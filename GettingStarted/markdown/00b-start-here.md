@@ -136,7 +136,7 @@ installed tree carries it as a file.
 | | |
 |---|---|
 | The server, the client libraries and the installer | <https://github.com/dmontaine/SDCore4Linux> |
-| These pages | <https://github.com/dmontaine/SDCoreLinuxDocs> |
+| These pages | <https://github.com/dmontaine/SDCore4LinuxDocs> |
 
 **Neither repository contains a built binary, deliberately** — no compiled
 executable, no `.so`, no object files. A clone builds. That is why installing
