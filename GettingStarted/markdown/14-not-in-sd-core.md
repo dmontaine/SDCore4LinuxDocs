@@ -102,8 +102,9 @@ or through your own export/import BASIC.
 
 ## Language and locale
 
-**SD Core is English only.** `NLS`, `set.language` and `load.language` do not
-exist.
+**SD Core is English only.** `set.language` and `load.language` do not exist.
+`nls` is still there: it shows and sets the currency symbol and the thousands
+and decimal separators, which is all it ever did.
 
 ## Embedded Python — kept, and this port's own decision to keep it
 

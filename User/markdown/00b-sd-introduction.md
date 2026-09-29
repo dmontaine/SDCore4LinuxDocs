@@ -152,7 +152,7 @@ are not in SD Core for Linux:
 | `ENCRYPT.FIELD` verb | Removed; `sdencrypt()` and `sddecrypt()` in SDBasic are the supported route |
 | `sed`, `update.record`, `modify` editors | Gone; use `nano`, `micro` or `ed` |
 | PROC language | Removed; use paragraphs instead |
-| NLS, `SET.LANGUAGE`, `LOAD.LANGUAGE` | Removed; SD Core is English only |
+| `SET.LANGUAGE`, `LOAD.LANGUAGE` | Removed; SD Core is English only (NLS, for currency and separators, is kept) |
 | Unattended install | Not supported; the installer asks questions and sets passwords that cannot be scripted around |
 
 **Embedded Python is not on this list** — a real difference from SD Core

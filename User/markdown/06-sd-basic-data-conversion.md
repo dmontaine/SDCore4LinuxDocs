@@ -255,6 +255,10 @@ is. **`setnls` changes them for the session**, so a
 program that alters them and then aborts leaves the session changed. Read the
 old value, set the new, and restore it on the way out.
 
+At the command prompt the `nls` verb does the same: `nls` alone shows all
+three, `nls currency` (or `thousands`, `decimal`) shows one, `nls currency USD`
+sets one for the session, and `nls default` puts back `$`, `,` and `.`.
+
 ## What is not here
 
 Nothing in the conversion group has been removed from this port.
