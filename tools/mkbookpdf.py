@@ -194,7 +194,7 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('html', help="mkbook.py's merged HTML file")
     ap.add_argument('pdf', help='where to write the PDF')
-    ap.add_argument('--footer', default='SD Core for Linux L1.1-0',
+    ap.add_argument('--footer', default='SD Core for Linux L1.1-1',
                     help='text drawn at the bottom-left of every printed page')
     ap.add_argument('--timeout', type=int, default=120)
     args = ap.parse_args()
