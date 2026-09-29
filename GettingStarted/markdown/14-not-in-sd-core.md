@@ -102,8 +102,8 @@ or through your own export/import BASIC.
 
 ## Language and locale
 
-`NLS`, `set.language` and `load.language` are removed. **SD Core is English
-only**, and these were the only callers of the message-language machinery.
+**SD Core is English only.** `NLS`, `set.language` and `load.language` do not
+exist.
 
 ## Embedded Python — kept, and this port's own decision to keep it
 

@@ -80,7 +80,6 @@ reads as a defect report.
 | **10.** version string | `W1.0-0` | Page 00 now tells a tester to quote `W1.0-0` and says where to find it — the header bar, the installer file name, and `sd --version` |
 | **11.** verbs or commands | the methodology was correct | *Verbs* for what a VOC contains, *commands* for what a person types |
 | **12.** lower case | **bold lower case for verbs** | 198 verb names across the set are now bold. The list is not hand-written: it is read from `sdsys/newvoc` and the two `TIER.*` records, so it cannot drift from what a VOC holds |
-| **13.** the Turkish and Azeri fix | leave as written | Page 12 describes it from the changelog |
 | **15.** does the toolchain move | move it — possibly to several machines | `mkdoc.py` and `mkpdf.ps1` are now in `tools\` here, and both are **out of** `assert-current.ps1`'s `$neverShipped`. A clone needs no checkout of `sd4windows` |
 | **16.** are the PDFs tracked | generated after a change, and only the ones that changed | `.gitignore` keeps `*.html`, `*.pdf` and `*.zip` out. Two deliverables eventually — a PDF download and the pages on a web site — both built from the Markdown at release time |
 | **17.** a release step | a short script | `tools\release.ps1`. It renders only what changed, **refuses to zip if any PDF is older than its Markdown**, and prints the SHA256 |

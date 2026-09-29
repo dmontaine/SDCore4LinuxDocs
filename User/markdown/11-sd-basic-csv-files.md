@@ -115,13 +115,12 @@ quoted comma correctly kept inside the second field.
 ## The separator
 
 Every statement here defaults to a comma. `csvdq()` and `dparse.csv` take the
-separator as an argument; a semicolon is common in locales where the comma is
-the decimal separator.
+separator as an argument, for a file that uses something else — some systems
+write a semicolon.
 
 > **A file whose separator is a semicolon is still called CSV by the program
 > that produced it.** Look at a line before assuming the separator, and take it
-> from configuration rather than hard-coding it — the same export from the same
-> system changes separator when the machine's locale changes.
+> from configuration rather than hard-coding it.
 
 ## Line endings
 
