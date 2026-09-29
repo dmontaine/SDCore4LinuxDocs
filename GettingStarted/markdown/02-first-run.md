@@ -182,8 +182,8 @@ off
 3. **Locking an account down.** Every account gets the full VOC now, so
    confining one to just your application is a hardening step you take by
    hand — see [Security](12-security.html#what-ships-secured-before-you-change-anything).
-4. **An upgrade.** Install over the top and check your data survived, then
-   run **`update.accounts all`** as `sdsys` to bring existing VOCs forward —
+4. **An upgrade.** Uninstall keeping your accounts, install again, and check
+   your data survived; the installer brings existing VOCs forward itself —
    see [Upgrading and uninstalling](01a-upgrading-and-uninstalling.html).
 
 ## When something goes wrong

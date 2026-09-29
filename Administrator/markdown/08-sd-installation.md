@@ -111,14 +111,15 @@ page is shown, on the principle that the machine already carries the
 answers and every setting has a verb that changes it afterwards
 (`remote.ssh`, `remote.api` — see *Remote access and the machine*).
 
-### Unlike SD Core for Windows, the VOC refresh is a step you run, not one the installer runs for you
+### As in SD Core for Windows, the installer refreshes every account's VOC
 
-**The installer does not run `update.accounts all`.** Checked directly
-against `installsdai.sh`: there is no such call anywhere in it. After an
-upgrade, log in as `sdsys` and run it yourself — see *Upgrading and
-uninstalling* in the Getting Started set. Until you do, existing
-accounts keep working exactly as before, with the release's fixes in
-the catalogue but not reachable by name.
+**When you kept your accounts, the installer runs `update.accounts all`**
+as the administrator near its end, announcing it with "Bringing every
+registered account's VOC up to this release." A command the release adds
+can then be typed in every account that already existed. If `newvoc`
+changes the type of a record an account already has, it asks about that
+record account by account, so stay at the keyboard until it finishes. See
+*Upgrading and uninstalling* in the Getting Started set.
 
 **The dictionaries are reapplied automatically.** The definitions the
 release ships are added and updated by the install step that writes them

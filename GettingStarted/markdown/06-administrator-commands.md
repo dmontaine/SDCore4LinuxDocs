@@ -39,8 +39,8 @@ here:
 - **`update.accounts`** only ever adds VOC records it finds missing, from a
   release that shipped verbs the account was created before. Since every
   account already has the whole VOC, this now matters only after an
-  *upgrade* — a fresh account never needs it, and **the installer does not
-  run it for you**: run `update.accounts all` yourself after an upgrade.
+  *upgrade* — a fresh account never needs it, and **the installer runs
+  `update.accounts all` for you** when you keep your accounts.
 - **`delete.account`** keeps the Linux user's home directory unless you
   add `remove.home` — a person's own files and ssh keys live there.
 

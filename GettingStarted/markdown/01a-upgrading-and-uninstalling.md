@@ -15,34 +15,37 @@ your database in place.**
 |---|---|
 | the catalogue and compiled programs | your accounts and their passwords |
 | the BASIC source | the private catalogue |
-| the messages and include records | the commands each account may run, unless you refresh them (see below) |
+| the messages and include records | anything you added to an account's VOC (the installer adds the release's new commands; see below) |
 | the VOC templates and library routines | your print queue and held reports |
 | the SDSYS `BP` programs | everything under your own accounts, and `sd.conf` |
 | terminfo, the licence, the contributor list | |
 
-Anything SD created while it was running — your VOC included — is left exactly
-as it is.
+Anything SD created while it was running is left as it is, except that each
+account's VOC is brought up to the release, as the next paragraphs say.
 
 **The dictionaries are brought up to date for you.** The install step that
 writes them (`write_install_dicts`) adds and updates the entries SD ships
 and leaves alone any you added. If that step cannot run, the installer says
 so rather than finishing quietly.
 
-**Existing accounts do *not* pick up a release's new commands
-automatically — that is a real difference from SD Core for Windows, whose
-installer runs the equivalent sweep for you.** After an upgrade, log in as
-`sdsys` and run:
+**Existing accounts pick up a release's new commands automatically**, as in
+SD Core for Windows. When you kept your accounts, the installer ends by
+running, as the administrator:
 
 ```
 :update.accounts all
 ```
 
-This walks every registered account and updates its VOC from `newvoc` — a
-command this release adds can then be typed in accounts that already
-existed. Refusing to run it leaves those accounts working exactly as
-before, with the release's fixes in the catalogue but not reachable by
-name until you do. To refresh one account instead, `update.accounts` (no
-`all`) run **in that account** updates just it and offers to do the rest.
+It says "Bringing every registered account's VOC up to this release." and
+walks every registered account, updating its VOC from `newvoc` — a command
+this release adds can then be typed in accounts that already existed. If
+`newvoc` changes the type of a record an account already has, it asks about
+that record, account by account, so stay at the keyboard until it finishes.
+
+You can run it again yourself at any time, logged in as `sdsys` — after
+registering an account from an older system, say. To refresh one account
+instead, `update.accounts` (no `all`) run **in that account** updates just
+it and offers to do the rest.
 
 Two limits are worth knowing before you rely on it.
 
@@ -59,6 +62,9 @@ Two limits are worth knowing before you rely on it.
 > *Accounts and security*.
 
 ## Uninstalling
+
+`deletesdai.sh` is in the release package beside `installsdai.sh` (from
+L1.1-1 on), and in the source repository. Run it as yourself, not with `sudo`:
 
 ```sh
 ./deletesdai.sh
