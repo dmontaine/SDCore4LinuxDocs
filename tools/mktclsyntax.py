@@ -201,8 +201,11 @@ out.append('| | syntax | who |')
 out.append('|---|---|---|')
 
 WHOMARK = {'ordinary': '', 'sdsys': 'S'}
+# 29 Sep 2026 - A shape's "|" (this OR that) is escaped for the table.  Left
+# bare it ended the cell: 37 rows rendered their alternatives as extra cells
+# and lost the "who" column, in the page and the bound PDF alike.
 for v in sorted(verbs):
-    out.append('| **`%s`** | %s | %s |' % (v, shapes[v], WHOMARK[verbs[v][2]]))
+    out.append('| **`%s`** | %s | %s |' % (v, shapes[v].replace('|', '\\|'), WHOMARK[verbs[v][2]]))
 
 out.append('')
 out.append('**Blank in the who column means every account has it**; `S` is SDSYS')
