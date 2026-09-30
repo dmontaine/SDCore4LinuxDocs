@@ -90,7 +90,9 @@ config
 set.date
 ```
 
-**`config`** reports the configuration parameters in force.
+**`config`** reports the configuration parameters in force. **`set.date`**
+sets the date *this session* sees, for testing date-dependent programs; the
+machine's clock and every other session are untouched.
 
 ## The remote doors
 

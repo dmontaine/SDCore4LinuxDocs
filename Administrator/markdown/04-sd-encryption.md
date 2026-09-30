@@ -102,7 +102,7 @@ internal programs are the only ones that may set the administrator flag.
 
 ### The keys
 
-Ten are implemented. Every binary value is base64, because the interface
+Eleven are implemented. Every binary value is base64, because the interface
 carries NUL-terminated strings and a raw 32-byte digest would contain a mark
 character about one time in nine.
 
@@ -119,6 +119,7 @@ character about one time in nine.
 | `SD_RANDBYTES` | 107 | count | Random bytes |
 | `SD_XORBYTES` | 108 | two equal-length values | Their exclusive-or |
 | `SD_CTEQUAL` | 109 | two values | `1` or `0`, compared in constant time |
+| `SD_TLS_CBIND` | 110 | none | This session's TLS channel binding, as the `c=` value its SCRAM login must carry; empty when the session is not TLS (a local pipe session) |
 
 `SD_CTEQUAL` reports a malformed argument as an error rather than as `0`,
 because by the time the login path compares these values both sides are the

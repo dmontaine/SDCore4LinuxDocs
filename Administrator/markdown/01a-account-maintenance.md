@@ -197,32 +197,32 @@ account: `sh`/`!`/`os.execute` run unconditionally for every account after
 the tiered-account teardown (S.27, "no second wall"), so there is no
 operating-system access this needs and does not already have.
 
-## Setting the machine's date: `set.date`
+## Setting the session's date: `set.date`
 
 ```
 set.date date
 ```
 
-Sets the **machine's** date, not a session preference — it changes the clock the
-whole installation reads. The argument goes through SD's `D` conversion, so
-anything `iconv(…, 'D')` accepts will do, and anything it does not is refused:
+Sets the date **this session** sees — not the machine's clock. The argument
+goes through SD's `D` conversion, so anything `iconv(…, 'D')` accepts will do,
+and anything it does not is refused:
 
 | | |
 |---|---|
 | *Date required* | `set.date` with nothing after it |
 | *Invalid date format* | the argument is not a date SD can read |
 
-**There is no confirmation and no undo.** It is described here from source
-rather than shown running, because demonstrating it would move the clock of
-whatever machine it ran on. **Changing the system clock is itself a
-privileged Linux operation** (`CAP_SYS_TIME`), so a session that has the
-verb may still be refused by the operating system underneath it —
-SDSYS's own session is the local `sdsys` Linux user, which needs the same
-capability any other account would to actually move the clock.
+**What it actually changes** (read from the source, `op_misc.c` `set_date()`):
+SD keeps an offset from the real date inside the one `sd` process that ran
+the command, and adds it wherever that process reports the date — `DATE()`
+and `TIMEDATE()` in BASIC, and so the `date` verb. Nothing else sees it:
+other sessions, other users, the operating system, file timestamps and
+scheduled jobs all keep the real date, and no Linux privilege is involved.
+The time of day is unchanged; only the day moves.
 
-**Moving a live machine's date backwards is not a neutral act**: file
-timestamps, licence expiry, scheduled tasks and anything that reasons about
-elapsed time all read it. Treat it as a maintenance operation on a quiet system.
+**It lasts until the session ends.** To go back sooner, run `set.date` again
+with today's date. Its use is testing date-dependent programs — month-end or
+year-end processing — without touching the machine's clock.
 
 ## Deleting an account: `delete.account`
 
