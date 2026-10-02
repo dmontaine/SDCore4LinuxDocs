@@ -143,7 +143,7 @@ not refused — the name is simply not recognised.**
 | **`rename`** | **`rename`** — the same verb as **`cname`** |  |
 | **`report.src`** | **`report.src on`** \| **`off`** \| **`report.src`** to toggle |  |
 | **`report.style`** | **`report.style`** {*name* \| **`off`**} |  |
-| **`restore.account`** | **`restore.account`** *archive* *account* {*account* …} \| **`all`** | S |
+| **`restore.account`** | **`restore.account`** *archive* \| **`latest`** *account* {*account* …} \| **`all`** {**`no.query`**} | S |
 | **`run`** | **`run`** {*file*} *record* {*arguments*} |  |
 | **`save.list`** | **`save.list`** *list* {**`from`** *list.no*} |  |
 | **`save.stack`** | **`save.stack`** {*name*} |  |

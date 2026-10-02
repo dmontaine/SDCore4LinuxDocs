@@ -278,6 +278,27 @@ catalogued again. **Backups made here restore on SD Core for Windows, and the
 other way round**; a backup of the full product restores only to a full system
 (SD Core Solo's only to Solo).
 
+**`restore.account latest` restores the most recent backup without your naming
+it:**
+
+```
+restore.account latest name {name ...} {no.query}
+restore.account latest all {no.query}
+```
+
+`latest` stands where the archive name goes. SD looks in the directory saved by
+`set.backup.directory`, picks **the newest backup made on this computer that
+holds every account you named**, prints which one it chose (*The most recent
+backup is …*) and then restores from it exactly as if you had typed its name.
+`latest all` takes the newest backup that was made with `all`. If none
+qualifies it says *No backup of … made on this computer was found in …* and
+changes nothing. The choice is made from the **file name alone** (a backup is
+called `SD-<computer>-<accounts>-<yyyymmdd-hhmmss>.zip`); the backup it picks is
+still checked against its own manifest before anything is changed, and only the
+accounts you named are restored from a backup of several. A backup made on
+another computer is never picked. An archive name always ends in `.zip`, so
+`latest` cannot be mistaken for one.
+
 **Both are SDSYS's.** A backup or restore starts only when every other session
 has logged out, says who is still logged in if any are, and **no one can log in
 — at the terminal, over ssh or through the API — until it has finished.**
