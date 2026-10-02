@@ -98,8 +98,8 @@ remote.api {on | local | off}
 
 | | |
 |---|---|
-| `on` | SD listens on port 4243 on every address, and the firewall allows it: other computers may connect |
-| `local` | SD listens on `127.0.0.1:4243` only: only this computer may |
+| `on` | SD listens on port 4247 on every address, and the firewall allows it: other computers may connect |
+| `local` | SD listens on `127.0.0.1:4247` only: only this computer may |
 | `off` | SD opens no API socket at all, TCP or local |
 
 **There are two axes here and the verb sets both, the same shape as SD
@@ -108,7 +108,7 @@ different underneath.** Whether SD listens at all is `systemd`'s
 `sdclient.socket` unit; who may reach it is `ufw`. The verb drives both and
 reads them back, so what it reports after a change is the machine's own
 answer, not the verb's intention. The firewall rule is the installer's own
-(`ufw allow 4243/tcp`), so this verb and the install describe one state.
+(`ufw allow 4247/tcp`), so this verb and the install describe one state.
 
 **No SD session is ever ended by this verb**, which is where it differs
 most from the Windows original. SD Core for Windows's own listener opens

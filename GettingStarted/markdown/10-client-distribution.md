@@ -55,7 +55,7 @@ take the same arguments and return the same things they always did.
 
 | | |
 |---|---|
-| `SDConnect()` | over the network, to port **4243** |
+| `SDConnect()` | over the network, to port **4247** |
 | `SDConnectLocal()` | on the same machine. **Sends no password and never did**, so SCRAM does not apply |
 
 BASIC programs reaching another SD server use the `!sdclient` class, which

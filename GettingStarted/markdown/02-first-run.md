@@ -173,7 +173,7 @@ off
    way in is a short BASIC program that reads your exported data and writes the
    records. Then query it — the query processor is where most of the surface
    area is.
-2. **A client program against the API.** Point it at port 4243. It needs a
+2. **A client program against the API.** Point it at port 4247. It needs a
    client library from this release, because the old cleartext login is
    gone — `sdclilib.so`, built as part of this port, or the source at
    <https://github.com/dmontaine/linuxsdclilib>. See

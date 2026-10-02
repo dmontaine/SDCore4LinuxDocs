@@ -2,7 +2,7 @@ Title: Upgrading and uninstalling
 Subtitle: Replacing an existing installation, and taking SD off the machine.
 
 This page continues [Installing SD Core](01-installation.html). SD must be
-uninstalled before `installsdai.sh` will run again — it refuses outright if
+uninstalled before `installsdcore.sh` will run again — it refuses outright if
 `/usr/local/sdsys/bin/sd` already exists — so "upgrading" here means
 uninstalling with accounts kept, then installing again.
 
@@ -63,11 +63,11 @@ Two limits are worth knowing before you rely on it.
 
 ## Uninstalling
 
-`deletesdai.sh` is in the release package beside `installsdai.sh` (from
+`deletesdcore.sh` is in the release package beside `installsdcore.sh` (from
 L1.1-1 on), and in the source repository. Run it as yourself, not with `sudo`:
 
 ```sh
-./deletesdai.sh
+./deletesdcore.sh
 ```
 
 Two separate questions, each defaulting to keeping what you have:

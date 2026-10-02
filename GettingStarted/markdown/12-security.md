@@ -16,7 +16,7 @@ to apply — it is what `create.account` and the installer already do:
 | Every SD account | an ordinary Linux user with no elevated rights of its own — see [Being able to `sudo` gets you nothing](#being-able-to-sudo-gets-you-nothing) |
 | ssh | `ForceCommand`s straight into `sd`, no shell reachable that way — see [ssh access](08-ssh-access.html) |
 | `sh`, `!`, `OS.EXECUTE` | run at the account's own Linux permissions, unconditionally — there is no separate permit list to keep here, unlike SD Core for Windows. This port keeps no second wall behind the one Linux itself already provides |
-| The API | local-only (`127.0.0.1:4243`) until an administrator opens it to the network — see [API access](09-api-access.html) |
+| The API | local-only (`127.0.0.1:4247`) until an administrator opens it to the network — see [API access](09-api-access.html) |
 | SDSYS | no remote route at all, ssh or API, ever, from anywhere — the one thing this page treats as non-negotiable rather than a default |
 
 **Unlike SD Core for Windows, an ordinary account is not denied a console

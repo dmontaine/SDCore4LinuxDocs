@@ -166,7 +166,7 @@ your own data.
 These are not removals. They are stated here because a reader coming from
 another MultiValue system will otherwise assume they exist.
 
-**SD cannot be installed unattended.** `installsdai.sh` asks for
+**SD cannot be installed unattended.** `installsdcore.sh` asks for
 confirmation and, at the end, three passwords — there is no flag to skip
 either. Unattended deployment from this installer is not supported; a
 site that needs one builds its own automation around the same underlying

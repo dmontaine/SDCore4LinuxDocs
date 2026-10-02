@@ -14,7 +14,7 @@ GettingStarted set, under *Installing SD Core*, and is not repeated here.
 
 ## Two things to know before the first install
 
-**SD cannot be installed unattended.** `installsdai.sh` asks for
+**SD cannot be installed unattended.** `installsdcore.sh` asks for
 confirmation, two yes/no questions about remote access, and ends by
 setting three passwords at the terminal — there is no flag to skip any of
 it.
@@ -25,7 +25,7 @@ would otherwise finish silently with a gap nobody noticed.
 
 **The installer refuses to start if SD is already installed.**
 `/usr/local/sdsys/bin/sd` existing is the test; uninstall with
-`deletesdai.sh` first. It also refuses if run as root, or if the calling
+`deletesdcore.sh` first. It also refuses if run as root, or if the calling
 user cannot `sudo` at all — both checked before anything on the machine
 changes.
 
@@ -132,7 +132,7 @@ records, so an account created before a verb was withdrawn keeps it.
 ## Uninstalling
 
 ```sh
-./deletesdai.sh
+./deletesdcore.sh
 ```
 
 **The default does not touch your accounts or your configuration.**

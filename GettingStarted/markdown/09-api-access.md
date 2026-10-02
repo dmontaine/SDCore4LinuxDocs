@@ -63,11 +63,11 @@ never did.
 
 **Whether SD listens for the API at all is `systemd`'s `sdclient.socket`
 unit**, activated independently of whether `sd` itself is running — not a
-line in `sd.conf`. It defaults to `127.0.0.1:4243`, local only.
+line in `sd.conf`. It defaults to `127.0.0.1:4247`, local only.
 
 **Reaching the port from another computer is off unless you say so during
-installation.** Answering yes rebinds the socket to `0.0.0.0:4243` and
-adds a `ufw allow 4243/tcp` rule; answering no leaves it local-only. Change
+installation.** Answering yes rebinds the socket to `0.0.0.0:4247` and
+adds a `ufw allow 4247/tcp` rule; answering no leaves it local-only. Change
 it afterward, as SDSYS:
 
 ```
@@ -78,9 +78,9 @@ remote.api on | local | off
 ended); `off` stops it. See
 [Administrator commands](06-administrator-commands.html).
 
-**If you tunnel, you no longer need to.** `ssh -L 4243:127.0.0.1:4243
+**If you tunnel, you no longer need to.** `ssh -L 4247:127.0.0.1:4247
 user@host` still works, but the design expects a direct connection to
-port 4243 once you have opened it — tunnelling is only for a `local`-only
+port 4247 once you have opened it — tunnelling is only for a `local`-only
 install reached from elsewhere.
 
 > **`APILOGIN` is not an off switch.** It decides whether the API demands a

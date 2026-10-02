@@ -259,11 +259,101 @@ the one most people meet.)*
 > the prompt will eat the commands that follow it as its answers, and the
 > session will then wait for ever.
 
+## Backing up and restoring accounts: `backup.account`, `restore.account`
+
+```
+backup.account name {name ...} to directory
+backup.account all to directory
+restore.account archive name {name ...}
+restore.account archive all
+```
+
+`backup.account` writes **one zip file**, named for the machine, the accounts
+and the time. It holds each account's files and a plain-text **manifest** of how
+the account was set up: its type, description, suspension, remote access and
+group members. `restore.account` puts accounts back — over an account that
+exists, or onto a machine that has never had it. A restored account's paths are
+corrected to where it now lives, and programs it had in the global catalogue are
+catalogued again. **Backups made here restore on SD Core for Windows, and the
+other way round**; a backup of the full product restores only to a full system
+(SD Core Solo's only to Solo).
+
+**Both are SDSYS's.** A backup or restore starts only when every other session
+has logged out, says who is still logged in if any are, and **no one can log in
+— at the terminal, over ssh or through the API — until it has finished.**
+
+**Every backup is checked as it is made.** The files, bytes and directories of
+each account are counted before it is packed and compared with what was
+written, and a backup that does not match is **deleted rather than kept**. A
+restore checks the whole archive against its manifest **before it changes
+anything**, lists what it will replace and create, and asks first.
+
+**What it does not do:**
+
+- It does not back up SDSYS or the system's configuration (`settings.report`,
+  below, records that for reference only).
+- It carries **no passwords**: an account restored onto a machine that never
+  had it asks for a new one, and an account that exists keeps its own.
+- It does not follow symbolic links inside an account; any it finds are named
+  and left out.
+- A program recompiled after it was catalogued globally is not recognised as the
+  account's and is not catalogued again.
+
+## Saying where backups go: `set.backup.directory`
+
+```
+set.backup.directory directory
+set.backup.directory
+```
+
+Saves the directory that `backup.account` writes to and `restore.account` reads
+from, so it need not be typed each time. It **creates the directory if it is not
+there**, checks that it can be written to, and keeps it in `sd.conf`
+(`BACKUPDIR=`), where it takes effect at once — no restart. On its own it shows
+the saved directory and changes nothing.
+
+With a directory saved, `backup.account` no longer needs `to`; with none saved
+it asks for one and saves the answer exactly as this verb would.
+`restore.account` does the same for an archive named without a directory.
+`to directory`, or an archive name that carries a directory, still works and
+changes nothing that is saved.
+
+**The directory must be a full path** — a relative one is refused, because a
+setting that meant different places depending on where you were standing would
+be a trap. **A directory that already exists is used as it is**, wherever it is
+(a USB drive, the pCloud folder), and nothing about it is changed.
+
+**A missing one is made readable by SDSYS only**, because a backup holds every
+account's files. SDSYS makes it itself wherever SDSYS may create it; elsewhere
+SD's privileged helper makes it, **but only below `/media`, `/run/media`,
+`/mnt`, `/var/backups`, `/srv`, `/opt` and `/home/sdsys`.** The limit is
+deliberate: a directory SDSYS owned inside a place the system reads its
+configuration from (`/etc/systemd/system/ssh.service.d`, say) would let SDSYS
+run commands as root, and SDSYS never is root. Anywhere else the verb says so
+and creates nothing. **To allow another place,** an administrator lists its
+directory, one per line, in `/etc/sd-backup-roots` (a file only root may own and
+write; SD ignores it otherwise), or creates the directory and gives it to
+`sdsys`.
+
+> An earlier release refuses to start if `sd.conf` holds a `BACKUPDIR` line, so
+> take the line out before going back to one.
+
+## Recording the settings: `settings.report`
+
+```
+settings.report {directory}
+```
+
+Writes, or shows, a **plain-text record** of the system's settings — `sd.conf`,
+ssh and API access, the accounts — for an administrator to keep. It is for
+reference only: nothing reads it back.
+
 ## Who has these verbs
 
 **All of them are SDSYS's** — `create.account`, `modify.account`,
 `modify.password` for another account, `delete.account`, `clean.account`,
-`update.accounts`, `config`. An ordinary account has none of these names at
+`update.accounts`, `config`, `backup.account`, `restore.account`,
+`set.backup.directory`, `settings.report`. An ordinary account has none of these names at
 all — this is not a permission it lacks, the verbs are simply not in its
 VOC. **Unlike SD Core for Windows, there is no separate `grant`/`revoke`/
 `list.grants` set** — `modify.account add`/`delete` folds the grant into

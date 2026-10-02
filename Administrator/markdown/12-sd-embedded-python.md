@@ -33,7 +33,7 @@ signed-on account - the same shape S.27 left `sh` and `os.execute` in, not a
 separate gate of its own. There is nothing here for an administrator to turn
 on or off.
 
-**The installer brings what this needs.** `installsdai.sh` installs
+**The installer brings what this needs.** `installsdcore.sh` installs
 `python3-dev` (Debian/Ubuntu) or the equivalent `-devel` package on the other
 three supported distributions itself, and refuses to proceed if `python3` and
 `python3-config` do not already resolve. Nothing is left for an administrator

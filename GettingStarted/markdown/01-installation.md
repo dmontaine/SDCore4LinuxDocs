@@ -1,7 +1,7 @@
 Title: Installing SD Core
 Subtitle: What the installer does to the machine, and the choices it puts in front of you.
 
-There is a compiler to run. `installsdai.sh` clones the source from
+There is a compiler to run. `installsdcore.sh` clones the source from
 `github.com/dmontaine/SDCore4Linux` and builds it on your machine — there is
 no prebuilt package and no installer binary. A clone builds; that is why
 installing means building.
@@ -37,15 +37,21 @@ setting three passwords at the terminal.
 
 ## Getting the installer
 
-Clone the repository, or fetch `installsdai.sh` on its own — the script
+**The command that starts SD Core is `sd`, and `sd` is its only name.** SD Core
+for Linux Solo, if you install it as well, is started by `sd-solo`; the two have
+separate API ports (4247 and 4249) and separate shared-memory keys, so they can
+share a computer. The installer is `installsdcore.sh` and the uninstaller
+`deletesdcore.sh` (Solo's are `installsdsolo.sh` and `deletesdsolo.sh`).
+
+Clone the repository, or fetch `installsdcore.sh` on its own — the script
 itself clones the source it actually builds from, so having the whole
 repository first is a convenience, not a requirement:
 
 ```sh
 git clone https://github.com/dmontaine/SDCore4Linux
 cd SDCore4Linux
-chmod +x installsdai.sh
-./installsdai.sh
+chmod +x installsdcore.sh
+./installsdcore.sh
 ```
 
 The script downloads its own working copy of the source to
@@ -59,7 +65,7 @@ After confirming you want to continue, two questions, both defaulting to
 
 ```
 Allow ssh access from other computers? enables sshd at boot, opens port 22 (y/N)
-Allow API access from other computers? opens TCP port 4243 (y/N)
+Allow API access from other computers? opens TCP port 4247 (y/N)
 ```
 
 **Answering "no" to both is a real, supported deployment**, not a degraded
@@ -78,7 +84,7 @@ itself is running). What the two questions actually decide:
 | Question | "no" (default) | "yes" |
 |---|---|---|
 | ssh | `sshd` is left however the box already had it; the SD boundary (below) is written to `sshd_config` regardless, ready for whenever ssh is turned on | `sshd` is enabled at boot and `ufw allow 22/tcp` is added |
-| API | `sdclient.socket` listens on `127.0.0.1:4243` only — a remote client reaches it by tunnelling over ssh (`ssh -L 4243:127.0.0.1:4243 <host>`) | the socket is rebound to `0.0.0.0:4243` and `ufw allow 4243/tcp` is added |
+| API | `sdclient.socket` listens on `127.0.0.1:4247` only — a remote client reaches it by tunnelling over ssh (`ssh -L 4247:127.0.0.1:4247 <host>`) | the socket is rebound to `0.0.0.0:4247` and `ufw allow 4247/tcp` is added |
 
 **The ssh boundary is applied either way, and it is what actually confines
 SD accounts.** Every account except SDSYS is `ForceCommand`'d into `sd` the

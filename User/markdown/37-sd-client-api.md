@@ -38,7 +38,7 @@ The header, `sdclilib.h`, ships with the source tree at
 
 | | |
 |---|---|
-| `SDConnect(host, port, user, pass, account)` | over the network, to port **4243** |
+| `SDConnect(host, port, user, pass, account)` | over the network, to port **4247** |
 | `SDConnectLocal(account)` | on the same machine. Sends no password and never did |
 
 > **`SDConnectUDS` (Unix Domain Socket) is not available, on either

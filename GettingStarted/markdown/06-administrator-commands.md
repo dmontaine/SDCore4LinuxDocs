@@ -139,7 +139,9 @@ SDSYS has no API route to arrive over in the first place — see
 ## The full list
 
 **`create.account`** · **`delete.account`** · **`modify.account`** ·
-**`update.accounts`** · **`clean.account`** · **`unlock`** · **`config`** ·
+**`update.accounts`** · **`clean.account`** · **`backup.account`** ·
+**`restore.account`** · **`set.backup.directory`** · **`settings.report`** ·
+**`unlock`** · **`config`** ·
 **`listu`** · **`list.readu`** · **`list.locks`** · **`clear.locks`** ·
 **`lock`** · **`logout`** · **`set.date`** · **`remote.api`** ·
 **`remote.ssh`** · **`umask`**

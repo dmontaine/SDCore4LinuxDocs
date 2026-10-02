@@ -8,7 +8,7 @@
 #   tools/mkdoc.py, UNCHANGED BUT FOR THE TWO DEFAULTS BELOW AND THE FONT
 #   STACK.  The conversion itself (python-markdown, no binary dependency) and
 #   the CSS were already fully portable - nothing here calls a Windows API or
-#   assumes a Windows path.  Not wired into installsdai.sh for the same
+#   assumes a Windows path.  Not wired into installsdcore.sh for the same
 #   reason the port gives for its own installer: naming a .md there is what
 #   would make assert-current watch it, and that toll is not owed while the
 #   format is still being judged.

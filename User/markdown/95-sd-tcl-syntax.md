@@ -36,6 +36,7 @@ not refused — the name is simply not recognised.**
 | **`analyse.file`** | **`analyse.file`** {**`dict`**} *file* {**`statistics`**} {**`lptr`**} |  |
 | **`analyze.file`** | **`analyze.file`** — the same verb as **`analyse.file`** |  |
 | **`autologout`** | **`autologout`** {*minutes*} |  |
+| **`backup.account`** | **`backup.account`** *account* {*account* …} \| **`all`** {**`to`** *directory*} | S |
 | **`basic`** | **`basic`** {*file*} *record* {*record* …} |  |
 | **`bell`** | **`bell on`** \| **`off`** |  |
 | **`break`** | **`break on`** \| **`off`** \| **`on user`** *n* |  |
@@ -142,17 +143,20 @@ not refused — the name is simply not recognised.**
 | **`rename`** | **`rename`** — the same verb as **`cname`** |  |
 | **`report.src`** | **`report.src on`** \| **`off`** \| **`report.src`** to toggle |  |
 | **`report.style`** | **`report.style`** {*name* \| **`off`**} |  |
+| **`restore.account`** | **`restore.account`** *archive* *account* {*account* …} \| **`all`** | S |
 | **`run`** | **`run`** {*file*} *record* {*arguments*} |  |
 | **`save.list`** | **`save.list`** *list* {**`from`** *list.no*} |  |
 | **`save.stack`** | **`save.stack`** {*name*} |  |
 | **`search`** | **`search`** {**`dict`**} *file* {*selection*} |  |
 | **`select`** | **`select`** {**`dict`**} *file* {*selection*} {*list.no*} |  |
 | **`set`** | **`set`** *name* *value* |  |
+| **`set.backup.directory`** | **`set.backup.directory`** {*directory*} | S |
 | **`set.date`** | **`set.date`** *date* | S |
 | **`set.exit.status`** | **`set.exit.status`** *n* |  |
 | **`set.file`** | **`set.file`** *account* *file* *pointer* |  |
 | **`set.trigger`** | **`set.trigger`** *file* *name* {*modes*} |  |
 | **`setptr`** | **`setptr`** *unit* \| **`default`**`,`*width*`,`*depth*`,`*top*`,`*bottom*`,`*mode* {`,`*options*}  ·  **`setptr display`**  ·  **`setptr`** *unit*`,`**`display`** |  |
+| **`settings.report`** | **`settings.report`** {*directory*} | S |
 | **`sh`** | **`sh`** *command* |  |
 | **`show`** | **`show`** {**`dict`**} *file* {*selection*} |  |
 | **`sleep`** | **`sleep`** *n* \| *hh*`:`*mm*{`:`*ss*} |  |
