@@ -45,7 +45,8 @@ desktop-sharing view of it (VNC, TeamViewer). Nothing else grants it:
 | a real login as `sdsys`, local | granted |
 | `sudo sd` as root | refused — root is treated as *another* administrator, not SD's |
 | `sudo -u sdsys sd` / `su - sdsys` | refused — the session runs as the `sdsys` Linux user, but the login that started it was somebody else's, and the kernel's own audit trail (unforgeable without root) says so |
-| `sdsys` over ssh, or the API | refused at the door — SDSYS has no remote access at all |
+| `sdsys` over ssh, or over the API from another computer or the network port | refused at the door — SDSYS has no remote access at all |
+| `sdsys` over the API, on the local Unix socket, from a process running as `sdsys` | granted, with SDSYS's own SD password |
 
 **This is not the elevation model SD Core for Windows uses**, and the
 difference is deliberate, not a gap: Windows checks whether the session is

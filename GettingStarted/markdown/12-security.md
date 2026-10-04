@@ -17,7 +17,7 @@ to apply — it is what `create.account` and the installer already do:
 | ssh | `ForceCommand`s straight into `sd`, no shell reachable that way — see [ssh access](08-ssh-access.html) |
 | `sh`, `!`, `OS.EXECUTE` | run at the account's own Linux permissions, unconditionally — there is no separate permit list to keep here, unlike SD Core for Windows. This port keeps no second wall behind the one Linux itself already provides |
 | The API | local-only (`127.0.0.1:4247`) until an administrator opens it to the network — see [API access](09-api-access.html) |
-| SDSYS | no remote route at all, ssh or API, ever, from anywhere — the one thing this page treats as non-negotiable rather than a default |
+| SDSYS | no remote route at all, ssh or API, ever, from any other computer; on the machine itself the API accepts it only on the local Unix socket, from a process running as `sdsys` — the one thing this page treats as non-negotiable rather than a default |
 
 **Unlike SD Core for Windows, an ordinary account is not denied a console
 login here.** SD keeps no second wall behind the one Linux permissions
@@ -78,11 +78,13 @@ which records who actually logged in and cannot be forged by `sudo` or
 happens to be running as.
 
 **This is deliberate and total, not a special case for remote sessions.**
-SDSYS itself is refused ssh and the API outright, from this machine or any
-other — see [ssh access](08-ssh-access.html) and
-[API access](09-api-access.html). There is no "administrator, but only
-locally over the network" middle case; SDSYS's only route is a genuine
-local login.
+SDSYS itself is refused ssh outright. The API refuses it from every other
+computer and over the network port on this machine as well; it accepts SDSYS
+only on the local Unix socket, from a process running as `sdsys`, and only
+with SDSYS's own SD password — see [ssh access](08-ssh-access.html) and
+[API access](09-api-access.html). There is no "administrator, but only over
+the network" middle case; SDSYS's routes are a genuine local login and, for
+programs, that local socket.
 
 ## Taking an account out of use without deleting it
 

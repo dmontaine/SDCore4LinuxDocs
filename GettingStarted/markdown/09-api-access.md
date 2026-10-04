@@ -15,10 +15,11 @@ take the same arguments and return the same things. **What changed is
 underneath: the login protocol, the port, the identity a session runs as, and
 what it is allowed to open.**
 
-> **SDSYS is the one exception, and it has no API access at all**, from
-> anywhere, under any setting — see
+> **SDSYS is the one exception, and its API access is local only**: never
+> from another computer, under any setting, and on this machine only through
+> the local Unix socket from a process running as `sdsys` — see
 > [Reaching the port is not getting in](#reaching-the-port-is-not-getting-in)
-> below. Every other account has it by default; there is nothing to grant.
+> below. Every other account has the API by default; there is nothing to grant.
 
 ## The login is SCRAM-SHA-256, and the old one is gone
 
@@ -93,14 +94,18 @@ A caller must clear two gates, in this order:
 
 1. **Complete the SCRAM exchange** against a password held for that account —
    so **an account with no password cannot connect at all**.
-2. **Not be SDSYS.** Every ordinary account already has API access; there is
-   no separate group to join for it.
+2. **Not be SDSYS** — except in the one local case below. Every ordinary
+   account already has API access; there is no separate group to join for it.
 
-**SDSYS clears neither gate, ever, from any address including this
-machine's own loopback.** It has no SD credential to complete a SCRAM
-exchange with by design, and there is no keyword that changes this: it is
-not a rule the API enforces about *where* SDSYS connects from, it is that
-SDSYS has no way to authenticate over the API at all. See
+**SDSYS is admitted only on this machine, and only one way.** It is refused
+from every other computer, and also over the network port on this machine's
+own loopback (`127.0.0.1:4247`). It is accepted only on the local Unix
+socket, and only when the operating system reports that the connecting
+process itself runs as the Linux user `sdsys`. It must still complete the
+SCRAM exchange with SDSYS's own SD password — the third password the
+installer asks for — so a process that merely runs as `sdsys` is not enough
+on its own. There is no keyword that widens this: it is a rule the API
+enforces about *where* and *as whom* SDSYS connects. See
 [Accounts](05-account-types.html#sdsys-is-the-only-administrator).
 
 **Failed API logins are written to the audit trail**, with the reason and

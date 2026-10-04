@@ -37,9 +37,12 @@ actually logged in, not which account a shell is currently running as).
 prompt to reach it at all, and changing it afterward is an ordinary Linux
 action (`passwd`), not an SD verb. SDSYS also has its own SD credential
 (`modify.password`, run from within an SDSYS session, changes its own),
-but that credential secures nothing remote: `sdsys` has no ssh or API
-access at all, from anywhere, under any setting — see
-[Reaching the operating system](06-administrator-commands.html).
+but that credential secures nothing remote: `sdsys` has no ssh access at
+all and no API access from another computer, under any setting. The one
+thing the credential is for is a program running as `sdsys` on this machine,
+which gives it to use the API through the local Unix socket — see
+[API access](09-api-access.html). For what an administrator cannot reach
+from SD, see [Reaching the operating system](06-administrator-commands.html).
 
 ## Creating an account
 

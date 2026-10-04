@@ -132,9 +132,10 @@ both simply do what their shape suggests.
 ### Neither is available over the API
 
 **`sh`** and `OS.EXECUTE` are refused to a session that arrived over the
-API. An API session is not treated as a local session for any purpose, and
-SDSYS has no API route to arrive over in the first place — see
-[API access](09-api-access.html).
+API. An API session is not treated as a local session for any purpose,
+SDSYS's own included (it can reach the API only through the local Unix
+socket) — see [API access](09-api-access.html). An administrator who needs a
+shell uses the local login.
 
 ## The full list
 

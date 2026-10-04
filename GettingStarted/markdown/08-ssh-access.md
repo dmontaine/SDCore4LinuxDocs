@@ -92,8 +92,10 @@ file permissions allow it. See [Security](12-security.html).
 
 **SDSYS cannot ssh in, from this machine or any other.** `Match User sdsys`
 denies it outright, at the ssh server, before authentication starts — there
-is no session for `ForceCommand` to ever apply to. The same is true of the
-API; see [API access](09-api-access.html).
+is no session for `ForceCommand` to ever apply to. The API is the same for
+every other computer, and for this machine's network port too; on this
+machine it accepts SDSYS only on the local Unix socket, from a process
+running as `sdsys` — see [API access](09-api-access.html).
 
 **Nothing changes for ordinary accounts.** Every account `create.account`
 makes reaches ssh from wherever `sdusers` membership allows, whether or

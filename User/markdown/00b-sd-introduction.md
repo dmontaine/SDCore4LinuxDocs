@@ -139,7 +139,8 @@ refused outright, whatever route it came in by.
 
 **This needs the console, or a desktop-sharing view of it** (VNC,
 TeamViewer) — a real local login, which counts as local because it *is*.
-`sdsys` has no ssh or API route to arrive over, ever, from anywhere.
+`sdsys` has no ssh route and no network route to arrive over, ever, from
+any other computer; its only API route is the local socket on this machine.
 
 ## What is not in SD Core
 
