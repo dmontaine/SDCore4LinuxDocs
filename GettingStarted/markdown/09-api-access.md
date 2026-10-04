@@ -67,7 +67,7 @@ line in `sd.conf`. It defaults to `127.0.0.1:4247`, local only.
 
 **Reaching the port from another computer is off unless you say so during
 installation.** Answering yes rebinds the socket to `0.0.0.0:4247` and
-adds a `ufw allow 4247/tcp` rule; answering no leaves it local-only. Change
+adds a firewall rule for 4247/tcp (`ufw`, or firewalld on Fedora); answering no leaves it local-only. Change
 it afterward, as SDSYS:
 
 ```

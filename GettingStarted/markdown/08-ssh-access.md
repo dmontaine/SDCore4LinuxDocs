@@ -62,7 +62,7 @@ than needing a separate remote-desktop product.
 **Whether remote ssh access is turned on is a plain yes/no from the
 installer**, defaulting to no (see
 [Installing SD Core](01-installation.html#what-you-are-asked)). Answering
-yes enables `sshd` at boot and adds a `ufw allow 22/tcp` rule; answering no
+yes enables `sshd` at boot and adds a firewall rule for 22/tcp (`ufw`, or firewalld on Fedora); answering no
 leaves `sshd` and the firewall exactly as the box already had them — the
 installer does not narrow an existing, wider rule on your behalf. Change it
 afterward with `remote.ssh on`/`off` — see

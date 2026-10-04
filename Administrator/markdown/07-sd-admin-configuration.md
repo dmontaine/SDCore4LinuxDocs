@@ -178,7 +178,7 @@ difference, not an oversight.** SD Core for Windows sizes its listener from
 `sd.conf` at start-up and restarts SD itself to change it; here, whether SD
 listens for the API at all is `systemd`'s `sdclient.socket` unit, activated
 independently of any running `sd` process (see *Remote access and the
-machine*, in this set), and who may reach it is the firewall (`ufw`), moved
+machine*, in this set), and who may reach it is the firewall (`ufw`, or firewalld on Fedora), moved
 by the `remote.api` verb rather than by editing this file. **And there is
 no config-file mechanism here that widens an API session's reach beyond
 its own account** — Windows's `NETDIRS` names directories every API session

@@ -38,7 +38,7 @@ some are destructive.
 |---|---|
 | **0** | done. That includes *"it was already done"* — most subcommands are written to be run twice |
 | **2** | **refused.** The line above names why — `die()`'s own convention, printed as `sd-elevate: REFUSED - <reason>` |
-| **3** | (`remote-ssh` only) **nothing was there to change.** The firewall would not have gated anything anyway (no `ufw`, inactive, or already permissive), so reporting success would be the reassuring falsehood this project's own instrument rule refuses to print |
+| **3** | (`remote-ssh` only) **nothing was there to change.** The firewall would not have gated anything anyway (no `ufw` or firewalld, inactive, or already permissive), so reporting success would be the reassuring falsehood this project's own instrument rule refuses to print |
 
 **There is no exit 1.** A refusal and a failure are the same event here —
 `die()` is the one way this script stops short of doing what it was asked,
@@ -61,8 +61,8 @@ argument, and it comes first.
 | `groupadd`, `groupdel`, `addgroup`, `delgroup` | the account's own `sdu_`/`sdg_` group, and membership in it — this is what `modify.account add`/`delete` calls underneath |
 | `setgid`, `chown-account` | ownership and the setgid bit on an account directory, at creation |
 | `rmtree-account` | removes an account's directory tree, for `delete.account remove.home` |
-| `remote-api on \| local \| off \| show` | the `sdclient.socket` binding and the `ufw` rule — what `remote.api` calls |
-| `remote-ssh on \| off \| show` | the `ufw` rule for port 22 — what `remote.ssh` calls |
+| `remote-api on \| local \| off \| show` | the `sdclient.socket` binding and the firewall rule (`ufw` or firewalld) — what `remote.api` calls |
+| `remote-ssh on \| off \| show` | the firewall rule for port 22 (`ufw` or firewalld) — what `remote.ssh` calls |
 | `cred-own query \| verify \| set` | an ordinary account's own write to `$cred`, which it cannot reach directly — what self-service `modify.password` calls |
 
 **Each subcommand re-derives whether the request is legal itself** — whose
