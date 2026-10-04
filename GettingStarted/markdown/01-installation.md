@@ -58,6 +58,19 @@ The script downloads its own working copy of the source to
 `~/.sdb64tmp`, builds from there, and deletes it when the install
 finishes — it does not use the clone you ran it from as the build tree.
 
+**From a USB stick.** A release zip can be unzipped on a USB stick and the
+installer run from there. Use `bash`: a stick formatted FAT, exFAT or NTFS has
+no execute permission, so `./installsdcore.sh` can fail on it.
+
+```sh
+bash /media/<you>/<stick>/installsdcore.sh
+```
+
+The stick carries only the installer and the documentation. The installer still
+downloads SD and the build packages, so the computer must be online. It checks
+first, before it asks anything or changes anything, and stops with a message if
+it is not. It writes nothing to the stick.
+
 ## What you are asked
 
 After confirming you want to continue, two questions, both defaulting to
