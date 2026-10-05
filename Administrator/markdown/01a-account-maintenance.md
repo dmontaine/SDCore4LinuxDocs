@@ -262,10 +262,10 @@ the one most people meet.)*
 ## Backing up and restoring accounts: `backup.account`, `restore.account`
 
 ```
-backup.account name {name ...} to directory
-backup.account all to directory
-restore.account archive name {name ...}
-restore.account archive all
+backup.account name {name ...} {to directory}
+backup.account all {to directory}
+restore.account archive name {name ...} {no.query}
+restore.account archive all {no.query}
 ```
 
 `backup.account` writes **one zip file**, named for the machine, the accounts
@@ -287,16 +287,26 @@ restore.account latest all {no.query}
 ```
 
 `latest` stands where the archive name goes. SD looks in the directory saved by
-`set.backup.directory`, picks **the newest backup made on this computer that
-holds every account you named**, prints which one it chose (*The most recent
-backup is …*) and then restores from it exactly as if you had typed its name.
-`latest all` takes the newest backup that was made with `all`. If none
-qualifies it says *No backup of … made on this computer was found in …* and
-changes nothing. The choice is made from the **file name alone** (a backup is
-called `SD-<computer>-<accounts>-<yyyymmdd-hhmmss>.zip`); the backup it picks is
-still checked against its own manifest before anything is changed, and only the
-accounts you named are restored from a backup of several. A backup made on
-another computer is never picked. An archive name always ends in `.zip`, so
+`set.backup.directory` and picks **the newest backup made on this computer that
+really holds every account you named**. It decides by *looking inside*: a backup
+is called `SD-<computer>-<accounts>-<yyyymmdd-hhmmss>.zip`, but one made with
+`all`, or of many accounts, carries no account names, so SD opens each backup
+the name might fit and reads its list of accounts (nothing is unpacked). It
+prints which backup it chose (*The most recent backup is …*) and then restores
+from it exactly as if you had typed its name.
+
+**If a newer backup made on this computer does not hold the account** — or
+cannot be read — SD says so before it asks you to go ahead: *The most recent
+backup made on this computer, …, does not hold … (or cannot be read). The newest
+backup that does is …*. You are then not restoring your latest backup, and you
+can still answer `n`. If **no** backup holds the account it says *No backup of …
+made on this computer was found in …* and changes nothing.
+
+`latest all` takes the newest backup that was made with `all`, by its name, and
+does not warn about a newer backup of one account. Whichever backup is picked is
+still checked against its own manifest, in full, before anything is changed, and
+only the accounts you named are restored from a backup of several. A backup made
+on another computer is never picked. An archive name always ends in `.zip`, so
 `latest` cannot be mistaken for one.
 
 **Both are SDSYS's.** A backup or restore starts only when every other session
@@ -367,7 +377,10 @@ settings.report {directory}
 
 Writes, or shows, a **plain-text record** of the system's settings — `sd.conf`,
 ssh and API access, the accounts — for an administrator to keep. It is for
-reference only: nothing reads it back.
+reference only: nothing reads it back. **It never contains a password or a
+private key.** The API's certificate appears as its subject, dates and
+fingerprint, or as *certificate: not yet generated* until the API has had its
+first TLS connection.
 
 ## Who has these verbs
 
