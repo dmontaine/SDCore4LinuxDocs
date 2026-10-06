@@ -49,6 +49,12 @@ reads as a wrong password.** From the server's point of view there is no
 credential to check. If a working client suddenly cannot log in after an
 upgrade, this is the first thing to try.
 
+**Known issue: `TLS read failed`.** A refused login made through the C client
+library can report `TLS read failed` instead of *Invalid username or password*.
+The login is refused either way and nothing else is affected. It has been seen
+only on test computers running under VirtualBox (Fedora and Debian guests), and
+not on Windows.
+
 The old credentials cannot be converted because **the password was never kept
 anywhere, by design** — there is nothing to convert them from.
 

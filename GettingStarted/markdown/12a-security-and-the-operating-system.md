@@ -74,7 +74,8 @@ with date, time and the Linux user it belonged to.
 **The refusals are the interesting half.** An entry saying somebody who is
 not SDSYS asked for SDSYS by name, or asked for an account they have not
 been granted, is the thing worth seeing. **Failed API logins are recorded
-too, with the reason.**
+too, with the reason** — and **before** the three-second wait SD adds to slow
+down guessing, so a program that hangs up during the wait is recorded as well.
 
 **This is not the error log and does not behave like it.** The error log
 throws away its oldest half when it fills; the audit file is **rotated —

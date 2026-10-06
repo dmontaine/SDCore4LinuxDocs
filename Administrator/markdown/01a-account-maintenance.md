@@ -309,15 +309,30 @@ only the accounts you named are restored from a backup of several. A backup made
 on another computer is never picked. An archive name always ends in `.zip`, so
 `latest` cannot be mistaken for one.
 
+**`latest` only considers backups SD named itself**, `SD-<computer>-<accounts or
+all>-<yyyymmdd-hhmmss>.zip`, and it passes over one whose name lists other
+accounts without opening it. A backup you have renamed is never picked: restore
+it by giving its name (`restore.account myfile.zip name`). A bare name is looked
+for in the saved directory; a name with a directory in it is used as given.
+
 **Both are SDSYS's.** A backup or restore starts only when every other session
 has logged out, says who is still logged in if any are, and **no one can log in
 — at the terminal, over ssh or through the API — until it has finished.**
 
 **Every backup is checked as it is made.** The files, bytes and directories of
 each account are counted before it is packed and compared with what was
-written, and a backup that does not match is **deleted rather than kept**. A
-restore checks the whole archive against its manifest **before it changes
-anything**, lists what it will replace and create, and asks first.
+written, and a backup that does not match is **deleted rather than kept**. **A
+backup never overwrites a file:** if the name is taken, SD says so and writes
+nothing. A restore checks the whole archive against its manifest **before it
+changes anything**, lists what it will replace and create, and asks first. **An
+archive that lies is refused with nothing changed** — counts that disagree with
+the manifest, an entry path with `..` in it or an absolute path, no manifest or
+two of them.
+
+**A restored account comes back as it was:** each directory has the permissions
+it was backed up with, and everything in the account belongs to its Linux user
+and its own group (`sdu_<name>`) again. An account that already exists keeps its
+Linux user, its password and its groups.
 
 **What it does not do:**
 
