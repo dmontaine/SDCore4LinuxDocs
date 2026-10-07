@@ -82,6 +82,14 @@ signals every entry in the user table and has no "are users logged in" check,
 so treat it as a machine-wide action rather than an administrative
 convenience.
 
+**Start it the way you stopped it.** `sd.service` is a one-shot unit that stays
+"active" after it has started SD, and `sd -stop` does not tell it that SD has
+gone: after `sd -stop` the unit still reads active, `systemctl start
+sd.service` does nothing and `sd` answers "SD has not been started". Use
+`sd -start` after `sd -stop`, or `systemctl restart sd.service`, which goes
+through the unit and puts the unit and the daemon back in step. The installer
+itself ends with such a restart for the same reason.
+
 ### After an unclean shutdown
 
 SD's shared state is a System V IPC segment (`shmget`), which **does not

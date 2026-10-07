@@ -27,6 +27,16 @@ sd -stop
 sd -start
 ```
 
+**Start it the way you stopped it.** `sd.service` is a one-shot unit: it
+stays "active" after it has started SD, and `sd -stop` does not tell it that
+SD has gone. So after `sd -stop` the unit still reads active,
+`sudo systemctl start sd.service` does nothing, and `sd` keeps answering
+"SD has not been started". After `sd -stop`, start SD with `sd -start`, or
+with `sudo systemctl restart sd.service`, which stops and starts it through the
+unit and leaves the unit and the daemon agreeing again. (`systemctl stop
+sd.service` is a stop the unit does know about, so `systemctl start` is the
+right partner for that one.)
+
 ## `sd -start` and `sd -stop` check the real process, not just the segment
 
 SD's shared state lives in a System V shared-memory segment
