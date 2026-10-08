@@ -68,8 +68,17 @@ fail rather than quietly running with less protection than intended.
 with date, time and the Linux user it belonged to.
 
 ```
-2026-08-16 11:42:07 user=don uid=1 pid=8624 LOGTO account=SDSYS
+2026-10-07 21:07:52 user=don uid=3 pid=353011 login account=sdsys
+2026-10-07 21:07:52 user=don uid=3 pid=353011 logto refused account=sdsys reason=sdsys is entered by its own session only
 ```
+
+Every word before the first `=` is lower case, the event names included
+(`login`, `logto`, `logto refused`, `api refused`, `elevation granted`,
+`modify.account route api`). What follows an `=` is data and keeps its case:
+the account name as it is registered, a `reason=` text, and what a caller
+typed in `command=`. Older lines in a file written before 7 October 2026 are
+upper case and are not rewritten, so match without regard to case when you
+search a long-lived file.
 
 **The refusals are the interesting half.** An entry saying somebody who is
 not SDSYS asked for SDSYS by name, or asked for an account they have not
