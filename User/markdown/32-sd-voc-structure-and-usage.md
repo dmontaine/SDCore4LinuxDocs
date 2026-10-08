@@ -13,7 +13,7 @@ here in lower case, which is what this port uses on disk. In the tables,
 stands; braces mark an optional part.
 
 > **Every record on this page was read from a stock account VOC.** The
-> records were written by `CREATE.ACCOUNT`, which copies them from
+> records were written by `create.account`, which copies them from
 > `newvoc` — not `voc_template`, which is SDSYS's own, larger VOC and
 > what the counts below are taken from. Every ordinary account gets the
 > same set; there is no smaller or larger starting VOC to choose between

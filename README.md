@@ -208,7 +208,7 @@ The syntax itself lives in `tools/tcl-syntax-shapes.txt`, **not** in the
 programs' `START-DESCRIPTION` blocks. Sixty-three of the ninety-seven
 catalogued verbs carry one and none is used as content: they are in a different
 notation and several are stale — `LIST.READU`'s omits `DETAIL`,
-`CREATE.ACCOUNT`'s predates every tier and access keyword. **They are used as a
+`create.account`'s predates every tier and access keyword. **They are used as a
 control instead**: the script reports where a block mentions a keyword the card
 does not, as a lead for a person to follow. That found six real omissions on its
 first run, in `cd`, `delete.index`, `fstat`, `map`, `option` and `setptr`.

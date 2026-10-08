@@ -131,7 +131,7 @@ entry actually contains without an editor.
 
 ## The VOC and account creation
 
-`CREATE.ACCOUNT` copies the VOC from `NEWVOC` in the system directory —
+`create.account` copies the VOC from `NEWVOC` in the system directory —
 **399 records**, counted directly, and identical for every ordinary
 account. SDSYS's own VOC is copied from `voc_template` instead — **424
 records** — which carries the administration verbs `NEWVOC` does not:

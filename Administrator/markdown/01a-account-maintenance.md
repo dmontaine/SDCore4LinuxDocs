@@ -67,7 +67,7 @@ A second word that is not `all` is refused by name rather than ignored:
 
 ```
 :update.accounts everything
-UPDATE.ACCOUNTS does not take everything
+update.accounts does not take everything
 ```
 
 Quietly ignoring it would run the interactive form while the caller believed

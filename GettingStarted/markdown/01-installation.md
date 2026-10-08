@@ -202,7 +202,7 @@ earlier attempt) is already there:
 | 3. `sdsys`'s SD password | reaching SDSYS through the API — and even with it, SD admits `sdsys` over the API only from a process already running as `sdsys` on this machine |
 
 All three are required — the closing summary names any that are still
-missing and prints the exact `MODIFY.PASSWORD` command to set it,
+missing and prints the exact `modify.password` command to set it,
 afterward, as `sdsys`.
 
 The closing summary also restates: **SD is administered only by logging in

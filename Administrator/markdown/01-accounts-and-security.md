@@ -188,7 +188,7 @@ than ignored:**
 
 ```
 :modify.password don hunter2
-A password is never given on the command line; MODIFY.PASSWORD prompts for it
+A password is never given on the command line; modify.password prompts for it
 ```
 
 **That refusal is the point of the verb's design.** The older behaviour set
