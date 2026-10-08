@@ -85,6 +85,20 @@ create.account other <name> <pathname> {no.query}
 > cannot be driven from a script**, and a group account, which has no
 > password, can.
 
+**An account is never left without a password.** If SD cannot set the new
+user's password and you answer `n` at "Retry", it removes the Linux user it
+has just made, with its home directory, and says "An account must have a
+password. Nothing was created." Should the removal itself fail it says so and
+gives the `userdel` command that finishes it. This applies to a user SD
+creates; it does not touch an existing Linux user, which `create.account`
+still refuses.
+
+**It warns when a route has nothing behind it.** A new user gets the ssh and
+API routes. If this computer has no ssh server installed, or the API listener
+is off (`remote.api on` turns it on), `create.account` says so after the route
+line. The warning does not stop anything: the account is made and the route
+works the day the server or listener is turned on.
+
 **Every account gets the same VOC**, the whole of `newvoc` — there is no
 tier, and no per-account choice of remote access either. **Every account
 except SDSYS has ssh and API access by default; nothing narrows that at
