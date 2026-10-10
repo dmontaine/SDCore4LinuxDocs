@@ -4,9 +4,9 @@ Subtitle: The catalogued names beginning with !, which of them an application ma
 **This port ships fifty catalogued routines whose names begin with `!`** —
 counted directly from `gpl.bp`, not carried over from SD Core for
 Windows's own count of forty-two. Twenty-one are the embedded Python
-interface (`!PY_CREATEDICT` and the rest — see the *Administrator* set's
-*Embedded Python* chapter; this page does not repeat
-them), and this port has no need for several Windows-only ones this page
+interface (`!PY_CREATEDICT` and the rest — see
+[Embedded Python](37a-sd-basic-python-integration.html); this page does not
+repeat them), and this port has no need for several Windows-only ones this page
 used to list — `!ELEVATE`, `!PS_SCRIPT`, `!DELETE_USER`, `!OS_GROUP` and
 `!PROFILE_DIR` among them, noted below where each would have been. They
 are in the global catalogue, so any account reaches them without

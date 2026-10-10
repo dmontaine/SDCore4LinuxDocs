@@ -194,8 +194,8 @@ as this port's own.**
 `SDPYOBJ(arg1, arg2, objname, key)` is the entry point behind every function
 on this page except five: `PY_INITIALIZE`, `PY_FINALIZE`, `PY_RUNSTRING`,
 `PY_RUNFILE` and `PY_GETATTR` go through `sdext()` instead, sharing that
-entry point with the cryptographic primitives in [Encryption and the SDEXT
-interface](04-sd-encryption.html). Both `SDPYOBJ` and `sdext` are
+entry point with the cryptographic primitives (*Encryption and the SDEXT
+interface* in the Administrator set). Both `SDPYOBJ` and `sdext` are
 internal-only C functions, reachable only from `$internal`-compiled code -
 see that page for what `$internal` requires and what happens when an
 ordinary program tries to call either directly.
