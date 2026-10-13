@@ -25,13 +25,15 @@ twenty-one refuses an empty object, dictionary, list or string name before
 making the underlying call**, setting `status()` to 1 - checked directly in
 `sdsys/gpl.bp/py_*`, not assumed.
 
-**There is no permission gate on any of this.** `$internal` controls who may
-*compile* a new internal-mode program (an administrator, at `$internal`'s own
-check); it is not re-checked when an already-catalogued routine like
-`PY_CREATEDICT` is *called*. So embedded Python runs unconditionally for any
-signed-on account - the same shape S.27 left `sh` and `os.execute` in, not a
-separate gate of its own. There is nothing here for an administrator to turn
-on or off.
+**Starting the interpreter and running code in it need the account's `os-on`
+switch** - the same one as `OS.EXECUTE`, because Python runs arbitrary code in
+your own process. SDSYS turns it on with `modify.account` *name* `os-on`; a new
+account does not have it. The question is put to the **account**, not to the
+routine: `$internal` controls who may *compile* a new internal-mode program, and
+a catalogued routine like `PY_CREATEDICT` is internal, but the interpreter
+itself refuses to start for an account without `os-on`. `PY_INITIALIZE` then
+returns null with `status()` 3035 and prints nothing, so a program that needs
+Python should test for it.
 
 **The installer brings what this needs.** `installsdcore.sh` installs
 `python3-dev` (Debian/Ubuntu) or the equivalent `-devel` package on the other

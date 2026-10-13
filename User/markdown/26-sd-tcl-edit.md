@@ -119,17 +119,17 @@ token** — another `~`, a backtick, a `!`, a `-`, a `,`, or a mark. Everywhere
 else a tilde is left exactly as you wrote it, so `a~b` is still `a~b` and
 ordinary source reads normally.
 
-## No gate — every account reaches both, unconditionally
+## The gate — `os-on`, off for a new account
 
-**Unlike SD Core for Windows, there is no `os.users`-style permission
-behind `nano` or `micro` here.** Every account has both verbs, and both run
-the moment they are typed — there is no record to grant, and nothing
-SDSYS needs to set up first. This port keeps no second wall behind an
-editor's own reach onto the machine: what an account's Linux user may
-read or write outside SD is exactly what an editor run from inside SD may
-touch, because they are the same permissions. See the *Administrator*
-set's *Accounts and Security* chapter, "There is no second wall for `sh`
-or `os.execute`."
+**`nano` and `micro` need the account's `os-on` switch**, the same one as
+`OS.EXECUTE` (and not `sh-on`: an account can be refused the shell and still
+run the editors, or the reverse). SDSYS turns it on with `modify.account`
+*name* `os-on`; a new account does not have it, and an account without it
+is told so when it types the verb. With it both editors run at once, and
+what an editor can read or write outside SD is exactly what the account's
+Linux user may touch, because they are the same permissions. See the
+*Administrator* set's *Accounts and Security* chapter, "The operating-system
+switches: `sh-on` and `os-on`".
 
 **A session with no terminal is still refused**, an API session or a
 script driving SD down a pipe having nowhere to draw a full screen:

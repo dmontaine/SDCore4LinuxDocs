@@ -184,8 +184,8 @@ no config-file mechanism here that widens an API session's reach beyond
 its own account** — Windows's `NETDIRS` names directories every API session
 in every account may additionally open; this port has nothing playing that
 role, so an API session's file access is exactly its own account's, full
-stop, the same "no second wall" reasoning that removed `sh-on`/`os-on` (see
-*Accounts and Security*).
+stop. (The `os-on` switch is read for an API session like any other, but it
+does not lift that confinement — see *Accounts and Security*.)
 
 `SDCLIENT` is not reported by the `config` verb and has no entry in the shipped
 `sd.conf`. It defaults to 0, which permits everything.
@@ -240,11 +240,11 @@ SH        /bin/bash -i
 SH1       /bin/bash -c
 ```
 
-**Both run at the account's own Linux permissions, unconditionally — SD
-keeps no second wall here** (see *Accounts and Security*, "There is no
-second wall for `sh` or `os.execute`"), unlike SD Core for Windows, where
-this same setting sits behind a separate `os.users` grant per account.
-Operating system access has its own page in this set.
+**Both run at the account's own Linux permissions, and only for an account
+that has the `sh-on` switch** (see *Accounts and Security*, "The
+operating-system switches: `sh-on` and `os-on`"); the setting says which
+shell it is, the switch says who may use it. Operating system access has its
+own page in this set.
 
 ## Parameters that are accepted and do nothing
 

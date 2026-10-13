@@ -111,13 +111,14 @@ ends.
 os.execute command {capturing variable}
 ```
 
-**Unlike SD Core for Windows, this runs unconditionally for every
-account here — there is no permission to check first.** `OS.EXECUTE`
-executes at the account's own Linux permissions, the same wall that
-already governs what that account's user could do at a shell prompt
-outside SD. This port keeps no second, SD-level gate behind it — see the
-*Administrator* set's *Accounts and Security* chapter, "There is no
-second wall for `sh` or `os.execute`."
+**It needs the account's `os-on` switch**, which SDSYS turns on and a new
+account does not have. Without it the statement stops the program with
+"*name* is not permitted to use OS.EXECUTE" before the command is touched.
+With it, `OS.EXECUTE` executes at the account's own Linux permissions, the
+same wall that already governs what that account's user could do at a shell
+prompt outside SD. A subroutine your program calls is held to the same rule.
+See the *Administrator* set's *Accounts and Security* chapter, "The
+operating-system switches: `sh-on` and `os-on`".
 
 ## LOGMSG
 

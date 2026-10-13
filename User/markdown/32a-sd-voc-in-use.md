@@ -46,6 +46,12 @@ name is, and the data stays where it is.
 upper case before the register is read. If it is not there you get
 *Account name '...' is not in register* and nothing is written.
 
+**The pointer is followed only into an account you could `logto`** (a member of
+its group, and not suspended), whether or not your account holds `os-on`;
+otherwise opening it is refused with status 3035. A file pointer you write
+yourself (`ed voc ...`, or `create.file ... pathname`) must lead inside your own
+account unless your account holds `os-on`.
+
 ### update.accounts — refresh from NEWVOC
 
 ```

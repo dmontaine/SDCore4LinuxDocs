@@ -155,6 +155,12 @@ is, and the data stays where it is.
 upper case before the register is read. If it is not there you get *Account name
 '…' is not in register* and nothing is written.
 
+**The pointer is followed only into an account you could `logto`** — you are a
+member of its group and it is not suspended — whether or not your account holds
+`os-on`. If you could not, opening the pointer is refused with status 3035 (an
+`OPEN … ELSE` takes its `ELSE`), even though `set.file` itself wrote it. The
+administrator's *Accounts and security* chapter has the whole rule.
+
 > **Read what `set.file` prints, not just whether it printed.** Its refusals
 > echo the names you passed in, so a script that checks its output for the
 > pointer name it asked for will find that name in the refusal as well as in the

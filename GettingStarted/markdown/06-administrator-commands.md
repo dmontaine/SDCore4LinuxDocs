@@ -27,9 +27,10 @@ Covered in full in [Accounts](05-account-types.html) and
 [Managing accounts](05a-managing-accounts.html). The points worth repeating
 here:
 
-- **There is no `ssh`/`api`/`none` keyword.** Every ordinary account has
-  both by default, unconditionally; only SDSYS is different, and that is
-  not a setting.
+- **A new account has no ssh, no API, no `sh` and no `OS.EXECUTE`.**
+  `ssh`, `api`, `both`, `sh-on` and `os-on` give them, at `create.account` or
+  later with `modify.account`; SDSYS has no remote access at all, and that
+  is not a setting.
 - **`modify.account add`/`delete`** is the grant — Linux group membership,
   with SD's own audit line on top. There is no separate `grant`/`revoke`
   pair of verbs.
@@ -111,31 +112,40 @@ and puts `sd` on `PATH` at install time rather than as a toggle.
 
 ## The shell — `sh` and `!`
 
-**Unlike SD Core for Windows, there is no permit list to keep and nothing
-to grant.** `sh`, `!` and `OS.EXECUTE` run for every account, from the
-moment it is created, at that account's own Linux permissions —
-unconditionally. There is no `os.users` file, no `sh-on`/`os-on` switch on
-`modify.account`, and nothing an administrator needs to do before an
-account can use them. This port keeps no second wall behind the one Linux
-itself already provides: what an account's Linux user may read, write or
-run outside SD is exactly what it may do through `sh` inside SD, because
-they are the same permissions. See the *Administrator* set's *Accounts and
-security* chapter, "There is no second wall for `sh` or `os.execute`."
+**A new account cannot use `sh`, `!` or `OS.EXECUTE` until you say so.**
+Each is a per-account switch, off at creation, that SDSYS turns on and off
+with `modify.account` *name* `sh-on` / `sh-off` (the `sh` verb and `!`) and
+`os-on` / `os-off` (`OS.EXECUTE`, the editors `nano` and `micro`, the
+embedded Python, and operating-system files by path outside the account's
+own directory). The two are independent, and each reports where the account
+now stands ("Account fred has SH yes, OS.EXECUTE no"); a change reaches the
+account the next time it is entered. **What the shell can then do is exactly
+what that account's Linux user may do** — it runs at that user's own Linux
+permissions, never as root. SDSYS is never refused. See the *Administrator*
+set's *Accounts and security* chapter, "The operating-system switches:
+`sh-on` and `os-on`".
 
-**`sh` gives a real, full shell** — pipes, redirection and chaining all
-work: `sh dir | more`. **`!` (`os.command`), the single-line inline form,
-sanitizes shell metacharacters before running** — a safety measure against
-an accidental injection in a one-liner, applied uniformly to every account
-rather than tied to who is running it. Neither is a permission tier;
-both simply do what their shape suggests.
+**`sh` and `!` run one command at a time, and both refuse a command that
+contains `;`, `|`, `&`, `$`, a backquote, `<`, `>` or a newline** — "Error 2
+executing operating system command", before anything runs. That is a safety
+measure against an accidental injection in a one-liner, applied to every
+account whether or not it has `sh-on`, SDSYS included. **There is no pipe,
+redirection or chaining from the prompt, and no interactive shell** (a bare
+`sh` is refused too); put the work in a script and run the script, `sh
+./myscript`.
 
-### Neither is available over the API
+### Over the API they follow the same switches
 
-**`sh`** and `OS.EXECUTE` are refused to a session that arrived over the
-API. An API session is not treated as a local session for any purpose,
-SDSYS's own included (it can reach the API only through the local Unix
-socket) — see [API access](09-api-access.html). An administrator who needs a
-shell uses the local login.
+**An API session reads the account's `sh-on` and `os-on` when it enters the
+account**, as sign-in and `logto` do: an account with `sh-on` has `sh` over the
+API, an account without it is refused there too, and a new account has
+neither. That makes `sh-on` or `os-on` on an account that also has the API
+route a shell behind its credential from wherever the API port is reachable —
+weigh that when you turn either on. An API session is not treated as a local
+session for any purpose otherwise, SDSYS's own included (it can reach the API
+only through the local Unix socket, and carries no administrator flag) — see
+[API access](09-api-access.html). An administrator who needs a shell uses the
+local login.
 
 ## The full list
 

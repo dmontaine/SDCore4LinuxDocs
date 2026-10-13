@@ -125,14 +125,14 @@ or through a desktop-sharing view of it (VNC, TeamViewer).
 ## 6. Create an account for somebody else
 
 ```
-create.account user jane
+create.account user jane ssh
 ```
 
 Two things about that line, and each has caught people out:
 
 | | |
 |---|---|
-| no `ssh`/`api` keyword | every ordinary account gets both by default now — there is no per-account choice at creation. See [Accounts](05-account-types.html) |
+| the `ssh` word | **every new account starts with no ssh, no API, no shell and no `OS.EXECUTE`** — yours too, the account the installer made for you. `ssh` gives Jane the ssh route she needs in step 7; add `api`, `sh-on` or `os-on` for the others (`create.account user jane ssh sh-on`), or turn any of them on later with `modify.account`. See [Accounts](05-account-types.html) |
 | it needs SDSYS | creating a Linux user account cannot be done from any other identity |
 
 You will be prompted for Jane's password, masked. **Refusing the prompt
@@ -153,7 +153,8 @@ command, and it applies to everyone who can reach ssh at all except
 `sdsys`.
 
 Jane can, however, log in to the console at this machine directly, the
-same as any Linux user — SD keeps no second wall behind ssh here (see
+same as any Linux user — SD's switches govern what a session inside SD can
+reach, not a login at the machine (see
 [Security and the operating system](12a-security-and-the-operating-system.html)).
 What she cannot do is reach SD's own administration, which is `sdsys`'s
 alone regardless of how she logged in.

@@ -1,17 +1,21 @@
 Title: ssh access
 Subtitle: How people reach SD on this machine over ssh, and the one thing it costs you.
 
-**Every ordinary account SD creates has ssh access, unconditionally — there
-is no per-account choice.** Only SDSYS is different: it has no remote route
-at all, ssh or otherwise. This page covers the ssh route for ordinary
-accounts; [API access](09-api-access.html) covers the other.
+**An account has ssh access only if SDSYS gave it** — `ssh` or `both` at
+`create.account`, or `modify.account` *name* `ssh` later; a new account has
+none. Without it the account is refused at the ssh door, with a message that
+says SD is not available to it over ssh. SDSYS is different: it has no remote
+route at all, ssh or otherwise, whatever it is given. This page covers the
+ssh route; [API access](09-api-access.html) covers the other.
 
 **Unlike SD Core for Windows, an ordinary account is *not* denied a local
-login at this machine.** SD keeps no second wall behind ssh here — see
-[Security and the operating system](12a-security-and-the-operating-system.html#there-is-no-second-wall)
-for why that turns out not to matter: a local login and an ssh session that
-reaches `sh` end up at the identical native permissions, so there is
-nothing a console login would grant an account that ssh does not already.
+login at this machine.** SD's switches govern what a session inside SD can
+reach, and being at the console is being on the machine as that Linux user —
+see
+[Security and the operating system](12a-security-and-the-operating-system.html#the-shell-and-operating-system-access-are-per-account-switches).
+An ssh session, by contrast, is forced into `sd`, so **ssh by itself gives an
+account SD and nothing else: no shell, unless SDSYS has also turned `sh-on`
+on for it.**
 
 ## How it is done
 
@@ -77,9 +81,9 @@ served entirely by `ssh localhost`.**
 
 **The `ForceCommand` rule controls *what an ssh connection may run*, not
 *where an account may otherwise log in*.** Confining a session to SD over
-ssh is this page's rule; there is no separate permit list gating `sh` or
-`OS.EXECUTE` once inside SD — every account reaches both unconditionally,
-at its own Linux permissions. See
+ssh is this page's rule; once inside SD, `sh`, `OS.EXECUTE` and the rest of
+the operating-system reach are the account's own `sh-on` and `os-on`
+switches, off until SDSYS turns them on. See
 [Security and the operating system](12a-security-and-the-operating-system.html).
 
 **And ssh confinement does not give accounts isolation from each other's
@@ -124,8 +128,8 @@ the kind of login record it looks for. See
 **It does not work, and that is deliberate.** Use the console, or a
 service- or session-based remote desktop, logged in as `sdsys`. An account
 that needs ordinary, non-administrative work from another machine was
-never an administration question — every ordinary account already has
-ssh access by default.
+never an administration question — give that account the `ssh` route
+(`modify.account` *name* `ssh`) and it can connect.
 
 **Scheduled tasks are affected too.** A cron job or a systemd timer has no
 terminal login either, so nothing can become SDSYS to run one. List the

@@ -250,7 +250,7 @@ Per-arity `CFUNCTYPE` definitions are provided for `SDCall` and
 
 | | |
 |---|---|
-| `sh` and `OS.EXECUTE` | **not refused over the API on this port** — unlike SD Core for Windows, both run at the account's own Linux permissions the same as any other session. `SDCLIENT` in `sd.conf` is the configurable control, if a site wants one; see the *Administrator* set's *Configuration* chapter |
+| `sh` and `OS.EXECUTE` | **only if the account holds `sh-on` / `os-on`**: the API server reads the account's switches when it enters the account, as sign-in does, and a new account has neither (SDSYS has none, so it has no shell over the API). `SDCLIENT` in `sd.conf` is the further control, if a site wants one; see the *Administrator* set's *Configuration* chapter |
 | Open files outside the account | refused (status 3035 — *not permitted*) |
 | Reach the credential file | never, and cannot be added |
 | Enumerate accounts | refused; all three failure cases give the same message |

@@ -36,8 +36,9 @@ state what SD does without qualifying every other paragraph.
 
 ### Whether `sd` inside an `sh` session started from `sd` is refused
 
-**Known.** `sh` runs a real, unrestricted shell for every account, and
-starting `sd` from an ordinary Linux shell works normally.
+**Known.** `sh` runs a shell for an account that has the `sh-on` switch
+(and always for SDSYS), and starting `sd` from an ordinary Linux shell works
+normally.
 
 **Not known.** Whether starting `sd` from *inside* an `sh` session that SD
 itself launched is refused, or simply starts a second, genuinely nested

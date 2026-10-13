@@ -47,7 +47,7 @@ from SD, see [Reaching the operating system](06-administrator-commands.html).
 ## Creating an account
 
 ```
-create.account user <name> {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {no.query}
 
 create.account group <name> {no.query}
 
@@ -59,14 +59,25 @@ account needs root, and only a genuine login as `sdsys` carries the
 identity SD's own elevation helper checks before granting it — see
 [SDSYS is the only administrator](#sdsys-is-the-only-administrator) above.
 
-### There is no route keyword — every ordinary account gets both
+### A new account starts with every door shut
 
-**Unlike SD Core for Windows, there is no `ssh`/`api`/`both`/`none`
-choice at creation.** The owner's ruling is literal: *"All accounts, other
-than SDSYS, will have remote ssh and API access."* `create.account` does
-not ask, and there is nothing to narrow — the only account with a
-different remote-access shape is SDSYS itself, which has none at all, and
-that is not a setting either.
+**A new user account has no ssh, no API, no `sh` and no `OS.EXECUTE`** until
+SDSYS turns each one on. SD is delivered with the tighter setting and the
+administrator loosens it, account by account, for the people who need it:
+
+| word | gives the account |
+|---|---|
+| `ssh` · `api` · `both` | the remote route(s). `none` is the default |
+| `sh-on` | the `sh` verb and `!` |
+| `os-on` | `OS.EXECUTE`, `nano` and `micro`, the embedded Python, and files or directories of the operating system named by their path outside the account's own directory |
+
+`sh-on` and `os-on` are independent of each other and of the routes. The
+same words change an account afterwards in `modify.account` — see
+[Managing accounts](05a-managing-accounts.html). **No new account is an
+exception — not even the one the installer creates for whoever installed
+SD**; the accounts that keep their shell and `OS.EXECUTE` are the ones that
+already exist when you upgrade. SDSYS has no remote access at all, and that
+is not a setting.
 
 ### What creating a user account actually does
 
@@ -80,28 +91,31 @@ that is not a setting either.
 **A user account cannot be created without a password.** Refusing the
 prompt creates nothing at all.
 
-**Joining `sdusers` is the whole of the remote-access grant.** Every
-`sdusers` member — every ordinary account, unconditionally — is
-`ForceCommand`'d into `sd` over ssh and reachable over the API; only
-`sdsys` is excluded, refused at the door on both routes rather than left
-ungranted. There is no separate ssh-only or API-only membership to choose.
+**Joining `sdusers` is what makes an account an SD account; the routes are
+two more groups.** Every `sdusers` member is `ForceCommand`'d into `sd` over
+ssh, and an account reaches `sd` over ssh only if it is also in `sdssh`, and
+over the API only if it is in `sdapi` — those two memberships are what the
+`ssh`, `api`, `both` and `none` words make and take away. `sdsys` is in
+neither, and is refused at the door on both routes rather than left
+ungranted.
 
 ### What every account can do
 
 **Every verb, from the moment it is created.** Compile, catalogue, edit,
 define files and indexes, run the bulk record editors, inspect processes —
-none of that is withheld any more. What an account cannot do is administer:
-create, delete, or suspend another account; change system-wide
-configuration. Reaching the operating system through `sh` or `OS.EXECUTE`
-needs **no permission at all** — see
-[There is no second wall](12a-security-and-the-operating-system.html#there-is-no-second-wall).
+none of that is withheld. What an account cannot do is administer: create,
+delete, or suspend another account; change system-wide configuration. And
+reaching the operating system — the `sh` verb, `OS.EXECUTE`, `nano` and
+`micro`, the embedded Python, a file or directory of the operating system
+by its path outside the account's own directory — takes the switch above:
+see
+[Security and the operating system](12a-security-and-the-operating-system.html#the-shell-and-operating-system-access-are-per-account-switches).
 
-> **None of this is a wall inside SD.** The VOC is the same for every
-> ordinary account; what actually stops one account reaching another's data
-> is the operating system's own file permissions and the ssh confinement —
-> not the contents of a VOC, and not a second SD-level gate on `sh`, which
-> this port does not have. See the *Administrator* set's *Accounts and
-> security* chapter.
+> **The VOC is the same for every ordinary account and is not the wall.**
+> What stops one account reaching another's data is the operating system's
+> own file permissions and the ssh confinement, and — for the verbs and
+> statements that name an operating-system path — the account's `os-on`
+> switch. See the *Administrator* set's *Accounts and security* chapter.
 
 ## Suspended — a state, not a tier
 

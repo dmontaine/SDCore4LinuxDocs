@@ -3,43 +3,66 @@ Subtitle: Reaching the machine from inside SD, how privileged work is done, and 
 
 This page continues [Security](12-security.html).
 
-## There is no second wall
+## The shell and operating-system access are per-account switches
 
-**Unlike SD Core for Windows, there are no ways out of SD that need a
-separate permission — all four already run for every account,
-unconditionally:**
+**SD is delivered with the ways out of SD shut, and the administrator opens
+them one account at a time.** A new user account has none of these until
+SDSYS turns it on (`modify.account` *name* `sh-on` / `os-on`):
 
-| | What it is |
-|---|---|
-| **`sh`** and `!` | a shell at the `:` prompt |
-| `OS.EXECUTE` | the operating system from inside a BASIC program |
-| **`nano`** and **`micro`** | a text editor, running outside SD |
+| | What it is | The switch |
+|---|---|---|
+| **`sh`** and `!` | a shell at the `:` prompt | `sh-on` |
+| `OS.EXECUTE` | the operating system from inside a BASIC program | `os-on` |
+| **`nano`** and **`micro`** | a text editor, running outside SD | `os-on` |
+| the embedded Python | arbitrary code in the account's own process | `os-on` |
+| a file or directory of the operating system **by its path**, outside the account's own directory | `OPENSEQ` and `OPENPATH` with a path, `DIR()` and `select.dir`, `DELETESEQ` of a path, `!OSCOPY`, `!IOSCOPY` and the `oscopy` verb, printing into a file by path | `os-on` |
 
-Windows keeps a second permission list (`os.users`) behind all four,
-because Windows gives SD no native way to sandbox what a shelled-out
-process can reach. **This port does not keep that list, and it is not a
-gap — it is a deliberate consequence of Linux already providing the wall
-SD would otherwise have to build itself**: what an account's Linux user
-may read, write or run outside SD is exactly what it may do through `sh`
-inside SD, because they are the same operating-system permissions, checked
-by the kernel either way.
+The two switches are independent: `sh-off` leaves `OS.EXECUTE` alone, and
+the reverse. A change reaches the account the next time it is entered.
+**SDSYS is never refused**, and no other account is an exception — the one
+the installer makes for whoever installed SD starts off too, and the
+installer tells them how to turn it on. When you upgrade, the installer
+switches both on, once, for every account that already exists, so nobody
+loses a command they were using; you can then turn them off account by
+account.
 
-**Nothing in SD limits what you then do**, and that was already true on
-the port this description was ported from too — the boundary is the
-account's own Linux permissions, and nothing else. A shell gets pipes and
-redirection; an editor can open any file its account may open, in the data
-tree or outside it.
+**Without a switch SD says so in words** — "*name* is not permitted to use
+the operating system shell", "*name* is not permitted to use OS.EXECUTE", or
+"*name* has no OS access, so a file or directory outside its own account
+cannot be reached by pathname (SDSYS can give it: `modify.account` *name*
+`os-on`)" — and a program is told with status 3035, so `OPEN ... ELSE` and
+`DELETESEQ ... ELSE` take their ELSE as for any other refusal.
 
-> **So `sh` and the editors are a statement of trust in an account from
-> the moment it is created.** Every account gets them, so an account's
-> Linux permissions are the whole of what limits it — set those
-> deliberately, the way you would for any other account with a shell on
-> the machine, because that is exactly what it has.
+**What an account without `os-on` still has** is everything that stays
+inside SD: every file its VOC names (dictionaries and other SD files
+included) and anything inside its own directory. A path is judged by its
+**real** path, so `..` and a symbolic link that points out of the account do
+not get round it.
 
-**A session with no terminal is refused regardless** — an API session or a
-piped script has nowhere to draw a full screen for an editor; see
-[API access](09-api-access.html) for what `sh`/`OS.EXECUTE` do over the API
-specifically, which is also unrestricted on this port, for the same reason.
+**A VOC pointer is held to the same rule.** A file pointer in an account's
+VOC must lead inside the account (or be one of the pointers SD itself puts in
+every VOC), so a pointer written by hand at `/etc` or at another account's
+directory is refused, status 3035, unless the account holds `os-on`. **A
+Q-pointer into another account is followed only if you could `logto` that
+account** — whether or not you hold `os-on`. The Administrator set's
+*Accounts and security* chapter has the full rule.
+
+**What the switches do not do.** They stop SD handing the operating system to
+an account that has not been given it. They do not change what the account's
+Linux user may do — that stays whatever Linux says, checked by the kernel.
+
+> **When you do turn `sh-on` or `os-on` on, you are giving that person a
+> shell on this machine as their own Linux user.** An editor can open any
+> file the account may open, in the data tree or outside it. Set the
+> account's Linux permissions deliberately, the way you would for any other
+> user with a shell — and think twice before giving it to an account that is
+> also reachable from outside (`ssh`, `api`), because then the shell is
+> behind that account's credential from wherever the route reaches.
+
+**A session with no terminal is refused for the editors regardless** — an API
+session or a piped script has nowhere to draw a full screen for an editor;
+see [API access](09-api-access.html) for what `sh`/`OS.EXECUTE` do over the
+API, which takes the same switches.
 
 ## Privileged work is done through a helper, not a raw command line
 

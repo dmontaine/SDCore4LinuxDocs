@@ -54,6 +54,9 @@ as any Linux service.** So:
 ```
 modify.account <account> add <user>
 modify.account <account> delete <user>
+modify.account <account> ssh | api | both | none
+modify.account <account> sh-on | sh-off
+modify.account <account> os-on | os-off
 modify.account <account> suspended | unsuspended
 ```
 
@@ -69,17 +72,27 @@ membership changes, no VOC changes — every account's VOC is the whole of
 
 **You cannot suspend your own account, or the one you are standing in.**
 
-### There is no remote-route keyword, and no `sh-on`/`os-on` to set
+### Remote access, `sh` and `OS.EXECUTE`: four switches, all off for a new account
 
-**Unlike SD Core for Windows, `modify.account` has nothing to say about
-ssh, the API, `sh`, or `OS.EXECUTE`.** Every ordinary account already has
-ssh and API access, unconditionally — there is no keyword to narrow or
-widen it (see [Accounts](05-account-types.html#there-is-no-route-keyword-every-ordinary-account-gets-both)).
-And `sh`/`OS.EXECUTE` run at the account's own Linux permissions
-unconditionally too, from the moment the account exists — there is no
-per-account switch behind them to grant, because this port keeps no
-second wall behind the one Linux itself already provides. See the
-*Administrator* set's *Accounts and security* chapter.
+**A new user account can sign in to nothing from outside and cannot reach
+the operating system from inside SD.** SDSYS opens each door for the
+accounts that need it, one at a time:
+
+| | |
+|---|---|
+| **`ssh`** \| **`api`** \| **`both`** \| **`none`** | who may connect. Absolute: `api` takes ssh away |
+| **`sh-on`** \| **`sh-off`** | the `sh` verb and `!` |
+| **`os-on`** \| **`os-off`** | `OS.EXECUTE` in a program, `nano` and `micro`, the embedded Python, and files or directories of the operating system named by their path outside the account's own directory |
+
+`sh-on` and `os-on` are independent, so `sh-off` leaves `OS.EXECUTE` alone;
+each reports where the account now stands ("Account fred has SH yes,
+OS.EXECUTE no"). **A change reaches the account the next time it is
+entered.** Without `sh-on` the verb answers "*name* is not permitted to use
+the operating system shell"; without `os-on`, "*name* is not permitted to use
+OS.EXECUTE" or "*name* has no OS access, so a file or directory outside its
+own account cannot be reached by pathname". See the *Administrator* set's
+*Accounts and security* chapter, which says what each switch covers and what
+`os-on` costs on an account that is also reachable from outside.
 
 **`modify.password` is now the whole of what `set.password` used to be.**
 Same verb, same behaviour under either name; every account has a password

@@ -15,15 +15,16 @@ to apply — it is what `create.account` and the installer already do:
 |---|---|
 | Every SD account | an ordinary Linux user with no elevated rights of its own — see [Being able to `sudo` gets you nothing](#being-able-to-sudo-gets-you-nothing) |
 | ssh | `ForceCommand`s straight into `sd`, no shell reachable that way — see [ssh access](08-ssh-access.html) |
-| `sh`, `!`, `OS.EXECUTE` | run at the account's own Linux permissions, unconditionally — there is no separate permit list to keep here, unlike SD Core for Windows. This port keeps no second wall behind the one Linux itself already provides |
+| ssh and the API, per account | **off for a new account**; SDSYS gives each account the route it needs (`ssh`, `api`, `both`) — see [Managing accounts](05a-managing-accounts.html) |
+| `sh`, `!`, `OS.EXECUTE`, the editors, the embedded Python, and operating-system files named by path | **off for a new account**, in two independent switches (`sh-on`, `os-on`) that SDSYS turns on account by account — see [Security and the operating system](12a-security-and-the-operating-system.html#the-shell-and-operating-system-access-are-per-account-switches) |
 | The API | local-only (`127.0.0.1:4247`) until an administrator opens it to the network — see [API access](09-api-access.html) |
 | SDSYS | no remote route at all, ssh or API, ever, from any other computer; on the machine itself the API accepts it only on the local Unix socket, from a process running as `sdsys` — the one thing this page treats as non-negotiable rather than a default |
 
-**Unlike SD Core for Windows, an ordinary account is not denied a console
-login here.** SD keeps no second wall behind the one Linux permissions
-already provide, so there is nothing a console login grants an account
-that its ssh session (which already reaches `sh` unconditionally) did not
-already have. See [Security and the operating
+**An ordinary account is not denied a console login here**, unlike SD Core
+for Windows. SD's switches govern what a session *inside SD* can reach;
+being at the machine's own console is being on the machine as that Linux
+user, with that user's own permissions and password, and SD does not stand
+between the two. See [Security and the operating
 system](12a-security-and-the-operating-system.html).
 
 **The administrator can open the API to the network — `remote.api`,

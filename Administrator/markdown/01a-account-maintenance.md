@@ -192,10 +192,9 @@ for changing an installation.
 **`config gpl` and `config contrib` shell out to `less`**, against two plain
 files in the system directory (`sdsys/licence`, `sdsys/contrib`) — not a VOC
 record, despite reading like one. `gpl.bp/config` runs `!less
-sdsys/licence` and `!less sdsys/contrib` directly. That still works in any
-account: `sh`/`!`/`os.execute` run unconditionally for every account after
-the tiered-account teardown (S.27, "no second wall"), so there is no
-operating-system access this needs and does not already have.
+sdsys/licence` and `!less sdsys/contrib` directly. That works because
+SDSYS runs it — `config` is one of SDSYS's own verbs, and SDSYS is never
+refused by the `sh` switch that gates `!` for every other account.
 
 ## Setting the session's date: `set.date`
 

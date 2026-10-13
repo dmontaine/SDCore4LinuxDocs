@@ -66,10 +66,11 @@ always leaves a clean slate; the "segment present, daemon dead" case above
 is specifically about a crash the machine itself did **not** restart from
 (SD killed, or `sd.service` restarted, while the box stays up).
 
-## `sh` runs at the account's own Linux permissions, unconditionally
+## `sh` runs at the account's own Linux permissions, for an account that has `sh-on`
 
-There is no elevation or grant it needs first, unlike an account confined
-by a second SD-level wall. See [Security and the operating
+It needs the account's `sh-on` switch, which SDSYS turns on and a new account
+does not have; with it, there is no elevation involved — the command runs as
+that account's own Linux user. See [Security and the operating
 system](12a-security-and-the-operating-system.html).
 
 **Unverified for this port, so stated as a question rather than copied as

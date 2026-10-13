@@ -66,7 +66,7 @@ privilege.**
 ## Making an account: `create.account`
 
 ```
-create.account user <name> {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {no.query}
 
 create.account group <name> {no.query}
 
@@ -78,6 +78,33 @@ create.account other <name> <pathname> {no.query}
 | **`user`** | an SD account **and** a Linux user account to log in as |
 | **`group`** | a shared workspace with no Linux account, reached only with `logto` |
 | **`other`** | an SD account over a directory you name |
+
+**A new user account starts with every door shut.** Say nothing and it has
+no ssh, no API, no `sh` and no `OS.EXECUTE`; you open each one by naming
+it. `ssh`, `api` or `both` give the remote routes (`none` is the default
+and is accepted so that a script can say so); `sh-on` and `os-on` give the
+two operating-system switches, and they are independent, so `sh-on os-on`
+gives both and neither cancels the other. **This is the setting SD is
+delivered with, on purpose: it is the tighter one, and you loosen it for the
+accounts that need it, one at a time** — the same words change an account
+later in `modify.account`, below. When it has made the account SD says
+where it stands:
+
+```
+fred has no remote access: not ssh, not the API
+Account fred has SH no, OS.EXECUTE no
+```
+
+**The installing user's own account is no exception**: the account the
+installer makes so that somebody can sign in starts with all four off too, and
+the installer says so and how to change it. The accounts that keep their
+access are the ones that already exist when you *upgrade* — see *Changing
+one*, below.
+
+**A group account and an `other` account have no Linux user of their own,
+so `sh-on` and `os-on` are refused for them** — "is a group account and has
+no Linux user, so it has no shell to permit". A shell is a fact about a
+person, and a group account is not one.
 
 > **It prompts for a password and `no.query` does not suppress that.**
 > `no.query` covers the confirmation, not the credential — a password is
@@ -93,34 +120,110 @@ gives the `userdel` command that finishes it. This applies to a user SD
 creates; it does not touch an existing Linux user, which `create.account`
 still refuses.
 
-**It warns when a route has nothing behind it.** A new user gets the ssh and
-API routes. If this computer has no ssh server installed, or the API listener
-is off (`remote.api on` turns it on), `create.account` says so after the route
-line. The warning does not stop anything: the account is made and the route
-works the day the server or listener is turned on.
+**It warns when a route has nothing behind it.** An account given the ssh
+or the API route is checked: if this computer has no ssh server installed,
+or the API listener is off (`remote.api on` turns it on), `create.account`
+says so after the route line. The warning does not stop anything: the
+account is made and the route works the day the server or listener is
+turned on.
 
 **Every account gets the same VOC**, the whole of `newvoc` — there is no
-tier, and no per-account choice of remote access either. **Every account
-except SDSYS has ssh and API access by default; nothing narrows that at
-creation time.** SDSYS is the one exception and it is not a setting — see
-above.
+tier. What differs from one account to the next is what it is *allowed to
+do* with the verbs it has: its remote routes and its two operating-system
+switches are per-account settings, all off until you turn them on.
+**SDSYS is the exception and it is not a setting** — see above; it is never
+refused by these switches, and it has no remote access whatever it is
+given.
 
-### There is no second wall for `sh` or `os.execute`
+### Two settings that are easy to conflate
 
-SD Core for Windows gates its shell and operating-system verbs behind an
-account setting (`os.users`, granted independently of everything else) —
-because Windows gives a process no native way to sandbox what a shelled-out
-command can reach. **Linux already has that wall, and SD does not build a
-second one**: `sh`, `!` and `os.execute` run at the account's own Linux
-permissions, unconditionally, the moment the account exists. There is
-nothing to grant and nothing to withhold — what the account's Linux user
-may read, write or run outside SD is exactly what it may do through `sh`
-inside SD, because they are the same permissions.
+| | |
+|---|---|
+| `ssh`, `api` | say who may **connect** |
+| `sh-on`, `os-on` | say who may reach the **operating system** |
 
-This is why account creation asks nothing about OS access: **the answer is
-already decided by every other file permission, group membership and
-`umask` on the machine**, the same way it would be for that Linux user
-logged in directly.
+Holding the first has never implied the second. **ssh alone does not give a
+shell**: every ssh session is forced into `sd`, so what the person can do is
+what SD lets them do — and an account without `sh-on` gets no shell from SD.
+
+### The operating-system switches: `sh-on` and `os-on`
+
+Two independent switches, kept per account in the register. **Both are off
+for a new account** and SDSYS turns each on with `modify.account` (below).
+An account with neither is still a full SD user: it runs programs, opens
+every file its VOC names, builds indexes, runs queries — everything that
+stays inside SD.
+
+| | |
+|---|---|
+| **`sh-on`** · `sh-off` | the `sh` verb and `!` |
+| **`os-on`** · `os-off` | `OS.EXECUTE` in a BASIC program, the screen editors `nano` and `micro`, the embedded Python, **and reaching an operating-system file or directory by its path outside the account's own directory** |
+
+That last clause is the one that is easy to miss. Without `os-on` an
+account can still open every file it reaches **through its VOC** —
+dictionaries and other SD files included — and anything inside its own
+directory, **provided the VOC pointer leads somewhere it may go** (the
+section below the table). What it cannot do is name `/etc`, another account's
+directory, or a symbolic link that points out of its own, in any of these:
+
+| | without `os-on` |
+|---|---|
+| `OPENSEQ` and `OPENPATH` with a path | status 3035, so `OPEN ... ELSE` works as before |
+| `DIR()` and the `select.dir` verb | no entries, and `STATUS()` is set (the verb says why) |
+| `DELETESEQ` of a bare path | status 3035; the file is left alone |
+| `!OSCOPY`, `!IOSCOPY` and the `oscopy` verb | refused, status -4 (the verb says why) |
+| printing into a file by path (`setptr ... as pathname`, or the `SETPU` statement) | the verb refuses when the unit is set; for either, the first line printed is refused and the program stops |
+
+The containment is by **real path**: `..` and a symbolic link are resolved
+before the test, so neither gets round it. A path inside the account's own
+directory always works.
+
+**SD says no in words.** `sh` gives "*name* is not permitted to use the
+operating system shell", `OS.EXECUTE` gives "*name* is not permitted to use
+OS.EXECUTE", and the path routes give "*name* has no OS access, so a file or
+directory outside its own account cannot be reached by pathname (SDSYS can
+give it: `modify.account` *name* `os-on`)". **SDSYS is never refused.**
+
+### VOC pointers: where a file pointer may lead, and which Q-pointers are followed
+
+**A VOC pointer is a way to name a file, so it is held to the same rule.** An
+account can write a pointer into its own VOC with `ed`, or make one with
+`create.file ... pathname`, and a Q-pointer is what `set.file` makes into
+another account. For everybody but SDSYS:
+
+| | |
+|---|---|
+| **a file pointer (F-type)** | must lead **inside the account's own directory**, or inside the directory of an account a Q-pointer was followed into (below), or be **the pointer SD itself put in the VOC** — the same id, with the same path, as in `newvoc` (`syscom`, `$map`, `sd.voclib`, `dict.dict`, `voc`, `newvoc`, `$acc`). An account that holds `os-on` may go anywhere its Linux user can. Anything else is refused with status 3035 |
+| **a Q-pointer** into a **registered account** | is followed only if the user **could `logto` that account**: a member of its Linux group, and the account not suspended — `logto`'s own test — **whether or not the account holds `os-on`**. SD's own two Q-pointers, `sd.accounts` (which leads into SDSYS, an account nobody can `logto`) and `md`, are exempt because they are exactly what SD put there |
+| **a Q-pointer** that **names a path** | is an operating-system path, and the `os-on` question |
+
+So `set.file` into somebody else's account works only for a user who may enter
+that account, and a hand-made pointer at `/etc` or another account's
+directory is refused unless the account holds `os-on`. A refused open takes
+the `ELSE` branch with status 3035, like any other refusal here. **SDSYS is
+never refused.**
+
+**What this changes on an existing machine.** A Q-pointer that leads into an
+account its owner can no longer enter stops opening, and so does a hand-made
+file pointer to a directory outside the account in an account that does not
+hold `os-on`. The accounts that existed at an upgrade hold `os-on`, so their
+own pointers keep working; the Q-pointer rule applies to them too.
+
+**`filerule`**, the `sd.conf` setting that turns on the `path:name` and
+`account:name` forms of a file name, is off unless you set it. If you do, the
+`path:` form is held to the `os-on` rule like the rest, and the `account:name`
+form is a Q-pointer and is held to the Q-pointer rule above.
+
+### What `os-on` actually costs
+
+Granting `os-on`, or `sh-on`, to an account that also has a remote route is
+a larger decision than it looks: **it puts an operating-system shell behind
+that account's credential, reachable from wherever the route is reachable
+from** — the ssh port, or the API port. What the shell can do is exactly
+what that Linux user can do on this machine, and nothing more, because SD
+runs it as that user and never as root; so the cost is the cost of giving
+that person a login on the machine. For an account that needs only SD,
+leave both off.
 
 ```
 umask {mask}
@@ -129,20 +232,69 @@ umask {mask}
 With no argument `umask` reports the session's current value; with one, it
 sets it — the standard Unix meaning, applied to files SD itself creates as
 well as anything a shelled-out command creates. **This is a real,
-per-session mechanism here for exactly the reason above** — it has no
-Windows equivalent because Windows already reaches the same guarantee a
-different way, one inheritable ACL entry set once by the installer, applied
-by NTFS below the runtime rather than by a value a process can forget to
-set.
+per-session mechanism here** — it has no Windows equivalent because Windows
+reaches the same guarantee a different way, one inheritable ACL entry set
+once by the installer, applied by NTFS below the runtime rather than by a
+value a process can forget to set.
 
 ## Changing one: `modify.account`
 
 ```
-modify.account account add <user.name>
-modify.account account delete <user.name>
-modify.account account suspended
-modify.account account unsuspended
+modify.account account add | delete  <user.name>
+modify.account account ssh | api | both | none
+modify.account account sh-on | sh-off
+modify.account account os-on | os-off
+modify.account account suspended | unsuspended
 ```
+
+### The other keywords
+
+| | |
+|---|---|
+| **`ssh`** \| **`api`** \| **`both`** \| **`none`** | what the account's remote access **is**. Absolute: `api` takes ssh away |
+| **`sh-on`** \| **`sh-off`** | the `sh` verb and `!` |
+| **`os-on`** \| **`os-off`** | `OS.EXECUTE`, the screen editors, the embedded Python, and operating-system paths outside the account's own directory (see above) |
+| **`add`** \| **`delete`** *user* | put a Linux user in, or out of, the account's group |
+
+**The first group is absolute and the second is not.** `ssh`/`api`/`both`/
+`none` are four names for one state, so whatever is not named is withdrawn.
+`sh-on` and `os-on` are two independent switches over two separate settings,
+so **`sh-off` says nothing about `OS.EXECUTE`** and leaves it alone.
+
+After either pair SD says where the account **now** stands, both fields at
+once, so that a command that did only what it named is plain to see:
+
+```
+:modify.account fred sh-on
+Account fred has SH yes, OS.EXECUTE no
+:modify.account fred os-on
+Account fred has SH yes, OS.EXECUTE yes
+:modify.account fred sh-off
+Account fred has SH no, OS.EXECUTE yes
+```
+
+Asking for what is already so changes nothing and says so ("fred already had
+that access; nothing changed"). A route word reports the route in the same
+way ("SD routes for fred: ssh and the API." — "fred has no remote access:
+not ssh, not the API").
+
+**A change takes effect the next time the account is entered.** The setting
+is read when a session signs in or `logto`s into the account, so a session
+already open keeps what it started with. To take a grant away from somebody
+who is signed in now, change the setting and then end their session.
+
+**Every one of these words is written to the audit trail** (`modify.account
+sh-on account=fred` and its siblings), and **SDSYS is never a target**: the
+account name is refused as invalid before the word is read. A group account
+is refused too for the `sh-on`/`sh-off`/`os-on`/`os-off` forms: it has no
+Linux user to hold the switch.
+
+**Upgrading keeps what accounts have.** The installer switches `sh` and
+`OS.EXECUTE` on, once, for every user account that exists when you upgrade
+(ssh and the API are left exactly as they were), so that nobody loses a
+command they were using. You can then turn them off one account at a time,
+and a later install does not turn them back on. Only accounts made after the
+upgrade start with everything off.
 
 ### `suspended`/`unsuspended` is a state, not a tier
 

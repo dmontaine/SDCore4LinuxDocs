@@ -153,7 +153,8 @@ you named, but nothing stops the person then opening any other file on the
 machine that their Linux account may open — inside the SD data tree or
 outside it altogether. **That is not a gap in SD; it is what an editor
 is** — and it is exactly the same reach that account's own login shell
-already has, since SD keeps no second wall behind Linux's own permissions.
+already has. It is why an editor needs the account's `os-on` switch, which a
+new account does not have.
 See [Security and the operating system](12a-security-and-the-operating-system.html).
 
 Neither editor can run a command, so neither is a shell. **What they are is
@@ -211,15 +212,14 @@ anything in this page as a boundary.
 | | |
 |---|---|
 | File permissions | ordinary Linux file permissions on the data tree — see [Security](12-security.html) |
-| Reaching the operating system | none, for `sh`, `OS.EXECUTE`, or either editor — every account has it, unconditionally |
+| Reaching the operating system | the account's own switches, off for a new account: `sh-on` for `sh` and `!`, `os-on` for `OS.EXECUTE`, either editor, the embedded Python and OS files named by path outside the account's own directory |
 | What an API session may open | the containment gate, rooted at the account the session stands in |
 
-**Unlike SD Core for Windows, the full-screen editors need no separate
-permission — they run the moment the verb is typed, for every account.**
-There is no `os.users` file, and nothing to grant before `nano` or `micro`
-work. The gate that page describes (`os.users` field 2) does not exist on
-this port at all: this account's own Linux permissions are already the
-only wall an editor — or a shell — ever runs into. See
+**The full-screen editors need `os-on`**, the same switch as `OS.EXECUTE`
+(not `sh-on`): an account can be refused `sh` and still run `nano` and
+`micro`, and the reverse. SDSYS sets it with `modify.account` *name*
+`os-on`. What an editor can then open is whatever that account's Linux user
+may — see
 [Security and the operating system](12a-security-and-the-operating-system.html).
 
 **A session with no terminal is refused**: an API session or a piped

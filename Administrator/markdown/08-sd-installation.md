@@ -137,6 +137,22 @@ cannot run, the installer says so rather than finishing quietly.
 Neither step can take anything away. `update.accounts` only ever adds
 records, so an account created before a verb was withdrawn keeps it.
 
+### An upgrade keeps what accounts could do: `sh` and `OS.EXECUTE`
+
+**An account made before the per-account switches existed has always been
+able to use `sh` and `OS.EXECUTE`, so the installer gives it both once.**
+In the same step it runs `upgrade_gates` as the administrator, and every
+user account that exists then has `sh-on` and `os-on` set (ssh and the API
+are left exactly as they were). Nobody loses a command they were using;
+SDSYS can then take either away one account at a time with `modify.account`
+*name* `sh-off` / `os-off`, and **a later install does not give them back**
+— the step runs once and leaves a marker. Group and `other` accounts are not
+touched, and accounts created after the upgrade start with every switch off.
+**A fresh install is not an upgrade**: the account it makes for whoever
+installed SD starts with ssh, the API, `sh` and `OS.EXECUTE` all off, like
+any other new account, and the installer prints the `modify.account`
+commands that turn them on (as `sdsys`).
+
 ## Uninstalling
 
 ```sh

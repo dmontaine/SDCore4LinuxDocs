@@ -92,9 +92,10 @@ ed customers 1001
 to insert, type your lines, a full stop on its own line to stop
 inserting, then `fi` to file and exit.
 
-Every account can also use `nano` or `micro` (both full-screen editors
-with syntax highlighting) — unconditionally, with no permission to grant
-first. `edit` aliases `ed` here, not a full-screen editor.
+An account can also use `nano` or `micro` (both full-screen editors with
+syntax highlighting) once the administrator has given it the `os-on` switch;
+a new account does not have it. `edit` aliases `ed` here, not a full-screen
+editor.
 
 ```
 list customers

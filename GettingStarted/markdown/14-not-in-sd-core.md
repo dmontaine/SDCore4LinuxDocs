@@ -115,9 +115,10 @@ process to talk to over a pipe.
 
 **BASIC-callable programs** (`call !py_createdict`, and so on) are the
 interface — there is no TCL verb, so this is a programming capability, not
-a command you type at the prompt. **There is no permission gate on
-starting it**, the same "no second wall" reasoning that applies to `sh` and
-`OS.EXECUTE` — see [Security and the operating
+a command you type at the prompt. **Starting it and running code in it
+need the account's `os-on` switch**, the same one as `OS.EXECUTE`, because
+the interpreter runs arbitrary code in the session's own process — see
+[Security and the operating
 system](12a-security-and-the-operating-system.html).
 
 ## Field-level encryption
@@ -135,8 +136,7 @@ What has gone is the TCL verb that encrypted a field in place, and
 |---|---|
 | `CREATUSR` | `config` no longer lists it; `config('CREATUSR')` returns nothing. A `CREATUSR` line in `sd.conf` is still accepted and ignored — `create.account` always creates the Linux user, there is nothing to opt in to |
 | `grant`/`revoke`/`list.grants` | folded into `modify.account add`/`delete` — see [Accounts](05-account-types.html) |
-| the `ssh`/`api`/`both`/`none` route keyword | every account has both by default now; there is no keyword to narrow it |
-| `sh-on`/`sh-off`/`os-on`/`os-off` | gone with the `os.users` permit list they set — `sh` and `OS.EXECUTE` are unconditional now, see [Security and the operating system](12a-security-and-the-operating-system.html) |
+| the `os.users` permit list | the file is gone; `sh-on`/`sh-off`/`os-on`/`os-off` are kept, and they set two fields of the account's own register record instead — see [Security and the operating system](12a-security-and-the-operating-system.html) |
 
 **`umask` is kept, deliberately, and is not on this list** — a real
 difference from SD Core for Windows, where it was removed as inert. It is

@@ -81,22 +81,21 @@ the `sdsys` Linux user, at its own password — not on being a Linux
 administrator, `sudo` or not, and not on a secret SD holds. See
 [Security](12-security.html).
 
-**2. Every ordinary account has ssh and API access, and there is no
-per-account choice.** All of them, except SDSYS — the owner's ruling is
-literal: *"All accounts, other than SDSYS, will have remote ssh and API
-access."* `create.account` does not ask, and there is no `ssh`/`api`/`none`
-keyword the way an earlier design once offered. **SDSYS has no remote
-route at all**, ssh or API, from anywhere — administration is a real login
-at this machine's own keyboard, or a desktop-sharing view of it. See
+**2. A new account has no ssh, no API, no shell and no `OS.EXECUTE` until
+SDSYS gives them.** SD is delivered with the tighter setting, and the
+administrator loosens it one account and one switch at a time: `ssh`,
+`api`, `both`, `sh-on` and `os-on`, at `create.account` or later with
+`modify.account`. **SDSYS has no remote route at all**, ssh or API, from
+anywhere, whatever it is given — administration is a real login at this
+machine's own keyboard, or a desktop-sharing view of it. See
 [ssh access](08-ssh-access.html) and [API access](09-api-access.html).
 
 **3. An ordinary account is not denied the console, and that is not a
-gap.** Unlike some MultiValue ports, SD keeps no second permission wall
-behind ssh — `sh` and `os.execute` already run at the account's own Linux
-permissions, unconditionally, the moment the account exists. A local login
-at the machine and an ssh session that reaches a shell land at the
-identical native permissions, so there is nothing a console login would
-grant that ssh does not already. See [Security and the operating
+gap.** SD's switches govern what a session *inside SD* can reach; a local
+login is the person as that Linux user on the machine, with their own
+password and permissions, and SD does not stand between the two. An ssh
+session is different: it is forced into SD, and reaches a shell only if the
+account has `sh-on`. See [Security and the operating
 system](12a-security-and-the-operating-system.html).
 
 **4. Every account gets the same VOC.** There is no reduced starting set —

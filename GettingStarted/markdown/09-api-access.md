@@ -3,11 +3,12 @@ Subtitle: The client API, the port it answers on, the login that replaced the ol
 
 The client API is a normal way for any account to use SD. A person running a
 custom GUI program that talks to SD needs API access and may need nothing
-else — no ssh, no terminal. **Every ordinary account has it, unconditionally
-— there is no per-account choice, unlike SD Core for Windows:**
+else — no ssh, no terminal. **An account has it only if SDSYS gave it — a new
+account has none, and `api` (or `both`) gives it:**
 
 ```
-create.account user jane
+create.account user jane api
+modify.account jane api
 ```
 
 Your application code does not change. `SDConnect()` and `SDConnectLocal()`
@@ -19,7 +20,9 @@ what it is allowed to open.**
 > from another computer, under any setting, and on this machine only through
 > the local Unix socket from a process running as `sdsys` — see
 > [Reaching the port is not getting in](#reaching-the-port-is-not-getting-in)
-> below. Every other account has the API by default; there is nothing to grant.
+> below. **Every other account has no API access until SDSYS gives it** —
+> `modify.account` *name* `api` (or `both`), or `api` at `create.account` — and
+> an account that has not been given it is refused at the door.
 
 ## The login is SCRAM-SHA-256, and the old one is gone
 
@@ -148,8 +151,9 @@ reach — a real difference from SD Core for Windows's `NETDIRS` setting,
 which this port does not have** (checked against `config.c` directly:
 `APIPORT` and `NETDIRS` are not parameters this port's configuration file
 accepts at all). An API session's file access is exactly its own account's,
-full stop — the same "no second wall" reasoning that removed the
-`sh-on`/`os-on` switches (see
+full stop: what the account's own file permissions and the confinement
+described above allow. The `os-on` switch is read for an API session like any
+other, but it does not lift this confinement (see
 [Security and the operating system](12a-security-and-the-operating-system.html)).
 If data needs to be reachable from more than one account, put it somewhere
 every account can already open on its own terms, or reach it through a
@@ -181,17 +185,22 @@ equivalent to guard against here.
 
 ## `sh` and `OS.EXECUTE` over the API
 
-**Unlike SD Core for Windows, there is no blanket refusal of `sh` or
-`OS.EXECUTE` for a session that arrived over the API on this port.** Both
-already run at the account's own Linux permissions unconditionally for
-every session, console or API alike — the same "no second wall" reasoning
-applies here too: an API session already runs as the real account
-(`setuid`, above), so it already has exactly the reach that account's own
-login shell has, no more. `SDCLIENT` in `sd.conf` is the configurable
-control, if you want one: non-zero disables file access outright for an
-API session, and `2` additionally refuses any subroutine not compiled as
-callable from a client. It defaults to `0`, which permits everything — see
-the *Administrator* set's *Configuration* chapter.
+**They follow the account's switches, the same as anywhere else.** The
+per-account switches `sh-on` and `os-on` are read when a session enters its
+account — at sign-in and `logto` for a terminal, and by the API server when it
+enters the account for an API session — so an account that holds `sh-on` has
+the `sh` verb over the API, one that holds `os-on` has `OS.EXECUTE`, and a new
+account has neither. **That puts a shell behind the account's API credential,
+reachable from wherever the API port is** — weigh it before you turn either
+on for an account that also has the `api` route. (SDSYS is the exception: an
+API session carries no administrator flag and SDSYS holds no switch, so there
+is no shell over the API for it; use the local login.) An API session still
+runs as the real account (`setuid`, above), so what it can reach is bounded by
+that account's own file permissions. `SDCLIENT` in `sd.conf` is the further
+control, if you want one: non-zero disables file access outright for an API
+session, and `2` additionally refuses any subroutine not compiled as
+callable from a client. It defaults to `0` — see the *Administrator* set's
+*Configuration* chapter.
 
 ## Client libraries
 
