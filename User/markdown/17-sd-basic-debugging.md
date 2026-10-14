@@ -263,26 +263,38 @@ program can ask the same question without the debugger:
 | `system(1002)` | the call stack as a dynamic array — one field per level |
 | `system(1029)` | internal subroutine depth — `0` at the top, `1` inside a `gosub` |
 
-## It is a line-mode debugger here, and that is not a limitation of your terminal
+## Full screen on a terminal, line by line everywhere else
 
-**On this port the debugger never draws a full screen.** Its own test is
-`terminfo('sreg')`, and `sreg` — *save screen region* — is a capability of SD's
-own client terminals, not of a console. In a session on the shipped `windows`
-terminal type:
+**On a terminal that has an alternate screen — xterm and the terminals that
+behave like it — the debugger takes the whole screen.** Its test is that the
+session is a real terminal (SD can read its window size) and that the terminal
+definition has `smcup` and `rmcup`. Then:
 
-| | |
-|---|---|
-| `terminfo('sreg')` | **0 characters** |
-| `terminfo('cup')` | 16 characters |
-| `terminfo('clear')` | 6 characters |
+- the top row is the **title**: the program and the line about to run;
+- below it is the **source**, with line numbers; the line about to run is
+  highlighted and a line with a breakpoint has its number marked;
+- then five lines of **messages** (what a command printed), and the **command
+  line** at the bottom, where you type the commands on this page;
+- **F1** shows the help in a box, **F4** shows the program's own screen until
+  you press a key, and Page Up and Page Down move the source.
 
-So cursor addressing is there and the region capability is not, and the
-debugger takes its line-oriented path. **Nothing is lost** — every command
-works, as the transcripts on this page show — and there is a real gain: because
-it is line-oriented it can be **driven from a script**. A whole debugging
-session can be fed down a pipe.
+The program's own screen is kept by the terminal (that is what the alternate
+screen is): when you let the program run, the debugger gives the terminal back
+and the program's output is on its own screen, and it is on the alternate
+screen again at the next stop. The colours are the screen library's: the
+`classic` theme while the debugger is up if the program asked for none, and
+whatever the program or the site chose otherwise.
+
+**On a terminal with no alternate screen, and in a session that is not a
+terminal, the debugger is line by line.** Every command works, as the
+transcripts on this page show, and there is a real gain: because it is
+line-oriented it can be **driven from a script**. A whole debugging session can
+be fed down a pipe.
 
 `@tty` reads empty in a piped session, and the debugger works there anyway.
+
+(Until 13 October 2026 the full-screen display needed AccuTerm, which kept the
+screen pictures; SD no longer supports AccuTerm.)
 
 ## Who has it
 

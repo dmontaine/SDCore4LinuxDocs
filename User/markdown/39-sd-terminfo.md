@@ -1,11 +1,11 @@
 Title: SD Terminal Information (Terminfo)
-Subtitle: The terminfo database, the 63 definitions that ship, and the compiler that ships with them.
+Subtitle: The terminfo database, the definitions that ship, and the compiler that ships with them.
 
 SD uses a terminfo database to know what byte sequences a terminal sends for
 each key, and what sequences to emit for screen control — cursor movement,
 clear, colour, bold, underline.
 
-Most installations never touch it. The 63 shipped definitions cover the
+Most installations never touch it. The shipped definitions cover the
 terminals in ordinary use, and `linux` works with any standard Linux
 console or terminal emulator.
 
@@ -28,13 +28,17 @@ The default terminal type is `linux`.
 
 ## What ships
 
-**63 terminfo definitions ship with SD**, compiling to **100 terminal
-names** — the extra names are variants. For example, `vt100-w` and
-`vt220-at` are aliases that map to the same definition as their base
-name.
+**About 50 terminfo definitions ship with SD**, compiling to **82 terminal
+names** — the extra names are variants. For example, `vt100-w` is an alias
+that maps to the same definition as its base name.
 
 Common names that work out of the box: `linux`, `vt100`, `vt220`,
 `wyse60`, `ansi`, `xterm`.
+
+The `-at` terminal types (`vt100-at`, `vt220-at`, `wy60-at` and the rest)
+were AccuTerm's, and `sdterm` was SDTerm's. They are gone: SD no longer
+supports either terminal program. A session that was set to one of them
+should use `xterm`, `vt100` or `vt220`.
 
 A name that is not installed is refused and your current type is kept:
 
@@ -43,7 +47,7 @@ A name that is not installed is refused and your current type is kept:
 Unrecognised terminal name
 ```
 
-There is no plain `vt320` — the shipped name is `vt320-at`.
+There is no `vt320` definition; `vt220` or `xterm` does the same job.
 
 ## Setting the terminal
 
@@ -73,7 +77,7 @@ is not one.
 
 ## The terminfo source
 
-`terminfo.src` ships with SD. It is a text file containing all 63
+`terminfo.src` ships with SD. It is a text file containing all the
 definitions in source form. You can read it to see what a terminal
 definition looks like, and you can use it as a template for a custom
 definition.

@@ -106,8 +106,13 @@ save.screen(column, row, width, height)
 restore.screen(saved, column, row)
 ```
 
-save and restore a rectangle, for a program that pops a window over what is
-already displayed.
+were for a program that pops a window over what is already displayed: they
+asked the *terminal* to keep the picture, which only AccuTerm and SDTerm could,
+and SD supports neither now. The calls are still accepted and the program still
+runs, but the terminal keeps nothing and `restore.screen` writes nothing. A
+program that needs what is under a window back should use the `screen`
+statement (page 12a), which keeps a picture of what it draws and puts it back
+itself.
 
 ## Input
 

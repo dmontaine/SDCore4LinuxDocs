@@ -225,7 +225,7 @@ prompt and dispatches it.
 
 **Terminfo** — the terminal capability database. Defines what
 sequences a terminal sends for keys and what sequences to use for
-screen control. SD ships 63 definitions compiling to 100 terminal
+screen control. SD ships about 50 definitions compiling to 82 terminal
 names. The terminfo compiler (`sdtic`) is built alongside the server
 during install, but — unlike SD Core for Windows, which keeps a
 permanent copy — **is not currently left on the machine afterward**:
