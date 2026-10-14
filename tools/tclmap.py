@@ -118,6 +118,12 @@ DOCS = [
  ('User', '27-sd-tcl-micro.md', """
    micro
  """),
+ ('User', '27a-sd-tcl-sed.md', """
+   sed
+ """),
+ ('User', '27b-sd-tcl-ced.md', """
+   ced
+ """),
  ('User', '28-sd-tcl-printing-and-spooling.md', """
    printer setptr sp.close sp.open sp.view spool como report.style
  """),

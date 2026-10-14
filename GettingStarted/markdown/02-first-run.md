@@ -71,10 +71,10 @@ ed customers 1001
 **`ed`** is the **line** editor, and it needs nothing installed —
 **`edit`** is an alias for it, not for a full-screen editor (a difference
 from SD Core for Windows, where `edit` opens Microsoft Edit; there is no
-Linux equivalent to alias it to). For a full screen, **`nano`** opens the
-record in `nano` and **`micro`** opens it in `micro` — see
+Linux equivalent to alias it to). For a full screen, **`sed`** is SD's own editor, with drop-down menus,
+**`nano`** opens the record in `nano` and **`micro`** opens it in `micro` — see
 [Programmer commands](07-programmer-commands.html#editors). The old
-full-screen editors `sed`, `update.record` and `modify` are all gone; see
+full-screen editors `update.record` and `modify` are gone; see
 [Not in SD Core](14-not-in-sd-core.html).
 
 In **`ed`**: `i` to insert, type your lines, a full stop on its own line to stop

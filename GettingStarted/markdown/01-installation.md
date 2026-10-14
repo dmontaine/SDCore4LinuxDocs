@@ -159,8 +159,9 @@ ssh at all. See [Security](12-security.html).
 if `/usr/share/nano` exists, the installer adds SD's own BASIC syntax
 highlighting to it system-wide (`/usr/share/nano/sdbasic.nanorc`). Neither
 is offered as a choice — an account with an editor verb that does nothing
-is worse than either answer. **`ed`**, the line editor, needs nothing and
-always works.
+is worse than either answer. **`ed`**, the line editor, and **`sed`**, the
+full-screen editor with menus, are part of SD and need nothing installed; they
+always work.
 
 If `micro`'s package install fails, the install still succeeds; `micro`'s
 own syntax file still needs a per-user copy (`~/.config/micro/syntax`),

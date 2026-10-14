@@ -158,7 +158,7 @@ deliberately because it is a real, live mechanism on this port. See
 *Accounts and Security* in the **administrator documentation** for what it
 does and why Linux keeps it. `umask()` from SD BASIC works too.
 
-**PROC is removed.** So are `sed` and `update.record`. A `PQ`-type VOC record
+**PROC is removed.** So is `update.record`. A `PQ`-type VOC record
 is **refused by name** rather than being reported as a bad dispatch code,
 because the record itself is valid PROC and it is the interpreter that is gone.
 Nothing that ships is type `PQ`, so this can only be met in a VOC record

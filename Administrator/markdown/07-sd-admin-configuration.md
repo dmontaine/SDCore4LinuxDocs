@@ -226,6 +226,12 @@ does not lift that confinement — see *Accounts and Security*.)
 | `OBJECTS` | 0 (no limit) | Compiled programs held in memory at once |
 | `OBJMEM` | 0 (no limit) | Memory those programs may occupy, in KB |
 
+## The screen
+
+| Parameter | Default | Effect |
+|---|---|---|
+| `SCREENTHEME` | unset (`mono`) | The colour theme that a program using the `SCREEN` statement gets when it does not choose one: `mono`, `classic` or `blue`. `mono` uses only reverse video and underline and reads on any terminal. A name that is not a theme, or a colour theme on a terminal that cannot show colour, is ignored without an error and the screen stays `mono`. A program that asks for a theme gets that one. A program reads the value with `config('SCREENTHEME')` |
+
 ## The shell
 
 | Parameter | Default | Effect |

@@ -92,6 +92,14 @@ of numbers.
 Both need a real terminal. Neither does anything useful in a phantom, a
 scheduled job or an API session.
 
+### Editing a data collection
+
+| | |
+|---|---|
+| `!CED` | `call !ced(collection)` — the data collection editor, on a collection held in a variable; see [ced](27b-sd-tcl-ced.html) |
+
+It needs a real terminal too, and returns at once without one.
+
 ### Printing and program information
 
 | | |

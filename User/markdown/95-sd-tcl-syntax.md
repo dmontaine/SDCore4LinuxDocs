@@ -44,6 +44,7 @@ not refused — the name is simply not recognised.**
 | **`catalog`** | **`catalog`** {*file* {*call.name*}} {*program*} {**`local`** \| **`global`** \| **`pcode`**} {**`no.xref`**} |  |
 | **`catalogue`** | **`catalogue`** — the same verb as **`catalog`** |  |
 | **`cd`** | **`cd`** {**`dict`** \| **`data`**} *file* {*i-type* …} {**`no.query`**} {**`no.page`**}  ·  **`cd local`**  ·  **`cd all`** |  |
+| **`ced`** | **`ced`** {**`dict`**} *file* {*id* …}  ·  **`ced`** {**`dict`**} *file* **`*`** |  |
 | **`clean.account`** | **`clean.account`** | S |
 | **`clear.abort`** | **`clear.abort`** |  |
 | **`clear.data`** | **`clear.data`** |  |
@@ -148,6 +149,7 @@ not refused — the name is simply not recognised.**
 | **`save.list`** | **`save.list`** *list* {**`from`** *list.no*} |  |
 | **`save.stack`** | **`save.stack`** {*name*} |  |
 | **`search`** | **`search`** {**`dict`**} *file* {*selection*} |  |
+| **`sed`** | **`sed`** {**`dict`**} *file* {*record*} |  |
 | **`select`** | **`select`** {**`dict`**} *file* {*selection*} {*list.no*} |  |
 | **`set`** | **`set`** *name* *value* |  |
 | **`set.backup.directory`** | **`set.backup.directory`** {*directory*} | S |

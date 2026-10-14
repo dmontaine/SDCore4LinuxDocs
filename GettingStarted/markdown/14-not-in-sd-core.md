@@ -19,17 +19,19 @@ recorded on one side and wonder whether it binds the other.
 
 | Gone | Use instead |
 |---|---|
-| `sed` — the full-screen editor | **`nano`** or **`micro`**, or **`ed`**/**`edit`** for the line editor |
-| `update.record` — the full-screen record editor | **`nano`** or **`micro`** |
-| `modify` — the full-screen record editor from OpenQM | **`nano`** or **`micro`** |
+| `update.record` — the full-screen record editor | **`sed`**, **`nano`** or **`micro`** |
+| `modify` — the full-screen record editor from OpenQM | **`sed`**, **`nano`** or **`micro`** |
 
-**SD Core's own full-screen editing is `nano` and `micro`**, which open the
+**`sed` was removed and has come back**, with drop-down menus that show the key
+for each action, so it is no longer in this table.
+
+**SD Core's own full-screen editing is `sed`, `nano` and `micro`**, which open the
 record in each program by name — see
 [Programmer commands](07-programmer-commands.html#editors), which also says
 what they are good for and what they cannot do. **Unlike SD Core for
 Windows, `edit` is not one of them here — it aliases `ed`, the line editor,
 because there is no Linux program to alias it to the way Microsoft Edit
-serves that role there.** The three removed programs above are gone as
+serves that role there.** The two removed programs above are gone as
 *programs*; the capability is not.
 
 `modify` is not in SD Core at all, for any account.

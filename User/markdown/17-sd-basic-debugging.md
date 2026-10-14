@@ -150,6 +150,33 @@ carries on with the new value.
 `dump var path` writes a variable to an operating system file, which is the way
 to look at something too long for the screen.
 
+**A data collection** is shown with its kind, the number of elements and its
+JSON text, the names in order; a long one is cut off with dots:
+
+```
+>/C
+Collection (3 elements): {"a":[1,2,{"k":"v"}],"name":"Acme","on":true}
+
+>/C{name}
+String (4 bytes): "Acme"
+
+>/C{a/3/k}
+String (1 bytes): "v"
+
+>/C{on}
+Boolean: true
+```
+
+(That is a collection of three elements, one of which is an array whose third
+element is itself a collection.) Name an element with its path in braces, the
+names separated by slashes (a number picks an element of an array, counting
+from 1). Names are case sensitive. The answer is the element's own type — `String`,
+`Integer`, `Array`, `Collection`, `Boolean` or `Null` — and a path that leads
+nowhere says *Element not found in the collection*. **`dump c{sub} path`
+writes the JSON of one element, and `dump c path` the whole collection**, as
+`dump` does for any variable. A collection that contains itself is shown as
+*(cannot be shown)* and does not stop the debugger.
+
 ## Stepping and running
 
 | | |

@@ -36,8 +36,10 @@ extra at all.
 | | |
 |---|---|
 | **`ed`** | the line editor. Needs nothing installed. `edit` is an alias for it |
+| **`sed`** | a **full-screen** editor that runs inside SD, with drop-down menus and colour for SD BASIC and five other languages |
 | **`nano`** | a **full-screen** editor — opens the record in `nano` |
 | **`micro`** | a **full-screen** editor — opens the record in `micro` |
+| **`ced`** | the data collection editor: a record that is a collection, one level at a time |
 | **`debug`** | the BASIC debugger |
 | **`pstat`** · **`pdebug`** · **`pdump`** · **`dump`** | process introspection |
 
@@ -46,7 +48,11 @@ extra at all.
 **`edit` is not a full-screen editor here** — a real difference from SD
 Core for Windows, where it opens Microsoft Edit. There is no Linux
 equivalent to alias it to, so `edit` runs the **line** editor, `ed`,
-instead. The two full-screen editors are named for the program each runs:
+instead. There are three full-screen editors. **`sed` is SD's own**: a program
+written in SD BASIC that runs inside SD, so it needs no installing and no
+operating-system permission (its menus, keys and syntax colour are described in
+*The SED Screen Editor*, in the User documentation). The other two are named for
+the program each runs:
 
 | | |
 |---|---|
@@ -54,16 +60,18 @@ instead. The two full-screen editors are named for the program each runs:
 | **`micro`** | installed by the SD installer as an ordinary package |
 
 ```
+sed   bp myprog
 nano  bp myprog
 micro bp myprog
 nano  dict customers name
 ```
 
-Either verb writes the record to a working copy, opens the editor on it,
-reads it back, and asks whether to save. For a `bp` record it then offers
-the compile and the catalogue.
+`nano` and `micro` write the record to a working copy, open the editor on it,
+read it back, and ask whether to save. For a `bp` record they then offer the
+compile and the catalogue. `sed` edits the record itself, locks it while it is
+open, and compiles from its own Tools menu.
 
-**Both are terminal editors**, so both work over ssh as well as at the
+**All three are terminal editors**, so they work over ssh as well as at the
 console.
 
 **Both highlight SD BASIC — a difference from SD Core for Windows, where
@@ -170,9 +178,9 @@ terminal rather than reading it through a pipe.
 **If an editor misbehaves over ssh and not at the console, that is worth
 reporting** with the terminal you connected from.
 
-The removed full-screen editors are a different matter: `sed`,
-`update.record` and `modify` are gone and are not coming back. See
-[Not in SD Core](14-not-in-sd-core.html).
+The removed full-screen editors are a different matter: `update.record` and
+`modify` are gone and are not coming back. (`sed` was removed once and has
+returned, above.) See [Not in SD Core](14-not-in-sd-core.html).
 
 ## Files
 
@@ -212,14 +220,16 @@ anything in this page as a boundary.
 | | |
 |---|---|
 | File permissions | ordinary Linux file permissions on the data tree — see [Security](12-security.html) |
-| Reaching the operating system | the account's own switches, off for a new account: `sh-on` for `sh` and `!`, `os-on` for `OS.EXECUTE`, either editor, the embedded Python and OS files named by path outside the account's own directory |
+| Reaching the operating system | the account's own switches, off for a new account: `sh-on` for `sh` and `!`, `os-on` for `OS.EXECUTE`, `nano` and `micro`, the embedded Python and OS files named by path outside the account's own directory (which `sed` also asks for) |
 | What an API session may open | the containment gate, rooted at the account the session stands in |
 
-**The full-screen editors need `os-on`**, the same switch as `OS.EXECUTE`
+**`nano` and `micro` need `os-on`**, the same switch as `OS.EXECUTE`
 (not `sh-on`): an account can be refused `sh` and still run `nano` and
-`micro`, and the reverse. SDSYS sets it with `modify.account` *name*
-`os-on`. What an editor can then open is whatever that account's Linux user
-may — see
+`micro`, and the reverse. **`sed` and `ced` need neither**, because they run
+inside SD; `sed` asks for `os-on` only when it is given an operating-system
+path outside the account's own directory. SDSYS sets it with
+`modify.account` *name* `os-on`. What `nano` or `micro` can then open is
+whatever that account's Linux user may — see
 [Security and the operating system](12a-security-and-the-operating-system.html).
 
 **A session with no terminal is refused**: an API session or a piped

@@ -532,6 +532,9 @@ reset command).
 - A table sorts what it *shows*, never the rows you gave it, and a tree is the list of
   nodes you gave it with the depths you gave it: neither is a database view.
 - It has no widget for editing a record with the editor's own commands: `screen memo` has
-  selection, undo and find, and SED and the debugger keep their own screens.
+  selection, undo and find, but not SED's macros, buffers, split window or bindings, and
+  [SED](27a-sd-tcl-sed.html) keeps its own text area and prompt line (its menus and its
+  colour for the language use the library). [CED](27b-sd-tcl-ced.html) and
+  [the debugger](17-sd-basic-debugging.html) are drawn with the library.
 - It draws nothing in a phantom or over the API: every verb takes `else`.
 - Text written with `print` or `crt` is not in the shadow.

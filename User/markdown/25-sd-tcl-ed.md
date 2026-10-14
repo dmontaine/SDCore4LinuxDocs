@@ -1,16 +1,19 @@
 Title: SD TCL - The ed Line Editor
 Subtitle: The editor that runs inside SD, needs no terminal, and can be driven from a script.
 
-SD has three editors and they are all installed with it. **`ed` is the one that
-runs *inside* SD**: it is written in SD BASIC, draws nothing, and needs neither
-a terminal nor operating-system permission. That is what makes it the editor for
-a phantom, an API session, a session driven down a pipe, and anything you want
-to automate.
+SD has four editors for a record and they are all installed with it. **`ed` is
+the one that needs no terminal**: it is written in SD BASIC and runs *inside*
+SD, draws nothing, and needs neither a terminal nor operating-system permission.
+That is what makes it the editor for a phantom, an API session, a session driven
+down a pipe, and anything you want to automate.
 
-The other two are [nano](26-sd-tcl-edit.html) and [micro](27-sd-tcl-micro.html),
-which hand the record to a full-screen program. Use one of those when
-you are sitting at a terminal and want to see the whole record at once.
-**`edit` is not a third program** — it is a second name for `ed` itself,
+The other three are full-screen. [sed](27a-sd-tcl-sed.html) is also written in SD
+BASIC and runs inside SD, so it needs no operating-system permission either;
+[nano](26-sd-tcl-edit.html) and [micro](27-sd-tcl-micro.html) hand the record to a
+full-screen program. Use one of those when you are sitting at a terminal and want
+to see the whole record at once. A record that is a data collection has an editor
+of its own, [ced](27b-sd-tcl-ced.html).
+**`edit` is not another program** — it is a second name for `ed` itself,
 since there is no Linux program to alias it to the way SD Core for
 Windows aliases it to Microsoft Edit.
 

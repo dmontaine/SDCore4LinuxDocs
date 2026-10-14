@@ -15,7 +15,11 @@ SDSYS turns it on (`modify.account` *name* `sh-on` / `os-on`):
 | `OS.EXECUTE` | the operating system from inside a BASIC program | `os-on` |
 | **`nano`** and **`micro`** | a text editor, running outside SD | `os-on` |
 | the embedded Python | arbitrary code in the account's own process | `os-on` |
-| a file or directory of the operating system **by its path**, outside the account's own directory | `OPENSEQ` and `OPENPATH` with a path, `DIR()` and `select.dir`, `DELETESEQ` of a path, `!OSCOPY`, `!IOSCOPY` and the `oscopy` verb, printing into a file by path | `os-on` |
+| a file or directory of the operating system **by its path**, outside the account's own directory | `OPENSEQ` and `OPENPATH` with a path, `DIR()` and `select.dir`, `DELETESEQ` of a path, `!OSCOPY`, `!IOSCOPY` and the `oscopy` verb, `sed` given a `path:` name, printing into a file by path | `os-on` |
+
+`sed` and `ced` are not in the table: they run inside SD, so editing a record of
+an SD file needs no switch. `sed` asks the `os-on` question only for a `path:`
+name outside the account's own directory (the last row).
 
 The two switches are independent: `sh-off` leaves `OS.EXECUTE` alone, and
 the reverse. A change reaches the account the next time it is entered.

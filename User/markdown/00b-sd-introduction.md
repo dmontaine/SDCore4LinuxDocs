@@ -92,6 +92,8 @@ ed customers 1001
 to insert, type your lines, a full stop on its own line to stop
 inserting, then `fi` to file and exit.
 
+`sed` is a full-screen editor that runs inside SD, with drop-down menus and
+colour for SD BASIC that you turn on when you want it; any account may use it.
 An account can also use `nano` or `micro` (both full-screen editors with
 syntax highlighting) once the administrator has given it the `os-on` switch;
 a new account does not have it. `edit` aliases `ed` here, not a full-screen
@@ -152,7 +154,7 @@ are not in SD Core for Linux:
 |---|---|
 | SDNet (remote files) | Removed; the API is the supported way to reach another SD server |
 | `ENCRYPT.FIELD` verb | Removed; `sdencrypt()` and `sddecrypt()` in SDBasic are the supported route |
-| `sed`, `update.record`, `modify` editors | Gone; use `nano`, `micro` or `ed` |
+| `update.record`, `modify` editors | Gone; use `sed`, `nano`, `micro` or `ed` |
 | PROC language | Removed; use paragraphs instead |
 | `SET.LANGUAGE`, `LOAD.LANGUAGE` | Removed; SD Core is English only (NLS, for currency and separators, is kept) |
 | Unattended install | Not supported; the installer asks questions and sets passwords that cannot be scripted around |
