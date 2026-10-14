@@ -82,6 +82,8 @@ Cleared all numbered select lists
 | **`qselect`** {**dict**} *file* {**saving** *n*} | a list of **field values** rather than record ids |
 | **`nselect`** *file* | keep only the ids of the active list that are **not** in *file* |
 | **`form.list`** {**dict**} *file* *record* | take the list from a record's contents |
+| **`select.dir`** *pathname* {**to** *n*} | the names in an operating system directory |
+| **`selectindex`** {**dict**} *file* *index* {*value*} {**to** *n*} | the values of an alternate key index, or the ids of the records that have one value (see [Alternate Key Indexes](23-sd-tcl-alternate-key-indexes.html)) |
 
 `select` and `sselect` take the whole selection language of the query processor
 — `with`, the operators, `by` — so anything you can list you can select. See
@@ -96,6 +98,32 @@ It is how you follow a reference from one file into another: select the orders,
 > `14 record(s) selected to select list`. **The list is there** — it is list 0
 > unless you gave `to` *n*. `select` and `nselect` both print the number
 > correctly, so do not read this as the list being missing.
+
+### The names in a directory: `select.dir`
+
+```
+select.dir pathname {to n}
+```
+
+Makes a list (0, or `to` *n*) of the names of the files and subdirectories in an
+**operating system** directory, in the order the operating system returns them,
+which is no order in particular — `sort.list` below puts them in one.
+
+```
+select.dir /home/pat/reports
+```
+
+```
+4 record(s) selected to select list 0
+```
+
+There is no option to keep only files or only directories. The directory is read
+**as you**, with your own permissions. A path outside the account's own directory
+needs the `os-on` switch, as `oscopy` does; without it the verb says *name has no
+OS access, so a file or directory outside its own account cannot be reached by
+pathname*. A directory that cannot be read is *Cannot read directory* and the
+pathname; a missing pathname is *Directory pathname required*. A `to` with no
+number, or a bad one, is *Select list number missing or invalid*.
 
 ## Numbered lists
 
@@ -128,8 +156,15 @@ account's `$savedlists` file and outlives it.
 | **`get.list`** {*name*} {**to** *n*} | load it back into list *n* |
 | **`delete.list`** *name* | delete the saved list |
 | **`copy.list`** *name* {`,`*new*} {**from** *file*} {**to** *file*} | copy one, or `*` for all |
+| **`sort.list`** *name* {**from** *file*} | sort a saved list, in place |
+| **`copy.listp`** {{**dict**} *file*} {*name* ... \| `*`} {`(`*options*} | the Pick form of `copy.list`: show a saved list, or copy it to another file |
 
 Both default to list 0, and `save.list` defaults the name to the list number.
+**`save.list`** takes **`keep`** to leave the active list as it was (it has always
+emptied it) and **`count.sup`** to leave out the count of records, and **`get.list`**
+takes **`deleting`** to delete the saved list once it is loaded and `count.sup`
+too. With the name left out, a list is called after its number: `save.list` saves
+list 0 as `0`, and `get.list 0` brings it back.
 
 ```
 select voc with dispatch = "OS"
@@ -154,6 +189,62 @@ Deleted saved select list 'zzos'
 **`copy.list` moves a saved list between accounts**, because `from` and `to` name
 the `$savedlists` file to read and write. Within one account it renames or
 duplicates.
+
+### `sort.list`
+
+```
+sort.list name {from file}
+```
+
+Sorts a saved list into ascending order, **as strings**, in place, and says how
+many it saved. `from` names another file of saved lists. There is no descending or
+numeric order (the list `9 10 100` sorts as `10 100 9`).
+
+```
+select.dir /home/pat/reports
+save.list reports
+sort.list reports
+```
+
+```
+4 record(s) selected to select list 0
+4 records saved to select list 'reports'
+4 records saved to select list 'reports'
+```
+
+A list that is not there is *Saved select list 'name' not found*, and no name is
+*Source list name required*.
+
+### `copy.listp`
+
+```
+copy.listp {{dict} file} {name ... | *} {(options}
+```
+
+The Pick form of `copy.list`, and the **same program as `copyp`**: its options and
+its `To:` question are `copyp`'s (`d` delete the source, `i` leave out the id, `n`
+no pagination, `o` overwrite, `p` to the printer, `s` leave out field numbers, `t`
+to the terminal). What differs is that the source file is **`$savedlists`**, where
+saved lists are kept, unless one is named. `*` is every saved list.
+
+```
+copy.listp reports (t
+```
+
+```
+Item reports
+0001 a.txt
+0002 b.txt
+0003 c.txt
+0004 subdir
+1 record(s) copied.
+```
+
+With `copy.listp *` and `t`, every saved list is shown. **When two or more words come
+before the options, the first is the source file if it opens as a file, and
+every word is a list name if it does not**; a file and a list with the same name
+are told apart by writing the file first (`copy.listp $savedlists reports`). After
+`dict` the next word is always the file. `copyp` itself still needs a file name.
 
 ## Combining two lists
 
@@ -215,7 +306,8 @@ does not for union and intersection.
 ## Who has these verbs
 
 **All of them are in every account.** Building, saving and combining lists
-is reading, and nothing on this page changes a record.
+is reading, and nothing on this page changes a record. (`select.dir` reads an
+operating system directory, and that is where the `os-on` switch comes in.)
 
 ## See also
 

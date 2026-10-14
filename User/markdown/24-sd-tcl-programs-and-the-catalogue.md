@@ -129,6 +129,32 @@ delete.catalog name... {global | local}
 ZZPROG deleted from the private catalogue
 ```
 
+```
+decatalog {file} name ...
+```
+
+**`delete.catalog ... local` removes only the VOC entry**, and leaves the object
+code it pointed to lying in the account's object directory. **`decatalog` removes
+both** — the local catalogue entry and the compiled program it names:
+
+```
+catalog bp zzdocprog local
+decatalog zzdocprog
+```
+
+```
+zzdocprog added to local catalogue
+zzdocprog deleted from the local catalogue
+```
+
+Several names may be given. A name that is not in the local catalogue is said so
+(*zzdocprog is not in the local catalogue*) and the rest are still done; an object
+file that cannot be deleted is reported as *Cannot delete the object code* and
+the entry is gone all the same. A file name in front of the program name is
+accepted and ignored, because the entry already holds the object's pathname.
+`decatalog` works on **local** entries only — a private or global catalogue entry
+is removed with `delete.catalog`.
+
 > **`map` also takes a `file` option**, which writes the map to a file instead
 > of the screen. **It asks before overwriting** — *"File xx will be cleared and
 > overwritten. Continue (Y/N)?"* — so it is not usable from a script driving SD

@@ -231,6 +231,92 @@ is in use, and `lptr` {*n*} to send it to a print unit.
 **Every account has both `ct` and `dump`** — they run the same code, reached
 by two separate VOC records rather than one.
 
+## Comparing two files
+
+```
+compare.files {dict} file1 {dict} file2 {detail}
+```
+
+Counts what two files hold: the records **only in the first**, **only in the
+second**, **in both but different**, and **the same**. `detail` lists the ids of
+the first three groups, indented three spaces under their count. A dictionary
+is named with `dict` in front of its file, so a file and its dictionary can be
+compared with each other or with another.
+
+```
+compare.files stock stock.new detail
+```
+
+```
+Records only in stock: 1
+   1004
+Records only in stock.new: 1
+   1006
+Records in both that differ: 1
+   1002
+Records that are the same: 3
+```
+
+**`@system.return.code` is 0 when the two files hold the same records and 1 when
+they do not**, so a paragraph can test it. Two names are required (*Two file names
+required*), and a file that will not open stops it (*Cannot open* the name). The
+records of a data collection file are compared as their JSON text, so two equal
+collections count as the same.
+
+## Taking the carriage returns out of directory file items
+
+```
+fixdir file {id ...}
+```
+
+An item of a **directory file** that arrived from a Windows machine has a carriage
+return at the end of each line (CR LF line ends), which the Linux side does not
+expect. `fixdir` takes the carriage return off the end of each line of the items
+named; with no ids it does every item of the file.
+
+```
+fixdir notes
+```
+
+```
+1 record(s) fixed in notes
+```
+
+An item with no carriage return is **not rewritten**, so a second run says
+*0 record(s) fixed in notes*. The file must be a directory file (*is not a
+directory file*), and it must open (*Cannot open*). A file name is required.
+
+## Copying an operating system file
+
+```
+oscopy source target {overwrite | append}
+```
+
+Copies one **operating system** file, named by its path, which no record verb
+can do. Without an option it **will not replace** a target that exists:
+
+```
+oscopy /home/pat/in.txt /home/pat/out.txt
+oscopy /home/pat/in.txt /home/pat/out.txt
+```
+
+```
+/home/pat/in.txt copied to /home/pat/out.txt
+Target /home/pat/out.txt already exists: give overwrite or append
+```
+
+`overwrite` replaces it and `append` adds the source to the end of it. A source
+that is not there is reported (*Source ... not found*); any other failure says
+*Cannot copy* with the status. **A directory is not copied** — the SD BASIC
+subroutine `!ioscopy` does a whole tree — and a program does the same as the
+verb with `!oscopy`.
+
+**It runs `cp` as you, so it has your own permissions and nobody else's**, and a
+path with a single quote in it is refused. **A path outside the account's own
+directory needs the `os-on` switch**, the same one as `OS.EXECUTE`; an account
+without it gets *name has no OS access, so a file or directory outside its own
+account cannot be reached by pathname* and nothing is copied.
+
 ## Triggers
 
 ```
@@ -240,15 +326,48 @@ set.trigger file.name
 ```
 
 Set, remove, or display a file's trigger function. An empty string in quotes
-removes it; no argument at all displays it.
+removes it; no argument at all displays it. **`all`** in place of the modes sets
+every one of them: pre- and post-write, pre- and post-delete, read, and pre- and
+post-clear. **The function must be catalogued** first — *Trigger function is not
+catalogued* otherwise.
+
+```
+set.trigger stock zztrig all
+```
+
+```
+Trigger function: zztrig
+Modes: PRE.WRITE, PRE.DELETE, POST.WRITE, POST.DELETE, READ, PRE.CLEAR, POST.CLEAR
+```
+
+```
+list.triggers {file ...}
+```
+
+**`list.triggers` says the same for every file of the account at once**: the file,
+its trigger function and the modes it is set for, with a count at the end. It looks
+at the data part and the dictionary of every file the account's VOC points to; with
+names after it, only those files.
+
+```
+list.triggers
+```
+
+```
+File                 Trigger function     Modes
+-------------------  -------------------  ------------------------------
+stock.new            zztrig               PRE.WRITE, PRE.DELETE
+stock                zztrig               PRE.WRITE, PRE.DELETE, POST.WRITE, POST.DELETE, READ, PRE.CLEAR, POST.CLEAR
+2 file(s) with a trigger function
+```
 
 ## Who has these verbs
 
 **Every account has all of them now** — there is no longer a withheld set.
 `ct`, `list.files`, `set.file`, `analyse.file`, `analyze.file`, `clear.file`,
-`cname`, `configure.file`, `copy`, `copyp`, `create.file`, `delete`,
-`delete.file`, `dump`, `fstat`, `hsm`, `rename`, `set.trigger` are all in
-every account's VOC.
+`cname`, `configure.file`, `compare.files`, `copy`, `copyp`, `create.file`,
+`delete`, `delete.file`, `dump`, `fixdir`, `fstat`, `hsm`, `list.triggers`,
+`oscopy`, `rename`, `set.trigger` are all in every account's VOC.
 
 ## What is not here
 

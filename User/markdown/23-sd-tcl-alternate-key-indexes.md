@@ -169,6 +169,67 @@ current with no further action. Reading an index from a program — `selectindex
 which also has the detail on why **an already-open file variable never learns
 about a new index**.
 
+## Selecting from an index: `selectindex`
+
+```
+selectindex {dict} file indexname {value} {to n}
+```
+
+The command form of the SD BASIC `SELECTINDEX` statement. **Without a value** it
+makes a select list (0, or `to` *n*) of the **values held in the index**; **with
+one** it makes the list of the **ids of the records that have that value**:
+
+```
+selectindex stock name
+selectindex stock name Smith
+```
+
+```
+5 record(s) selected to select list 0
+1 record(s) selected to select list 0
+```
+
+The first list holds `Brown`, `Green`, `Jones`, `Smith` and `White` — the values,
+not record ids — so a `list stock` after it looks for records called `Brown` and
+reports each as not found. Save it (`save.list`, then `copy.listp name (t`) to see
+it. The second list holds `1001`, and `list stock name` after it lists that record.
+
+**The value is matched as the index holds it**, so for a date or a number it is
+the internal form, as in the statement. The index name is looked up as typed, then in
+lower case, then in upper, and the file name the same. The file must be a
+dynamic (hashed) file and the index **built** — an index that has been created but
+not built selects nothing. An index that is not there is *Unrecognised index name*
+and the name; a missing index name is *Index name required*; a file that is not
+dynamic is *Dynamic file required*.
+
+## Rebuilding every index in the account
+
+```
+rebuild.all.indices {no.query}
+```
+
+Does `build.index` *file* `all` for **every file the account's VOC points to that
+has indices**, one after the other. A file that cannot be opened, is not a dynamic
+file or has no indices is passed over. It asks first, and anything but `y` stops it
+with nothing rebuilt; **`no.query`** leaves the question out, which is how a
+paragraph or a script runs it.
+
+```
+rebuild.all.indices
+```
+
+```
+Rebuild the indices of all files (y/<n>)? y
+Indices of stock rebuilt
+1 file(s) had their indices rebuilt
+```
+
+**Read the answer with care.** `build.index` needs a file to itself (see above), and
+`rebuild.all.indices` **does not look at what `build.index` said** — a file that
+another session has open is refused by `build.index` and is still reported as
+rebuilt. Make sure nothing else has the files open, and check a file you doubt with
+`list.index`.
+
 ## Removing an index
 
 ```
@@ -194,9 +255,10 @@ Deleting the file removes its indexes with it.
 
 ## Who has these verbs
 
-**Every account has all five now.** An index changes how a query runs, not
-how data is written, so there was never a reason to withhold them even
-under the old model.
+**Every account has all of them now** — `create.index`, `build.index`,
+`make.index`, `delete.index`, `list.index`, `selectindex` and `rebuild.all.indices`.
+An index changes how a query runs, not how data is written, so there was never a
+reason to withhold them even under the old model.
 
 ## See also
 

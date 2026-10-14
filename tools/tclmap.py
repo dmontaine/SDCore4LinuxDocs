@@ -78,9 +78,14 @@ if len(roster) < 100:
 # Each entry is (set, markdown filename, verbs).  Keep it in page order.
 
 DOCS = [
+ # nls is explained with getnls() and setnls, on the data-conversion page, where the
+ # three keys it sets are the point (13 Oct 26: assigned, it was on the page already).
+ ('User', '06-sd-basic-data-conversion.md', """
+   nls
+ """),
  ('User', '19-sd-tcl-command-processor.md', """
    abort clear.data clear.input cleardata clr cs
-   display go if message off pause quit report.src stop break
+   display go if message off pause quit redo report.src stop break
  """),
  # The command stack, the @-variables and the session verbs left 19 for 19a
  # when the page was cut in two.  The twelve below were named by tclmap itself,
@@ -90,23 +95,25 @@ DOCS = [
    set set.exit.status who who.am.i
  """),
  ('User', '20-sd-tcl-files-and-records.md', """
-   analyse.file analyze.file clear.file cname configure.file copy copyp
-   create.file ct delete delete.file dump fstat hsm list.files rename set.file
-   set.trigger
+   analyse.file analyze.file clear.file cname compare.files configure.file copy
+   copyp create.file ct delete delete.file dump fixdir fstat hsm list.files
+   list.triggers oscopy rename set.file set.trigger
  """),
  ('User', '21-sd-tcl-query-processor.md', """
-   count list list.item list.label reformat search show sort sort.item
+   count list list.item list.label reformat scan search show sort sort.item
    sort.label sreformat sum
  """),
  ('User', '22-sd-tcl-select-lists.md', """
-   clear.select clearselect copy.list delete.list form.list get.list list.diff
-   list.inter list.union merge.list nselect qselect save.list select sselect
+   clear.select clearselect copy.list copy.listp delete.list form.list get.list
+   list.diff list.inter list.union merge.list nselect qselect save.list select
+   select.dir sort.list sselect
  """),
  ('User', '23-sd-tcl-alternate-key-indexes.md', """
    build.index create.index delete.index list.index make.index
+   rebuild.all.indices selectindex
  """),
  ('User', '24-sd-tcl-programs-and-the-catalogue.md', """
-   basic catalog catalogue cd compile.dict debug delete.catalog
+   basic catalog catalogue cd compile.dict debug decatalog delete.catalog
    delete.catalogue delete.common format generate list.common map run
  """),
  ('User', '25-sd-tcl-ed.md', """
@@ -129,7 +136,7 @@ DOCS = [
  """),
  ('User', '29-sd-tcl-the-terminal-and-the-session.md', """
    autologout bell clear.prompts clearinput clearprompts date date.format echo
-   hush logmsg pterm sleep term time
+   hush list.term.types logmsg pterm sleep term time
  """),
  ('User', '30-sd-tcl-processes-and-phantoms.md', """
    pdebug pdump phantom pstat status
@@ -148,7 +155,8 @@ DOCS = [
  # arriving from the other direction: the name is on the page and the
  # explanation is not.  Each verb is assigned where it is actually explained.
  ('Administrator', '01a-account-maintenance.md', """
-   clean.account config delete.account set.date update.accounts
+   backup.account clean.account config delete.account restore.account set.backup.directory
+   set.date settings.report update.accounts
  """),
  ('Administrator', '02-sessions-and-locks.md', """
    clear.locks list.locks list.readu listu lock logout unlock

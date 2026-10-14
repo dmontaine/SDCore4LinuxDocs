@@ -121,6 +121,13 @@ shortcut is text shown beside the entry; the program acts on the key itself. The
 code is what comes back; without one the entry's number does. An entry of `-` is
 a line across the menu. An `&` in a label marks its key.
 
+**A menu with more entries than there are rows** under its top (a short window; the menu bar
+cannot move up, a pop-up and a submenu first move up as far as they can) **shows the rows
+that fit and scrolls** as the cursor moves: a `^` in the last cell of the first row says there
+are entries above it and a `v` in the last cell of the last row says there are more below. The
+cursor keys, Home, End, a letter and a click work as ever on the entries that are in view or
+scrolled to.
+
 A **fourth subvalue** holds flags: `D` makes the entry *disabled* (it is drawn dim, the
 cursor keys go past it, Return and its letter choose nothing) and `C` makes it *checked*
 (a `*` in its first cell, for a setting that is on):
@@ -207,7 +214,7 @@ before, and with no `/` or `*` in it. `else` is taken if a widget cannot be adde
 | `screen button f, id, text {at x,y} {default} {cancel}` | `[ text ]`. `default`: Return in any other widget presses it. `cancel`: pressing it, like Esc, ends the form with `else`. An `&` marks its key. |
 | `screen progress f, id {at x,y} {width n} {value v}` | `[#####     ] 60%`, 0 to 100. It cannot take the focus. |
 | `screen tabs f, id, labels {at x,y} {value n}` | A strip of tabs; the chosen one is the form's page (below). |
-| `screen memo f, id, text {at x,y} {size w,h} {readonly} {wrap}` | A text area of several lines, one line to a field. `readonly` makes it a viewer; `wrap` wraps long lines at a blank instead of panning sideways. |
+| `screen memo f, id, text {at x,y} {size w,h} {readonly} {wrap} {syntax name} {lnum}` | A text area of several lines, one line to a field. `readonly` makes it a viewer; `wrap` wraps long lines at a blank instead of panning sideways; `syntax` *name* draws the text in the syntax colours of a language; `lnum` puts line numbers down the left. |
 | `screen table f, id, columns, rows {at x,y} {size w,h} {value n} {multi}` | A heading and rows of cells (below). `multi` lets rows be marked. |
 | `screen tree f, id, nodes {at x,y} {size w,h} {value n} {expanded}` | A tree of nodes, some open to show what is under them (below). |
 | `screen scrollbar f, id, total {at x,y} {size w,h} {visible n} {value n}` | A scroll bar of its own, for content the program draws itself (below). |
@@ -258,6 +265,25 @@ strip shows every widget.
 `screen memo` serves as an editor and, with `readonly`, as a viewer. The last column is
 a scroll bar. Page up and page down scroll by a page less one row with the cursor
 keeping its row on the screen.
+
+**Colour for a language.** `syntax` *name* colours the text as the language *name*:
+`sd.basic`, `c`, `json`, `markdown`, `sh`, `python`, or one a site added in the file
+`&sed.syntax&` (the same languages and rules as [SED](27a-sd-tcl-sed.html)'s colour). The colours
+are the **theme's**, so the program chooses one that has them (`dark`, `light`, `classic` or `blue`;
+`mono` has none, and the text is plain in it). A name that is not a language is not an error: the
+text is drawn plain. The text is coloured as it is edited — typing `*` at the start of an SD BASIC
+line makes it a comment as it goes in. A text of some thousand lines is slower to draw for it, because
+the colour of a line depends on the lines above it.
+
+```
+screen theme 'dark' returning th else crt 'no colour here'
+screen memo f, 'src', text at 2,2 size 40,8 syntax 'sd.basic' lnum
+```
+
+**Line numbers.** `lnum` puts the number of each line down the left, as wide as the last
+number needs and one blank more; the `size` includes them. A wrapped line has its number on
+its first row only. The numbers are not part of the text: `screen get` answers the lines as they
+are, and a click on the text counts from the first character, not from the numbers.
 
 **Wrapping.** Without `wrap` a long line pans sideways as the cursor moves. With `wrap`
 (or `screen set f, id wrap 1`) a line is broken after the last blank that fits, or in
@@ -456,9 +482,12 @@ screen theme name {returning current} {then ... else ...}
 screen style name, foreground, background, flags
 ```
 
-Three themes ship: **`mono`**, which uses only reverse video and underline and so reads
-on any terminal; **`classic`**, dark text on light dialogues over a blue desktop; and
-**`blue`**, white on blue dialogues. **A program that never asks gets `mono`**, unless
+Five themes ship: **`mono`**, which uses only reverse video and underline and so reads
+on any terminal; **`classic`**, dark text on light dialogues over a blue desktop;
+**`blue`**, white on blue dialogues; and **`dark`** and **`light`**, which are `mono` with
+the **syntax colours** added, for a dark and a light terminal background (the colours that
+`screen memo ... syntax` and SED's colour for the language use; `classic` and `blue`
+have them too, `mono` has none). **A program that never asks gets `mono`**, unless
 the administrator has set `SCREENTHEME=` in `sd.conf` to the theme the site wants; a
 program that asks for a theme gets the one it asked for.
 `screen theme` gives `else` for a name that is not a theme, on a terminal that cannot

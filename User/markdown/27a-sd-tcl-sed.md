@@ -37,10 +37,16 @@ marks a word typed as it stands; braces mark an optional part.
 With a select list, SED shows the first id and asks whether to use the list
 (`Y` or `N`). Leaving one record goes on to the next.
 
-**The terminal must be at least 80 columns by 12 lines.** The top row is the
-menu bar, the bottom two rows say which record is open and how it is being
-edited: the number of lines, the line and column, and any of *Macro*,
-*Overlay*, *Indent* and the search mode that are in force.
+**SED is 120 columns by 36 lines, always** — SD's own default terminal size —
+whatever the window is. **A window smaller than that is refused**, in words
+(*SED needs a window of at least 120 columns by 36 lines; this one is 80 by 24*),
+because SED would draw off the edge of it; a bigger window shows SED in its top
+left corner with the rest blank, and **SED does not follow a window that is
+resized while it runs**. A session with no window to ask (a pipe, a phantom) is
+laid out as 120 by 36. The top row is the menu bar, the bottom two rows say which
+record is open and how it is being edited: the number of lines, the line and
+column, and any of *Macro*, *Overlay*, *Indent* and the search mode that are in
+force.
 
 ## The menus
 
@@ -57,11 +63,11 @@ cursor goes past it; a mode that is on is checked.
 | Menu | Items |
 |---|---|
 | **File** | Save · Save as · Open record · Import · Export · List records · Quit |
-| **Edit** | Set mark · Swap mark · Cut region · Copy region · Paste · Delete char · Kill line · Delete word · Close spaces · Upcase word · Lower case word · Capital initial · Upcase region · Downcase region · Align text · Toggle chars · Overlay mode |
+| **Edit** | Undo · Redo · Set mark · Swap mark · Cut region · Copy region · Paste · Delete char · Kill line · Delete word · Close spaces · Upcase word · Lower case word · Capital initial · Upcase region · Downcase region · Align text · Toggle chars · Overlay mode |
 | **Search** | Forward search · Backward search · Replace · Query replace · Goto line · Top · Bottom · Page up · Page down · Case on · Case off · Word search · Basic word search |
 | **Buffer** | Next buffer · Previous buffer · Goto buffer · List buffers · Delete buffer · Up to list · Dive |
 | **Window** | Split window · Unsplit window · Toggle window · Refresh screen |
-| **Tools** | Compile · Compile and run · Format · Indent mode · Expand tabs · Stamp · Syntax colour · Release lock · Keys in use · Run extension · Command · Start macro · End macro · Execute macro |
+| **Tools** | Compile · Compile and run · Format · Indent mode · Expand tabs · Stamp · Syntax colour · Mouse · Release lock · Keys in use · Run extension · Command · Start macro · End macro · Execute macro |
 
 **Several records can be open at once** — they are *buffers*, and a record
 named in a list or opened with *Open record* becomes the next one. *List
@@ -80,6 +86,7 @@ have rebound.
 | **`Ctrl-S`** | save |
 | **`Ctrl-Q`** | quit. A changed record asks *Quit without saving?* in a small box where **No** is the default |
 | **`Ctrl-O`** · **`Ctrl-W`** | open a record · write the record under another name |
+| **`Ctrl-Z`** · **`Ctrl-Y`** | undo · redo (see *Undo and redo*, below) |
 | **`Esc .`** | set the mark |
 | **`Ctrl-C`** · **`Ctrl-X`** · **`Ctrl-V`** | copy, cut and paste the text between the mark and the cursor (`Esc W` and `Esc Y` also copy and paste) |
 | **`Ctrl-F`** · **`Ctrl-B`** | search forward · search backward (`Esc S` and `Esc R` also) |
@@ -103,10 +110,44 @@ its own opens the menu bar. `Ctrl-X` is no longer a prefix, so the old
 the buffers, import, export and the rest) are reached through the menus, which
 show the key of each item that has one.
 
-**SED has no undo.** To throw changes away, quit and answer **Yes** to
-*Quit without saving?*, then open the record again.
+## Undo and redo
 
-**It does not use the mouse.** SED reads the keyboard only.
+**`Ctrl-Z` undoes the last change and `Ctrl-Y` does it again**, as do *Undo* and
+*Redo* at the top of the Edit menu. A **step** is one change: a run of typing (or
+of backspaces, or of deletes) on one line is one step, and so is each of the other
+edits — a new line, a kill, a cut, a paste, a replace, a command such as *Format* or
+*Expand tabs*. Moving the cursor ends a run of typing. The cursor goes back to where
+the change began.
+
+- Undo changes the **screen**, not the file: the record on disk is the one last
+  saved, and saving writes what is on the screen, undone or not.
+- Undoing after a save is allowed, and the record is then different from the saved
+  one until it is saved again.
+- A new change after an undo ends the redo: what was undone cannot be brought back.
+- **It holds 100 steps, or about 8 million characters of them, the oldest going
+  first**, and **starts again with each record and when you go to another buffer** —
+  coming back to a buffer finds nothing to undo in it. A record that is read-only has
+  none.
+- With nothing to undo or redo SED says so (*Nothing to undo*, *Nothing to redo*).
+
+## The mouse
+
+SED takes the mouse in a terminal that reports it — xterm and the terminals that
+behave like it; the Linux console does not.
+
+| | |
+|---|---|
+| a click on the text | puts the cursor there (in the other window of a split, it goes there first) |
+| a click on a title of the bar | opens that menu; a click on an item chooses it, and a click anywhere else closes the menu |
+| the wheel | moves the cursor up or down three lines |
+
+**It is on unless you turn it off.** The command `mouse off` (and `mouse on`, or
+`mouse` alone to switch), Tools > *Mouse* (checked while it is on), or the word
+`no.mouse` in `&sed.options&` turn it off; with it off a report that arrives is
+ignored. **While it is on the terminal's own selection and copy with the mouse do not
+work — hold Shift to use them**, which is how a terminal gives the mouse to the program
+that asked for it. SED asks the terminal for reports only while it waits for a key and
+for the menu, so a prompt, a question or a command SED runs never sees one.
 
 The command line (`Esc X`, or *Command* on the Tools menu) takes these:
 
@@ -124,6 +165,7 @@ The command line (`Esc X`, or *Command* on the Tools menu) takes these:
 | **`release`** | release the update lock on the record |
 | **`keys`** · **`save.keys`** · **`load.keys`** | show the key bindings in use, save them as a record of `&sed.bindings&`, load a saved set |
 | **`syntax`** | colour, see below |
+| **`mouse`** · **`mouse on`** · **`mouse off`** | the mouse (above); `mouse` alone switches it |
 | **`quit`** | give up a select-list edit |
 
 ## Colour for the language
@@ -181,6 +223,7 @@ blanks:
 | **`case_on`** · **`case_off`** | searches match case, or do not |
 | **`word`** · **`bword`** | search for whole words, or whole SD BASIC words |
 | **`syntax`** · **`no.syntax`** · **`syntax.light`** | colour on or off at the start; light palette |
+| **`mouse`** · **`no.mouse`** | the mouse on (the default) or off at the start |
 | **`no.invert`** | leave the case of typed letters alone |
 
 **`&sed.bindings&`** is a file of key sets. SED loads the first that exists of:

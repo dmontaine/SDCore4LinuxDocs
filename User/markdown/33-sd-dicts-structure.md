@@ -41,6 +41,7 @@ type `D` and the rest is a comment.
 | Type | Name | What it does |
 |---|---|---|
 | `D` | direct | references a field number in the data record |
+| `E` | element | like `D`, but field 2 is the **path** of an element of a **data collection** record instead of a field number — see [SD TCL - Data Collection Files](20a-sd-tcl-collection-files.html) |
 | `I` | indirect | an expression that returns a value — a virtual field |
 | `C` | calculated | like I but compiled with the BASIC compiler and returning via `@ANS` |
 | `A` | A-type | Pick-style data definition, with a different field layout |

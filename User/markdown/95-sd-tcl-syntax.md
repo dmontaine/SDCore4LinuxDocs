@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **145** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **164** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,8 +23,8 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 130 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 15 more | in `voc_template` but not `newvoc` |
+| **every account** | 145 verbs | `newvoc`, identical for every ordinary account |
+| **SDSYS only** | 19 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -36,7 +36,7 @@ not refused — the name is simply not recognised.**
 | **`analyse.file`** | **`analyse.file`** {**`dict`**} *file* {**`statistics`**} {**`lptr`**} |  |
 | **`analyze.file`** | **`analyze.file`** — the same verb as **`analyse.file`** |  |
 | **`autologout`** | **`autologout`** {*minutes*} |  |
-| **`backup.account`** | **`backup.account`** *account* {*account* …} \| **`all`** {**`to`** *directory*} | S |
+| **`backup.account`** | **`backup.account`** *name* … {**`to`** *directory*}  ·  **`backup.account all`** {**`to`** *directory*} | S |
 | **`basic`** | **`basic`** {*file*} *record* {*record* …} |  |
 | **`bell`** | **`bell on`** \| **`off`** |  |
 | **`break`** | **`break on`** \| **`off`** \| **`on user`** *n* |  |
@@ -61,11 +61,13 @@ not refused — the name is simply not recognised.**
 | **`clr`** | **`clr`** |  |
 | **`cname`** | **`cname`** *old.file* **`to`** *new.file* |  |
 | **`como`** | **`como on`** {*record*} \| **`off`** \| **`pause`** \| **`resume`** |  |
+| **`compare.files`** | **`compare.files`** {**`dict`**} *file1* {**`dict`**} *file2* {**`detail`**} |  |
 | **`compile.dict`** | **`compile.dict`** — the same verb as **`cd`** |  |
 | **`config`** | **`config`** {**`lptr`** \| **`gpl`** \| **`contrib`** \| *param* *value*} | S |
 | **`configure.file`** | **`configure.file`** {**`dict`**} *voc.name* {*parameters*} \| **`default`** |  |
 | **`copy`** | **`copy from`** {**`dict`**} *src* {**`to`** {**`dict`**} *tgt*} {*id* …} {**`(options`**} |  |
 | **`copy.list`** | **`copy.list`** *list* {**`,`***new*} {**`from`** *src*} {**`to`** *tgt*} {*options*} |  |
+| **`copy.listp`** | **`copy.listp`** {{**`dict`**} *file*} {*name* … \| **`*`**} {**`(`***options*} |  |
 | **`copyp`** | **`copyp`** {**`dict`**} *file* *id* … {**`(options`**} |  |
 | **`count`** | **`count`** {**`dict`**} *file* {*selection*} |  |
 | **`create.account`** | **`create.account user`** *name* {**`ssh`** \| **`api`** \| **`both`** \| **`none`**} {**`sh-on`**} {**`os-on`**} {**`no.query`**}  ·  **`create.account group`** *name* {**`no.query`**}  ·  **`create.account other`** *name* *pathname* {**`no.query`**} | S |
@@ -76,6 +78,7 @@ not refused — the name is simply not recognised.**
 | **`date`** | **`date`** \| **`internal`** \| *n* \| *date* |  |
 | **`date.format`** | **`date.format on`** \| **`off`** \| **`display`** |  |
 | **`debug`** | **`debug`** |  |
+| **`decatalog`** | **`decatalog`** {*file*} *name* … |  |
 | **`delete`** | **`delete`** {**`dict`**} *file* {*id* …} {**`no.query`**} |  |
 | **`delete.account`** | **`delete.account`** *account* {**`remove.home`**} | S |
 | **`delete.catalog`** | **`delete.catalog`** *name* … {**`global`** \| **`local`**} |  |
@@ -89,6 +92,7 @@ not refused — the name is simply not recognised.**
 | **`echo`** | **`echo on`** \| **`off`** \| **`echo`** to toggle |  |
 | **`ed`** | **`ed`** {**`dict`**} *file* {*id* …} |  |
 | **`edit`** | **`edit`** {**`dict`**} *file* *record* |  |
+| **`fixdir`** | **`fixdir`** *file* {*id* …} |  |
 | **`form.list`** | **`form.list`** {**`dict`**} *file* {*list.no*} |  |
 | **`format`** | **`format`** {*file*} {*record*} {**`case`**} |  |
 | **`fstat`** | **`fstat`** *file* **`on`** \| **`off`** \| {**`lptr`**}  ·  **`fstat global`** {**`lptr`**}  ·  **`fstat reset`**  ·  **`fstat`** |  |
@@ -109,6 +113,8 @@ not refused — the name is simply not recognised.**
 | **`list.label`** | **`list.label`** {**`dict`**} *file* {*selection*} {*fields*} |  |
 | **`list.locks`** | **`list.locks`** | S |
 | **`list.readu`** | **`list.readu`** {*user.no*} {**`detail`**} {**`wait`**} {**`no.page`**} {**`lptr`** {*n*}} | S |
+| **`list.term.types`** | **`list.term.types`** {**`lptr`** {*n*}} |  |
+| **`list.triggers`** | **`list.triggers`** {*file* …} {**`lptr`** {*n*}} |  |
 | **`list.union`** | **`list.union`** *list.1* {*list.2* {*tgt*}} {**`count.sup`**} |  |
 | **`list.vars`** | **`list.vars`** {*pattern*} |  |
 | **`listu`** | **`listu`** {**`no.page`**} {**`lptr`** {*n*}} | S |
@@ -128,6 +134,7 @@ not refused — the name is simply not recognised.**
 | **`nselect`** | **`nselect`** *file* {*list.no*} |  |
 | **`off`** | **`off`** |  |
 | **`option`** | **`option`** *name* {**`on`** \| **`off`** \| **`display`**}  ·  **`option all off`**  ·  **`option`** |  |
+| **`oscopy`** | **`oscopy`** *source* *target* {**`overwrite`** \| **`append`**} |  |
 | **`pause`** | **`pause`** {*seconds*} |  |
 | **`pdebug`** | **`pdebug`** {*command*} |  |
 | **`pdump`** | **`pdump`** *n* |  |
@@ -137,6 +144,8 @@ not refused — the name is simply not recognised.**
 | **`pterm`** | **`pterm display`** \| **`lptr`** \| **`break`** … \| **`case`** … \| **`newline`** … \| **`return`** … \| **`binary`** … \| **`telnet`** … \| **`reset`** *string* \| **`prompt`** *p* *c* |  |
 | **`qselect`** | **`qselect`** {**`dict`**} *file* {*id* … \| **`*`**} {**`(options`**} |  |
 | **`quit`** | **`quit`** — the same verb as **`off`** |  |
+| **`rebuild.all.indices`** | **`rebuild.all.indices`** {**`no.query`**} |  |
+| **`redo`** | **`redo`** {**`times`** *n*} {**`every`** *s*} *command* |  |
 | **`reformat`** | **`reformat`** {**`dict`**} *file* {*selection*} {*fields*} |  |
 | **`release`** | **`release`** *file* *id* …  ·  **`release filelock`** *file* |  |
 | **`remote.api`** | **`remote.api`** {**`on`** \| **`local`** \| **`off`**} | S |
@@ -144,13 +153,16 @@ not refused — the name is simply not recognised.**
 | **`rename`** | **`rename`** — the same verb as **`cname`** |  |
 | **`report.src`** | **`report.src on`** \| **`off`** \| **`report.src`** to toggle |  |
 | **`report.style`** | **`report.style`** {*name* \| **`off`**} |  |
-| **`restore.account`** | **`restore.account`** *archive* \| **`latest`** *account* {*account* …} \| **`all`** {**`no.query`**} | S |
+| **`restore.account`** | **`restore.account`** *archive* *name* … {**`no.query`**}  ·  **`restore.account`** *archive* **`all`** {**`no.query`**}  ·  **`restore.account latest`** *name* … \| **`all`** {**`no.query`**} | S |
 | **`run`** | **`run`** {*file*} *record* {*arguments*} |  |
 | **`save.list`** | **`save.list`** *list* {**`from`** *list.no*} |  |
 | **`save.stack`** | **`save.stack`** {*name*} |  |
+| **`scan`** | **`scan`** {**`dict`**} *file* {*selection*} {*id* …} {**`all`**} {**`no.case`**} {**`all.match`** \| **`no.match`**} {**`strings`** *file* *record*} **`for`** *"text"* … |  |
 | **`search`** | **`search`** {**`dict`**} *file* {*selection*} |  |
 | **`sed`** | **`sed`** {**`dict`**} *file* {*record*} |  |
 | **`select`** | **`select`** {**`dict`**} *file* {*selection*} {*list.no*} |  |
+| **`select.dir`** | **`select.dir`** *pathname* {**`to`** *n*} |  |
+| **`selectindex`** | **`selectindex`** {**`dict`**} *file* *index* {*value*} {**`to`** *n*} |  |
 | **`set`** | **`set`** *name* *value* |  |
 | **`set.backup.directory`** | **`set.backup.directory`** {*directory*} | S |
 | **`set.date`** | **`set.date`** *date* | S |
@@ -165,6 +177,7 @@ not refused — the name is simply not recognised.**
 | **`sort`** | **`sort`** {**`dict`**} *file* {*selection*} {*fields*} {*options*} |  |
 | **`sort.item`** | **`sort.item`** {**`dict`**} *file* {*selection*} |  |
 | **`sort.label`** | **`sort.label`** {**`dict`**} *file* {*selection*} {*fields*} |  |
+| **`sort.list`** | **`sort.list`** *name* {**`from`** *file*} |  |
 | **`sp.close`** | **`sp.close`** |  |
 | **`sp.open`** | **`sp.open`** |  |
 | **`sp.view`** | **`sp.view`** |  |
