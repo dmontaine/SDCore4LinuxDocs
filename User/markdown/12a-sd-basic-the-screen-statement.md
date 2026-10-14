@@ -73,11 +73,12 @@ was.
 
 | | |
 |---|---|
-| `screen open {clear} {nocursor} {minsize w,h} {nomouse}` | Takes the screen. `clear` clears it (to the theme's desktop colour); `nocursor` hides the cursor; `minsize` gives `else` on a smaller terminal; `nomouse` leaves mouse reporting off (see below). `else` also when there is no terminal. |
-| `screen close` | Gives the screen back: the shadow is forgotten, the cursor shown, mouse reporting off, the theme back to mono, and the cursor moved to the first column of the last line. A coloured desktop is cleared. |
+| `screen open {clear} {nocursor} {minsize w,h} {nomouse} {lines}` | Takes the screen. `clear` clears it (to the theme's desktop colour); `nocursor` hides the cursor; `minsize` gives `else` on a smaller terminal; `nomouse` leaves mouse reporting off (see below); `lines` draws every border in the line-drawing characters of Unicode (see *Borders*). `else` also when there is no terminal. |
+| `screen close` | Gives the screen back: the shadow is forgotten, the cursor shown, mouse reporting off, the clip taken off, borders plain again, the theme back to mono, and the cursor moved to the first column of the last line. A coloured desktop is cleared. |
+| `screen clip {at x,y size w,h}` | Keeps everything the library draws inside the rectangle: text, boxes, forms and dialogues that reach outside it are cut at its edge, cell by cell, and the cut part is neither drawn nor remembered. With no rectangle the clip is taken off. `else` when the library does not own the screen (no `open`) or there is no terminal. |
 | `screen clear {at x,y} {size w,h} {attr style}` | Blanks the whole screen, or a rectangle of it, in the style given (default `desktop`). |
 | `screen text string {at x,y} {attr style} {width n}` | Draws one line. Left out, `at` is where the last `screen text` ended. `width` cuts or pads the text to exactly that many cells. Text past the right edge is cut, not wrapped. |
-| `screen box {at x,y} {size w,h} {title t} {attr style} {fill}` | Draws a border (`+`, `-`, `|`) and, with `fill`, blanks the inside. |
+| `screen box {at x,y} {size w,h} {title t} {attr style} {fill}` | Draws a border (`+`, `-`, `|`, or the line-drawing characters after `screen open lines`) and, with `fill`, blanks the inside. |
 | `screen cursor {at x,y} {on} {off}` | Moves the cursor, shows it or hides it. The library puts it back there after each command that draws. |
 | `screen refresh` | Clears the terminal and draws the shadow again. `returning` holds `resized` if the terminal's size has changed since `open`; the program then draws everything again. |
 | `screen size returning v` | The width, a field mark and the height, as the terminal is now. |
@@ -120,6 +121,14 @@ shortcut is text shown beside the entry; the program acts on the key itself. The
 code is what comes back; without one the entry's number does. An entry of `-` is
 a line across the menu. An `&` in a label marks its key.
 
+A **fourth subvalue** holds flags: `D` makes the entry *disabled* (it is drawn dim, the
+cursor keys go past it, Return and its letter choose nothing) and `C` makes it *checked*
+(a `*` in its first cell, for a setting that is on):
+
+```
+items = 'Open':@vm:'Save':@sm:'':@sm:'save':@sm:'D':@vm:'Autosave':@sm:'':@sm:'auto':@sm:'C'
+```
+
 ### menu bar
 
 ```
@@ -131,7 +140,19 @@ each as for `screen menu`. With `draw` the bar is drawn and the statement return
 without it the first menu opens at once. Left and right move between menus, up
 and down between entries, Return chooses, Esc leaves, a letter chooses the entry
 that has it. Clicking a title opens that menu; clicking an entry chooses it;
-clicking anywhere else closes the menus.
+clicking anywhere else closes the menus. Entries take the same `D` and `C` flags as
+those of `screen menu`.
+
+**Submenus.** A menu whose title begins with `>` is not on the bar: it is a submenu. An
+entry whose *code* is that title opens it beside the entry, with a `>` at its right edge;
+Right or Return opens it, Esc or Left closes it, and what is chosen in it is the code the
+statement returns. Submenus may be three deep.
+
+```
+menus = '&File':@vm:'&Open':@sm:'':@sm:'open':@vm:'&Recent':@sm:'':@sm:'>Recent':@vm:'E&xit':@sm:'':@sm:'exit'
+menus<2> = '>Recent':@vm:'one.txt':@sm:'':@sm:'r1':@vm:'two.txt':@sm:'':@sm:'r2'
+screen menubar menus returning code
+```
 
 ### pick list
 
@@ -186,8 +207,10 @@ before, and with no `/` or `*` in it. `else` is taken if a widget cannot be adde
 | `screen button f, id, text {at x,y} {default} {cancel}` | `[ text ]`. `default`: Return in any other widget presses it. `cancel`: pressing it, like Esc, ends the form with `else`. An `&` marks its key. |
 | `screen progress f, id {at x,y} {width n} {value v}` | `[#####     ] 60%`, 0 to 100. It cannot take the focus. |
 | `screen tabs f, id, labels {at x,y} {value n}` | A strip of tabs; the chosen one is the form's page (below). |
-| `screen memo f, id, text {at x,y} {size w,h} {readonly}` | A text area of several lines, one line to a field. `readonly` makes it a viewer. |
-| `screen table f, id, columns, rows {at x,y} {size w,h} {value n}` | A heading and rows of cells (below). |
+| `screen memo f, id, text {at x,y} {size w,h} {readonly} {wrap}` | A text area of several lines, one line to a field. `readonly` makes it a viewer; `wrap` wraps long lines at a blank instead of panning sideways. |
+| `screen table f, id, columns, rows {at x,y} {size w,h} {value n} {multi}` | A heading and rows of cells (below). `multi` lets rows be marked. |
+| `screen tree f, id, nodes {at x,y} {size w,h} {value n} {expanded}` | A tree of nodes, some open to show what is under them (below). |
+| `screen scrollbar f, id, total {at x,y} {size w,h} {visible n} {value n}` | A scroll bar of its own, for content the program draws itself (below). |
 
 #### The keys of the widgets
 
@@ -206,8 +229,10 @@ another page, is passed over.
 | list | up, down, home, end, page up, page down; a letter jumps; with `multi` the space bar picks |
 | combo | as an entry field; down or F4 opens the list |
 | tabs | left, right, home, end |
-| memo | the arrow keys, home, end, page up and down; typing, Return (splits the line), backspace, delete (both join lines at the ends), Ctrl-K; Ctrl-A and Ctrl-E go to the ends of the line |
-| table | up, down, home, end, page up, page down; a letter jumps to the next row whose first cell starts with it |
+| memo | the arrow keys, home, end, page up and down; typing, Return (splits the line), backspace, delete (both join lines at the ends), Ctrl-K; Ctrl-A and Ctrl-E go to the ends of the row; Ctrl-B and Ctrl-F a word back and on; Ctrl-G the mark, Ctrl-X cut, Ctrl-C or Ctrl-O copy, Ctrl-V paste; Ctrl-Z undo, Ctrl-Y redo; Ctrl-T find, Ctrl-N the next one |
+| table | up, down, home, end, page up, page down; left and right the current column; F3 sorts by it; `<` and `>` its width; a letter jumps to the next row whose first cell starts with it; with `multi` the space bar marks the row |
+| tree | up, down, home, end, page up, page down; right opens a node (or goes to the first one under it); left closes it (or goes to the node it is under); the space bar opens or closes; a letter jumps |
+| scrollbar | up and down (left and right when it is horizontal), page up, page down, home, end |
 
 ### Tabs and pages
 
@@ -230,10 +255,32 @@ strip shows every widget.
 
 ### The text area
 
-`screen memo` serves as an editor and, with `readonly`, as a viewer. It does not
-wrap: a long line pans sideways as the cursor moves, and the last column is a scroll
-bar. Page up and page down scroll by a page less one line with the cursor keeping its
-row on the screen. It has no undo, selection or search.
+`screen memo` serves as an editor and, with `readonly`, as a viewer. The last column is
+a scroll bar. Page up and page down scroll by a page less one row with the cursor
+keeping its row on the screen.
+
+**Wrapping.** Without `wrap` a long line pans sideways as the cursor moves. With `wrap`
+(or `screen set f, id wrap 1`) a line is broken after the last blank that fits, or in
+the middle of a word that is longer than the width; the blank stays at the end of its
+row and the text itself is not changed. Up, down, home, end, page up and page down then
+work by *row*, so a wrapped line is several rows.
+
+**Selection and the clipboard.** The selection runs from the *mark* to the cursor.
+Ctrl-G sets the mark where the cursor is (and takes it away again); the selected text
+is drawn in the `highlight` style. Ctrl-X cuts it, Ctrl-C or Ctrl-O copies it, Ctrl-V
+puts what was cut or copied in at the cursor. The clipboard belongs to the library, so
+it passes from one text area to another. Typing, Return, backspace and delete on a
+selection replace or delete it. A `readonly` area can select and copy, and nothing else.
+
+**Undo.** Ctrl-Z undoes and Ctrl-Y does it again, for up to 100 steps. A run of typed
+characters (or of backspaces, or of deletes) is one step, and so is replacing a
+selection by typing over it.
+
+**Find.** Ctrl-T asks for text on the bottom row of the area and selects the first
+place it is found from the cursor on; Ctrl-N finds the next one. Case is ignored and the
+search goes on past the end of the text to its start. A bell means there is none.
+
+Ctrl-B and Ctrl-F move a word back and on.
 
 ### The table
 
@@ -250,6 +297,70 @@ is as wide as its heading and the widest cell among its first 200 rows, at most 
 *rows* has one row to a field and one cell to a value. The first row of the widget is
 the heading and the last column a scroll bar. A click on a row makes it the current
 one; a second click on the row the last click chose is Return.
+
+**Sorting.** F3 sorts by the current column: ascending, then descending, then the order
+of *rows* again. A column in which every cell is a number is sorted by value, any other
+by its text without regard to case; the sorted column's heading shows `^` or `v`. A
+click on a heading makes that column current and sorts by it in the same way. The
+current row stays the same row through a sort. Sorting changes what is *shown*, never
+`rows`: **`screen get` answers the number of the current row in `rows`**, whatever order
+it is shown in.
+
+**Columns.** Left and right move the current column (the heading of the current column
+is in the `highlight` style once a key or a click has used the columns) and the table
+scrolls sideways to show it when the columns are wider than the widget; at the first or
+last column the keys are left for the form. `<` and `>` make the current column one cell
+narrower or wider.
+
+**Marked rows.** With `multi` the space bar marks or unmarks the current row (a click
+does too); a marked row has a `*` in front of it. `screen get` and a Return then give the
+numbers of the rows marked, in `rows`, as values (the current row if none is marked), and
+the marks stay with their rows through a sort.
+
+### The tree
+
+```
+nodes = 'Colours':@sm:1:@sm:'c'
+nodes<2> = 'Red':@sm:2:@sm:'c1'
+nodes<3> = 'Green':@sm:2:@sm:'c2'
+nodes<4> = 'Shapes':@sm:1:@sm:'s'
+screen tree f, 'tr', nodes at 2,1 size 20,6
+```
+
+*nodes* has one value for each node, in the order they are shown with everything open:
+its label, as a subvalue its **depth** (1 for a root, 2 for what is under a root; 1 if
+left out, never more than one deeper than the node before it), and as a second subvalue
+the **code** the program gets for it (its number if left out). A node that has a deeper
+node after it can be opened. The tree starts closed, or with every such node open under
+`expanded`.
+
+Each row is indented two cells for each level and shows `+` for a closed node with
+something under it, `-` for an open one, and a blank for one with nothing under it. Up
+and down move over the rows shown; right opens a closed node (or, on an open one, goes
+to the first node under it); left closes an open node (or goes to the node this one is
+under); the space bar opens or closes; a letter goes to the next node shown whose label
+starts with it; Return is a *done* event of the form. A click on a node makes it
+current, a click on its `+` or `-` opens or closes it, a second click on the node is
+Return, and the wheel moves three rows. With more rows than room the last column is a
+scroll bar. `screen get` answers the code of the current node, and each move of the
+current node is a `change` event.
+
+### The scroll bar
+
+```
+screen scrollbar f, 'sb', 200 at 40,1 size 1,10 visible 10
+```
+
+A scroll bar of its own, for a program that draws content itself (labels it changes with
+`screen set`, say) and wants the user to scroll it. *total* is how many lines there are,
+`visible` how many show at a time (the length of the bar if left out) and `value` the
+number of the first line shown (1). `size w,h` makes it vertical (one cell wide, *h* long)
+or, when *w* is the greater, horizontal; it is at least three long. The keys of its
+direction, page up, page down, home and end move it, a click on an arrow moves one and a
+click on the track either side of the thumb a page, and the wheel three. **Each move is a
+`change` event whose data is the number of the first line shown**; the program redraws
+its content from it. `screen set f, id value n` moves the bar and `screen get` answers
+where it is.
 
 ### Running a form
 
@@ -294,14 +405,15 @@ field 3 its data.
 | type | when | id | data |
 |---|---|---|---|
 | `button` | a button was pressed | its id | |
-| `change` | a check box, radio group, list, combo, tab strip or table changed its value | its id | the new value |
+| `change` | a check box, radio group, list, combo, tab strip, table, tree or scroll bar changed its value | its id | the new value |
 | `focus` | the focus moved | the widget it went to | the one it left |
 | `key` | a key the form had no use for (a function key, a Ctrl key) | | its name |
+| `resize` | the terminal's window changed size; the form has been drawn again at the new size | | the width, a value mark and the height |
 | `cancel` | Esc, or the form's cancel button | the button, if any | |
 | `timeout` | no key came in time | | |
 | `end` | the input ended | | |
 
-`then` is taken for `button`, `change`, `focus` and `key`; `else` for `cancel`,
+`then` is taken for `button`, `change`, `focus`, `key` and `resize`; `else` for `cancel`,
 `timeout` and `end`. Esc does **not** close the form here: the program decides. An
 entry field reports no event for each key typed; ask for its text with `screen get`
 on a `focus` or `button` event. `screen hide f` puts the screen back.
@@ -310,8 +422,8 @@ on a `focus` or `button` event. `screen hide f` puts the screen back.
 
 | | |
 |---|---|
-| `screen get f, id returning v` | An entry or combo: the text. A check: 1 or 0. A radio: the number of the choice. A list: the number of the current item (with `multi`, the numbers picked, as values). Tabs: the tab. A table: the current row. A memo: the text, one line to a field. A label: its text. |
-| `screen set f, id {value v} {text t} {items i} {enabled e}` | `value` sets what `get` answers (a memo: replaces the text; tabs: chooses a tab). `text` is a caption. `items` replaces the choices of a radio or list, or the rows of a table. `enabled 0` takes a widget out of the focus ring. A form that is on the screen is redrawn at once. |
+| `screen get f, id returning v` | An entry or combo: the text. A check: 1 or 0. A radio: the number of the choice. A list: the number of the current item (with `multi`, the numbers picked, as values). Tabs: the tab. A table: the number of the current row in the rows given (with `multi`, the numbers of the rows marked). A tree: the code of the current node. A scroll bar: the number of the first line shown. A memo: the text, one line to a field. A label: its text. |
+| `screen set f, id {value v} {text t} {items i} {enabled e} {wrap b} {readonly b} {visible b}` | `value` sets what `get` answers (a memo: replaces the text; tabs: chooses a tab; a scroll bar: moves it). `text` is a caption. `items` replaces the choices of a radio or list, or the rows of a table (the order of rows comes back). `enabled 0` takes a widget out of the focus ring. `wrap` and `readonly` (1 or 0) change a memo. `visible 0` hides any widget - it is not drawn and takes no focus - and `visible 1` shows it again. A form that is on the screen is redrawn at once. |
 | `screen focus f, id` | The next `run` starts with the focus there. |
 | `screen values f returning c` | A collection with the value of every entry, check, radio, list, combo, progress, tabs and table, named by id: `c{'name'}`. A memo is left out (ask for it with `get`). |
 | `screen hide f` | Puts the screen back under a form shown by `wait`. |
@@ -334,6 +446,7 @@ works on a terminal with colour and one without.
 | `hotkey`, `hotkey.bar` | a key letter, in a menu and on the bar |
 | `field` | an entry field that has not the focus |
 | `disabled` | an entry that cannot be chosen |
+| `bar.disabled` | a disabled entry of a menu (dim, on the menu's own background) |
 | `desktop` | what `screen clear`, `text` and `box` draw on |
 | `text` | the text of a memo or a table |
 | `header` | the heading row of a table |
@@ -345,7 +458,9 @@ screen style name, foreground, background, flags
 
 Three themes ship: **`mono`**, which uses only reverse video and underline and so reads
 on any terminal; **`classic`**, dark text on light dialogues over a blue desktop; and
-**`blue`**, white on blue dialogues. **A program that never asks gets `mono`.**
+**`blue`**, white on blue dialogues. **A program that never asks gets `mono`**, unless
+the administrator has set `SCREENTHEME=` in `sd.conf` to the theme the site wants; a
+program that asks for a theme gets the one it asked for.
 `screen theme` gives `else` for a name that is not a theme, on a terminal that cannot
 show colour and in a phantom, and leaves the theme as it was; `returning` holds the name
 in force. A null name only answers. If the library owns the screen it is drawn again in
@@ -363,6 +478,16 @@ There are eight colours; `bold` makes the text bright. Colour comes from the ter
 have. On a terminal that scrolls when its bottom right cell is written (`ansi`) the
 library leaves that one cell of the desktop alone.
 
+## Borders
+
+Borders (`screen box`, a form's frame, a message box) are drawn with `+`, `-` and `|`,
+which every terminal shows. `screen open ... lines` draws them with the line-drawing
+characters of Unicode instead (`┌ ─ ┐ │ └ ┘`). It needs a terminal set to UTF-8 with a
+font that has the characters, which is why it is asked for and not the default; on a
+terminal without them the borders are unreadable, so a program should offer it as a
+setting. A `+`, `-` or `|` that the program writes itself with `screen text` is left as
+it is. `screen close` puts the plain borders back.
+
 ## The mouse
 
 `screen open` asks an xterm-compatible terminal to report the mouse: buttons,
@@ -377,7 +502,9 @@ program**:
   button chooses it; on a row of a list or table makes it the current one (and a second
   click on that row is Return); on a tab chooses it; in an entry field or a memo puts
   the cursor under the pointer; on a combo's `[v]` opens its list;
-- the wheel scrolls a list, table or memo three lines;
+- on a tree's node makes it current (a click on its `+` or `-` opens or closes it); on a
+  table's heading sorts by that column; on a scroll bar's arrow or track moves it;
+- the wheel scrolls a list, table, tree, memo or scroll bar three lines;
 - in a message box a click on a button presses it; in a menu a click on an entry
   chooses it and a click elsewhere cancels it; in a pick list a click on an entry
   chooses it and a click outside the box cancels;
@@ -396,10 +523,15 @@ reset command).
 
 ## What it does not do
 
-- **It does not follow a resize.** SD does not read the size of the terminal's window:
-  the size is what `term` says, 120 by 36 unless set. `screen refresh` notices a change
-  of size but starts again with a blank screen.
-- It does not wrap text in a memo, sort a table, or draw box characters other than
-  `+`, `-` and `|`.
+- **A resize keeps only what the library drew.** SD reads the size of the terminal's
+  window when the session starts and again when the window is resized; the library makes
+  its picture the new size, keeps every cell of its shadow that still fits and draws it
+  again, and a form being waited on gives a `resize` event. Text written with `print` or
+  `crt` is lost, as for `screen refresh`, and a program that placed things by the old
+  size must lay them out again (`screen refresh returning` says `resized`).
+- A table sorts what it *shows*, never the rows you gave it, and a tree is the list of
+  nodes you gave it with the depths you gave it: neither is a database view.
+- It has no widget for editing a record with the editor's own commands: `screen memo` has
+  selection, undo and find, and SED and the debugger keep their own screens.
 - It draws nothing in a phantom or over the API: every verb takes `else`.
 - Text written with `print` or `crt` is not in the shadow.
