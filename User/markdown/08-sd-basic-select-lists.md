@@ -23,9 +23,11 @@ does. **Clear a list you built for your own use** — see `clearselect` below.
 
 ```
 select file.variable {to list} {on error statements}
-sselect file.variable {to list}
+sselect file.variable {to list} {right.aligned} {descending}
+sselectn file.variable {to list} {right.aligned} {descending}
 selectn file.variable {to list}
 selectv file.variable to list.variable
+sselectv file.variable to list.variable {right.aligned} {descending}
 selectindex index.name {, value} from file.variable {to list}
 formlist array {to list}
 ```
@@ -36,6 +38,11 @@ formlist array {to list}
 | `sselect` | every id, **sorted** |
 | `selectn` | as `select`, but does not clear the list first |
 | `selectv` | the list into a **variable** rather than a numbered list |
+| `sselectv` | the sorted ids into a **variable**: `sselect` and `selectv` in one. The file may be a dynamic array instead, and `to` is required |
+
+The sort clauses of the sorted forms may come before or after `to`.
+**`right.aligned`** sorts numeric ids as numbers (1, 9, 10, 100) instead of as
+text (1, 10, 100, 9); **`descending`** reverses the order.
 | `selectindex` | from an alternate key index — see [SD Basic - Alternate Key Indexes](09-sd-basic-alternate-key-indexes.html) |
 | `formlist` | builds a list from a dynamic array you already have |
 

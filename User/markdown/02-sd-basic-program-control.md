@@ -164,7 +164,7 @@ program run from a script reports success or failure.
 ## Running something else
 
 ```
-execute expression {capturing variable} {returning variable} {passlist} {rtnlist variable}
+execute expression {capturing variable} {returning variable} {passlist} {rtnlist variable} {stacklist}
 perform expression
 chain expression
 enter name {(arguments)}
@@ -192,6 +192,12 @@ reads **-1**. The program carries on. **Test `@system.return.code` after any
 | **returning** *var* | error messages go to *var* |
 | **passlist** | the caller's default select list is handed to the command |
 | **rtnlist** *var* | the command's select list comes back |
+| **stacklist** | the default select list is kept as it was, the place `readnext` had reached included, and put back when the command returns. The command is given the list as usual and may read, change or replace it. It cannot be combined with **passlist** or **rtnlist** (the compiler refuses it) |
+
+Without **stacklist**, whatever the command leaves in the default select list
+is what the program finds afterwards. Note that a `select` command that
+meets an active list selects *from that list* (an intersection): a command that
+means to replace the list must `clear.select` first.
 
 > **`chain` discards unnamed common by default.** The `chain.keep.common`
 > option preserves it — `option chain.keep.common` — which is the setting a

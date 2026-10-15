@@ -127,6 +127,17 @@ alpha(string)
 it, embedded numbers compare character by character and `10` sorts before `9`.
 `l` is the explicit left-justified form and is the default.
 
+An **`i`** after the justification letter compares ignoring case: `'LI'`, `'RI'`
+(`li` works too). `compare('abc', 'ABC', 'LI')` is `0`, where
+`compare('abc', 'ABC')` is `1`. Without the `i` nothing changes.
+
+### Equal, ignoring case: `~=`
+
+`a ~= b` is true when the two strings are equal ignoring case. `'ABC' ~= 'abc'`
+is true. It is the case insensitive form of `=` for one comparison, whatever the
+program was compiled to do; two values that are both numbers are compared as
+numbers, as with `=`.
+
 `alpha()` is true if every character is a letter.
 
 | Expression | Result | |

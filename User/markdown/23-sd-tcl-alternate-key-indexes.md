@@ -46,6 +46,7 @@ Use the two-step form only when you have a reason to separate them.
 | | |
 |---|---|
 | **`no.nulls`** | do not index records whose field is empty |
+| **`no.case`** | case insensitive: keys that differ only in case ('Apple', 'apple', 'APPLE') are one key, and a lookup of any of them finds all three records |
 | **`pathname`** *path* | put the index somewhere other than beside the file |
 
 ## Why the two-step form catches people

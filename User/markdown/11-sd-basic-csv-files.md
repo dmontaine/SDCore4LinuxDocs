@@ -116,7 +116,37 @@ quoted comma correctly kept inside the second field.
 
 Every statement here defaults to a comma. `csvdq()` and `dparse.csv` take the
 separator as an argument, for a file that uses something else — some systems
-write a semicolon.
+write a semicolon. `writecsv` and `printcsv` take theirs from `csv.mode`.
+
+### `csv.mode`
+
+```
+csv.mode mode {, delimiter}
+```
+
+Sets how `writecsv` and `printcsv` build a line, and the character between the
+fields. *mode* is 1, 2 or 3:
+
+| mode | a field is put in double quotes when |
+|---|---|
+| 1 (the default) | it holds a double quote or the delimiter — the RFC 4180 rule |
+| 2 | it is not empty and not a number |
+| 3 | always, an empty one too |
+
+A double quote inside a quoted field is written twice in every mode. The
+delimiter replaces the comma; a null string is a comma, and only the first
+character of a longer string is used. A mode outside 1 to 3 is ignored.
+`system(1043)` and `system(1046)` give the current mode and delimiter.
+
+```
+csv.mode 2, ';'
+printcsv 'x', 7, 'a;b'      ;* "x";7;"a;b"
+```
+
+The setting goes with the program: a subroutine you call starts with yours, a
+change it makes is undone when it returns, and a command started with `execute`
+starts at the defaults and gives yours back afterwards. `readcsv`, `inputcsv`
+and `dparse.csv` are not affected.
 
 > **A file whose separator is a semicolon is still called CSV by the program
 > that produced it.** Look at a line before assuming the separator, and take it

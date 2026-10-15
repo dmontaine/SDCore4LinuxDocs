@@ -118,6 +118,7 @@ exist.**
 | **`creating`** | `openseq` *path*`,` *id* `creating to` *file.var* `then` … `else` … ***(clause word)*** |
 | **`crop`** | `crop(`*a*`)` |
 | **`crt`** | `crt` *expr* {`:` …} {`:`} |
+| **`csv.mode`** | `csv.mode` *mode* {, *delimiter*} |
 | **`csvdq`** | `csvdq(`*line* {, *delimiter*}`)` |
 | **`current.level`** | clause of `enter` — run at the current command level ***(clause word)*** |
 
@@ -157,6 +158,7 @@ exist.**
 |---|---|
 | **`ebcdic`** | `ebcdic(`*a*`)` |
 | **`echo`** | `echo on`   ·   `echo off`   ·   `echo` *expr* |
+| **`ecs`** | clause of `opentemp` — accepted and ignored ***(clause word)*** |
 | **`edit`** | clause of `keyedit`, and the `edit` verb at the command prompt ***(clause word)*** |
 | **`element.exists`** | `element.exists(`*c*, *path*`)` |
 | **`else`** | clause of `if`, and of every statement that has a `then` |
@@ -168,7 +170,7 @@ exist.**
 | **`equ`** | `equ` *name* `to` *value* — synonym of `equate` |
 | **`equate`** | `equate` *name* `to` *value* {, *name* `to` *value*} … |
 | **`ereplace`** | `ereplace(`*string*, *old*, *new* {, *occurrence* {, *start*}}`)` |
-| **`execute`** | `execute` *cmd* {`capturing` *v*} {`returning` *v*} {`passlist` {*l*}} {`rtnlist` {*v*}} |
+| **`execute`** | `execute` *cmd* {`capturing` *v*} {`returning` *v*} {`passlist` {*l*}} {`rtnlist` {*v*}} {`stacklist`} |
 | **`exit`** | `exit` — leave the enclosing `loop` or `for` |
 | **`exp`** | `exp(`*a*`)` |
 | **`expand`** | `expand(`*c*`{`*path*`}` {, *file.var*}`)` |
@@ -188,6 +190,7 @@ exist.**
 | **`findstr`** | `findstr` *x* `in` *arr* {, *occ*} `setting` *f* {, *v* {, *sv*}} `then` … `else` … |
 | **`fix`** | `fix(`*number* {, *precision* {, *mode*}}`)` |
 | **`flush`** | `flush` *file.var* `then` … `else` … |
+| **`flush.dh.cache`** | `flush.dh.cache` {`local` | `no.wait`} |
 | **`fmt`** | `fmt(`*a*, *b*`)` |
 | **`fmts`** | `fmts(`*a*, *b*`)` |
 | **`fold`** | `fold(`*string*, *width* {, *delimiter*}`)` |
@@ -239,12 +242,15 @@ exist.**
 | **`indices`** | `indices(`*file.var* {, *index*}`)` |
 | **`inherit`** | `inherit` *object* |
 | **`inmat`** | `inmat()`   ·   `inmat(`*matrix*`)` |
-| **`input`** | `input` *var* {, *length*} {`:`} {`_`} {`hidden`} {`overlay`} {`upcase`} {`waiting` *n*} |
+| **`input`** | `input` *var* {, *length* {, *fill*}} {`:`} {`_`} {`hidden`} {`no.echo`} {`raw`} {`overlay`} {`upcase`} {`waiting` *n*} |
 | **`inputblk`** | `inputblk(`*a*`)` |
 | **`inputclear`** | `inputclear` |
 | **`inputcsv`** | `inputcsv` *var*, … |
 | **`inputerr`** | `inputerr` *message* |
 | **`inputfield`** | `inputfield` *var*, *length* {, *mask*} |
+| **`inputif`** | `inputif` *var* {, *length* {, *fill*}} {`:`} {`_`} {`hidden`} {`no.echo`} {`upcase`} `then` … `else` … |
+| **`inputnull`** | `inputnull` *char* |
+| **`inputtrap`** | `inputtrap` *chars* `goto` *label* {, *label* …}   ·   `inputtrap` *chars* `gosub` *label* {, *label* …} |
 | **`ins`** | `ins` *value* `before` *arr*`<`*f* {, *v* {, *sv*}}`>` |
 | **`insert`** | `insert(`*arr*, *f* {, *v* {, *sv*}}, *value*`)` |
 | **`int`** | `int(`*a*`)` |
@@ -325,6 +331,7 @@ exist.**
 | **`negs`** | `negs(`*a*`)` |
 | **`nes`** | `nes(`*a*, *b*`)` |
 | **`next`** | `next` *var* — closes a `for` |
+| **`no.echo`** | clause of `input` and `input @` — show nothing of what is typed ***(clause word)*** |
 | **`nobuf`** | `nobuf` *file.var* `then` … `else` … |
 | **`nocaseinvert`** | clause of `input` — do not invert the case of typed letters ***(clause word)*** |
 | **`non.transactional`** | `open` *name* `non.transactional` {`readonly`} `to` *file.var* …   ·   `openpath` *path* `non.transactional` {`readonly`} `to` *file.var* … ***(clause word)*** |
@@ -347,6 +354,7 @@ exist.**
 | **`open.socket`** | `open.socket(`*addr*, *port*, *flags* {, *context*}`)` |
 | **`openpath`** | `openpath` *path* `to` *file.var* {`readonly`} {`on error` …} `then` … `else` … |
 | **`openseq`** | `openseq` *path* `to` *file.var* {`append`} {`overwrite`} {`readonly`} `then` … `else` … — ***`then` = it existed, `else` = it was created*** |
+| **`opentemp`** | `opentemp` {*path*} {`ecs`} {`non.transactional`} `to` *file.var* {`on error` …} `then` … `else` … |
 | **`ors`** | `ors(`*a*, *b*`)` |
 | **`os.error`** | `os.error()` |
 | **`os.execute`** | `os.execute` *command* {`capturing` *var*} |
@@ -390,6 +398,7 @@ exist.**
 |---|---|
 | **`raise`** | `raise(`*a*`)` |
 | **`randomize`** | `randomize`   ·   `randomize(`*seed*`)` |
+| **`raw`** | clause of `input` — read exactly *length* characters as they arrive ***(clause word)*** |
 | **`rdiv`** | `rdiv(`*a*, *b*`)` |
 | **`read`** | `read` *var* `from` *file.var*, *id* {`on error` …} `then` … `else` … |
 | **`read.socket`** | `read.socket(`*a*, *b*, *c*, *d*`)` |
@@ -479,7 +488,9 @@ exist.**
 | **`squote`** | `squote(`*a*`)` |
 | **`sselect`** | `sselect` {*file.var*} {`by` *field*} {`to` *list.no*} |
 | **`sselectn`** | `sselectn` *file.var* {`right.aligned`} {`descending`} {`to` *list.no*} |
+| **`sselectv`** | `sselectv` *file.var* `to` *list.var* {`right.aligned`} {`descending`} |
 | **`ssub`** | `ssub(`*a*, *b*`)` |
+| **`stacklist`** | clause of `execute` — keep the active select list and put it back afterwards ***(clause word)*** |
 | **`status`** | `status()` |
 | **`step`** | clause of `for`: `for` *v* `=` *a* `to` *b* `step` *n* ***(clause word)*** |
 | **`stop`** | `stop` {*message*} |

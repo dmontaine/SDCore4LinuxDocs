@@ -44,6 +44,43 @@ end
 ends, so `close` matters mainly in a long-running program that opens files in a
 loop.
 
+### A temporary file
+
+```
+opentemp {pathname} {ecs} {non.transactional} to file.variable
+   then statements
+else statements
+```
+
+`opentemp` makes a new dynamic file and opens it; **the file is deleted when the
+file variable is closed** (or goes out of scope). With no pathname, or a null
+string, SD makes the file in its temporary directory (the `TEMPDIR` setting;
+`system(38)` names it) under a name built from the process number and a counter.
+A name that already exists is refused — `else` is taken — never taken over. The
+`ecs` word is accepted and ignored. A temporary file's updates are never part of
+a transaction, so that closing it really deletes it, and a session that is killed
+leaves its file behind.
+
+**It needs the account's OS-access permission, like `openpath`:** both the
+temporary directory and a pathname you give lie outside the account. An account
+without the permission can use `opentemp` only with a name inside its own
+directory, and takes `else` for the others.
+
+### Flushing the file cache
+
+```
+flush.dh.cache {local | no.wait}
+```
+
+A dynamic file that a program closes is kept open in a cache of recently closed
+files, so that opening it again is quick. A program that is about to do
+something outside SD that fails while a file is still open somewhere (moving the
+file, say) can ask every process to close its cached files. `flush.dh.cache`
+does that and waits, for up to four seconds, for the other processes to say they
+have; a process waiting at an `input` does not answer until a key arrives, so it
+costs the four seconds. **no.wait** asks and carries on; **local** flushes only
+the calling process.
+
 ## Reading
 
 ```
@@ -78,6 +115,10 @@ A three-field record read into `dim mm(2)` gives `mm(1)` = `f1`,
 `matread`, not `3`. It reports the element count after `matparse`, not after
 `matread`. If a record may have more fields than your matrix, `read` it and use
 `dcount(rec, @fm)`, or size the matrix from the dictionary.
+
+After `matbuild` and `matwrite`, `inmat()` gives the index of the last element
+that went into the string or record, or `0` when the zero element of the matrix
+was added at the end.
 
 ## Writing
 
@@ -230,14 +271,18 @@ All three fetch one field of one record from a named file, opening it if
 needed. `trans` and `xlate` are the same function under two names; `rtrans`
 takes an already-open file variable instead of a name.
 
-The *action* says what to do when the record is missing:
+The *action* says what to do when the record is missing — **or when the file
+cannot be opened at all**, which takes the same action:
 
 | | |
 |---|---|
-| **x** | return the null string |
-| **v** | return the null string and print an error |
+| **x** | return the null string, and say nothing (the default) |
+| **v** | return the null string and print an error (`Cannot open 'name'` for a file) |
 | **c** | return the record id itself |
 | **n** | return the record id itself |
+
+(Before 14 Oct 2026 a file that would not open always printed the message,
+whatever the action. A program that relied on the message now needs **v**.)
 
 A *field* of `0` returns the record id.
 

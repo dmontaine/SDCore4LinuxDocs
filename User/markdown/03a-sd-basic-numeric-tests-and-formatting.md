@@ -189,6 +189,11 @@ to the nearest end rather than refused.
 > `precision`** — a common cause of a report where the totals show four decimal
 > places and the line items show something else.
 
+**`precision inherit`** is the way to ask for the caller's value: the program
+takes the precision of the program that called it (a program that was not called
+by another keeps its own; the command processor's is 4). A number after
+`precision` works as before.
+
 Where you need a specific layout rather than a number of decimals, use `fmt()`
 and the output conversion codes instead; they are covered in
 [SD Basic - Data Conversion](06-sd-basic-data-conversion.html).

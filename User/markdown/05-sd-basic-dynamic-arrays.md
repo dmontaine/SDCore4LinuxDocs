@@ -170,6 +170,18 @@ The starting subscript really does start there. With
 `vals<1,2>`, `locate 'apple'` — which is value 1 — **misses**, and reports an
 insertion point of 4.
 
+**The `by` string** is a few letters, in any order and in either case:
+
+| letters | |
+|---|---|
+| **A** or **D** | the array is in ascending or descending order, so the search stops at the place where the item would be (without either, every element is looked at) |
+| **L** or **R** | compare left aligned (text), or right aligned (numbers: 9 before 10) |
+| **C** or **N** | force a case sensitive or a case insensitive comparison, whatever the program was compiled to do |
+
+`locate 'banana' in list<0> by 'ALN' setting p` finds `Banana` in a list kept in
+alphabetical order without regard to case; `'N'` alone searches an unsorted list
+ignoring case. A string without **C** or **N** behaves as it always did.
+
 The function form takes the position as arguments instead, and returns the
 position or zero:
 
