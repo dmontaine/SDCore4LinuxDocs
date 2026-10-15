@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **164** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **166** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,7 +23,7 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 145 verbs | `newvoc`, identical for every ordinary account |
+| **every account** | 147 verbs | `newvoc`, identical for every ordinary account |
 | **SDSYS only** | 19 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
@@ -102,6 +102,7 @@ not refused — the name is simply not recognised.**
 | **`go`** | **`go`** *label* |  |
 | **`hsm`** | **`hsm on`** \| **`off`** \| **`display`** {**`user`** *n*} |  |
 | **`hush`** | **`hush on`** \| **`off`** \| **`hush`** to toggle |  |
+| **`ide`** | **`ide`** {*file* *record*} |  |
 | **`if`** | **`if`** *condition* *command* |  |
 | **`list`** | **`list`** {**`dict`**} *file* {*selection*} {*fields*} {*options*} |  |
 | **`list.common`** | **`list.common`** {**`all`**} |  |
@@ -117,7 +118,7 @@ not refused — the name is simply not recognised.**
 | **`list.triggers`** | **`list.triggers`** {*file* …} {**`lptr`** {*n*}} |  |
 | **`list.union`** | **`list.union`** *list.1* {*list.2* {*tgt*}} {**`count.sup`**} |  |
 | **`list.vars`** | **`list.vars`** {*pattern*} |  |
-| **`listu`** | **`listu`** {**`no.page`**} {**`lptr`** {*n*}} | S |
+| **`listu`** | **`listu`** {**`detail`**} {**`no.page`**} {**`lptr`** {*n*}} | S |
 | **`lock`** | **`lock`** *n* {**`no.wait`**} | S |
 | **`logmsg`** | **`logmsg`** *text* |  |
 | **`logout`** | **`logout`** \| *n* … \| **`all`** |  |
@@ -173,6 +174,7 @@ not refused — the name is simply not recognised.**
 | **`settings.report`** | **`settings.report`** {*directory*} | S |
 | **`sh`** | **`sh`** *command* |  |
 | **`show`** | **`show`** {**`dict`**} *file* {*selection*} |  |
+| **`show.list`** | **`show.list`** {*n*} |  |
 | **`sleep`** | **`sleep`** *n* \| *hh*`:`*mm*{`:`*ss*} |  |
 | **`sort`** | **`sort`** {**`dict`**} *file* {*selection*} {*fields*} {*options*} |  |
 | **`sort.item`** | **`sort.item`** {**`dict`**} *file* {*selection*} |  |

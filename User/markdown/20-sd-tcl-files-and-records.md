@@ -124,7 +124,11 @@ Where a file name is taken, a select list or several names may be given instead.
 hsm {on|off|display} {user n}
 ```
 
-The Hot Spot Monitor. `display` is the default.
+The Hot Spot Monitor. `display` is the default. It counts each program's
+opens, reads, writes and deletes as well as its calls and processor time, and
+the report has a column for each. **What a program asks for through the `open`
+of a name (its VOC lookup), or through `readv` and `writev`, which read and
+write the record themselves, is not counted against it.**
 
 ```
 list.files

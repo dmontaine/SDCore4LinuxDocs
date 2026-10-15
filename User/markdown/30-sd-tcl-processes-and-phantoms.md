@@ -55,6 +55,9 @@ Each line under a user number is the account it is in, the command it is
 running, and where in that command it currently is — program name, source line,
 and the address in hexadecimal.
 
+For a process that is **waiting for a lock**, `pstat` also shows when the wait
+began, as `list.readu detail` already did.
+
 ### The levels are additive
 
 | | |

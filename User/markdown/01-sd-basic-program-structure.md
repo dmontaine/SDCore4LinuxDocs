@@ -305,6 +305,43 @@ Calls a function and throws the answer away. It exists because SD BASIC has no
 statement form for a function call — `void kernel(...)` is the idiom you will
 see throughout `gpl.bp`.
 
+## Compiler modes: `$mode`
+
+```
+$mode name {, name …}
+$mode -name
+```
+
+A mode changes how one program is compiled. **Every mode is off unless the
+program asks for it**, and a program that does not ask sees no change. A name
+with a minus in front turns the mode off again. The ones below are the 1.2-0
+additions; each is described by what it does and does **not** do.
+
+| mode | what it does |
+|---|---|
+| **`partial.expressions`** | `A and B` does not evaluate `B` when `A` is false, and `A or B` does not evaluate `B` when `A` is true. That makes `if idx matches '1-2N' and s<idx> # 0` safe, and a function with a side effect on the right-hand side runs only when it is needed. **The value of every expression is the same as without the mode**; only what is evaluated changes |
+| **`execute.clearlist`** | clears the default select list (list 0) before the command of each `execute` runs, so the command does not pick up a list the program happened to have active. An `execute` with a **passlist** clause, with or without a variable, still passes the list in |
+| **`pick.readnext`** | a `readnext` that takes its `else` clause (the list is exhausted, or none is active) leaves the id variable as it was instead of setting it to the null string, so a program can read the last id after the loop. **Only the plain forms**; the forms that return value and subvalue positions are unchanged |
+| **`open.fail.zero.fvar`** | an `open` or `openpath` that fails leaves the integer `0` in the file variable, where it is otherwise unassigned and a test of it stops the program with a run-time error. The `else` clause is taken as always, and an `open` that works is not touched |
+| **`stdfil`** | the default file variable: `open`, `read`, `matread`, `write`, `matwrite`, `delete`, `close`, `clearfile`, `filelock`, `fileunlock`, `release` and `select` may be written without a file variable and use one the program does not name |
+| **`write.delete.then.else`** | `write`, `writeu`, `matwrite`, `matwriteu`, `delete` and `deleteu` take `then` and `else` clauses. A trigger that refuses the write or delete takes `else`, and the trigger is told it is being called with an error trap set. A statement with neither clause is as it was |
+
+## Options that change how SD runs a program
+
+`option` on its own lists every option and its state; `option` *name* `on` or
+`off` sets one (see [SD Basic - Numeric Tests and Formatting](03a-sd-basic-numeric-tests-and-formatting.html)).
+**All of these are off by default.**
+
+| option | what it does |
+|---|---|
+| **`chained.select`** | a `get.list`, `qselect`, `search`, `select`, `sselect` or `selectindex` that leaves an active select list takes the first line of the data queue and runs it as the next command, as a `chain` would: `data 'LIST STOCK'` followed by `execute 'SELECT SALES'` lists the selected records. **When the select finds nothing the queue is cleared**, so the commands waiting for a list do not run on nothing. Without the option the data queue is left alone |
+| **`pick.ml.conv.mask`** | a left bracket in an `ML` or `MR` conversion code no longer asks for negative values in round brackets: it starts a format mask enclosed in round brackets, as in `MR2(#10)` or `ML2,(%8)`. The mask is read as if the brackets were not there, in output and in input conversion. The other negative-value styles (`+ - < C D`) and the `P`, `Z` and `T` options are as they were |
+| **`force.reload`** | an unload event (compiling or cataloguing a program) also refreshes the subroutine links a running program holds, so the next `call` loads the current object code |
+| **`numeric.exponent`** | numbers in exponent form, such as `123.45E-2`, are numeric |
+| **`paginate.on.heading`** | with `run ... no.page`, a heading or a footing still turns pagination on |
+| **`query.footer.pause`** | a report with a page footer waits for Return after its last footer |
+| **`inherit.mfile.path`** | `create.file` puts a new subfile of a multifile in the directory of the default subfile |
+
 ## What is not here
 
 Nothing in the program-structure group has been removed from this port. The

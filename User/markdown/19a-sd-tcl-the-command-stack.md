@@ -29,6 +29,9 @@ dot, and `n` below is a stack position — 1 is the most recent.
 **`n` defaults to 1 everywhere, and the spaces shown are required.** `.d2`
 deletes the second stack line and `.d 2` looks for a VOC record called `2`.
 
+**`.c-` undoes the `.c` just before it.** A `.l` or `.?` may come between;
+anything else ends the chance, and `.c-` then has nothing to undo.
+
 `.s` and `.r` together are the whole workflow: type the lines, then save them
 under a name, then recall them later to edit. **`.s` writes a sentence when the
 range is one line and a paragraph when it is more**, so the record type follows

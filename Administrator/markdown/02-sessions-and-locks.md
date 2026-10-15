@@ -57,6 +57,24 @@ on this page is keyed to the Linux identity, not to the SD account — so two
 sessions showing different accounts but the same username are, as far as
 `logout` is concerned, the same person's.
 
+**Each line ends with the account the user is in** (`: jack, sales`). A user
+moves into another account with `logto` and the table follows; a phantom starts
+in its parent's account. The account is shown to the administrator and, for
+anybody else, only for the sessions of the login user who is asking; **another
+user's account is left blank.** `listu` itself is still the administrator's
+verb: an ordinary account has `!listu`, from a program, whose ninth value is the
+account.
+
+```
+listu detail {no.page} {lptr {n}}
+```
+
+`detail` adds a line above the report: the interactive users, the API sessions,
+the phantoms that count as licensed, the other phantoms, and the most users
+there have been at once since SD started. `system(1056)` gives the same five
+numbers. **SD has no licence count**, so the third number is whatever the system
+marks as chargeable.
+
 **`Origin` is blank for a local session and that is not a fault.** It reports
 an address or a device name, and a console or piped session has neither. It
 reads `Phantom` for a phantom and an IP address for a network client.

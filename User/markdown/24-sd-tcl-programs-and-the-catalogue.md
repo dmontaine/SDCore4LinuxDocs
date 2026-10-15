@@ -83,6 +83,11 @@ ZZPROG OK
 read `zzprog hello`, so arguments arrive as typed and the program parses them
 itself.
 
+**A program run by its catalogue name takes `lptr` and `no.page` as `run`
+does.** The words stay in the sentence for the program to see. A word in
+quotation marks is not a keyword. This applies to a catalogue name only, not to
+the name of a VOC verb.
+
 ### Three catalogues, and they are not the same
 
 | | |
@@ -100,6 +105,11 @@ rather than by the `global` keyword — so the prefix is not a way round it.
 
 Private and local cataloguing need none of this and work in a programmer's own
 account.
+
+**`catalog ... local` asks before it overwrites.** When the VOC already holds a
+local catalogue pointer under that name and it points at a different object
+file, you are asked first (Return is no). `no.query` goes ahead without asking,
+and cataloguing the same file again does not ask.
 
 ### Seeing and removing
 
@@ -208,6 +218,57 @@ Named common survives between programs in a session, and `list.common` is how
 you see what is holding memory. `all` additionally shows the system blocks and
 is internal-only.
 
+## One screen for the lot: `ide`
+
+```
+ide {file record}
+```
+
+Opens a full-screen environment for BASIC programs and the other text records
+of an account, built on the screen library. `ide file record` starts on that
+record. It needs a terminal and **stops in a phantom**.
+
+| part | what it is |
+|---|---|
+| menu bar | the top row; F10 or Esc opens it |
+| tree | the account's files on the left. Return on a file lists its records (the first 2000), and Return again closes the list. Return on a record opens it. A letter jumps to the next entry that starts with it |
+| editor | on the right, a tab for each open record. It is the text area `screen memo` uses, so its keys are `memo`'s: selection, cut, copy and paste, undo and redo, find, line numbers. Text is coloured as SD BASIC, C, Python, JSON, shell or Markdown by the file and record name |
+| table | under the editor: the compiler's errors, or search results |
+| status line | the record, the cursor's line and column, and a star when there are unsaved changes |
+
+| key | |
+|---|---|
+| F7 | save and compile; the compiler's lines go in the table. Return on one goes to its line, F4 to the next |
+| F8 | compile and catalogue |
+| F5 | compile and run |
+| F9 | compile with debugging and run the debugger |
+| F2 · Ctrl-S | save the record |
+| Ctrl-R | find a text in every record of the file the tree is on (the first 2000 records, 500 lines), listed in the table; Return opens the record at the line |
+| F11 | find in all the records of a file |
+
+Run and debug give the terminal to the program and come back to the IDE when
+you press Return. **Nothing runs if the compile failed.** If somebody else has
+changed a record since the IDE read it, saving asks before it overwrites;
+closing a record, or leaving, with unsaved changes asks whether to save.
+
+The other keys follow [SED](27a-sd-tcl-sed.html) where the two do the same:
+Ctrl-Q quits, Ctrl-L goes to a line, Ctrl-X, Ctrl-C and Ctrl-V cut, copy and
+paste, Ctrl-Z and Ctrl-Y undo and redo, Ctrl-F finds forward and Ctrl-B
+backward (Return on the question repeats the last text), Ctrl-R replaces a text
+through the record and Ctrl-W writes the text to another record. In the text
+area of every program that uses `screen memo`, a word back and on are now
+Ctrl-P and Ctrl-U; they were Ctrl-B and Ctrl-F, which are SED's find keys.
+
+On a UTF-8 terminal (`LC_ALL`, `LC_CTYPE` or `LANG` says UTF-8) the frame, menus
+and scroll bars use line-drawing characters; elsewhere `+ - |`. The colours are
+the blue theme.
+
+**What it does not do:** it does not lock records while they are open (the check
+at saving is what protects against a second editor), has no replace across
+records, no project files and no completion. It follows the size of the window
+with a minimum of 60 columns by 16 lines, and refuses a smaller one. SED is
+unchanged.
+
 ## The two that are not like the others
 
 **`generate`** builds `$include` token definitions from a dictionary. **It is
@@ -223,7 +284,7 @@ program in a phantom process"*. The debugger itself is covered in
 
 **Every account has all of them now**: `format`, `list.common`, `basic`,
 `catalog`, `catalogue`, `cd`, `compile.dict`, `debug`, `delete.catalog`,
-`delete.catalogue`, `delete.common`, `generate`, `map`, `run`.
+`delete.catalogue`, `delete.common`, `generate`, `ide`, `map`, `run`.
 
 **Running a catalogued program never needed any of these anyway** — a
 catalogued name runs by being typed, with no VOC record of its own — so an

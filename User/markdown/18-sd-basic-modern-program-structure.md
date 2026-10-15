@@ -194,6 +194,9 @@ of member. This is the part most worth having in front of you:
 | `o->owner` | runs the **`get`** routine for that property |
 | `o->owner = 'MIXED Case Name'` | runs the **`set`** routine for it |
 
+**An empty pair of brackets is accepted after a method name in a statement**
+(`o->reset()`), as it already was in an expression.
+
 All six on one instance, with `deposit` called twice with 40 and 2. `total`
 multiplies by its argument; the `set owner` routine lower-cases what it is
 given into the public variable `label`, and `get owner` wraps it:
@@ -273,6 +276,10 @@ ZZMATH.REVEAL=base-private
 | `whoami()` | **the derived version won** — both classes define it |
 | `tag` | a public **variable** of the base, reached through the derived object |
 | `reveal()` | a base public function returning the base's own `private` member |
+
+The object variable that holds the inherited class is named after the base
+class. **`inherits name as variable`** gives it a name of its own:
+`class derived inherits base as parent`. Nothing else changes.
 
 The last row is the interesting one: **a base class's private state stays
 private, and reaches the outside only through whatever the base chooses to

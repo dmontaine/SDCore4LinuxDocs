@@ -145,6 +145,34 @@ select voc with dispatch = "IN" to 4
 is what makes the numbered lists a safe scratch area, and it is why the prompt
 above stayed `:` rather than becoming `::`.
 
+## Choosing from a list: `show.list`
+
+```
+show.list {n}
+```
+
+Shows the items of active select list *n* (list 0 if no number is given) a page
+at a time, each with its number and an asterisk. **All items start starred.**
+When you quit, the list is made again from the items that still carry an
+asterisk.
+
+| | |
+|---|---|
+| **`s`** *items* | star the items. Just the number does the same |
+| **`c`** *items* | clear the asterisks of the items |
+| **`t`** | top of the list |
+| **`n`** · Return | next page |
+| **`p`** | previous page |
+| **`q`** | quit, keeping the asterisks |
+| **`qc`** | quit, keeping nothing |
+| **`?`** | help |
+
+*Items* is a number, a range `a-b` with no spaces round the hyphen, `visible`
+(the items on this page) or `all` (`v` and `a` will do); several may be given
+separated by spaces or commas, as `1,4,8-11`. The space after `s` and `c` is
+optional. **`show.list` changes only the list in memory** — it does not save it;
+use `save.list` for that.
+
 ## Saving a list by name
 
 Numbered lists last as long as your session. A **saved** list is a record in the
