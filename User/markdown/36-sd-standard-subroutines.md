@@ -75,7 +75,7 @@ reimplementing the rules.
 |---|---|
 | `!ERRTEXT` | `call "!ERRTEXT", expansion, errno` — the message text for a status code |
 | `!FORMAT` | `call "!FORMAT", in.rec, out.rec, default.file, indent.step, case.option, errors` — the source formatter behind the `format` verb |
-| `!SORT` | `call "!SORT", in.list, out.list, mode` — sort a list |
+| `!SORT` | `call "!SORT", in.list, out.list, mode` — sort a list; *in.list* may also be a select list variable, whose ids are sorted (and used up) |
 | `!VOCREC` | `call "!VOCREC", rec, (id)` — build or check a VOC record |
 
 `!ERRTEXT` is the useful one. A program that traps a status code and wants to
