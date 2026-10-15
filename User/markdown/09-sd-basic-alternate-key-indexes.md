@@ -90,6 +90,17 @@ with-value form is how you ask *"who is in London?"*. A program that drops the
 value argument by accident gets a list of values where it expected ids, reads
 them as record ids, and finds nothing — with no error at any point.
 
+```
+selectindexv index.name {, value} from file.variable to list.variable
+```
+
+The same, into a **select list variable** instead of a numbered list: read it
+with `readnext id from list.variable`. **Numbered list 10 is the statement's
+scratch list**: the selection goes through it and it is empty afterwards, so a
+program that keeps something in list 10 must keep it elsewhere. An index the file
+does not have leaves `status()` at 1, as `selectindex` does, and the variable
+holds an empty list.
+
 ## Walking an index in order
 
 ```

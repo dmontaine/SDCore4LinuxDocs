@@ -456,7 +456,9 @@ exist.**
 | **`seek`** | `seek` *file.var*, *offset* {, *relative.to*} `then` … `else` … |
 | **`select`** | `select` {*file.var*} {`to` *list.no*} |
 | **`selecte`** | `selecte` {`to` *var*} |
+| **`select.socket`** | `select.socket(`*matrix*, *milliseconds*`)` — see [SD Basic - Sockets](15-sd-basic-sockets.html) |
 | **`selectindex`** | `selectindex` *index* {, *value*} `from` *file.var* {`to` *list.no*} |
+| **`selectindexv`** | `selectindexv` *index* {, *value*} `from` *file.var* `to` *list.var* — list 10 is its scratch list |
 | **`selectinfo`** | `selectinfo(`*a*, *b*`)` |
 | **`selectleft`** | `selectleft` *index* `from` *file.var* `setting` *var* `to` *list.no* — ***no `then`/`else`*** |
 | **`selectn`** | `selectn` {*file.var*} `to` *list.no* |

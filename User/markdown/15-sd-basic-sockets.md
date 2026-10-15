@@ -163,6 +163,40 @@ can go down a socket and come back as itself.
 Key 6 can be turned off as well as on: `set.socket.mode(s, 6, 0)` returns `1`
 and `socket.info(s, 6)` then reads `0`.
 
+Key **9**, `SKT$INFO.EVENTS`, is what `select.socket()` watches for (next
+section); the value is 0 to 7, anything else is refused.
+
+## Waiting on several sockets: `select.socket()`
+
+```
+$include keys.h
+dim skt(10)
+...
+ok = set.socket.mode(skt(1), SKT$INFO.EVENTS, SKT$READ.EVENT)
+events = select.socket(skt, 5000)
+```
+
+`select.socket(`*matrix*`,` *milliseconds*`)` waits until something happens on
+one of the sockets in the elements of a dimensioned matrix, or the time is up.
+**A zero time asks and returns at once; a negative one waits for ever.** An
+element that is not a socket, or that has no events set, is not watched.
+
+| Event | Value | Happens when |
+|---|---|---|
+| `SKT$READ.EVENT` | 1 | data can be read, **a connection is waiting on a server socket**, or the other end closed |
+| `SKT$WRITE.EVENT` | 2 | data can be sent |
+| `SKT$EXCEPTION.EVENT` | 4 | an exception condition |
+
+The result is a dynamic array with one field for each element of the matrix: the
+letters **R**, **W** and **E** for the events found there, and a null field for
+the rest. If nothing happened in the time the result is the **null string and
+`status()` is 1011 (timeout)**; any other failure is a null string with another
+status. `socket.info(skt, SKT$INFO.EVENTS)` gives the letters the last call found
+on that socket. **The sockets' own watch is the TCP connection:** bytes a TLS
+session has already taken off it are not seen as readable.
+
+`SKT$INFO.EVENTS` is 9 here; the manual gives no number, so it is SD's own.
+
 ## When the far end goes away
 
 ```
@@ -263,9 +297,9 @@ whatever bytes you put on it. Anything encrypted has to terminate outside SD.
 **The whole of this page is TCP.** `0x00010000` and `0x00020000` are the UDP
 and ICMP flag values.
 
-**A server that serves more than one client at a time** needs something to do
-the waiting, and SD BASIC has no `select` over several sockets. The shape that
-works is one accepted connection per session.
+**A server that serves more than one client at a time** waits with
+`select.socket()` (above) over a matrix holding the server socket and the
+accepted ones. A program that accepts one connection per session still works.
 
 ## See also
 
