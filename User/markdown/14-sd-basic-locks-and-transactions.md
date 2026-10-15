@@ -279,6 +279,18 @@ no implicit commit. A `return`, a `goto` or simply reaching `end transaction`
 without having executed a `commit` discards every write since the start, and
 nothing is printed. The record still reads whatever it held before.
 
+**`status()` tells you which it was.** Read straight after `end transaction`,
+it is **0** when the transaction committed and **1021** (`ER_ROLLBACK`) when it
+was rolled back, whether by `rollback` or by reaching `end transaction` without
+a `commit`. Read it before any other statement that sets it. A commit that
+fails does not come back as 1022 (`ER_COMMIT_FAIL`, defined for it): it still
+stops the program with its message.
+
+```
+end transaction
+if status() then crt 'the transaction was rolled back'
+```
+
 Inside the transaction your own reads see your own uncommitted writes — a
 program reads back its own new value before the commit, and a rolled-back
 `delete` makes the record read `else` inside the transaction and reappear

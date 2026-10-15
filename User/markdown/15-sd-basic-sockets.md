@@ -19,7 +19,7 @@ here in lower case. In the tables, *italics* mark something you supply and
 |---|---|
 | `create.server.socket(`*addr*`, `*port*`, `*flags*`)` | bind and listen. Returns a **socket**, or 0 |
 | `accept.socket.connection(`*server*`, `*timeout*`)` | take the next waiting connection |
-| `open.socket(`*addr*`, `*port*`, `*flags*` {, `*context*`})` | dial out |
+| `open.socket(`*addr*`, `*port*`, `*flags*` {, `*timeout*`})` | dial out; *timeout* is seconds to wait for the connection |
 | `write.socket(`*socket*`, `*data*`, `*flags*`, `*timeout*`)` | returns the byte count |
 | `read.socket(`*socket*`, `*maxlen*`, `*flags*`, `*timeout*`)` | returns the bytes read |
 | `set.socket.mode(`*socket*`, `*key*`, `*value*`)` | returns 1 or 0 |
@@ -38,6 +38,13 @@ srv = create.server.socket('127.0.0.1', 45123, 0)
 cli = open.socket('127.0.0.1', 45123, 0)
 inc = accept.socket.connection(srv, 2000)
 ```
+
+The optional fourth argument of `open.socket` is a **connect timeout in
+seconds**. When it runs out the call returns 0 with `status()` **7005**, as any
+failed connect does; zero, a negative number or no argument means no limit of
+SD's own (the system's connect timeout, which can be two minutes, applies).
+Before this release the fourth argument was an unused place for a security
+context and had to be zero.
 
 Flags `0` is TCP, stream. `0x00010000` selects UDP and `0x00020000` ICMP.
 
