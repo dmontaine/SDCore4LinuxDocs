@@ -258,6 +258,25 @@ another session has open is refused by `build.index` and is still reported as
 rebuilt. Make sure nothing else has the files open, and check a file you doubt with
 `list.index`.
 
+## Switching an index off for a large load: `disable.index`
+
+```
+disable.index file index …
+disable.index file all
+```
+
+Switches off the **updating and the use** of the named indexes of a file: the index is
+not kept up as records are written, and the query processor does not use it. It is for
+a large load, or a batch run that would change most of the records, where keeping
+three indexes live costs far more than building them afterwards. **`build.index`
+builds it again and switches it on.** Until then its data are out of date, and
+`list.index` shows it as *needing a build*.
+
+**Like `delete.index` it needs the file to itself.** Another session that had the file
+open would go on using, and keeping up, an index this one had switched off. (openQM
+removed that need in 2.10-4; doing so here would mean telling every open copy of the
+file, which SD does not do.)
+
 ## Removing an index
 
 ```
@@ -284,8 +303,8 @@ Deleting the file removes its indexes with it.
 ## Who has these verbs
 
 **Every account has all of them now** — `create.index`, `build.index`,
-`make.index`, `delete.index`, `list.index`, `analyse.index`, `selectindex` and
-`rebuild.all.indices`.
+`make.index`, `delete.index`, `disable.index`, `list.index`, `analyse.index`,
+`selectindex` and `rebuild.all.indices`.
 An index changes how a query runs, not how data is written, so there was never a
 reason to withhold them even under the old model.
 

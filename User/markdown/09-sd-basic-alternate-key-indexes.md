@@ -128,6 +128,73 @@ Walking with `selectright` is how you produce a report in index order without
 sorting, and how you page through a large file a value at a time rather than
 selecting all of it.
 
+### Into a select list variable: `selectleftv` and `selectrightv`
+
+```
+selectleftv index.name from file.variable {setting variable} to list.variable
+selectrightv index.name from file.variable {setting variable} to list.variable
+```
+
+The same step, but the ids come back in a **select list variable** — read it with
+`readnext id from list.variable` — instead of a numbered list. **Numbered list 10
+is the statement's scratch list**: the step goes through it, and anything a
+program kept in list 10 is lost. `status()` is the step's: **3030** past the end
+of the index and **3019** for an index the file does not have. With `selectindexv`
+(above), every statement that fills a numbered list now has a form that fills a
+variable.
+
+## Scanning an index the Pick way: `root`, `key` and `bscan`
+
+Three statements for programs written for other multivalue systems. They are made of
+`setleft`, `setright`, `selectindex`, `selectleft` and `selectright`, and
+they work on **dynamic hashed files only** (a directory file gives `status()` 3).
+**Numbered list 10 is their scratch list** here too.
+
+```
+root file.name, index.name to scan.variable then ... else ...
+key(operator, scan.variable, index.key, item.id) then ... else ...
+bscan indexed.value {, ids} from file.variable {, value} using index.name {reset} {by a | d} then ... else ...
+```
+
+**`root`** checks that the file opens and has the index (it looks for the name as
+typed, then in lower and in upper case) and makes the **scan variable**, an ordinary
+string holding the file name and the index name. Where openQM also takes an
+A-correlative expression in place of an index name and looks for an index built from
+it, SD takes the **name of an index only**. The `else` branch has `status()` the error of
+the open, or 3019.
+
+**`key`** takes one step of a scan. An entry is an indexed value and **one** record id;
+the ids of one value come in the order `selectindex` gives them. Nothing is kept
+between calls except `index.key` and `item.id`, the entry last returned: each call
+opens the file and finds its place again. The brackets are optional. `key` is a
+statement unless the program has a matrix called `key`, in which case `key(1) = x` is
+still the assignment it looks like.
+
+| operator | the step |
+|---|---|
+| `c` | the first entry at or beyond `index.key`, left to right |
+| `n` | the entry after (`index.key`, `item.id`): the next id of the same value, else the first id of the next value; with both null, the first entry of the index |
+| `p` | the entry before; with both null, the last entry |
+| `l` | with a null `index.key` the rightmost entry, otherwise as `p` |
+| `r` | the first id of the value `index.key` |
+| `x` | `item.id` becomes the field-mark list of **all** the ids of the value `index.key` |
+| `v` | does the entry (`index.key`, `item.id`) exist |
+
+The `then` branch means the step found something. In the `else` branch `status()` is
+**3030** for no entry beyond or before, **1** for no entry for that value or pair,
+**3019** for an index that is not there and **2** for an operator that is not one of these.
+
+**`bscan`** scans with its position kept for you, per file variable and index: a scan
+goes on from the entry the last `bscan`, `selectindex`, `selectleft` or `selectright` on
+that file variable returned. `reset` goes to the extreme left (the extreme right with
+`by d`) and returns the entry there; `value` positions at that value, or at the
+nearest entry in the direction of the scan when the index has none, with `status()` 2;
+with neither it moves one entry in the direction of the scan. `indexed.value` and the
+`ids` (field-mark delimited, all the ids of the value) are returned. In the `else`
+branch `status()` is **0** when the scan has run off the end of the index (both
+variables null), **3** for a file that is not a dynamic hashed file, **4** for an index that
+is not there, **5** for a `by` that is not `a` or `d`, and **10** for anything else.
+
 ## Asking what indexes a file has
 
 ```

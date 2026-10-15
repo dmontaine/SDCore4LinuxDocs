@@ -168,6 +168,17 @@ the administrator's new sessions included, while they run. That hold also lapses
 when the session that took it is killed, which it did not until 15 October 2026:
 it used to wait for `sd -cleanup` to remove the dead session's entry.
 
+## The paragraph every session runs first: `MASTER.LOGIN`
+
+A VOC record named `MASTER.LOGIN` in the SDSYS account, if it is a paragraph (its first
+line is `PA`), is run **once by every new session, before the account's own `LOGIN`
+paragraph**: an interactive session, a phantom, and — since 15 October 2026 — an
+**API session**, which runs it when it first enters an account. Entering another
+account with `logto` runs the new account's `LOGIN` only. There is none unless you write
+one, so nothing runs by default; a session shows what it is by `@tty` (`apisrvr` for the
+API). It runs in the account just entered, **under that account's own switches**: it can do
+no more there than the account's users can.
+
 ## What is locked: `list.readu`
 
 ```

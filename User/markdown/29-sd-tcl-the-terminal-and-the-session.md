@@ -232,6 +232,11 @@ too long — useful on a machine where people walk away from a prompt, and worth
 thinking about before enabling on a machine where a long-running interactive job
 is normal.
 
+*n* is minutes and 0 turns it off. **It applies to an API session too**: a client that
+executes `autologout 10` (`SDExecute("AUTOLOGOUT 10")`) has its server session ended after
+ten minutes in which it sent nothing, and its next request fails at once
+(see [SD Client API](37-sd-client-api.html)). The setting belongs to the one session that gave it.
+
 ## The command echo: `echo`
 
 ```

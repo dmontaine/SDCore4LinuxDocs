@@ -77,4 +77,8 @@ A standalone copy of the same source, kept in sync for building the client
 without the whole server tree, is at
 <https://github.com/dmontaine/linuxsdclilib>.
 
-**The C headers are shipped with the source tree.**
+**The C headers are shipped with the source tree**, and **a header for each of five more languages
+is installed with the server**, in `/usr/local/sdsys/syscom`: `sdclient.bas` (Basic), `sdclient.pb`
+(PureBasic), `sdclient.module` (Gambas 3), `sdclilibbind.pas` (Free Pascal and Lazarus) and `sdclient.py`
+(Python 3), beside `sdclilib.h`. All six declare every function of the library; see *SD Client API*
+and *SD Client API: Language Bindings* in the **User** set.

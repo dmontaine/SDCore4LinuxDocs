@@ -367,6 +367,17 @@ says why**:
 A digest is not a way to store a password: use the system's login. It is for
 checking that a file or a string is what it should be.
 
+## `swapmarks()`
+
+```
+swapmarks(string)
+```
+
+Gives back **the string as it is.** openQM's function exchanges the mark characters with
+accented letters on a system running in ECS (extended character set) mode, and since its
+release 3.0-2 returns the data unchanged on any other. SD has no ECS mode, so the
+function exists only so that a program that calls it compiles and runs: it never changes a byte.
+
 ## Continued in
 
 [SD Basic - String Matching and Replacing](04a-sd-basic-string-matching.html)

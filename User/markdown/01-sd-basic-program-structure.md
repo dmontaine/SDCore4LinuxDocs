@@ -373,6 +373,7 @@ additions; each is described by what it does and does **not** do.
 | **`explicit`** | every scalar has to be named in a `dim` statement before it is used, or the compiler refuses the program with *Variable xx has not been declared* |
 | **`default.unass.args`** | an argument that has a default value (see *Arguments that may be left out* above) also takes it when the caller passed the argument unassigned, not only when it was left out |
 | **`trap.unused.main`** | like `trap.unused`, but it warns only about a variable that is assigned a value in the program itself, not in an include record |
+| **`non.durable.txn`** | every `commit` the program contains is a *non-durable* commit: a transaction **nested** in another writes nothing at its `commit` but hands its records, deletions and locks to the enclosing transaction, which writes them when it commits or throws them away if it aborts. A commit that is not nested writes as ever. See [SD Basic - Locks and Transactions](14-sd-basic-locks-and-transactions.html) |
 | **`conditional.statements`** | accepted, and it changes nothing: `read`, `readu`, `readv`, `readnext`, `readseq`, `readblk`, `readcsv`, `matread`, `open`, `openpath`, `openseq`, `writeseq`, `writeblk`, `writecsv`, `seek`, `send`, `filelock`, `fileunlock`, `flush`, `getlist`, `locate`, `find` and `findstr` may always be the condition of `while` and `until` |
 
 ## Options that change how SD runs a program
@@ -389,6 +390,7 @@ additions; each is described by what it does and does **not** do.
 | **`numeric.exponent`** | numbers in exponent form, such as `123.45E-2`, are numeric |
 | **`paginate.on.heading`** | with `run ... no.page`, a heading or a footing still turns pagination on |
 | **`query.footer.pause`** | a report with a page footer waits for Return after its last footer |
+| **`query.merge.print`** | a report sent to the default printer does not close a printer that was already active when the report began (a program's own `printer on`), so the report and the program's output are one print job |
 | **`inherit.mfile.path`** | `create.file` puts a new subfile of a multifile in the directory of the default subfile |
 | **`git`** | a directory file keeps `.gitignore` and `.gitattributes` under their own names on the disk. Without it the leading dot of every such name is replaced by `%D`, which git does not read. **Only these two names**: any other name with a leading dot is mapped as ever |
 | **`dir.dtm`** | writing a record to a directory file moves the directory's date and time modified. The system moves it only when a name is added or removed, so a replaced record leaves it as it was. **Closing a written sequential file does not do this** |

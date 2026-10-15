@@ -133,6 +133,28 @@ There is no "insert only" form — read first if that distinction matters, and
 hold a lock between the read and the write or two sessions will both find it
 absent.
 
+### Letting the file number its records: `creating.seqkey`
+
+```
+write variable to file.variable creating.seqkey id.variable {on error ...}
+writeu variable to file.variable creating.seqkey id.variable {on error ...}
+```
+
+A **hashed** file keeps a counter in its header. With `creating.seqkey` the record is written
+under the counter's next value, **1** in a file that has never used it, and `id.variable`
+is given that id (as text). An update lock on the new id is taken for the write and
+released before the next statement, or with `writeu` **kept**. In a transaction the id is
+taken at the `write`, not at the `commit`, so a transaction that does not commit leaves a gap.
+**A directory file is refused** (*WRITE … CREATING.SEQKEY needs a hashed file*; status 3005 under
+`on error`) and `id.variable` is left as it was. `fileinfo(file, 1031)` is the id of the last record written this way
+(0 if none), and `configure.file` *file* `next` *n* sets the next id (`next query` shows it).
+
+**Use it for every record of the file, or for none**: there is no check that a record with the
+id it hands out is not already there, and a record written under that id by any other route is
+overwritten. The counter is changed in the file header at once, so a power failure can leave it
+one behind the records; setting it with `configure.file … next` puts that right. The client library
+has it as `SDWriteSeqKey` and `SDWriteuSeqKey` ([SD Client API](37-sd-client-api.html)).
+
 `delete file.variable, record.id` removes a record. After
 `delete f, 'R2'`, reading `R2` takes the `else` branch.
 

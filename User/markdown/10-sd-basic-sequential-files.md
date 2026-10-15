@@ -144,6 +144,11 @@ statements (`oswrite` to anywhere else leaves `status()` 3035 and writes
 nothing), and one with it reaches what the user can. openQM's `on error`
 clause is not supported; a fault is the `status()`. They take no locks.
 
+**What was read about the file: `system(1071)`.** After a successful `osread` it
+gives the file's `status` array, as the system reported it for the file that was read;
+it is null before any `osread` and after one that failed, and it belongs to the
+process.
+
 ## Position
 
 ```

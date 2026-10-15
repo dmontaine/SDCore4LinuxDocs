@@ -70,6 +70,7 @@ exist.**
 | **`bittest`** | `bittest(`*a*, *b*`)` |
 | **`bitxor`** | `bitxor(`*a*, *b*`)` |
 | **`break`** | `break on`   ·   `break off`   ·   `break` *n* |
+| **`bscan`** | `bscan` *indexed.value* {, *ids*} `from` *file.var* {, *value*} `using` *index* {`reset`} {`by` `a` \| `d`} `then` … `else` … — see [SD Basic - Alternate Key Indexes](09-sd-basic-alternate-key-indexes.html) |
 | **`by`** | clause of `locate` and `sselect` — `by` `'AL'`, `'AR'`, `'DL'`, `'DR'` ***(clause word)*** |
 
 ## C
@@ -191,7 +192,7 @@ exist.**
 | **`findstr`** | `findstr` *x* `in` *arr* {, *occ*} `setting` *f* {, *v* {, *sv*}} `then` … `else` … |
 | **`fix`** | `fix(`*number* {, *precision* {, *mode*}}`)` |
 | **`flush`** | `flush` *file.var* `then` … `else` … |
-| **`flush.dh.cache`** | `flush.dh.cache` {`local` | `no.wait`} |
+| **`flush.dh.cache`** | `flush.dh.cache` {`local` \| `no.wait`} |
 | **`fmt`** | `fmt(`*a*, *b*`)` |
 | **`fmts`** | `fmts(`*a*, *b*`)` |
 | **`fold`** | `fold(`*string*, *width* {, *delimiter*}`)` |
@@ -272,6 +273,7 @@ exist.**
 | | |
 |---|---|
 | **`keycode`** | `keycode(`{*timeout*}`)` |
+| **`key`** | `key(`*operator*, *scan.var*, *index.key*, *item.id*`)` `then` … `else` … — the brackets are optional; operators `c` `l` `n` `p` `r` `v` `x` |
 | **`keyedit`** | `keyedit` *key*, *action* |
 | **`keyexit`** | `keyexit` *key*, *action* |
 | **`keyin`** | `keyin(`{*timeout*}`)` |
@@ -436,6 +438,7 @@ exist.**
 | **`returning`** | clause of `execute` — take the command's error text ***(clause word)*** |
 | **`reuse`** | `reuse(`*a*`)` |
 | **`rnd`** | `rnd(`*a*`)` |
+| **`root`** | `root` *file.name*, *index* `to` *scan.var* `then` … `else` … |
 | **`rollback`** | `rollback`, inside `begin transaction` … `end transaction` |
 | **`rqm`** | `rqm` {*seconds*} |
 | **`rtnlist`** | clause of `execute` — take the list the command left ***(clause word)*** |
@@ -461,8 +464,10 @@ exist.**
 | **`selectindexv`** | `selectindexv` *index* {, *value*} `from` *file.var* `to` *list.var* — list 10 is its scratch list |
 | **`selectinfo`** | `selectinfo(`*a*, *b*`)` |
 | **`selectleft`** | `selectleft` *index* `from` *file.var* `setting` *var* `to` *list.no* — ***no `then`/`else`*** |
+| **`selectleftv`** | `selectleftv` *index* `from` *file.var* {`setting` *var*} `to` *list.var* — list 10 is its scratch list |
 | **`selectn`** | `selectn` {*file.var*} `to` *list.no* |
 | **`selectright`** | `selectright` *index* `from` *file.var* `setting` *var* `to` *list.no* — ***no `then`/`else`*** |
+| **`selectrightv`** | `selectrightv` *index* `from` *file.var* {`setting` *var*} `to` *list.var* — list 10 is its scratch list |
 | **`selectv`** | `selectv` {*file.var*} `to` *var* — read it back with `readnext … from` |
 | **`sendmail`** | `sendmail` *to*, *from*, *subject*, *body* {, *attachments*} `then` … `else` … |
 | **`sentence`** | `sentence()` — the same value as `@sentence` |
@@ -512,6 +517,7 @@ exist.**
 | **`sum`** | `sum(`*a*`)` |
 | **`summation`** | `summation(`*a*`)` |
 | **`swap`** | `swap(`*string*, *from*, *to* {, *occurrences* {, *start*}}`)` |
+| **`swapmarks`** | `swapmarks(`*string*`)` — gives the string unchanged: SD has no ECS mode |
 | **`swapcase`** | `swapcase(`*a*`)` |
 | **`sysmsg`** | `sysmsg(`*number* {, *substitution*, …}`)` |
 | **`system`** | `system(`*a*`)` |
@@ -567,13 +573,13 @@ exist.**
 | **`wake`** | `wake` *user.no* |
 | **`weofseq`** | `weofseq` *file.var* {`on error` …} |
 | **`while`** | clause of `loop`: `loop` … `while` *condition* … `repeat` |
-| **`write`** | `write` *var* `to` *file.var*, *id* {`on error` …} — ***inside a transaction the lock must already be held*** |
+| **`write`** | `write` *var* `to` *file.var*, *id* {`on error` …} — ***inside a transaction the lock must already be held***  ·  `write` *var* `to` *file.var* `creating.seqkey` *id.var* {`on error` …} — a hashed file numbers the record itself |
 | **`write.socket`** | `write.socket(`*a*, *b*, *c*, *d*`)` |
 | **`writeblk`** | `writeblk` *var* `to` *file.var* {`on error` …} |
 | **`writecsv`** | `writecsv` *value*, … `to` *file.var* `then` … `else` … |
 | **`writeseq`** | `writeseq` *var* `to` *file.var* {`on error` …} `then` … `else` … |
 | **`writeseqf`** | `writeseqf` *var* `to` *file.var* {`on error` …} `then` … `else` … |
-| **`writeu`** | `writeu` *var* `to` *file.var*, *id* {`on error` …} |
+| **`writeu`** | `writeu` *var* `to` *file.var*, *id* {`on error` …}  ·  `writeu` *var* `to` *file.var* `creating.seqkey` *id.var* {`on error` …} |
 | **`writev`** | `writev` *var* `to` *file.var*, *id*, *field* {`on error` …} |
 | **`writevu`** | `writevu` *var* `to` *file.var*, *id*, *field* {`on error` …} |
 

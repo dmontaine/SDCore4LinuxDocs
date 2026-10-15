@@ -130,7 +130,10 @@ which accounts there are, by asking.
 | `1048` | a sequence number | unique across all sessions until SD restarts, then 1 again |
 | `1049` | is `hush` in effect? | `0` or `1` |
 | `1062` | has `signal()` been raised for this process? | `1` and **cleared by reading it**: `until system(1062)` is the loop of a phantom that waits to be told |
+| `1066` | the form queue `sp.assign` last gave to any print unit | `-1` until one has been given (see [SD TCL - Printing and Spooling](28-sd-tcl-printing-and-spooling.html)); `getpu(pu$form.queue, unit)` is the queue of one unit |
 | `1067` | the default group size of a dynamic file | in bytes |
+| `1071` | the `status` array of the last `osread` | null before any `osread`, and after one that failed; the information the system gave about the file that was read. Held per process |
+| `1073` | the phantoms grouped with this process | their user numbers, field mark delimited (`phantom group`; `system(1058)` lists every child) |
 | `1086` | are string comparisons case sensitive in this program? | `0` after `$nocase.strings` or `casing off` |
 | `1088` | where `maximum()` or `minimum()` found its element | the field, value and subvalue numbers joined by value marks: for `'61' : @vm : '42' : @fm : '71' : @vm : '57'` the maximum is `71` and `system(1088)` is `2` vm `1` vm `1`. The first of equal elements is the one. Null when the array has no number |
 

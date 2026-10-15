@@ -142,6 +142,29 @@ never started.
 a cron job or systemd timer that starts SD, and that is a different
 subject, covered under *Scheduled jobs* in the **Getting Started** set.
 
+### A phantom that ends with its parent: `phantom group`
+
+```
+phantom group command
+```
+
+A phantom started with the word `group` is **grouped with the process that started it**:
+when that process ends — it logs out, or is logged out — SD logs the grouped phantoms
+out too, where an ordinary phantom would go on until its command finished. It is for a helper that has no purpose without you. `listu` shows a
+grouped phantom with a **`G`** after its parent's number, and `system(1073)` in the
+parent gives the user numbers of the phantoms grouped with it, field mark delimited
+(`system(1058)` gives all its child phantoms, grouped or not, and `system(1052)` counts
+them). A phantom that has not yet finished starting when its parent ends is still
+logged out.
+
+### `@pstat`: what `pstat` shows about the program
+
+`@pstat` is an `@` variable a program **may assign to**. Whatever text it holds when
+another session runs `pstat` (or `pstat user n`) is printed as an extra line under the
+process's last command and location, so a long-running program or a phantom can say what
+it is doing — `@pstat = 'Posting batch ' : n` — without a terminal to say it on. It is the
+program's own text and is not cleared for it.
+
 ### What a phantom does not inherit
 
 **A phantom is a new SD process, not a branch of yours.** It is started with

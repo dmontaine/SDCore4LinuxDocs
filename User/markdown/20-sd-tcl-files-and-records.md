@@ -92,6 +92,12 @@ and the disk on a large file.
 `no.case` / `case` and `resize` / `no.resize` are the pairs that turn a setting
 on and off. For a directory file, `binary` turns on mark mapping.
 
+**`next` *n*** sets the next record id that `write … creating.seqkey` will give out in a
+**hashed** file (see [SD Basic - File Handling](07-sd-basic-file-handling.html)); **`next query`** says
+what it is (*The next sequential record id is 103*). A new file's counter is 1, and rebuilding a file
+with a different group size or version carries the counter over. A directory file is refused:
+*NEXT applies to a hashed file only*.
+
 ## Looking at a file
 
 ```
@@ -404,12 +410,45 @@ stock                zztrig               PRE.WRITE, PRE.DELETE, POST.WRITE, POS
 2 file(s) with a trigger function
 ```
 
+## Sizes and who is busy: `file.stat` and `fstat.user`
+
+```
+file.stat {dict} {file ...} {lptr {n}} {no.page}
+fstat.user {top} {user n} {lptr {unit}} {no.page}
+```
+
+**`file.stat`** prints one line for each file of **the current account**: the type
+(`DYN`, `DIR` or `COL`), the current and minimum modulus, the group size, the number
+of records, the bytes in the primary and overflow subfiles and their total, and `Y` or
+`N` for indexes (`AK`), trigger (`TR`), statistics (`ST`), case-insensitive ids (`NC`),
+`NO.RESIZE` (`NR`), encryption (`EN`), replication (`RP`) and journalling (`JN`).
+A directory file shows its type and record count only. With no names it takes the files
+on an active select list (list 0) or, if there is none, every file the VOC points at with
+an `F` entry; `dict` reports the dictionaries instead. The report needs **122 columns**.
+`EN`, `RP` and `JN` are always `N`: SD has no file encryption, replication or journalling.
+**openQM can also report on other accounts (`file.stat account.list`, `file.stat all`);
+SD does not**: the report reads each file, and another account's files are the business
+of that account's users and of the administrator, who has `list.files` and the
+account's own session.
+
+**`fstat.user`** reports file activity by session: how many records each has read,
+written and deleted since it started — the counts the system keeps in `fstat global`,
+kept for each session as well. Sessions come in user number order, or with **`top`** in
+descending order of reads + writes + deletes, which shows where a slow system is busy.
+**`user n`** shows all the counts of one session: opens, reads, writes, deletes, clears,
+selects, index reads, writes and deletes, splits and merges. **An administrator sees
+every session; anyone else sees the sessions of their own login name**, because the file
+activity of other people is theirs to see only through an administrator. openQM's verb
+repeats the report every two seconds and takes `t`, `i`, `d` and `u` at the keyboard; this
+one shows it once — run it again for another look.
+
 ## Who has these verbs
 
 **Every account has all of them now** — there is no longer a withheld set.
 `ct`, `list.files`, `set.file`, `analyse.file`, `analyze.file`, `clear.file`,
 `cname`, `configure.file`, `compare.files`, `copy`, `copyp`, `create.file`,
-`delete`, `delete.file`, `dump`, `fixdir`, `find.file`, `fstat`, `hsm`,
+`delete`, `delete.file`, `dump`, `file.stat`, `fixdir`, `find.file`, `fstat`,
+`fstat.user`, `hsm`,
 `list.triggers`, `oscopy`, `rename`, `set.mode`, `set.trigger` are all in every
 account's VOC. (`set.mode` is there but refuses an account without the OS gate,
 as above.)
