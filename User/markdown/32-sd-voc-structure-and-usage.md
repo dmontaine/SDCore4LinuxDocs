@@ -269,6 +269,23 @@ the words the query processor — `LIST`, `SELECT`, `SORT` and the rest —
 recognises inside a command line. `all` is `K` with number 5; `after` is
 `K` with a number; `and` is `K`.
 
+**A K record can also be a command.** When its fields 3 onwards are another
+VOC record (a `V` record, say), typing the K record's name runs that record as
+if it had been typed instead:
+
+```
+001  K
+002  1
+003  V
+004  CS
+005  /home/app/bp.out/report
+```
+
+This works for a locally catalogued subroutine too. The object is found by the
+last part of the pathname in field 5, which is the name it was catalogued
+under, so a program catalogued under a call name different from its program
+name is not reached this way.
+
 The 248 K-records in a stock VOC are the query processor's vocabulary,
 and they are what makes a sentence like `list stock with qty > 100 by
 supplier` parse.
