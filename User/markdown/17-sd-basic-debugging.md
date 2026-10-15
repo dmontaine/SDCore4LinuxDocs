@@ -268,6 +268,28 @@ program.
 
 There is **one** watch at a time; `w` on another variable replaces it.
 
+### Stopping only for a value
+
+```
+w n > 7
+w s = stop
+w code matches '3a0n'
+```
+
+`w` *variable* *operator* *value* stops only when the value just assigned meets
+the condition; otherwise the program goes on and the debugger shows nothing.
+The operators are `=` `#` `<` `>` `<=` `>=`, the words `eq` `ne` `lt` `gt` `le`
+`ge`, and `matches`. A value in quotes is that text; a number compares as a
+number and anything else as text. With `n` set to 1 to 10 in a loop, `w n > 7`
+stops three times, for 8, 9 and 10.
+
+A plain `w n` stops at every assignment as before, a new `w` replaces the old
+watch **and its condition**, and `uw` clears both. An operator that is not in
+the list, or no value after it, gives *Unrecognised command* and watches
+nothing. `like` and `unlike` are not supported. The variable is found by its
+number in the program that set the watch, so a condition on a local variable
+works while that program is the one running.
+
 ## The call stack
 
 ```
