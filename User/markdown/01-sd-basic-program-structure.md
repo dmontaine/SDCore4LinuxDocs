@@ -341,6 +341,12 @@ additions; each is described by what it does and does **not** do.
 | **`paginate.on.heading`** | with `run ... no.page`, a heading or a footing still turns pagination on |
 | **`query.footer.pause`** | a report with a page footer waits for Return after its last footer |
 | **`inherit.mfile.path`** | `create.file` puts a new subfile of a multifile in the directory of the default subfile |
+| **`git`** | a directory file keeps `.gitignore` and `.gitattributes` under their own names on the disk. Without it the leading dot of every such name is replaced by `%D`, which git does not read. **Only these two names**: any other name with a leading dot is mapped as ever |
+| **`dir.dtm`** | writing a record to a directory file moves the directory's date and time modified. The system moves it only when a name is added or removed, so a replaced record leaves it as it was. **Closing a written sequential file does not do this** |
+| **`keep.old.object`** | a compilation that fails leaves the previous object code in place, where it would otherwise be deleted before the compiler starts. The listing of the failed compile is not put back |
+| **`no.phantom.notify`** | set inside a phantom, it stops the message the phantom sends to its parent when it ends (*Phantom nn : Normal termination.*) |
+| **`spool.command`** | shows the operating system command that prints a job, just before it runs; a diagnostic aid |
+| **`assoc.all`** | the query processor ignores the associations in the dictionary and treats every field as one association. With `by.exp` on one multivalued field, each line then shows the matching value of the other fields, where fields in other associations show all of theirs on every line |
 
 ## What is not here
 
