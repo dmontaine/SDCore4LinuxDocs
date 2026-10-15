@@ -285,6 +285,16 @@ options inside the text for page number, date and time.
 it breaks on almost always wants to be a sort key as well, or the groups come
 out scattered.
 
+**An `X` among a break field's control codes saves the field's previous value.**
+The I-types of that line can read it as `@bpv`: the value the field had on the
+last record before the break. It is empty on a field without `X`.
+
+Two options (see [SD Basic - Program Structure](01-sd-basic-program-structure.html))
+change a report. With `option query.footer.pause` a report that has a page
+footer waits for Return after its last footer. With `option paginate.on.heading`,
+a `run ... no.page` that prints a heading or a footing still turns pagination on.
+Neither is on unless asked for.
+
 ## Taking only some of the records
 
 | | |
