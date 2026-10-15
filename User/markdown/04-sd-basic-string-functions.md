@@ -342,6 +342,31 @@ With `s = '1*2*3*4*5'`:
 
 *string* may be an element of an array, as `a(2)`.
 
+## Message digests: `md5()` and `digest()`
+
+```
+md5(string)
+digest(string, is.file, mode)
+```
+
+`md5` gives the 32 hexadecimal characters of the string's MD5 digest. `digest`
+does the same for **`MD5`, `SHA1`, `SHA256`, `SHA384` and `SHA512`** (the mode in
+either case), and with *is.file* true the string is the pathname of a file and
+the file's contents are what is digested, read a block at a time, so a large file
+is fine. The result is lower case hexadecimal, the same form as `md5`, and
+`status()` is `0`; **on any failure the result is the null string and `status()`
+says why**:
+
+| status | |
+|---|---|
+| `1` | the mode is not one of those five (this includes openQM's `MD4`, which is broken and which OpenSSL 3 no longer provides by default) |
+| `3003` | no such file |
+| `3035` | the file is not one the account may reach: **an account without the OS gate can read only files inside its own directory**, as `openseq`; a link that points out is refused. An `$internal` program is exempt, as it is for `openseq` |
+| `1008` | not a regular file (a directory, say), or it could not be read |
+
+A digest is not a way to store a password: use the system's login. It is for
+checking that a file or a string is what it should be.
+
 ## Continued in
 
 [SD Basic - String Matching and Replacing](04a-sd-basic-string-matching.html)

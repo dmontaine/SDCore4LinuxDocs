@@ -170,6 +170,36 @@ is removed with `delete.catalog`.
 > overwritten. Continue (Y/N)?"* — so it is not usable from a script driving SD
 > down a pipe.
 
+## Which copy will run: `find.program`
+
+```
+find.program name {detail}
+```
+
+For the case where the system seems to run the wrong version of a program
+because it is catalogued in more than one place. It looks in the three places a
+program is loaded from, **in the order they are searched** — the local catalogue
+(a VOC entry that points at the object file), the private catalogue (the
+account's `cat` directory, or the directory `$PRIVATE.CATALOGUE` names) and the
+global one — and reports every one that has it:
+
+```
+Program is in the local catalogue
+   Compiled 10/15/26 20:56:03
+   Subroutine with 2 arguments
+Program is in the private catalogue
+   Compiled 10/14/26 09:12:40
+   Subroutine with 2 arguments
+```
+
+The kind is *Program*, *Subroutine with n arguments*, *Function with n
+arguments* or *Class module*. `detail` adds the object code size in bytes and the
+flags of the object (`internal`, `debug`, `recursive`, `trusted`, `case sensitive`,
+`sdcall`). **SD's object code carries no compiler version and no source
+pathname, so those two lines of openQM's `detail` are not there.** A name found
+nowhere is *xx is not catalogued*. The name is looked for as typed; a global
+program is named with its prefix (`!acc_hold`, `$listphan`).
+
 ## Formatting source
 
 ```
@@ -284,7 +314,8 @@ program in a phantom process"*. The debugger itself is covered in
 
 **Every account has all of them now**: `format`, `list.common`, `basic`,
 `catalog`, `catalogue`, `cd`, `compile.dict`, `debug`, `delete.catalog`,
-`delete.catalogue`, `delete.common`, `generate`, `ide`, `map`, `run`.
+`delete.catalogue`, `delete.common`, `find.program`, `generate`, `ide`, `map`,
+`run`.
 
 **Running a catalogued program never needed any of these anyway** — a
 catalogued name runs by being typed, with no VOC record of its own — so an

@@ -118,8 +118,25 @@ For `e = 1234567890`, a session on UTC gets date `15020` and time `84690`; a
 session running in Asia/Kathmandu (5 hours 45 minutes ahead) gets `15021` and
 `18990`. **The zone is the one the session runs in** (the machine's `TZ`
 setting, as `date()` and `time()` use) and summer time is allowed for, so
-`mvepoch(mvdate(e), mvtime(e))` gives `e` back in any zone. There is no
-`set.timezone` yet, so a program cannot choose another zone.
+`mvepoch(mvdate(e), mvtime(e))` gives `e` back in any zone.
+
+```
+set.timezone zone
+```
+
+Chooses another zone for these four functions, for this session only:
+`set.timezone 'America/Los_Angeles'` and the same `e` gives date `15020` and
+time `55890`. `config('TIMEZONE')` says which zone is in force (the session's
+own `TZ`, if none has been set), and the verb `config timezone` *zone* does the
+same as the statement. **`date()`, `time()` and the clock are not moved**: the
+zone belongs to the conversions and nothing else. A null string goes back to the
+session's own zone.
+
+**The name must be one this machine has** — a file under
+`/usr/share/zoneinfo`, or `GMT` or `UTC`. openQM does no check and quietly
+converts in UTC for a name it does not know; SD refuses it, `status()` is `2`
+(and the verb says *Invalid value for this parameter*), and the zone stays as it
+was. Rule strings such as `EST5EDT,M3.2.0` are not taken.
 
 > **A value that cannot be converted gives the null string, not an error.**
 > That covers an epoch value outside 13 December 1901 to 19 January 2038 (the

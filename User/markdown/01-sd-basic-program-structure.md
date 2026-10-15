@@ -398,6 +398,22 @@ additions; each is described by what it does and does **not** do.
 | **`correlative.nocase`** | string operations in a correlative or an I-type ignore case. The option is read when the correlative runs, not when it was compiled |
 | **`correlative.reuse`** | the array operators of a correlative or an I-type act as if `reuse()` had been applied to each operand: the last value of a shorter array is used again for the missing ones, where otherwise they count as zero. Read when the correlative runs |
 | **`assoc.all`** | the query processor ignores the associations in the dictionary and treats every field as one association. With `by.exp` on one multivalued field, each line then shows the matching value of the other fields, where fields in other associations show all of theirs on every line |
+| **`clear.select`** | the command processor clears the default select list (list 0) when a command ends **if the list was already active when the command began**: a list the command made itself is kept, so `select` followed by `list` still works. A program that was meant to use what is left of a list and leave it says **`keep.select`**, and then the list stays (below) |
+
+### `keep.select`
+
+```
+keep.select
+```
+
+A program that finds a select list active, takes some of it and ends leaves the
+rest behind, where the next command may take it up by accident. With `option
+clear.select` on, the command processor clears list 0 as the command ends. A
+program that **means** to leave what is left of the list for the next command
+says `keep.select` and it stays. The word belongs to the command that ran it and
+is forgotten when that command ends, so a second command that does not say it
+loses the list. **Without `option clear.select` the statement does nothing**,
+since nothing was going to clear the list.
 
 ## What is not here
 

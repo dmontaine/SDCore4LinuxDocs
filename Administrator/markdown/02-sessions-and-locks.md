@@ -135,6 +135,39 @@ process and waits about four seconds — and that is the difference between a de
 entry and a busy one. `pstat` is a programmer verb and is documented in the user
 set.
 
+## Keeping new sessions out while you work: `inhibit.login`
+
+```
+inhibit.login on        no new session until it is switched off
+inhibit.login off       allow them again
+inhibit.login           say which it is, and who set it
+```
+
+For maintenance that needs the system quiet. A person who signs in while it is
+on is refused with *SD is not accepting new sessions: logins have been
+inhibited by* name *(inhibit.login). Try again later.*, and so is an API
+connection, before any credential is looked at. **Sessions already running are
+not touched** — it does not log anyone out — and neither are the phantoms the
+session that set it starts. The refusals are on the audit trail
+(`login refused ... reason=logins are inhibited (inhibit.login)`), and so are
+the `inhibit.login on` and `off` themselves.
+
+**It is SDSYS's verb, and SDSYS is never locked out by it.** openQM keeps out
+every new session, the administrator's included, and the one who set it can be
+the only one to switch it off; on a lost terminal that means restarting the
+service. Here the administrator can always open a new session, and **any
+administrator session may switch it off**. If the session that set it is killed
+the inhibit is ignored from then on — the record names a user number *and* a
+process id, and a process that is not there holds nothing — and the next `on`
+replaces it.
+
+The record is the file `login.inhibit` in the SDSYS directory (user number,
+process id, login name, date, time). **It is not the same thing as the hold that
+`backup.account` and `restore.account` take**, which keeps *everybody* out,
+the administrator's new sessions included, while they run. That hold also lapses
+when the session that took it is killed, which it did not until 15 October 2026:
+it used to wait for `sd -cleanup` to remove the dead session's entry.
+
 ## What is locked: `list.readu`
 
 ```
@@ -318,7 +351,9 @@ any file, so nothing has to be written back.
 
 **All of them are SDSYS's**, so an ordinary account does not have the names
 at all — being SDSYS is the whole of the gate, for every verb on this page,
-including `unlock` and `logout` against another Linux account's session.
+including `unlock`, `logout` and `inhibit.login` against another Linux account's
+session. (`inhibit.login` refuses anyone else by name as well, in case a VOC
+entry has been given to an account.)
 
 ## See also
 

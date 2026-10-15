@@ -42,6 +42,18 @@ rather than failing visibly.
 A trailing colon on `printcsv` suppresses the line terminator, so several
 statements can build one row.
 
+```
+matwritecsv matrix to file.variable then ... else ...
+```
+
+`matwritecsv` is `matreadcsv` the other way: **one line**, made of every element
+of a dimensioned matrix in storage order, each quoted as `writecsv` quotes, joined
+with the separator `csv.mode` has set. A matrix of one empty element writes a
+blank line. `on` may be written for `to`, and one of `then` and `else` is
+needed; a failed write takes `else`. **openQM's `encoding` clause and `on error`
+are not supported**: SD has no character encodings of files, and the write is
+the same `writeseq` it always is.
+
 ## Reading
 
 ```

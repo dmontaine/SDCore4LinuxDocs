@@ -145,6 +145,45 @@ The limit is the `NUMFILES` configuration parameter. **The peak is what matters
 when you are sizing it** — the current figure moves constantly and tells you
 almost nothing.
 
+```
+find.file {dict} file
+```
+
+A summary of one file, opened the way any program would open it: its type
+(*Dynamic hashed file, group size 1, modulus 3*, or *Directory file*), its
+pathname, and a line for each of these that is true of it — *File uses case
+insensitive record ids*, *File has indices*, *File has trigger* name, *File is
+read only*. A name that is not in the VOC, or a file that will not open, is said
+so. Unlike `analyse.file` it does not walk the file.
+
+## Permission bits of records: `set.mode`
+
+```
+set.mode {dict} file {all | from n | id ...} {no.query} mode
+```
+
+Sets the permission bits of records of a **directory file**, as `chmod` does
+for files. *mode* is three octal digits, owner then group then other (`640`).
+The records are named on the line, or `all` of them, or those of select list
+*n*, or the active select list if none of these is given — which it asks about
+first, unless `no.query` is given. The last word on the line is the mode, so a
+record cannot be named after it. It answers `3 record(s) set to mode 640`, and
+`@system.return.code` is the count.
+
+**It is behind the account's OS gate.** A change of permission bits is a change
+to the operating system's files, so the verb refuses an account whose
+`os.execute` gate is off — *SET.MODE changes operating system file permissions
+and needs the account's operating system access* — and the administrator turns
+the gate on with `modify.account` *name* `os-on`. The administrator needs no
+grant.
+
+**It changes the rwx bits and nothing else.** No set-id and no sticky bit (four
+digits are refused), only regular files, and a record that is itself a symbolic
+link is not followed — it is reported and the file it points at keeps its mode.
+A record that is not there is `Record 'xx' not found`. A dynamic file is refused
+(*A directory file is required*). What the mode lets other users do is still up
+to the account's directory and the file system.
+
 ## Reaching a file in another account
 
 ```
@@ -370,8 +409,10 @@ stock                zztrig               PRE.WRITE, PRE.DELETE, POST.WRITE, POS
 **Every account has all of them now** — there is no longer a withheld set.
 `ct`, `list.files`, `set.file`, `analyse.file`, `analyze.file`, `clear.file`,
 `cname`, `configure.file`, `compare.files`, `copy`, `copyp`, `create.file`,
-`delete`, `delete.file`, `dump`, `fixdir`, `fstat`, `hsm`, `list.triggers`,
-`oscopy`, `rename`, `set.trigger` are all in every account's VOC.
+`delete`, `delete.file`, `dump`, `fixdir`, `find.file`, `fstat`, `hsm`,
+`list.triggers`, `oscopy`, `rename`, `set.mode`, `set.trigger` are all in every
+account's VOC. (`set.mode` is there but refuses an account without the OS gate,
+as above.)
 
 ## What is not here
 

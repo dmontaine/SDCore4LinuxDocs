@@ -341,6 +341,34 @@ A number is seconds; a time is *until* that time, rolling over midnight if it
 has already passed. **`sleep` with no argument returns immediately** rather than
 sleeping for ever — the argument parses as zero.
 
+## A log of the commands a session runs: `command.logging`
+
+```
+command.logging {on | off}
+```
+
+`on` starts a log of every command this session runs and where it came from;
+`off` stops it; with neither word it says whether it is on and where the file
+is. The log is a file named `clog.`*user number*`.log` **in the account
+directory**, mode 0600 (nobody but its owner can read it), added to and never
+emptied. A line is tab separated: the time as an epoch value, the user number,
+the login name, the origin and the command.
+
+| origin | |
+|---|---|
+| `User` | typed at the prompt |
+| `Cmd` | the command line `sd` was started with |
+| `PA` | a line of a paragraph |
+| `Exec` | any other command a program or a menu runs, such as `execute` |
+
+The `command.logging on` itself is not in the log, because the log starts after
+it; `command.logging off` is. **openQM writes the file in `TEMPDIR` and has a
+`CMDLOG` parameter that logs every session into one directory; SD has neither.**
+`TEMPDIR` is `/tmp` unless `sd.conf` says otherwise, a directory anyone can
+write to, where another user could create the file first and be handed the log.
+A symbolic link left where the file would be made is refused (*The command log
+could not be started*). Logging belongs to the session and is off in the next.
+
 ## Writing to the error log
 
 ```

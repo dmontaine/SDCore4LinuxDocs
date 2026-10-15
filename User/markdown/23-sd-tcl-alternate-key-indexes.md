@@ -145,6 +145,33 @@ A file with none says so plainly:
 File has no indices
 ```
 
+## How well an index is spreading: `analyse.index`
+
+```
+analyse.index file {index {statistics} {detail}} {lptr {n}} {no.page}
+```
+
+With the file name alone, one line for each index: its number of indexed
+values and the most records any one value has.
+
+```
+Analysis of the indices of file zzak
+
+Index name...... Indexed values  Most records for one value
+CITY                          4                           5
+```
+
+With an index name the totals follow (index entries, key values, least, average
+and most records for a value) and how the values spread over the number of
+records they point at; `detail` lists every value with its count, as
+`list.index ... detail` does. The index name is taken in any case.
+
+**openQM's `statistics` also shows the index's node settings and a
+distribution of node sizes. SD does not read its indices at that level from
+Basic, so those are not shown**: the spread above is the part that is visible.
+`list.index file index statistics` gives the same totals together with the
+index's definition.
+
 ## Using an index
 
 **Nothing changes in how you write a query.** An index makes a selection on that
@@ -257,7 +284,8 @@ Deleting the file removes its indexes with it.
 ## Who has these verbs
 
 **Every account has all of them now** — `create.index`, `build.index`,
-`make.index`, `delete.index`, `list.index`, `selectindex` and `rebuild.all.indices`.
+`make.index`, `delete.index`, `list.index`, `analyse.index`, `selectindex` and
+`rebuild.all.indices`.
 An index changes how a query runs, not how data is written, so there was never a
 reason to withhold them even under the old model.
 

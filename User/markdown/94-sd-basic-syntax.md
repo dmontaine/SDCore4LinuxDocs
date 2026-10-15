@@ -596,13 +596,16 @@ in one list. Each is described where its subject is.
 | **`ceil`** · **`floor`** | `ceil(`*a*`)` · `floor(`*a*`)` |
 | **`child`** | `child(`*user.no*`)` |
 | **`compares`** | `compares(`*a*, *b* {, *justification*}`)` |
+| **`digest`** | `digest(`*string*, *is.file*, *mode*`)` — *mode* `MD5`, `SHA1`, `SHA256`, `SHA384` or `SHA512` |
 | **`formlistv`** | `formlistv` *array* `to` *var* |
 | **`getlistv`** | `getlistv` *name* `to` *var* {`setting` *count*} `then` … `else` … |
 | **`groupstore`** | `groupstore` *new* `in` *var* `using` *i*, *n* {, *delimiter*} |
 | **`is.alnum`** · **`is.alpha`** · **`is.digit`** · **`is.graph`** · **`is.mark`** · **`is.space`** | `is.alnum(`*a*`)` and so on |
+| **`keep.select`** | `keep.select` |
 | **`last`** · **`lasts`** | `last(`*string*, *delimiter*`)` · `lasts(`*array*, *delimiter*`)` |
 | **`left`** · **`right`** | `left(`*string*, *n*`)` · `right(`*string*, *n*`)` |
 | **`matchess`** · **`matchfields`** · **`trimws`** | `matchess(`*array*, *template*`)` · `matchfields(`*array*, *template*, *n*`)` · `trimws(`*array*`)` |
+| **`matwritecsv`** | `matwritecsv` *matrix* `to` *file.var* `then` … `else` … — ***no `encoding`, no `on error`*** |
 | **`mergelist`** | `mergelist(`*list1*, *list2*, *modes*`)` |
 | **`movelist`** · **`movelistv`** | `movelist` *n* `to` *m* {`keep`}   ·   `movelistv` *n* `to` *var* {`keep`} |
 | **`nv`** · **`ns`** | `nv(`*array* {, *repeat*}`)` · `ns(`*array*`)` |
@@ -612,6 +615,7 @@ in one list. Each is described where its subject is.
 | **`rmvd`** | `rmvd(`*array*, *code*`)` |
 | **`rounddown`** · **`roundup`** | `rounddown(`*a*, *step*`)` · `roundup(`*a*, *step*`)` |
 | **`send`** | `send` *expression* {`:`} `to` *file.var* `then` … `else` … |
+| **`set.timezone`** | `set.timezone` *zone* |
 | **`signal`** | `signal(`*user.no*`)` |
 | **`sort.compare`** | `sort.compare(`*a*, *b*, *mode* {, *no.case*}`)` |
 | **`terminfo.ex`** | `terminfo.ex(`*capability*`)` |

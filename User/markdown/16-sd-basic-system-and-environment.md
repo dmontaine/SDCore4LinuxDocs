@@ -123,6 +123,7 @@ which accounts there are, by asking.
 | Key | | Value |
 |---|---|---|
 | `14` | characters waiting at the terminal | a snapshot; for **piped input** it is only what has been read ahead, so do not rely on it |
+| `20` | print jobs passed to the spooler | a count for the whole system since SD started, all sessions together. openQM gives the job's reference; SD does not read the spooler's own job number back |
 | `19` | a unique value from the date and time | two five digit numbers, the day and the second; a second value in the same second, from **any** process, gets a letter on the end (`a`, `b` … `z`, `aa`). The time is the process's own, so two users in different time zones can get the same value |
 | `21` | a unique value from the date and a sequence | two five digit numbers, the day and a count that starts at 1 again each day |
 | `45` | the name of the running program | its catalogue name |
@@ -213,6 +214,10 @@ does not exist, and a caller cannot tell the two apart:
 | `config('NOSUCHKEY')` — **nine** characters | empty, `status()` **1004** |
 
 **Keep every `config()` name to eight characters and upper case.**
+
+`config('TIMEZONE')` is the zone the epoch functions convert in (see
+[SD Basic - Data Conversion](06-sd-basic-data-conversion.html)); `config('USPLIT')`
+is `1` when the administrator has turned on the split of user numbers.
 
 Neither call aborts the caller: a name that is too long comes back empty with
 a status, the same as a name that does not exist.

@@ -133,6 +133,8 @@ reads.
 | `FDS` | unset | Limit on file descriptors. No limit when unset |
 | `FIXUSERS` | unset | `base,range` — user numbers reserved for sessions that ask for a specific number |
 | `PORTMAP` | unset | `base_port,base_user,range` — gives a session a fixed user number derived from the port its connection arrived on. Refused if the range overlaps `FIXUSERS` |
+| `USERPOOL` | 1023 | The highest user number handed out; user numbers rotate through 1 to this, 0 always takes the lowest free one |
+| `USPLIT` | 0 | `1`: interactive sessions take the lowest free user number and every other process (a phantom, an API session) the highest free one in 1 to `NUMUSERS`, so the two never meet. `FIXUSERS`, `PORTMAP` and `USERPOOL` are ignored while it is on. `config('USPLIT')` reads it |
 
 ## Files and locking
 
