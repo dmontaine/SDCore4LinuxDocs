@@ -145,6 +145,36 @@ select voc with dispatch = "IN" to 4
 is what makes the numbered lists a safe scratch area, and it is why the prompt
 above stayed `:` rather than becoming `::`.
 
+### Moving a list: `move.list`
+
+```
+move.list 3 to 0
+move.list 0 to 5 keep
+```
+
+Moves the ids of list *n* that have not been read to list *m*, replacing what
+*m* held; list *n* is then empty. **`keep`** leaves the source as it was, so
+both lists hold the ids. A list moved onto itself, and an empty list, are left
+as they are. A number outside 0 to 10, a missing number, or a word other than
+`to` and `keep` is refused (*Select list number missing or invalid*,
+*Unexpected token (xx)*) and nothing is moved. `move.list 3 to 0` is how a
+list kept in 3 is made the one the next command uses.
+
+### A command for each id: `execute.list`
+
+```
+select voc with type = 'F'
+execute.list analyse.file () ; pause
+```
+
+Runs its commands, separated by semicolons, for each id of list 0 in turn: the
+pair of empty round brackets in a command is replaced by the id, as many times
+as it appears. Every id is taken out of the list before the first command runs,
+so a command that itself uses list 0 does not take ids from the loop, and the
+list is empty afterwards. With no active list nothing is run and nothing is
+said; with no command at all the verb stops with *A command is needed after
+EXECUTE.LIST*.
+
 ## Choosing from a list: `show.list`
 
 ```

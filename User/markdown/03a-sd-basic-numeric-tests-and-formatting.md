@@ -104,6 +104,28 @@ Returns true if *expr* would be accepted as a number, false otherwise.
 `nums()` applies the same test to every element of a dynamic array. See
 [SD Basic - Dynamic Arrays](05-sd-basic-dynamic-arrays.html) for the whole family of `s` functions.
 
+### Three more tests: `bool`, `numeric` and `is.null`
+
+```
+bool(expr)
+numeric(expr)
+is.null(expr)
+```
+
+| Expression | Result | |
+|---|---|---|
+| `bool(0)`, `bool(0.0)`, `bool('00')`, `bool('')` | false | a number that is zero, and the null string |
+| `bool(-3)`, `bool('abc')`, `bool(' ')` | true | |
+| `bool('false')` | **true** | the text *false* is not zero (`jboolean('false')` is how to read it as the JSON word) |
+| `numeric('007')` | `7` | the value as a number, exactly as `value + 0` gives it |
+| `numeric('1.50')` | `1.5` | |
+| `is.null(jnull())` | true | true only for the SQL null a collection can hold |
+| `is.null('')`, `is.null(0)`, `is.null('abc')` | false | the null string is **not** the SQL null |
+
+`bool()` makes a Boolean: `jtype(bool(5))` is `boolean` and `jbuild()` writes it
+as `true`. `arg.present(name)` and `reusing(name)` are described under
+*Arguments that may be left out* in [SD Basic - Program Structure](01-sd-basic-program-structure.html).
+
 ## Bit operations
 
 These work on **32-bit signed integers**. A value outside that range is

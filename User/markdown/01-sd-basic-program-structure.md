@@ -295,6 +295,46 @@ set.arg n, value
 These read the arguments of the **command line** that started the program, not
 the arguments of a subroutine call. `arg(1)` is the first word after the verb.
 
+## Arguments that may be left out
+
+```
+subroutine name(a, b = 7, c = 'none') var.args
+function name(a, flag = @true) var.args
+arg.present(name)
+reusing(name)
+```
+
+An argument may be given a **default value**: a number (a minus sign allowed),
+a string in single or double quotes (not one that holds both kinds), `@true` or
+`@false`. The program then needs `var.args`, or `$mode default.unass.args`, or the
+compiler refuses it (*Default argument values need the VAR.ARGS option or $MODE
+DEFAULT.UNASS.ARGS*); a default that is anything else, such as a variable or an
+expression, is *A default argument value must be a number, a string, @TRUE or
+@FALSE*. When the caller passes fewer arguments than there are, the missing ones
+take their defaults; with `$mode default.unass.args` one that was passed
+**unassigned** takes it too. `arg.count()` is still the number the caller passed,
+not what the defaults make of the rest. The program's own lines keep their line
+numbers.
+
+`arg.present(name)` is true if the caller passed that argument, whether or not
+it has a default now. It names an argument of the subroutine or function it is
+in; any other name, or use outside one, is a compile error (*xx is not an
+argument of this subroutine or function*). `reusing(name)` is true if the caller
+passed the argument with `reuse()`, and does not clear it.
+
+## Case sensitivity of strings: `casing`
+
+```
+casing on
+casing off
+casing expression
+```
+
+Switches case sensitivity of string comparisons and the string functions for the
+rest of the running program, the way `$nocase.strings` does for the whole of it.
+`system(1086)` says which is in effect. A `casing` with nothing after it is a
+compile error.
+
 ## Discarding a result
 
 ```
@@ -325,6 +365,15 @@ additions; each is described by what it does and does **not** do.
 | **`open.fail.zero.fvar`** | an `open` or `openpath` that fails leaves the integer `0` in the file variable, where it is otherwise unassigned and a test of it stops the program with a run-time error. The `else` clause is taken as always, and an `open` that works is not touched |
 | **`stdfil`** | the default file variable: `open`, `read`, `matread`, `write`, `matwrite`, `delete`, `close`, `clearfile`, `filelock`, `fileunlock`, `release` and `select` may be written without a file variable and use one the program does not name |
 | **`write.delete.then.else`** | `write`, `writeu`, `matwrite`, `matwriteu`, `delete` and `deleteu` take `then` and `else` clauses. A trigger that refuses the write or delete takes `else`, and the trigger is told it is being called with an error trap set. A statement with neither clause is as it was |
+| **`change.no.overlap`** | `change`, `ereplace` and `swap` count occurrences without overlap: when a starting occurrence is given, the ones before it are passed over whole, not one character at a time. A replace-all is the same with or without the mode |
+| **`count.overlap`** | `count` and `counts` find occurrences that overlap: `aa` in `aaaaaaaaa` is found 8 times, not 4. `dcount` is not changed, a delimiter never overlapping |
+| **`index.overlap`** | `index` and `indexs` take the *n*th occurrence counting the ones that overlap, so the 3rd `aa` in `aaaaaaaaa` starts at character 3, not 5 |
+| **`pick.convert`** | `convert(string, from, to)`: the string first, as Pick has it, in place of `convert(from, to, string)`. It applies from the line where the mode is turned on; the `convert` statement is not changed |
+| **`pick.select`** | `selectv` moves an active default select list (list 0) to the variable instead of making a new selection |
+| **`explicit`** | every scalar has to be named in a `dim` statement before it is used, or the compiler refuses the program with *Variable xx has not been declared* |
+| **`default.unass.args`** | an argument that has a default value (see *Arguments that may be left out* above) also takes it when the caller passed the argument unassigned, not only when it was left out |
+| **`trap.unused.main`** | like `trap.unused`, but it warns only about a variable that is assigned a value in the program itself, not in an include record |
+| **`conditional.statements`** | accepted, and it changes nothing: `read`, `readu`, `readv`, `readnext`, `readseq`, `readblk`, `readcsv`, `matread`, `open`, `openpath`, `openseq`, `writeseq`, `writeblk`, `writecsv`, `seek`, `send`, `filelock`, `fileunlock`, `flush`, `getlist`, `locate`, `find` and `findstr` may always be the condition of `while` and `until` |
 
 ## Options that change how SD runs a program
 
@@ -346,6 +395,8 @@ additions; each is described by what it does and does **not** do.
 | **`keep.old.object`** | a compilation that fails leaves the previous object code in place, where it would otherwise be deleted before the compiler starts. The listing of the failed compile is not put back |
 | **`no.phantom.notify`** | set inside a phantom, it stops the message the phantom sends to its parent when it ends (*Phantom nn : Normal termination.*) |
 | **`spool.command`** | shows the operating system command that prints a job, just before it runs; a diagnostic aid |
+| **`correlative.nocase`** | string operations in a correlative or an I-type ignore case. The option is read when the correlative runs, not when it was compiled |
+| **`correlative.reuse`** | the array operators of a correlative or an I-type act as if `reuse()` had been applied to each operand: the last value of a shorter array is used again for the missing ones, where otherwise they count as zero. Read when the correlative runs |
 | **`assoc.all`** | the query processor ignores the associations in the dictionary and treats every field as one association. With `by.exp` on one multivalued field, each line then shows the matching value of the other fields, where fields in other associations show all of theirs on every line |
 
 ## What is not here

@@ -258,6 +258,27 @@ next i
 > from a 32-bit value. For anything security-bearing use `sdencrypt()` and the
 > facilities described under *Security* rather than building your own.
 
+## Whole numbers above and below: `ceil`, `floor`, `roundup`, `rounddown`
+
+```
+ceil(value)
+floor(value)
+roundup(value, step)
+rounddown(value, step)
+```
+
+`ceil()` is the smallest whole number not below the value and `floor()` the
+greatest not above it. Where `int()` drops the fraction, `floor(-3.1)` is -4
+and `ceil(-3.1)` is -3.
+
+`roundup()` goes to the next multiple of *step* away from zero and
+`rounddown()` to the previous one towards zero; a value that is already a
+multiple is unchanged. With a step of 3, `roundup(10, 3)` is 12,
+`rounddown(10, 3)` is 9, `roundup(-4, 3)` is -6 and `rounddown(-4, 3)` is -3.
+**A step under 1 gives 0.**
+
+All four take a dynamic array and answer with one of the same shape.
+
 ## Continued in
 
 [SD Basic - Numeric Tests and

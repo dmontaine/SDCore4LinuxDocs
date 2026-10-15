@@ -150,6 +150,30 @@ A `savelist` of a two-id list followed by `getlist ... to 5` and a
 > `formlist` and `clearselect` do **not** take a `then`/`else` clause, so the
 > four statements are not consistent with each other.
 
+## Lists in variables, and moving them
+
+```
+formlistv array to list.variable
+getlistv name to list.variable {setting count} then ... else ...
+writelist array to name              (on may be written for to)
+movelist n to m {keep}
+movelistv n to list.variable {keep}
+```
+
+| | |
+|---|---|
+| `formlistv` | `formlist` into a select list variable, so list 0 and the numbered lists are not touched. A null array makes an empty list |
+| `getlistv` | `getlist` into a variable. **`then` or `else` is needed**, as for `getlist`. `setting` takes the number of ids; it is 0 when the list is not there |
+| `writelist` | writes the field mark delimited array as a saved list, replacing one of that name: the same record that `savelist` makes, in the saved-lists file, and without a numbered list to go through |
+| `movelist` | moves the ids not yet read from numbered list *n* (or from a select list variable) to list *m*, which is replaced; list *n* is then empty. With `keep` the source is left as it was. A list moved onto itself is left alone |
+| `movelistv` | the same into a select list variable |
+
+Both numbers are 0 to 10; anything else stops the program with the select list
+message. The same move is a command, `move.list n to m {keep}`, described in
+[SD TCL - Select Lists](22-sd-tcl-select-lists.html). `call !sort` of a select
+list variable and `mergelist()` of one (see [SD Basic - Array Operations](05a-sd-basic-array-operations.html))
+read its ids out.
+
 ## Combining and comparing lists
 
 ```

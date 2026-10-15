@@ -290,6 +290,58 @@ Digits, punctuation and mark characters are left alone.
 > comparison people reach for `fold` expecting is `compare()` or, for whole
 > files, the no-case file option described under [SD Basic - File Handling](07-sd-basic-file-handling.html).
 
+## Ends of a string, and the last element: `left`, `right`, `last`
+
+```
+left(string, n)
+right(string, n)
+last(string, delimiter)
+lasts(array, delimiter)
+```
+
+`left(s, n)` is `s[1, n]` and `right(s, n)` is `s[n]` (its last *n* characters,
+shortened if the string is shorter). A count under 1 is taken as 1 by `left()`
+and as 0 by `right()`. `last(s, d)` is the final element of a string delimited
+by *d*, which is `field(s, d, dcount(s, d))`; `lasts()` does it to each element
+of a dynamic array.
+
+## Testing one character: the `is.` functions
+
+```
+is.alnum(s)   is.alpha(s)   is.digit(s)
+is.graph(s)   is.mark(s)    is.space(s)
+```
+
+Each is true if the **first character** of the argument is a letter or digit,
+a letter, a digit, a printing character, one of the mark characters, or white
+space. **A null string is false** for all six. They look at one character: a
+test of a whole string is `matches`.
+
+## Changing part of a delimited string: `groupstore`
+
+```
+groupstore new in string using i, n {, delimiter}
+```
+
+A statement for what `string = fieldstore(string, delimiter, i, n, new)` does:
+it replaces *n* delimited elements of *string*, from the *i*th, with the
+elements of *new*. A position under 1 is taken as 1; a string with fewer
+elements than *i* gets delimiters to make up the number. With a positive *n*,
+*n* elements are replaced and *new* is padded with delimiters or cut to fit;
+with zero or a negative *n*, nothing is deleted (zero) or that many are, and
+the whole of *new* goes in. The delimiter is a field mark if it is left out.
+With `s = '1*2*3*4*5'`:
+
+| Statement | `s` becomes |
+|---|---|
+| `groupstore 'A*B' in s using 2, 3, '*'` | `1*A*B**5` |
+| `groupstore 'A*B*C' in s using 2, 3, '*'` | `1*A*B*C*5` |
+| `groupstore 'A*B*C*D' in s using 2, 3, '*'` | `1*A*B*C*5` |
+| `groupstore 'A*B' in s using 2, 0, '*'` | `1*A*B*2*3*4*5` |
+| `groupstore 'A*B' in s using 2, -3, '*'` | `1*A*B*5` |
+
+*string* may be an element of an array, as `a(2)`.
+
 ## Continued in
 
 [SD Basic - String Matching and Replacing](04a-sd-basic-string-matching.html)

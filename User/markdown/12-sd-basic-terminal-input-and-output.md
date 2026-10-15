@@ -101,6 +101,46 @@ return the **null string** — so a program that formats a screen from
 `terminfo()` must cope with getting nothing back when it is run from a script
 or the API.
 
+`terminfo.ex(name)` is the same call under the name openQM gives the form that
+returns **every** string a capability has, separated by value marks. SD's
+terminal database holds one string for each capability, so what comes back is
+always the one value `terminfo(name)` gives (a null string for a capability the
+terminal does not have).
+
+### Saving and restoring the terminal modes: `ttyget()` and `ttyset`
+
+```
+settings = ttyget()
+ttyset settings
+```
+
+`ttyget()` returns the modes that `pterm` sets as a field mark delimited array,
+and `ttyset` puts such an array back, so a program that changes the terminal
+can leave it as it found it:
+
+```
+saved = ttyget()
+... change the terminal ...
+ttyset saved
+```
+
+| Field | Mode | `pterm` |
+|---|---|---|
+| 1 | is Ctrl-C the break key? (0 or 1) | `break on` / `off` |
+| 2 | is case inversion on? (0 or 1) | `case invert` / `noinvert` |
+| 3 | the break character, as a number (3 for Ctrl-C) | `break` *c* |
+| 4 | the output newline characters | `newline` |
+| 5 | the input return key, as a character code | `return` |
+| 6 | typed `ctrl-\` `ctrl-]` `ctrl-^` become the marks? | `mark` |
+| 7 | the erase key: 0 as at the start, 1 to 255 a character, 256 none | `erase` |
+| 8 | are control characters discarded by `input`? | `ctrl.filter` |
+| 9, 10 | Telnet binary mode, in and out | `binary` |
+| 11 | Telnet negotiation recognised? | `telnet` |
+
+**Fields 1 to 5 are openQM's; 6 to 11 are SD's own**, so that a program that
+saves everything and puts it back changes nothing. A field that is null is
+left as it is, so an array that holds fewer fields sets fewer modes.
+
 ```
 save.screen(column, row, width, height)
 restore.screen(saved, column, row)

@@ -273,6 +273,8 @@ options inside the text for page number, date and time.
 |---|---|
 | **`total`** *field* | a column total |
 | **`average`** · **`avg`** | the mean |
+| **`median`** | the middle value: **the mean of the two in the middle when there is an even number**, a null counted as zero (left out with `no.nulls`), and a value that is not a number left out. At a break it is the median of that group, at the end of the report of every value. Where the values 150, 40, 30, 20 and 10 have an `average` of 50, their `median` is 30 |
+| **`rpt`** | repeats a single valued field on every line of a report on a multivalued one, in place of printing it on the first line only |
 | **`max`** · **`min`** | the largest and smallest value |
 | **`enum`** · **`enumerate`** | count the values rather than total them |
 | **`percent`** · **`pct`** · **`%P`** | express as a percentage |

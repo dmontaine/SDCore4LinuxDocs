@@ -174,6 +174,50 @@ not `listu` — a phantom somebody else started does not appear, and neither doe
 one your session started before you `logto`'d somewhere else. The register it
 reads is keyed by the parent's user number.
 
+## Every phantom that is running: `list.phantoms`
+
+```
+list.phantoms
+list.phantoms user name
+```
+
+Lists the phantoms, **and no other session**: a header, then a line for each
+with its user number, its operating system process id, the login name it runs
+as, the time it started and the account it is in (the phantom starts in its
+parent's account). `user` *name* shows only that user's (the name is case
+sensitive). **The account is shown for the administrator and for your own
+phantoms, and left blank for anyone else's**, as `listu` does. **openQM's
+`pool` word is refused** (*SD has no pools of phantom processes*), and `user`
+without a name is *User name required after USER*.
+
+## Telling a phantom what to do: `child()` and `signal()`
+
+```
+child(userno)
+signal(userno)
+system(1062)
+```
+
+`child(userno)` is true if *userno* is a phantom **this process started** and
+it is still running; the number is the one `phantom` hands back. Any other
+number, and a phantom that has ended, give false.
+
+`signal(userno)` raises a flag in the process with that user number and is true
+if that process is logged in; the other process reads and clears it with
+`system(1062)`. It is the simple way to ask a phantom to stop:
+
+```
+loop
+   ... the work ...
+until system(1062)
+   nap 100
+repeat
+```
+
+**SD signals only a process of the same login user** (the administrator can
+signal any): to a process of another user it gives false and does nothing.
+Two signals before the other process reads one are one signal.
+
 ## Dumping a process: `pdump`
 
 ```

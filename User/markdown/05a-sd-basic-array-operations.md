@@ -47,6 +47,46 @@ After one `remove` from `aaa^bbb`, `getrem()` is `4`.
 **Changing the string resets the pointer.** A loop that both `remove`s from a
 string and assigns to it will restart from the beginning, silently.
 
+### `rmvd()`: only three marks end an element
+
+```
+element = rmvd(array, delimiter)
+```
+
+The same as `remove()` as a function, and sharing its pointer, but **only a
+field, value or subvalue mark ends an element** (codes 2, 3 and 4). A text mark
+or an item mark is part of the data. `remove()` ends an element at those too,
+with the codes 5 and 1. Once the end is reached `rmvd()` gives a null string
+and 0 until the string is assigned again.
+
+### `revremove`: the same, going backwards
+
+```
+revremove variable from array setting delimiter
+```
+
+Takes the element that **ends at the remove pointer** and moves the pointer
+back past the mark in front of it. The delimiter is that mark's code (2, 3, 4,
+and also 1 and 5), and **0 for the first element of the string**. The pointer
+has to be put in place first: `setrem len(s) on s` before the first
+`revremove` walks the whole string from the end, and `setrem 5 on s` starts
+with the elements that lie in the first five characters. Without a `setrem` the
+pointer is at the start and there is nothing before it: a null string and 0.
+
+```
+s = 'a' : @fm : 'b' : @vm : 'c'
+setrem len(s) on s
+loop
+   revremove element from s setting mark
+   crt element : ' ' : mark          ;* c 3, then b 2, then a 0
+while mark
+repeat
+```
+
+A null element is given as a null string with its mark, and a string that
+begins with a mark ends on a null first element, as a forward `remove` would
+begin on one.
+
 ## Changing the mark level
 
 ```
@@ -164,6 +204,51 @@ sortclear
 back drains it. The order codes are the same `al` / `ar` / `dl` / `dr` as
 `locate`. For sorting a whole file, `sselect` is faster — see
 [SD Basic - Select Lists](08-sd-basic-select-lists.html).
+
+### `sort.compare()` and `compares()`
+
+```
+sort.compare(a, b, mode {, no.case})
+compares(a, b {, justification})
+```
+
+`sort.compare()` answers -1, 0 or 1 as *a* comes before, equal to or after *b*
+under the rule in *mode*. The names are in `syscom keys.h`.
+
+| Mode | Name | Rule |
+|---|---|---|
+| 0 | `srt$left` | character by character from the start (so `10` is before `9`) |
+| 1 | `srt$right` | right justified: two whole numbers, with an optional sign, compare as numbers |
+| 2 | `srt$compound` | alternating number and text parts: `GC5` is before `GC41`; a leading number comes before text |
+| 3 | `srt$right.float` | as 1, but any number, not only a whole one, compares as a number |
+| 4 | `srt$strict` | as 2, but `28` and `028` differ, the one with fewer characters first |
+| + 16 | `srt$descending` | the answer is reversed |
+| + 64 | `srt$nocase` | case is ignored; a true fourth argument does the same |
+
+`compares()` is `compare()` over two arrays, with an answer of the same shape;
+the justification is that of `compare()` (`'R'`, `'LI'` and so on).
+
+`mergelist(list1, list2, modes)` merges two lists that are in order by the
+same rules: *modes* is `ml$inter` (8), `ml$union` (16) or `ml$diff` (24) added
+to a sort rule and, if the lists are not in order, `ml$unsorted` (32). Either
+list may be a select list variable. **The values 8, 16, 24 and 32 are SD's
+own**: the openQM manual names the four but does not number them. `call
+!mergelist` is the older subroutine with its own mode words, and is unchanged.
+
+### `nv()` and `ns()`
+
+`nv(array {, repeat})` puts each value's position number in its field in place
+of the value, and `ns(array)` each subvalue's position number in its value in
+place of the subvalue. The marks stay where they were, so the answer has the
+shape of the argument. With *repeat* true `nv()` numbers the subvalues of a
+value with the number of the value, and without it a value's subvalues are
+dropped. For `111 vm 121 sm 122 sm 123 vm 131 sm 132 fm 211 sm 212 vm 221`:
+
+| Expression | Result |
+|---|---|
+| `nv(s, 0)` and `nv(s)` | `1 vm 2 vm 3 fm 1 vm 2` |
+| `nv(s, 1)` | `1 vm 2 sm 2 sm 2 vm 3 sm 3 fm 1 sm 1 vm 2` |
+| `ns(s)` | `1 vm 1 sm 2 sm 3 vm 1 sm 2 fm 1 sm 2 vm 1` |
 
 ## Mark mapping
 

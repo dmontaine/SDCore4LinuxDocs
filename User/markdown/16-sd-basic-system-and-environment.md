@@ -96,6 +96,49 @@ list of `NAME=value` pairs.
 `system(1020)` is the one to time something with: against a lock wait it gives
 252 ms where `time()` gives 0.
 
+### Where a file or an account is: `vocpath()` and `account.path()`
+
+```
+vocpath(filename {, dict.flag})
+account.path(account)
+```
+
+`vocpath()` gives the operating system pathname of a file named through the VOC:
+the data part, or the dictionary part if `DICT ` is written in front of the name
+or the second argument is true. The file is opened as `open` opens it, so a
+Q-pointer and the other forms `open` takes are resolved as `open` resolves them.
+`status()` is 0 if it was found; a null string comes back with the error of the
+open if it was not. `account.path()` gives the directory of an account from the
+accounts register, in either case of the name, and a null string when there is no
+such account.
+
+**A path is told only where the account could open it.** The account's own
+directory and the files in it always; anything else only to an account that has
+the OS access gate, and to any other the answer is a null string (with `status()`
+3035 from `vocpath()`). So a program cannot learn where another account lives, or
+which accounts there are, by asking.
+
+### Unique values, and a few more
+
+| Key | | Value |
+|---|---|---|
+| `14` | characters waiting at the terminal | a snapshot; for **piped input** it is only what has been read ahead, so do not rely on it |
+| `19` | a unique value from the date and time | two five digit numbers, the day and the second; a second value in the same second, from **any** process, gets a letter on the end (`a`, `b` … `z`, `aa`). The time is the process's own, so two users in different time zones can get the same value |
+| `21` | a unique value from the date and a sequence | two five digit numbers, the day and a count that starts at 1 again each day |
+| `45` | the name of the running program | its catalogue name |
+| `1048` | a sequence number | unique across all sessions until SD restarts, then 1 again |
+| `1049` | is `hush` in effect? | `0` or `1` |
+| `1062` | has `signal()` been raised for this process? | `1` and **cleared by reading it**: `until system(1062)` is the loop of a phantom that waits to be told |
+| `1067` | the default group size of a dynamic file | in bytes |
+| `1086` | are string comparisons case sensitive in this program? | `0` after `$nocase.strings` or `casing off` |
+| `1088` | where `maximum()` or `minimum()` found its element | the field, value and subvalue numbers joined by value marks: for `'61' : @vm : '42' : @fm : '71' : @vm : '57'` the maximum is `71` and `system(1088)` is `2` vm `1` vm `1`. The first of equal elements is the one. Null when the array has no number |
+
+`signal(userno)` raises the flag in another process and is true if that process
+is logged in. **SD signals only a process of the same login user**, or any
+process when the caller is the administrator; to any other it gives false and
+nothing happens. `child(userno)` is true while a phantom this process started
+is running. See [SD TCL - Processes and Phantoms](30-sd-tcl-processes-and-phantoms.html).
+
 ## DATE, TIME and TIMEDATE
 
 ```

@@ -262,6 +262,34 @@ finding a name someone has spelled by ear.
 Soundex is tuned for English and does poorly on names of other origins. It is a
 way to narrow a search, not to decide a match.
 
+## Cutting a string by a pattern: `parse`
+
+```
+parse(string, pattern, delimiter)
+```
+
+`parse()` matches the string against the pattern, as `matches` does, and
+returns the string with the *delimiter* put between the part that matched each
+element of the pattern. **A string that does not match gives the null
+string.** The delimiter is a field mark if it is null, and only its first
+character is used.
+
+| Expression | Result |
+|---|---|
+| `parse('01604-709200', '0N"-"0N', '\|')` | `01604\|-\|709200` |
+| `parse('ABC123DEF', '0X2N0X', '\|')` | `ABC\|12\|3DEF` |
+| `parse('ABC123DEF', '0X2-3N0X', '\|')` | `ABC\|123\|DEF` |
+| `parse('ab12cd', '...2N...', '\|')` | `ab\|12\|cd` |
+| `parse('ab12', '3N' : @vm : '2A2N', '\|')` | `ab\|12` |
+| `parse('abc', '3N', '\|')` | the null string |
+
+`0X` and a range such as `2-4X` take as few characters as they need; `0N`,
+`0A` and ranges of those take as many as they can. A pattern may be several
+templates separated by value marks: the first that matches is used. The three
+dots of the openQM pattern are the same as `0X`. **Text that is not in quotes
+is read one character to an element**, so a literal is written in quotes.
+`inmat()` is not set by `parse()`, which is a program of its own.
+
 ## Applying a function to every element
 
 Most functions here have a partner ending in `s` that applies the same
@@ -276,6 +304,10 @@ operation to every element of a dynamic array:
 | `indexs('Ab' : @vm : 'cD', 'b', 1)` | `2` and `0` |
 | `soundexs('Smith' : @vm : 'Smyth')` | `S530` and `S530` |
 | `spaces(2 : @vm : 3)` | two spaces and three |
+| `matchess(array, template)` | `matches` for each element |
+| `matchfields(array, template, component)` | `matchfield()` for each element |
+| `trimws(array)` | `trimw()` for each element |
+| `lasts(array, delimiter)` | `last()` for each element |
 
 The full family, and the rules for how they pair elements when given two
 arrays, is in [SD Basic - Dynamic Arrays](05-sd-basic-dynamic-arrays.html).

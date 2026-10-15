@@ -582,6 +582,42 @@ exist.**
 | **`xlate`** | `xlate(`{*dict*`,`} *file.name*, *id*, *field*, *action*`)` |
 | **`xtd`** | `xtd(`*a*`)` |
 
+## Added from openQM 4, 15 Oct 2026
+
+The statements and functions of the 1.2-0 additions that come from openQM 4,
+in one list. Each is described where its subject is.
+
+| | |
+|---|---|
+| **`account.path`** · **`vocpath`** | `account.path(`*account*`)` · `vocpath(`*file* {, *dict.flag*}`)` |
+| **`arg.present`** · **`reusing`** | `arg.present(`*name*`)` · `reusing(`*name*`)` |
+| **`bool`** · **`is.null`** · **`numeric`** | `bool(`*a*`)` · `is.null(`*a*`)` · `numeric(`*a*`)` |
+| **`casing`** | `casing on`   ·   `casing off`   ·   `casing` *expression* |
+| **`ceil`** · **`floor`** | `ceil(`*a*`)` · `floor(`*a*`)` |
+| **`child`** | `child(`*user.no*`)` |
+| **`compares`** | `compares(`*a*, *b* {, *justification*}`)` |
+| **`formlistv`** | `formlistv` *array* `to` *var* |
+| **`getlistv`** | `getlistv` *name* `to` *var* {`setting` *count*} `then` … `else` … |
+| **`groupstore`** | `groupstore` *new* `in` *var* `using` *i*, *n* {, *delimiter*} |
+| **`is.alnum`** · **`is.alpha`** · **`is.digit`** · **`is.graph`** · **`is.mark`** · **`is.space`** | `is.alnum(`*a*`)` and so on |
+| **`last`** · **`lasts`** | `last(`*string*, *delimiter*`)` · `lasts(`*array*, *delimiter*`)` |
+| **`left`** · **`right`** | `left(`*string*, *n*`)` · `right(`*string*, *n*`)` |
+| **`matchess`** · **`matchfields`** · **`trimws`** | `matchess(`*array*, *template*`)` · `matchfields(`*array*, *template*, *n*`)` · `trimws(`*array*`)` |
+| **`mergelist`** | `mergelist(`*list1*, *list2*, *modes*`)` |
+| **`movelist`** · **`movelistv`** | `movelist` *n* `to` *m* {`keep`}   ·   `movelistv` *n* `to` *var* {`keep`} |
+| **`nv`** · **`ns`** | `nv(`*array* {, *repeat*}`)` · `ns(`*array*`)` |
+| **`osread`** · **`oswrite`** · **`osdelete`** | `osread` *var* `from` *path* `then` … `else` …   ·   `oswrite` *expr* `to` *path*   ·   `osdelete` *path* |
+| **`parse`** | `parse(`*string*, *pattern*, *delimiter*`)` |
+| **`revremove`** | `revremove` *var* `from` *array* `setting` *code* |
+| **`rmvd`** | `rmvd(`*array*, *code*`)` |
+| **`rounddown`** · **`roundup`** | `rounddown(`*a*, *step*`)` · `roundup(`*a*, *step*`)` |
+| **`send`** | `send` *expression* {`:`} `to` *file.var* `then` … `else` … |
+| **`signal`** | `signal(`*user.no*`)` |
+| **`sort.compare`** | `sort.compare(`*a*, *b*, *mode* {, *no.case*}`)` |
+| **`terminfo.ex`** | `terminfo.ex(`*capability*`)` |
+| **`ttyget`** · **`ttyset`** | `ttyget()`   ·   `ttyset` *settings* |
+| **`writelist`** | `writelist` *array* `to` *name* |
+
 ## See also
 
 [SD Basic - Program Structure](01-sd-basic-program-structure.html) ·
