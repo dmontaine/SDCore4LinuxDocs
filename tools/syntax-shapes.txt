@@ -202,6 +202,7 @@ REPEAT = `repeat` — closes a `loop`
 REPLACE = `replace(`*arr*, *f* {, *v* {, *sv*}}, *value*`)`
 RESET.MODES = `reset.modes` *mask*
 RESTORE.SCREEN = `restore.screen` *image*, *restore.cursor*
+RESTRICTED = `restricted` *var* {`readonly`}, …   ·   `restricted subroutine` *name*{(*args*)} … `end`   ·   `restricted function` *name*{(*args*)} … `end` — in a class module
 RETURN = `return` {`to` *label*}   ·   `return(`*value*`)` from a function
 RETURNING = clause of `execute` — take the command's error text
 REWIND = `rewind` *file.var* `then` … `else` …

@@ -228,6 +228,34 @@ not a member at all. `private` is genuine encapsulation, not a convention.
 The way to expose one is to write a public routine that returns it, which is
 what `reveal()` does in the class above.
 
+### Restricted members: seen by the family, and only by the family
+
+```
+restricted var {readonly}, var2 ...
+restricted subroutine name(args)
+   ...
+end
+restricted function name(args)
+   ...
+end
+```
+
+`restricted` sits between `public` and `private`. A restricted name is **public to the class
+that declares it and to every class that inherits it, and invisible to everything else**:
+the main program, an unrelated class, and a sibling that shares only the parent. A child
+reaches its parent's restricted members through the inherited object, as it reaches the public
+ones (`parent->secret()`); a program that tries gets the same answer it gets for a private
+name, *Unrecognised property/method name (SECRET)*. **The child object does not pass
+the parent's restricted names on to the caller** — `c->secret()` from the main program is
+refused although `c` inherits it.
+
+`readonly` holds for a restricted variable as for a public one: a child can read it and cannot
+assign it. A name is wholly public or wholly restricted: a `restricted function foo` beside a
+`public subroutine foo` is a compile error.
+
+**It does not take an initial value** (`restricted x = 1`): no declaration does yet, `public` and
+`private` included. `restricted` is a reserved word inside the program now.
+
 ## Construction and destruction
 
 `create.object` and `destroy.object` are hooks, not calls you make. **They run

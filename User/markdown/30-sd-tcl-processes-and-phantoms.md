@@ -157,6 +157,26 @@ parent gives the user numbers of the phantoms grouped with it, field mark delimi
 them). A phantom that has not yet finished starting when its parent ends is still
 logged out.
 
+### A phantom with a user number of its own: `phantom user`
+
+```
+phantom user n command
+```
+
+The phantom is **user number n**. The numbers are the ones the administrator keeps for this
+with the `PHANTOMS` parameter of `sd.conf` (`PHANTOMS=900,4` keeps 900 to 903); no session and no
+phantom started without `user` is ever given one of them. It is for a service that other
+programs find by its user number. `user` may stand beside `no.msg`, `data`, `group` and `log`, in
+any order, and `phantom` returns the number as it always does.
+
+| refusal | when |
+|---|---|
+| *phantom user needs a user number* | `user` with nothing after it, or something that is not a whole number above 0 |
+| *user number n is not one of the numbers the phantoms parameter keeps* | `n` is outside `PHANTOMS`, or the administrator has set none |
+| *user number n is already in use* | a phantom (or anybody) has it now; no phantom is made |
+
+With `USPLIT=1` the numbers are not kept from other processes, but `user n` still takes a free one.
+
 ### `@pstat`: what `pstat` shows about the program
 
 `@pstat` is an `@` variable a program **may assign to**. Whatever text it holds when
