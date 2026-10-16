@@ -40,6 +40,13 @@ formlist array {to list}
 | `selectv` | the list into a **variable** rather than a numbered list |
 | `sselectv` | the sorted ids into a **variable**: `sselect` and `selectv` in one. The file may be a dynamic array instead, and `to` is required |
 
+**`$mode selectv`** makes `to` optional. With it, `select f`, `selectv f` and
+`sselectv f` leave the list in the program's own default select list variable,
+and `readnext id` with no `from` reads that variable, not list 0 (see the
+`selectv` row of the `$mode` table in *SD Basic - Program Structure*). A
+`readnext` before any `select` takes its `else` clause. Without the mode,
+`selectv f` and `sselectv f` with no `to` are still a compile error.
+
 The sort clauses of the sorted forms may come before or after `to`.
 **`right.aligned`** sorts numeric ids as numbers (1, 9, 10, 100) instead of as
 text (1, 10, 100, 9); **`descending`** reverses the order.

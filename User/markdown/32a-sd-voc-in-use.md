@@ -116,6 +116,23 @@ Ten verbs list VOC entries by type. They are all R-records into
 | `lists` | all sentences (S-records) |
 | `listv` | all verbs (V-records) |
 
+`listf`, `listfl` and `listfr` show the VOC name, the **file type**, the
+description and the data and dictionary pathnames. The type is `DH` for a
+dynamic hashed file (followed by `I` for alternate key indices, `S` for
+statistics and `T` for a trigger function), `Dir` for a directory file, `Err`
+and the error number for a file that will not open. **A multifile has a line
+for each subfile**: the type column holds one value for each subfile, so that
+each type is on the line of that subfile's pathname, and the first begins with
+`Mult` (`Mult DH` on the first line, `Dir` on the second for a multifile of a
+hashed and a directory subfile).
+
+The three can take a `with` or `without` clause on **`trigger`**,
+**`encryption`** or **`replication`**, as `listf with trigger` for the files
+that have a trigger function. SD has neither encryption nor replication, so
+`with encryption` and `with replication` select nothing and `without` selects
+every file. Any other query processor words may be added after them, as for
+every sentence.
+
 ### count — count the records
 
 ```
