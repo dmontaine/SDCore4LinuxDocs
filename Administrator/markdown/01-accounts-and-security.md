@@ -184,6 +184,29 @@ OS.EXECUTE", and the path routes give "*name* has no OS access, so a file or
 directory outside its own account cannot be reached by pathname (SDSYS can
 give it: `modify.account` *name* `os-on`)". **SDSYS is never refused.**
 
+### The third switch: `sd-on`, other SD accounts' directories
+
+`os-on` is wide: it reaches any path. `sd-on` is the narrow version, for an
+account that has to read or write the **data** of a neighbouring SD account
+(a shared reports folder, a hand-over directory) without being given the
+whole machine. It is **off for a new account**, and `modify.account` *name*
+`sd-on` / `sd-off` turns it on and off. It may be set on a group account
+(`sh-on` may not).
+
+With `sd-on`, the path routes in the table above also accept a path under the
+directory of any SD account **the user could `logto`**: the register's group is
+one the user belongs to, and the account is not suspended. Reading and writing
+are one switch. Two things stay shut:
+
+- **The other account's VOC** (`voc`, `voc.dic` at the top of its directory)
+  is never reachable this way; the account's own VOC is, as always.
+- Any directory that is not an SD account's, `/etc` included, still needs
+  `os-on`.
+
+**SDSYS is not affected** — it is never refused. `os-on` implies `sd-on`.
+The setting lives in field 9 of the register record and is not carried by an
+account archive, so a restored account starts with it off.
+
 ### VOC pointers: where a file pointer may lead, and which Q-pointers are followed
 
 **A VOC pointer is a way to name a file, so it is held to the same rule.** An
@@ -244,6 +267,7 @@ modify.account account add | delete  <user.name>
 modify.account account ssh | api | both | none
 modify.account account sh-on | sh-off
 modify.account account os-on | os-off
+modify.account account sd-on | sd-off
 modify.account account suspended | unsuspended
 ```
 
