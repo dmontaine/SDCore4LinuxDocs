@@ -30,6 +30,7 @@ marks a word typed as it stands; braces mark an optional part.
 |---|---|
 | `sed bp myprog` | edit record `myprog` of file `bp` |
 | `sed dict customers name` | edit a dictionary item |
+| `sed bp creating.seqkey` | edit a new record under the file's next sequential id (the counter `write … creating.seqkey` uses); also with `dict`, and typed at the *Record name* prompt. The id is taken when the edit begins, so a record never filed leaves a gap. A directory file or a file opened read only is refused; in quotes it is an ordinary id |
 | `sed` *file* | with a select list active, SED offers to edit its records one after another; with none, it asks for the record names until you give a null one |
 | `sed` | asks for the file name, then the record name |
 | a file name written `path:/home/pat/notes.txt` | an operating-system file by its path. An account needs `os-on` for a path outside its own directory; without it SED says the account has no OS access |

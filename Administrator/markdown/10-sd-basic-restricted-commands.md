@@ -96,7 +96,7 @@ itself administrator rights. That was demonstrated, not theorised.
 
 | | |
 |---|---|
-| **`fcontrol`** | `fcontrol(`*a*, *b*, *c*`)` ***(internal)*** |
+| **`fcontrol.int`** | `fcontrol.int(`*a*, *b*, *c*`)` ***(internal)*** — until 15 Oct 2026 this was `fcontrol`; that name is now the public function with openQM's numbers |
 | **`find`** | `find` *x* `in` *arr* {, *occ*} `setting` *f* {, *v* {, *sv*}} `then` … `else` … ***(internal)*** |
 | **`formcsv`** | `formcsv(`*a*`)` ***(internal)*** |
 

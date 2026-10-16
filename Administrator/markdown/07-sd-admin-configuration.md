@@ -173,7 +173,7 @@ can be listed or read.
 | Parameter | Default | Effect |
 |---|---|---|
 | `APILOGIN` | 1 | Whether the API requires authentication. `0` is the weaker setting, not the safer one |
-| `SDCLIENT` | 0 | Restricts what an API session may do. Non-zero disables file access outright (no file can be opened, so no dictionary can be evaluated either) and refuses `SDIConv`, `SDOConv`, `SDIConvs` and `SDOConvs` a conversion code that reads a file (`T` with a file) or calls a program (`U`); `2` additionally refuses any subroutine not compiled as callable from a client |
+| `SDCLIENT` | 0 | Restricts what an API session may do. Non-zero disables file access outright (no file can be opened, so no dictionary can be evaluated either) and refuses `SDIConv`, `SDOConv`, `SDIConvs` and `SDOConvs` a conversion code that reads a file (`T` with a file) or calls a program (`U`); any non-zero value also refuses `SDOpenSeq` and `SDExecute`; `2` additionally refuses any subroutine not compiled as callable from a client (a subroutine whose name begins with `$` must be so compiled at every setting, `0` included). Before 15 Oct 2026 the refusal at `2` was reported but the subroutine still ran |
 
 **There is no `APIPORT` and no `NETDIRS` on this port — a real structural
 difference, not an oversight.** SD Core for Windows sizes its listener from

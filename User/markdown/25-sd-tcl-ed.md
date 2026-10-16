@@ -52,6 +52,14 @@ bp zzed
 3 line(s)
 ```
 
+**`creating.seqkey` in the place of a record name** edits a new record under the
+file's next sequential id, the counter that `write … creating.seqkey` uses:
+`ed bp creating.seqkey`. The id is taken when the edit begins and shown like any
+record id, so a record that is never filed leaves a gap in the sequence, and an id
+that a record already holds is skipped. A file that is not a hashed file, such as a
+directory file, is refused with a message, as is a file opened read only. In
+quotes, `'creating.seqkey'` is an ordinary record id.
+
 **Omit the record name and `ed` asks for one**, and asks again after each edit
 until you give it an empty answer. **Give several names and it works through
 them in order** — the record after the current one is reached by filing or

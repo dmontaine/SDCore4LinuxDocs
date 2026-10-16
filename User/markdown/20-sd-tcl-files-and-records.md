@@ -72,7 +72,8 @@ clear.file {dict|data} file
 
 `delete.file` removes the file and its VOC record. **`force` is needed if the
 file is not empty.** `clear.file` empties a file and keeps it, along with its
-dictionary and its indexes.
+dictionary, its indexes and its `creating.seqkey` counter (the next sequential id carries on; this is
+SD's behaviour, and `configure.file` *file* `next 1` starts it again).
 
 ## Changing a file after it exists
 
@@ -94,8 +95,9 @@ on and off. For a directory file, `binary` turns on mark mapping.
 
 **`next` *n*** sets the next record id that `write … creating.seqkey` will give out in a
 **hashed** file (see [SD Basic - File Handling](07-sd-basic-file-handling.html)); **`next query`** says
-what it is (*The next sequential record id is 103*). A new file's counter is 1, and rebuilding a file
-with a different group size or version carries the counter over. A directory file is refused:
+what it is (*The next sequential record id is 103*). A new file's counter is 1, `clear.file` keeps it (SD's behaviour), and rebuilding a file
+with a different group size or version carries the counter over. A file made by `copy` starts its own
+counter at 1; `write … creating.seqkey` skips an id that already names a record. A directory file is refused:
 *NEXT applies to a hashed file only*.
 
 ## Looking at a file

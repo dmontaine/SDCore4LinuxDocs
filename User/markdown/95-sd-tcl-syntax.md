@@ -95,7 +95,7 @@ not refused — the name is simply not recognised.**
 | **`display`** | **`display`** *text* |  |
 | **`dump`** | **`dump`** {**`dict`**} *file* {*id* … \| **`*`**} {**`(options`**} |  |
 | **`echo`** | **`echo on`** \| **`off`** \| **`echo`** to toggle |  |
-| **`ed`** | **`ed`** {**`dict`**} *file* {*id* …} |  |
+| **`ed`** | **`ed`** {**`dict`**} *file* {*id* … \| **`creating.seqkey`**} |  |
 | **`edit`** | **`edit`** {**`dict`**} *file* *record* |  |
 | **`execute.list`** | **`execute.list`** *command* {**`;`** *command* …}  —  a pair of brackets `()` in a command is replaced by each id of list 0 in turn |  |
 | **`file.stat`** | **`file.stat`** {**`dict`**} {*file* …} {**`lptr`** {*n*}} {**`no.page`**} |  |
@@ -173,7 +173,7 @@ not refused — the name is simply not recognised.**
 | **`save.stack`** | **`save.stack`** {*name*} |  |
 | **`scan`** | **`scan`** {**`dict`**} *file* {*selection*} {*id* …} {**`all`**} {**`no.case`**} {**`all.match`** \| **`no.match`**} {**`strings`** *file* *record*} **`for`** *"text"* … |  |
 | **`search`** | **`search`** {**`dict`**} *file* {*selection*} |  |
-| **`sed`** | **`sed`** {**`dict`**} *file* {*record*} |  |
+| **`sed`** | **`sed`** {**`dict`**} *file* {*record* \| **`creating.seqkey`**} |  |
 | **`select`** | **`select`** {**`dict`**} *file* {*selection*} {*list.no*} |  |
 | **`select.dir`** | **`select.dir`** *pathname* {**`to`** *n*} |  |
 | **`selectindex`** | **`selectindex`** {**`dict`**} *file* *index* {*value*} {**`to`** *n*} |  |

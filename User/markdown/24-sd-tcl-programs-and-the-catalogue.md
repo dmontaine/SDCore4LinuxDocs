@@ -236,7 +236,7 @@ a query using those entries runs against.
 ## Named common blocks
 
 ```
-list.common {all}
+list.common {all} {detail}
 delete.common name
 ```
 
@@ -246,7 +246,17 @@ No named common blocks present
 
 Named common survives between programs in a session, and `list.common` is how
 you see what is holding memory. `all` additionally shows the system blocks and
-is internal-only.
+is internal-only. `detail` puts the name of the program that created each block
+beside its name, which helps when two programs disagree about the size of a block:
+
+```
+list.common detail
+SCREEN.DATA  show.screen
+SYS.FILES    myprog
+```
+
+The names are sorted on their own; the program is the one that executed the
+`common` statement first, in this session.
 
 ## One screen for the lot: `ide`
 

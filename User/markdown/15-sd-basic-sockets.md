@@ -166,6 +166,16 @@ and `socket.info(s, 6)` then reads `0`.
 Key **9**, `SKT$INFO.EVENTS`, is what `select.socket()` watches for (next
 section); the value is 0 to 7, anything else is refused.
 
+Key **10**, `SKT$INFO.TRACE`, writes a log of everything sent and received on the socket to the
+file whose pathname is the value; a null value (or closing the socket) ends it, and an existing
+file is overwritten. Each entry is `SEND n bytes` or `RECV n bytes` and the data sixteen bytes to a
+line, in hexadecimal and as characters (a full stop for a byte that is not printable). On a TLS
+socket the log holds the data before it is encrypted and after it is decrypted, so it can hold
+passwords: **the log is made readable by its owner only (mode 0600), a link at the path is not followed,
+and the pathname is held to the OS-access gate** — an account without `os-on` may trace only into its
+own directory (`set.socket.mode` returns 0 and nothing is written). SD's own key number; the
+openQM manual names the key without one.
+
 ## Waiting on several sockets: `select.socket()`
 
 ```

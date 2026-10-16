@@ -182,6 +182,7 @@ exist.**
 
 | | |
 |---|---|
+| **`fcontrol`** | `fcontrol(`*file.var*, *action* {, *qualifier*}`)` — *action* `FC$SET.SEQ.KEY` 2, `FC$GET.SEQ.KEY` 3, 5 (field access, always 1), `FC$VALID.ID` 6, `FC$MINMOD` 7; `FC$SYNC` 1 and `FC$CRLF` 4 stop the program ([File Handling](07-sd-basic-file-handling.html)) |
 | **`field`** | `field(`*string*, *delimiter*, *occurrence* {, *count*}`)` |
 | **`fields`** | `fields(`*arr*, *delimiter*, *occurrence* {, *count*}`)` |
 | **`fieldstore`** | `fieldstore(`*a*, *b*, *c*, *d*, *e*`)` |
