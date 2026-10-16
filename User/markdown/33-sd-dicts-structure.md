@@ -217,7 +217,10 @@ An A-type (or S-type) uses a different field layout:
 The correlative in field 8 is a Pick-style expression — a short code
 that transforms the field value before display. SD compiles
 correlatives the same way it compiles I-types, storing the object in
-field 16 onward.
+field 16 onward. **Field 8 may also begin with an `if` expression**
+(`if 3 > "5" then "big" else "small"`), which is taken as an A-correlative
+without the `a;` in front; anything else that does not begin `a` or `f` is
+a conversion code, as before.
 
 ## The PH record — a phrase
 

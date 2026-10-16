@@ -125,6 +125,7 @@ pdebug = **`pdebug`** {*command*}
 pdump = **`pdump`** *n*
 phantom = **`phantom`** {**`no.msg`**} {**`data`**} {**`group`**} {**`user`** *n*} {**`log`** *file*} *command*
 printer = **`printer`** {*unit*} **`query`** | **`at`** *name* | **`file`** *file* *record* | **`width`** *n* | **`lines`** *n* | **`top.margin`** *n* | **`bottom.margin`** *n* | **`left.margin`** *n* | **`keep.open`** | **`close`** | **`reset`**
+profiler = **`profiler on`** {**`user`** *n*} {*event* …} | **`off`** {**`user`** *n*} | {**`display`**} {**`user`** *n*}
 pstat = **`pstat`** {**`user`** *n*} {**`level`** *n*} {**`no.page`**} {**`lptr`** {*n*}}
 pterm = **`pterm display`** | **`lptr`** | **`break`** … | **`case`** … | **`newline`** … | **`return`** … | **`binary`** … | **`telnet`** … | **`reset`** *string* | **`prompt`** *p* *c*
 qselect = **`qselect`** {**`dict`**} *file* {*id* … | **`*`**} {**`(options`**}

@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **182** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **184** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,8 +23,8 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 162 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 20 more | in `voc_template` but not `newvoc` |
+| **every account** | 163 verbs | `newvoc`, identical for every ordinary account |
+| **SDSYS only** | 21 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -116,7 +116,7 @@ not refused — the name is simply not recognised.**
 | **`if`** | **`if`** *condition* *command* |  |
 | **`inhibit.login`** | **`inhibit.login`** {**`on`** \| **`off`**} | S |
 | **`list`** | **`list`** {**`dict`**} *file* {*selection*} {*fields*} {*options*} |  |
-| **`list.common`** | **`list.common`** {**`all`**} |  |
+| **`list.common`** | **`list.common`** {**`all`**} {**`detail`**} |  |
 | **`list.diff`** | **`list.diff`** *list.1* {*list.2* {*tgt*}} {**`count.sup`**} |  |
 | **`list.files`** | **`list.files`** |  |
 | **`list.index`** | **`list.index`** *file* {*field* …} |  |
@@ -132,6 +132,7 @@ not refused — the name is simply not recognised.**
 | **`list.vars`** | **`list.vars`** {*pattern*} |  |
 | **`listu`** | **`listu`** {**`detail`**} {**`no.page`**} {**`lptr`** {*n*}} | S |
 | **`lock`** | **`lock`** *n* {**`no.wait`**} | S |
+| **`lock.tracer`** | **`lock.tracer`** **`on`** \| **`off`** \| {**`user`** *n*} {**`lptr`** {*n*}} {**`no.page`**} | S |
 | **`logmsg`** | **`logmsg`** *text* |  |
 | **`logout`** | **`logout`** \| *n* … \| **`all`** |  |
 | **`logto`** | **`logto`** *account* |  |
@@ -152,8 +153,9 @@ not refused — the name is simply not recognised.**
 | **`pause`** | **`pause`** {*seconds*} |  |
 | **`pdebug`** | **`pdebug`** {*command*} |  |
 | **`pdump`** | **`pdump`** *n* |  |
-| **`phantom`** | **`phantom`** *command* |  |
+| **`phantom`** | **`phantom`** {**`no.msg`**} {**`data`**} {**`group`**} {**`user`** *n*} {**`log`** *file*} *command* |  |
 | **`printer`** | **`printer`** {*unit*} **`query`** \| **`at`** *name* \| **`file`** *file* *record* \| **`width`** *n* \| **`lines`** *n* \| **`top.margin`** *n* \| **`bottom.margin`** *n* \| **`left.margin`** *n* \| **`keep.open`** \| **`close`** \| **`reset`** |  |
+| **`profiler`** | **`profiler on`** {**`user`** *n*} {*event* …} \| **`off`** {**`user`** *n*} \| {**`display`**} {**`user`** *n*} |  |
 | **`pstat`** | **`pstat`** {**`user`** *n*} {**`level`** *n*} {**`no.page`**} {**`lptr`** {*n*}} |  |
 | **`pterm`** | **`pterm display`** \| **`lptr`** \| **`break`** … \| **`case`** … \| **`newline`** … \| **`return`** … \| **`binary`** … \| **`telnet`** … \| **`reset`** *string* \| **`prompt`** *p* *c* |  |
 | **`qselect`** | **`qselect`** {**`dict`**} *file* {*id* … \| **`*`**} {**`(options`**} |  |

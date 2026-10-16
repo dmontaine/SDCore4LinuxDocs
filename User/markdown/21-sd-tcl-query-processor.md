@@ -225,11 +225,62 @@ dictionary entry called `dispatch`.
 | **`conv`** *"code"* | override the conversion |
 | **`as`** *name* | use another dictionary entry's formatting |
 | **`col.spaces`** *n* | change the gap between columns |
-| **`vert`** | one field per line instead of columns |
+| **`vert`** · **`vertically`** | one field per line instead of columns (see *A vertical report*) |
 | **`dbl.spc`** | a blank line between records |
 | **`col.sup`** · **`col.hdr.sup`** · **`hdr.sup`** | suppress column headings, both, or the page heading |
 | **`count.sup`** | suppress the trailing record count |
 | **`det.sup`** | suppress the detail lines, leaving totals |
+
+## A vertical report
+
+`vert` (or `vertically`) prints one field to a line, the name of the field, a
+colon and the value. **A second value of a multivalued field repeats the colon**;
+a line that wrapped because the value was longer than the column has none, so
+the two can be told apart:
+
+```
+list sales vertically
+name....... : Ann
+lines...... : one
+           : two
+text....... : a long value that
+              wrapped here
+```
+
+The name column is 12 wide, the heading cut to fit it. Both can be changed:
+
+| | |
+|---|---|
+| **`vertically fmt "25l"`** | the whole heading, in a column of that format |
+| **`vertically fmt "fit"`** | a column as wide as the longest heading in the report |
+| **`vertically fmt ,"20l"`** | a data format for the values: every item that is **not right justified in its dictionary entry** and has no `fmt` of its own takes it |
+
+**The same, as a default for a dictionary or the whole account:** a record
+**`$vlist`** in the dictionary (or, failing that, in the VOC) with `x` in field 1,
+the name format in field 2 (or `fit`) and the data format in field 3. What the
+command line gives wins over the record.
+
+## Defaults for a file's queries: `$query.defaults`
+
+A record **`$query.defaults`** in a dictionary, with `x` in field 1, holds words
+added to the query before it is read: field 2 for `list` and `sort`, **field 3
+for `select`, `sselect` and `search`**, and **field 4 the format of the id column the
+query processor makes up when the dictionary has no `@id`** (a width and `l`, `r`,
+`t` or `c`, as `10r`; anything else is ignored with a message and the default
+`12l` is used). A line that ends with `_` continues on the next.
+
+## Selecting some of the values: `when`
+
+`when` takes the values of a multivalued field, not the record, and may be used
+with the same operators as `with`. **`when field` with no operator keeps the values that are
+not null**; `between` is checked against **every** value of the field; and
+`unlike no.case` takes the case of the pattern as no matter.
+
+## More than one exploded sort
+
+`by.exp` and `by.exp.dsnd` may each be given **more than once, provided the fields are in the
+same association** (the later ones decide the order of values that the earlier ones leave
+equal). A field outside the association is refused with a message.
 
 ## Headings and footings
 
@@ -274,6 +325,8 @@ options inside the text for page number, date and time.
 | **`total`** *field* | a column total |
 | **`average`** · **`avg`** | the mean |
 | **`median`** | the middle value: **the mean of the two in the middle when there is an even number**, a null counted as zero (left out with `no.nulls`), and a value that is not a number left out. At a break it is the median of that group, at the end of the report of every value. Where the values 150, 40, 30, 20 and 10 have an `average` of 50, their `median` is 30 |
+| **`mode`** | the value that comes most often, at the end of the report and at each breakpoint; **if several come as often, the first one is shown**. A null is a value (left out with `no.nulls`), and the values need not be numbers |
+| **`range`** | the largest value less the smallest, numbers only (a value that is not a number is left out, a null counts as zero unless `no.nulls`) |
 | **`rpt`** | repeats a single valued field on every line of a report on a multivalued one, in place of printing it on the first line only |
 | **`max`** · **`min`** | the largest and smallest value |
 | **`enum`** · **`enumerate`** | count the values rather than total them |
@@ -329,6 +382,48 @@ whole one.
 
 Printing, print units and `$hold` are in
 [SD TCL - Printing and Spooling](28-sd-tcl-printing-and-spooling.html).
+
+## A report as XML
+
+```
+list sales sale date cust item qty price xml
+```
+
+`xml` makes the report an XML document: the declaration, a root element
+`<ROOT>`, and one element for each record, named for the file. A single
+valued field is an attribute of it, and each row of an **association**
+(fields the dictionary puts in the same association) is a tag named for the
+association, a value in each attribute. A multivalued field that is in no
+association is one tag for each value, named for the field with `_MV` added.
+A field with no value is left out. The characters XML reserves (`&` `<` `>`
+and `"`) become entities.
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<ROOT>
+<sales sale = "12140" date = "14 Oct 07" cust = "1056">
+  <line item = "003" qty = "1" price = "1.70"/>
+  <line item = "122" qty = "3" price = "44.50"/>
+</sales>
+</ROOT>
+```
+
+| | |
+|---|---|
+| **`elements`** | every field is an element of its own, and an association row is an element that holds one element for each field, in place of attributes |
+| **`with.dtd`** | the DTD, as a `DOCTYPE` for `ROOT`, before the data |
+| **`dtd.only`** | the declarations of the DTD and no data |
+| **`with.schema`** | an XML Schema document before the data (the data document follows it, with its own declaration) |
+| **`schema.only`** | the schema and no data |
+
+**What it does not do.** An XML report cannot have breakpoints, totals or any
+other arithmetic on a field (it says so and stops), and `heading`, `footing`,
+`det.sup` and the page layout are ignored. The `elements`, `with.dtd`,
+`dtd.only`, `with.schema` and `schema.only` words are accepted only with `xml`.
+The text of the DTD and of the schema is SD's own: the openQM manual shows the
+data but not them. A character in a field name that is not a letter, digit,
+underscore, dot or dash becomes an underscore, and the tags are in the case
+the file and the dictionary give them.
 
 ## Querying a dictionary
 

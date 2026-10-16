@@ -243,6 +243,27 @@ recompile rather than trying to work around it.
 **There is no conditional breakpoint.** Put a `debug` statement inside the `if`
 instead, and recompile.
 
+## Equate tokens
+
+A program compiled with `$mode debug.equates` (and for the debugger, `basic ...
+debugging`) keeps its `equate` and `$define` tokens in the object. The
+debugger then takes a token for what it stands for, wherever it takes a
+variable name:
+
+```
+>/cust.name          the variable the token was equated to
+>/limit              LIMIT = 100        a $define or an equate of a constant
+>set tot = 9         sets the variable behind the token
+>w tot > 10          watches it
+```
+
+A token equated to a **variable**, an **element of a matrix** or a **field of
+a dynamic array variable** shows, `set`s and `watch`es the thing it stands
+for. A token of a **number, a string or `char(n)`** is not a variable: it
+shows as `name = value`, and `set` and `watch` refuse it with *Variable not
+defined*. Without the mode a token is not known to the debugger, as it
+never was.
+
 ## Watching a variable
 
 ```

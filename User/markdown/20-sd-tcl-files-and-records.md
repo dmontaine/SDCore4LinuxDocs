@@ -139,6 +139,38 @@ of a name (its VOC lookup), or through `readv` and `writev`, which read and
 write the record themselves, is not counted against it.**
 
 ```
+profiler on {user n} {event ...}
+profiler off {user n}
+profiler {display} {user n}
+```
+
+The application event profiler: where the Hot Spot Monitor counts per program,
+this records **what** the programs did and **where**. `profiler on` starts
+logging in your session, or, for the administrator, in session *n*; `profiler off`
+stops it and keeps what was found; `profiler` (or `display`) shows it. The events
+are `call` (a subroutine), `open`, `read` (including `readu`, `readv` and
+`matread`), `write`, `delete`, `openseq`, `readseq`, `writeseq`, `execute` (the
+first 32 characters of the command) and `object` (a call of a class module's
+object). Name some after `on` to log only those; none means all of them.
+
+`display` is a list of the event types with a count of each. Type the **number** of
+a line to open it: the names the events were on (the file, the subroutine, the
+command), then the programs that did them, then the **line numbers** in the
+program. **`b`** goes back a level and **`q`** leaves. (openQM uses the cursor
+keys; a number works on any terminal.) With one profile available it opens
+without asking which.
+
+**What it is and is not.** The profile is kept in memory while it is on, and
+written to the `$ipc` file when it is turned off, so nothing is left on the
+disk and it is gone when SD is restarted. **Only the administrator can profile
+another user's session** (what a profile holds is the files and commands of
+that user), and an ordinary user sees only their own. It holds 4,000 different
+events: when there are more, `display` says how many were not logged. A user's
+program is named by the pathname of its compiled code. Only a program's own
+statements are counted: a `readv` is one `read`, not that and the reads the
+language does for it.
+
+```
 list.files
 ```
 
