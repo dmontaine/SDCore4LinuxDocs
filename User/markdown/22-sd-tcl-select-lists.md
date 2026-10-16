@@ -314,6 +314,14 @@ easiest mistake on the page.**
 | **`list.union`** · **`list.inter`** · **`list.diff`** | **saved list names** | reads and writes `$savedlists` |
 | **`merge.list`** | **list numbers** | works on the numbered lists in your session |
 
+All four commands find a key of one list in the other without scanning it
+(since 16 Oct 2026), so lists of tens of thousands of keys merge in seconds
+where the time used to grow with the product of the two lengths. The result
+is what it always was: a union keeps the first list and adds each new key of
+the second once; an intersection gives the keys of the second list that are in
+the first, a key repeated in the second repeated; a difference takes away one
+occurrence in the first list for each key of the second.
+
 Giving a number to `list.union` does not do the numbered thing — it looks for a
 saved list with that name and fails:
 

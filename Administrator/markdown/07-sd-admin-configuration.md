@@ -127,7 +127,7 @@ reads.
 |---|---|---|
 | `NUMUSERS` | 20 | Maximum concurrent sessions. Sizes the user table in shared memory |
 | `NUMFILES` | 80 | Maximum open files across all sessions |
-| `NUMLOCKS` | 100 | Maximum record locks across all sessions |
+| `NUMLOCKS` | 100 | Maximum record locks across all sessions. Range 1 to 32767 (the lock table's cells are 16 bits; a value outside it stops SD starting, which it did not before the check of 16 Oct 2026, when 40000 wrapped) |
 | `MAXCALL` | 10000 | Maximum subroutine call depth. Range 10 to 1000000 |
 | `CMDSTACK` | 99 | Depth of the command stack |
 | `FDS` | unset | Limit on file descriptors. No limit when unset |

@@ -192,7 +192,9 @@ a marginal verb.
 ```
 
 This is `sd.accounts`. Field 2 is the account name, field 3 is the file
-name in that account. `set.file` writes Q-pointers; see below.
+name in that account. `set.file` writes Q-pointers; see below. Since 16 Oct 2026 the
+target of `set.file` may itself be a Q-pointer, which makes a chain (not recommended, but it opens): each link is
+followed with the same account test, so a chain cannot reach where its links alone could not.
 
 `md` is a Q-pointer to `voc` — the VOC's own dictionary is reached
 through it, and it is how `dict voc` finds its records.

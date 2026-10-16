@@ -90,6 +90,10 @@ rather than lazily, and `dynamic` or `directory` to change the file's kind.
 requires a full restructure; the rest take effect without one. Plan for the time
 and the disk on a large file.
 
+**`reporting`** shows how far the work has got: a line *1000 records converted* at every thousand
+and the total at the end, when `dynamic` or `directory` converts the file, and *n groups moved* in the same way
+for `immediate`. It changes nothing else, and without it nothing is shown.
+
 `no.case` / `case` and `resize` / `no.resize` are the pairs that turn a setting
 on and off. For a directory file, `binary` turns on mark mapping.
 

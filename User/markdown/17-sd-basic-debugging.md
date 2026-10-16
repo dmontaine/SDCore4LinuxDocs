@@ -264,6 +264,36 @@ shows as `name = value`, and `set` and `watch` refuse it with *Variable not
 defined*. Without the mode a token is not known to the debugger, as it
 never was.
 
+**A token may also be the value** of a `set` (16 Oct 2026): `set tot = numc`
+gives the variable the number the token stands for, and a token of a string or
+of `char(n)` gives it that. A token of a **variable** is not a value, and is
+refused with *Illegal value* as before.
+
+## Every variable, control characters, the size of the screen
+
+**`/*`** shows every variable of the program, one to a line, the name first and
+then what `/name` shows: the locals, then the common blocks the program names.
+(In the full-screen debugger the lines are paged with *---more---*; the manual's
+list you can move about in and open with Return is not built. Use `/name` to go
+into an array, a collection or a string.)
+
+**`^`** switches the way a control character in a string is shown: as `?`, as it
+always was, or as `^9` (a caret and the decimal number) after the first `^`; a
+second `^` puts the `?` back. The length shown does not change.
+
+**`window` *n*** sets the number of rows of the data area (messages and
+replies) of the **full-screen** debugger, 5 to 15; the source above it takes
+what is left. `window 3` is refused (*The data area must be 5 to 15 lines*) and
+in line-by-line mode the command is a format error. A `window` *n* line in the
+VOC record **`$debug.options`** (the record that already holds
+`no.source.warning`) sets it at the first stop of a session.
+
+**A stop at every `case` condition.** A program compiled for the debugger stops
+before each `case` of a `begin case` is tried, so stepping by line shows the
+condition being tried (`case x = 1`, then `case x = 2` when that was false) and
+not only the statements of the case that was chosen. A condition and a
+statement on one line are two elements of the line.
+
 ## Watching a variable
 
 ```

@@ -248,9 +248,9 @@ its values were lines:
 ----: EV
 Editing values. Use SV to save changes or QV to discard changes
 ----: P20
-0001: NAME
-0002: Smith
-0003: Jones
+1.0001: NAME
+1.0002: Smith
+1.0003: Jones
 Bottom at line 3
 ----: QV
 EV mode changes discarded
@@ -259,6 +259,12 @@ Returned from EV mode
 
 `SV` leaves `EV` keeping the changes, `QV` discards them. Three levels are
 available: values, subvalues, and the elements of a compound I-type.
+
+**In `EV` a line number carries the positions above it** (16 Oct 2026): the
+example edited field 1, so its values are `1.0001`, `1.0002`, `1.0003`; one
+level down, in the subvalues of value 2 of field 1, a line is `1.2.0001`.
+`NO.EV.POSITION` in the `$ed.options` record of the VOC leaves the prefix out
+and numbers the lines as before.
 
 **A mark is typed as `^` and its character code**: `^253` for a value mark,
 `^252` for a subvalue mark, `^^` for a literal `^`. The line above was made
