@@ -46,7 +46,7 @@ type `D` and the rest is a comment.
 | `C` | calculated | like I but compiled with the BASIC compiler and returning via `@ANS` |
 | `A` | A-type | Pick-style data definition, with a different field layout |
 | `S` | S-type | identical to `A` in SD — kept for compatibility |
-| `L` | link | used only in query processor commands, to join to another file |
+| `L` | link | names another file and how to find the record in it, so that a query or an I-type can use its fields as `link%item` |
 | `PH` | phrase | a stored fragment substituted into a query command line |
 | `X` | text | miscellaneous data — not a field definition |
 
@@ -236,10 +236,68 @@ phrase is scoped to the file whose dictionary holds it.
 
 ## The L record — a link
 
-An L-type is used only in query processor commands. It names another
-file to join to, so that fields from both files can appear in one
-report. An L-record carries the file name and the field to match on, and
-the query processor reads from the linked file for each record it lists.
+An L-type names another file and says how to find the record in it, so
+that fields of the other file can be used in a query or in an I-type
+without writing a `TRANS()` for each one.
+
+| Field | What it holds |
+|---|---|
+| `1` | `L`, optionally followed by a comment |
+| `2` | the **id expression**: an I-type expression that gives the id (or ids) of the record in the other file, from the record being listed |
+| `3` | the **file name**: the file whose dictionary is searched for the item named after the link, and, unless field 4 says otherwise, the file read |
+| `4` | the **file expression**, optional: an I-type expression that gives the name of the file actually read, for a set of files that share one dictionary (sales kept in a file for each region, say). Field 3 still names the one whose dictionary is used |
+
+A book file whose record ids are a title id and a copy number, `T1-2`,
+with the titles in another file:
+
+```
+001  L
+002  FIELD(@ID, "-", 1)
+003  TITLES
+```
+
+kept as the record `TTL` of the book file's dictionary, is used as
+`TTL%TITLE`, the link, a percent sign and the name of an item in the
+dictionary of `TITLES`:
+
+```
+LIST BOOKS TTL%TITLE TTL%AUTHOR
+```
+
+The same name is a field of an I-type of the book file's dictionary: an I-type whose
+expression is `TTL%TITLE`, or `UPCASE(TTL%AUTHOR)`, or `COPY : "/" : TTL%TITLE`, works
+as the same expression written with `TRANS()`:
+
+```
+TRANS("TITLES", FIELD(@ID, "-", 1), TITLE, "X")
+```
+
+The item may be a D, I, C, A, S or E item of the other file. It takes the column
+heading, format, conversion and association that item has, unless the I-type or the
+query says otherwise. A query treats the result as multivalued, because the id
+expression may give several ids.
+
+**A link can reach through another link.** If the file the link names has a link of its
+own, the two names are joined: with `OUT`, a link from `READERS` to `BOOKS` whose id
+expression is `LOANS`, the titles on loan are `OUT%TTL%TITLE`:
+
+```
+LIST READERS OUT%TTL%TITLE
+```
+
+At most ten links may follow one another.
+
+**What to know.** A link is worked out when an I-type is compiled, not each time it
+is used: the compiled I-type has the `TRANS()` in it. **After a link is changed, the
+I-types that use it must be compiled again** (`cd`, on page 24, does it). A query that
+names a link directly is compiled each time it is run and is not affected. A link's
+expressions cannot be compound (no semicolons), the item name after the percent sign
+must be a name as it would be written in an I-type (a name with a hyphen in it is not),
+and **a dictionary record whose id has a percent sign in it is found first**:
+`TTL%TITLE` is that record if there is one, and a link only if there is not. An item that
+is not in the other file's dictionary, a link with no file or no id expression, an
+expression with a semicolon, or an item of a type that holds no data, are refused with a
+message that names the link or the item.
 
 ## The X record — text
 

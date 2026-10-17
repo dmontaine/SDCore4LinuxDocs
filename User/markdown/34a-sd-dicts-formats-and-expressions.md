@@ -150,6 +150,12 @@ An I-type expression is a single SD BASIC expression. It can use:
   `SUM()`, `OCONV()`, `ICONV()`, `DATE()`, `TIME()`, `RAISE()`,
   `DOWNCASE()`, `UPCASE()`, `TRIM()`, `STR()`, `SPACE()`, `SEQ()`,
   `CHAR()`, `ABS()`, `INT()`, `MOD()`, `SQRT()`, `TRANS()` and the rest.
+- **Links**: `TTL%TITLE` is the item `TITLE` of the file that the L-type record
+  `TTL` of this dictionary names, for the record that its id expression gives.
+  It can stand anywhere a field can, in a function or a concatenation:
+  `UPCASE(TTL%AUTHOR)`, `COPY : "/" : TTL%TITLE`. A link to a link is written
+  `OUT%TTL%TITLE`. See the L record on [SD Dictionaries - Structure](33-sd-dicts-structure.html);
+  a link is worked out when the I-type is compiled.
 - **Subroutine calls**: `SUBR("name", arg, ...)` invokes a catalogued
   subroutine. The `FTYPE` I-type in `voc.dic` calls `SUBR("!FTYPE",
   DATA.NAME)`.
