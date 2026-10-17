@@ -76,7 +76,7 @@ from the command line, and it is neither.
 
 ## Setting one up
 
-Four steps, and only the third needs an administrator.
+Four steps, and the first and third need an administrator for a new account.
 
 **1. Write the work as a paragraph** in the account that will run it. A `PA`
 record in that account's VOC, with the commands on the lines after the type:
@@ -84,6 +84,11 @@ record in that account's VOC, with the commands on the lines after the type:
 ```
 :ed voc my.report
 ```
+
+Saving a record of the VOC needs the account to hold `voc-on`, which a new
+account does not have. SDSYS gives it with `modify.account` *name* `voc-on`
+(see [Managing accounts](05a-managing-accounts.html)); accounts that existed
+at an upgrade have it already.
 
 **2. Check it runs when you type it**, in that account, before putting it on a
 timer.

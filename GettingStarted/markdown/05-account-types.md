@@ -47,7 +47,7 @@ from SD, see [Reaching the operating system](06-administrator-commands.html).
 ## Creating an account
 
 ```
-create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {no.query}
 
 create.account group <name> {no.query}
 
@@ -61,7 +61,8 @@ identity SD's own elevation helper checks before granting it — see
 
 ### A new account starts with every door shut
 
-**A new user account has no ssh, no API, no `sh` and no `OS.EXECUTE`** until
+**A new user account has no ssh, no API, no `sh` and no `OS.EXECUTE`, and it
+cannot save a change to a VOC, a program file or a dictionary,** until
 SDSYS turns each one on. SD is delivered with the tighter setting and the
 administrator loosens it, account by account, for the people who need it:
 
@@ -70,13 +71,18 @@ administrator loosens it, account by account, for the people who need it:
 | `ssh` · `api` · `both` | the remote route(s). `none` is the default |
 | `sh-on` | the `sh` verb and `!` |
 | `os-on` | `OS.EXECUTE`, `nano` and `micro`, the embedded Python, and files or directories of the operating system named by their path outside the account's own directory |
+| `voc-on` | saving a change to the account's VOC |
+| `bp-on` | saving a change to a program file (`bp`, `bp.out`, `*.bp`, `*.bp.out`), and compiling and cataloguing. A new account needs it before it can save or compile its first program |
+| `dict-on` | saving a change to a dictionary (a file whose name ends `.dic`) |
 
-`sh-on` and `os-on` are independent of each other and of the routes. The
-same words change an account afterwards in `modify.account` — see
-[Managing accounts](05a-managing-accounts.html). **No new account is an
+`sh-on`, `os-on` and the three edit switches are independent of each other
+and of the routes. The same words change an account afterwards in
+`modify.account` — see [Managing accounts](05a-managing-accounts.html), which
+has a section on the edit switches. **No new account is an
 exception — not even the one the installer creates for whoever installed
-SD**; the accounts that keep their shell and `OS.EXECUTE` are the ones that
-already exist when you upgrade. SDSYS has no remote access at all, and that
+SD on a fresh machine**; the accounts that keep their shell, `OS.EXECUTE` and
+edit rights are the user accounts that already exist when the installing user
+upgrades. SDSYS has no remote access at all, and that
 is not a setting.
 
 ### What creating a user account actually does

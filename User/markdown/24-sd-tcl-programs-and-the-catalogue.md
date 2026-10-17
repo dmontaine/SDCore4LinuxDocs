@@ -11,6 +11,10 @@ marks a word typed as it stands; braces mark an optional part.
 > **Every listing on this page was produced by running it**, on SD Core for
 > Linux, against a two-line program in an account's `bp` file.
 
+An account that SDSYS has not given `bp-on` cannot save a program to `bp`, and
+`basic`, `catalog`, `delete.catalog` and `decatalog` are refused for it. A new
+account starts without it; accounts that existed at an upgrade have it.
+
 ## Compiling
 
 ```

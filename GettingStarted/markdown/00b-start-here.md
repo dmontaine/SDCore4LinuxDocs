@@ -81,11 +81,12 @@ the `sdsys` Linux user, at its own password — not on being a Linux
 administrator, `sudo` or not, and not on a secret SD holds. See
 [Security](12-security.html).
 
-**2. A new account has no ssh, no API, no shell and no `OS.EXECUTE` until
-SDSYS gives them.** SD is delivered with the tighter setting, and the
+**2. A new account has no ssh, no API, no shell and no `OS.EXECUTE`, and
+cannot save a change to a VOC, a program file or a dictionary, until SDSYS
+gives them.** SD is delivered with the tighter setting, and the
 administrator loosens it one account and one switch at a time: `ssh`,
-`api`, `both`, `sh-on` and `os-on`, at `create.account` or later with
-`modify.account`. **SDSYS has no remote route at all**, ssh or API, from
+`api`, `both`, `sh-on`, `os-on`, `voc-on`, `bp-on` and `dict-on`, at
+`create.account` or later with `modify.account`. **SDSYS has no remote route at all**, ssh or API, from
 anywhere, whatever it is given — administration is a real login at this
 machine's own keyboard, or a desktop-sharing view of it. See
 [ssh access](08-ssh-access.html) and [API access](09-api-access.html).

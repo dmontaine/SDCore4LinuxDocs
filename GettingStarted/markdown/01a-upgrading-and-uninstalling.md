@@ -68,7 +68,15 @@ existed have always had both. So when you kept your accounts the installer
 switches `sh-on` and `os-on` on, **once**, for every user account that
 exists then; ssh and the API are left as they were. Turn either off for an
 account whenever you like with `modify.account` *name* `sh-off` / `os-off` —
-**a later install does not turn them back on.** Accounts you make after the
+**a later install does not turn them back on.**
+
+**The same is true of the right to save a change to a VOC, a program file or
+a dictionary** (`voc-on`, `bp-on`, `dict-on`), which is also off for a new
+account. When the installer is run by the user whose own account already
+exists, it switches all three on, once, for every user account in the
+register; group and other accounts are left off on purpose, and a different
+OS user installing over existing accounts does not run this step. Turn them
+off with `voc-off`, `bp-off` and `dict-off`. Accounts you make after the
 upgrade start with everything off.
 
 ## Uninstalling

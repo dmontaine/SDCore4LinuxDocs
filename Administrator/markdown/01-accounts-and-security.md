@@ -66,7 +66,7 @@ privilege.**
 ## Making an account: `create.account`
 
 ```
-create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {no.query}
 
 create.account group <name> {no.query}
 
@@ -76,15 +76,17 @@ create.account other <name> <pathname> {no.query}
 | | |
 |---|---|
 | **`user`** | an SD account **and** a Linux user account to log in as |
-| **`group`** | a shared workspace with no Linux account, reached only with `logto` |
+| **`group`** | a shared workspace with no Linux account, reached with `logto`, or directly by a member of its group with `sd -A`*name* |
 | **`other`** | an SD account over a directory you name |
 
 **A new user account starts with every door shut.** Say nothing and it has
-no ssh, no API, no `sh` and no `OS.EXECUTE`; you open each one by naming
+no ssh, no API, no `sh` and no `OS.EXECUTE`, and it cannot save a change to
+a VOC, a program file or a dictionary; you open each one by naming
 it. `ssh`, `api` or `both` give the remote routes (`none` is the default
 and is accepted so that a script can say so); `sh-on` and `os-on` give the
 two operating-system switches, and they are independent, so `sh-on os-on`
-gives both and neither cancels the other. **This is the setting SD is
+gives both and neither cancels the other; `voc-on`, `bp-on` and `dict-on`
+give the three edit switches (below), each on its own. **This is the setting SD is
 delivered with, on purpose: it is the tighter one, and you loosen it for the
 accounts that need it, one at a time** — the same words change an account
 later in `modify.account`, below. When it has made the account SD says
@@ -93,11 +95,12 @@ where it stands:
 ```
 fred has no remote access: not ssh, not the API
 Account fred has SH no, OS.EXECUTE no
+Account fred has VOC.EDIT no, BP.EDIT no, DICT.EDIT no
 ```
 
 **The installing user's own account is no exception**: the account the
-installer makes so that somebody can sign in starts with all four off too, and
-the installer says so and how to change it. The accounts that keep their
+installer makes so that somebody can sign in starts with all of them off too,
+and the installer says so and how to change it. The accounts that keep their
 access are the ones that already exist when you *upgrade* — see *Changing
 one*, below.
 
@@ -207,6 +210,137 @@ are one switch. Two things stay shut:
 The setting lives in field 9 of the register record and is not carried by an
 account archive, so a restored account starts with it off.
 
+### The edit switches: `voc-on`, `bp-on` and `dict-on`
+
+Three more per-account switches, in fields 10 to 12 of the register record,
+say whether the person who signed on to the account may **save a change** to
+a VOC, to a program file, and to a dictionary. Reading is never stopped. **All
+three are off for a new account**, and `modify.account` *name* `voc-on` /
+`voc-off`, `bp-on` / `bp-off` and `dict-on` / `dict-off` turn each one on and
+off. `create.account user` takes `voc-on`, `bp-on` and `dict-on`. After a
+change SD says where the account now stands (if the switch already had the
+value asked for, SD says only that the account already had that access and
+that nothing changed):
+
+```
+:modify.account fred bp-on
+Account fred has VOC.EDIT no, BP.EDIT yes, DICT.EDIT no
+```
+
+**Which files.** A file is known by the name of the file that is **open**, not
+by the name that was typed, so a Q-pointer to somebody's VOC is caught:
+
+| | |
+|---|---|
+| **a VOC** | a file called `voc` |
+| **a dictionary** | any file whose name ends in `.dic`. `voc.dic` is the dictionary of the VOC, so it is a dictionary, not the VOC |
+| **a program file** | `bp`, `bp.out` (the object code), or any name ending in `.bp` or `.bp.out` |
+
+Capitals do not matter.
+
+**What stops.** A program's `WRITE`, `WRITEV`, `DELETE` and `CLEARFILE` of
+such a file is refused with a message that names the missing switch (or sets
+the `ON ERROR` status). The verbs and statements that change a file the
+person names ask the same question first, before they lock or change
+anything, and give the reason: `sed`, `ide` and `ced` show it in their
+message line, and every other verb prints it (the same text as above) and
+stops. They are `ed`, `edit`, `copy` and `copyp` into the file or moving
+records out of it, `delete`, `clear.file`, `cname` of a record, `delete.file`
+of a program file or of a dictionary on its own, `fixdir`, `format`,
+`map file` (asked before the "will be cleared and overwritten" question),
+`sp.view` (the X key that deletes an item; the reason replaces the prompt
+line), `set.trigger` when it installs or removes a trigger (the report form,
+with no trigger name, is not asked), `copy.list` into the file or with
+`deleting` from it, `delete.list ... in`, `get.list ... deleting in`,
+`save.list ... in`, `sort.list ... from`, `reformat ... to` (and the
+`Output file:` prompt), `list ... pageseq`, a delimited report written `to` a
+pathname, `cd data` (which compiles records of an ordinary file as dictionary
+items), `generate` (the `$include` record of a dictionary, and the include
+record it writes to the target file), `como on ... in`, and the `.s` and `.d`
+stack commands on an existing VOC record. `create.file` naming a file that
+already exists (adding a part to a multifile, or converting a single file to a
+multifile) is asked too; making a new file is not. The private catalogue
+directory (`cat`, or whatever `$private.catalogue` names) counts as a program
+file. For programs, `create.file` and `opentemp` of a new file inside such a
+place, `ospath` with keys 5, 13 and 14, and the socket trace file
+(`set.socket.mode` with `skt$info.trace`) are refused with status 3035. `cname`
+will not take a program file out of its name, or put a file under one, for a
+person without the switch, so a rename is not a way round. `OPENSEQ` in such a
+place opens the file for reading only and cannot create one; `DELETESEQ`, a
+print file made there, and `!OSCOPY` or `!IOSCOPY` into it are refused. For
+these operating-system routes the name of the record or file being made counts
+only when it is itself a directory or anything but a plain file, so a plain
+file called `sample.bp` in an ordinary directory is not held back, while a
+file inside the directory `bp` is. Over the API a client's writes, deletes and
+file clears, and `SDOpenSeq` for writing, are held to the same rule (an
+`SDOpenSeq` of such a place opens read only).
+
+**Compiling is held by `bp-on` too.** Without it `basic`, `catalog`,
+`delete.catalog` and `decatalog` are refused ("Programs can only be compiled
+or catalogued by an account that has bp.edit"), because compiling is how a
+source becomes code that runs: otherwise source could be copied into any file
+and compiled there.
+
+**`logto` does not change them.** The switches are those of the account the
+person **signed on** to (over the API, the account first entered). A person
+with a switch on keeps it in another account; a person without it does not
+gain it there. A change takes effect the next time the person signs on. Unlike
+`sh-on`, `os-on` and `sd-on`, the three edit switches are read at sign-on
+only, not again at `logto`.
+
+**What is not stopped.** What SD writes as a side effect of an ordinary
+command — a new pointer made by `create.file`, a new saved sentence, a
+compiled I-type, the command stack — and anything done from the shell by an
+account that holds `sh-on` or `os-on`. The operating-system routes above
+(`OPENSEQ`, `DELETESEQ`, print files, `!OSCOPY`, `!IOSCOPY`, `ospath`) are
+not looked at for an account that holds `os-on`, when the path is outside the
+account's own directory: `os-on` already trusts it with the whole machine.
+The switches are about changing these files by hand or by program, not a
+replacement for the operating-system switches above.
+
+**Internal programs run only from the global catalogue.** The gates on files
+and on operating-system paths (these three and the shell, `OS.EXECUTE` and
+`sd-on` gates before them) do not apply to a program compiled in *internal
+mode*, which SD's own commands are. That mark is a bit in the program's own
+object file, and SD used to believe it wherever the object came from, so a
+user who could put an object file where SD would run it (a directory file with
+a `.out` entry in the VOC, or a run file) could set the bit and skip every
+gate. SD now honours the bit only for an object from the global catalogue,
+which only SDSYS can write, or for the administrator; for any other object the
+bit is cleared when the object is loaded. SD's own commands are all in the
+global catalogue and are unaffected; a program that SDSYS compiled in internal
+mode into a user's account runs there as an ordinary program.
+
+**SDSYS is never refused.** On a terminal or in a batch job the
+administrator passes every gate. An API session carries no administrator
+flag, so SDSYS over the local API (a process running as `sdsys` entering the
+`sdsys` account on the Unix socket) is given all three switches on when it
+signs on; `modify.account` refuses SDSYS as a target, so there is nothing to
+set for it.
+
+**Group and other accounts.** The three words are accepted for a group or
+other account, and they do matter: a member of the account's Linux group can
+sign on to it directly with `sd -A`*name*, in a batch job, or over the API,
+and the account's own switches then decide, because the account signed on to
+is the one that counts (only `logto` leaves the earlier account's switches
+alone). The upgrade leaves group and other accounts off on purpose; where
+members need to save to a VOC, a program file or a dictionary there, SDSYS
+gives it with `modify.account` *name* `voc-on` / `bp-on` / `dict-on`.
+
+**On an existing machine.** When the installer is run by the user whose own
+account already exists, the upgrade switches all three on, **once**, for every
+*user* account in the register, so that no such account loses what it had;
+group and other accounts, and accounts made afterwards, start with all three
+off. On a fresh install, the installing user's own account is made with all
+three off like any other. If a different OS user runs the installer over
+existing accounts (so the installing user's account does not exist yet), the
+upgrade walk is not run, and the existing accounts stay off until SDSYS turns
+the switches on. The switches are kept in the account archive, but
+`restore.account` gives them back only to an account it has to create; an
+account that already exists keeps its current switches, group and other
+accounts are not in the manifest, and an archive from before the switches
+existed carries none and gives none.
+
 ### VOC pointers: where a file pointer may lead, and which Q-pointers are followed
 
 **A VOC pointer is a way to name a file, so it is held to the same rule.** An
@@ -268,6 +402,9 @@ modify.account account ssh | api | both | none
 modify.account account sh-on | sh-off
 modify.account account os-on | os-off
 modify.account account sd-on | sd-off
+modify.account account voc-on | voc-off
+modify.account account bp-on | bp-off
+modify.account account dict-on | dict-off
 modify.account account suspended | unsuspended
 ```
 
@@ -278,12 +415,17 @@ modify.account account suspended | unsuspended
 | **`ssh`** \| **`api`** \| **`both`** \| **`none`** | what the account's remote access **is**. Absolute: `api` takes ssh away |
 | **`sh-on`** \| **`sh-off`** | the `sh` verb and `!` |
 | **`os-on`** \| **`os-off`** | `OS.EXECUTE`, the screen editors, the embedded Python, and operating-system paths outside the account's own directory (see above) |
+| **`sd-on`** \| **`sd-off`** | the directories of other SD accounts the user could `logto` (see above) |
+| **`voc-on`** \| **`voc-off`** | saving a change to a VOC (see *The edit switches*) |
+| **`bp-on`** \| **`bp-off`** | saving a change to a program file, and compiling and cataloguing |
+| **`dict-on`** \| **`dict-off`** | saving a change to a dictionary |
 | **`add`** \| **`delete`** *user* | put a Linux user in, or out of, the account's group |
 
 **The first group is absolute and the second is not.** `ssh`/`api`/`both`/
 `none` are four names for one state, so whatever is not named is withdrawn.
 `sh-on` and `os-on` are two independent switches over two separate settings,
-so **`sh-off` says nothing about `OS.EXECUTE`** and leaves it alone.
+so **`sh-off` says nothing about `OS.EXECUTE`** and leaves it alone; the
+other switches are each their own as well.
 
 After either pair SD says where the account **now** stands, both fields at
 once, so that a command that did only what it named is plain to see:
@@ -303,8 +445,9 @@ way ("SD routes for fred: ssh and the API." — "fred has no remote access:
 not ssh, not the API").
 
 **A change takes effect the next time the account is entered.** The setting
-is read when a session signs in or `logto`s into the account, so a session
-already open keeps what it started with. To take a grant away from somebody
+is read when a session signs in, and for `sh`, `os` and `sd` again when it
+`logto`s into the account (the three edit switches are read at sign-on only),
+so a session already open keeps what it started with. To take a grant away from somebody
 who is signed in now, change the setting and then end their session.
 
 **Every one of these words is written to the audit trail** (`modify.account
@@ -316,7 +459,11 @@ Linux user to hold the switch.
 **Upgrading keeps what accounts have.** The installer switches `sh` and
 `OS.EXECUTE` on, once, for every user account that exists when you upgrade
 (ssh and the API are left exactly as they were), so that nobody loses a
-command they were using. You can then turn them off one account at a time,
+command they were using, and in the same way `voc-on`, `bp-on` and
+`dict-on`, once, for the same user accounts. This happens when the installer
+is run by the user whose own account already exists; a different OS user
+installing over existing accounts does not run it. Group and other accounts
+are left off on purpose. You can then turn them off one account at a time,
 and a later install does not turn them back on. Only accounts made after the
 upgrade start with everything off.
 

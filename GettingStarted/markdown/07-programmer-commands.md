@@ -66,6 +66,13 @@ micro bp myprog
 nano  dict customers name
 ```
 
+**A new account can do none of this until SDSYS gives it two switches.**
+Saving a record of a program file or a dictionary, and compiling or
+cataloguing, need `bp-on` (and `dict-on` for a dictionary); `nano` and `micro`
+also need `os-on`, because they run an operating-system program. See *Saving
+changes to a VOC, a program file or a dictionary* in
+[Managing accounts](05a-managing-accounts.html).
+
 `nano` and `micro` write the record to a working copy, open the editor on it,
 read it back, and ask whether to save. For a `bp` record they then offer the
 compile and the catalogue. `sed` edits the record itself, locks it while it is

@@ -17,6 +17,7 @@ to apply — it is what `create.account` and the installer already do:
 | ssh | `ForceCommand`s straight into `sd`, no shell reachable that way — see [ssh access](08-ssh-access.html) |
 | ssh and the API, per account | **off for a new account**; SDSYS gives each account the route it needs (`ssh`, `api`, `both`) — see [Managing accounts](05a-managing-accounts.html) |
 | `sh`, `!`, `OS.EXECUTE`, the editors, the embedded Python, and operating-system files named by path | **off for a new account**, in two independent switches (`sh-on`, `os-on`) that SDSYS turns on account by account — see [Security and the operating system](12a-security-and-the-operating-system.html#the-shell-and-operating-system-access-are-per-account-switches) |
+| Saving a change to a VOC, a program file or a dictionary (and compiling) | **off for a new account**, in three independent switches (`voc-on`, `bp-on`, `dict-on`) that SDSYS turns on account by account; reading is never stopped — see [Managing accounts](05a-managing-accounts.html) |
 | The API | local-only (`127.0.0.1:4247`) until an administrator opens it to the network — see [API access](09-api-access.html) |
 | SDSYS | no remote route at all, ssh or API, ever, from any other computer; on the machine itself the API accepts it only on the local Unix socket, from a process running as `sdsys` — the one thing this page treats as non-negotiable rather than a default |
 

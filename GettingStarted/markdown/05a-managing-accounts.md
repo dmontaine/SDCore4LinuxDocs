@@ -57,6 +57,9 @@ modify.account <account> delete <user>
 modify.account <account> ssh | api | both | none
 modify.account <account> sh-on | sh-off
 modify.account <account> os-on | os-off
+modify.account <account> voc-on | voc-off
+modify.account <account> bp-on | bp-off
+modify.account <account> dict-on | dict-off
 modify.account <account> suspended | unsuspended
 ```
 
@@ -93,6 +96,38 @@ OS.EXECUTE" or "*name* has no OS access, so a file or directory outside its
 own account cannot be reached by pathname". See the *Administrator* set's
 *Accounts and security* chapter, which says what each switch covers and what
 `os-on` costs on an account that is also reachable from outside.
+
+### Saving changes to a VOC, a program file or a dictionary: three more switches
+
+Three more switches, also off for a new account, say whether the person
+may **save a change** to a VOC, to a program file (and compile or catalogue)
+or to a dictionary. Reading is never stopped:
+
+| | |
+|---|---|
+| **`voc-on`** \| **`voc-off`** | saving a change to a VOC |
+| **`bp-on`** \| **`bp-off`** | saving a change to a program file (`bp`, `bp.out`, or any name ending `.bp` or `.bp.out`), and the `basic`, `catalog`, `delete.catalog` and `decatalog` commands |
+| **`dict-on`** \| **`dict-off`** | saving a change to any dictionary (a file whose name ends `.dic`) |
+
+After a change SD says where the account now stands ("Account fred has
+VOC.EDIT no, BP.EDIT yes, DICT.EDIT no"); when the switch already had the
+value asked for, it says only that the account already had that access. The
+account the person **signed on** to decides, so `logto` neither gives nor takes
+the switch (and, unlike `sh-on` and `os-on`, it is read at sign-on only), and a
+change reaches the person the next time they sign on. A refusal names the
+switch: "A program file can only be changed by an account that has bp.edit
+(SDSYS can give it: modify.account *name* bp-on)". The editors `sed`, `ide`
+and `ced` show that in their message line; every other verb prints it.
+
+When the installer is run by the user whose own account already exists, the
+upgrade switches all three on, once, for the *user* accounts in the register.
+Group and other accounts are left off on purpose, and a member who signs on to
+one directly (`sd -A`*name*, a batch job, or the API) gets that account's own
+switches, so give them there with `voc-on`, `bp-on` and `dict-on` where members
+need them. `restore.account` gives the switches back only to an account it has
+to create; an existing account keeps what it has. See the *Administrator* set's
+*Accounts and security* chapter for which files and which commands are
+covered, and for what is not stopped.
 
 **`modify.password` is now the whole of what `set.password` used to be.**
 Same verb, same behaviour under either name; every account has a password

@@ -119,6 +119,9 @@ disk at:
 /home/sd/user_accounts/<account>/bp
 ```
 
+A new account must be given `bp-on` by SDSYS before it can save a program in
+`bp` or compile it, and `os-on` as well before it can use `nano` or `micro`.
+
 Compile and catalogue it from inside SD:
 
 ```

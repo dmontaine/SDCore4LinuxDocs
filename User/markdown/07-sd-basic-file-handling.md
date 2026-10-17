@@ -133,6 +133,20 @@ There is no "insert only" form — read first if that distinction matters, and
 hold a lock between the read and the write or two sessions will both find it
 absent.
 
+### Files an account may not change: the edit switches
+
+Three kinds of file can be changed only by an account whose administrator
+has given it the matching switch (`voc-on`, `bp-on`, `dict-on`; see the
+*Administrator* set, *Accounts and security*): a **VOC** (a file called
+`voc`), a **dictionary** (a name ending `.dic`) and a **program file** (`bp`,
+`bp.out`, or a name ending `.bp` or `.bp.out`). Without the switch `write`,
+`writev`, `matwrite`, `delete` and `clearfile` on such a file stop the program
+with a message that names the missing switch, or, with an `on error` clause,
+take that clause and leave `status()` set; nothing is changed. Reading is
+never refused, and neither is a file of any other name. The compiler and
+`catalog` refuse in the same way without `bp-on`. The switch is that of the
+account the person signed on to, so `logto` does not change the answer.
+
 ### Letting the file number its records: `creating.seqkey`
 
 ```

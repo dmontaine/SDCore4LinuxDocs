@@ -2,6 +2,8 @@ Title: SD Programming 101 - Routines and an Application
 Subtitle: Lessons 7 to 10: subroutines, functions, error handling, and a small application put together.
 
 This page continues [SD Programming 101](40-sd-programming-tutorial.html).
+As there, the account needs `bp-on` before it can save or compile any of
+these programs.
 
 ## 7. A subroutine
 
