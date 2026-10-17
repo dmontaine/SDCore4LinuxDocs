@@ -173,6 +173,7 @@ program may use it; it changes only the file it is given.
 
 | action | token | what it does |
 |---|---|---|
+| 1 | `FC$SYNC` | forced writes of a hashed file: the qualifier 1 turns them on, 0 off, -1 only asks. The result is the state before the call. See *Forced writes* below |
 | 2 | `FC$SET.SEQ.KEY` | the qualifier *n* (1 or more) becomes the next id `write … creating.seqkey` gives out; returns 1 |
 | 3 | `FC$GET.SEQ.KEY` | takes the next id and moves the counter on, so a program can reserve an id without writing a record; the null string if the file is not hashed |
 | 5 | | does the user have access to the field position in the qualifier? Always 1: SD has no field level encryption |
@@ -181,13 +182,31 @@ program may use it; it changes only the file it is given.
 
 Actions 2, 3 and 7 are refused on a file opened `readonly`: `status()` is 3018 and the result is 0
 (null for 3), and the counter is not touched. On a file that is not hashed `status()` is 3005; a
-qualifier under 1 sets `status()` to 1. **`fcontrol` does not do `FC$SYNC` (1) or `FC$CRLF` (4):**
-SD has no forced-write mode and no line terminator modes, so a program that asks for either is stopped
+qualifier under 1 sets `status()` to 1. **`fcontrol` does not do `FC$CRLF` (4):**
+SD has no line terminator modes, so a program that asks for it is stopped
 with *FCONTROL cannot do this action in SD* rather than being told it worked, and any other action number
-stops it with *the action is not one SD knows*. A program written for openQM that uses those two
-will need changing. The qualifier may be left out where the action does not use it. The
+stops it with *the action is not one SD knows*. A program written for openQM that uses it
+will need changing. `FC$SYNC` works on a hashed file only (`status()` is 3005 on any other). The qualifier may be left out where the action does not use it. The
 internal programs' own function is called `fcontrol.int` since 15 Oct 2026 and is not available to
 ordinary programs.
+
+### Forced writes: `sync`
+
+A file that must survive a power failure can be told to write to disk as it goes. Without it SD, like any
+program that writes files, leaves data in the operating system's cache for a short while.
+
+```
+open 'LEDGER' to f.ledger sync else stop 'cannot open'
+openpath '/data/ledger' to f.ledger sync else stop
+x = fcontrol(f.ledger, FC$SYNC, 1)       ;* or turn it on, or off, for a file already open
+x = fileinfo(f.ledger, FL$SYNC)          ;* 1 if this open has it on
+```
+
+With the state on, every write and delete flushes the primary and the overflow subfiles before the
+statement returns. The `S` flag in field 6 of the file's VOC entry (an `F` entry) gives the same state to every
+`open` of it, and bit 4 of the `FSYNC` parameter in `sd.conf` gives it to every hashed file. **It is much slower: a write costs a disk flush, so use it on the
+files that need it and not on all.** It protects the file you flagged and nothing else on the machine, and a file
+that is not hashed (a directory file) does not take it.
 
 `delete file.variable, record.id` removes a record. After
 `delete f, 'R2'`, reading `R2` takes the `else` branch.

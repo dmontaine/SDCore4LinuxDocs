@@ -336,6 +336,51 @@ FIle [[filename] record.id]
                 Write record and end edit
 ```
 
+### External commands: a catalogued subroutine as an ED command
+
+**You can add commands to `ed`** (16 Oct 2026) by writing a subroutine and naming
+the commands it handles in the `$ed.options` record of the VOC. A line of that
+record such as
+
+```
+EXTERNAL zzedx1 WHERE DUMP UPCASE "'ADD 'A0X"
+```
+
+says that the catalogued subroutine `zzedx1` handles the commands `WHERE`,
+`DUMP`, `UPCASE`, and any command that matches the template `'ADD 'A0X`.
+After the subroutine's name come one or more patterns, one after another, with
+no quotes needed; a pattern with a space in it is put in double quotes. A
+pattern is a `MATCHES` template or a plain word, and the match ignores case.
+The patterns are tried **before** the standard commands, so an external command
+can replace one: `EXTERNAL myb B` makes your subroutine the `B` command.
+
+The subroutine is called with two arguments:
+
+```
+subroutine zzedx1(mat info, error)
+   dim info(8)
+```
+
+| `info(1)` | the file name, with `DICT` if that was given |
+|---|---|
+| `info(2)` | the record id |
+| `info(3)` | the data being edited, a field mark between lines (in `EV` the level you are editing) |
+| `info(4)` | the current line, 0 at the top |
+| `info(5)`, `info(6)` | the block start and end lines, 0 if not set |
+| `info(7)` | the command, in the case you typed it |
+| `info(8)` | the `EV` depth: 0 normally, 1 in values, 2 in subvalues |
+
+Set `error` to true if the command fails: the editor says *External command
+`name` failed* and changes nothing. Otherwise it takes `info(3)` as the new
+data and `info(4)` to `info(6)` as the new positions, which it keeps inside the
+record (999 becomes the last line, -3 the top). `OOPS` undoes what the
+subroutine did. The subroutine must be catalogued where the user can reach it.
+
+**What this does not do:** the editor does not check that the subroutine exists
+until a command that names it is typed; a missing one then stops the editor with
+the run time's usual message. An unrecognised option in `$ed.options` is
+ignored, as before.
+
 ### The command stack, and prestored sequences
 
 Every command you type is kept. `.L` lists the stack, `.R`*n* recalls line *n*
