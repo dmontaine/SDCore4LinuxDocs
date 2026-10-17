@@ -81,9 +81,9 @@ exist.**
 | **`capturing`** | clause of `execute` and `os.execute` — take the output ***(clause word)*** |
 | **`case`** | `case` *condition*, inside `begin case` … `end case` |
 | **`catalogued`** | `catalogued(`*a*`)` |
-| **`catch`** | `try` {*statement*} … `catch` *exception* {*qualifiers*} {, *exception* …} … {`catch` …} `end` |
+| **`catch`** | `try` {*statement*} … `catch` *exception* {*qualifiers*} {, *exception* …} … {`catch` …} `end` — see page 02 |
 | **`cats`** | `cats(`*a*, *b*`)` |
-| **`caught`** | `caught(`*exception* {, *modes*}`)` |
+| **`caught`** | `caught(`*exception* {, *modes*}`)` — see page 02 |
 | **`ccall`** | `ccall(`*a*, *b*`)` |
 | **`chain`** | `chain` *command* |
 | **`change`** | `change(`*string*, *from*, *to* {, *occurrences* {, *start*}}`)` |
@@ -537,7 +537,7 @@ exist.**
 | **`tclread`** | `tclread` *var* |
 | **`terminfo`** | `terminfo(`*capability* {, *arg*, …}`)` |
 | **`then`** | clause of `if`, and of every statement that has an `else` ***(clause word)*** |
-| **`throw`** | `throw` *exception* {, *data*} |
+| **`throw`** | `throw` *exception* {, *data*} — see page 02 |
 | **`time`** | `time()` |
 | **`timedate`** | `timedate()` |
 | **`timeout`** | `timeout` *file.var*, *seconds* |
@@ -552,7 +552,7 @@ exist.**
 | **`trimfs`** | `trimfs(`*a*`)` |
 | **`trims`** | `trims(`*arr* {, *character* {, *option*}}`)` |
 | **`trimw`** | `trimw(`*a*`)` |
-| **`try`** | `try` {*statement*} … `catch` *exception* … `end` |
+| **`try`** | `try` {*statement*} … `catch` *exception* … `end` — see page 02 |
 
 ## U
 

@@ -293,8 +293,8 @@ SORTNEXT = `sortnext(`*sortvar* {, {`mat`} *keys*}`)`
 # 13 Oct 26: the 1.2-0 names that had no line, so that the card can be written again.  The data collection names
 # are on pages 05b and 05c (docmap.py); the others were named in the changelog and are checked there, not run here.
 AS = `ins` *value* `as` *c*`{`*path*`}` — a reserved word, ends the value of that form of `ins`
-CATCH = `try` {*statement*} … `catch` *exception* {*qualifiers*} {, *exception* …} … {`catch` …} `end`
-CAUGHT = `caught(`*exception* {, *modes*}`)`
+CATCH = `try` {*statement*} … `catch` *exception* {*qualifiers*} {, *exception* …} … {`catch` …} `end` — see page 02
+CAUGHT = `caught(`*exception* {, *modes*}`)` — see page 02
 COLLECTION = `collection()`   ·   `collection(`*c*`)`
 CREATING = `openseq` *path*`,` *id* `creating to` *file.var* `then` … `else` …
 DELIMITER = `for each` *var* `in` *string* {`delimiter` *d*} … `next` *var*
@@ -316,9 +316,9 @@ REDIMENSION = `redimension` *name*`(`*rows* {, *cols*}`)` — changes the size o
 SCREEN = `screen` *verb* {*values*} {*keyword* *values*} {`returning` *var*} {`then` … `else` …} — see page 12a
 SHARED = `openseq` *path*`,` *id* `shared to` *file.var* `then` … `else` …
 SSELECTN = `sselectn` *file.var* {`right.aligned`} {`descending`} {`to` *list.no*}
-THROW = `throw` *exception* {, *data*}
+THROW = `throw` *exception* {, *data*} — see page 02
 TIME = `time()`
-TRY = `try` {*statement*} … `catch` *exception* … `end`
+TRY = `try` {*statement*} … `catch` *exception* … `end` — see page 02
 VSLICE = `vslice(`*array*, *value.number*`)`
 SSELECTV = `sselectv` *file.var* `to` *list.var* {`right.aligned`} {`descending`}
 CSV.MODE = `csv.mode` *mode* {, *delimiter*}

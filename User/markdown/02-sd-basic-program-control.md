@@ -161,6 +161,152 @@ quit
 `set.exit.status value` sets the value a caller can read, which is how a
 program run from a script reports success or failure.
 
+## Exceptions: `try`, `catch` and `throw`
+
+```
+try {statement}
+   statements
+catch name {, name ...} {dumping} {saving.stack}
+   statements
+{catch name ...
+   statements}
+end
+
+throw name {, data}
+caught(name {, modes})
+```
+
+`throw` gives up the statements it is in, and every `gosub` and `call` between
+it and the nearest `try` that has a `catch` for the name, and carries on in that
+`catch` clause. If the `try` clause finishes without a throw, the `catch`
+clauses are skipped. A name is not case sensitive and may be up to 63
+characters. Names beginning `SYS.` and names containing `$` are SD's: use
+neither for your own.
+
+```
+try
+   call process.account(id)
+catch account.invalid
+   display 'Account ' : id : ' is not valid'
+end
+```
+
+**Names are paths, and a `catch` takes everything below the name it writes.**
+`catch account` takes `account.invalid` and `account.invalid.closed`; `catch
+account.invalid` takes `account.invalid.closed` but not `account`; `catch acc`
+takes neither, because a name is compared a whole component at a time. When
+one `try` has several clauses, the first that covers the name is the one used,
+in the order written. Put the specific name before the group:
+
+```
+catch account.invalid.closed
+   ...
+catch account
+   ...
+```
+
+| | |
+|---|---|
+| `catch sys$any` | takes any exception no earlier clause named |
+| `catch sys$unhandled` | takes one that no `try` anywhere up the stack names, and no `sys$any` takes either |
+
+**What the clause can read:**
+
+| | |
+|---|---|
+| `@exception` | the name as it was thrown (its case too) |
+| `@exception.data` | the second argument of `throw`; for a run time error, the message |
+| `@exception.origin` | the program (its object path), a field mark and the line the exception was thrown from, or -1 where the program has no line table |
+| `@exception.stack` | the call stack as `system(1002)` gives it, innermost first; filled only when the clause says `saving.stack` (or `$mode exception.save.stack`) |
+
+`dumping` makes a process dump file, showing the call stack as it was, before the
+stack is unwound.
+
+`caught(name, modes)` is 1 if a `throw` of that name from here would find a
+handler. *modes* adds the special handlers: 1 for `sys$any`, 2 for
+`sys$unhandled`, 3 for both; with 0 or nothing only a handler that names it, or a
+group above it, counts.
+
+**A transaction begun inside the `try` clause and still open when the exception
+leaves it is rolled back.** One that was already open when the `try` was
+entered is left alone, and carries on. Locks taken inside the rolled back
+transaction go with it.
+
+**Limits, and what it will not do:**
+
+- Up to 64 `try` constructs may be active at once. Leaving a `try` clause by
+  `goto`, `exit` or `continue` is not allowed; the handler stays until its
+  program level returns. A `return` from a `gosub` or a `call` made inside the
+  clause is fine.
+- A throw does not reach past an `execute`, a trigger, a recursive call or a
+  dictionary expression. Thrown inside one and not handled inside it, it is
+  unhandled there: the program aborts as a run time error does, with the
+  message `Unhandled exception name`.
+- A `throw` inside a `catch` clause goes to the `try` outside it.
+
+### Run time errors as exceptions
+
+Many errors that would abort the program are thrown as exceptions in the `SYS`
+group, so a program can deal with them where it chooses:
+
+```
+zz = 0
+try
+   y = 1 / zz
+catch sys.program.div_zero
+   display 'Zero: ' : @exception.data
+end
+```
+
+When nothing can catch the exception (no `try` for it, or one the throw cannot
+reach) **the error aborts exactly as it always did, with the same message**. When
+something does catch it, nothing is displayed, logged or dumped; the message is
+the `@exception.data` and also `@abort.message`. `catch sys` takes every system
+exception, `catch sys.program` the ones in that group, and so on down.
+
+| Name | The error |
+|---|---|
+| `sys.program.datatype.unassigned` | an unassigned variable was used |
+| `sys.program.datatype.not_numeric` | a non-numeric value where a number is needed |
+| `sys.program.datatype.invalid` | data of the wrong type for the operation (also a value that cannot be a string) |
+| `sys.program.datatype.not_file` · `not_matrix` · `not_image` · `not_object` · `not_socket` · `not_sort` · `not_collection` | a variable that is not a file, matrix, screen image, object, socket, sort or data collection |
+| `sys.program.datatype.null_string` | a null string where one is not allowed |
+| `sys.program.div_zero` | divide by zero |
+| `sys.program.invalid_matrix_index` | a subscript out of range |
+| `sys.program.invalid_matrix_size` | an argument matrix too small for the subroutine, or a Pick style matrix that cannot be resized or has no elements |
+| `sys.program.invalid_argct` | the wrong number of arguments in a `call` |
+| `sys.program.invalid_call_name` | a call name that cannot be a program name |
+| `sys.program.not_found` | the subroutine is not in the catalogue, or cannot be loaded |
+| `sys.program.load_error` · `load_error.read_error` | object code that is damaged or cannot be read |
+| `sys.program.invalid_data_size` | a string or element over its limit |
+| `sys.program.invalid_in_txn` | a file operation a transaction does not allow |
+| `sys.program.not_txn` | `end transaction` with none open |
+| `sys.program.range` · `invalid_key` · `invalid_name` · `invalid_itype` · `resize_error` | a value out of range for the function; an unknown key; a bad collection element name; a bad I-type; a failed resize |
+| `sys.program.limit.gosub_depth` · `call_depth` · `max_breakpoints` | `gosub`s or `call`s nested too deeply; too many breakpoints |
+| `sys.program.is_class` | a class module used as an ordinary program |
+| `sys.program.no_pdebug` | a phantom reached the debugger and no `pdebug` is waiting (below) |
+| `sys.locks.deadlock` · `limit` · `task_lock.invalid` | a deadlock; the `maxrlock` limit; a bad task lock number |
+| `sys.filesys.invalid_file_type` · `invalid_record_id` · `lock_required` | the wrong kind of file for the statement; a bad record id; a write in a transaction with no lock on the record |
+| `sys.filesys.creation_error` · `open_error` · `io_error` · `permissions.read_only` · `trigger` | a file that cannot be made, opened, read or written; a read only file; a trigger that cannot be run |
+| `sys.printer.invalid_unit` · `invalid_key` · `invalid_operation` · `invalid_region` · `io_error` | print unit and screen errors |
+| `sys.select.invalid_list_no` | a select list number out of range |
+| `sys.sort.invalid_key_count` · `invalid_operation` · `io_error` | sort errors |
+| `sys.kernel.no_memory` | out of memory |
+
+**Not every error has a name.** An error with no row here still aborts, whatever
+handlers there are, and a few that could be caught are left alone on purpose:
+the failure of a transaction's commit, and the refusal of a path or an operating
+system command by the account's gates. **Catching an error does not undo what
+caused it**: a refused operation stays refused, and a write that failed has not
+been made.
+
+**A phantom that reaches the debugger with no one to debug it** (a `debug`
+statement, say, with no `pdebug` command waiting for it) normally ends. If
+the program has a handler for `sys.program.no_pdebug`, for a group above it,
+for `sys$any` or for `sys$unhandled`, the exception is thrown instead, with
+the message "Phantom debugger not active", and the phantom goes on from the
+handler.
+
 ## Running something else
 
 ```
