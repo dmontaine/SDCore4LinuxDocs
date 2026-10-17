@@ -137,35 +137,66 @@ names something else entirely.** This program, in an ordinary account:
 
 ```
       v1 = kernel(28, 0)
-      v2 = ospath('C:', 1)
       v5 = option('X')
       v6 = pterm(1, '')
 ```
 
-compiles to, at the **last line of the program**:
+compiles to, at the **last line of the program** (line 4 of this four-line
+file, counting its `end`):
 
 ```
-41: Matrix KERNEL is not referenced in a DIM statement
-41: Matrix OPTION is not referenced in a DIM statement
-41: Matrix OSPATH is not referenced in a DIM statement
-41: Matrix PTERM is not referenced in a DIM statement
+4: Matrix KERNEL is not referenced in a DIM statement
 WARNING: KERNEL is not assigned a value
+WARNING: OPTION is not assigned a value
+WARNING: PTERM is not assigned a value
+1 error(s)
 ```
 
 A name the compiler does not know as a function is read as a **matrix
-reference**, so the error is about a `dim` statement you never wrote, at a line
+reference**, so the complaint is about a `dim` statement you never wrote, at a line
 number nowhere near the call. **If a function you are sure exists produces
 that, it exists and this account may not call it.** A call with three arguments
 gives a different but equally misleading answer — `sdext(101, 'pw', 'salt')`
 is *"Right bracket not found where expected"*, because a matrix takes at most
 two subscripts.
 
-Internal-only: `kernel()`, `ospath()`, `option()`, `pterm()`, `sdext()`,
-`testlock()` and `getlocks()`.
-The compiler's list is longer than that; those seven are the ones this page
+Internal-only: `kernel()`, `option()`, `pterm()`, `sdext()`, `testlock()` and
+`getlocks()`.
+The compiler's list is longer than that; those six are the ones this page
 put in front of it. They are reachable only from a program compiled
 with `$internal`, which additionally requires an administrator in the `SDSYS`
 account.
+
+**`ospath()` is not on that list any more.** Any program may call it, with the
+openQM keys, and the account's OS access gate decides what it may look at:
+
+```
+ospath(path, key {, qualifier})
+```
+
+| key | name | answer |
+|---|---|---|
+| 0 · 1 | | is *path* a valid path name · a valid single file name (text only, no gate) |
+| 2 | | it exists, as a file or a directory |
+| 3 | | a file name `D` and seven digits that is not in the directory *path* (the name, not the path) |
+| 4 · 9 | `os$fullpathx` | the full path name; SD keeps the case, so the two are one |
+| 5 | | delete a file or an **empty** directory — never a tree. True if it was removed |
+| 6 | | is it open in SD, by any user |
+| 7 | | when it was modified, as an epoch value; 0 if it is not there |
+| 8 | | flush this process's cache of dynamic files; true |
+| 10 | `os$parent` | the parent directory |
+| 11 · 12 | `os$uid` · `os$gid` | the owner's and group's numbers; 0 if the path is not there |
+| 13 · 14 | | make a directory · make it and the levels above it; true if done |
+| 15 | `os$modes` | the permission bits as a decimal number (`0755` is 493); 0 if it is not there |
+| 16 · 17 | `os$is.file` · `os$is.dir` | a file · a directory |
+| 18 | | the Windows owner: a null string on Linux |
+
+The names are in the `keys.h` header; 6 and 18 have none, so give those as numbers. Every key that
+looks at or changes the file system (all but 0, 1, 4, 8, 9, 10 and 18) asks the account's gate
+first: an account with neither `os-on` nor `sd-on` is held to its own directory, and a refusal
+answers false with `status()` set to a permission error. An unknown key answers false with
+`status()` 1. The qualifier is read and ignored. An internal program's own `ospath()`, with its
+different numbers, is unchanged.
 
 **And some statements are restricted the same way.** These are
 *"Unrecognised statement"* in an ordinary account: `set.modes`, `reset.modes`,

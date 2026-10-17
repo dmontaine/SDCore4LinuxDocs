@@ -112,7 +112,7 @@ show it.
 |---|---|
 | **`who`** | your user number and the account you are in |
 | **`who.am.i`** | the same information at more length |
-| **`logto`** *account* | change account without logging out |
+| **`logto`** *account* {**reset** {**all**}} | change account without logging out; **reset** restarts the command level, **reset all** every level |
 | **`off`** · **`quit`** | end the session |
 | **`option`** {*name*} {**on**\|**off**\|**display**} | set or show a session option |
 | **`option all off`** | turn every session option off at once |
@@ -145,6 +145,26 @@ outright from any other account.** Administering SD means logging in to the
 machine itself, locally, as the `sdsys` account, its own password, and
 starting a fresh session, not `logto`-ing there from one you already have —
 see the *Administrator* set's *Accounts and Security* chapter.
+
+### `logto … reset` and `logto … reset all`
+
+When a program runs `logto` with `execute`, the session is several command levels deep: the
+prompt, the program's `execute`, then the `execute` of the `logto` itself. The two options say
+what happens to those levels.
+
+| | |
+|---|---|
+| `logto` *account* `reset` | restarts the command level the `logto` ran at, in the new account. The programs that ran the `logto` **carry on** when it ends |
+| `logto` *account* `reset all` | **casts off every level** — programs, menus and paragraphs — and runs the new account's `login` at level 1. Nothing that ran the `logto` carries on, `execute … trapping aborts` does not catch it, and the unnamed common blocks of the levels it cast off are gone |
+
+At level 1, at the prompt, `reset all` is `reset`: there is nothing to cast off. A menu that the
+new account's `login` starts is not itself discarded, because the `login` runs after the levels
+have gone.
+
+**`reset all` is refused in an API session**, with *LOGTO RESET ALL is not available in a client
+session* (message 11392), before anything is changed: the API server is its own bottom level and
+has no prompt to return to. That refusal was written but not run, because a test session cannot
+host an API connection.
 
 ## What is not here
 

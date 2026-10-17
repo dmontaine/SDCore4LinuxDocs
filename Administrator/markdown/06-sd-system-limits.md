@@ -49,6 +49,20 @@ source notes that raising it would require major file-format changes.
 
 Group size is expressed in 1 KB units, so the compiled maximum of 8 is 8 KB.
 
+**A sort that outgrows `SORTMEM` is written to work files, and an item or a key may be of any
+length SD can hold** (16 Oct 2026). The lengths in a work file were 16 bits, so an item or a key of
+32 KB or more wrapped when a sort spilled to disk and the result was wrong; they are 32 bits now.
+The count of a sort that returned no data was also one short when the last record ended the file.
+
+**A split of a dynamic file stops before it changes the file when the disk cannot take it** (16 Oct
+2026). A dynamic file grows by splitting its groups. The split writes the new, empty group first and
+only then advances the file's modulus; it does nothing if that write cannot be made, or if the file
+system holds less than 1 MB, and writes a line to the log. Before, a full disk could leave the modulus
+advanced with no group behind it, and the records that hashed there could not be found. **A split that
+fails after the new group has begun to be used still cannot be undone**: it logs the failure and
+writes the file's header, and the file needs a file check (`sdfix`). This was tested with a write
+limit standing in for a full disk; the free-space check itself was not driven.
+
 ## Sessions and locks
 
 | | | |

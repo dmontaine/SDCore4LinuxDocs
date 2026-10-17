@@ -164,12 +164,42 @@ An I-type expression cannot use:
 - **Statements**: no `OPEN`, `READ`, `WRITE`, `PRINT`, `INPUT`, `FOR`,
   `LOOP`, `GOTO`, `GOSUB`.
 - **Multiple statements**: no semicolons between statements. The whole
-  field 2 is one expression.
+  field 2 is one expression. The one exception is a `$MODE` prefix, below.
 - **Dimensioned arrays**: no `DIM`, no `MAT`.
 - **Common blocks**: no `COMMON`.
 
 If you need any of these, write a subroutine, catalogue it, and call it
 with `SUBR()` from the I-type.
+
+### Compiler modes: `$MODE`
+
+An I-type may begin with `$MODE`, a list of mode names and a semicolon, as a program begins with
+`$MODE`:
+
+```
+$MODE COUNT.OVERLAP ; COUNT(F1, 'aa')
+$MODE INDEX.OVERLAP,NOCASE.STRINGS ; INDEX(F1, 'AA', 3)
+```
+
+| mode | |
+|---|---|
+| `INDEX.OVERLAP` · `COUNT.OVERLAP` | `INDEX()` takes the *n*th occurrence counting the ones that overlap, and `COUNT()` finds occurrences that overlap: `aa` in `aaaaaaaaa` is found 8 times, not 4 |
+| `CHANGE.NO.OVERLAP` | `CHANGE()` counts occurrences without overlap: when a starting occurrence is given, the ones before it are passed over whole |
+| `NOCASE.STRINGS` | string comparisons and the string functions ignore case |
+| `TIME.MS` | `TIME()` returns the seconds since midnight to the millisecond, as a number with a fraction |
+| `COMPATIBLE.APPEND` | accepted, and does nothing: an I-type has no append to change |
+
+These are the same modes, with the same meanings, as in
+[SD Basic - Program Structure](01-sd-basic-program-structure.html).
+
+Several names may be separated by commas, several `$MODE` statements may each end in a semicolon,
+and a name with a minus in front of it turns that mode off again (`COUNT.OVERLAP,-COUNT.OVERLAP`).
+**Each mode gives the value a program gives with the same `$MODE`**; without the mode the same
+expression gives its ordinary value.
+
+Any other mode is refused, and the message names it: *UV.LOCATE is not a mode that an I-type can use*
+(message 11395). **An I-type that another I-type uses cannot set modes** (message 11396), because
+the one that uses it would be compiled with modes it had not asked for.
 
 ### Compilation and the stamp
 

@@ -143,7 +143,7 @@ itself administrator rights. That was demonstrated, not theorised.
 | | |
 |---|---|
 | **`option`** | `option(`*a*`)` ***(internal)*** |
-| **`ospath`** | `ospath(`*a*, *b*`)` ***(internal)*** |
+| **`ospath`** | `ospath(`*a*, *b*`)` ***(internal)***. **Any program may call the openQM form, with openQM's key numbers (16 Oct 2026), behind the account's OS access gate;** the internal form keeps its own numbers. See *SD Basic - Status and the Machine* |
 | **`osrename`** | `osrename(`*a*, *b*`)` ***(internal)*** |
 
 ## P

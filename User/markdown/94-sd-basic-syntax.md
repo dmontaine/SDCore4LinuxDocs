@@ -182,7 +182,7 @@ exist.**
 
 | | |
 |---|---|
-| **`fcontrol`** | `fcontrol(`*file.var*, *action* {, *qualifier*}`)` — *action* `FC$SET.SEQ.KEY` 2, `FC$GET.SEQ.KEY` 3, 5 (field access, always 1), `FC$VALID.ID` 6, `FC$MINMOD` 7; `FC$SYNC` 1 and `FC$CRLF` 4 stop the program ([File Handling](07-sd-basic-file-handling.html)) |
+| **`fcontrol`** | `fcontrol(`*file.var*, *action* {, *qualifier*}`)` — *action* `FC$SET.SEQ.KEY` 2, `FC$GET.SEQ.KEY` 3, 5 (field access, always 1), `FC$VALID.ID` 6, `FC$MINMOD` 7, `FC$SYNC` 1 (forced writes: qualifier 1 on, 0 off, -1 only asks); `FC$CRLF` 4 stops the program ([File Handling](07-sd-basic-file-handling.html)) |
 | **`field`** | `field(`*string*, *delimiter*, *occurrence* {, *count*}`)` |
 | **`fields`** | `fields(`*arr*, *delimiter*, *occurrence* {, *count*}`)` |
 | **`fieldstore`** | `fieldstore(`*a*, *b*, *c*, *d*, *e*`)` |
@@ -209,7 +209,7 @@ exist.**
 | | |
 |---|---|
 | **`ges`** | `ges(`*a*, *b*`)` |
-| **`get`** | `get` *var* `from` *object* |
+| **`get`** | `get` *var* {`,` *length*} {`setting` *count*} `from` *file.var* {`until` *terminator*} {`returning` *last*} {`waiting` *seconds*} {`then` … `else` …} ([Sequential Files](10-sd-basic-sequential-files.html)) · in a class module, `get` *name* … `end` declares a property ([Modern Program Structure](18-sd-basic-modern-program-structure.html)) |
 | **`get.messages`** | `get.messages()` |
 | **`get.port.params`** | `get.port.params(`*a*`)` |
 | **`getlist`** | `getlist` *name* {`to` *list.no*} `then` … `else` — ***the `then`/`else` is not optional*** |
@@ -358,14 +358,15 @@ exist.**
 | **`oconv`** | `oconv(`*a*, *b*`)` |
 | **`oconvs`** | `oconvs(`*a*, *b*`)` |
 | **`on`** | `on` *n* `goto` *label*, … — ***clamps, it does not fall through*** |
-| **`open`** | `open` {*dict*`,`} *name* `to` *file.var* {`readonly`} {`on error` …} `then` … `else` … |
+| **`open`** | `open` {*dict*`,`} *name* {`sync`} `to` *file.var* {`readonly`} {`on error` …} `then` … `else` … — `sync` writes every write and delete of the file to disk |
 | **`open.socket`** | `open.socket(`*addr*, *port*, *flags* {, *context*}`)` |
-| **`openpath`** | `openpath` *path* `to` *file.var* {`readonly`} {`on error` …} `then` … `else` … |
+| **`openpath`** | `openpath` *path* {`sync`} `to` *file.var* {`readonly`} {`on error` …} `then` … `else` … |
 | **`openseq`** | `openseq` *path* `to` *file.var* {`append`} {`overwrite`} {`readonly`} `then` … `else` … — ***`then` = it existed, `else` = it was created*** |
 | **`opentemp`** | `opentemp` {*path*} {`ecs`} {`non.transactional`} `to` *file.var* {`on error` …} `then` … `else` … |
 | **`ors`** | `ors(`*a*, *b*`)` |
 | **`os.error`** | `os.error()` |
 | **`os.execute`** | `os.execute` *command* {`capturing` *var*} |
+| **`ospath`** | `ospath(`*path*, *key* {, *qualifier*}`)` — keys 0 to 18, see [Status and the Machine](16a-sd-basic-status-and-the-machine.html); an internal program's own `ospath()` has other numbers |
 | **`outerjoin`** | `outerjoin(`*a*, *b*, *c*`)` |
 | **`overlay`** | clause of `input` — type over what is already there ***(clause word)*** |
 | **`overwrite`** | clause of `openseq` ***(clause word)*** |

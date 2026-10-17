@@ -82,6 +82,31 @@ definitions in source form. You can read it to see what a terminal
 definition looks like, and you can use it as a template for a custom
 definition.
 
+## Ending one attribute: `eblink`, `edim`, `erev`, `ebold` and `eprot`
+
+SD turned blink, half intensity, reverse video and bold off with `sgr0`, which ends **every**
+attribute and the colours as well. A terminal entry can now give each its own capability:
+
+| capability | ends | sent by |
+|---|---|---|
+| `eblink` | flashing text | `@(-6)` |
+| `edim` | half intensity | `@(-12)` |
+| `erev` | reverse video | `@(-14)` |
+| `ebold` | bold | `@(-59)` |
+| `eprot` | protected mode | nothing yet: no `@()` function uses it |
+
+When the entry defines the capability, the function sends it; **when it does not, the function
+sends `sgr0` as before.** No entry that ships with SD defines any of the five, so nothing changes
+until you add them. SD's own programs that use `@(-14)` to put the colours back (the query
+processor's styles, SED, the pick lists) therefore behave as they did on every stock terminal.
+Think before you give an entry an `erev` of its own: it ends reverse video and nothing else, where
+`sgr0` ended the colours too.
+
+Put the additions in `terminfo.mods` in the SDSYS account directory, which the installer compiles
+after `terminfo.src` so that an upgrade does not lose them, and compile with `sdtic` as described
+below. The start functions `@(-5)` and `@(-13)` were not changed. Tested with a copy of the `ansi`
+entry that has all five, a copy that has none and a copy with only `erev`.
+
 ## Compiling a definition
 
 **`sdtic` is built alongside the server during installation** — it is

@@ -186,6 +186,45 @@ timeout file.variable, seconds
 named pipe or a device, where a read can otherwise block for ever; on an
 ordinary file it does nothing useful.
 
+## Reading what arrives: `get`
+
+```
+get variable {, length} {setting count} from file.variable
+    {until terminator} {returning last} {waiting seconds} {then ... else ...}
+```
+
+`readseq` waits for a whole line. **`get` takes characters as they come**, which is what a
+program listening on a named pipe, a serial line or another process's output needs.
+
+| clause | |
+|---|---|
+| `, length` | read this many characters. With no length and no `until`, one character |
+| `setting count` | the number of characters read |
+| `until terminator` | read on until this character. **The terminator is kept in the data** — `until char(10)` gives `hello` and the line feed |
+| `returning last` | with `until`, the terminator that ended the read (`char(10)` in the example below) |
+| `waiting seconds` | how long to wait for each character |
+
+```
+openseq '/tmp/feed' to f else stop 'cannot open'
+get a, 3 setting c from f                   ;* hel    c = 3
+get b setting c from f until char(10)       ;* lo and a line feed
+get d, 5 from f waiting 3 then ... else ...
+```
+
+**A timeout takes the `else` branch and leaves `status()` at 0**: nothing went wrong, nothing came,
+and anything that arrived before the time ran out is in the variable and counted. A later `get` finds
+the data that arrived afterwards. **The end of an ordinary file before the length is reached also
+takes `else`, but with `status()` not 0**; what there was is in the variable and counted. That is
+how a program tells the two apart.
+
+**The wait is for each character, not for the whole read**: a read of 100 characters with
+`waiting 5` can take as long as the characters keep arriving inside five seconds of each other.
+
+A pipe or device is opened by its pathname, so the account's OS access gate applies as it does to
+any other `openseq` of a path. It was tested on a named pipe fed on a clock and on an ordinary
+file; a serial port or other character device was not tried. `get` with no `from` is still a class
+module's property declaration, as in [SD Basic - Modern Program Structure](18-sd-basic-modern-program-structure.html).
+
 ## Asking about the file
 
 ```

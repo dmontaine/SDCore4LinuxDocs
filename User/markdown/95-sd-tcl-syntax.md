@@ -135,7 +135,7 @@ not refused — the name is simply not recognised.**
 | **`lock.tracer`** | **`lock.tracer`** **`on`** \| **`off`** \| {**`user`** *n*} {**`lptr`** {*n*}} {**`no.page`**} | S |
 | **`logmsg`** | **`logmsg`** *text* |  |
 | **`logout`** | **`logout`** \| *n* … \| **`all`** |  |
-| **`logto`** | **`logto`** *account* |  |
+| **`logto`** | **`logto`** *account* {**`reset`** {**`all`**}} |  |
 | **`make.index`** | **`make.index`** *file* *field* … {**`no.nulls`**} {**`pathname`** *path*} |  |
 | **`map`** | **`map`** {**`all`**} {**`lptr`** {*n*}} {**`file`** {*name*}} |  |
 | **`merge.list`** | **`merge.list`** *list.no* *rel.op* *list.no* {**`to`** *list.no*} {**`count.sup`**} |  |
