@@ -3,8 +3,9 @@ Subtitle: The NET switch and the server definitions: what is in place for files 
 
 SDNet is the name for opening a file that lives on **another SD server** and using
 it with `READ`, `WRITE`, `SELECT` and `LIST` as if it were local. **This release
-has the first slice only: the permission and the list of servers. Nothing in it
-connects to anything, and no remote file can be opened.** The switch and the
+has the first slices only: the permission, the list of servers, and one
+connection that `set.server` can make so that it can show you a server's key hash.
+Nothing else connects to anything, and no remote file can be opened.** The switch and the
 definitions are in place so that the work that follows has something to stand on,
 and so that you can see, and set, what it will be allowed to use.
 
@@ -43,13 +44,15 @@ anyone who is not the administrator. Commands are shown here in lower case.
 
 ### What does not exist yet
 
-- **The connection.** No verb, statement or program in SD opens a socket to a
-  server defined here. A definition is a record on disk and nothing reads it
-  but these three verbs.
-- **Confirming the key hash.** `set.server` cannot connect, so it cannot show you
-  the hash the server presents and ask you to confirm it. You type the pin, and
-  nothing checks it. This slice has no command that prints a server's key hash,
-  so it has to come from the other server's administrator.
+- **The connection, apart from one.** The only thing in SD that opens a socket to
+  a server is `set.server` with the word `connect`, once, for the handshake
+  alone (see below). No verb, statement or program opens a socket to a server
+  *defined* here. A definition is a record on disk and nothing reads it but
+  these three verbs.
+- **A check that a typed pin is right.** When you type the 64 digits, nothing
+  connects and nothing checks them; use `connect` to have the server's own hash
+  shown to you. And nothing yet checks a pin on a later connection, because
+  there is no later connection.
 - **Credentials.** No user name or password for the remote account is asked
   for or stored anywhere.
 - **Remote files.** There is no VOC pointer to a remote file, and the NET switch
@@ -62,7 +65,9 @@ anyone who is not the administrator. Commands are shown here in lower case.
 **Nothing a user can type chooses a host.** The only machines SD will ever be
 asked to call are the ones SDSYS has written down, and only SDSYS can write them:
 the file is replaced only by these verbs, and the verbs are SDSYS's. A program
-cannot define, change or point at a server. Two things must then both be true
+cannot define, change or point at a server. (The one connection that exists
+today is SDSYS's own: `set.server ... connect` dials the host SDSYS typed, for a
+handshake, and sends nothing.) Two things must then both be true
 before an account could use one: it has the NET switch (off by default), and it
 is named in that server's *accounts* list (empty by default). Neither is a
 judgement that nobody should have the capability; each is a decision about who
@@ -106,12 +111,16 @@ ASCII range, so a line cannot be made into something else.
 ## Defining a server: `set.server`
 
 ```
-set.server name host port account pin {read | write} {accounts a,b,c} {no.query}
+set.server name host port account {pin | connect} {read | write} {accounts a,b,c} {no.query}
 ```
 
-Everything after the pin is optional and may come in either order. Capitals in the
-name, host, pin, mode and account list are converted. Words are split at spaces, so
-nothing can be quoted.
+The fifth word is **either the pin, 64 hexadecimal digits, typed (no connection is
+made), or the word `connect`** (SD fetches the hash and asks you to confirm it:
+see "Getting the pin by connecting" below). Everything after it is optional and may
+come in either order. `no.query` skips the question about replacing a definition,
+**and never the question about trusting a key**. Capitals in the name, host, pin,
+mode and account list are converted. Words are split at spaces, so nothing can be
+quoted.
 
 ```
 :set.server solo2 192.168.1.40 4249 sduser 5f29e23fd38c423996bef4450ba56aa16e11f06e926ddb0828b5d9649064b9b9
@@ -129,13 +138,13 @@ Server solo2 is already defined (192.168.1.40:4249).  Replace it (y/<n>)?y
 Server solo2 (192.168.1.40:4249) was replaced
 ```
 
-Fewer than six words (the verb, then name, host, port, account and pin) print the
-usage and a reminder of where the pin comes from, and stop:
+Fewer than six words (the verb, then name, host, port, account and pin or
+`connect`) print the usage and a reminder of where the pin comes from, and stop:
 
 ```
 :set.server solo2 192.168.1.40 4249 sduser
-Usage: set.server name host port account pin {read | write} {accounts a,b,c} {no.query}
-The pin is the SHA-256 hash of the server's public key, 64 hexadecimal digits, from the other server's administrator.  Nothing connects to the server yet, so the hash cannot be shown here for confirmation.
+Usage: set.server name host port account {pin | connect} {read | write} {accounts a,b,c} {no.query}
+The pin is the server's public key hash: 64 hexadecimal digits from its administrator (nothing is dialled), or the word connect to see the hash the server presents and confirm it.  no.query never skips that question.
 ```
 
 **Every field is checked before anything is written, and each field that is wrong
@@ -156,9 +165,146 @@ be listed). A refusal writes nothing.
 
 **Replacing.** A name that is already defined is replaced, after the question
 above, which defaults to no (and so does an input that ends). `no.query` goes
-ahead without asking. **A replacement is the whole definition, not a merge:**
+ahead without asking **that** question, and no other (see the next section).
+**A replacement is the whole definition, not a merge:**
 the accounts list is whatever the new command gives, so give it again. With ten
 servers already defined, a new name is refused until you delete one.
+
+### Getting the pin by connecting: `set.server ... connect`
+
+Typing 64 digits from a message is how a pin gets mistyped, or swapped for the
+wrong one. Give the word `connect` in place of the pin and SD fetches the hash
+itself, shows it to you, and writes the definition only if you say the hash is
+the right one:
+
+```
+set.server name host port account connect {read | write} {accounts a,b,c} {no.query}
+```
+
+`connect` may be in any case. This is what happens, in this order:
+
+1. **Every other field is checked first**, exactly as above (the pin check is
+   the only one left out, because there is no pin yet). **Nothing is dialled for
+   a definition that would be refused.**
+2. The definitions are read and the limit of ten is checked. If the name is
+   already defined and `no.query` was not given, the replacement question is
+   asked **before any connection**, so answering no (or ending the input)
+   dials nothing.
+3. SD opens a **TLS connection to *host*:*port*, waiting at most 5 seconds**, and
+   reads the SHA-256 hash of the public key the server presented. It closes the
+   connection at once. **It is a handshake only: nothing is sent to the server.**
+4. SD shows the hash and asks you to trust it. The answer defaults to no, and so
+   does an input that ends.
+5. On **y** the definition is written with that hash as its pin. On **n** nothing
+   is written.
+
+```
+:set.server hq hq.example.com 4247 reports connect read accounts fred
+Connected to hq.example.com:4247 (a TLS handshake only: nothing was sent).  The server presented a public key with this hash:
+90b7bd01319812c22b8a37b3170d3026955a4e640bb9b216acf9db468475bc06
+Compare it with the hash the administrator of that server gives you, by a way that does not use this network.  If it differs, answer n: something may be standing between this server and that one.
+Trust this key (y/<n>)?y
+Server hq (hq.example.com:4247) is defined
+```
+
+(The hash above is an example value, not a real server's. The hash is printed
+alone on its line, in lower case, so it can be copied.) Answering n:
+
+```
+Trust this key (y/<n>)?n
+The key was not trusted.  Nothing was written: server hq is as it was
+```
+
+**THE KEY QUESTION IS ALWAYS ASKED. `no.query` does not skip it.** `no.query` only
+skips the question about replacing a definition that exists. An administrator
+who scripts `set.server` with `no.query` and `connect` still has to answer
+whether the hash is the right one, because that answer is the whole point of
+`connect`: with no one to compare, the pin would be whatever answered the call,
+and that is no check at all. A replacement with `connect` therefore asks two
+questions when `no.query` is absent (replace, then trust) and one when it is
+present (trust). When the input ends before an answer, the answer is no.
+
+**Why you compare, and what to compare with.** SD does not check the server's
+certificate against anything here: it has nothing to check it against, which is
+what the pin is for. So the connection can tell you what key *something* at that
+address holds, but not that the something is the server you meant. If another
+machine were standing between the two (or the address were wrong), the hash
+would be that machine's. **Compare the hash with one you get another way: ask the
+administrator of that server, by telephone or in person or by a channel you
+already trust, and not over the network this connection used.**
+
+**What the hash is.** It is the SHA-256 of the server's **public key** (the
+certificate's SubjectPublicKeyInfo, DER encoded), shown as 64 lower case hex
+digits. It is not the hash of the certificate. A certificate that is renewed over
+the **same key** therefore has the same hash, and a pin does not go stale at a
+renewal; a new key is a new hash and the pin has to be set again.
+
+**How the other administrator gets the hash.** The administrator of the server
+being defined asks that server for it: run as SDSYS, `settings.report` shows a
+line `public key sha256: ` followed by the 64 digits in its `[api]` section, and
+the same line comes from the privileged helper on its own:
+
+```
+sudo /usr/local/sbin/sd-elevate tls-key
+```
+
+If that server has not taken a TLS connection yet the line says
+`certificate: not yet generated` (the file is made by the first connection). The
+command reads only the public key; the private key in the same file is never
+read into the output. It takes no argument and no path.
+
+The same figure can be worked out by hand with `openssl`, with these two
+commands run as a pipeline, which is also how to check that `tls-key` and the
+connection agree:
+
+```
+sudo sh -c 'openssl x509 -pubkey -noout -in /etc/sd-tls/api.pem | openssl pkey -pubin -outform DER | openssl dgst -sha256'
+```
+
+(`sudo`: the file also holds the server's private key, so only root can read it.
+The `sudo sh -c` form is used so that the pipe runs as root; run bare, the
+first `openssl` would be refused.) The 64 hexadecimal digits at the end of the
+output are the hash, and they should match what `set.server` showed. Depending on
+the version, `openssl` puts a short label such as `(stdin)= ` in front of the digits;
+the label is not part of the hash.
+
+What was and was not confirmed about that command, so you can weigh it:
+
+- **Confirmed from the source:** `/etc/sd-tls/api.pem` is where an SD Core server
+  keeps its API identity (the certificate and its private key): the file is
+  `api.pem` in a directory named `sd-tls` inside the directory that holds
+  `sd.conf`, which is normally `/etc`; `sd-elevate
+  tls-show` reads the same file. The hash SD shows is computed from the DER
+  encoding of the certificate's public key, which is what the pipeline hashes.
+- **Confirmed by test:** `sd-elevate tls-key` gives the same figure as an
+  independent computation (the key's DER bytes hashed in Python) on a test
+  certificate, and the figure `set.server ... connect` shows for a local TLS 1.3 test
+  server equals the same computation.
+- **Not confirmed:** the pipeline has not been run against a live SD server and its
+  output compared with what `set.server ... connect` shows. They should agree,
+  and if they do not, trust neither until you know why. The file is made by the
+  API's first TLS connection, so a server that has never taken one has no
+  `api.pem` yet. Where the identity of a Solo server is kept was not checked, and
+  a server with a different `sd.conf` directory has its `sd-tls` there.
+
+**When it does not work, nothing is written.** There is a message for each case:
+
+| you see | meaning |
+|---|---|
+| `Cannot connect to host:port (status n, os error m).  Nothing was written` | the connection was not made: nothing is listening there, the address is wrong, or the 5 seconds passed (the operating system's error for a timeout, 110, is what is expected) |
+| `The TLS handshake with host:port did not complete.  Is that the API port of an SD server?  Nothing was written` | something answered, but it did not complete a TLS handshake: most likely the port is not an SD server's API port |
+| `host:port completed the handshake but gave no public key hash.  Nothing was written` | a TLS session was made but no hash could be read from it |
+
+The first two are told apart by the operating system's error number, which is
+zero for a handshake that failed after the connection was made. That is read off
+the source and has not been tried against a closed port, a port that is not TLS
+and an address that does not answer.
+
+**One thing to know about the lock.** The definitions are locked from the time
+they are read until the answer is acted on, which includes the connection (up to
+5 seconds) and the time you take to answer. A second administrator session that
+changes the definitions meanwhile is told to try again. The lock is so that the
+definition cannot change between the confirmation and the write.
 
 ## Removing a server: `delete.server`
 
@@ -209,12 +355,16 @@ without changing anything; correct the file at the operating system.
 Defining and deleting are written to the audit trail, in lower case:
 
 ```
-set.server name=solo2 host=192.168.1.40 port=4249 mode=read replaced=no
+set.server name=solo2 host=192.168.1.40 port=4249 mode=read replaced=no pin=typed
+set.server name=hq host=hq.example.com port=4247 mode=read replaced=no pin=confirmed
 delete.server name=solo2 host=192.168.1.40 port=4249
 ```
 
-The pin is not in the line (it is not secret, only long). A refusal, a declined
-replacement and `list.servers` write nothing. Giving or taking the NET switch is
+The last word of a `set.server` line says how the pin was obtained: `pin=typed`
+for 64 digits typed in the command, `pin=confirmed` for a hash that SD fetched with
+`connect` and SDSYS answered y to. The pin itself is not in the line (it is not
+secret, only long). A refusal, a declined replacement, a key that was not trusted,
+a connection that failed and `list.servers` write nothing. Giving or taking the NET switch is
 audited like every other `modify.account` word (`modify.account net-on
 account=fred`).
 

@@ -208,6 +208,7 @@ set.mode = **`set.mode`** {**`dict`**} *file* {**`all`** | **`from`** *listno* |
 set.queue = **`set.queue`** *queue* {, *width*, *depth*, *top*, *bottom*, *mode* {, *options*}}  ·  **`set.queue display`** {**`lptr`** {*unit*}}  ·  **`set.queue deleting`** *queue*
 sp.assign = **`sp.assign`** {*options*} {, *setptr options*}
 # 17 Oct 26: S.65 slice 1, SDNet's server definitions (SDSYS only).  Their page is Administrator/12, named in tclmap.py.
-set.server = **`set.server`** *name* *host* *port* *account* *pin* {**`read`** | **`write`**} {**`accounts`** *a*`,`*b*`,`…} {**`no.query`**}
+# 17 Oct 26: S.65 slice 2a, set.server takes the word connect in place of the pin (the key question is always asked).
+set.server = **`set.server`** *name* *host* *port* *account* {*pin* | **`connect`**} {**`read`** | **`write`**} {**`accounts`** *a*`,`*b*`,`…} {**`no.query`**}
 delete.server = **`delete.server`** *name*
 list.servers = **`list.servers`** {*name*}

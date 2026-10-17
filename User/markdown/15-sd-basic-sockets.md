@@ -83,6 +83,16 @@ you are polling for a service to come up.
 | `5` | Nagle disabled? | `0` |
 | `6` | keep-alive? | `0` |
 | `7` | family: **1** IPv4, **2** IPv6 | `1` |
+| `8` | `SKT$INFO.TLS.CBIND`: the SCRAM channel binding of a TLS socket | text; null without TLS |
+| `11` | `SKT$INFO.TLS.SPKI`: the SHA-256 hash of the public key the server presented | 64 lower case hex digits; **null** for a socket opened without `SKT$TLS` |
+
+Keys 8 and 11 are SD's own and are for a socket opened with the flag `SKT$TLS`
+(in `keys.h`) added to the flags of `open.socket`, which makes SD speak TLS 1.3 as
+the client. Key 11 hashes the certificate's **public key**, not the certificate,
+so a renewed certificate over the same key gives the same value. **The client does
+not check the certificate against anything**: the hash is for the program to compare
+with a value it already trusts, as `set.server ... connect` does for the SDNet
+server definitions (the SDNet page of the Administrator guide).
 
 **Key 2 means two different things and the difference is easy to miss.** On
 the socket you dialled out with it is **the port you dialled**; on a socket you
@@ -301,8 +311,10 @@ finished is the newline it went looking for.
 ordinary account it is *"Unrecognised statement"*. It writes an SDClient
 protocol packet and is not a general socket write.
 
-**No TLS.** There is nothing in SD BASIC that speaks HTTPS; a socket carries
-whatever bytes you put on it. Anything encrypted has to terminate outside SD.
+**No HTTPS.** There is nothing in SD BASIC that speaks HTTPS; a socket carries
+whatever bytes you put on it. The one TLS there is, the `SKT$TLS` flag above, is a
+TLS 1.3 client made for an SD server's own API port, and it does not verify the
+certificate. Anything else encrypted has to terminate outside SD.
 
 **The whole of this page is TCP.** `0x00010000` and `0x00020000` are the UDP
 and ICMP flag values.
