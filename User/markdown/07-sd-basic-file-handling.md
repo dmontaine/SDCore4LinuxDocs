@@ -349,6 +349,13 @@ On a newly created dynamic file:
 | `13` | does the file have alternate key indexes? | |
 | `1001` | read-only? | |
 | `1003` | size in bytes, excluding indexes | |
+| `1021` (`FL$WHO`) | the user numbers of the other sessions that have the file open, a field mark between them | `14` or `14` : `@fm` : `22`, null when there are none |
+| `1100` (`FL$HOLDERS`) | the same sessions as text, for messages | `14 (ann), 22 (don)` |
+
+**Key `1021` is the openQM `FL$WHO`, and the caller is left out** unless it has the file
+open through more than one file variable. `1021` returned the text form until 17 Oct 2026; code
+that wants text for a message now asks `1100`, and SD's own "cannot gain exclusive access"
+messages do. Compile with `$include keys.h`, so that the names carry whatever number they have.
 
 File types: `1` SH, **`3` DH — an ordinary dynamic file**, `4` directory, `5`
 sequential.
