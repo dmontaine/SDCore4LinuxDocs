@@ -119,6 +119,16 @@ still reads correctly here.
 this port is *n* bytes shorter than the same file written by SD Core for
 Windows, whose CRLF endings cost an extra byte per line.
 
+**You can choose the line end, for one file** (16 Oct 2026). `fcontrol(s, FC$CRLF, mode)` on the file variable of an `openseq`
+sets one of four modes, and a letter in field 6 of the VOC entry of the directory file does the same for every `openseq` of its
+records: `L` (mode 0) ends a line at LF only and keeps every CR; `C` (mode 1) ends it at CR LF only, so a line may hold an LF
+or a CR of its own and `writeseq` adds CR LF; `B` (mode 2) is what `readseq` has always done, CR LF or LF with a lone CR kept;
+`X` (mode 3) ends a line at LF and throws every CR away. Only mode 1 changes what `writeseq` writes. A file with no letter and no
+`fcontrol` is in mode 2 for `readseq`, as above; `fcontrol(s, FC$CRLF, -1)` says so. The table of all four modes, and what a
+directory file `read` and `write` do in each, is under *Line terminators* in
+[SD Basic - File Handling](07-sd-basic-file-handling.html). A last line with no line end at the end of the file is a line in
+every mode, and a CR left at the very end of a file counts as a line only where it is data.
+
 ## A whole file by pathname: `osread`, `oswrite`, `osdelete`
 
 ```

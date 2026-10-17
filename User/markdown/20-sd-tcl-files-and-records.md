@@ -448,6 +448,32 @@ stock                zztrig               PRE.WRITE, PRE.DELETE, POST.WRITE, POS
 2 file(s) with a trigger function
 ```
 
+### A trigger on a directory file
+
+A directory file can have a trigger function too (16 Oct 2026). `set.trigger` works on it as on a hashed file, and
+`list.triggers` lists it. The directory has no header to hold the trigger, so it is kept in a small text file named
+`%header%` in the directory itself, which SD makes when the trigger is set and removes when it is taken away:
+
+```
+trigger=zztrig
+modes=127
+```
+
+`select`, `count` and `analyse.file` do not count it as a record, `clear.file` leaves it (and so the trigger), and no record id
+can reach it: `%` is one of the characters SD rewrites in a directory file's record ids, so a program that writes the id
+`%header%` makes an ordinary record under another name. The file is not locked away, though: anyone who can write to the
+directory can change it with an editor, just as anyone who can write to it can add or remove records, so the trigger is only
+as safe as the directory is. A file that is not a header in this form, or names a function whose name no function can have, is
+read as no trigger.
+
+**What calls it.** `read`, `write`, `delete` and `clearfile` (and the verbs built on them) call the function for the modes that
+are set, in the same order as for a hashed file, with the same arguments, and a pre-write or pre-delete trigger can refuse the
+operation with `@trigger.return.code` or change the data being written. **`writeseq`, `writeblk`, `oswrite` and `osdelete` do
+not call it**, so a query report sent to a file, or a compile listing, never does; that is openQM's limit too. **A change to the
+trigger takes effect when the file is next opened**, not for a program that has it open already (`set.trigger` itself needs the
+file to itself, as it does for a hashed file). If the header names a function that is not catalogued, the first operation that
+needs it stops with *Trigger function 'name' not loaded for the file*.
+
 ## Sizes and who is busy: `file.stat` and `fstat.user`
 
 ```

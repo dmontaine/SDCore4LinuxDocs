@@ -176,19 +176,51 @@ program may use it; it changes only the file it is given.
 | 1 | `FC$SYNC` | forced writes of a hashed file: the qualifier 1 turns them on, 0 off, -1 only asks. The result is the state before the call. See *Forced writes* below |
 | 2 | `FC$SET.SEQ.KEY` | the qualifier *n* (1 or more) becomes the next id `write … creating.seqkey` gives out; returns 1 |
 | 3 | `FC$GET.SEQ.KEY` | takes the next id and moves the counter on, so a program can reserve an id without writing a record; the null string if the file is not hashed |
+| 4 | `FC$CRLF` | the line terminator mode of a directory file or a sequential file: the qualifier 0 to 3 sets it, -1 only asks. The result is the mode before the call. See *Line terminators* below |
 | 5 | | does the user have access to the field position in the qualifier? Always 1: SD has no field level encryption |
 | 6 | `FC$VALID.ID` | 1 if the qualifier could be the id of a record of this file (not null, not longer than the limit, no mark characters; a directory file also applies its name mapping), else 0 |
 | 7 | `FC$MINMOD` | sets the minimum modulus of a hashed file to the qualifier (1 or more); returns 1 |
 
 Actions 2, 3 and 7 are refused on a file opened `readonly`: `status()` is 3018 and the result is 0
 (null for 3), and the counter is not touched. On a file that is not hashed `status()` is 3005; a
-qualifier under 1 sets `status()` to 1. **`fcontrol` does not do `FC$CRLF` (4):**
-SD has no line terminator modes, so a program that asks for it is stopped
-with *FCONTROL cannot do this action in SD* rather than being told it worked, and any other action number
-stops it with *the action is not one SD knows*. A program written for openQM that uses it
-will need changing. `FC$SYNC` works on a hashed file only (`status()` is 3005 on any other). The qualifier may be left out where the action does not use it. The
+qualifier under 1 sets `status()` to 1. `FC$CRLF` on a hashed file gives 0 with `status()` 3004 (*not a directory
+file*: a hashed file has no line terminators); a mode outside 0 to 3 gives the mode the file is in and sets
+`status()` to 1, changing nothing. Until 16 Oct 2026 `FC$CRLF` stopped the program with *FCONTROL cannot do this
+action in SD*. Any action number SD does not know stops the program with *the action is not one SD knows*.
+`FC$SYNC` works on a hashed file only (`status()` is 3005 on any other). The qualifier may be left out where the action does not use it. The
 internal programs' own function is called `fcontrol.int` since 15 Oct 2026 and is not available to
 ordinary programs.
+
+### Line terminators: `fcontrol` `FC$CRLF` and the letters `L C B X`
+
+A directory file record is a file of text, and a field mark in a record is a line end on the disk. What counts as a line end
+when the record is read back, and what is written for a field mark, is the *line terminator mode* of the open file. There are
+four, with the openQM numbers and `keys.h` tokens (`FC$CRLF.LF` 0, `FC$CRLF.CRLF` 1, `FC$CRLF.BOTH` 2, `FC$CRLF.NOCR` 3, which the
+manual also spells `FC$CRLF.NO.CR`; both are defined):
+
+| mode | letter | a line ends at | a lone CR | a lone LF | `write` puts for a field mark |
+|---|---|---|---|---|---|
+| 0 LF | `L` | LF | data | (that is the end) | LF |
+| 1 CRLF | `C` | CR LF | data | data | CR LF |
+| 2 BOTH | `B` | CR LF or LF | data | (end) | LF |
+| 3 NOCR | `X` | LF, with the CRs thrown away | dropped | (end) | LF |
+
+The last line end of a record is not turned into a field mark in any mode, so a record `a`, LF, `b`, LF reads as `a<FM>b`. An
+open file starts in the mode its VOC entry names with one of the letters in field 6 (a capital or a small letter; a hashed file
+ignores them), and `fcontrol(f, FC$CRLF, mode)` changes it for that file variable only. **A file with no letter and no
+`fcontrol` behaves as it always has on this port:** a `read` ends a line at LF and keeps every CR (mode 0), a `write` ends it
+with LF, a `readseq` ends a line at LF and drops a CR in front of it (mode 2), a `writeseq` adds LF. So a program that never
+asks changes nothing. The modes are for a directory that another system's tools write: a CRLF file read in mode 2 or 3 has no
+stray CR on each line (it has one on every line in mode 0), and a file read in mode 1 can hold an LF inside a line. `readseq` and
+`writeseq` follow the same four modes (see [SD Basic - Sequential Files](10-sd-basic-sequential-files.html)); `mark.mapping off`
+(image mode) turns the conversion off altogether, whatever the mode, and `readblk`, `writeblk`, `osread` and `oswrite` never use
+it.
+
+```
+open 'IMPORTS' to f.in else stop 'cannot open'
+was = fcontrol(f.in, FC$CRLF, FC$CRLF.NOCR)   ;* was = 0, the mode it was in
+read rec from f.in, 'from.windows' then ... else ...
+```
 
 ### Forced writes: `sync`
 
@@ -379,7 +411,10 @@ it is what the examples on this page use.
 
 `set.trigger` attaches a program that runs on every write or delete to a file.
 A trigger runs inside the caller's transaction, so anything it does is part of
-the same all-or-nothing unit.
+the same all-or-nothing unit. A directory file can have one too (16 Oct 2026): it is
+called by `read`, `write`, `delete` and `clearfile`, and not by `writeseq`, `writeblk`,
+`oswrite` or `osdelete`; see *Triggers* in
+[SD TCL - Files and Records](20-sd-tcl-files-and-records.html).
 
 ## What is not here
 
