@@ -185,11 +185,11 @@ itself administrator rights. That was demonstrated, not theorised.
 | **`set.status`** | `set.status` *n* ***(restricted)*** |
 | **`set.trigger`** | `set.trigger` *file.var*, *mode*, *program* {, *modes*} ***(restricted)*** |
 | **`set.unassigned`** | `set.unassigned` *var* ***(restricted)*** |
-| **`sortadd`** | `sortadd` *key*, *data* ***(restricted)*** |
-| **`sortclear`** | `sortclear` ***(restricted)*** |
-| **`sortdata`** | `sortdata()` ***(internal)*** |
+| **`sortadd`** | `sortadd` *key*, *data* ***(restricted)*** — this is the form with no sort variable; the form with one is open to every program (see the syntax card) |
+| **`sortclear`** | `sortclear` ***(restricted)*** — with no sort variable; the form with one is open to every program |
+| **`sortdata`** | `sortdata()` ***(internal)*** — with no argument; the form with a sort variable is open to every program |
 | **`sortinit`** | `sortinit` *keys*, *memory* ***(restricted)*** |
-| **`sortnext`** | `sortnext(`*matrix*`)` — *matrix* is a `dim`med one-dimensional name ***(internal)*** |
+| **`sortnext`** | `sortnext(`*matrix*`)` — *matrix* is a `dim`med one-dimensional name ***(internal)*** — the form with a sort variable is open to every program |
 
 ## T
 

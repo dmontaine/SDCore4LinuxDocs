@@ -144,6 +144,29 @@ record keeps the version the account already had, so a defect fixed in that
 record stays unfixed in this account. Remove the marker from field 1 and run
 `update.accounts` again to take the new version.
 
+## Your own changes to every account's VOC: `newvoc.mods`
+
+An optional file called `newvoc.mods` in the SDSYS directory holds VOC records of
+your own: a verb withdrawn, a Q-pointer to a shared file, a paragraph every
+account should have. Each record in it is written to an account's VOC **after**
+the standard records, so it has the last word.
+
+| When | What happens to `newvoc.mods` |
+|---|---|
+| SD is installed | its records are written to SDSYS's own VOC as well (`bbproc`, the first bootstrap pass) |
+| an account is created | its records are written to the new account's VOC |
+| `update.accounts` runs | its records are written to the account's VOC where they differ, except over a record marked `[locked]` |
+| SD is upgraded and the accounts are kept | `deletesdcore.sh` puts the file aside in `/home/sd` and `installsdcore.sh` puts it back before the first bootstrap pass |
+| SD is deleted with its accounts | the file goes with them |
+
+The file is a directory file: one record per file, the record id as the file
+name, the VOC record as its contents. There is no file until you make one, and
+nothing is created for you. The tested form is a directory file made by hand in
+the SDSYS directory.
+
+To see it work, put a record in the file and run `update.accounts`; then
+`ct voc` the id in the account.
+
 ## Reading and setting configuration: `config`
 
 ```

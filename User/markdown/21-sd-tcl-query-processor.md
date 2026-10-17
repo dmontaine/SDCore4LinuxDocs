@@ -90,6 +90,8 @@ spellings in a row returned identical counts on the same data.
 | matches a pattern | `like` · `matches` · `matching` |
 | does not match | `unlike` · `not.matching` |
 | sounds like | `said` · `spoken` |
+| is in a list | `in` |
+| is not in a list | `not.in` |
 
 `before` and `after` read well on dates and are the same operators as `<` and
 `>`. All three spellings of *not equal* returned **331** on the same query, and
@@ -127,6 +129,60 @@ count voc with f1 like "V0X"
 > an error, not a warning. **Always prove a pattern against a case you know
 > matches** before believing a small answer, and be especially careful of a
 > query that returns zero when you expected few.
+
+### Is it in a list: `in` and `not.in`
+
+```
+list myfile with color in colors @id
+list myfile with color not.in colors @id
+list myfile with color in "myfile allow" @id
+list myfile with color in no.case "myfile allow" @id
+list myfile with every tags in tags.list @id
+```
+
+`in` selects the records whose field has a value that is one of the values of a
+list; `not.in` selects the others. The list is named after the operator in one
+of two ways:
+
+| Written as | The list is |
+|---|---|
+| a bare word, `colors` | the saved select list of that name, from `$savedlists` |
+| a quoted *file* and *id*, `"myfile allow"` | the fields of record *id* of *file*, one value to a field |
+
+The first word of a quoted name is the file and the rest is the record id. A
+quoted name with no space in it is a saved list. The match is exact, and
+**is case sensitive unless `no.case` comes before the list**. With `every`, a
+multi-valued field is chosen only when all of its values are in the list
+(with `not.in`, when none of them is); without it, one value is enough. `when`
+shows only the values that satisfy the test, as it does for the other
+operators.
+
+An empty list contains nothing, so `in` selects no record and `not.in` selects
+every one. A file or record that cannot be read stops the command, with *File
+not found* or *Record "name" not found*, and an empty name (`in ""`) stops it
+with *A saved list name, or a quoted file and record id, is needed after in or
+not.in*. These two operators never use an alternate key index.
+
+The values in the list are compared with the field as it is stored. Unlike a
+value typed in the sentence, they are not run through the field's input
+conversion first, so for a field with a conversion (a date, say) the list must
+hold the stored form: a list of day numbers selects the records for those days,
+a list of the same dates written as `12/31/2023` selects none. *(Tried on a
+field with the `D4/` conversion.)*
+
+**`in` and `not.in` are now keywords.** After `=` or another comparison an
+unquoted `in` is still an ordinary value: `with state = in` finds the records
+whose state is IN. But after `or` or `and`, where the field and the operator are
+left out and repeated for you, an unquoted `in` or `not.in` is the operator, so
+`with state = "oh" or in` asks for a list name. Quote the value there:
+`with state = "oh" or "in"`. A dictionary item called `in` still wins over the
+keyword, and a quoted value is never taken for one. An account whose VOC
+predates this change has no `in` or `not.in` record; the query processor knows
+the two words anyway (tried, with both records deleted from the account's VOC),
+and `update.accounts` adds the records.
+
+These are the query processor's own. The paragraph `if` has an `in` of its
+own, which compares a word with a list of words; the two are not connected.
 
 ### Other ways to choose
 

@@ -75,6 +75,15 @@ no conditional breakpoint.
 verb refuses a phantom outright with *"Cannot debug program in a phantom
 process"*.
 
+In `pdebug` an `@variable` you ask for (`/@user0`, `/@tty`) is the value in the
+phantom being debugged, not in your own session: the request is sent to the
+phantom, which answers with its own. In the phantom `@tty` is `phantom`. The
+`@variables` the debugger can show now include `@bpv`, `@conv`, `@ds`,
+`@exception` and its three companions, `@file.name`, `@filename`, `@lpv`, `@nd`,
+`@ni`, `@ns`, `@nv`, `@option`, `@pstat`, `@seqno`, `@system.set`,
+`@transaction.id`, `@transaction.level` and `@trigger.return.code`, as well as
+those it showed before.
+
 ## The commands, as this port prints them
 
 Typing `help` at the `>` prompt gives:

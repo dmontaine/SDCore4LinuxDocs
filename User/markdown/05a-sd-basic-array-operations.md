@@ -205,6 +205,69 @@ back drains it. The order codes are the same `al` / `ar` / `dl` / `dr` as
 `locate`. For sorting a whole file, `sselect` is faster — see
 [SD Basic - Select Lists](08-sd-basic-select-lists.html).
 
+### Sorts of your own: `sort()`, `sortadd`, `sortdata()`, `sortnext()`, `sortclear`
+
+```
+sortvar = sort(key.count, {mat} flags)
+sortadd sortvar, {mat} keys {, data}
+items = sortdata(sortvar {, max.items})
+data  = sortnext(sortvar {, {mat} keys})
+sortclear sortvar
+```
+
+`sort()` makes a sort and gives back a variable that stands for it. Sorts are
+independent of each other, so several may be open at once, each in its own
+variable (up to 255 in one process). *key.count* is the number of keys (1 to
+32) and *flags* is one `srt$` value for each key: a scalar for one key, a
+one-dimensional matrix for more. `srt$data` (128) is read from the first key's
+flags and says that each `sortadd` carries a data item. `srt$unique` (32) makes
+a duplicate key value be ignored. `sortadd` puts a record in; with more than one
+key the keys come in a matrix.
+
+`sortdata()` gives back the whole sort in order as a dynamic array, one item to
+a field, and sets `status()` to the number of items. With *max.items* it gives
+at most that many and the next call goes on from there, so a big sort can be
+taken in pieces. `sortnext()` gives back one item and sets `status()` to 0, or
+to 1 when there is nothing left. If a *keys* variable or matrix is given, the
+item's keys are put in it.
+
+`sortclear` empties a sort, which can then be used again. A sort is released
+when its variable is. `vartype()` of a sort variable is 20, `vt$sort`. A sort
+variable is not a BTree and every `btree` statement refuses one.
+
+**What an item is, as SD does it.** A sort made with `srt$data` holds a data
+item with each key and `sortdata()` / `sortnext()` give the data. A sort made
+without it has only keys: `sortdata()` gives the keys, `sortnext(sortvar)` with
+one argument gives the key, and `sortnext(sortvar, keys)` with two gives a null
+string and puts the key in *keys*. The openQM manual contradicts itself here:
+its text says the one-argument form gives a null string for a sort with no data
+element, while its own example uses that form to read the keys back. SD follows
+the example.
+
+**Equal keys.** In a sort that stays in memory, keys that compare as equal come
+out newest first. A sort that is large enough to spill to a work file (the
+`SORTMEM` setting) may give equal keys in another order, and with `srt$unique`
+may keep another one of the duplicates. The order of equal keys is not
+something to rely on; the order of *different* keys is the same either way.
+
+**The values of *flags*.** `srt$left` 0, `srt$right` 1, `srt$compound` 2,
+`srt$right.float` 3 and `srt$strict` 4 choose how two keys are compared, the
+same five that `sort.compare()` takes. They may be added to `srt$descending` 16,
+`srt$unique` 32, `srt$nocase` 64 and, for the first key only, `srt$data` 128.
+Only the low byte of a flag is used, and a mode above 4 is taken as 0; neither
+is an error.
+
+**When it goes wrong.** A variable that is not a sort, given to `sortadd`,
+`sortnext()` or `sortdata()`, stops the program with *Not a sort variable*. A
+process can have 255 sorts open at once; the 256th `sort()` stops with *Too many
+sorts are open at once*. A sort is freed when its variable is overwritten or
+goes out of scope, so a loop that makes a new sort into the same variable each
+time never reaches that limit.
+
+The `srt$` values are the ones `sort.compare()` takes (next), with `srt$data`
+and `srt$unique` added. Programs that run inside SD itself still have the older
+`sortadd key, data`, with no sort variable; that form is unchanged.
+
 ### `sort.compare()` and `compares()`
 
 ```

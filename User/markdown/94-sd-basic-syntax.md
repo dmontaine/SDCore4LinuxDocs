@@ -493,6 +493,11 @@ exist.**
 | **`sleep`** | `sleep` {*seconds*}   ·   `sleep` *hh:mm:ss* |
 | **`smul`** | `smul(`*a*, *b*`)` |
 | **`socket.info`** | `socket.info(`*a*, *b*`)` |
+| **`sort`** | `sort(`*key.count*, {`mat`} *flags*`)` — makes a sort and gives back the variable that stands for it |
+| **`sortadd`** | `sortadd` *sortvar*, {`mat`} *keys* {, *data*} |
+| **`sortclear`** | `sortclear` *sortvar* |
+| **`sortdata`** | `sortdata(`*sortvar* {, *max.items*}`)` |
+| **`sortnext`** | `sortnext(`*sortvar* {, {`mat`} *keys*}`)` |
 | **`soundex`** | `soundex(`*a*`)` |
 | **`soundexs`** | `soundexs(`*a*`)` |
 | **`space`** | `space(`*a*`)` |

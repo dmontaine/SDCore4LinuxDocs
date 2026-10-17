@@ -237,8 +237,8 @@ SETREM = `setrem` *position* `on` *var*
 SETRIGHT = `setright` *index* `from` *file.var* — ***no `then`/`else`***
 SETTING = clause of `find`, `findstr`, `locate`, `remove`, `selectleft`, `selectright`
 SLEEP = `sleep` {*seconds*}   ·   `sleep` *hh:mm:ss*
-SORTADD = `sortadd` *key*, *data*
-SORTCLEAR = `sortclear`
+SORTADD = `sortadd` *sortvar*, {`mat`} *keys* {, *data*}
+SORTCLEAR = `sortclear` *sortvar*
 SORTINIT = `sortinit` *keys*, *memory*
 SSELECT = `sselect` {*file.var*} {`by` *field*} {`to` *list.no*}
 STEP = clause of `for`: `for` *v* `=` *a* `to` *b* `step` *n*
@@ -287,7 +287,9 @@ FOLDS = `folds(`*arr*, *width* {, *delimiter*}`)`
 BTREE = `btree(`*file.var*, *matrix*`)` — *matrix* is a `dim`med one-dimensional name
 REMOVEF = `removef(`*string* {, *occurrence*}`)`
 SCAN = `scan(`*a* {, *matrix*}`)` — *matrix* is a `dim`med one-dimensional name
-SORTNEXT = `sortnext(`*matrix*`)` — *matrix* is a `dim`med one-dimensional name
+SORT = `sort(`*key.count*, {`mat`} *flags*`)` — makes a sort and gives back the variable that stands for it
+SORTDATA = `sortdata(`*sortvar* {, *max.items*}`)`
+SORTNEXT = `sortnext(`*sortvar* {, {`mat`} *keys*}`)`
 # 13 Oct 26: the 1.2-0 names that had no line, so that the card can be written again.  The data collection names
 # are on pages 05b and 05c (docmap.py); the others were named in the changelog and are checked there, not run here.
 AS = `ins` *value* `as` *c*`{`*path*`}` — a reserved word, ends the value of that form of `ins`
