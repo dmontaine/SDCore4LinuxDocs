@@ -174,6 +174,10 @@ DOCS = [
  ('Administrator', '05-remote-access-and-the-machine.md', """
    remote.api remote.ssh
  """),
+ # 17 Oct 26 - S.65 slice 1 (SDNet): the three server-definition verbs, SDSYS's alone (voc_template).
+ ('Administrator', '12-sdnet.md', """
+   delete.server list.servers set.server
+ """),
 ]
 
 # Verbs deliberately not given a page of their own, with the reason.  These

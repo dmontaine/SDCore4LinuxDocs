@@ -66,7 +66,7 @@ privilege.**
 ## Making an account: `create.account`
 
 ```
-create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {net-on} {no.query}
 
 create.account group <name> {no.query}
 
@@ -80,13 +80,14 @@ create.account other <name> <pathname> {no.query}
 | **`other`** | an SD account over a directory you name |
 
 **A new user account starts with every door shut.** Say nothing and it has
-no ssh, no API, no `sh` and no `OS.EXECUTE`, and it cannot save a change to
-a VOC, a program file or a dictionary; you open each one by naming
-it. `ssh`, `api` or `both` give the remote routes (`none` is the default
+no ssh, no API, no `sh` and no `OS.EXECUTE`, it cannot save a change to
+a VOC, a program file or a dictionary, and it has no right to use a server
+defined for SDNet; you open each one by naming it. `ssh`, `api` or `both` give the remote routes (`none` is the default
 and is accepted so that a script can say so); `sh-on` and `os-on` give the
 two operating-system switches, and they are independent, so `sh-on os-on`
 gives both and neither cancels the other; `voc-on`, `bp-on` and `dict-on`
-give the three edit switches (below), each on its own. **This is the setting SD is
+give the three edit switches (below), each on its own; `net-on` gives the
+SDNet switch (below). **This is the setting SD is
 delivered with, on purpose: it is the tighter one, and you loosen it for the
 accounts that need it, one at a time** — the same words change an account
 later in `modify.account`, below. When it has made the account SD says
@@ -96,6 +97,7 @@ where it stands:
 fred has no remote access: not ssh, not the API
 Account fred has SH no, OS.EXECUTE no
 Account fred has VOC.EDIT no, BP.EDIT no, DICT.EDIT no
+Account fred has NET no
 ```
 
 **The installing user's own account is no exception**: the account the
@@ -341,6 +343,49 @@ account that already exists keeps its current switches, group and other
 accounts are not in the manifest, and an archive from before the switches
 existed carries none and gives none.
 
+### The NET switch: `net-on` and `net-off`
+
+One more per-account switch, in field 15 of the register record, for **SDNet**:
+files held on another SD server, which an account will one day open from its own
+VOC (see [SDNet](12-sdnet.html)). It is the permission an account needs before it
+may use a server, and **it is off for a new account**. `modify.account` *name*
+`net-on` / `net-off` turns it on and off, and `create.account user` takes
+`net-on`. After a change SD says where the account stands, in a line of its own
+(the same wording as the edit switches' line, for one switch):
+
+```
+:modify.account fred net-on
+Account fred has NET yes
+```
+
+**Today the switch does nothing, because nothing can open a remote file yet.**
+It is in place, and checked at every sign-on, so that the slices that follow can
+rely on it; an account that has it still opens no file on another server, and an
+account that lacks it loses nothing it had. A blank field, and every account that
+existed before the switch did, count as off: **there is no upgrade step**, since
+nothing used it.
+
+**It is read the way `sd-on` is, not the way the edit switches are.** It belongs
+to the account the person is *in*: it is read at sign-on, again at `logto` into
+another account, and given back when `logto` returns, and the API server reads it
+at every entry to an account. A change takes effect the next time the account is
+entered. It may be set on a group account, as `sd-on` may (`sh-on` may not).
+**SDSYS is never refused**, and an SDSYS session over the local API is given the
+switch on when it signs on. If the switch already had the value asked for, SD
+says only that the account already had that access and that nothing changed.
+The change is written to the audit trail (`modify.account net-on account=fred`).
+
+The switch is kept in the account archive for a user account (`net: 1` or `0` in
+its manifest), and `restore.account` gives it back only to an account it has to
+create, as for the edit switches; an archive from before the switch carries none
+and restores the account with it off.
+
+**Having the switch is not enough, even when SDNet can open files.** An account
+must also be named in the *allowed accounts* of the server it wants, and
+SDSYS puts it there with `set.server ... accounts` ([SDNet](12-sdnet.html)). Two
+lists, both empty until SDSYS writes to them: the switch says the account may use
+SDNet at all, the list says which servers it may use.
+
 ### VOC pointers: where a file pointer may lead, and which Q-pointers are followed
 
 **A VOC pointer is a way to name a file, so it is held to the same rule.** An
@@ -405,6 +450,7 @@ modify.account account sd-on | sd-off
 modify.account account voc-on | voc-off
 modify.account account bp-on | bp-off
 modify.account account dict-on | dict-off
+modify.account account net-on | net-off
 modify.account account suspended | unsuspended
 ```
 
@@ -419,6 +465,7 @@ modify.account account suspended | unsuspended
 | **`voc-on`** \| **`voc-off`** | saving a change to a VOC (see *The edit switches*) |
 | **`bp-on`** \| **`bp-off`** | saving a change to a program file, and compiling and cataloguing |
 | **`dict-on`** \| **`dict-off`** | saving a change to a dictionary |
+| **`net-on`** \| **`net-off`** | the right to use a server defined for SDNet (see *The NET switch*; it does nothing yet) |
 | **`add`** \| **`delete`** *user* | put a Linux user in, or out of, the account's group |
 
 **The first group is absolute and the second is not.** `ssh`/`api`/`both`/
@@ -445,7 +492,7 @@ way ("SD routes for fred: ssh and the API." — "fred has no remote access:
 not ssh, not the API").
 
 **A change takes effect the next time the account is entered.** The setting
-is read when a session signs in, and for `sh`, `os` and `sd` again when it
+is read when a session signs in, and for `sh`, `os`, `sd` and `net` again when it
 `logto`s into the account (the three edit switches are read at sign-on only),
 so a session already open keeps what it started with. To take a grant away from somebody
 who is signed in now, change the setting and then end their session.
@@ -463,7 +510,8 @@ command they were using, and in the same way `voc-on`, `bp-on` and
 `dict-on`, once, for the same user accounts. This happens when the installer
 is run by the user whose own account already exists; a different OS user
 installing over existing accounts does not run it. Group and other accounts
-are left off on purpose. You can then turn them off one account at a time,
+are left off on purpose. **`net-on` is not part of it**: nothing used SDNet
+before, so every existing account has it off. You can then turn them off one account at a time,
 and a later install does not turn them back on. Only accounts made after the
 upgrade start with everything off.
 
