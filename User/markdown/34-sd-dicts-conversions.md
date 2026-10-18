@@ -244,6 +244,19 @@ B64
 For output, encodes the value as Base64. For input, decodes a Base64
 string back to binary.
 
+### Encrypted value — XE
+
+```
+XE      XE;name
+```
+
+For output, decrypts a value that was stored encrypted, with the key called *name*
+(`default` when none is given) from the key ring of the session's process. For input,
+encrypts it with the newest key of that name. With no key in the ring, output leaves the
+stored cipher text as it is and sets `status()`; **input gives the null string and sets
+`status()`, never the plaintext.** A null value stays null. The ring, the statuses and what a
+query does with an encrypted field are on [SD Basic - Encrypting Data](06a-sd-basic-encryption.html).
+
 ### TRANS — T
 
 ```

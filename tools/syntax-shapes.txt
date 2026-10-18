@@ -336,3 +336,6 @@ MVDATE = `mvdate(`*epoch*`)`
 MVTIME = `mvtime(`*epoch*`)`
 MVDATE.TIME = `mvdate.time(`*epoch*`)`
 MVEPOCH = `mvepoch(`*date_time*`)` · `mvepoch(`*date*`,` *time*`)`
+SDSALT = `sdsalt()` — a fresh random salt for `sdkey()`; see [SD Basic - Encrypting Data](06a-sd-basic-encryption.html)
+SDKEY = `sdkey(`*passphrase*, *salt*`)` — a 44 character base64 key (argon2id); `status()` 10206 bad salt, 10207 bad passphrase
+SDRANDKEY = `sdrandkey()` — a random 256 bit key, 44 characters

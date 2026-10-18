@@ -458,6 +458,9 @@ exist.**
 | **`sddecrypt`** | `sddecrypt(`*a*, *b*, *c*`)` |
 | **`sdencrypt`** | `sdencrypt(`*a*, *b*, *c*`)` |
 | **`sdiv`** | `sdiv(`*a*, *b*`)` |
+| **`sdkey`** | `sdkey(`*passphrase*, *salt*`)` — a 44 character base64 key (argon2id); `status()` 10206 bad salt, 10207 bad passphrase — see [SD Basic - Encrypting Data](06a-sd-basic-encryption.html) |
+| **`sdrandkey`** | `sdrandkey()` — a random 256 bit key, 44 characters |
+| **`sdsalt`** | `sdsalt()` — a fresh random salt for `sdkey()` |
 | **`seek`** | `seek` *file.var*, *offset* {, *relative.to*} `then` … `else` … |
 | **`select`** | `select` {*file.var*} {`to` *list.no*} |
 | **`selecte`** | `selecte` {`to` *var*} |

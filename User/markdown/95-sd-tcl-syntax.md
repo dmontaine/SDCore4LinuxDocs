@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **190** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **191** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,7 +23,7 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 165 verbs | `newvoc`, identical for every ordinary account |
+| **every account** | 166 verbs | `newvoc`, identical for every ordinary account |
 | **SDSYS only** | 25 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
@@ -99,6 +99,7 @@ not refused — the name is simply not recognised.**
 | **`echo`** | **`echo on`** \| **`off`** \| **`echo`** to toggle |  |
 | **`ed`** | **`ed`** {**`dict`**} *file* {*id* … \| **`creating.seqkey`**} |  |
 | **`edit`** | **`edit`** {**`dict`**} *file* *record* |  |
+| **`encrypt.key`** | **`encrypt.key set`** *name* *salt* {**`confirm`**}  ·  **`encrypt.key clear`** {*name*}  ·  **`encrypt.key list`** |  |
 | **`execute.list`** | **`execute.list`** *command* {**`;`** *command* …}  —  a pair of brackets `()` in a command is replaced by each id of list 0 in turn |  |
 | **`file.stat`** | **`file.stat`** {**`dict`**} {*file* …} {**`lptr`** {*n*}} {**`no.page`**} |  |
 | **`find.file`** | **`find.file`** {**`dict`**} *file* |  |
