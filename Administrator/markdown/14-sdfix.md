@@ -14,10 +14,17 @@ sound.
 
 > **How this page was made.** Everything here was read from `sdfix.c` and run on
 > scratch copies of a small file in a private sandbox built from SD Core for
-> Linux `Dev` at commit `1adf913` (the program's banner reads `SDFIX L1.1-3`).
+> Linux `Dev` (the program's banner reads `SDFIX L1.1-3`).
 > Each result is marked *run* (the damage was made and the output is real) or
 > *source* (read from the code, not provoked). It was not run on a large file,
 > on a file owned by another user, or as root.
+>
+> **Revised 18 October 2026.** The first version of this page described the
+> program as built at `Dev` commit `1adf913` and listed faults in it. Six were
+> fixed on 18 October (see the end of
+> [sdfix: what it checks and repairs](14a-sdfix-checks-and-repairs.html)), and
+> this page describes the program as fixed. An older copy of `sdfix` behaves as
+> the first version said.
 
 ## The short version
 
@@ -30,10 +37,15 @@ back up the file, close it everywhere (or stop SD), then:
   directory holding `%0` and `%1` (and `%2` onward for indexes); copy the whole
   directory with `cp -a`. `-F`, `-R` and `-Z` write into the file and none of
   them can be undone.
-* **`sdfix` does not check whether SD has the file open.** *Run*: it processed a
-  file that a running session held open, without a word. Close the file in every
+* **`sdfix` refuses a file that SD has open** (*run*): `File is currently open
+  within SD`, `Status: 1`, and it reads nothing. It looks in the running SD's
+  table of open files for the file's resolved path, so a symbolic link or a
+  trailing slash makes no difference, and it does so for every option, a plain
+  check included. **It checks nothing when SD is not running**, and it cannot see
+  a file held by another program, `sdidx` or `sdconv`. Close the file in every
   session, or stop SD ([Installation](08-sd-installation.html) gives the
-  commands). `sdidx` does make this check; `sdfix` does not.
+  commands). Older copies of `sdfix` processed a file a running session held
+  open without a word.
 * **A plain `sdfix file` is safe to run** on a file that nobody has open. It
   reads. The one exception is `-Z`, which writes (see below).
 * **"Status: 0" does not mean the file is sound.** It means the program ran. A
@@ -78,7 +90,7 @@ matching given name(s)*.
 | `-C` | Check the file. This is the default when no other mode is given. |
 | `-F` | Check, and **fix every error it knows how to fix, without asking.** Not combinable with `-Q`. |
 | `-Q` | Check, and **ask `Fix?` at each error it knows how to fix.** Answer `y` or `n`. Not combinable with `-F`. |
-| `-R` | Recover disk space: shrink the primary subfile and rewrite the overflow subfile with the free blocks squeezed out. **Given with `-F` or `-Q`, it does not check and fixes nothing** (*run*: `-F -R` on a file with a bad header printed no error and fixed none). Add `-C` or `-Z` to make it check first. |
+| `-R` | Recover disk space: shrink the primary subfile and rewrite the overflow subfile with the free blocks squeezed out. **Not combinable with `-F` or `-Q`** (*run*): `-r cannot be combined with -f or -q: run the fix first, then -r on its own`, status 1, and the file is not touched. (Older copies accepted the combination, ran neither the check nor the repair, and recovered space from an unchecked file.) Add `-C` or `-Z` to make it check first. |
 | `-Z` | Clear the dead space at the end of each group (implies `-C`). **Writes to the file.** |
 | `-B` | No progress bar. Use it when you log or redirect, since the bar is drawn with carriage returns. |
 | `-V` | Verbose. Changes the output of `-R` only; it does nothing to a check. Not listed in the usage text. |
@@ -100,12 +112,15 @@ Output stops every 24 lines with *Press return to continue...* (the program
 reads standard input one character; `q` quits, `s` stops paging). The `Fix?` and
 *Dump and rebuild* questions also read standard input.
 
-**If standard input ends while `-Q` is asking `Fix?`, the program loops for
-ever.** *Run*: `sdfix -Q file < /dev/null` was still running when `timeout`
-stopped it after five seconds, and the file was unchanged. The *Dump and
-rebuild* question uses the same routine (source; not run separately). Run `-Q`
-and `-F` from a terminal, or feed every answer, starting with `s` to stop the
-paging: `printf 'sY' | sdfix -B -F file`.
+**If standard input ends while `-Q` is asking `Fix?`, the end of input is taken
+as `n`** (*run*): the program prints `Fix? N (end of input)`, repairs nothing,
+and carries on with the check without waiting for any further answer. At the
+*Press return* pause the end of input means "stop paging". The *Dump and
+rebuild* question uses the same routine (source; not run separately). Older
+copies looped for ever at `Fix?` (`sdfix -Q file < /dev/null` was still
+running when `timeout` stopped it after five seconds). To answer the questions
+from a script, feed every answer, starting with `s` to stop the paging:
+`printf 'sY' | sdfix -B -Q file`.
 
 ## A check, with nothing wrong *(run)*
 
@@ -151,7 +166,8 @@ The first error is still there on the next run; the second is gone. `-F` does
 the same for every error, with no questions. Which errors can be fixed, and how,
 is on the next page of this set, [sdfix: what it checks and repairs](14a-sdfix-checks-and-repairs.html).
 That page also covers the dump-and-rebuild of mis-hashed groups, interactive
-mode, and the faults in the repairs that were found while writing these pages.
+mode, and the faults in the tool that were found while writing these pages and
+fixed afterwards.
 
 ## Recovering space with `-R` *(run)*
 
@@ -180,7 +196,7 @@ among them). `-V` adds a line for every block it moves.
 * It does not touch the index subfiles. The source says they were too hard to
   shrink, so an indexed file keeps its index sizes.
 * It does not check the file first unless you also give `-C` (or `-Z`), and
-  `-F` and `-Q` do nothing alongside it. **Run a check, and `-F` any errors in
+  `-F` and `-Q` are refused alongside it. **Run a check, and `-F` any errors in
   a separate run, before you recover space**, not after.
 
 ## Clearing dead space with `-Z` *(run)*

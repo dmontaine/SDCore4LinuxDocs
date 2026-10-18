@@ -1,5 +1,5 @@
 Title: sdfix: What It Checks and Repairs
-Subtitle: Every error a check reports, what -F or -Q does about it, the dump and rebuild of mis-hashed groups, interactive mode, and four faults in the tool that were found by running it.
+Subtitle: Every error a check reports, what -F or -Q does about it, the dump and rebuild of mis-hashed groups, interactive mode, and the faults in the tool that were found by running it and fixed.
 
 > This document is separate so that it can be withheld. It links to nothing
 > outside the administrator set. Where a page in another set is worth naming,
@@ -19,10 +19,10 @@ repair is done without asking; under `-Q` each is offered with `Fix?`.
 |---|---|---|
 | `Invalid group size (n bytes)` | the header's group size is not a multiple of 1,024 or is out of range (*source*) | none; the check stops |
 | `Large record size is invalid (n)` | the size above which a record goes to its own blocks is outside the group (*source*) | resets it to the group size less the block header |
-| `Invalid split and/or merge loads (a, b)` | split load is not above merge load (*run*) | **writes 50 and 80, which its own check rejects; see Faults** |
-| `AKn subfile found but not expected` | an index file the header does not list (*run*) | tries to delete the file; **see Faults** |
+| `Invalid split and/or merge loads (a, b)` | split load is not above merge load (*run*) | writes the defaults SD gives a new file, split 80 and merge 50, and says `Corrected by resetting to defaults (80, 50)` (*run*). Older copies wrote 50 and 80, which the check rejects |
+| `AKn subfile found but not expected` | an index file the header does not list (*run*) | deletes the file (*run* for an index in the file's own directory; *source* for one in a relocated index directory), and says `Corrected by deleting affected AK index subfile` only if it went; otherwise `The AK index subfile could not be deleted` (*run*) |
 | `AKn subfile not found` | the header lists an index whose file is gone (*run*) | removes the index from the header. **The file then has no index of that name.** Create and build it again |
-| `Cannot read AKn subfile header`, `AKn subfile has incorrect magic number` | a damaged index file (*source*) | deletes the file and removes the index from the header; the delete has the fault below. Create and build it again |
+| `Cannot read AKn subfile header`, `AKn subfile has incorrect magic number` | a damaged index file (*run*, the magic number) | deletes the file and removes the index from the header (if the file could not be deleted it says so and still removes the index from the header). Create and build it again |
 | `Active group n found after released group(s)!` | a used group follows groups marked as released (*source*) | writes empty groups over the released ones |
 | `Group n has incorrect block type (t)` | (*source*) | sets the type to data |
 | `Record 'id' mis-hashed into group n. Should be in group m` | the record's id does not hash to the group it is in (*run*) | queues the group for dump and rebuild (below). Only `-F` queues; `-Q` reports only. At most 50 are reported |
@@ -99,41 +99,55 @@ shows the window at that decimal address; `rebuild n` dump and rebuild group *n*
 
 * **Addresses it prints with an `x` in front are decimal.** `Header size 2048
   (x0800)` is the hex form; `Group 1 (x000000002048)` is 2,048 in decimal.
-* **`Wn=value` writes into the file and does not do what its help text says.**
-  The help says hex. Address and value are read as decimal digits, and the
-  number of digits after `=` (2, 4 or 8) chooses 1, 2 or 4 bytes, with 4- and
-  8-digit values then byte-swapped to big-endian. Writing `99` as eight digits to
-  a 32-bit field gave 1,660,944,384 (0x63000000). *Run*, on a scratch copy.
-  Do not use it on a file you cannot lose.
+  The offsets `h` prints at the start of each line, without an `x`, are hex.
+* **`Wa=x` writes into the file.** *Run*, on a scratch copy; do not use it on a
+  file you cannot lose. The address *a* is **hex**, the same text `h` prints
+  (`W002E=4142`), and the value *x* is 2, 4 or 8 hex digits for 1, 2 or 4 bytes,
+  written **in the order you type them**, which is the order a dump of the file
+  shows them. It prints `Was` and the bytes that were there. `Wa="text"` writes the
+  text. An address past the end of the subfile is `Illegal address`, a value that
+  is not 2, 4 or 8 hex digits is `Illegal data length`, and any character that is
+  not a hex digit is `Format error in W command`. Older copies read the address and
+  the value as decimal numbers (`W10=41` wrote 0x29 at decimal offset 10, and a hex
+  letter was a format error) and byte-swapped the number they had read.
 * `h` shows `Next seq id`, the counter used by `write ... creating.seqkey`, and
   warns if it is negative.
 
-## Faults in the tool, found while writing this page
+## Faults in the tool, found while writing these pages, fixed on 18 October 2026
 
-These were seen on the `Dev` tip named in the first page. They are in the
-program, not in the use of it. Each *run*.
+These were seen on the `Dev` tip the first version of these pages was written
+from. They were in the program, not in the use of it. Each was *run* before it
+was fixed and again afterwards. They are listed so that an older copy of
+`sdfix` can be recognised.
 
-1. **`-F` cannot delete an index subfile that sits in the file's own
+1. **`-F` could not delete an index subfile that sits in the file's own
    directory.** *AK0 subfile found but not expected* was followed by *Corrected
    by deleting affected AK index subfile*, and the file `%2` was still there on
-   the next run. The routine builds the name from the header's index path, tests
-   it against the character `0` rather than the empty string, and so removes
-   `/%2`. Delete the stray file by hand once you have checked that it is not
-   needed.
-2. **The repair for split and merge loads is rejected by the check that finds
-   it.** A file made with the defaults has split 80 and merge 50. The check wants split above
-   merge, and the repair writes split 50 and merge 80: the next run reports it
-   again, and `-F` writes it again. Answer `n` to this one under `-Q`, and set
-   the loads from SD with `configure.file` *file* `split.load` *n*
-   `merge.load` *n*. (That command was not run against a damaged file here.)
-3. **Input that ends loops for ever** at `Fix?` (and, by the code, at the dump question), see the
-   first page.
-4. **`W` in interactive mode reads decimal and swaps bytes**, above.
+   the next run. The routine builds the name from the header's index path, tested
+   it against the character `0` rather than the empty string, and so removed
+   `/%2`. The same call is used for a damaged index file, which was therefore
+   taken out of the header and left on the disk. If an older copy was used, look
+   for a stray `%2` beside `%0` and `%1` and delete it by hand once you have
+   checked that it is not needed.
+2. **The repair for split and merge loads was rejected by the check that finds
+   it.** A file made with the defaults has split 80 and merge 50. The check wants
+   split above merge, and the repair wrote split 50 and merge 80: the next run
+   reported it again, and `-F` wrote it again. It now writes 80 and 50. A file
+   whose loads were set with `configure.file` *file* `split.load` *n*
+   `merge.load` *n* to anything the check accepts is not touched.
+3. **Input that ended looped for ever** at `Fix?` (and at the dump question).
+   The end of input is now taken as `n`; see the first page.
+4. **`W` in interactive mode read decimal and swapped bytes**, above.
+5. **`-R` with `-F` or `-Q` fixed nothing and said nothing.** It is now refused.
+6. **`sdfix` did not look for a file open in SD,** as `sdidx` does. It now does;
+   see the first page.
 
 ## What it will not do
 
-* It does not check whether SD has the file open. Nothing stops a run while
-  sessions are using the file; the result is whatever the two processes make of it.
+* It checks that SD does not have the file open, and nothing else. When SD is
+  not running there is nothing to ask, and a file held by another program,
+  `sdidx` or `sdconv` is not seen; the result is whatever the two processes make
+  of it.
 * It does not take a backup, and no run can be undone.
 * It does not repair an index tree. It reports one, and removes an index from the
   header only when the index file is missing or unreadable.

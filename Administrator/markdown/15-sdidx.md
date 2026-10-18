@@ -19,9 +19,16 @@ SD is not running.
 
 > **How this page was made.** Everything here was read from `sdidx.c` and run
 > on scratch copies of a small indexed file in a private sandbox built from SD
-> Core for Linux `Dev` at commit `1adf913` (banner `SDIDX L1.1-3`). The sections
-> say *run* where output is real. It was not run as another user, as root, on a
-> file with more than one index, on a path over 255 characters or on a big file.
+> Core for Linux `Dev` (banner `SDIDX L1.1-3`). The sections say *run* where
+> output is real. It was not run as another user, as root, on a file with more
+> than one index or on a big file.
+>
+> **Revised 18 October 2026.** The first version of this page described the
+> program as built at `Dev` commit `1adf913` and listed faults in it. Those
+> faults were then fixed (see *What was fixed*, near the end), and the page
+> describes the program as fixed. A copy of `sdidx` older than that day still
+> does what the first version said: the old behaviour is described under *What
+> was fixed* so that you can recognise it.
 
 ## The short version
 
@@ -30,17 +37,21 @@ sdidx -q /home/sd/user_accounts/acct/orders        # where are its indexes?
 ```
 
 * **Take a copy of the file's whole directory first (`cp -a`) if you use `-m`
-  or `-d`.** `-m` deletes the old index location afterwards and `-d` deletes
+  or `-d`.** `-m` deletes the old index files afterwards and `-d` deletes
   indexes. Neither can be undone.
 * **Give full paths, for the data file and for the index directory.** The data
-  path is resolved for you. The index path is stored exactly as typed
-  (*run*: `-p` with `by-hand` reported `Index directory is by-hand`), and SD uses
-  the stored text as the path, so a relative one only works from one directory.
+  path is resolved for you. The index path is stored exactly as typed, and SD
+  uses the stored text as the path, so a relative one only works from one
+  directory. A path longer than 255 characters, which the file header cannot
+  hold, is refused (*run*: `Path is too long (the limit is 255 characters)`,
+  status 1).
 * **Close the file in every session first.** The program refuses if the file is
   open within the running SD: see below. **It refuses nothing if SD is not
   running**, because it has nothing to ask.
-* **Check two things after `-m` or `-d` on a file in an account**: that the old
-  `%2` really went (see the fault below), and who owns the files you moved.
+* **Check who owns the files you moved** after `-m` on a file in an account (see
+  below). If `-m` or `-d` cannot delete an old index file it says so and
+  exits 1; it no longer says "moved" or "deleted" over a file that is still
+  there.
 
 ## Where it is and who can run it
 
@@ -103,16 +114,23 @@ both headers, and says *Index subfile n does not appear to belong to the data
 file* or *Incorrect magic number* if not); refuses with *`akpath` already exists*
 if the target is there; creates the target directory, **and any missing parents**
 (*run*: `a/b/c` was made from nothing); **copies** each index file to the new
-place; writes the new path into the data header; **then deletes the old
-location.** If it stops before the header is written, the copy at the target is
+place; writes the new path into the data header; **then deletes the old index
+files.** If it stops before the header is written, the copy at the target is
 left behind and the file is as before.
 
 * **With no `akpath`, it moves the indexes back** into the data file's own
   directory and clears the path in the header. *Run.*
-* **The old location is deleted whole.** If the indexes were relocated, the
-  entire old directory is removed, **including anything else in it** (*run*: a
-  file named `note-from-admin` put in the old directory was gone). Never point
-  indexes at a directory that holds anything else, or move them from one.
+* **Only the index files are deleted from the old place** (*run*). It removes the
+  `%2`, `%3` ... that the header lists, and nothing else. If the indexes were in
+  a relocated directory, that directory is removed afterwards **only if it is
+  then empty**; if it holds anything else (*run*: a file named
+  `note-from-admin`) the directory and the file stay, and the program says
+  `path holds other files and has been left`. A new `akpath` inside the old
+  directory therefore survives the move (*run*).
+* If an old index file cannot be deleted the program says `Cannot delete path
+  [n]`, then `Indices have been moved, but the old index files could not all be
+  deleted`, and exits 1. The move itself is complete: the header names the new
+  place.
 * It needs room for a second copy of the indexes while it moves them.
 
 ### `-p`, point *(run)*
@@ -125,9 +143,11 @@ is out of date.
   not a directory*), and that **every index the header lists is in it and belongs
   to this file**. A directory without the index files gives *Cannot open index
   subfile 2 [2]*.
-* **On success it prints nothing at all**, apart from the banner. Run `sdidx -q`
-  to see what it did. A program that needs to know checks `-q`, which is how
-  SD's own account restore uses it.
+* **On success it says what `-q` would now say** (*run*): `Index directory is
+  /tmp/sdi_demo/byhand`, or `Indices are not relocated` when `akpath` is omitted.
+  It used to print nothing. A failure to write the header is now reported and
+  exits 1. SD's own account restore does not read this line: it checks the
+  status and then runs `-q` itself.
 * Omit `akpath` to say "the indexes are in the data file's directory".
 * It does not know about accounts. It will point a file at any directory you can
   write, inside the account or not. The account restore goes through a helper
@@ -137,7 +157,7 @@ is out of date.
 
 ```
 $ echo y | sdidx -d o4
-Delete /tmp/sdi_demo/o4.idx (Y/N)? All indices deleted
+Delete the index files in /tmp/sdi_demo/o4.idx (Y/N)? All indices deleted
 ```
 
 The result is a file with no indexes: the header's index map is cleared. To get
@@ -145,16 +165,22 @@ the indexes back you create them and build them again with `create.index` and
 `build.index`.
 
 * If the indexes are relocated and the directory exists, it asks
-  `Delete path (Y/N)?` and, on `y`, deletes that directory **and everything in
-  it**.
-* **Answering `n` still prints "All indices deleted" and still clears the header.**
-  The directory stays on the disk, now referred to by nothing. *Run*: the `%2`
-  was still there and `-q` said *File has no indices*. If you answer `n`, you have
-  orphaned the index files and the file has lost its indexes.
+  `Delete the index files in path (Y/N)?` and, on `y`, deletes **the index files
+  the header lists** and then the directory if that leaves it empty. Anything
+  else in the directory stays, and the program says so (the same rule as `-m`).
+  It used to delete the directory and everything in it.
+* **Answering `n` stops the program** (*run*): it prints `Indices not deleted`,
+  exits 1, and changes nothing: the header is as it was and `-q` still names the
+  directory. It used to print "All indices deleted" and clear the header,
+  leaving the index files on the disk referred to by nothing.
+* **If standard input ends at the question, it is taken as `n`** (*run*): the
+  program prints `End of input` and `Indices not deleted` and exits 1. It used to
+  answer with whatever was left in memory, or loop for ever.
 * With indexes in the data file's own directory there is no question. It deletes
-  the files (with the fault below) and clears the map.
-* **If standard input ends at the question, the program loops for ever.** *Run*:
-  killed by `timeout` after five seconds. Run it from a terminal, or give `echo y |`.
+  the files and clears the map. If a file cannot be deleted it says so, clears
+  the map anyway (the indexes are gone from the file's point of view), and
+  exits 1 with `The indices are removed from the file, but some index files could
+  not be deleted`.
 
 ## The check that SD does not have the file open *(run)*
 
@@ -168,23 +194,33 @@ That is all it does. **It does not look for a file held by another program, by
 `sdfix` or by `sdconv`, and when SD is not running it checks nothing.** Do not
 run it while any of those has the file.
 
-## Faults found while writing this page *(run)*
+## What was fixed on 18 October 2026
 
-1. **The old local index files are not deleted when the path is long.** `-m` (from
-   local to elsewhere) and `-d` (local) delete each `%n` through a name buffer of
-   33 bytes, so a data path with `/%2` after it longer than 32 characters is cut
-   short, the delete misses, and the program prints *Overflowed path/filename
-   buffer* (with the full name, not the cut one) and then reports success. Almost
-   every real path is longer: `/home/sd/user_accounts/acct/orders` is 34 characters before the `/%2`.
-   After the move the old `%2` is still in the data directory; after `-d` the
-   file has no indexes but the `%2` is still there, and `sdfix` calls it *AK0
-   subfile found but not expected*. Delete it by hand, after checking the move
-   worked. **A stale `%2` also stops `-m` moving the indexes back**: *Cannot create
-   new index subfile 2 [17]* (*run*).
-2. **`-d` with the answer `n`** as above.
-3. **Input that ends** as above.
+The first version of this page found these by running the program. Each was
+fixed the same day and the fix is tested by `sandbox-tools.py`; they are listed
+so that a copy of `sdidx` older than that can be recognised.
 
-The relocated cases (a directory that is deleted whole) are not affected by the first.
+1. **The old local index files were not deleted when the path was long.** `-m`
+   (from local to elsewhere) and `-d` (local) deleted each `%n` through a name
+   buffer of 33 bytes, so a data path with `/%2` after it longer than 32
+   characters was cut short, the delete missed, and the program printed
+   *Overflowed path/filename buffer* and then reported success. Almost every
+   real path is longer: `/home/sd/user_accounts/acct/orders` is 34 characters
+   before the `/%2`. The old `%2` stayed in the data directory, `sdfix` called it
+   *AK0 subfile found but not expected*, and the stale `%2` also stopped `-m`
+   moving the indexes back (*Cannot create new index subfile 2 [17]*). The name
+   now has room for the longest path the file header can hold.
+   If you used an older `sdidx` on an indexed file, look for a stray `%2`, `%3`
+   ... beside `%0` and `%1`, and delete it by hand once you have checked that
+   the index is where the header says.
+2. **`-d` with the answer `n`, and with input that ended,** cleared the header
+   anyway. Now it stops.
+3. **`-m` and `-d` deleted the whole old index directory,** including other
+   files, and a new directory inside it. Now only the index files go.
+4. **`-p` printed nothing.** Now it prints what `-q` prints.
+5. **A path argument over 255 characters** overran a buffer (the old program was
+   killed by a segmentation fault on a 305 character `akpath`). Now it is
+   refused.
 
 ## What it will not do
 
@@ -197,4 +233,3 @@ The relocated cases (a directory that is deleted whole) are not affected by the 
   move one index and leave the others.
 * It does not work on directory files, sequential files or other things that are
   not SD hashed files.
-* It does not tell you what it did with `-p`.
