@@ -52,13 +52,12 @@ term
 | `listf` | the files in it |
 | **`term`** | your terminal type and page size |
 
-**`term` also reports the page size, and SD's default is 120 × 36 — not
-80 × 24.** The shipped dictionaries and the default `list` layouts are
-formatted for 120 columns, so **a terminal narrower than that makes
-ordinary reports look wrapped or truncated** and the report is not at
-fault. Widen the window, or set it for the session with `term default` —
-which puts the 120 × 36 back and prints nothing while doing it, so check
-with a bare `term` afterwards. `term 120,36` is the same thing typed out.
+**`term` also reports the page size, and SD's default is 140 × 42 — not
+80 × 24.** **A terminal narrower than that makes wide reports look wrapped
+or truncated** and the report is not at fault. Widen the window, or set it
+for the session with `term default` — which puts the 140 × 42 back and
+prints nothing while doing it, so check with a bare `term` afterwards.
+`term 140,42` is the same thing typed out.
 See [Other hardening](13-hardening.html#the-terminal).
 
 ## 4. Make a file and put something in it

@@ -38,7 +38,8 @@ marks a word typed as it stands; braces mark an optional part.
 With a select list, SED shows the first id and asks whether to use the list
 (`Y` or `N`). Leaving one record goes on to the next.
 
-**SED is 120 columns by 36 lines, always** — SD's own default terminal size —
+**SED is 120 columns by 36 lines, always** — the size of SD's default terminal
+until 18 October 2026, when the default became 140 by 42 and SED did not follow —
 whatever the window is. **A window smaller than that is refused**, in words
 (*SED needs a window of at least 120 columns by 36 lines; this one is 80 by 24*),
 because SED would draw off the edge of it; a bigger window shows SED in its top

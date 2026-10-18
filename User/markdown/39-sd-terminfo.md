@@ -54,26 +54,33 @@ There is no `vt320` definition; `vt220` or `xterm` does the same job.
 ```
 term                    * report current type and page size
 term linux              * set for this session
-term 120,36             * set page size
-term default            * restore 120 x 36 (prints nothing; check with bare term)
+term 140,42             * set page size
+term default            * restore 140 x 42 (prints nothing; check with bare term)
 ```
 
 The page size is worked out at login in this order:
 
 1. the `LINES` and `COLUMNS` environment variables if they are numeric
 2. the terminfo entry's `lines` and `cols`
-3. otherwise 36 and 120
+3. otherwise 42 and 140
 
-A console or ssh session normally gets its real window size. 120 × 36
+A console or ssh session normally gets its real window size. 140 × 42
 is the fallback when nothing answers — a phantom or a piped script.
+The terminfo entries that name a width and a depth say 140 and 42; the
+132-column entries keep their own depth.
 
-## The page is 120 × 36
+## The page is 140 × 42
 
-SD's default is **120 columns by 36 lines**, not 80 × 24. The shipped
-dictionary records and the default `list` report layouts are formatted
-for 120 columns. A console window narrower than that makes ordinary
-reports look wrapped or truncated — which reads as a formatting bug and
-is not one.
+SD's default is **140 columns by 42 lines**, not 80 × 24 — and no longer
+the 120 × 36 of the releases before 18 October 2026. A console window
+narrower than that makes wide reports look wrapped or truncated — which
+reads as a formatting bug and is not one. `term 120,36` gives the old
+size back for a session that wants it.
+
+The default is only a default. `term w,h` takes any width from 20 to
+32767 and any depth from 10 to 32767, larger or smaller than 140 × 42,
+and nothing else clamps it. A real terminal still decides its own size,
+and `term default` puts the page back to 140 × 42 whatever the window.
 
 ## The terminfo source
 

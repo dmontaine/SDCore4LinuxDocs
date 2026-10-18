@@ -43,21 +43,19 @@ Page depth: 9999
 
 The depth stayed at 9999 because only the width was given.
 
-### The page is the terminal's own size, and SD's default is 120 × 36
+### The page is the terminal's own size, and SD's default is 140 × 42
 
 **SD asks the terminal how big it is.** When a session starts on a terminal, and
 again each time the window is resized, SD reads the size of the window and makes
 it the page: `@crtwide` and `@crthigh` follow it, and so does `term`. A program
 that draws a screen — the SCREEN statement, CED, the debugger — sees an 80 × 24
-window as 80 × 24. (**SED is the exception: it is 120 × 36 always**, SD's default
-size, and refuses a window smaller than that.)
+window as 80 × 24. (**SED is the exception: it is 120 × 36 always**, the old
+default size, and refuses a window smaller than that.)
 
-**SD's default is 120 columns by 36 lines, not 80 × 24**, and it is not a
-cosmetic choice: the shipped `@` dictionary records and the default `list`
-report layouts are formatted for that width. It is what a session gets when
-there is no terminal to ask — a phantom, a piped script, a service — and a
-report that looks wrapped or truncated on a narrow window is usually the
-window, not the report.
+**SD's default is 140 columns by 42 lines, not 80 × 24** (it was 120 by 36
+until 18 October 2026). It is what a session gets when there is no terminal to
+ask — a phantom, a piped script, a service — and a report that looks wrapped or
+truncated on a narrow window is usually the window, not the report.
 
 **Where the number comes from**, in order, when a session starts:
 
@@ -66,26 +64,28 @@ window, not the report.
 | 1 | **the terminal's own window size**, as the terminal reports it |
 | 2 | when there is no terminal to ask: the `LINES` and `COLUMNS` environment variables, if they are numeric |
 | 3 | otherwise the terminfo entry's `lines` and `cols` |
-| 4 | **otherwise 36 and 120** |
+| 4 | **otherwise 42 and 140** |
 
 and whatever comes out is then raised to the minimum of 10 lines by 20 columns
 if it is smaller. **`term` with a size typed by hand sets the page from then on,
-until the next time the window is resized.**
+until the next time the window is resized**, and it is taken as typed: any width
+from 20 to 32767 and any depth from 10 to 32767, larger or smaller than the
+default, with no other ceiling.
 
-> **`term default` puts the 120 × 36 pair back, and it prints nothing when it
-> does.** The verb sets the same 120 × 36 that is the fallback, then returns
-> without a message — so the way to see that it worked is a bare `term` after
-> it, not the command itself:
+> **`term default` puts the 140 × 42 pair back, and it prints nothing when it
+> does.** The verb sets the same 140 × 42 that is the fallback, whatever size
+> the window is, then returns without a message — so the way to see that it
+> worked is a bare `term` after it, not the command itself:
 >
 > ```
 > :term default
 > :term
-> Page width: 120
-> Page depth: 36
+> Page width: 140
+> Page depth: 42
 > ```
 >
 > `term 120,36` does the same thing by hand and is worth knowing for the cases
-> where you want some other size back.
+> where you want some other size back, the old default included.
 
 **`Device`** is the terminfo entry in use, `windows` on this port. If a terminal
 type has no terminfo entry SD falls back to `windows` rather than failing, so
