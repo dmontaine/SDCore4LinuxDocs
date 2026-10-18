@@ -60,6 +60,7 @@ modify.account <account> os-on | os-off
 modify.account <account> voc-on | voc-off
 modify.account <account> bp-on | bp-off
 modify.account <account> dict-on | dict-off
+modify.account <account> files-on | files-off
 modify.account <account> suspended | unsuspended
 ```
 
@@ -83,7 +84,8 @@ accounts that need it, one at a time:
 
 | | |
 |---|---|
-| **`ssh`** \| **`api`** \| **`both`** \| **`none`** | who may connect. Absolute: `api` takes ssh away |
+| **`ssh`** \| **`api`** \| **`both`** \| **`none`** | who may connect. Absolute: `api` takes ssh away. These four words leave `files-on` alone |
+| **`files-on`** \| **`files-off`** | the files-only API route: a login that may work with files and do nothing else. Off for a new account; reported as "Account fred has FILES yes"; reaches the person at their next login. `api` wins when the account has both |
 | **`sh-on`** \| **`sh-off`** | the `sh` verb and `!` |
 | **`os-on`** \| **`os-off`** | `OS.EXECUTE` in a program, `nano` and `micro`, the embedded Python, and files or directories of the operating system named by their path outside the account's own directory |
 

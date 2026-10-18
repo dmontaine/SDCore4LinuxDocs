@@ -47,7 +47,7 @@ from SD, see [Reaching the operating system](06-administrator-commands.html).
 ## Creating an account
 
 ```
-create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {files-on} {no.query}
 
 create.account group <name> {no.query}
 
@@ -69,6 +69,7 @@ administrator loosens it, account by account, for the people who need it:
 | word | gives the account |
 |---|---|
 | `ssh` · `api` · `both` | the remote route(s). `none` is the default |
+| `files-on` | the files-only API route: an API login that can open, read, write and select from files and do nothing else (no commands, no subroutine calls, no `logto`). `api` gives the whole API and wins when an account has both |
 | `sh-on` | the `sh` verb and `!` |
 | `os-on` | `OS.EXECUTE`, `nano` and `micro`, the embedded Python, and files or directories of the operating system named by their path outside the account's own directory |
 | `voc-on` | saving a change to the account's VOC |
@@ -98,11 +99,14 @@ is not a setting.
 prompt creates nothing at all.
 
 **Joining `sdusers` is what makes an account an SD account; the routes are
-two more groups.** Every `sdusers` member is `ForceCommand`'d into `sd` over
+more groups.** Every `sdusers` member is `ForceCommand`'d into `sd` over
 ssh, and an account reaches `sd` over ssh only if it is also in `sdssh`, and
 over the API only if it is in `sdapi` — those two memberships are what the
-`ssh`, `api`, `both` and `none` words make and take away. `sdsys` is in
-neither, and is refused at the door on both routes rather than left
+`ssh`, `api`, `both` and `none` words make and take away. A third group,
+`sdfiles`, is a narrower API route that reaches files and nothing else; the
+`files-on` and `files-off` words make and take it away, and `ssh`, `api`,
+`both` and `none` leave it alone. `sdsys` is in
+none of them, and is refused at the door on both routes rather than left
 ungranted.
 
 ### What every account can do

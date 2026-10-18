@@ -24,6 +24,16 @@ what it is allowed to open.**
 > `modify.account` *name* `api` (or `both`), or `api` at `create.account` — and
 > an account that has not been given it is refused at the door.
 
+**There is a second, narrower route for a client that only needs files.** An
+account SDSYS gave `files-on` (and not `api`) can log in over the API but is
+held to files: opening, closing, reading, writing, deleting, selecting, locking,
+indices and file information. A request to call a subroutine, execute a
+command, enter another account (`logto`), read a variable or use a sequential
+file is refused with *"This login is for files only: request n is not
+allowed"*, and the connection stays open. An account with `api` has the whole
+API whether or not it also has `files-on`. This is the route SDNet's logins are
+meant to use. It has not been run against a live server yet.
+
 ## The login is SCRAM-SHA-256, and the old one is gone
 
 **A client that sends a password in clear is refused.** It gets *"Cleartext

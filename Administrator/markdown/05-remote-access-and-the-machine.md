@@ -22,8 +22,8 @@ system does.
 > **Neither gives SDSYS remote access, and no setting does.** Opening ssh
 > or the API to other computers opens it for ordinary accounts only — and
 > of those, only the accounts SDSYS has given the route (`ssh`, `api` or
-> `both`, in `create.account` and `modify.account`), since a new account has
-> neither.
+> `both`, in `create.account` and `modify.account`, or `files-on`, the
+> narrower files-only API route), since a new account has none of them.
 > **SDSYS has no remote route at all, under any setting these two verbs
 > control** — refused at the door, not merely ungranted. Administration
 > needs a real login as `sdsys` at the machine's own keyboard, or a

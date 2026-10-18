@@ -66,7 +66,7 @@ privilege.**
 ## Making an account: `create.account`
 
 ```
-create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {net-on} {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {net-on} {files-on} {no.query}
 
 create.account group <name> {no.query}
 
@@ -82,8 +82,9 @@ create.account other <name> <pathname> {no.query}
 **A new user account starts with every door shut.** Say nothing and it has
 no ssh, no API, no `sh` and no `OS.EXECUTE`, it cannot save a change to
 a VOC, a program file or a dictionary, and it has no right to use a server
-defined for SDNet; you open each one by naming it. `ssh`, `api` or `both` give the remote routes (`none` is the default
-and is accepted so that a script can say so); `sh-on` and `os-on` give the
+defined for SDNet, and no files-only login; you open each one by naming it. `ssh`, `api` or `both` give the remote routes (`none` is the default
+and is accepted so that a script can say so); `files-on` gives the narrower
+files-only API route (below, *The files-only route*); `sh-on` and `os-on` give the
 two operating-system switches, and they are independent, so `sh-on os-on`
 gives both and neither cancels the other; `voc-on`, `bp-on` and `dict-on`
 give the three edit switches (below), each on its own; `net-on` gives the
@@ -98,6 +99,7 @@ fred has no remote access: not ssh, not the API
 Account fred has SH no, OS.EXECUTE no
 Account fred has VOC.EDIT no, BP.EDIT no, DICT.EDIT no
 Account fred has NET no
+Account fred has FILES no
 ```
 
 **The installing user's own account is no exception**: the account the
@@ -144,7 +146,7 @@ given.
 
 | | |
 |---|---|
-| `ssh`, `api` | say who may **connect** |
+| `ssh`, `api`, `files-on` | say who may **connect**, and by which route |
 | `sh-on`, `os-on` | say who may reach the **operating system** |
 
 Holding the first has never implied the second. **ssh alone does not give a
@@ -386,6 +388,157 @@ SDSYS puts it there with `set.server ... accounts` ([SDNet](12-sdnet.html)). Two
 lists, both empty until SDSYS writes to them: the switch says the account may use
 SDNet at all, the list says which servers it may use.
 
+### The files-only route: `files-on` and `files-off`
+
+There are now **two API routes, and the second is narrower.** `api` (the Linux
+group `sdapi`) lets a person do everything the API offers: execute commands, call
+catalogued subroutines, enter other accounts with `logto`, read and write
+sequential files, and work with files. **`files-on` (the Linux group `sdfiles`)
+lets a person log in over the API and do files and nothing else.** It exists so
+that a login kept for SDNet (see [SDNet](12-sdnet.html)) never needs `sdapi`: the
+other server's administrator gives that login `sdfiles`, and whoever steals the
+stored login can open, read and write files on that server and cannot run a
+command there.
+
+**Off for a new account, like every other door.** `create.account user` takes
+`files-on`; `modify.account` *name* `files-on` / `files-off` turns it on and off.
+Membership of `sdfiles` *is* the route, as membership of `sdapi` is for `api`, so
+there is no field for it in the register. After a change SD says where the account
+stands, **read back from the operating system's group file** rather than taken from
+the request, in a line of its own:
+
+```
+:modify.account fred files-on
+Account fred has FILES yes
+:modify.account fred files-off
+Account fred has FILES no
+```
+
+Asking for what is already so changes nothing and says so ("fred already had that
+access; nothing changed"). The change is made by the same privileged helper as the
+`api` word (`sudo /usr/local/sbin/sd-elevate addgroup` or `delgroup`, with the
+group `sdfiles`), and written to the audit trail (`modify.account files-on
+account=fred`). If the group file does not show the state asked for afterwards, SD
+reports the failure ("Unable to change remote access for fred, status: 2") and not
+a success.
+
+**The rules, in the order the login applies them.** The API server decides at the
+end of the login, after the password has been proved:
+
+1. The person must be in `sdusers`, as for every route.
+2. A member of **`sdapi` has the whole API, whether or not they are also in
+   `sdfiles`: `sdapi` wins.**
+3. Otherwise a member of **`sdfiles`** is let in **files only**. The session is
+   marked once, at login, and the mark is never cleared for the life of the
+   connection.
+4. A person in **neither** group is refused exactly as before: "*name* is not
+   permitted to use the API", with the reason `not a member of sdapi` in the
+   audit trail. If the group file cannot be read the login is refused, not
+   guessed.
+5. `sdsys` is exempt from both groups by name and keeps the doors it has always
+   had; it is never made files-only.
+
+**What a files-only session may ask for.** One function, `!apifilesok`, decides, and
+it is an *allow list*: a request number that is not in it is refused, including a
+number this release has never heard of.
+
+| allowed | request |
+|---|---|
+| 1, 2 | quit; get the text of the last error |
+| **3, once** | set the account. The first one, which is the entry to an account after login, is allowed; a later one would be a `logto` and is refused |
+| 4, 5 | open a file; close it |
+| 6 to 10 | read, and the locking reads (`readl`, `readlw`, `readu`, `readuw`) |
+| 11 to 15 | select; read the next id; clear a select list; read a saved list; release a lock |
+| 16 to 19 | write; write and keep the lock; delete; delete and keep the lock |
+| 26 | select on an index. Allowed because it is a select, with 37 to 39 |
+| 30 to 36 | lock a record; clear a file; lock and unlock a file; ask whether a record is locked; list the indices |
+| 37 to 39 | select a list; select by an index value; select by an index key |
+| 40, 41 | file information; read one field |
+| 42 to 45 | set the left or right end of an index range (`setleft`, `setright`), and select within it (`selectleft`, `selectright`) |
+| 46 | the mark mapping |
+| 49 | the server's revision |
+
+| refused | request |
+|---|---|
+| 20 | call a catalogued subroutine |
+| 21, 22, 23 | execute a command; respond to its prompt; end it |
+| 24, 25 | the other logins |
+| 27, 28 | enter and exit a licensed package (not supported by any route) |
+| 29 | open a file on another SDNet server |
+| 47, 48 | the SCRAM login itself, which is only possible before the session is logged in |
+| 50, 51 | read a variable; `system()` |
+| 52, 53 | `trans()` |
+| 54 | transactions |
+| 55 to 60 | evaluate and the conversions |
+| 61 to 69 | sequential files |
+| 0, 70 and above, anything else | no such request here |
+
+A refused request is answered with "This login is for files only: request *n* is not
+allowed", **the request is not carried out**, and a line goes to the audit trail
+(below). The connection stays open, so a client that asks for something it should not
+can carry on with files.
+
+**What is not changed.** Everything else about the session applies as it does to any
+other: the account must be entered, the account's own switches (the OS-access
+gate, the three edit switches, the NET switch) are loaded and enforced, `SDCLIENT` in
+`sd.conf` still decides whether a client may open the files it names, and the
+API listener must be on (`remote.api`). Nothing in the route enforces *read only*:
+**a files-only login may write and delete.** Whether SDNet writes to a server at
+all is the definition's `read` or `write` mode on the *client* (see SDNet), not
+this route.
+
+**The route words are not one state.** `ssh`, `api`, `both` and `none` are
+absolute about the two routes they name, and **leave `files-on` alone**:
+`modify.account fred none` takes away ssh and the API and not the files-only
+login. Withdraw it with `files-off`. `sdapi` is never touched by `files-on` or
+`files-off`.
+
+**User accounts only.** A group account, which has no Linux user, is refused
+`files-on` and `files-off` ("is a group account and has no remote access"), an
+`other` account too ("Unable to change remote access ... status: 2"), and
+`create.account group` and `create.account other` refuse the word the same way.
+`files-on` also refuses a person who is not in `sdusers`, because the login would
+refuse them first. If the Linux group `sdfiles` does not exist, `files-on` says
+"sdfiles is not a valid Linux Group" and changes nothing, and
+`create.account user ... files-on` looks for the group **before** it makes the Linux
+user, so nothing is left behind. **An installation made before this release has no
+`sdfiles` group, and its helper does not accept it, until the installer is run
+again**; the installer makes the group (empty) beside `sdssh` and `sdapi`, and the
+helper's list of groups it will touch includes it. Like `sdssh` and `sdapi`, the
+group cannot be deleted with the helper's `groupdel`; a full DELETE of SD (not one
+that keeps the accounts) removes it with the others.
+
+**A change takes effect at the person's next login.** The group is read when the
+login finishes, so a connection already open keeps the route it started with.
+To take the route away from somebody who is connected now, `files-off` and end the
+connection.
+
+**Audit trail.** A files-only login writes `api login route=sdfiles user=fred`. Each
+refusal writes `api refused request=26 route=sdfiles user=fred` (the number is the
+request). A user in neither group, as before, has the refused login in the usual
+`api refused` form.
+
+**The archive.** For a user account the manifest carries `route.files: 1` or `0`
+beside `route.ssh` and `route.api` (not `files:`, which is already the count of files
+in the archive), and `restore.account` puts an account it has to create back in
+`sdfiles` if the manifest says so. An archive from before this release has no such
+line and restores the account out of the group. A manifest that says `1`, restored on
+a machine with no `sdfiles` group, fails for that account with the group message
+and creates nothing.
+
+**What has and has not been shown.** Checked from the source and by the free
+checks that read it as text: the order of the checks in the login, that the gate
+sits in the request loop before the dispatch, the table of numbers, the helper's
+rules for the group and its refusals (`sd-elevate`, by test as an ordinary user, with
+mutants), and the wording of the messages. **Not run at all: the login itself with a
+real user in `sdfiles`, the group membership read at login, the refusal of a
+request on a live session, `modify.account files-on` and `files-off` against a real
+`/etc/group`, `create.account ... files-on`, the installer making the group, and the
+archive round trip.** None of the SD programs for the route has been compiled or run
+yet; they need an installation and a second user, and until they have been seen to
+work the route should be treated as unproved. **No client uses the route yet** (see
+SDNet).
+
 ### VOC pointers: where a file pointer may lead, and which Q-pointers are followed
 
 **A VOC pointer is a way to name a file, so it is held to the same rule.** An
@@ -451,6 +604,7 @@ modify.account account voc-on | voc-off
 modify.account account bp-on | bp-off
 modify.account account dict-on | dict-off
 modify.account account net-on | net-off
+modify.account account files-on | files-off
 modify.account account suspended | unsuspended
 ```
 
@@ -466,10 +620,12 @@ modify.account account suspended | unsuspended
 | **`bp-on`** \| **`bp-off`** | saving a change to a program file, and compiling and cataloguing |
 | **`dict-on`** \| **`dict-off`** | saving a change to a dictionary |
 | **`net-on`** \| **`net-off`** | the right to use a server defined for SDNet (see *The NET switch*; it does nothing yet) |
+| **`files-on`** \| **`files-off`** | the files-only API login: membership of the Linux group `sdfiles` (see *The files-only route*). Independent of `ssh`/`api`/`both`/`none`: those words leave it alone |
 | **`add`** \| **`delete`** *user* | put a Linux user in, or out of, the account's group |
 
 **The first group is absolute and the second is not.** `ssh`/`api`/`both`/
-`none` are four names for one state, so whatever is not named is withdrawn.
+`none` are four names for one state, so whatever is not named is withdrawn
+(of ssh and the API: `files-on` is its own setting and is not withdrawn by them).
 `sh-on` and `os-on` are two independent switches over two separate settings,
 so **`sh-off` says nothing about `OS.EXECUTE`** and leaves it alone; the
 other switches are each their own as well.
@@ -511,7 +667,8 @@ command they were using, and in the same way `voc-on`, `bp-on` and
 is run by the user whose own account already exists; a different OS user
 installing over existing accounts does not run it. Group and other accounts
 are left off on purpose. **`net-on` is not part of it**: nothing used SDNet
-before, so every existing account has it off. You can then turn them off one account at a time,
+before, so every existing account has it off. **Neither is `files-on`**: the
+`sdfiles` group is made empty, and nobody is in it until you say so. You can then turn them off one account at a time,
 and a later install does not turn them back on. Only accounts made after the
 upgrade start with everything off.
 

@@ -6,10 +6,12 @@ it with `READ`, `WRITE`, `SELECT` and `LIST` as if it were local. **This release
 has the first slices only: the permission, the list of servers, one
 connection that `set.server` can make so that it can show you a server's key hash,
 and a person's own login on a server (`set.netlogin`), kept as values derived from
-the password and never as the password. Nothing uses that login yet, and no remote
-file can be opened.** The switch, the definitions and the logins are in place so that
-the work that follows has something to stand on, and so that you can see, and set,
-what it will be allowed to use.
+the password and never as the password. On the server side there is now also a
+second, narrower API route, `sdfiles`, which lets a login work with files and do
+nothing else. Nothing uses a stored login yet, and no remote
+file can be opened.** The switch, the definitions, the logins and the files-only route
+are in place so that the work that follows has something to stand on, and so that you
+can see, and set, what it will be allowed to use.
 
 An earlier SDNet was removed on 9 September 2026 (a `server;file` VOC entry over
 port 4245, with each server's password in `sd.conf`, which any local user could
@@ -42,6 +44,7 @@ Planned, not built yet:
 | **`set.netlogin`** | a person makes their own login on a defined server: SD runs the SCRAM exchange once and keeps the derived values (see "Your login on a server") |
 | **`delete.netlogin`** | removes it |
 | **`sd-elevate netcred-dir`** | the privileged helper step that makes the directory the logins are kept in |
+| the **files-only route** | the Linux group `sdfiles`, on the server being reached: `modify.account` *name* `files-on` / `files-off`, and `files-on` in `create.account user`. See "The files-only route on a server" below |
 
 **The first three verbs are SDSYS's.** They are in SDSYS's VOC and in no other account's,
 and each one also stops with "Command requires administrator privileges" for
@@ -65,11 +68,16 @@ gates they ask are described below. Commands are shown here in lower case.
 - **Using the login.** Nothing reads a stored login to log in, and nothing opens
   a file on the other server. `set.netlogin` proves the login works once, at the
   moment it is made, and keeps the result.
-- **A route on the server that reaches files only.** The login is the remote
-  user's ordinary API login. The server does not yet have a way to give a login
-  that can reach files and nothing else, or only read them. Until it does,
-  whoever holds a stored login can do on that server what that remote user can
-  do over the API. Choose the remote user with that in mind.
+- **A client that uses the files-only route.** The server now has the route (below)
+  and the person who runs the other server can give the remote user `files-on` instead
+  of `api`. But `set.netlogin` does not require it, and **nothing on the client side
+  uses a stored login yet**, so no SDNet client has connected by this route. A
+  remote user who is in `sdapi` still has the whole API, and so does a stored login
+  made for that user: whoever holds the file can do on that server what that remote
+  user can do over the API. Give the remote user `files-on` and not `api`, or choose
+  the remote user with that in mind. The route also does not make a login
+  *read only*: a files-only login can write and delete. Read or write is the
+  definition's `mode`, and nothing enforces it yet.
 - **Remote files.** There is no VOC pointer to a remote file, and the *accounts*
   list and the NET switch are consulted by `set.netlogin` and by nothing else.
 - **`NETFILES`** in `sd.conf` is still accepted and still does nothing (see
@@ -608,6 +616,83 @@ the directory step (check 6) with a message that includes sudo's own refusal.
   changes nothing, and that its owner and mode are right are not seen. The
   sudoers permission has not been tried on an installed system.
 
+## The files-only route on a server
+
+This section is about the server being **reached**, the one whose administrator is
+giving somebody a login. (The same machine is that server for others and the client
+for its own people, so both halves can be yours.)
+
+Until this slice the only way to log in to a server's API was membership of the Linux
+group `sdapi`, which gives everything the API offers: execute commands, call
+subroutines, enter other accounts with `logto`, work with sequential files and files.
+A stored SDNet login on that route, taken from a machine, would give whoever took it
+all of that. **So there is a second route, the Linux group `sdfiles`: a login that is
+in `sdusers` and `sdfiles` and not in `sdapi` is let in "files only".** The rest of
+the rules, the table of what is allowed and refused and why, the words and the
+messages are in [Accounts and Security](01-accounts-and-security.html#the-files-only-route-files-on-and-files-off); in short:
+
+- **`sdapi` wins.** A remote user who is in both groups has the whole API.
+- **A user in neither group is refused**, as before. Both groups are empty for a new
+  account until the administrator of that server adds the person
+  (`modify.account` *name* `files-on`, or `files-on` when the account is made).
+- A files-only session may open and close files; read (also with locks), write and
+  delete records; select, read the next id and read and save lists; lock records and
+  files and ask about locks; use indices; ask for file information; and set its
+  account **once**, which is the entry after login. **It may not** call a
+  subroutine, execute a command or answer its prompts, enter another account,
+  use sequential files, read variables, run `system()`, `trans()` or an evaluation or
+  conversion, run a transaction, or open an SDNet file on a third server. Any other
+  request, and any request number this release does not know, is refused: the table
+  is an allow list.
+- A refused request is not carried out. It is answered with "This login is for files
+  only: request *n* is not allowed" and written to the audit trail; the connection
+  stays up.
+- Everything else about the session is as for any other API login: the account has to
+  be entered, its switches (OS access, the edit switches, NET) apply, `SDCLIENT` still
+  applies, and `sdsys` is never made files-only.
+- **It is not a read-only route.** A files-only login may write and delete. Whether
+  SDNet will write at all is the definition's `read` or `write` mode on the client, a
+  decision made by the client side.
+
+**The remote user must be a real account on that server.** It is still a Linux user,
+a member of `sdusers`, with an SD account of its own, and every gate that account has
+there applies to it. What `files-on` replaces is the need for `sdapi`, not for the
+account. An administrator who wants an SDNet login for a person on another SD server
+creates it there with `create.account user` *name* `files-on` (no `api`), then gives
+the name and the password to the person, who runs `set.netlogin` here.
+
+**The client.** The SDNet client (a later slice) is meant to log in with the stored
+login and use only the requests this route allows, so that it needs no more than
+`sdfiles`. **That client does not exist yet.** Today `set.netlogin` makes the login
+exchange as it always did, which does not depend on the route: the server decides
+the route at the end of the exchange, and a remote user in neither group is refused
+there (so `set.netlogin` should say "The server refused the login"; read off the
+source, not seen). That a `set.netlogin` made against a
+user who is only in `sdfiles` succeeds has not been tried.
+
+**On the machine being reached:** the group `sdfiles` is made, empty, by the
+installer beside `sdssh` and `sdapi`. An installation made before this release has
+neither the group nor a copy of the helper that accepts it until the installer is run
+again; until then `files-on` says "sdfiles is not a valid Linux Group" and changes
+nothing. The API listener has to be on (`remote.api`), as for any API login.
+
+### What was and was not confirmed (the files-only route)
+
+- **Confirmed from the source:** the order of the tests in the login; the mark is set
+  once, in the common block of the API server, and is not cleared; the gate is in the
+  request loop before the dispatch, so no request goes round it; the table of numbers
+  is a pure function with a fail-closed default; the helper accepts `sdfiles` by
+  exact name for `addgroup`, `delgroup` and `groupadd` and refuses `groupdel` of it.
+  **Confirmed by test (no SD, no install):** the helper's rules for the group
+  (180 rows as an ordinary user, and 8 mutants of them killed), and the free checks
+  that read the source as text.
+- **Not confirmed:** none of the SD programs for the route (`apisrvr`, `apifilesok`,
+  `modifya`, `createa`, `create_account`, `acc_os_info`, `restorea`) has been compiled
+  or run. **The login itself with a user in `sdfiles`, the refusal of a request on a
+  live session, the membership read at login, `files-on` and `files-off` against a
+  real group file, and the installer making the group have not been seen to work.**
+  Treat the route as unproved until they have.
+
 ## What is audited
 
 Defining and deleting are written to the audit trail, in lower case:
@@ -631,6 +716,17 @@ audited**. A refusal, a failed exchange and a login that was not stored write
 nothing. Giving or taking the NET switch is
 audited like every other `modify.account` word (`modify.account net-on
 account=fred`).
+
+On the server that is reached, the files-only route writes, in lower case:
+
+```
+api login route=sdfiles user=reports
+api refused request=20 route=sdfiles user=reports
+modify.account files-on account=reports
+```
+
+The first is a successful files-only login, the second a request the route does not
+allow (the number is the request), the third the administrator giving the route.
 
 ## See also
 
