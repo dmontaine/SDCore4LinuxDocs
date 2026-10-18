@@ -79,6 +79,18 @@ OS user installing over existing accounts does not run this step. Turn them
 off with `voc-off`, `bp-off` and `dict-off`. Accounts you make after the
 upgrade start with everything off.
 
+**The installer makes the `shared` account** (a group account whose data files
+every account can open by file name; see [Accounts](05-account-types.html#the-shared-account)),
+just after the account for the installing user and before the accounts you kept are
+brought up to the release. If you kept your accounts, the one you had is kept. Every
+account, new or existing, can read the `shared` account's files and none can write them,
+until SDSYS says otherwise with `shared-read-off` and `shared-write-on`; nothing is
+written to your existing accounts for that.
+
+**The installer stops, before it changes anything, if an account named `shared`
+already exists that is not SD's own.** The name is reserved. It names the account's
+register record, and you rename that account by hand and run the installer again.
+
 ## Uninstalling
 
 `deletesdcore.sh` is in the release package beside `installsdcore.sh` (from
@@ -110,7 +122,10 @@ decision to make.
 
 The `sdusers` Linux group and the `sdsys` user are removed only on a full
 `DELETE` of accounts — kept accounts need `sdusers` to remain readable, and
-removing the group would orphan the permissions on your database.
+removing the group would orphan the permissions on your database. **The Linux
+group `sdg_shared` (the `shared` account's group) goes the same way:** removed on
+a full `DELETE`, kept when the accounts are kept, so that the members an earlier
+install gave it cannot be admitted to a new `shared` account by mistake.
 
 ## Continued in
 

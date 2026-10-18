@@ -127,6 +127,26 @@ see
 > statements that name an operating-system path — the account's `os-on`
 > switch. See the *Administrator* set's *Accounts and security* chapter.
 
+## The `shared` account
+
+**One group account, named `shared`, exists on every installation.** The
+installer makes it; you do not create it, and nobody can create or delete an
+account of that name. **Its data files can be opened by every account by
+file name** — `open "inventory"` finds the file `shared` holds under that
+name, with no `logto` and no pointer in your VOC — unless your own account
+already has an entry of that name, which always wins.
+
+**Reading is on for every account; writing is off.** Two per-account
+switches, `shared-read-on` / `shared-read-off` and `shared-write-on` /
+`shared-write-off`, are SDSYS's to change. Without `shared-write-on`, an
+attempt to save, delete or clear a record in a shared file is refused, and
+changing the *structure* of a shared file (clearing it, configuring it,
+indexing it, deleting it) is SDSYS's alone, at a terminal on the machine.
+The verbs, programs and catalogue of `shared` are not shared: only its data
+files and their dictionaries. **Nobody but SDSYS signs on to `shared`.**
+Because every account can read it, put nothing there that is not meant for
+everyone.
+
 ## Suspended — a state, not a tier
 
 **A suspended account cannot be entered.** It is for an account that should

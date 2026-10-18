@@ -18,6 +18,7 @@ to apply — it is what `create.account` and the installer already do:
 | ssh and the API, per account | **off for a new account**; SDSYS gives each account the route it needs (`ssh`, `api`, `both`) — see [Managing accounts](05a-managing-accounts.html) |
 | `sh`, `!`, `OS.EXECUTE`, the editors, the embedded Python, and operating-system files named by path | **off for a new account**, in two independent switches (`sh-on`, `os-on`) that SDSYS turns on account by account — see [Security and the operating system](12a-security-and-the-operating-system.html#the-shell-and-operating-system-access-are-per-account-switches) |
 | Saving a change to a VOC, a program file or a dictionary (and compiling) | **off for a new account**, in three independent switches (`voc-on`, `bp-on`, `dict-on`) that SDSYS turns on account by account; reading is never stopped — see [Managing accounts](05a-managing-accounts.html) |
+| The `shared` account | the one door that is **open** in a new installation, on purpose: every account can read the data files of the `shared` account by file name, and none can write them — see [The shared account](#the-shared-account-is-open-to-read-by-design) |
 | The API | local-only (`127.0.0.1:4247`) until an administrator opens it to the network — see [API access](09-api-access.html) |
 | SDSYS | no remote route at all, ssh or API, ever, from any other computer; on the machine itself the API accepts it only on the local Unix socket, from a process running as `sdsys` — the one thing this page treats as non-negotiable rather than a default |
 
@@ -41,6 +42,19 @@ and disabling its break key (`pterm break off`, so it cannot interrupt out
 to a TCL prompt). Neither is a keyword on `create.account` — both are done
 by hand, per account, when that account's whole purpose is one application
 and nothing else.
+
+## The shared account is open to read, by design
+
+**The `shared` account that the installer makes is the one place where the
+default is open rather than closed.** Every account, new or old, can open its
+data files by file name (`shared.read` is on unless SDSYS turns it off with
+`shared-read-off`), and none can write them until SDSYS gives it
+`shared-write-on`. Nobody but SDSYS can sign on to `shared` or change the
+structure of its files. So **anything placed in `shared` is readable by every
+account that has not had the right taken away: put nothing in it that is not
+meant for everyone.** An account with `sh-on` or `os-on` can also reach the
+files from the operating system. The verbs, programs and catalogue of `shared`
+are never reached from another account. See [Accounts](05-account-types.html#the-shared-account).
 
 ## Signing in asks for no password
 

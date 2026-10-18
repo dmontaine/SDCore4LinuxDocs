@@ -17,6 +17,14 @@ SD folds case, so a command may be typed in either case. Commands are shown
 here in lower case. In the tables, *italics* mark something you supply and
 **bold** marks a word typed as it stands; braces mark an optional part.
 
+> **Anything you put in the `shared` account can be read by every account,**
+> by file name, with no `logto` and no pointer, **unless you type
+> `shared-read-off` for an account.** The installer makes the `shared` account;
+> every account, new or old, starts with the right to read its files, and
+> without the right to write them. This is the one right here that is on until
+> you take it away. See *The shared account*, below, and
+> [The shared account](13-the-shared-account.html).
+
 ## Read this before anything else: being SDSYS is the whole of it
 
 **Having the verb is not having the right to use it — and there is exactly
@@ -66,20 +74,21 @@ privilege.**
 ## Making an account: `create.account`
 
 ```
-create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {net-on} {files-on} {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {no.query}
 
-create.account group <name> {no.query}
+create.account group <name> {shared-read-off} {shared-write-on} {no.query}
 
-create.account other <name> <pathname> {no.query}
+create.account other <name> <pathname> {shared-read-off} {shared-write-on} {no.query}
 ```
 
 | | |
 |---|---|
 | **`user`** | an SD account **and** a Linux user account to log in as |
-| **`group`** | a shared workspace with no Linux account, reached with `logto`, or directly by a member of its group with `sd -A`*name* |
+| **`group`** | a shared workspace with no Linux account, reached with `logto`, or directly by a member of its group with `sd -A`*name*. The name `shared` is reserved for the installer's own account (below) and is refused here |
 | **`other`** | an SD account over a directory you name |
 
-**A new user account starts with every door shut.** Say nothing and it has
+**A new user account starts with every door shut** (but one: it can read the
+files of the `shared` account, below, and not write them). Say nothing and it has
 no ssh, no API, no `sh` and no `OS.EXECUTE`, it cannot save a change to
 a VOC, a program file or a dictionary, and it has no right to use a server
 defined for SDNet, and no files-only login; you open each one by naming it. `ssh`, `api` or `both` give the remote routes (`none` is the default
@@ -88,7 +97,11 @@ files-only API route (below, *The files-only route*); `sh-on` and `os-on` give t
 two operating-system switches, and they are independent, so `sh-on os-on`
 gives both and neither cancels the other; `voc-on`, `bp-on` and `dict-on`
 give the three edit switches (below), each on its own; `net-on` gives the
-SDNet switch (below). **This is the setting SD is
+SDNet switch (below). Two words go the other way, because the `shared` account
+(below) is open to every account unless you say otherwise: `shared-read-off`
+takes away the right to read its files and `shared-write-on` gives the right
+to write them. (The two words that restate the defaults, `shared-read-on` and
+`shared-write-off`, are for `modify.account` only.) **This is the setting SD is
 delivered with, on purpose: it is the tighter one, and you loosen it for the
 accounts that need it, one at a time** — the same words change an account
 later in `modify.account`, below. When it has made the account SD says
@@ -98,6 +111,7 @@ where it stands:
 fred has no remote access: not ssh, not the API
 Account fred has SH no, OS.EXECUTE no
 Account fred has VOC.EDIT no, BP.EDIT no, DICT.EDIT no
+Account fred has shared.read yes, shared.write no
 Account fred has NET no
 Account fred has FILES no
 ```
@@ -388,6 +402,81 @@ SDSYS puts it there with `set.server ... accounts` ([SDNet](12-sdnet.html)). Two
 lists, both empty until SDSYS writes to them: the switch says the account may use
 SDNet at all, the list says which servers it may use.
 
+### The shared account: `shared-read-on`, `shared-read-off`, `shared-write-on` and `shared-write-off`
+
+The installer makes one group account, named `shared`, and **the files in it can be
+opened by every account by file name** — `open "inventory"` in any account finds
+the file `shared` holds under that name, with no `logto` and no pointer in the
+account's own VOC. Two per-account switches, in fields 13 and 14 of the register
+record, decide who may. The full description, with the order of the checks and the
+cautions, is its own page: [The shared account](13-the-shared-account.html).
+
+| switch | delivered | words | what it allows |
+|---|---|---|---|
+| `shared.read` | **on, for every account** | `shared-read-off` / `shared-read-on` | opening the files of `shared` by name, and reading them |
+| `shared.write` | off | `shared-write-on` / `shared-write-off` | saving, deleting and clearing records in them (a dictionary needs `dict-on` as well) |
+
+**`shared.read` is the one switch in SD whose blank means ON.** It is only off when
+the field says `no`: `shared-read-off` writes `no`, and `shared-read-on` writes
+`yes`. A blank field — a new group or other account, and every account that
+existed before the switch did — reads as on, so **nothing is withdrawn from an
+existing account, and nothing needs to be run at an upgrade.** `shared.write` is
+the other way: only `yes` is on. **Anything you place in `shared` can be read by
+every account you have not taken the right from**, so put nothing there that is not
+meant for everyone, and take the right from the accounts that should not have it
+before you fill the account.
+
+```
+:modify.account fred shared-read-off
+Account fred has shared.read no, shared.write no
+:modify.account fred shared-write-on
+Account fred has shared.read no, shared.write yes
+```
+
+`modify.account` *name* `shared-read-on` / `shared-read-off` / `shared-write-on` /
+`shared-write-off` change one switch each and say where the account now stands,
+both switches in one line. `create.account user` takes `shared-read-off` and
+`shared-write-on` (the other two would only restate the delivered state), and so
+do `group` and `other`. Asking for what is already so changes nothing and says so.
+Each change is written to the audit trail (`modify.account shared-read-off
+account=fred`). A switch may be set on a group or other account, as `net-on` may;
+**SDSYS is never a target**.
+
+**It belongs to the account the person is in, like `net-on`:** it is read at
+sign-on, again at `logto` into another account, and given back when `logto`
+returns, and the API server reads it at every entry. `shared.read` is read when a
+file is *opened*, so a file already open stays usable after you withdraw it,
+until the person's next entry; `shared.write` is tested at every write.
+
+**How SDSYS puts files in `shared`.** Sign on as SDSYS, `logto shared`, and make
+files as in any account: `create.file`, `copy`, programs that write. The account's
+directory, `/home/sd/group_accounts/shared`, belongs to `sdsys` with the group
+`sdusers` (mode 2775, files 664), so every SD user's own process can read the
+files through the kernel, and write them when it has `shared.write`. **Only SDSYS
+enters `shared`**: its Linux group is `sdg_shared`, whose members are `root` and
+`sdsys`, not `sdusers`, so `logto shared`, a Q-pointer to it and `sd -Ashared` are
+refused to everybody else. That is what makes taking `shared.read` away a real
+wall for an account that has neither `sh` nor `os`.
+
+**A maintainer who is not SDSYS** is made of two things: membership of the group,
+`modify.account shared add` *name* (the Linux user can then `logto shared` and
+sign on to it directly), and `shared-write-on` **on the account named `shared`**,
+which lets those members write records there. Neither lets a maintainer change the
+*structure* of a file — see the page for that. The switches on the account `shared`
+decide what its members can do inside it; a blank means write off.
+
+**What it does not do.** The verbs, sentences and programs of `shared` are not
+shared; only data files and their dictionaries are. The administrator's own `open`
+does not follow `shared` (reach it with `logto shared`). `shared` is not copied to
+other servers. The name is reserved: `create.account` refuses it, and
+`delete.account shared` is refused.
+
+**Upgrading.** The installer makes `shared` when it is run, and keeps it when the
+accounts are kept. **It stops before it changes anything if an account named
+`shared` already exists that is not its own**, and names the register record: rename
+that account by hand and run the installer again. Removing SD together with its
+accounts removes the Linux group `sdg_shared` too; keeping the accounts keeps it.
+
 ### The files-only route: `files-on` and `files-off`
 
 There are now **two API routes, and the second is narrower.** `api` (the Linux
@@ -604,6 +693,8 @@ modify.account account voc-on | voc-off
 modify.account account bp-on | bp-off
 modify.account account dict-on | dict-off
 modify.account account net-on | net-off
+modify.account account shared-read-on | shared-read-off
+modify.account account shared-write-on | shared-write-off
 modify.account account files-on | files-off
 modify.account account suspended | unsuspended
 ```
@@ -620,6 +711,8 @@ modify.account account suspended | unsuspended
 | **`bp-on`** \| **`bp-off`** | saving a change to a program file, and compiling and cataloguing |
 | **`dict-on`** \| **`dict-off`** | saving a change to a dictionary |
 | **`net-on`** \| **`net-off`** | the right to use a server defined for SDNet (see *The NET switch*; it does nothing yet) |
+| **`shared-read-on`** \| **`shared-read-off`** | opening the files of the `shared` account by name. **On unless the field says no** (see *The shared account*) |
+| **`shared-write-on`** \| **`shared-write-off`** | writing to the files of the `shared` account. Off unless the field says yes |
 | **`files-on`** \| **`files-off`** | the files-only API login: membership of the Linux group `sdfiles` (see *The files-only route*). Independent of `ssh`/`api`/`both`/`none`: those words leave it alone |
 | **`add`** \| **`delete`** *user* | put a Linux user in, or out of, the account's group |
 
@@ -648,8 +741,9 @@ way ("SD routes for fred: ssh and the API." — "fred has no remote access:
 not ssh, not the API").
 
 **A change takes effect the next time the account is entered.** The setting
-is read when a session signs in, and for `sh`, `os`, `sd` and `net` again when it
-`logto`s into the account (the three edit switches are read at sign-on only),
+is read when a session signs in, and for `sh`, `os`, `sd`, `net` and the two
+`shared` switches again when it `logto`s into the account (the three edit switches
+are read at sign-on only),
 so a session already open keeps what it started with. To take a grant away from somebody
 who is signed in now, change the setting and then end their session.
 
@@ -667,7 +761,11 @@ command they were using, and in the same way `voc-on`, `bp-on` and
 is run by the user whose own account already exists; a different OS user
 installing over existing accounts does not run it. Group and other accounts
 are left off on purpose. **`net-on` is not part of it**: nothing used SDNet
-before, so every existing account has it off. **Neither is `files-on`**: the
+before, so every existing account has it off. **The `shared` switches are not part
+of it either**: a blank field already reads as `shared.read` on and `shared.write`
+off, which is how they are delivered, so every existing account can read the
+`shared` account's files and none can write them (take the read right away with
+`shared-read-off` before you put anything private there). **Neither is `files-on`**: the
 `sdfiles` group is made empty, and nobody is in it until you say so. You can then turn them off one account at a time,
 and a later install does not turn them back on. Only accounts made after the
 upgrade start with everything off.

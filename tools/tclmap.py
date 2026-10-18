@@ -179,6 +179,10 @@ DOCS = [
  ('Administrator', '12-sdnet.md', """
    delete.netlogin delete.server list.servers set.netlogin set.server
  """),
+ # 18 Oct 26 - S.66 (the shared account): list.shared, in voc_template (SDSYS's set), not in newvoc.
+ ('Administrator', '13-the-shared-account.md', """
+   list.shared
+ """),
 ]
 
 # Verbs deliberately not given a page of their own, with the reason.  These

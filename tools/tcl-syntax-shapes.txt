@@ -58,7 +58,7 @@ copy = **`copy from`** {**`dict`**} *src* {**`to`** {**`dict`**} *tgt*} {*id* �
 copy.list = **`copy.list`** *list* {**`,`***new*} {**`from`** *src*} {**`to`** *tgt*} {*options*}
 copyp = **`copyp`** {**`dict`**} *file* *id* … {**`(options`**}
 count = **`count`** {**`dict`**} *file* {*selection*}
-create.account = **`create.account user`** *name* {**`ssh`** | **`api`** | **`both`** | **`none`**} {**`sh-on`**} {**`os-on`**} {**`voc-on`**} {**`bp-on`**} {**`dict-on`**} {**`net-on`**} {**`files-on`**} {**`no.query`**}  ·  **`create.account group`** *name* {**`no.query`**}  ·  **`create.account other`** *name* *pathname* {**`no.query`**}
+create.account = **`create.account user`** *name* {**`ssh`** | **`api`** | **`both`** | **`none`**} {**`sh-on`**} {**`os-on`**} {**`voc-on`**} {**`bp-on`**} {**`dict-on`**} {**`shared-read-off`**} {**`shared-write-on`**} {**`net-on`**} {**`files-on`**} {**`no.query`**}  ·  **`create.account group`** *name* {**`shared-read-off`**} {**`shared-write-on`**} {**`no.query`**}  ·  **`create.account other`** *name* *pathname* {**`shared-read-off`**} {**`shared-write-on`**} {**`no.query`**}
 create.file = **`create.file`** {**`dict`**} *voc.name* {**`directory`**} {*parameters*}
 create.index = **`create.index`** *file* *field* … {**`no.nulls`**} {**`pathname`** *path*}
 cs = **`cs`** — the same verb as **`clr`**
@@ -113,7 +113,7 @@ map = **`map`** {**`all`**} {**`lptr`** {*n*}} {**`file`** {*name*}}
 merge.list = **`merge.list`** *list.no* *rel.op* *list.no* {**`to`** *list.no*} {**`count.sup`**}
 message = **`message`** *user.no* {**`immediate`**} {*text*}
 micro = **`micro`** {**`dict`**} *file* *record*
-modify.account = **`modify.account`** *account* **`add`** | **`delete`** *user*  ·  *account* **`ssh`** | **`api`** | **`both`** | **`none`**  ·  *account* **`sh-on`** | **`sh-off`** | **`os-on`** | **`os-off`**  ·  *account* **`sd-on`** | **`sd-off`**  ·  *account* **`voc-on`** | **`voc-off`** | **`bp-on`** | **`bp-off`** | **`dict-on`** | **`dict-off`**  ·  *account* **`net-on`** | **`net-off`**  ·  *account* **`files-on`** | **`files-off`**  ·  *account* **`suspended`** | **`unsuspended`**
+modify.account = **`modify.account`** *account* **`add`** | **`delete`** *user*  ·  *account* **`ssh`** | **`api`** | **`both`** | **`none`**  ·  *account* **`sh-on`** | **`sh-off`** | **`os-on`** | **`os-off`**  ·  *account* **`sd-on`** | **`sd-off`**  ·  *account* **`voc-on`** | **`voc-off`** | **`bp-on`** | **`bp-off`** | **`dict-on`** | **`dict-off`**  ·  *account* **`net-on`** | **`net-off`**  ·  *account* **`shared-read-on`** | **`shared-read-off`** | **`shared-write-on`** | **`shared-write-off`**  ·  *account* **`files-on`** | **`files-off`**  ·  *account* **`suspended`** | **`unsuspended`**
 modify.password = **`modify.password`** {*account*}
 nano = **`nano`** {**`dict`**} *file* *record*
 nls = **`nls`** {**`currency`** | **`thousands`** | **`decimal`** {*value*}}  ·  **`nls default`**
@@ -215,3 +215,5 @@ list.servers = **`list.servers`** {*name*}
 # 17 Oct 26: S.65 slice 2b, a person's own login on a defined server (in every account's VOC).  Their page is Administrator/12.
 set.netlogin = **`set.netlogin`** *server*
 delete.netlogin = **`delete.netlogin`** *server*
+# 18 Oct 26: S.66, the shared account.  list.shared is in the voc_template (SDSYS's set, as list.servers is); its page is Administrator/13.
+list.shared = **`list.shared`**
