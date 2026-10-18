@@ -745,11 +745,22 @@ The login to the other server is the stored one of the person running the progra
 with `set.netlogin`; the connection is the other server's API port, TLS 1.3, with the
 pinned key checked before a byte is sent. A connection that dies is noticed on the next
 use and reported; it is never quietly remade in the middle of an operation. All of a
-process's connections end when the process does.
+process's connections end when the process does, and **at `LOGTO`**: going into another account,
+and coming back, closes every connection and invalidates every remote file variable opened before
+(a `READ` on one is an error), so a remote file never follows a person into an account that was
+not asked whether it may use it. A new `OPEN` dials again.
+
+**The record cache.** To save requests, a process keeps the last 64 records it `READ` from remote
+files for **2 seconds**, and the fact that the server did not have a record. A second `READ` of the
+same record from the same file variable in that time is answered from memory. This means a `READ`
+can show a record up to 2 seconds old: a program that waits for another user's change to a remote
+record sees it up to 2 seconds late. A record over 32,768 bytes is not kept, `READV` is not cached,
+and the entries of a file go when it is closed, when it is `SELECT`ed again, and at `LOGTO`. Ids
+are kept as given, so `READ`s of `JACK` and `jack` are two entries. On the test server this halves
+the requests of a `SORT`; it does little for a `LIST` that reads every record once.
 
 **What is not here yet:** select by index and the server's indices, writes, locks, transactions,
-saved lists on the remote side, and dropping the connections at `LOGTO` (a file variable opened
-before a `LOGTO` is refused afterwards, but the connection itself stays until the process ends).
+and saved lists on the remote side.
 **What was not confirmed:** everything above was run in a private sandbox against a fake
 server written for the tests; no two machines have talked to each other yet.
 
