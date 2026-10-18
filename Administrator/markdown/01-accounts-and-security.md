@@ -74,7 +74,7 @@ privilege.**
 ## Making an account: `create.account`
 
 ```
-create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {files-write-on} {no.query}
 
 create.account group <name> {shared-read-off} {shared-write-on} {no.query}
 
@@ -486,8 +486,9 @@ sequential files, and work with files. **`files-on` (the Linux group `sdfiles`)
 lets a person log in over the API and do files and nothing else.** It exists so
 that a login kept for SDNet (see [SDNet](12-sdnet.html)) never needs `sdapi`: the
 other server's administrator gives that login `sdfiles`, and whoever steals the
-stored login can open, read and write files on that server and cannot run a
-command there.
+stored login can open and read files on that server and cannot run a command
+there. **Changing files there is a further permission, `files-write-on` (the Linux
+group `sdfileswrite`)**, given separately and off for a new account (below, *Changing files: `files-write-on`*).
 
 **Off for a new account, like every other door.** `create.account user` takes
 `files-on`; `modify.account` *name* `files-on` / `files-off` turns it on and off.
@@ -536,13 +537,15 @@ number this release has never heard of.
 | 1, 2 | quit; get the text of the last error |
 | **3, once** | set the account. The first one, which is the entry to an account after login, is allowed; a later one would be a `logto` and is refused |
 | 4, 5 | open a file; close it |
-| 6 to 10 | read, and the locking reads (`readl`, `readlw`, `readu`, `readuw`) |
+| 6 | read |
+| 7 to 10 | the locking reads (`readl`, `readlw`, `readu`, `readuw`): **only with `files-write-on`** |
 | 11 to 15 | select; read the next id; clear a select list; read a saved list; release a lock |
-| 16 to 19 | write; write and keep the lock; delete; delete and keep the lock |
+| 16 to 19 | write; write and keep the lock; delete; delete and keep the lock: **only with `files-write-on`** |
 | 26 | select on an index. Allowed because it is a select, with 37 to 39 |
-| 30 to 36 | lock a record; clear a file; lock and unlock a file; ask whether a record is locked; list the indices |
+| 30 to 33 | lock a record; clear a file; lock and unlock a file: **only with `files-write-on`** |
+| 34 to 36 | ask whether a record is locked; list the indices |
 | 37 to 39 | select a list; select by an index value; select by an index key |
-| 40, 41 | file information; read one field |
+| 40, 41 | file information; read one field (a `readv` that takes a lock is a change and needs `files-write-on`) |
 | 42 to 45 | set the left or right end of an index range (`setleft`, `setright`), and select within it (`selectleft`, `selectright`) |
 | 46 | the mark mapping |
 | 49 | the server's revision |
@@ -571,10 +574,34 @@ can carry on with files.
 other: the account must be entered, the account's own switches (the OS-access
 gate, the three edit switches, the NET switch) are loaded and enforced, `SDCLIENT` in
 `sd.conf` still decides whether a client may open the files it names, and the
-API listener must be on (`remote.api`). Nothing in the route enforces *read only*:
-**a files-only login may write and delete.** Whether SDNet writes to a server at
-all is the definition's `read` or `write` mode on the *client* (see SDNet), not
-this route.
+API listener must be on (`remote.api`). **`sdfiles` alone is a read-only route**: the
+numbers marked above are refused unless the person is also in `sdfileswrite`.
+
+### Changing files: `files-write-on` and `files-write-off`
+
+A files-only login may write, delete, lock and clear **only if the person is also in
+the Linux group `sdfileswrite`**, which the administrator of that server gives with
+`modify.account` *name* `files-write-on` (or `files-write-on` after `files-on` in
+`create.account user`) and takes away with `files-write-off`. It is off for a new
+account. The line SD prints after a change is read back from the group file, as for
+`files-on`:
+
+```
+:modify.account fred files-write-on
+Account fred has FILES-WRITE yes
+```
+
+`files-write-on` for a person who is not in `sdfiles` is refused ("Account fred does
+not have FILES access, so it cannot be given FILES-WRITE: use files-on first"), because
+the group on its own gives nothing; `files-off` takes the person out of both groups. A
+refused change is answered "This login can read files but is not allowed to change
+them (the administrator of this server can allow it: modify.account *account*
+files-write-on): request *n* is not allowed", is not carried out, and goes to the audit
+trail as `api refused request=16 route=sdfiles write=off user=fred`; the login line says
+`write=on` or `write=off`. `sdapi` members are not affected. Like `sdfiles`, the group is
+read at login, so a change reaches the person at their next login. The account's manifest
+(`backup.account`) records it as `route.files.write`, and `restore.account` gives it back
+only to an account that is in `sdfiles`.
 
 **The route words are not one state.** `ssh`, `api`, `both` and `none` are
 absolute about the two routes they name, and **leave `files-on` alone**:
@@ -602,9 +629,11 @@ login finishes, so a connection already open keeps the route it started with.
 To take the route away from somebody who is connected now, `files-off` and end the
 connection.
 
-**Audit trail.** A files-only login writes `api login route=sdfiles user=fred`. Each
-refusal writes `api refused request=26 route=sdfiles user=fred` (the number is the
-request). A user in neither group, as before, has the refused login in the usual
+**Audit trail.** A files-only login writes `api login route=sdfiles write=off user=fred`
+(`write=on` for a person in `sdfileswrite`). Each refusal writes
+`api refused request=26 route=sdfiles write=off user=fred` (the number is the
+request; `write` is the state of the login, so a refusal with `write=on` is a request
+no files-only login may make). A user in neither group, as before, has the refused login in the usual
 `api refused` form.
 
 **The archive.** For a user account the manifest carries `route.files: 1` or `0`

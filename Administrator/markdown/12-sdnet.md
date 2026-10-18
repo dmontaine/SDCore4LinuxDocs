@@ -77,11 +77,14 @@ gates they ask are described below. Commands are shown here in lower case.
   remote user who is in `sdapi` still has the whole API, and so does a stored login
   made for that user: whoever holds the file can do on that server what that remote
   user can do over the API. Give the remote user `files-on` and not `api`, or choose
-  the remote user with that in mind. The route also does not make a login
-  *read only*: a files-only login can write and delete. Read or write is the
-  definition's `mode`, which **the client enforces and the server does not know**:
-  a modified client holding the stored login could write whatever the definition says.
-  A server-side write group is not built.
+  the remote user with that in mind. **A files-only login is read only on the
+  server unless the remote user is also in the Linux group `sdfileswrite`**
+  (`modify.account` *name* `files-write-on`, below): without it the server refuses every
+  write, delete, record lock, file lock and clear, and the locking forms of a
+  read, whatever the client's definition says. The definition's `mode` on the
+  *client* is still enforced there, but it is no longer the only thing between a
+  stored login and a write: **a target's administrator decides whether a login may
+  change anything on that target.**
 - **Remote files.** A VOC pointer of type `N` opens a file on another server for
   reading, selecting and querying (see "Remote files, read only" below), and, only
   for a server defined with `write`, for writing and locking (see "Writing and
@@ -641,10 +644,12 @@ messages are in [Accounts and Security](01-accounts-and-security.html#the-files-
 - **A user in neither group is refused**, as before. Both groups are empty for a new
   account until the administrator of that server adds the person
   (`modify.account` *name* `files-on`, or `files-on` when the account is made).
-- A files-only session may open and close files; read (also with locks), write and
-  delete records; select, read the next id and read and save lists; lock records and
-  files and ask about locks; use indices; ask for file information; and set its
-  account **once**, which is the entry after login. **It may not** call a
+- A files-only session may open and close files; read records; select, read the next
+  id and read and save lists; ask about locks and release them; use indices; ask for
+  file information; and set its account **once**, which is the entry after login.
+  **With the write group as well** (next section) it may also write and delete
+  records, take record and file locks (and read with a lock), and clear a file.
+  **It may not** call a
   subroutine, execute a command or answer its prompts, enter another account,
   use sequential files, read variables, run `system()`, `trans()` or an evaluation or
   conversion, run a transaction, or open an SDNet file on a third server. Any other
@@ -656,15 +661,60 @@ messages are in [Accounts and Security](01-accounts-and-security.html#the-files-
 - Everything else about the session is as for any other API login: the account has to
   be entered, its switches (OS access, the edit switches, NET) apply, `SDCLIENT` still
   applies, and `sdsys` is never made files-only.
-- **It is not a read-only route.** A files-only login may write and delete. Whether
-  SDNet will write at all is the definition's `read` or `write` mode on the client, a
-  decision made by the client side.
+- **It is a read-only route unless the remote user is also in `sdfileswrite`** (next
+  section). The table above is what `sdfiles` alone allows: the writes, deletes, locks
+  and clear are in it only for a login that also has the write group.
+
+### The write group: `sdfileswrite`
+
+**A login on the target server may change something only if the target's administrator
+allows it.** That is the rule (the owner's decision of 18 October 2026), and it is why
+a *write* server definition on a client is no longer enough by itself: the definition
+says what the client is willing to do, the write group says what the target is willing
+to let that login do.
+
+- The Linux group **`sdfileswrite`** is made, empty, by the installer beside `sdfiles`.
+  SDSYS gives it to one person at a time on the server being reached:
+  `modify.account` *name* `files-write-on`, taken away with `files-write-off`, and
+  `files-write-on` after `files-on` in `create.account user`. **It is off for a new
+  account.**
+- **`files-write-on` needs `files-on` first.** The group alone gives nothing (the login
+  route is `sdfiles`), so for a person who is not in `sdfiles` it is refused: "Account
+  *name* does not have FILES access, so it cannot be given FILES-WRITE: use files-on
+  first". `create.account user` *name* `files-write-on` without `files-on` is refused
+  the same way before anything is made. A group or other account is refused as for
+  `files-on`.
+- **`files-off` takes the person out of `sdfileswrite` too**, so a later `files-on`
+  does not hand the write back without you saying so.
+- **What it changes.** Without it a files-only login is refused: write (16), writeu (17),
+  delete (18), deleteu (19), lock record (30), clearfile (31), file lock (32) and file
+  unlock (33), the four locking reads (7 to 10), and a `READV` with a lock flag. They are
+  answered "This login can read files but is not allowed to change them (the
+  administrator of this server can allow it: modify.account *account* files-write-on):
+  request *n* is not allowed" and **nothing is carried out**. Reads, selects, `READV` without
+  a lock, file information, the indices, a test of a lock and `RELEASE` still work.
+- **`sdapi` is not touched.** A remote user in `sdapi` has the whole API as before, with
+  or without the write group, and `sdsys` is never made files-only.
+- **The refusal is in the audit trail of the target**, in lower case:
+  `api refused request=16 route=sdfiles write=off user=name`, and a login by this route is
+  written `api login route=sdfiles write=on user=name` or `write=off`. **The person at the
+  client sees only that the change failed** (message 11500 with status 0 for the
+  statement or call), not the target's text; the reason is on the target.
+- **The group is read at login**, from `/etc/group`, so a change takes effect at the
+  person's **next** login on that server, and a refusal to read the group file refuses
+  the login with its own reason.
+- **The consequence for existing definitions.** A server defined `write` on a client
+  stops writing the day the target runs this release, until the remote user is given
+  the group there (one `modify.account` word on the target). Reads are unaffected.
+- An installation made before this release has neither the group nor the helper that
+  accepts it until the installer is run again; until then `files-write-on` says
+  "sdfileswrite is not a valid Linux Group" and changes nothing.
 
 **The remote user must be a real account on that server.** It is still a Linux user,
 a member of `sdusers`, with an SD account of its own, and every gate that account has
 there applies to it. What `files-on` replaces is the need for `sdapi`, not for the
 account. An administrator who wants an SDNet login for a person on another SD server
-creates it there with `create.account user` *name* `files-on` (no `api`), then gives
+creates it there with `create.account user` *name* `files-on` (no `api`; add `files-write-on` only if the person is to change files there), then gives
 the name and the password to the person, who runs `set.netlogin` here.
 
 **The client.** The SDNet client (a later slice) is meant to log in with the stored
@@ -716,7 +766,13 @@ customers
 Opening it with `OPEN 'customers' TO f` (using the VOC name) gives a file variable that
 `READ`, `MATREAD`, `READV`, `SELECT`, `SELECTV`, `SSELECT`, `FILEINFO` and `CLOSE` work on.
 `OPEN 'DICT', 'customers' TO d` opens the **dictionary** of the remote file, from the same
-server, and the same statements work on it. **Nothing else does.** Every other statement
+server, and the same statements work on it. (Until 18 October 2026 a real server did not
+understand the request the client sends for a dictionary, which is `dict customers`
+in lower case, so `LIST`, `COUNT`, `SORT` and `SELECT` on a remote file stopped at "Cannot
+open dictionary": the test server the client was tried against had always accepted it.
+The server now opens `dict` and a name, in any case, as a dictionary. A client on this
+release against a server that has not been updated still cannot open a dictionary.)
+**Nothing else does.** Every other statement
 given the file variable (writes, deletes, `CLEARFILE`, locks, `SELECTINDEX`...) stops with
 message 11501 (or, with `ON ERROR`, sets `STATUS()` and goes on), and nothing is sent to the
 other server. `OPENPATH`, `OPENTEMP`, `OPENSEQ` and `CALL "file program"` never see such a
