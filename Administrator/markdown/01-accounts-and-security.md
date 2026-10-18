@@ -629,11 +629,11 @@ account. The line SD prints after a change is read back from the group file, as 
 
 ```
 :modify.account fred files-write-on
-Account fred has FILES-WRITE yes
+Account fred has files-write yes
 ```
 
 `files-write-on` for a person who is not in `sdfiles` is refused ("Account fred does
-not have FILES access, so it cannot be given FILES-WRITE: use files-on first"), because
+not have files access, so it cannot be given files-write: use files-on first"), because
 the group on its own gives nothing; `files-off` takes the person out of both groups. A
 refused change is answered "This login can read files but is not allowed to change
 them (the administrator of this server can allow it: modify.account *account*

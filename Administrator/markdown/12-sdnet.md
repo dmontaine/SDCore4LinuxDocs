@@ -680,7 +680,7 @@ to let that login do.
   account.**
 - **`files-write-on` needs `files-on` first.** The group alone gives nothing (the login
   route is `sdfiles`), so for a person who is not in `sdfiles` it is refused: "Account
-  *name* does not have FILES access, so it cannot be given FILES-WRITE: use files-on
+  *name* does not have files access, so it cannot be given files-write: use files-on
   first". `create.account user` *name* `files-write-on` without `files-on` is refused
   the same way before anything is made. A group or other account is refused as for
   `files-on`.
