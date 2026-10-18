@@ -316,6 +316,47 @@ account's own directory: `os-on` already trusts it with the whole machine.
 The switches are about changing these files by hand or by program, not a
 replacement for the operating-system switches above.
 
+**Two VOC records that change what a command line does: `$private.voc` and
+`$voc.parser`.** Neither is in a stock VOC and nothing SD ships writes them.
+Both are VOC records of type `X`, so writing, changing or deleting one needs
+`voc-on` (an account without it is refused with status 3035 and the `voc.edit`
+message). What they do, and where `voc-on` stops, was run on a private SD
+(Dev tip, 18 October 2026) in ordinary accounts:
+
+* **`$private.voc`** (field 2 a file name) is a second vocabulary. A command
+  word that is in no VOC record is looked for in that file, as typed, then in
+  lower and upper case, **before** the private and global catalogues. It
+  can add a command, and it can replace one that exists only as a catalogued
+  program; it cannot replace a command that the VOC holds. Its records run
+  under the same switches as VOC records: a verb record in mode `os` was
+  refused for an account without `sh-on`. A record that does not work (the
+  file missing, a place the account may not open) is ignored without a
+  message.
+* **The file is not guarded by `voc-on`.** The switches look at the name of
+  the file being written, and only a file called `voc` counts as a VOC. A
+  private vocabulary called `zzpv` is an ordinary data file, so **an account
+  with all three edit switches off could add and replace commands in it** once
+  you had pointed `$private.voc` at it. Keep the file where only the people
+  you mean can write it. A file of the shared account works for this: an
+  account with `shared.read` (on unless you turn it off with
+  `shared-read-off`) ran a command from one, and its write to the file was
+  refused with status 3035 while `shared.write` was off.
+* **`$voc.parser`** (field 2 record type codes, field 3 the names of
+  catalogued subroutines) hands a VOC record whose type begins with a code to
+  that subroutine **instead of SD's own handling of the type**. A code of `v`
+  hands over every verb, including `off`; a blank code matches every record.
+  It is read once, at sign-on, and `logto` does not read the new account's
+  copy. A handler must already be catalogued, and cataloguing needs `bp-on`;
+  but `voc-on` alone is enough to switch on a handler that someone else
+  catalogued. So an account with `voc-on` can change what the commands in its
+  own VOC mean for every session that signs on to it, by way of a handler that
+  you or somebody with `bp-on` put in a catalogue.
+* **If a handler locks an account out,** every command in the account,
+  yours included, is handed to the handler, so the record cannot be removed
+  from inside. It was removed by SDSYS signed on to the `sdsys` account, with
+  an ordinary program that opened the account's `voc` by its pathname and
+  deleted `$voc.parser`.
+
 **Internal programs run only from the global catalogue.** The gates on files
 and on operating-system paths (these three and the shell, `OS.EXECUTE` and
 `sd-on` gates before them) do not apply to a program compiled in *internal

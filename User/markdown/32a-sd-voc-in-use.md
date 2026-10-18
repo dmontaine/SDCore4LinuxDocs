@@ -13,16 +13,28 @@ file.
 
 ### Name resolution
 
-A name is tried **as typed, then lower case, then upper case**. This is
+A name is tried **as typed, then lower case, then upper case** (and then
+with each hyphen changed to a dot, in upper case and in lower case). This is
 the change that lets a lower-case `voc`, `bp` and `newvoc` on disk
 coexist with code and habits that still type names in upper case.
 
 **Account names are the deliberate exception.** They are still folded
 upward, which is what makes signing in case-insensitive.
 
-### If the VOC has nothing, the catalogue is tried
+### If the VOC has nothing, the private vocabulary is tried
 
-A name that is not in the VOC is looked for in the **private catalogue**
+If the account's VOC has a record `$private.voc` (type `X`, the name of a
+file in field 2), a name that is in no VOC record is looked for in that file
+next, as typed, then in lower case, then in upper case. The VOC always wins,
+so the private vocabulary can add a command and never replace one the VOC
+holds. See [SD VOC - A Private Vocabulary and Your Own Record
+Types](32b-sd-voc-private-vocabulary-and-parser.html), which also describes
+`$voc.parser`, the record that hands a VOC record of a type SD does not know
+to a program of your own.
+
+### If neither has it, the catalogue is tried
+
+A name that is not in the VOC or the private vocabulary is looked for in the **private catalogue**
 of the account and then in the **global catalogue**, `gcat`. A hit is
 treated exactly as though the VOC had held `V` / `CA` / *name*. This is
 why a program you have catalogued can be run by typing its name with no
