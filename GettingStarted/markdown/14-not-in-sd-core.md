@@ -56,18 +56,30 @@ and `sort` are unaffected. They are a different thing despite the similar name.
 ## SDNet — remote file access
 
 SD could open a file held on another SD server by putting `server;file` in a
-VOC entry. **That is gone. A VOC entry containing a semicolon is now simply a
-file name that does not resolve.**
+VOC entry, with each server's password in `sd.conf`. **That form is gone, and
+it stays gone. A VOC entry containing a semicolon is simply a file name that
+does not resolve.**
 
-`set.server`, `delete.server` and `list.servers` have gone with it.
+**A different SDNet has replaced it.** A VOC entry of type `N` names a server
+that SDSYS has defined with `set.server` and a file on it; the verbs
+`set.server`, `delete.server` and `list.servers` are SDSYS's, and
+`set.netlogin` and `delete.netlogin` let a person store their own login (never
+the password) for a server. Nothing is open by default: an account needs the
+`net-on` switch, has to be named in the server's list, and a server is read
+only unless SDSYS defines it as `write`. It uses the other server's API port
+over TLS and does not put a password in any file. The *Administrator* set's
+*SDNet* page describes it and says what has been tested; as that page says, no
+two real machines have been connected by it yet.
 
 **The API is not affected.** `!sdclient` and the remote API are a separate
 mechanism and are unchanged. See [API access](09-api-access.html).
 
-**`NETFILES` is still accepted in `sd.conf`** and does nothing, so an existing
-configuration file will not stop SD starting — see
-[Other hardening](13-hardening.html#the-logs) for the one place it is still
-read (a dead code path with no way to reach it, not a live feature).
+**`NETFILES` is still accepted in `sd.conf`**, so an existing configuration
+file will not stop SD starting, and the new SDNet does not use it. The only
+thing that reads it is the API server's old request to open an SDNet file,
+which is refused unless bit 2 of `NETFILES` is set; the value is 0 unless
+`sd.conf` sets it.
+The *Administrator* set's *Configuration* page has the detail.
 
 ## Virtual file systems
 

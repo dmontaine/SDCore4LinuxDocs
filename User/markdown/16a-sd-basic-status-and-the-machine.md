@@ -198,16 +198,25 @@ answers false with `status()` set to a permission error. An unknown key answers 
 `status()` 1. The qualifier is read and ignored. An internal program's own `ospath()`, with its
 different numbers, is unchanged.
 
-**And some statements are restricted the same way.** These are
-*"Unrecognised statement"* in an ordinary account: `set.modes`, `reset.modes`,
-`remove.token`, `release.lock`, `como`, `quit`, `keyboard.input`, `writepkt`,
+**And some statements are restricted the same way.** These 34 are
+*"Unrecognised statement"* to a program that is not compiled `$internal` by an
+administrator (each was compiled once in a plain program to check):
+`add`, `akclear`, `akdelete`, `akenable`, `akread`, `akrelease`, `akwrite`,
+`callv`, `configure.file`, `create.ak`, `delete.ak`, `delete.common`,
+`keyboard.input`, `modify`, `quit`, `release.lock`, `remove.token`,
+`reset.modes`, `rewind`, `run`, `set.modes`, `set.status`, `set.trigger`,
+`set.unassigned`, `sortinit`, `unload.object`, `varset`, `writepkt`, `como`,
 and the whole debugging family — `debug.on`, `debug.off`, `debug.set`,
-`breakpoint` and `watch`.
+`breakpoint` and `watch`. An earlier version of this list gave 13 of them and
+left out `set.status`; it is the compiler's own `restricted.statements` list
+that counts, and the *Administrator* set's *SD Basic - Restricted Commands*
+page carries the same names.
 
-**`errmsg` is in the compiler's statement table and does not exist.** It
-compiles to *"Unrecognised statement"* for everybody. Its opcode was removed in
-July 2024 and the name was left behind in the table. **Being in the table is
-not evidence a statement exists.**
+**`errmsg` is not a statement at all.** It compiles to *"Unrecognised
+statement"* for everybody, as any word the compiler does not know does. It was
+removed from the compiler's statement table in July 2024. An earlier version of
+this page said the name was left behind in the table; only a comment beside the
+table still holds it.
 
 **`sendmail`, `chgphant()` and `ccall()` compile for an ordinary account**, and
 each needs something outside SD before it can do anything: `sendmail` a mail

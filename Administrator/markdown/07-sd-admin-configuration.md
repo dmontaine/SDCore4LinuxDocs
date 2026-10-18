@@ -149,7 +149,7 @@ reads.
 | `SAFEDIR` | 0 | When 1, directory files are updated by write-and-rename rather than in place |
 | `RECCACHE` | 0 | Records cached per file. Range 0 to 32 |
 | `FSYNC` | 0 | Bit flags controlling when SD forces data to disk |
-| `FILERULE` | 0 | Bit flags deciding which special VOC file references are honoured. Bit 4 allows a `PATH:` reference to name a pathname directly |
+| `FILERULE` | 0 | Bit flags deciding which special VOC file references are honoured: bit 1 `account:file`, bit 4 `path:` followed by a pathname, and bit 2 `system:account:file`, which opens nothing on this port. See below the table of inert parameters |
 
 ## Directories
 
@@ -161,7 +161,6 @@ reads.
 | `DUMPDIR` | `/usr/local/sdsys/dumps` | Where process dumps are written |
 | `TEMPDIR` | unset | Temporary files. Falls back to the system default when unset |
 | `SORTWORK` | unset | Work files for a sort that does not fit in memory. Falls back to the system default when unset |
-| `JNLDIR` | empty | Journal directory |
 | `TERMINFO` | empty | An additional terminfo directory. The shipped definitions are found without it |
 
 `DUMPDIR` is set rather than left empty on purpose. A blank value falls back to
@@ -226,7 +225,6 @@ does not lift that confinement — see *Accounts and Security*.)
 | `PDUMP` | 0 | Bit flags controlling when a process dump is written |
 | `DEBUG` | unset | Bit flags enabling debugging features |
 | `STARTUP` | empty | A command run when SD starts |
-| `JNLMODE` | 0 | Journalling mode |
 | `OBJECTS` | 0 (no limit) | Compiled programs held in memory at once |
 | `OBJMEM` | 0 (no limit) | Memory those programs may occupy, in KB |
 
@@ -263,16 +261,40 @@ changes SD's behaviour, and none should be offered to a site as a control.
 
 | Parameter | Why it is inert |
 |---|---|
-| `NETFILES` | SDNet was removed from this port. `netfiles.c` is deleted, a `server;file` VOC reference is refused, and the request that reports open SDNet connections returns an empty list. The value is still stored and still reported, and setting it opens nothing |
+| `JNLMODE` | Stored, shown by `config` and readable with `config('JNLMODE')`. SD has no journalling: nothing reads the value and nothing writes a journal. Checked by setting `JNLMODE=3` and `JNLDIR` to an empty directory, writing 50 records and deleting one: the directory stayed empty and `fileinfo(f, 1010)`, the file's journal number, was 0 |
+| `JNLDIR` | The same: stored, shown, readable with `config('JNLDIR')`, and used by nothing. The journal error codes 8801 to 8804 are in the error table, and nothing in the kernel raises them (searched in the source) |
 | `CREATUSR` | SD has accounts rather than accounts and users, so `create.account` always creates the operating system account and there is nothing to opt in to. The value is discarded as it is read |
 | `CODEPAGE` | Stored, readable and settable. Nothing acts on it |
-| `EXCLREM` | Stored, readable and settable. It described exclusive access to a remote file, and there are no remote files |
+| `EXCLREM` | Stored, readable and settable. It described leaving remote files out of an account save. Nothing reads it |
 | `RINGWAIT` | Stored, readable and settable. Nothing acts on it |
 | `TXCHAR` | Stored, and not readable — there is no `config('TXCHAR')` |
 
-`FILERULE` is **not** in this list, and is easy to mistake for it. Its remote
-bits died with SDNet, but bit 4 is live and decides whether a `PATH:` VOC
-reference may name a pathname directly.
+**`NETFILES` is not in this list, but it is not what SDNet uses either.**
+SDNet is the way a program opens a file that lives on another SD server: a VOC
+entry of type `N`, a server you define with `set.server`, and a per-account
+`net-on` switch, all off until SDSYS turns them on. It is built and is
+described on the SDNet page of this set, with what has and has not been tested
+(no two real machines have been connected yet). None of it reads `NETFILES`,
+and the older SDNet that was removed on 9 September 2026 (a `server;file` VOC
+entry, with each server's password in `sd.conf`) is still gone: that form of
+name is refused. `NETFILES` is parsed, stored, shown by `config` and readable
+with `config('NETFILES')`, and setting it to 2 made `config` show 2. **One
+thing in the source reads it:** the API server's request 29, "open an SDNet
+file", answers "Remote server disallowed access" (7009) unless bit 2 of
+`NETFILES` is set, and the files-only API route refuses request 29 whatever the
+value is. That was read from `apisrvr`; no client function sends request 29,
+so it was not run. The value is 0 unless `sd.conf` sets it, and the installer
+does not, so the request is refused as delivered. Leave it at 0.
+
+`FILERULE` is **not** in this list, and is easy to mistake for it. It is a set
+of bits that decide which special VOC names are honoured when the name is not
+a VOC entry: bit 1 allows `account:file`, bit 4 allows `path:` followed by a
+pathname, and bit 2 allows `system:account:file`, a form that names another
+system. In a test with `FILERULE=7`, `sdsys:bp` and `path:/tmp` opened;
+`localhost:sdsys:bp` did not (the open failed with status 3003), because this
+port has nothing that reaches another system by that form. With `FILERULE`
+at 0, none of the three opened. The `path:` form is still held to the
+account's operating-system access switches.
 
 There is no licence parameter and no licence verb. SD Core for Windows is
 GPL v3 and is not licensed per site or per user; `config gpl` displays the

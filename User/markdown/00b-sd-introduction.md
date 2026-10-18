@@ -155,7 +155,7 @@ are not in SD Core for Linux:
 
 | Gone | Why |
 |---|---|
-| SDNet (remote files) | Removed; the API is the supported way to reach another SD server |
+| The old SDNet (`server;file` in a VOC entry) | Removed in September 2026, and a name with a semicolon in it stays unresolved. A new SDNet replaces it: it is off until the administrator turns it on, and it opens a file on another SD server through an `N` entry in the VOC (the *Administrator* set's *SDNet* page describes it). The API is the other way to reach another SD server |
 | `ENCRYPT.FIELD` verb | Removed; `sdencrypt()` and `sddecrypt()` in SDBasic are the supported route |
 | `update.record`, `modify` editors | Gone; use `sed`, `nano`, `micro` or `ed` |
 | PROC language | Removed; use paragraphs instead |

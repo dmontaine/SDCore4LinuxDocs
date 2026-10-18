@@ -135,8 +135,12 @@ included — is counted separately in the *User* set's SD TCL syntax card.)
 | Parameters the `config` verb displays | **42** |
 | Parameters readable with `config()` | **47** |
 | Parameters settable for the current session | **28** |
-| Parameters accepted that do nothing | **6** |
+| Parameters accepted that do nothing | **7** |
 
-The six inert parameters, and why each is inert, are listed under
-*Configuration* in this set. `NETFILES` and `CREATUSR` are the two a site is
-most likely to have in an existing `sd.conf`.
+The seven inert parameters (`JNLMODE`, `JNLDIR`, `CREATUSR`, `CODEPAGE`,
+`EXCLREM`, `RINGWAIT` and `TXCHAR`), and why each is inert, are listed under
+*Configuration* in this set. `CREATUSR` is the one a site is most likely to have
+in an existing `sd.conf`. `NETFILES` used to be counted here; it is not inert,
+though it is not what SDNet uses either, and *Configuration* says what does
+read it. The count was 6 until 18 October 2026, when `JNLMODE` and `JNLDIR`,
+which the Configuration page had listed as live, were found to be inert.

@@ -424,13 +424,16 @@ Core for Windows). A program using one will not compile.
 | `rsd` | |
 | `enter.package` · `exit.package` · `package` | |
 | `trace` | |
-| `errmsg` | see below |
+| `errmsg` | |
 
-**`errmsg` is in the compiler's statement table and still does not compile.**
-`errmsg 1000` is rejected with *"Unrecognised statement"*. The name
-survives in `BCOMP`'s list but its opcode was removed, so the table is not a
-reliable guide for this one — **being listed as a statement does not mean a
-statement exists.**
+**`errmsg` is not in the compiler's statement table, and has not been since
+July 2024.** `errmsg 1000` is rejected with *"Unrecognised statement"*, the
+same message as for any word the compiler does not know (`foobarbaz 1000` gets
+it too). An earlier version of this page said the name was still in the table
+with nothing behind it. That was wrong: `BCOMP` removed the table entry on
+28 July 2024 and left the name only in a comment beside the line that was
+changed, and a tool that read the table by matching quoted names picked it up
+from the comment.
 
 `procread` and `procwrite` **do** compile, despite appearing on the SD 0.8.0
 removed list; `procread` was restored afterwards. Both were checked, not

@@ -79,9 +79,13 @@ marks as chargeable.
 an address or a device name, and a console or piped session has neither. It
 reads `Phantom` for a phantom and an IP address for a network client.
 
-`SDNet` is also among the values it can print, and you will not see it: SDNet
-was removed from this port, so nothing can open the kind of session that would
-report it.
+`SDNet` is also among the values it can print, and you will not normally see
+it. The mark behind it is set in only one place, the API server's request 29,
+"open an SDNet file", which is refused unless `NETFILES` has bit 2 set (see
+*Configuration*). The SDNet described in this set, where a program opens a file
+on another SD server, does not use request 29, so a session that comes from it
+shows an address like any other API session. This was read from the source and
+not run.
 
 **`(logout pending)`** after the name means somebody has asked that session to
 end and it has not gone. See below.
