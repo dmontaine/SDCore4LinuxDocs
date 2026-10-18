@@ -1,5 +1,5 @@
 Title: sdconv, the Byte Order Convertor
-Subtitle: A tool for turning compiled program files between big-endian and little-endian form: what it converts in this build, what it silently does not, and why you will rarely need it.
+Subtitle: A tool for turning compiled program files between big-endian and little-endian form: what it converts in this build, what it refuses, and why you will rarely need it.
 
 > This document is separate so that it can be withheld. It links to nothing
 > outside the administrator set. Where a page in another set is worth naming,
@@ -10,11 +10,14 @@ opposite byte orders. SD Core for Linux is built and tested here on a
 little-endian machine (x86-64). Nothing on this page can say whether a result
 would run on a big-endian machine, because there is none to run it on.
 
-> **Read this first: in this build `sdconv` does not convert hashed files.** It
-> finds one, prints nothing, changes nothing and exits 0. It converts **compiled
-> program files** only, and only the header of each. *Run*, below. The routine
-> that converts a hashed file's subfiles is in the source, but the program does
-> not call it.
+> **Read this first: `sdconv` does not convert hashed files.** Given one it says
+> so, changes nothing and exits 1. It converts **compiled program files** only,
+> and only the header of each. *Run*, below. (Before 18 Oct 2026 it printed
+> nothing and exited 0, which read as a successful conversion; an older copy
+> still does.) The routine that converts a hashed file's subfiles is in the
+> source, but the program does not call it, and this SD cannot open a
+> big-endian hashed file, so a converted file would be of no use here. Linux and
+> Windows are both little-endian.
 
 > **How this page was made.** Everything here was read from `sdconv.c` and run on
 > scratch copies in a private sandbox built from SD Core for Linux `Dev` at
@@ -33,7 +36,8 @@ would run on a big-endian machine, because there is none to run it on.
   copy first.
 * **It rewrites even a file that needs no conversion.** *Run*: a program already
   in the right order had its modified time changed by `sdconv -L`.
-* **A path that is not a hashed file or a program object is skipped with no
+* **A hashed file is refused: a message, the file untouched, exit status 1.**
+* **A path that is neither a hashed file nor a program object is skipped with no
   message and the exit status is 0**, including a path that does not exist.
 
 ## Where it is and who can run it
@@ -71,6 +75,8 @@ Usage: SDCONV {options} pathname(s)
 Options:
    -B      Force conversion to big-endian
    -L      Force conversion to little-endian
+
+Only compiled programs are converted; a hashed file is refused (exit status 1).
 ```
 
 (preceded, as always, by the banner.) A run that did something looks like a run
@@ -123,26 +129,26 @@ does it when it loads them.
 ```
 $ ls zzcust; sdconv -B zzcust; echo rc=$?
 %0  %1
-rc=0
+zzcust is a hashed file: sdconv converts compiled programs only, nothing was changed
+rc=1
 ```
 
-Afterwards `%0` and `%1` were byte for byte as before, with `-B`, with `-BD`, and
-with `-L`. No message is printed. The source has a routine, `process_file`, that
-would convert the header, the data groups and the index nodes with a "partly
-converted" marker for a run that stops part way. It is commented out of
-`convert_file`, which calls the object routine for a hashed file instead; the
-object routine cannot open a directory, and returns without a word.
+`%0` and `%1` are byte for byte as before, with `-B`, with `-L` and with no
+option. The source has a routine, `process_file`, that would convert the header,
+the data groups and the index nodes with a "partly converted" marker for a run
+that stops part way. It was commented out of `convert_file` in a compiler-warning
+clean-up, nothing records a decision to do that, and it has faults of its own
+(an endless loop on an unknown block type, a 64-bit field cut to 32 bits, two
+buffer overflows, no open-file check and no backup), so it is not used.
 
-Two statements elsewhere in SD's records are therefore not true of this build:
-the change-log entry that says a conversion of a file "carries the sequential
-counter over; sdconv reverses it", and the idea that `sdconv` can be used to move
-a hashed file between byte orders. **A hashed file taken to a machine of the other
-byte order cannot be converted by this tool.** Nothing here has tested whether
-SD could open such a file.
+**A hashed file taken to a machine of the other byte order cannot be converted by
+this tool, and this SD could not open it if it were.** The change-log entry that
+once said a conversion of a file "carries the sequential counter over; sdconv
+reverses it" was wrong and has been removed.
 
 ## What it will not do
 
-* It will not convert a hashed file, and will not tell you so.
+* It will not convert a hashed file; it tells you so and exits 1.
 * It will not report a path it skipped, a file it could not open, or one that was
   not a program object. The exit status is 0 for all of them.
 * It will not make a copy, and will not reverse a conversion except by running it
