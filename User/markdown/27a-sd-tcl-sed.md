@@ -38,17 +38,54 @@ marks a word typed as it stands; braces mark an optional part.
 With a select list, SED shows the first id and asks whether to use the list
 (`Y` or `N`). Leaving one record goes on to the next.
 
-**SED is 120 columns by 36 lines, always** — the size of SD's default terminal
-until 18 October 2026, when the default became 140 by 42 and SED did not follow —
-whatever the window is. **A window smaller than that is refused**, in words
-(*SED needs a window of at least 120 columns by 36 lines; this one is 80 by 24*),
-because SED would draw off the edge of it; a bigger window shows SED in its top
-left corner with the rest blank, and **SED does not follow a window that is
-resized while it runs**. A session with no window to ask (a pipe, a phantom) is
-laid out as 120 by 36. The top row is the menu bar, the bottom two rows say which
-record is open and how it is being edited: the number of lines, the line and
-column, and any of *Macro*, *Overlay*, *Indent* and the search mode that are in
-force.
+**SED is 140 columns by 42 lines, always** — SD's default terminal size, which
+SED has followed since 18 October 2026 (it was 120 by 36 before) — whatever the
+window is. A bigger window shows SED in its top left corner with the rest blank.
+The top row is the menu bar, the bottom two rows say which record is open and how
+it is being edited: the number of lines, the line and column, and any of *Macro*,
+*Overlay*, *Indent* and the search mode that are in force.
+
+**A window smaller than that when SED starts is refused**, in words
+(*SED needs a window of at least 140 columns by 42 lines; this one is 100 by 30*),
+and SED draws nothing; `ed` is the editor for a small window. The window it
+measures is the one on the screen, or the display `term w,h` gave if that is
+smaller, so `term 100,30` typed in a large window is refused too.
+
+### A window made smaller while SED is running
+
+Dragging the corner of the window, or a tiling window manager, can make the
+window smaller after SED has started. SED looks at the window about once a second
+while it waits for a key, and again every time it draws. When the window has
+changed it clears the screen and draws the **upper left corner of its 140 by 42
+layout** — the menu bar, the first lines of the record and as much as fits — and
+nothing past the edge: nothing wraps and nothing lands on the wrong row. Nothing
+pans; the upper left is always the anchor. Make the window bigger and the whole
+layout is drawn again. The menus, the *Quit without saving?* box and the other
+boxes are placed inside the part that shows.
+
+**While the cursor is off the screen SED does not take keys**, because you would
+be typing where you cannot see. The cursor is off the screen when it is on a line
+below the window or past its right edge, and also when SED is asking something on
+a row the window does not show (the search prompt and the line-number prompt are
+on the two bottom rows). SED clears the screen and shows a warning in reverse video
+in the upper left corner instead:
+
+> The window is 100 by 30 and SED is laid out for 140 by 42: the cursor is off the
+> screen and keys are ignored. Make the window larger to carry on, or press Ctrl-Q
+> to leave.
+
+Every key and every mouse click is thrown away. Make the window large enough to
+show the cursor and the warning goes by itself — no key is needed — and the whole
+layout is drawn again, with the cursor where it was. **Ctrl-Q is the one key that
+does anything**: it changes the warning to *Leave? (changes are NOT saved) y/n*
+in the same box. **y** leaves SED, with the record unlocked and any change not
+saved; any other key goes back to the warning. This question is not SED's own
+*Quit without saving?*, which may be on a row you cannot see.
+
+A session that has `autologout` set waits for the keyboard alone, so that the
+time-out can still fire: SED notices a new window size at the next key rather
+than within a second, and the warning goes at the first key after the window is
+big enough.
 
 ## The menus
 
