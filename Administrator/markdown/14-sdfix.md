@@ -101,10 +101,21 @@ matching given name(s)*.
 The usage text printed for a bad option names only `-F`, `-L`, `-Q`, `-R` and
 `-Z`; `-B`, `-C`, `-V` and `-I` work but are not listed. *Run.*
 
-**Exit status.** The program's status is that of the **last** pathname: 0 if it
-could be processed, 1 if it was not a hashed file, could not be opened, or its
-overflow subfile had a wrong magic number. Finding and even fixing errors gives 0. Each file
-also prints a line ` SDFIX processed:  name   Status: n`.
+**Exit status.** The program's status is 0 if every pathname could be
+processed and **1 if any of them could not**: it was not a hashed file, was open
+in SD, could not be opened, had a path too long for its index subfile names, or
+its overflow subfile had a wrong magic number (*run*; older copies gave the
+status of the last pathname only, so a refused file followed by a good one
+ended 0). Finding and even fixing errors gives 0. Each file also prints a line
+` SDFIX processed:  name   Status: n`.
+
+**A path of 252 characters or more is refused** (*run*): `The path is too long:
+the name of the last index subfile does not fit in 255 characters`, `Status: 1`,
+and nothing more is read. The check looks for index subfiles under all 32
+possible names, and with a path this long the names of AK 8 and up do not fit.
+Older copies cut them short to `%1`, which is the overflow subfile, and `-F` then
+deleted that file and the index as "found but not expected". The same applies to
+the relocated index directory, if the header names one.
 
 ### Paging, and what happens when input runs out
 

@@ -40,11 +40,13 @@ sdidx -q /home/sd/user_accounts/acct/orders        # where are its indexes?
   or `-d`.** `-m` deletes the old index files afterwards and `-d` deletes
   indexes. Neither can be undone.
 * **Give full paths, for the data file and for the index directory.** The data
-  path is resolved for you. The index path is stored exactly as typed, and SD
-  uses the stored text as the path, so a relative one only works from one
-  directory. A path longer than 255 characters, which the file header cannot
-  hold, is refused (*run*: `Path is too long (the limit is 255 characters)`,
-  status 1).
+  path is resolved for you. A relative index path given to `-m` or `-p` is
+  made absolute from the current directory before it is used and stored (*run*;
+  older copies stored the text as typed, which only a process running in that
+  same directory could follow, and SD never does). Other `..` and symbolic-link
+  parts are kept as typed. A path longer than 255 characters, which the file
+  header cannot hold, is refused (*run*: `Path is too long (the limit is 255
+  characters)`, status 1).
 * **Close the file in every session first.** The program refuses if the file is
   open within the running SD: see below. **It refuses nothing if SD is not
   running**, because it has nothing to ask.
@@ -221,6 +223,11 @@ so that a copy of `sdidx` older than that can be recognised.
 5. **A path argument over 255 characters** overran a buffer (the old program was
    killed by a segmentation fault on a 305 character `akpath`). Now it is
    refused.
+6. **A relative index path was stored as typed** (found on trying to break the
+   fixes above, *run*): `sdidx -m data idx` from one directory left
+   `Index directory is idx` in the header, and SD, whose current directory is
+   somewhere else, would not find the indexes. A relative `akpath` is now made
+   absolute from the current directory.
 
 ## What it will not do
 

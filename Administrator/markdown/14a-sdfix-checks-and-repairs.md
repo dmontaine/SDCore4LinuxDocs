@@ -22,7 +22,7 @@ repair is done without asking; under `-Q` each is offered with `Fix?`.
 | `Invalid split and/or merge loads (a, b)` | split load is not above merge load (*run*) | writes the defaults SD gives a new file, split 80 and merge 50, and says `Corrected by resetting to defaults (80, 50)` (*run*). Older copies wrote 50 and 80, which the check rejects |
 | `AKn subfile found but not expected` | an index file the header does not list (*run*) | deletes the file (*run* for an index in the file's own directory; *source* for one in a relocated index directory), and says `Corrected by deleting affected AK index subfile` only if it went; otherwise `The AK index subfile could not be deleted` (*run*) |
 | `AKn subfile not found` | the header lists an index whose file is gone (*run*) | removes the index from the header. **The file then has no index of that name.** Create and build it again |
-| `Cannot read AKn subfile header`, `AKn subfile has incorrect magic number` | a damaged index file (*run*, the magic number) | deletes the file and removes the index from the header (if the file could not be deleted it says so and still removes the index from the header). Create and build it again |
+| `Cannot read AKn subfile header`, `AKn subfile has incorrect magic number` | a damaged index file (*run*, the magic number) | deletes the file and removes the index from the header (if the file could not be deleted it says so and still removes the index from the header). An index file that cannot be read at all (an empty one, say) is reported once, as `Cannot read AKn subfile header`, and repaired once (*run*; older copies also tested the unread header for a magic number, printed a made-up one and repaired it a second time). Create and build it again |
 | `Active group n found after released group(s)!` | a used group follows groups marked as released (*source*) | writes empty groups over the released ones |
 | `Group n has incorrect block type (t)` | (*source*) | sets the type to data |
 | `Record 'id' mis-hashed into group n. Should be in group m` | the record's id does not hash to the group it is in (*run*) | queues the group for dump and rebuild (below). Only `-F` queues; `-Q` reports only. At most 50 are reported |
@@ -107,7 +107,10 @@ shows the window at that decimal address; `rebuild n` dump and rebuild group *n*
   shows them. It prints `Was` and the bytes that were there. `Wa="text"` writes the
   text. An address past the end of the subfile is `Illegal address`, a value that
   is not 2, 4 or 8 hex digits is `Illegal data length`, and any character that is
-  not a hex digit is `Format error in W command`. Older copies read the address and
+  not a hex digit is `Format error in W command`. The address must be hex digits
+  followed at once by `=` (spaces before it are allowed): `W1G0=41`, `W10xyz=41`
+  and `W10 =41` are format errors and write nothing (*run*; the first copies of
+  the fix wrote at the digits they could read, here at 0x1 and 0x10). Older copies read the address and
   the value as decimal numbers (`W10=41` wrote 0x29 at decimal offset 10, and a hex
   letter was a format error) and byte-swapped the number they had read.
 * `h` shows `Next seq id`, the counter used by `write ... creating.seqkey`, and
@@ -141,6 +144,13 @@ was fixed and again afterwards. They are listed so that an older copy of
 5. **`-R` with `-F` or `-Q` fixed nothing and said nothing.** It is now refused.
 6. **`sdfix` did not look for a file open in SD,** as `sdidx` does. It now does;
    see the first page.
+7. **Found on trying to break the fixes above (all *run*, red then green):**
+   a path of 252 characters made `-F` delete the overflow subfile and the index
+   (refused now, see the first page); interactive mode whose input *failed*, as
+   opposed to ended (a directory as input, say), prompted for ever and now
+   prints `Input error [n]` and ends with `Status: 1`; an unreadable index file
+   was repaired twice; the exit status was the last file's; and `W` took
+   `W1G0=41` as `W1=41`.
 
 ## What it will not do
 
