@@ -60,7 +60,8 @@ only then advances the file's modulus; it does nothing if that write cannot be m
 system holds less than 1 MB, and writes a line to the log. Before, a full disk could leave the modulus
 advanced with no group behind it, and the records that hashed there could not be found. **A split that
 fails after the new group has begun to be used still cannot be undone**: it logs the failure and
-writes the file's header, and the file needs a file check (`sdfix`). This was tested with a write
+writes the file's header, and the file needs a file check (`sdfix`, described in
+[sdfix, the File Check Tool](14-sdfix.html)). This was tested with a write
 limit standing in for a full disk; the free-space check itself was not driven.
 
 ## Sessions and locks
