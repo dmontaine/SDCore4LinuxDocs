@@ -80,10 +80,10 @@ gates they ask are described below. Commands are shown here in lower case.
   the remote user with that in mind. The route also does not make a login
   *read only*: a files-only login can write and delete. Read or write is the
   definition's `mode`, and nothing enforces it yet.
-- **Remote files beyond a plain read.** A VOC pointer of type `N` now opens a file on
-  another server for reading (see "Remote files, read only" below). Writing,
-  deleting, clearing, locking, `SELECT` and the query verbs `LIST`, `COUNT`, `SORT`
-  and `SELECT` are refused or stop with a message; they come in later slices.
+- **Remote files beyond reading.** A VOC pointer of type `N` now opens a file on
+  another server for reading, selecting and querying (see "Remote files, read only"
+  below). Writing, deleting, clearing, locking, indices and transactions are refused;
+  they come in later slices.
 - **`NETFILES`** in `sd.conf` is still accepted and still does nothing (see
   [SD Admin Configuration](07-sd-admin-configuration.html)).
 
@@ -703,7 +703,7 @@ A VOC entry whose first field is `N` names a file on another SD server. It has t
 fields: the server's **name** as defined with `set.server` (field 2) and the file's name
 on that server (field 3). Names are lower case; the server name is a letter and up to 15
 letters or digits, the file name up to 63 letters, digits and `. _ - $`. Anything else is
-refused, and so is a dictionary of such a file.
+refused.
 
 ```
 N
@@ -712,10 +712,23 @@ customers
 ```
 
 Opening it with `OPEN 'customers' TO f` (using the VOC name) gives a file variable that
-`READ`, `MATREAD`, `READV`, `FILEINFO` and `CLOSE` work on. **Nothing else does.** Every
-other statement given the file variable stops with message 11501 (or, with `ON ERROR`,
-sets `STATUS()` and goes on), and nothing is sent to the other server. `OPENPATH`,
-`OPENTEMP`, `OPENSEQ` and `CALL "file program"` never see such a pointer.
+`READ`, `MATREAD`, `READV`, `SELECT`, `SELECTV`, `SSELECT`, `FILEINFO` and `CLOSE` work on.
+`OPEN 'DICT', 'customers' TO d` opens the **dictionary** of the remote file, from the same
+server, and the same statements work on it. **Nothing else does.** Every other statement
+given the file variable (writes, deletes, `CLEARFILE`, locks, `SELECTINDEX`...) stops with
+message 11501 (or, with `ON ERROR`, sets `STATUS()` and goes on), and nothing is sent to the
+other server. `OPENPATH`, `OPENTEMP`, `OPENSEQ` and `CALL "file program"` never see such a
+pointer.
+
+**Queries.** `LIST`, `COUNT`, `SORT`, `SELECT`, `SSELECT`, `LIST.ITEM` and `LIST DICT` work on
+the VOC name, with the dictionary read from the server. A `SELECT` takes **every record id** of
+the remote file in one reply and turns it into an ordinary select list; each record a query
+needs is then one request to the server, so a query that reads every record of a big file costs
+one round trip per record, and a `WITH` clause reads each record. An id list given on the
+command line (`LIST customers 'c2'`) selects nothing and reads only those records.
+`INDICES(f)` is empty for a remote file, so the server's own indices are not used. A remote file
+answers `FILEINFO(f, FL$TYPE)` with 7 (`FL$TYPE.NET`) and counts as case-insensitive, as every file
+on a current server is.
 
 Who may open one, checked in this order before anything is dialled: the account holds the
 **NET switch** (or is SDSYS), the server is defined, the account is in the definition's
@@ -734,9 +747,9 @@ pinned key checked before a byte is sent. A connection that dies is noticed on t
 use and reported; it is never quietly remade in the middle of an operation. All of a
 process's connections end when the process does.
 
-**What is not here yet:** `LIST`, `COUNT`, `SORT` and `SELECT` on a remote file (they stop with
-"FILEINFO key 3 ... is not answered yet"), select lists, indices, writes, locks,
-transactions, and the same on LOGTO (the connections are not dropped at LOGTO yet).
+**What is not here yet:** select by index and the server's indices, writes, locks, transactions,
+saved lists on the remote side, and dropping the connections at `LOGTO` (a file variable opened
+before a `LOGTO` is refused afterwards, but the connection itself stays until the process ends).
 **What was not confirmed:** everything above was run in a private sandbox against a fake
 server written for the tests; no two machines have talked to each other yet.
 
