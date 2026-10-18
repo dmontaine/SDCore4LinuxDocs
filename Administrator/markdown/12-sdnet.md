@@ -79,11 +79,13 @@ gates they ask are described below. Commands are shown here in lower case.
   user can do over the API. Give the remote user `files-on` and not `api`, or choose
   the remote user with that in mind. The route also does not make a login
   *read only*: a files-only login can write and delete. Read or write is the
-  definition's `mode`, and nothing enforces it yet.
-- **Remote files beyond reading.** A VOC pointer of type `N` now opens a file on
-  another server for reading, selecting and querying (see "Remote files, read only"
-  below). Writing, deleting, clearing, locking, indices and transactions are refused;
-  they come in later slices.
+  definition's `mode`, which **the client enforces and the server does not know**:
+  a modified client holding the stored login could write whatever the definition says.
+  A server-side write group is not built.
+- **Remote files.** A VOC pointer of type `N` opens a file on another server for
+  reading, selecting and querying (see "Remote files, read only" below), and, only
+  for a server defined with `write`, for writing and locking (see "Writing and
+  locking"). Indices, file locks and anything that makes or deletes a file are refused.
 - **`NETFILES`** in `sd.conf` is still accepted and still does nothing (see
   [SD Admin Configuration](07-sd-admin-configuration.html)).
 
@@ -759,10 +761,72 @@ and the entries of a file go when it is closed, when it is `SELECT`ed again, and
 are kept as given, so `READ`s of `JACK` and `jack` are two entries. On the test server this halves
 the requests of a `SORT`; it does little for a `LIST` that reads every record once.
 
-**What is not here yet:** select by index and the server's indices, writes, locks, transactions,
-and saved lists on the remote side.
+**What is not here yet:** select by index and the server's indices, and saved lists on the
+remote side.
 **What was not confirmed:** everything above was run in a private sandbox against a fake
 server written for the tests; no two machines have talked to each other yet.
+
+## Writing and locking: the definition's `write` mode
+
+A server is `read` unless SDSYS defined it with the word `write` (`set.server ... write`).
+**With `read` nothing changes from the section above: every statement that changes or locks a
+remote file is refused with message 11501 and nothing is sent.** With `write`, a file opened
+through an `N` pointer to that server can be changed and locked by the statements below, for
+every account that holds the `net` switch and is on the definition's *accounts* list.
+
+**The mode is the client's.** It is a field of the definition on the machine that is
+reading; the server it points at is never told. The server's own limits still apply to the
+stored login: the files-only route lets a login write and delete, the server's `voc.edit`,
+`dict.edit` and `bp.edit` switches (off by default) refuse a write to a VOC, dictionary or
+program file of the remote account, and the remote user's own file permissions decide the
+rest. The mode is looked up when the file is opened **and again on every change**, so
+`set.server ... read` stops writes through a handle that is already open; a handle opened
+while the mode was `read` does not write after the mode is changed to `write` until it is
+opened again.
+
+| Statement | What happens |
+|---|---|
+| `WRITE`, `WRITEU`, `MATWRITE` | one request; the record is written on the server. `WRITE` releases the session's lock on the record, `WRITEU` keeps it |
+| `WRITEV`, `WRITEVU` | read the record (never from the cache), change the field, write it, as for a local file |
+| `DELETE`, `DELETEU` | one request; a record that is not there is not an error |
+| `CLEARFILE` | one request; a big file can take minutes, and the connection is only called lost after five |
+| `READU`, `READL`, `MATREADU/L`, `READVU/L` | the lock, then the read; a busy record takes the `LOCKED` branch (`STATUS()` is the holder) or, without a `LOCKED` clause, the statement tries again every quarter of a second until the lock is free |
+| `RECORDLOCKU`, `RECORDLOCKL` | the lock, with the same busy behaviour |
+| `RELEASE` | the record form, the file form and plain `RELEASE` (every lock this process holds on a write-mode server) |
+
+Locks are held by the connection: closing the file variable releases the locks taken through
+it, ending the process or a `LOGTO` closes the connection and releases them all, and a file
+variable that merely goes out of scope has its close sent at the next prompt. Waiting is done
+by asking again, so it costs about four requests a second and two machines cannot detect a
+deadlock between them.
+
+**Never repeated.** A change that gets no answer (the connection dropped, the server stopped)
+is *not* sent again: its outcome is not known. Without `ON ERROR` the program stops with
+message 11509 ("it is not known whether the change was made"); with `ON ERROR` `STATUS()` is
+7000. The handle and every other handle of that server are dropped; open the file again and
+read the record to find out.
+
+**What is refused even with `write`.** A change or lock inside `BEGIN TRANSACTION` (message
+11510: a remote write can't be rolled back, so it never joins a local transaction); `FILELOCK`,
+`FILEUNLOCK`, `GETLOCKS`, `RECORDLOCKED()`, `CONFIGURE.FILE`, `ANALYSE.FILE`, `FCONTROL`, the
+index statements, and `WRITE ... CREATING.SEQKEY` (message 11511). `MUSTLOCK` and
+`$MODE AUTOLOCK` are honoured as for a local file: a write without the lock held is refused
+with `STATUS()` 3023.
+
+**The local edit gates apply by the remote file's name.** A write, delete or clear of a remote
+file named `voc`, `bp`, `bp.out`, `*.bp`, `*.bp.out` or `*.dic`, or of a remote dictionary
+(`OPEN 'DICT', ...`), needs the account to hold `voc.edit`, `bp.edit` or `dict.edit` as it would for
+a local file (messages 11405 to 11407). The programs the system supplies that edit a file the
+user names (`ED`, `COPY` and the like) ask the same question.
+
+**The cache is off for a write-mode handle**, so a record is never read from memory a second
+before it is changed; a `LIST` or `SORT` over such a file makes about twice the read requests.
+
+**What was and was not confirmed.** All of this was run in a private sandbox against a fake
+server written for the tests (772 rows, including a second session holding a lock, a dropped
+connection before and after a write, and every refusal above). Not measured: the handler
+running inside the recursion that `WRITEV` uses, very large records, how the real server
+releases locks when a process ends, and any run between two machines.
 
 ## What is audited
 
@@ -787,6 +851,22 @@ audited**. A refusal, a failed exchange and a login that was not stored write
 nothing. Giving or taking the NET switch is
 audited like every other `modify.account` word (`modify.account net-on
 account=fred`).
+
+On the client, a write-mode handle adds lines in lower case (no record data, no id):
+
+```
+netfile open server=hq file=customers mode=write
+netfile write server=hq file=customers
+netfile delete server=hq file=customers
+netfile clear server=hq file=customers
+netfile refused server=hq reason=mode
+netfile lost server=hq op=write
+```
+
+`write` and `delete` are written the first time through a handle, `clear` every time, `refused
+... reason=mode` once per handle when the definition says `read` by then, and `lost` when a
+change got no answer. The refusals the kernel makes itself (a read-mode handle, a transaction,
+an edit gate) write nothing.
 
 On the server that is reached, the files-only route writes, in lower case:
 
