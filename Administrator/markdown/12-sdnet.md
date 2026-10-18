@@ -65,21 +65,25 @@ gates they ask are described below. Commands are shown here in lower case.
   shown to you. `set.netlogin` does compare the key the server presents with the
   definition's pin, before it sends anything, but nothing else yet checks a pin
   on a later connection, because there is no later connection.
-- **Using the login.** Nothing reads a stored login to log in, and nothing opens
-  a file on the other server. `set.netlogin` proves the login works once, at the
-  moment it is made, and keeps the result.
+- **Using the login, apart from a remote file.** The only thing that reads a stored
+  login to log in is opening a remote file through an `N` pointer (below).
+  `set.netlogin` proves the login works once, at the moment it is made, and keeps
+  the result.
 - **A client that uses the files-only route.** The server now has the route (below)
   and the person who runs the other server can give the remote user `files-on` instead
-  of `api`. But `set.netlogin` does not require it, and **nothing on the client side
-  uses a stored login yet**, so no SDNet client has connected by this route. A
+  of `api`. But `set.netlogin` does not require it, and **the only client use of a stored
+  login is opening a remote file, which has been run only against a test server**, so
+  no two real machines have connected by this route. A
   remote user who is in `sdapi` still has the whole API, and so does a stored login
   made for that user: whoever holds the file can do on that server what that remote
   user can do over the API. Give the remote user `files-on` and not `api`, or choose
   the remote user with that in mind. The route also does not make a login
   *read only*: a files-only login can write and delete. Read or write is the
   definition's `mode`, and nothing enforces it yet.
-- **Remote files.** There is no VOC pointer to a remote file, and the *accounts*
-  list and the NET switch are consulted by `set.netlogin` and by nothing else.
+- **Remote files beyond a plain read.** A VOC pointer of type `N` now opens a file on
+  another server for reading (see "Remote files, read only" below). Writing,
+  deleting, clearing, locking, `SELECT` and the query verbs `LIST`, `COUNT`, `SORT`
+  and `SELECT` are refused or stop with a message; they come in later slices.
 - **`NETFILES`** in `sd.conf` is still accepted and still does nothing (see
   [SD Admin Configuration](07-sd-admin-configuration.html)).
 
@@ -692,6 +696,49 @@ nothing. The API listener has to be on (`remote.api`), as for any API login.
   live session, the membership read at login, `files-on` and `files-off` against a
   real group file, and the installer making the group have not been seen to work.**
   Treat the route as unproved until they have.
+
+## Remote files, read only
+
+A VOC entry whose first field is `N` names a file on another SD server. It has two more
+fields: the server's **name** as defined with `set.server` (field 2) and the file's name
+on that server (field 3). Names are lower case; the server name is a letter and up to 15
+letters or digits, the file name up to 63 letters, digits and `. _ - $`. Anything else is
+refused, and so is a dictionary of such a file.
+
+```
+N
+nfa
+customers
+```
+
+Opening it with `OPEN 'customers' TO f` (using the VOC name) gives a file variable that
+`READ`, `MATREAD`, `READV`, `FILEINFO` and `CLOSE` work on. **Nothing else does.** Every
+other statement given the file variable stops with message 11501 (or, with `ON ERROR`,
+sets `STATUS()` and goes on), and nothing is sent to the other server. `OPENPATH`,
+`OPENTEMP`, `OPENSEQ` and `CALL "file program"` never see such a pointer.
+
+Who may open one, checked in this order before anything is dialled: the account holds the
+**NET switch** (or is SDSYS), the server is defined, the account is in the definition's
+*accounts* list, the user has a stored login (`set.netlogin`) and the server's key still
+matches the pin, and the limits (10 servers, 100 open remote files per process) hold.
+An `$internal` program is not exempt. Each failure has its own message and an audit line,
+`netfile refused server=... reason=...`; a success writes `netfile open server=... file=...`.
+
+**Who may write the pointer.** The VOC is protected by the `voc.edit` switch, which is off
+for an ordinary account, so only SDSYS or an account SDSYS has given `voc.edit` can make
+one. The switch that matters for *using* it is the NET switch of whoever opens the file.
+
+The login to the other server is the stored one of the person running the program, made
+with `set.netlogin`; the connection is the other server's API port, TLS 1.3, with the
+pinned key checked before a byte is sent. A connection that dies is noticed on the next
+use and reported; it is never quietly remade in the middle of an operation. All of a
+process's connections end when the process does.
+
+**What is not here yet:** `LIST`, `COUNT`, `SORT` and `SELECT` on a remote file (they stop with
+"FILEINFO key 3 ... is not answered yet"), select lists, indices, writes, locks,
+transactions, and the same on LOGTO (the connections are not dropped at LOGTO yet).
+**What was not confirmed:** everything above was run in a private sandbox against a fake
+server written for the tests; no two machines have talked to each other yet.
 
 ## What is audited
 
