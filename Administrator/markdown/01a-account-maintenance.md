@@ -351,10 +351,14 @@ archive that lies is refused with nothing changed** — counts that disagree wit
 the manifest, an entry path with `..` in it or an absolute path, no manifest or
 two of them.
 
-**A restored account comes back as it was:** each directory has the permissions
-it was backed up with, and everything in the account belongs to its Linux user
-and its own group (`sdu_<name>`) again. An account that already exists keeps its
-Linux user, its password and its groups.
+**A restored account comes back as it was:** each file and directory has the
+permissions it was backed up with, except that write for others is dropped and
+the owner always keeps read and write, and everything in the account belongs to
+its Linux user and its own group (`sdu_<name>`) again. An account that already
+exists keeps its Linux user, its password and its groups, **and its own
+switches**: the manifest's switches are used only for an account that has to be
+created. **Moving an account to another machine** is covered by
+[Moving an Account](17-moving-an-account.html).
 
 **What it does not do:**
 
