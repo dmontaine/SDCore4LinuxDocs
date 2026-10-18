@@ -212,3 +212,6 @@ sp.assign = **`sp.assign`** {*options*} {, *setptr options*}
 set.server = **`set.server`** *name* *host* *port* *account* {*pin* | **`connect`**} {**`read`** | **`write`**} {**`accounts`** *a*`,`*b*`,`…} {**`no.query`**}
 delete.server = **`delete.server`** *name*
 list.servers = **`list.servers`** {*name*}
+# 17 Oct 26: S.65 slice 2b, a person's own login on a defined server (in every account's VOC).  Their page is Administrator/12.
+set.netlogin = **`set.netlogin`** *server*
+delete.netlogin = **`delete.netlogin`** *server*

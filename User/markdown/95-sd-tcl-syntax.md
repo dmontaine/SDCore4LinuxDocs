@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **187** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **189** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,7 +23,7 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 163 verbs | `newvoc`, identical for every ordinary account |
+| **every account** | 165 verbs | `newvoc`, identical for every ordinary account |
 | **SDSYS only** | 24 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
@@ -91,6 +91,7 @@ not refused — the name is simply not recognised.**
 | **`delete.file`** | **`delete.file`** {**`dict`** \| **`data`**} *voc.name* {**`force`**} {**`no.query`**} |  |
 | **`delete.index`** | **`delete.index`** *file* *field* … \| **`all`** |  |
 | **`delete.list`** | **`delete.list`** *list* |  |
+| **`delete.netlogin`** | **`delete.netlogin`** *server* |  |
 | **`delete.server`** | **`delete.server`** *name* | S |
 | **`disable.index`** | **`disable.index`** *file* *index* … \| **`all`** |  |
 | **`display`** | **`display`** *text* |  |
@@ -187,6 +188,7 @@ not refused — the name is simply not recognised.**
 | **`set.exit.status`** | **`set.exit.status`** *n* |  |
 | **`set.file`** | **`set.file`** *account* *file* *pointer* |  |
 | **`set.mode`** | **`set.mode`** {**`dict`**} *file* {**`all`** \| **`from`** *listno* \| *id* …} {**`no.query`**} *mode* |  |
+| **`set.netlogin`** | **`set.netlogin`** *server* |  |
 | **`set.queue`** | **`set.queue`** *queue* {, *width*, *depth*, *top*, *bottom*, *mode* {, *options*}}  ·  **`set.queue display`** {**`lptr`** {*unit*}}  ·  **`set.queue deleting`** *queue* |  |
 | **`set.server`** | **`set.server`** *name* *host* *port* *account* {*pin* \| **`connect`**} {**`read`** \| **`write`**} {**`accounts`** *a*`,`*b*`,`…} {**`no.query`**} | S |
 | **`set.trigger`** | **`set.trigger`** *file* *name* {*modes*} |  |

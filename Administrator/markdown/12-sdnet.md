@@ -3,11 +3,13 @@ Subtitle: The NET switch and the server definitions: what is in place for files 
 
 SDNet is the name for opening a file that lives on **another SD server** and using
 it with `READ`, `WRITE`, `SELECT` and `LIST` as if it were local. **This release
-has the first slices only: the permission, the list of servers, and one
-connection that `set.server` can make so that it can show you a server's key hash.
-Nothing else connects to anything, and no remote file can be opened.** The switch and the
-definitions are in place so that the work that follows has something to stand on,
-and so that you can see, and set, what it will be allowed to use.
+has the first slices only: the permission, the list of servers, one
+connection that `set.server` can make so that it can show you a server's key hash,
+and a person's own login on a server (`set.netlogin`), kept as values derived from
+the password and never as the password. Nothing uses that login yet, and no remote
+file can be opened.** The switch, the definitions and the logins are in place so that
+the work that follows has something to stand on, and so that you can see, and set,
+what it will be allowed to use.
 
 An earlier SDNet was removed on 9 September 2026 (a `server;file` VOC entry over
 port 4245, with each server's password in `sd.conf`, which any local user could
@@ -37,26 +39,39 @@ Planned, not built yet:
 | **`set.server`** | adds a definition, or replaces one |
 | **`delete.server`** | removes one |
 | **`list.servers`** | shows them |
+| **`set.netlogin`** | a person makes their own login on a defined server: SD runs the SCRAM exchange once and keeps the derived values (see "Your login on a server") |
+| **`delete.netlogin`** | removes it |
+| **`sd-elevate netcred-dir`** | the privileged helper step that makes the directory the logins are kept in |
 
-**The three verbs are SDSYS's.** They are in SDSYS's VOC and in no other account's,
+**The first three verbs are SDSYS's.** They are in SDSYS's VOC and in no other account's,
 and each one also stops with "Command requires administrator privileges" for
-anyone who is not the administrator. Commands are shown here in lower case.
+anyone who is not the administrator. **`set.netlogin` and `delete.netlogin` are in
+every account's VOC**, because they are for the person whose login it is; the
+gates they ask are described below. Commands are shown here in lower case.
 
 ### What does not exist yet
 
-- **The connection, apart from one.** The only thing in SD that opens a socket to
-  a server is `set.server` with the word `connect`, once, for the handshake
-  alone (see below). No verb, statement or program opens a socket to a server
-  *defined* here. A definition is a record on disk and nothing reads it but
-  these three verbs.
+- **The connection, apart from two.** The only things in SD that open a socket to
+  a server are `set.server` with the word `connect`, once, for the handshake
+  alone, and `set.netlogin`, once, for the login exchange (both below). No verb,
+  statement or program opens a socket to a server *defined* here for any other
+  purpose. A definition is a record on disk and nothing reads it but these
+  verbs.
 - **A check that a typed pin is right.** When you type the 64 digits, nothing
   connects and nothing checks them; use `connect` to have the server's own hash
-  shown to you. And nothing yet checks a pin on a later connection, because
-  there is no later connection.
-- **Credentials.** No user name or password for the remote account is asked
-  for or stored anywhere.
-- **Remote files.** There is no VOC pointer to a remote file, and the NET switch
-  and the *accounts* list are not consulted by anything yet.
+  shown to you. `set.netlogin` does compare the key the server presents with the
+  definition's pin, before it sends anything, but nothing else yet checks a pin
+  on a later connection, because there is no later connection.
+- **Using the login.** Nothing reads a stored login to log in, and nothing opens
+  a file on the other server. `set.netlogin` proves the login works once, at the
+  moment it is made, and keeps the result.
+- **A route on the server that reaches files only.** The login is the remote
+  user's ordinary API login. The server does not yet have a way to give a login
+  that can reach files and nothing else, or only read them. Until it does,
+  whoever holds a stored login can do on that server what that remote user can
+  do over the API. Choose the remote user with that in mind.
+- **Remote files.** There is no VOC pointer to a remote file, and the *accounts*
+  list and the NET switch are consulted by `set.netlogin` and by nothing else.
 - **`NETFILES`** in `sd.conf` is still accepted and still does nothing (see
   [SD Admin Configuration](07-sd-admin-configuration.html)).
 
@@ -76,7 +91,8 @@ decides, and it is yours.
 **The file holds no secret, and must never hold one.** A definition is a name, an
 address, a port, the name of an account, and the hash of a *public* key. The file
 is readable by every user (mode 644) on purpose, and only the `sdsys` user writes
-it. When credentials exist, they will be kept somewhere else.
+it. A person's login on a server is kept somewhere else, in a file only that
+person can read (see "Your login on a server").
 
 ## The file: `netservers`
 
@@ -350,6 +366,248 @@ lock. If the file holds a line these verbs did not write, all three stop and say
 which line, "The server definitions file has a line that is not a definition",
 without changing anything; correct the file at the operating system.
 
+## Your login on a server: `set.netlogin` and `delete.netlogin`
+
+A defined server is a name, an address and a key. To use it, a person also needs a
+**login** on it: a user name and password that the other server knows. `set.netlogin`
+is how a person gives SD that login, once, and `delete.netlogin` is how they take
+it away. **They are the person's own verbs, in every account's VOC, and SDSYS does
+not set a login for anyone else.**
+
+```
+set.netlogin name
+delete.netlogin name
+```
+
+### What is kept: not the password
+
+**SD never stores the password.** It is typed hidden, used once to work out some
+values, and cleared from memory. What is kept is what the SCRAM-SHA-256 login
+(RFC 5802 and 7677, the same login the API uses) derives from the password:
+
+- the **salt** and **iteration count** the other server chose for that user,
+- the **ClientKey** and the **ServerKey**, which are keyed hashes of a
+  PBKDF2-HMAC-SHA-256 stretch of the password and the salt.
+
+A later login needs those and not the password. That is the whole reason for
+keeping them: the file can be used without anyone typing anything, and it is not
+the password.
+
+**What a person who reads the file can and cannot do.** Be exact about this,
+because "not the password" can sound safer than it is.
+
+- **They can log in as that remote user to that one server.** The ClientKey is
+  the secret that proves the user, so having it is as good as having the password
+  *for that server*. They cannot log in to a different server, because the salt
+  and so the keys are different there, even if the password was the same.
+- **They cannot read the password from it.** The keys are one-way. **They can
+  guess it offline.** Anyone holding the salt, the count and a key can try
+  passwords at their own speed and check each against the key, with no server
+  involved. The iteration count (the server chose it; this release accepts nothing
+  outside the API's own limits) slows that, but a weak password still falls to it,
+  and a password that was reused elsewhere is then known elsewhere. This is why
+  the file is kept private (below), and why the remote password should be a
+  strong one that is not used for anything else.
+- **The ServerKey does not let them pretend to be the server to you.** It would
+  let a program produce a signature that looks right, but SD compares the key the
+  server presents with the pin in the definition before it sends anything, and an
+  impostor does not have the real server's private key.
+
+### Where it is kept, and why there
+
+```
+/var/lib/sd-net/<linux user>/<server name>
+```
+
+- `/var/lib/sd-net` is owned by root, mode 755, and holds one directory for each
+  person that has one.
+- `/var/lib/sd-net/<linux user>` is owned by that person, mode **700**.
+- The file is owned by that person, mode **600**, one line, written whole through a
+  temporary file `<server name>.new` and renamed, so a failure leaves any older login
+  as it was:
+
+```
+v1|remote user|salt (base64)|iterations|ClientKey (base64)|ServerKey (base64)|pin|created
+```
+
+`pin` is the pin of the definition *when the login was made* (64 hex digits) and
+`created` is `yyyy-mm-dd`.
+
+**It is outside the account directory on purpose.** An account's programs reach
+the operating system's files only through the account's own directory unless the
+account holds the `sh` or `os.execute` switch. Anything kept inside an account
+directory, or under the home directory, could be read by an account program with
+`OPENSEQ`; a file in `/var/lib/sd-net/<user>` cannot be reached that way by an
+account without those switches. That makes the file safe from the ordinary
+account program. It does not make it safe from a person.
+
+**The honest limit.** An account that holds the **`sh`** or the **`os.execute`**
+switch can read anything its Linux user can read, and this file is something that
+Linux user can read, **exactly as such an account can read `~/.ssh`**. The file's
+privacy is the operating system's privacy of that one user, no more. If an account
+runs untrusted code with one of those switches on, a login kept by the same Linux
+user is exposed to it. Two accounts of the same Linux user share the one file for a
+server, because the file belongs to the Linux user and not to the SD account.
+
+**How a program reads it.** Only through an internal subroutine, `$netcred`, that
+no ordinary program can call (its name starts with a dollar sign). Before every
+use of the file or its directory, `$netcred` asks the C check `SD_FILE_PRIVATE`
+(one of the SDEXT functions, key 111, again callable only from an internal
+program): the path is a **regular file and not a link**, owned by the user who is
+running, with **no group or world permission bits**, and its directory is owned by
+that user, is not a link, and has no group or world bits (mode 700). That is the test
+ssh makes of a private key. A file or directory that fails it is **never opened**:
+the stored login is reported as not trusted and nothing in it is used. `$netcred`
+also refuses a login made for a different pin than the definition has now, so a
+login does not carry over to a server whose key has changed (or to a server
+redefined under the same name).
+
+### `set.netlogin`
+
+```
+:set.netlogin hq
+Setting up your login on server hq (hq.example.com:4247).  Your password is used once here and is not stored
+Remote user: reports
+Remote password:
+Your login on server hq as reports is stored.  The password is not stored
+```
+
+(`Remote password:` is typed hidden.) *Remote user* is the user name that the other
+server has for you; it is not the *account* field of the definition (which is the
+account entered on the other server later, once something uses the login).
+
+**The checks, in order.** Every local check comes first and asks you for
+nothing; the prompts come after them; the network comes after the prompts.
+
+1. The command has exactly one word after it, and that word is a valid server name.
+2. **The account has the NET switch**, or the session is the administrator.
+3. **The server is defined**, and its pin is a well formed one.
+4. **The account is in the server's *accounts* list**, unless the session is the
+   administrator's.
+5. The session is a Linux user that can keep a login: not `sdsys` and not `root`.
+6. **The directory is ready:** SD runs `sudo -n /usr/local/sbin/sd-elevate netcred-dir`
+   (below) and then asks `SD_FILE_PRIVATE` whether the directory it was given is
+   private and the person's own. `-n` is there so a person without the sudo
+   permission is refused and not asked for a Linux password in the middle of an SD
+   session.
+7. The two prompts. A user name that is empty or not valid (letters, digits,
+   dots, underscores and hyphens, up to 32) ends the command before the password is
+   asked. An empty password, or input that ends, ends it too.
+8. **One TLS connection** to the host and port of the definition, waiting at most
+   5 seconds.
+9. **The key the server presents is compared with the pin, before anything is
+   sent.** A different key ends the command with nothing sent and the password
+   still unspent.
+10. The server's one-byte acknowledgement, then the SCRAM exchange exactly as the
+    API client makes it: two packets from SD, two replies from the server, bound to
+    the TLS session. SD checks that the server's nonce extends its own, that the
+    iteration count is a whole number within the API's limits, that the salt is
+    well formed, and **that the server's signature is right**, so the server has
+    to know the password too. Each read or write waits at most 15 seconds.
+11. Only then is the login written, through `$netcred`.
+
+**Nothing else is sent.** No account is entered on the other server and no quit
+is sent; the connection is closed when the exchange ends. On any failure nothing
+is stored, and **an existing login is left exactly as it was**. When the exchange
+succeeds, an existing login for the same server is **replaced without a question**,
+because the person has just proved the new one.
+
+**When it does not work:**
+
+| you see | meaning |
+|---|---|
+| `Usage: set.netlogin server` | the wrong number of words |
+| `Server name x is not valid` | not a lower case letter followed by up to 15 lower case letters or digits |
+| `This account does not have the NET gate, so it cannot log in to a server.  Ask the administrator (modify.account x net-on)` | no NET switch |
+| `No server is defined with the name x` | there is no such definition |
+| `Account x is not listed for server y.  Ask the administrator to list it (set.server ... accounts)` | the account is not in the definition's list |
+| `The administrator has no Linux login of its own to keep a server login in.  Use an ordinary user's account` | the session is `sdsys` (or `root`) |
+| `The directory for your server logins is not ready or is not private (...).  Nothing was done` | `netcred-dir` failed (for example the sudo permission is missing, or this installation has not been brought up to date) or the directory failed the private check; the text in the brackets is the helper's last line, cleaned |
+| `The remote user name is not valid (...)` / `A password is required.  Nothing was changed` | the prompts |
+| `Cannot connect to host:port (status n, os error m).  Nothing was sent or stored` | nothing is listening, the address is wrong, or the 5 seconds passed |
+| `The TLS handshake with host:port did not complete.  Nothing was sent or stored` | something answered but not with TLS |
+| `The server at host:port gave no public key hash.  Nothing was sent or stored` | a session was made but no hash could be read |
+| `The key presented by host:port is not the key in the definition of server x.  Nothing was sent to it and nothing was stored.  It is not the server that was defined, or its key was renewed` | the pin check. If the other server really did get a new key, define the server again (with `connect`) and then run `set.netlogin` again |
+| `The connection to host:port failed or timed out at ...` | a read or write of the exchange failed or waited 15 seconds |
+| `The server's first message was not valid (...)` | the server's reply was not what the exchange allows |
+| `The server refused the login (...)` | wrong user name or password, or the server will not allow it; the server's text, if any, is cleaned to printable characters and cut |
+| `The server's signature did not verify, so it does not know the password or is not the real server` | the final check |
+| `The keys could not be derived (...)` | SD could not work out the values; the final message was not sent |
+| `The login for server x could not be stored or removed (...)` | the last step failed; any older login is as it was |
+
+### `delete.netlogin`
+
+```
+:delete.netlogin hq
+Your login on server hq was deleted
+```
+
+It removes **your** login on that server and nothing else. It asks for no switch,
+since removing a login adds nothing to what an account may do, and it connects to
+nothing; the definition is not touched. If there is no login:
+`There is no login stored for server hq.  set.netlogin hq makes one`. **A file
+that is not the plain private file `set.netlogin` makes is refused and left where
+it is** (the message says the stored login is not trusted); a person with such a
+file in the way removes it from the shell.
+
+`delete.server` leaves people's login files behind. They are inert: a login made
+for a pin the definition no longer has is refused, so it cannot be used. But a
+server defined again under the same name *with the same pin* finds them valid, so
+people who do not want that run `delete.netlogin` first.
+
+### Where it works
+
+`set.netlogin` and `delete.netlogin` need a **local session of an ordinary Linux
+user**: the file is that user's and the ownership check is made against the user
+the session runs as. In an API session the process runs as `sdsys`, and the
+check fails closed (the stored login is "not trusted"). The administrator,
+who is `sdsys`, has no login of its own to keep.
+
+### The helper: `sd-elevate netcred-dir`
+
+The directory `/var/lib/sd-net/<user>` cannot be made by the user (its parent is
+root's), so `set.netlogin` asks a helper:
+
+```
+sudo -n /usr/local/sbin/sd-elevate netcred-dir
+```
+
+It takes **no argument**; whose directory it makes is read from sudo's own record
+of who asked (`SUDO_USER` and `SUDO_UID`, which must agree with the user database),
+never from anything typed. It refuses root, `sdsys`, a user below the
+minimum ordinary uid and an unknown user. It makes `/var/lib/sd-net` (root,
+mode 755) if there is none, then the caller's own directory (the caller, their
+primary group, mode 700). **It is safe to run again**: if the directory is there it
+changes nothing but a wrong mode, which it sets back to 700. It refuses, and says
+so, if either path is a link or a file, if the user's directory belongs to
+someone else, or if `/var/lib/sd-net` is writable by its group or by everyone. It
+prints `netcred-dir: <path>` on a line of its own **only after reading the
+directory back and finding it right**. `--dry-run` shows the commands and makes
+nothing, and does not print that line. Root never writes a file inside the user's
+directory.
+
+`/etc/sudoers.d/sdcore` gives members of the `sdusers` group this one command,
+`sd-elevate netcred-dir` with no argument, **beside** the three `cred-own` commands they
+already had. That is all that was added. **The sudoers file is installed by
+the installer, so an installation made before this release does not have the
+permission until the installer is run again.** Until then `set.netlogin` stops at
+the directory step (check 6) with a message that includes sudo's own refusal.
+
+### What was and was not confirmed
+
+- **Confirmed from the source:** the order of the checks above, the messages, the
+  audit words, the layout of the file and the SD_FILE_PRIVATE rules. **Confirmed
+  by test (no SD needed):** `sd-elevate netcred-dir` through `--dry-run`, every
+  refusal it makes, and the sudoers line parses.
+- **Not confirmed:** `set.netlogin`, `delete.netlogin` and `$netcred` have not
+  been run against a live server. The exchange was written to follow the API
+  client's `scram.login` step for step, and nothing about it has been seen to
+  work yet, in particular the full login against a second server on a real
+  network. `SD_FILE_PRIVATE` has not been run, and neither has a real (not
+  `--dry-run`) `netcred-dir`: that the directory appears, that a second run
+  changes nothing, and that its owner and mode are right are not seen. The
+  sudoers permission has not been tried on an installed system.
+
 ## What is audited
 
 Defining and deleting are written to the audit trail, in lower case:
@@ -358,13 +616,19 @@ Defining and deleting are written to the audit trail, in lower case:
 set.server name=solo2 host=192.168.1.40 port=4249 mode=read replaced=no pin=typed
 set.server name=hq host=hq.example.com port=4247 mode=read replaced=no pin=confirmed
 delete.server name=solo2 host=192.168.1.40 port=4249
+set.netlogin server=hq remote=reports
+delete.netlogin server=hq
 ```
 
 The last word of a `set.server` line says how the pin was obtained: `pin=typed`
 for 64 digits typed in the command, `pin=confirmed` for a hash that SD fetched with
 `connect` and SDSYS answered y to. The pin itself is not in the line (it is not
 secret, only long). A refusal, a declined replacement, a key that was not trusted,
-a connection that failed and `list.servers` write nothing. Giving or taking the NET switch is
+a connection that failed and `list.servers` write nothing. `set.netlogin` and
+`delete.netlogin` write a line **on success only**; the `set.netlogin` line carries
+the remote user name you typed, and **no password, key, salt or hash is ever
+audited**. A refusal, a failed exchange and a login that was not stored write
+nothing. Giving or taking the NET switch is
 audited like every other `modify.account` word (`modify.account net-on
 account=fred`).
 

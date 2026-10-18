@@ -175,8 +175,9 @@ DOCS = [
    remote.api remote.ssh
  """),
  # 17 Oct 26 - S.65 slice 1 (SDNet): the three server-definition verbs, SDSYS's alone (voc_template).
+ # 17 Oct 26 - S.65 slice 2b: delete.netlogin and set.netlogin, a person's own login on a server; in newvoc, so in every VOC.
  ('Administrator', '12-sdnet.md', """
-   delete.server list.servers set.server
+   delete.netlogin delete.server list.servers set.netlogin set.server
  """),
 ]
 
