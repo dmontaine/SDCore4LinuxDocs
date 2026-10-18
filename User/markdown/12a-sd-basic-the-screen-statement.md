@@ -218,6 +218,8 @@ before, and with no `/` or `*` in it. `else` is taken if a widget cannot be adde
 | `screen table f, id, columns, rows {at x,y} {size w,h} {value n} {multi}` | A heading and rows of cells (below). `multi` lets rows be marked. |
 | `screen tree f, id, nodes {at x,y} {size w,h} {value n} {expanded}` | A tree of nodes, some open to show what is under them (below). |
 | `screen scrollbar f, id, total {at x,y} {size w,h} {visible n} {value n}` | A scroll bar of its own, for content the program draws itself (below). |
+| `screen container f, id {at x,y} {size w,h} {title t} {noborder}` | A rectangle that owns the widgets added after `screen in` (below). |
+| `screen viewport f, id {at x,y} {size w,h} {content cw,ch} {title t} {noborder}` | A container whose inside is a window on a larger sheet of widgets, with scroll bars (below). |
 
 #### The keys of the widgets
 
@@ -240,6 +242,7 @@ another page, is passed over.
 | table | up, down, home, end, page up, page down; left and right the current column; F3 sorts by it; `<` and `>` its width; a letter jumps to the next row whose first cell starts with it; with `multi` the space bar marks the row |
 | tree | up, down, home, end, page up, page down; right opens a node (or goes to the first one under it); left closes it (or goes to the node it is under); the space bar opens or closes; a letter jumps |
 | scrollbar | up and down (left and right when it is horizontal), page up, page down, home, end |
+| viewport | up, down, left, right (one row or column), page up, page down, home (the top), end (the bottom); at the edge the key goes on to the widget before or after |
 
 ### Tabs and pages
 
@@ -388,6 +391,82 @@ click on the track either side of the thumb a page, and the wheel three. **Each 
 its content from it. `screen set f, id value n` moves the bar and `screen get` answers
 where it is.
 
+### Containers and viewports
+
+```
+screen form title 'Orders' at 0,0 size 140,42 returning f
+screen viewport f, 'sheet' at 1,1 size 138,38 content 200,60 title 'Sheet'
+screen in f, 'sheet'
+for r = 0 to 29
+   screen label f, 'l':r, 'Row ':r at 0, r*2
+   screen entry f, 'e':r at 12, r*2 width 20
+next r
+screen in f, ''
+screen button f, 'ok', '&OK' at 2,40 default
+```
+
+A **container** owns widgets. `screen in f, id` says that the widgets added **from now on**
+are inside that container, as `screen page` does for a tab (`screen in f, ''` ends it).
+A widget inside a container has its `at x,y` counted from **the first cell inside the
+container's border** (0,0 is the cell right of and under the corner), not from the form's
+corner. The widgets move with their container (`screen move`), are hidden, disabled or
+put on a tab page with it (`screen set f, id visible 0`, `enabled 0`), and are taken out
+with it (`screen delete`). What a widget draws, and where a click reaches it, is cut at
+the edge of the container's inside: a long label stops at the border, an entry that
+starts left of the inside shows only its right part. A container named while another is
+current is inside that one, so containers nest to any depth; `screen in f, 'outer'` goes
+back to an outer one. `noborder` leaves out the border: the inside is the whole rectangle,
+and a widget at x,y is where it would be in the form at the container's corner plus x,y.
+
+A **viewport** is a container whose inside is a window on a **sheet** `content cw,ch` cells
+big (the default is no larger than the window, and then nothing scrolls). The widgets are
+placed on the sheet, `at 0,0` being its top left cell, and only the part in the window is
+drawn. When the sheet is higher than the window a scroll bar appears in the right column
+of the inside, when it is wider one appears in the bottom row (so the window is one
+column or row smaller than the inside). The viewport can take the focus (it is in the
+Tab ring, ahead of its widgets), and then the arrow keys, page up and down, home and end
+scroll it. The wheel scrolls it three rows, Shift and the wheel three columns, wherever the
+pointer is over it, even over a widget in it that has no use for the wheel (a list, memo,
+table, tree and scroll bar keep it for themselves) - and the wheel never moves the focus.
+A click on a bar's arrow moves one, on the track a page, and the thumb can be dragged: the
+sheet follows the pointer, which may leave the bar sideways and go past its ends. **A
+widget that takes the focus (Tab, a click, or `screen focus` before the form is shown) is
+scrolled into view**, as little as it takes; a widget bigger than the window gets its top
+left corner shown.
+
+```
+screen scroll f, id {to x,y} {by dx,dy} returning v
+screen move f, id {at x,y} {size w,h} {content cw,ch}
+screen delete f, id returning n
+```
+
+`screen scroll` scrolls a viewport from the program (`to` first, then `by`): *x* is the
+first column of the sheet to show and *y* the first row, from 0. It never goes past the
+sheet's edge, and `returning` says where it ended up: the column, a value mark, the row.
+`screen get f, id` of a viewport answers the same. `screen move` gives a widget a new
+place, counted as it was given, and a container, viewport or frame a new size (`size`),
+and a viewport a new sheet (`content`); everything in a container goes with it.
+`screen delete` takes a widget out of the form (and a container everything in it, at any
+depth) and says how many went; the id may be used again. `else` is taken when the form or
+the widget is not there, or a size is asked of a widget that has none.
+
+A scroll is a **`change` event** of the viewport's id whose data is the column, a value
+mark and the row; if the same key also moved the focus the `focus` event is returned
+instead. A scroll made by `screen scroll` is not an event.
+
+Things to know:
+
+- **The cursor.** While the focused widget is not wholly in view (scrolled out, cut by the
+  edge, or taller than the window) the cursor is hidden; it comes back when the widget
+  does. A viewport has no cursor of its own. So give a memo or a table a size that fits
+  the window.
+- **Pop-ups are not cut.** The list of a combo box is drawn over the whole screen, not
+  inside the viewport.
+- A viewport is not a window of its own: it is drawn into the form, and a later widget
+  placed over it is drawn over it (a scroll draws it again too).
+- Scrolling 200 by 60 of sheet (630 widgets) in a window of 138 by 40 takes about a tenth
+  of a second a step, measured. The cost is the widgets in the window.
+
 ### Running a form
 
 ```
@@ -431,7 +510,7 @@ field 3 its data.
 | type | when | id | data |
 |---|---|---|---|
 | `button` | a button was pressed | its id | |
-| `change` | a check box, radio group, list, combo, tab strip, table, tree or scroll bar changed its value | its id | the new value |
+| `change` | a check box, radio group, list, combo, tab strip, table, tree or scroll bar changed its value, or a viewport was scrolled by the user | its id | the new value (a viewport: its first column, a value mark and its first row) |
 | `focus` | the focus moved | the widget it went to | the one it left |
 | `key` | a key the form had no use for (a function key, a Ctrl key) | | its name |
 | `resize` | the terminal's window changed size; the form has been drawn again at the new size | | the width, a value mark and the height |
@@ -448,7 +527,7 @@ on a `focus` or `button` event. `screen hide f` puts the screen back.
 
 | | |
 |---|---|
-| `screen get f, id returning v` | An entry or combo: the text. A check: 1 or 0. A radio: the number of the choice. A list: the number of the current item (with `multi`, the numbers picked, as values). Tabs: the tab. A table: the number of the current row in the rows given (with `multi`, the numbers of the rows marked). A tree: the code of the current node. A scroll bar: the number of the first line shown. A memo: the text, one line to a field. A label: its text. |
+| `screen get f, id returning v` | An entry or combo: the text. A check: 1 or 0. A radio: the number of the choice. A list: the number of the current item (with `multi`, the numbers picked, as values). Tabs: the tab. A table: the number of the current row in the rows given (with `multi`, the numbers of the rows marked). A tree: the code of the current node. A scroll bar: the number of the first line shown. A viewport: its first column and first row, from 0, with a value mark between. A memo: the text, one line to a field. A label: its text. |
 | `screen set f, id {value v} {text t} {items i} {enabled e} {wrap b} {readonly b} {visible b}` | `value` sets what `get` answers (a memo: replaces the text; tabs: chooses a tab; a scroll bar: moves it). `text` is a caption. `items` replaces the choices of a radio or list, or the rows of a table (the order of rows comes back). `enabled 0` takes a widget out of the focus ring. `wrap` and `readonly` (1 or 0) change a memo. `visible 0` hides any widget - it is not drawn and takes no focus - and `visible 1` shows it again. A form that is on the screen is redrawn at once. |
 | `screen focus f, id` | The next `run` starts with the focus there. |
 | `screen values f returning c` | A collection with the value of every entry, check, radio, list, combo, progress, tabs and table, named by id: `c{'name'}`. A memo is left out (ask for it with `get`). |
@@ -533,7 +612,9 @@ program**:
   the cursor under the pointer; on a combo's `[v]` opens its list;
 - on a tree's node makes it current (a click on its `+` or `-` opens or closes it); on a
   table's heading sorts by that column; on a scroll bar's arrow or track moves it;
-- the wheel scrolls a list, table, tree, memo or scroll bar three lines;
+- the wheel scrolls a list, table, tree, memo or scroll bar three lines; over a viewport
+  it scrolls the viewport three rows (Shift: three columns), and a press on the thumb of
+  its bar followed by moves of the pointer with the button held drags the sheet along;
 - in a message box a click on a button presses it; in a menu a click on an entry
   chooses it and a click elsewhere cancels it; in a pick list a click on an entry
   chooses it and a click outside the box cancels;
