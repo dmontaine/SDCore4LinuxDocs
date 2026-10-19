@@ -403,8 +403,8 @@ existed carries none and gives none.
 ### The NET switch: `net-on` and `net-off`
 
 One more per-account switch, in field 15 of the register record, for **SDNet**:
-files held on another SD server, which an account will one day open from its own
-VOC (see [SDNet](12-sdnet.html)). It is the permission an account needs before it
+files held on another SD server, which an account opens from its own VOC through
+an `N` pointer (see [SDNet](12-sdnet.html)). It is the permission an account needs before it
 may use a server, and **it is off for a new account**. `modify.account` *name*
 `net-on` / `net-off` turns it on and off, and `create.account user` takes
 `net-on`. After a change SD says where the account stands, in a line of its own
@@ -415,12 +415,11 @@ may use a server, and **it is off for a new account**. `modify.account` *name*
 Account fred has NET yes
 ```
 
-**Today the switch does nothing, because nothing can open a remote file yet.**
-It is in place, and checked at every sign-on, so that the slices that follow can
-rely on it; an account that has it still opens no file on another server, and an
-account that lacks it loses nothing it had. A blank field, and every account that
-existed before the switch did, count as off: **there is no upgrade step**, since
-nothing used it.
+**The switch is what lets an account open a remote file.** An account without it
+is refused before anything is dialled. It is checked at every sign-on. A blank
+field, and every account that existed before the switch did, count as off:
+**there is no upgrade step**, and those accounts cannot use SDNet until SDSYS
+turns the switch on, which is the delivered state.
 
 **It is read the way `sd-on` is, not the way the edit switches are.** It belongs
 to the account the person is *in*: it is read at sign-on, again at `logto` into
@@ -769,6 +768,19 @@ modify.account account files-on | files-off
 modify.account account suspended | unsuspended
 ```
 
+**One action per command.** A second word is refused, before anything is
+changed, and the refusal names it, so a half-done change on a security verb
+cannot go unnoticed:
+
+```
+:modify.account fred voc-off bp-off
+modify.account does one action at a time, and nothing was changed: bp-off was not carried out (give each action in a command of its own)
+```
+
+`add` and `delete` take one user name the same way. (Until 18 Oct 2026 the
+second word was read by nobody: `voc-off` was done and `bp-off` dropped without
+a message.)
+
 ### The other keywords
 
 | | |
@@ -780,7 +792,7 @@ modify.account account suspended | unsuspended
 | **`voc-on`** \| **`voc-off`** | saving a change to a VOC (see *The edit switches*) |
 | **`bp-on`** \| **`bp-off`** | saving a change to a program file, and compiling and cataloguing |
 | **`dict-on`** \| **`dict-off`** | saving a change to a dictionary |
-| **`net-on`** \| **`net-off`** | the right to use a server defined for SDNet (see *The NET switch*; it does nothing yet) |
+| **`net-on`** \| **`net-off`** | the right to use a server defined for SDNet (see *The NET switch*) |
 | **`shared-read-on`** \| **`shared-read-off`** | opening the files of the `shared` account by name. **On unless the field says no** (see *The shared account*) |
 | **`shared-write-on`** \| **`shared-write-off`** | writing to the files of the `shared` account. Off unless the field says yes |
 | **`files-on`** \| **`files-off`** | the files-only API login: membership of the Linux group `sdfiles` (see *The files-only route*). Independent of `ssh`/`api`/`both`/`none`: those words leave it alone |

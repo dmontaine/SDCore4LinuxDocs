@@ -3,30 +3,31 @@ Subtitle: The NET switch and the server definitions: what is in place for files 
 
 SDNet is the name for opening a file that lives on **another SD server** and using
 it with `READ`, `WRITE`, `SELECT` and `LIST` as if it were local. **This release
-has the first slices only: the permission, the list of servers, one
-connection that `set.server` can make so that it can show you a server's key hash,
-and a person's own login on a server (`set.netlogin`), kept as values derived from
-the password and never as the password. On the server side there is now also a
-second, narrower API route, `sdfiles`, which lets a login work with files and do
-nothing else. Nothing uses a stored login yet, and no remote
-file can be opened.** The switch, the definitions, the logins and the files-only route
-are in place so that the work that follows has something to stand on, and so that you
-can see, and set, what it will be allowed to use.
+has the permission (the NET switch), the list of servers, a person's own login on a
+server (`set.netlogin`, kept as values derived from the password and never as the
+password), and a VOC pointer of type `N` that opens a file on a defined server: for
+reading, selecting and querying, and, only for a server defined `write` whose
+administrator has also put the remote user in the Linux group `sdfileswrite`, for
+writing and locking.** On the server side there is a second, narrower API route,
+`sdfiles`, which lets a login work with files and do nothing else. **It has been run
+in private sandboxes against a test server; a first witness on a real installed server
+found and fixed defects but is not finished, and no two real machines have been
+connected by this route yet** (see "What was and was not confirmed" below). The pieces
+that are not there are listed under "What does not exist yet".
 
 An earlier SDNet was removed on 9 September 2026 (a `server;file` VOC entry over
 port 4245, with each server's password in `sd.conf`, which any local user could
 read). **This is not that.** Nothing from it is back: there is no `;` in a path, no
 port 4245 and no password in any file.
 
-## What SDNet is planned to be
+## What SDNet is
 
-Planned, not built yet:
-
-- **Files on another SD server, read only first.** Writing would come later and
-  only for a server that SDSYS marks `write`.
-- **The same channel as the API.** The connection would be the target server's
-  own API port, TLS 1.3 with the SCRAM login bound to the TLS session, and no
-  new listener. A full SD Core listens for the API on 4247; a Solo on 4249.
+- **Files on another SD server, read only unless two people say otherwise.** A server is
+  `read` unless SDSYS defines it `write` on the client, and the administrator of the
+  *target* must also allow writing for that remote user (`sdfileswrite`).
+- **The same channel as the API.** The connection is the target server's own API port,
+  TLS 1.3 with the SCRAM login bound to the TLS session, and no new listener. A full
+  SD Core listens for the API on 4247; a Solo on 4249.
 - **Delivered off, and loosened by SDSYS.** The switch is off for every account,
   the list of accounts allowed to use a server is empty, and a server is
   `read` unless SDSYS says otherwise. SDSYS turns each on, one account and one
@@ -54,17 +55,16 @@ gates they ask are described below. Commands are shown here in lower case.
 
 ### What does not exist yet
 
-- **The connection, apart from two.** The only things in SD that open a socket to
-  a server are `set.server` with the word `connect`, once, for the handshake
-  alone, and `set.netlogin`, once, for the login exchange (both below). No verb,
-  statement or program opens a socket to a server *defined* here for any other
-  purpose. A definition is a record on disk and nothing reads it but these
-  verbs.
+- **A connection that is not one of three.** The only things in SD that open a socket
+  to a server are `set.server` with the word `connect`, once, for the handshake
+  alone, `set.netlogin`, once, for the login exchange, and opening a remote file
+  through an `N` pointer (all below). No other verb, statement or program dials a
+  server *defined* here. A definition is a record on disk and nothing reads it but
+  these.
 - **A check that a typed pin is right.** When you type the 64 digits, nothing
   connects and nothing checks them; use `connect` to have the server's own hash
-  shown to you. `set.netlogin` does compare the key the server presents with the
-  definition's pin, before it sends anything, but nothing else yet checks a pin
-  on a later connection, because there is no later connection.
+  shown to you. `set.netlogin` and every remote open compare the key the server
+  presents with the definition's pin before they send anything.
 - **Using the login, apart from a remote file.** The only thing that reads a stored
   login to log in is opening a remote file through an `N` pointer (below).
   `set.netlogin` proves the login works once, at the moment it is made, and keeps
@@ -97,11 +97,12 @@ gates they ask are described below. Commands are shown here in lower case.
 **Nothing a user can type chooses a host.** The only machines SD will ever be
 asked to call are the ones SDSYS has written down, and only SDSYS can write them:
 the file is replaced only by these verbs, and the verbs are SDSYS's. A program
-cannot define, change or point at a server. (The one connection that exists
-today is SDSYS's own: `set.server ... connect` dials the host SDSYS typed, for a
-handshake, and sends nothing.) Two things must then both be true
-before an account could use one: it has the NET switch (off by default), and it
-is named in that server's *accounts* list (empty by default). Neither is a
+cannot define, change or point at a server. (`set.server ... connect` is the one
+connection that takes a host as typed: it dials the host SDSYS typed, for a
+handshake, and sends nothing. Every other connection goes to a defined server.)
+Two things must then both be true before an account can use one: it has the NET
+switch (off by default), and it is named in that server's *accounts* list (empty
+by default). Neither is a
 judgement that nobody should have the capability; each is a decision about who
 decides, and it is yours.
 
