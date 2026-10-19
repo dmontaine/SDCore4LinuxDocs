@@ -308,6 +308,22 @@ says nothing at all and returns to TCL.
 > overwrite**, and so do `FD` and `DELETE`. Written back to their own record
 > they ask nothing at all, which is what lets `ed` be driven from a script.
 
+**If `ed`'s input ends** (a pipe that has been used up, as in a script or a test; a
+terminal does not end like this), `ed` leaves the record the way `Q` does when it
+is answered `Y`, and asks nothing, because nobody is there to answer: **a change
+that was not filed is not saved**, the record is not written, and its lock is given
+back. It does not go on to the next record of a list of names, of a select list or
+of the `Record name?` prompt. A question that is being asked at that moment (an
+overwrite, `FD`, a block action, `Record changed - OK to quit?`) is answered *no*,
+as Enter answers it, so the end of the input never deletes or overwrites a record.
+The start-line and end-line questions of `LOAD` and `UNLOAD` are different: Enter
+takes their default (the whole record), and the end of the input is not an Enter,
+so the command is cancelled and `UNLOAD` writes nothing. A script that wants its
+work kept ends with `FI` (or `SAVE`). An empty Enter at the `----:` prompt on a
+terminal is still an empty command and shows the next line. Before 19 October 2026
+such a session went on for as long as it was left, printing the prompt without end
+and using all of a CPU.
+
 ### `XEQ` runs a TCL command without leaving the editor
 
 `@FILE`, `@ID` and `@LINE` are substituted, so a command can be about whatever
