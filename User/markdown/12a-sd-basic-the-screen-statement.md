@@ -516,7 +516,7 @@ field 3 its data.
 | `resize` | the terminal's window changed size; the form has been drawn again at the new size | | the width, a value mark and the height |
 | `cancel` | Esc, or the form's cancel button | the button, if any | |
 | `timeout` | no key came in time | | |
-| `end` | the input ended | | |
+| `end` | the input ended, whether or not the statement has a `timeout` (before 19 October 2026 a wait with a timeout answered `timeout` instead, again and again) | | |
 
 `then` is taken for `button`, `change`, `focus`, `key` and `resize`; `else` for `cancel`,
 `timeout` and `end`. Esc does **not** close the form here: the program decides. An
@@ -639,6 +639,12 @@ reset command).
   again, and a form being waited on gives a `resize` event. Text written with `print` or
   `crt` is lost, as for `screen refresh`, and a program that placed things by the old
   size must lay them out again (`screen refresh returning` says `resized`).
+- **It imposes no window size and no lock on your program.** Ask for the size you need with
+  `minsize`; a window that becomes smaller later cuts what falls outside it (cells outside the
+  window are dropped, not wrapped) and your program keeps its keys. SD's own full-screen
+  programs (SED, the IDE, CED) are laid out for 140 by 42 and, when their cursor is off the
+  screen, take the keyboard behind a warning until the window is made bigger or you press
+  Ctrl-Q, y; the library routines that do it are SD's own and are not a statement.
 - A table sorts what it *shows*, never the rows you gave it, and a tree is the list of
   nodes you gave it with the depths you gave it: neither is a database view.
 - It has no widget for editing a record with the editor's own commands: `screen memo` has

@@ -48,11 +48,14 @@ The depth stayed at 9999 because only the width was given.
 **SD asks the terminal how big it is.** When a session starts on a terminal, and
 again each time the window is resized, SD reads the size of the window and makes
 it the page: `@crtwide` and `@crthigh` follow it, and so does `term`. A program
-that draws a screen — the SCREEN statement, CED, the debugger — sees an 80 × 24
-window as 80 × 24. (**SED is the exception: it is 140 × 42 always**, SD's
-default size, and refuses a window smaller than that; if the window is made
-smaller while it runs, it shows the upper left corner and stops taking keys while
-the cursor is off the screen — see the SED page.)
+that draws a screen — the SCREEN statement — sees an 80 × 24 window as 80 × 24.
+(**SD's own full-screen programs are the exception: SED, the IDE and CED are
+laid out for 140 × 42 or more**, SD's default size, and refuse a window smaller
+than that; the debugger's full-screen display says so and is line by line
+instead. If the window is made smaller while one of them runs, it shows the
+upper left corner and stops taking keys while the cursor is off the screen — see
+the SED page. A `screen open` program of your own asks for the size it needs
+with `minsize`, and SD asks nothing more of it.)
 
 **SD's default is 140 columns by 42 lines, not 80 × 24** (it was 120 by 36
 until 18 October 2026). It is what a session gets when there is no terminal to

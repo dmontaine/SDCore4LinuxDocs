@@ -387,6 +387,25 @@ definition has `smcup` and `rmcup`. Then:
 - **F1** shows the help in a box, **F4** shows the program's own screen until
   you press a key, and Page Up and Page Down move the source.
 
+**The full-screen display is laid out for 140 columns by 42 lines or more**
+(since 18 October 2026; a bigger window is used whole). **On a window smaller
+than that the debugger does not refuse: it says why, once, and is line by line
+for the session** — *The debugger needs a window of at least 140 columns by 42
+lines for its full-screen display; this one is 100 by 30, so it is using line
+mode* — because a small window is no reason to take away the way to debug a
+program. The window measured is the one on the screen, or the display `term w,h`
+gave if that is smaller. The choice is made at the first stop of a session.
+
+If the window is made smaller **while the full-screen display is up**, the debugger
+lays itself out again within a second and shows the **upper left corner** of its
+140 by 42 layout and nothing past the edge, and draws everything again when the
+window is made bigger. The command line is on the last row, so a window under 42
+lines does not show where you type: the debugger then does not take keys. A
+warning in reverse video fills the upper left, every key is thrown away, it goes
+by itself when the window is big enough, and **Ctrl-Q, then y** leaves the
+debugger the way F3 (Stop) does. A window narrower than 140 but 42 lines or more
+high shows the left part of the lines and works as usual.
+
 The program's own screen is kept by the terminal (that is what the alternate
 screen is): when you let the program run, the debugger gives the terminal back
 and the program's output is on its own screen, and it is on the alternate

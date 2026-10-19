@@ -51,6 +51,19 @@ row. The path of the level is on the line near the bottom, and the last line giv
 messages. Questions — a new value, a name, a type, *Save changes?* — are asked in
 small boxes over the list.
 
+**The screen is laid out for 140 columns by 42 lines or more** (a bigger window
+is used whole), and since 18 October 2026 **a window smaller than that is
+refused**, before any record is touched, in words (*CED needs a window of at least
+140 columns by 42 lines; this one is 100 by 30*); `!ced()` refuses the same way,
+prints the message and returns, and the program goes on. If the window is made
+smaller while CED is open it shows the **upper left corner** of the layout and
+nothing past the edge, and draws everything again when the window is made bigger.
+While the selected row is **off the screen** CED does not take keys: a warning in
+reverse video fills the upper left, every key is thrown away, it goes by itself
+when the window is big enough, and **Ctrl-Q, then y** leaves CED with nothing
+kept; the record is unlocked. [SED](27a-sd-tcl-sed.html) describes the lock in
+full.
+
 ## The keys
 
 | | |

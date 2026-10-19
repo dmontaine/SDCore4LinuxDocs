@@ -87,6 +87,11 @@ time-out can still fire: SED notices a new window size at the next key rather
 than within a second, and the warning goes at the first key after the window is
 big enough.
 
+**If SED's input ends** (a pipe that has been used up, as in a script or a test; a
+terminal does not end like this), SED leaves in the same way as after *y* above: the
+record unlocked, the screen cleared, nothing asked, and any change not saved. Before
+19 October 2026 such a session went on for as long as it was left, using all of a CPU.
+
 ## The menus
 
 **F10, or Esc pressed on its own, opens the menu bar.** Left and right move
