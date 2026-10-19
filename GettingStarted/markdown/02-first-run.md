@@ -131,7 +131,7 @@ Two things about that line, and each has caught people out:
 
 | | |
 |---|---|
-| the `ssh` word | **every new account starts with no ssh, no API, no shell and no `OS.EXECUTE`** — yours too, the account the installer made for you. `ssh` gives Jane the ssh route she needs in step 7; add `api`, `sh-on` or `os-on` for the others (`create.account user jane ssh sh-on`), or turn any of them on later with `modify.account`. The same goes for saving a change to a VOC, a program file or a dictionary: `voc-on`, `bp-on` and `dict-on` allow it, one each, and until then the account can read them but not change them or compile programs. See [Accounts](05-account-types.html) |
+| the `ssh` word | **every new account starts with no ssh, no API, no shell and no `OS.EXECUTE`** — yours too, the account the installer made for you, unless you answered `y` to the installer's question about opening every access gate for your own account. `ssh` gives Jane the ssh route she needs in step 7; add `api`, `sh-on` or `os-on` for the others (`create.account user jane ssh sh-on`), or turn any of them on later with `modify.account`. The same goes for saving a change to a VOC, a program file or a dictionary: `voc-on`, `bp-on` and `dict-on` allow it, one each, and until then the account can read them but not change them or compile programs. See [Accounts](05-account-types.html) |
 | it needs SDSYS | creating a Linux user account cannot be done from any other identity |
 
 You will be prompted for Jane's password, masked. **Refusing the prompt
