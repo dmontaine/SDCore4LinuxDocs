@@ -74,7 +74,7 @@ not refused — the name is simply not recognised.**
 | **`copy.listp`** | **`copy.listp`** {{**`dict`**} *file*} {*name* … \| **`*`**} {**`(`***options*} |  |
 | **`copyp`** | **`copyp`** {**`dict`**} *file* *id* … {**`(options`**} |  |
 | **`count`** | **`count`** {**`dict`**} *file* {*selection*} |  |
-| **`create.account`** | **`create.account user`** *name* {**`ssh`** \| **`api`** \| **`both`** \| **`none`**} {**`sh-on`**} {**`os-on`**} {**`voc-on`**} {**`bp-on`**} {**`dict-on`**} {**`shared-read-off`**} {**`shared-write-on`**} {**`net-on`**} {**`files-on`**} {**`no.query`**}  ·  **`create.account group`** *name* {**`shared-read-off`**} {**`shared-write-on`**} {**`no.query`**}  ·  **`create.account other`** *name* *pathname* {**`shared-read-off`**} {**`shared-write-on`**} {**`no.query`**} | S |
+| **`create.account`** | **`create.account user`** *name* {**`ssh`** \| **`api`** \| **`both`** \| **`none`**} {**`sh-on`**} {**`os-on`**} {**`voc-on`**} {**`bp-on`**} {**`dict-on`**} {**`shared-read-off`**} {**`shared-write-on`**} {**`net-on`**} {**`files-on`**} {**`files-write-on`**} {**`no.query`**}  ·  **`create.account group`** *name* {**`shared-read-off`**} {**`shared-write-on`**} {**`no.query`**}  ·  **`create.account other`** *name* *pathname* {**`shared-read-off`**} {**`shared-write-on`**} {**`no.query`**} | S |
 | **`create.file`** | **`create.file`** {**`dict`**} *voc.name* {**`directory`**} {*parameters*} |  |
 | **`create.index`** | **`create.index`** *file* *field* … {**`no.nulls`**} {**`pathname`** *path*} |  |
 | **`cs`** | **`cs`** — the same verb as **`clr`** |  |
@@ -146,7 +146,7 @@ not refused — the name is simply not recognised.**
 | **`merge.list`** | **`merge.list`** *list.no* *rel.op* *list.no* {**`to`** *list.no*} {**`count.sup`**} |  |
 | **`message`** | **`message`** *user.no* {**`immediate`**} {*text*} |  |
 | **`micro`** | **`micro`** {**`dict`**} *file* *record* |  |
-| **`modify.account`** | **`modify.account`** *account* **`add`** \| **`delete`** *user*  ·  *account* **`ssh`** \| **`api`** \| **`both`** \| **`none`**  ·  *account* **`sh-on`** \| **`sh-off`** \| **`os-on`** \| **`os-off`**  ·  *account* **`sd-on`** \| **`sd-off`**  ·  *account* **`voc-on`** \| **`voc-off`** \| **`bp-on`** \| **`bp-off`** \| **`dict-on`** \| **`dict-off`**  ·  *account* **`net-on`** \| **`net-off`**  ·  *account* **`shared-read-on`** \| **`shared-read-off`** \| **`shared-write-on`** \| **`shared-write-off`**  ·  *account* **`files-on`** \| **`files-off`**  ·  *account* **`suspended`** \| **`unsuspended`** | S |
+| **`modify.account`** | **`modify.account`** *account* **`add`** \| **`delete`** *user*  ·  *account* **`ssh`** \| **`api`** \| **`both`** \| **`none`**  ·  *account* **`sh-on`** \| **`sh-off`** \| **`os-on`** \| **`os-off`**  ·  *account* **`sd-on`** \| **`sd-off`**  ·  *account* **`voc-on`** \| **`voc-off`** \| **`bp-on`** \| **`bp-off`** \| **`dict-on`** \| **`dict-off`**  ·  *account* **`net-on`** \| **`net-off`**  ·  *account* **`shared-read-on`** \| **`shared-read-off`** \| **`shared-write-on`** \| **`shared-write-off`**  ·  *account* **`files-on`** \| **`files-off`** \| **`files-write-on`** \| **`files-write-off`**  ·  *account* **`suspended`** \| **`unsuspended`** | S |
 | **`modify.password`** | **`modify.password`** {*account*} |  |
 | **`move.list`** | **`move.list`** *n* **`to`** *m* {**`keep`**} |  |
 | **`nano`** | **`nano`** {**`dict`**} *file* *record* |  |

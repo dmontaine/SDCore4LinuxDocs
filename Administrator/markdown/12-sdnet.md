@@ -10,10 +10,12 @@ reading, selecting and querying, and, only for a server defined `write` whose
 administrator has also put the remote user in the Linux group `sdfileswrite`, for
 writing and locking.** On the server side there is a second, narrower API route,
 `sdfiles`, which lets a login work with files and do nothing else. **It has been run
-in private sandboxes against a test server; a first witness on a real installed server
-found and fixed defects but is not finished, and no two real machines have been
-connected by this route yet** (see "What was and was not confirmed" below). The pieces
-that are not there are listed under "What does not exist yet".
+in private sandboxes against a test server, and on one real installation with the same
+machine as the server and the client (the loopback address), on 18 October 2026: the
+open, the login, remote queries, writes and locks, a lost connection and the refusals
+below. No two real machines have been connected by this route yet** (see "What was and
+was not confirmed" below). The pieces that are not there are listed under "What does not
+exist yet".
 
 An earlier SDNet was removed on 9 September 2026 (a `server;file` VOC entry over
 port 4245, with each server's password in `sd.conf`, which any local user could
@@ -69,11 +71,13 @@ gates they ask are described below. Commands are shown here in lower case.
   login to log in is opening a remote file through an `N` pointer (below).
   `set.netlogin` proves the login works once, at the moment it is made, and keeps
   the result.
-- **A client that uses the files-only route.** The server now has the route (below)
+- **A way to make the client use only the files-only route.** The server has the route
+  (below), the client that opens remote files asks only for requests the route allows,
   and the person who runs the other server can give the remote user `files-on` instead
   of `api`. But `set.netlogin` does not require it, and **the only client use of a stored
-  login is opening a remote file, which has been run only against a test server**, so
-  no two real machines have connected by this route. A
+  login is opening a remote file, which has been run against a test server and on one
+  real installation over the loopback address**, so no two real machines have connected
+  by this route. A
   remote user who is in `sdapi` still has the whole API, and so does a stored login
   made for that user: whoever holds the file can do on that server what that remote
   user can do over the API. Give the remote user `files-on` and not `api`, or choose
@@ -89,8 +93,13 @@ gates they ask are described below. Commands are shown here in lower case.
   reading, selecting and querying (see "Remote files, read only" below), and, only
   for a server defined with `write`, for writing and locking (see "Writing and
   locking"). Indices, file locks and anything that makes or deletes a file are refused.
-- **`NETFILES`** in `sd.conf` is still accepted and still does nothing (see
-  [SD Admin Configuration](07-sd-admin-configuration.html)).
+- **`NETFILES`** in `sd.conf` is not what this uses. Opening a remote file through an
+  `N` pointer does not read it. The one thing that does is the API server's old request
+  29, "open an SDNet file": it needs bit 2 of `NETFILES` and, since 18 October 2026,
+  the same account rules as `logto` and the account's NET switch, and a files-only login
+  can never make it (see [SD Admin Configuration](07-sd-admin-configuration.html)).
+  What you can set in `sd.conf` for SDNet is the two waits, `NETWAIT` and `NETREPLY`
+  (below).
 
 ## The security model
 
@@ -224,7 +233,8 @@ set.server name host port account connect {read | write} {accounts a,b,c} {no.qu
    already defined and `no.query` was not given, the replacement question is
    asked **before any connection**, so answering no (or ending the input)
    dials nothing.
-3. SD opens a **TLS connection to *host*:*port*, waiting at most 5 seconds**, and
+3. SD opens a **TLS connection to *host*:*port*, waiting at most `NETWAIT` seconds (5
+   unless `sd.conf` says otherwise; see "The two waits")**, and
    reads the SHA-256 hash of the public key the server presented. It closes the
    connection at once. **It is a handshake only: nothing is sent to the server.**
 4. SD shows the hash and asks you to trust it. The answer defaults to no, and so
@@ -314,8 +324,11 @@ What was and was not confirmed about that command, so you can weigh it:
   independent computation (the key's DER bytes hashed in Python) on a test
   certificate, and the figure `set.server ... connect` shows for a local TLS 1.3 test
   server equals the same computation.
-- **Not confirmed:** the pipeline has not been run against a live SD server and its
-  output compared with what `set.server ... connect` shows. They should agree,
+- **Not confirmed:** neither the pipeline nor `sd-elevate tls-key` has been run on a real
+  server and compared with what `set.server ... connect` showed there. (`connect` itself
+  worked against a real server on 18 October 2026, and the hash it showed was used as the
+  pin for everything that followed. The owner-run step `gplbld/witness-sdnet-files-route.sh`,
+  row S4, makes exactly this comparison, and has not been run yet.) They should agree,
   and if they do not, trust neither until you know why. The file is made by the
   API's first TLS connection, so a server that has never taken one has no
   `api.pem` yet. Where the identity of a Solo server is kept was not checked, and
@@ -325,7 +338,7 @@ What was and was not confirmed about that command, so you can weigh it:
 
 | you see | meaning |
 |---|---|
-| `Cannot connect to host:port (status n, os error m).  Nothing was written` | the connection was not made: nothing is listening there, the address is wrong, or the 5 seconds passed (the operating system's error for a timeout, 110, is what is expected) |
+| `Cannot connect to host:port (status n, os error m).  Nothing was written` | the connection was not made: nothing is listening there, the address is wrong, or `NETWAIT` seconds passed (the operating system's error for a timeout, 110, is what is expected) |
 | `The TLS handshake with host:port did not complete.  Is that the API port of an SD server?  Nothing was written` | something answered, but it did not complete a TLS handshake: most likely the port is not an SD server's API port |
 | `host:port completed the handshake but gave no public key hash.  Nothing was written` | a TLS session was made but no hash could be read from it |
 
@@ -336,7 +349,7 @@ and an address that does not answer.
 
 **One thing to know about the lock.** The definitions are locked from the time
 they are read until the answer is acted on, which includes the connection (up to
-5 seconds) and the time you take to answer. A second administrator session that
+`NETWAIT` seconds, 5 unless changed) and the time you take to answer. A second administrator session that
 changes the definitions meanwhile is told to try again. The lock is so that the
 definition cannot change between the confirmation and the write.
 
@@ -512,7 +525,7 @@ nothing; the prompts come after them; the network comes after the prompts.
    dots, underscores and hyphens, up to 32) ends the command before the password is
    asked. An empty password, or input that ends, ends it too.
 8. **One TLS connection** to the host and port of the definition, waiting at most
-   5 seconds.
+   `NETWAIT` seconds (5 unless changed).
 9. **The key the server presents is compared with the pin, before anything is
    sent.** A different key ends the command with nothing sent and the password
    still unspent.
@@ -542,7 +555,7 @@ because the person has just proved the new one.
 | `The administrator has no Linux login of its own to keep a server login in.  Use an ordinary user's account` | the session is `sdsys` (or `root`) |
 | `The directory for your server logins is not ready or is not private (...).  Nothing was done` | `netcred-dir` failed (for example the sudo permission is missing, or this installation has not been brought up to date) or the directory failed the private check; the text in the brackets is the helper's last line, cleaned |
 | `The remote user name is not valid (...)` / `A password is required.  Nothing was changed` | the prompts |
-| `Cannot connect to host:port (status n, os error m).  Nothing was sent or stored` | nothing is listening, the address is wrong, or the 5 seconds passed |
+| `Cannot connect to host:port (status n, os error m).  Nothing was sent or stored` | nothing is listening, the address is wrong, or `NETWAIT` seconds passed |
 | `The TLS handshake with host:port did not complete.  Nothing was sent or stored` | something answered but not with TLS |
 | `The server at host:port gave no public key hash.  Nothing was sent or stored` | a session was made but no hash could be read |
 | `The key presented by host:port is not the key in the definition of server x.  Nothing was sent to it and nothing was stored.  It is not the server that was defined, or its key was renewed` | the pin check. If the other server really did get a new key, define the server again (with `connect`) and then run `set.netlogin` again |
@@ -617,14 +630,19 @@ the directory step (check 6) with a message that includes sudo's own refusal.
   audit words, the layout of the file and the SD_FILE_PRIVATE rules. **Confirmed
   by test (no SD needed):** `sd-elevate netcred-dir` through `--dry-run`, every
   refusal it makes, and the sudoers line parses.
-- **Not confirmed:** `set.netlogin`, `delete.netlogin` and `$netcred` have not
-  been run against a live server. The exchange was written to follow the API
-  client's `scram.login` step for step, and nothing about it has been seen to
-  work yet, in particular the full login against a second server on a real
-  network. `SD_FILE_PRIVATE` has not been run, and neither has a real (not
-  `--dry-run`) `netcred-dir`: that the directory appears, that a second run
-  changes nothing, and that its owner and mode are right are not seen. The
-  sudoers permission has not been tried on an installed system.
+- **Confirmed on a real installation (18 October 2026, the same machine as the server
+  and the client, over the loopback address):** `set.netlogin` made a login against the
+  installed server, with the server's signature checked; `$netcred` read it back to open
+  remote files; the real `netcred-dir` made `/var/lib/sd-net/<user>` owned by the user,
+  mode 700 (the user on that machine had passwordless sudo, so the line of
+  `/etc/sudoers.d/sdcore` that grants this one command was not what was tested); and a login made for a pin that the
+  definition no longer had was refused with "The stored login for server ... was made for
+  a different server key than the definition has now".
+- **Not confirmed:** the full login against a *second* machine on a real network, and the
+  channel binding against an interposed machine (the test server cannot compute it, so
+  the only positive case seen is the real server's own). `delete.netlogin` on a real
+  installation, a second run of `netcred-dir` that changes nothing, and the
+  sudoers line for a user without passwordless sudo were not looked at.
 
 ## The files-only route on a server
 
@@ -685,22 +703,39 @@ to let that login do.
   first". `create.account user` *name* `files-write-on` without `files-on` is refused
   the same way before anything is made. A group or other account is refused as for
   `files-on`.
-- **`files-off` takes the person out of `sdfileswrite` too**, so a later `files-on`
-  does not hand the write back without you saying so.
+- **`files-off` takes the person out of `sdfileswrite` too, and first**, so a later
+  `files-on` does not hand the write back without you saying so. It removes the write
+  group, reads it back, then removes `sdfiles` and reads that back, and it does the work
+  for a person who is in only one of the two: a person who is in `sdfileswrite` and
+  not in `sdfiles` (a removal that stopped half way, or a change made by hand) is
+  taken out of it, where the first release told them "already had that access" and
+  left the membership in place to become write access at the next `files-on`. If a
+  removal fails the command says so ("Unable to change remote access for *name*,
+  status: *n*") and stops: a failure of the write group's removal leaves the person
+  exactly as they were, and a failure of the second removal leaves them in `sdfiles`
+  alone, with read access and never write access without read. When the write group went
+  a line `Account fred has files-write no` comes before `Account fred has files no`.
+  `files-on` removes a leftover `sdfileswrite` membership **before** it adds `sdfiles`,
+  and stops with the same failure message if it cannot.
 - **What it changes.** Without it a files-only login is refused: write (16), writeu (17),
   delete (18), deleteu (19), lock record (30), clearfile (31), file lock (32) and file
   unlock (33), the four locking reads (7 to 10), and a `READV` with a lock flag. They are
-  answered "This login can read files but is not allowed to change them (the
-  administrator of this server can allow it: modify.account *account* files-write-on):
-  request *n* is not allowed" and **nothing is carried out**. Reads, selects, `READV` without
+  answered "This login cannot change or lock files here: ask the administrator for
+  files-write-on (request *n*)" and **nothing is carried out**. Reads, selects, `READV` without
   a lock, file information, the indices, a test of a lock and `RELEASE` still work.
 - **`sdapi` is not touched.** A remote user in `sdapi` has the whole API as before, with
   or without the write group, and `sdsys` is never made files-only.
 - **The refusal is in the audit trail of the target**, in lower case:
   `api refused request=16 route=sdfiles write=off user=name`, and a login by this route is
   written `api login route=sdfiles write=on user=name` or `write=off`. **The person at the
-  client sees only that the change failed** (message 11500 with status 0 for the
-  statement or call), not the target's text; the reason is on the target.
+  client is told why**: a program that does not trap the error with `ON ERROR` stops with
+  message 11500, "Server *name* answered *write* with an error: This login cannot change or lock files
+  here: ask the administrator for files-write-on (request 16)". (Before 19 October 2026 the
+  client showed "status 0" for every `ON ERROR` reply and never its text. It now shows the
+  text of any such reply that has one, cut at 100 characters, which is why the message was
+  shortened from 175 characters to 98; a reply with no text still shows "status *n*".) A
+  program that traps the error with `ON ERROR` sees `STATUS()` 7000, as before. The audit
+  trail on the target also has the request number.
 - **The group is read at login**, from `/etc/group`, so a change takes effect at the
   person's **next** login on that server, and a refusal to read the group file refuses
   the login with its own reason.
@@ -718,14 +753,14 @@ account. An administrator who wants an SDNet login for a person on another SD se
 creates it there with `create.account user` *name* `files-on` (no `api`; add `files-write-on` only if the person is to change files there), then gives
 the name and the password to the person, who runs `set.netlogin` here.
 
-**The client.** The SDNet client (a later slice) is meant to log in with the stored
-login and use only the requests this route allows, so that it needs no more than
-`sdfiles`. **That client does not exist yet.** Today `set.netlogin` makes the login
-exchange as it always did, which does not depend on the route: the server decides
-the route at the end of the exchange, and a remote user in neither group is refused
-there (so `set.netlogin` should say "The server refused the login"; read off the
-source, not seen). That a `set.netlogin` made against a
-user who is only in `sdfiles` succeeds has not been tried.
+**The client.** The SDNet client logs in with the stored login (made by
+`set.netlogin`) and uses only the requests this route allows, so that it needs no more
+than `sdfiles`, plus `sdfileswrite` for a server defined `write`. Opening a remote file
+through an `N` pointer is the client. `set.netlogin` itself makes the login exchange as it
+always did, which does not depend on the route: the server decides the route at the end of
+the exchange. **Seen on a real installation (18 October 2026, loopback):** a `set.netlogin`
+made against a user who is only in `sdfiles` succeeded, and remote reads, queries, writes
+and locks then worked for that user once it was also in `sdfileswrite`.
 
 **On the machine being reached:** the group `sdfiles` is made, empty, by the
 installer beside `sdssh` and `sdapi`. An installation made before this release has
@@ -743,12 +778,25 @@ nothing. The API listener has to be on (`remote.api`), as for any API login.
   **Confirmed by test (no SD, no install):** the helper's rules for the group
   (180 rows as an ordinary user, and 8 mutants of them killed), and the free checks
   that read the source as text.
-- **Not confirmed:** none of the SD programs for the route (`apisrvr`, `apifilesok`,
-  `modifya`, `createa`, `create_account`, `acc_os_info`, `restorea`) has been compiled
-  or run. **The login itself with a user in `sdfiles`, the refusal of a request on a
-  live session, the membership read at login, `files-on` and `files-off` against a
-  real group file, and the installer making the group have not been seen to work.**
-  Treat the route as unproved until they have.
+- **Seen on a real installation (18 October 2026; the same machine as the server and the
+  client, over the loopback address; the Dev branch at commits `5315c65` and `c42aa13`):**
+  a user in `sdfiles` logging in and working with files; the installer making
+  `sdfiles` and `sdfileswrite`; `create.account user ... files-on` and
+  `modify.account ... files-write-on` changing the real groups, with the line read back
+  from them; the refusal of the requests the route does not allow, with the audit lines
+  (`api refused request=N route=sdfiles write=off user=...`); the write group read at login,
+  so that the same programs that were refused worked after `files-write-on`; a login
+  removed from both groups being refused. The log of a full `deletesdcore`
+  on the same machine on 19 October says it removed `sdfiles` and `sdfileswrite`, and one
+  that kept the accounts kept them.
+- **Not seen:** `files-off` with a person in `sdfileswrite` on a real group file
+  (changed on 19 October and run only against a scratch group file and a stand-in for the
+  helper); TLS 1.2 being refused by the API port; requests 20 to 23, 29, 54 and 61 refused
+  on a real files-only login (the others, 7 to 10, 16 to 19 and 30 to 31, were); an
+  installer run over an installation that has `sdfiles` and not `sdfileswrite`; the archive
+  round trip for a person in `sdfileswrite`; and anything between two machines. Three
+  scripts in `gplbld` (`witness-sdnet-writegroup.sh`, `witness-sdnet-files-route.sh` and
+  `witness-sdnet-gaps.sh`) are written for the owner to run on an installation to see them.
 
 ## Remote files, read only
 
@@ -820,8 +868,23 @@ the requests of a `SORT`; it does little for a `LIST` that reads every record on
 
 **What is not here yet:** select by index and the server's indices, and saved lists on the
 remote side.
-**What was not confirmed:** everything above was run in a private sandbox against a fake
-server written for the tests; no two machines have talked to each other yet.
+**What was confirmed:** all of it was run in a private sandbox against a fake server written
+for the tests, and on 18 October 2026 on one real installation (the same machine as server and
+client): `COUNT`, `LIST`, `LIST DICT` and `SORT` on a remote file, the opening of its dictionary,
+a read-only definition refusing a write, and a definition whose pin the stored login was not
+made for being refused before anything was sent. **Not confirmed:** anything between two
+machines.
+
+### Which remote files work
+
+A remote file is whatever the remote **account's VOC** names, opened by the server with its
+ordinary `OPEN`, so the rules are the server's. What the client adds is on this page: the
+name is 63 characters or fewer, an id is 1 to 63 characters (anything longer is refused on
+the client before it is sent), and what a program receives is the record the server sends,
+with the marks as the server holds them. Measured against a real server on 19 October 2026
+(the request layer only, not through an `N` pointer): the User set's page 42,
+*Programming with a Remote File*, has the table of what was and was not measured,
+including directory files and the case of ids.
 
 ## Writing and locking: the definition's `write` mode
 
@@ -880,10 +943,51 @@ user names (`ED`, `COPY` and the like) ask the same question.
 before it is changed; a `LIST` or `SORT` over such a file makes about twice the read requests.
 
 **What was and was not confirmed.** All of this was run in a private sandbox against a fake
-server written for the tests (772 rows, including a second session holding a lock, a dropped
-connection before and after a write, and every refusal above). Not measured: the handler
-running inside the recursion that `WRITEV` uses, very large records, how the real server
-releases locks when a process ends, and any run between two machines.
+server written for the tests (834 rows in `gplbld/sandbox-netfile.py`, including a second session holding a lock, a
+dropped connection before and after a write, a reply whose length cannot be true, and every
+refusal above), and the main paths on one real installation over the loopback address on
+18 October 2026. **Seen there (the Dev branch at `5315c65`, before the write group
+existed):** a second session finding a record locked by the first, a connection lost while a
+change was in flight (killed, and stopped, the server's process: no change was sent twice and
+message 11509 came back), `CLEARFILE` of a remote file, a change refused inside
+`BEGIN TRANSACTION`, the edit gates applied by the remote file's name, and the refusals for a
+gate that is off, a definition that says `read`, an account that is not listed, a wrong pin and
+a login removed from its group. **Seen at `c42aa13`, with the write group:** a write refused
+until `files-write-on`, and then `WRITE`, `WRITEU`, `DELETE`, `READU`, `RECORDLOCKU`, `READVU`
+and `CLEARFILE` done on the server's file. **Not measured:** the handler running inside the
+recursion that `WRITEV` uses, `MUSTLOCK` on a real installation (it cannot be set without
+putting every session under it), how the real server releases locks when a process ends other
+than by the cases above, and any run between two machines. The steps for what was not seen are
+in `gplbld/witness-sdnet-*.sh` in the source.
+
+## The two waits: `NETWAIT` and `NETREPLY`
+
+Two settings in `sd.conf` (and readable with `config('NETWAIT')` and `config('NETREPLY')`,
+listed by `config`) say how long SD waits on another server. Both are in **seconds, 1 to
+3600**, and both are per computer, not per server definition:
+
+| setting | what it bounds | default |
+|---|---|---|
+| `NETWAIT` | the connection: `set.server ... connect`, `set.netlogin`, and the first use of a defined server by an `OPEN` of a remote file | 5 |
+| `NETREPLY` | each wait for a reply from the server once connected, in the login and in every request | 30 |
+
+A server that is slower than `NETREPLY` is treated as lost, as it always was (the 30 seconds
+were fixed in the programs); **a changing request that gets no answer is never sent again**
+whatever the setting is. A `CLEARFILE` waits for the longer of five minutes and `NETREPLY`,
+because a big file takes longer than a reply bound. The login exchange of `set.netlogin`
+keeps its own 15 seconds for each packet. **A zero is refused**, and SD does not start with
+`NETWAIT=0` or `NETREPLY=0` in `sd.conf` (openQM reads zero as "wait for ever"; here
+that is never what an administrator of a pinned peer wants). The names are eight characters
+or fewer because `config()` reads no longer one. openQM's `NETDELAY`, which keeps a
+connection open after the last file is closed, is not this and does not exist in SD.
+
+**A reply that cannot be true.** The client reads the length a reply announces before it reads
+the reply. A server that announces less than the ten bytes of its own header, or more than the
+largest string SD can hold (a little over a gigabyte), is treated as a lost connection at once:
+nothing of it is read, a changing request answers 11509 as for any lost reply, and the
+connection is dropped. Before this the client read for as long as the server sent, and waited a
+whole `NETREPLY` for a reply that was never coming. Nothing is refused that a real record could
+need: the ceiling is the size of the largest record.
 
 ## What is audited
 
@@ -928,13 +1032,43 @@ an edit gate) write nothing.
 On the server that is reached, the files-only route writes, in lower case:
 
 ```
-api login route=sdfiles user=reports
-api refused request=20 route=sdfiles user=reports
+api login route=sdfiles write=off user=reports
+api refused request=20 route=sdfiles write=off user=reports
 modify.account files-on account=reports
+modify.account files-write-on account=reports
+api login route=sdfiles write=on user=reports
+api refused user=reports reason=not a member of sdapi or sdfiles
 ```
 
-The first is a successful files-only login, the second a request the route does not
-allow (the number is the request), the third the administrator giving the route.
+The first is a successful files-only login (`write=on` when the person is also in
+`sdfileswrite`, as in the fifth line), the second a request the route does not allow or, for a login
+without the write group, a change or a lock (the number is the request; `write` is the state of the
+login), the third and fourth the administrator giving the route and the write group, and the last a
+login of a person who is in neither `sdapi` nor `sdfiles` (the reason named only `sdapi` until 19
+October 2026; the decision is made on both). All of them are written on the server being reached.
+
+## Steps that are left to run: the owner-run witnesses
+
+Everything above that says "not confirmed" is a step in one of these scripts, in
+`sdb_ai/sd64/gplbld/` of the source repository. **None of them has been run on a real
+installation yet.** Each is run with `sudo` from the owner's login, says on its first lines what
+it changes and puts it back, refuses to start when anything it would make already exists, shows
+the text it got and the real state (the Linux groups, the audit trail, the server's file) next
+to each row, and fails a row whose session printed nothing. Each ends with a log in `/var/tmp`.
+Their programs, helpers and mutants are checked by `gplbld/test-witness-sdnet-units.py` against
+a model of the installation, which says the scripts can fail; it does not say the installation
+does what the model does.
+
+| script | what it shows on a real installation |
+|---|---|
+| `witness-sdnet-files-route.sh` | the whole route on one machine talking to itself: the key shown by `set.server ... connect` equals `sd-elevate tls-key` and the openssl pipeline; reads; every change and lock refused by the server without the write group and the text a person sees (K1); the write group on; two sessions and one lock; `files-write-off`, `files-off` (the audit reason) and `files-on`; the manifest key at each step |
+| `witness-sdnet-writegroup.sh` | `modify.account` `files-on`, `files-off`, `files-write-on`, `files-write-off` against the real `/etc/group`, **including a person in `sdfileswrite` and not in `sdfiles`** and the order of the two group changes |
+| `witness-sdnet-gaps.sh` | TLS 1.2 refused and 1.3 accepted by the API port; the requests a files-only login may never make (20 to 23, 54, 61 and a second 3) refused and audited; `verify-auditwords.py` over the real audit file; backup, delete and restore of an account with the write group off and on |
+| `witness-sdnet-groups.sh` | read from the group file, before and after: the installer over an install that has `sdfiles` but no `sdfileswrite`, and a DELETE cycle that removes the accounts and one that keeps them. It never runs the installer or the uninstaller |
+| `witness-sdnet-two-machines.sh` | two real machines: reachability, the key seen from the other side, the wrong pin refused before anything is sent, the login, a read and a write over the network, two clocks |
+
+`MUSTLOCK` on a remote file has no script: it cannot be set on an installed system without
+putting every session under it, and the sandbox rows are the evidence.
 
 ## See also
 

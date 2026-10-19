@@ -113,7 +113,8 @@ Account fred has SH no, OS.EXECUTE no
 Account fred has VOC.EDIT no, BP.EDIT no, DICT.EDIT no
 Account fred has shared.read yes, shared.write no
 Account fred has NET no
-Account fred has FILES no
+Account fred has files no
+Account fred has files-write no
 ```
 
 **The installing user's own account is no exception**: the account the
@@ -545,10 +546,13 @@ the request, in a line of its own:
 
 ```
 :modify.account fred files-on
-Account fred has FILES yes
+Account fred has files yes
 :modify.account fred files-off
-Account fred has FILES no
+Account fred has files no
 ```
+
+(The word was "FILES" in capitals until 19 October 2026; SD writes a keyword it prints in
+lower case, as the line for `files-write` always did.)
 
 Asking for what is already so changes nothing and says so ("fred already had that
 access; nothing changed"). The change is made by the same privileged helper as the
@@ -568,9 +572,10 @@ end of the login, after the password has been proved:
    marked once, at login, and the mark is never cleared for the life of the
    connection.
 4. A person in **neither** group is refused exactly as before: "*name* is not
-   permitted to use the API", with the reason `not a member of sdapi` in the
-   audit trail. If the group file cannot be read the login is refused, not
-   guessed.
+   permitted to use the API", with the reason `not a member of sdapi or sdfiles` in the
+   audit trail (it said only `not a member of sdapi` until 19 October 2026, although the
+   decision is made on both groups). If the group file cannot be read the login is refused,
+   not guessed, with a reason of its own.
 5. `sdsys` is exempt from both groups by name and keeps the doors it has always
    had; it is never made files-only.
 
@@ -639,10 +644,19 @@ Account fred has files-write yes
 
 `files-write-on` for a person who is not in `sdfiles` is refused ("Account fred does
 not have files access, so it cannot be given files-write: use files-on first"), because
-the group on its own gives nothing; `files-off` takes the person out of both groups. A
-refused change is answered "This login can read files but is not allowed to change
-them (the administrator of this server can allow it: modify.account *account*
-files-write-on): request *n* is not allowed", is not carried out, and goes to the audit
+the group on its own gives nothing; `files-off` takes the person out of both groups.
+**`files-off` takes the write group away first, then `sdfiles`, and reads each back**, and it
+does the work for a person who is in only one of them. A person who is in `sdfileswrite`
+and not in `sdfiles` (a removal that stopped half way, or a change made by hand) used to be
+told "fred already had that access; nothing changed" and kept the membership, which the next
+`files-on` turned into write access nobody had given; that case is now cleaned up, with the
+line `Account fred has files-write no` before `Account fred has files no`. If a removal fails
+SD says so and stops: a failure of the write group's removal leaves the person as they were, and
+a failure of the second removal leaves them in `sdfiles` alone, read access and never write
+without read. `files-on` takes a leftover write membership away before it adds `sdfiles`, and
+stops with the same message if it cannot. A
+refused change is answered "This login cannot change or lock files here: ask the
+administrator for files-write-on (request *n*)", is not carried out, and goes to the audit
 trail as `api refused request=16 route=sdfiles write=off user=fred`; the login line says
 `write=on` or `write=off`. `sdapi` members are not affected. Like `sdfiles`, the group is
 read at login, so a change reaches the person at their next login. The account's manifest
@@ -694,14 +708,18 @@ and creates nothing.
 checks that read it as text: the order of the checks in the login, that the gate
 sits in the request loop before the dispatch, the table of numbers, the helper's
 rules for the group and its refusals (`sd-elevate`, by test as an ordinary user, with
-mutants), and the wording of the messages. **Not run at all: the login itself with a
-real user in `sdfiles`, the group membership read at login, the refusal of a
-request on a live session, `modify.account files-on` and `files-off` against a real
-`/etc/group`, `create.account ... files-on`, the installer making the group, and the
-archive round trip.** None of the SD programs for the route has been compiled or run
-yet; they need an installation and a second user, and until they have been seen to
-work the route should be treated as unproved. **No client uses the route yet** (see
-SDNet).
+mutants), and the wording of the messages. **Seen on a real installation (18 October 2026,
+one machine as server and client over the loopback address):** a real user in `sdfiles`
+logging in; the group membership read at login (the same programs refused before
+`files-write-on` and working after it); the refusal of requests on a live session with the
+audit lines; `create.account ... files-on` and `modify.account ... files-write-on` against
+the real `/etc/group`; and the installer making the groups. **Run only against a scratch
+group file and a stand-in for the helper (19 October 2026):** `files-off` and `files-on`
+with a person in `sdfileswrite`, including a removal that fails. **Not run on a real
+installation:** that case, the archive round trip for a person in `sdfileswrite`, and the
+refusal of requests 20 to 23, 29, 54 and 61 on a live files-only session. The client that
+uses the route is the SDNet client (see [SDNet](12-sdnet.html)), which has also not been
+run between two machines.
 
 ### VOC pointers: where a file pointer may lead, and which Q-pointers are followed
 
