@@ -282,9 +282,20 @@ with `config('NETFILES')`, and setting it to 2 made `config` show 2. **One
 thing in the source reads it:** the API server's request 29, "open an SDNet
 file", answers "Remote server disallowed access" (7009) unless bit 2 of
 `NETFILES` is set, and the files-only API route refuses request 29 whatever the
-value is. That was read from `apisrvr`; no client function sends request 29,
-so it was not run. The value is 0 unless `sd.conf` sets it, and the installer
-does not, so the request is refused as delivered. Leave it at 0.
+value is. **Setting the bit is no longer enough** (changed 18 October 2026).
+Until then the bit was the whole gate: with it set, any API login could open
+the VOC-named file of *any* account through request 29, including an account it
+could not `logto`, a suspended one, one named by a path and one whose `net-on`
+switch was off, and `SDCLIENT` did not stop it; that was run on a private SD and
+the planted record came back from the disk. The request now also refuses unless
+`SDCLIENT` is 0, the account has a register record (a path names none), the
+caller may enter the account by the same rule as `logto` (a member of its
+group, the account not suspended, the reason never told to the caller), and
+the account's `net-on` switch is on (SDSYS's own account excepted). Each
+refusal is on the audit trail as `api refused request=29 reason=...`. The value
+is 0 unless `sd.conf` sets it, and the installer does not, so the request is
+refused as delivered. Leave it at 0: no client function in this set sends
+request 29.
 
 `FILERULE` is **not** in this list, and is easy to mistake for it. It is a set
 of bits that decide which special VOC names are honoured when the name is not
