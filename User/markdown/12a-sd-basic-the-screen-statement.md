@@ -71,6 +71,16 @@ must survive a dialogue with `screen text`, or `screen refresh` will not bring i
 back. Before `screen open` a dialogue still works, but it leaves blanks where it
 was.
 
+**A form on a screen opened with `clear` writes only what has changed** (since
+19 October 2026). The terminal is then known to show the shadow, so when a form is
+drawn again, or one of its widgets is, the text that is already there in the same style
+is left out; choosing a record in the IDE wrote 6,635 characters to the terminal
+before and about 780 now. Two things follow. A form does not repair what the program
+printed over it with `print` or `crt`, only `screen refresh` does; and a screen opened
+*without* `clear` is written in full, as before, because the terminal may show what the
+program printed there. `screen text`, `screen box` and the dialogues always write what
+they are told.
+
 | | |
 |---|---|
 | `screen open {clear} {nocursor} {minsize w,h} {nomouse} {lines}` | Takes the screen. `clear` clears it (to the theme's desktop colour); `nocursor` hides the cursor; `minsize` gives `else` on a smaller terminal; `nomouse` leaves mouse reporting off (see below); `lines` draws every border in the line-drawing characters of Unicode (see *Borders*). `else` also when there is no terminal. |
@@ -139,7 +149,7 @@ items = 'Open':@vm:'Save':@sm:'':@sm:'save':@sm:'D':@vm:'Autosave':@sm:'':@sm:'a
 ### menu bar
 
 ```
-screen menubar menus {row r} {draw} {returning code}
+screen menubar menus {row r} {draw} {click x} {returning code}
 ```
 
 *menus* has one **field** for each menu: its title, then its entries as values,
@@ -149,6 +159,15 @@ and down between entries, Return chooses, Esc leaves, a letter chooses the entry
 that has it. Clicking a title opens that menu; clicking an entry chooses it;
 clicking anywhere else closes the menus. Entries take the same `D` and `C` flags as
 those of `screen menu`.
+
+**`click x`** is for a program that has been told of a click on a bar that is not open
+(`screen key` gave `mouse` and `screen mouse` says where; a form gives it the same way
+for a click on no widget when the program has asked for those): *x* is the column of the
+click, and the menu whose title is over it opens instead of the first. A column with no
+title over it (the space to the right of the titles) opens nothing, and the statement
+takes `else`. A title is its label with a blank on each side, from column 0.
+A program compiled before 19 October 2026 that uses `screen menubar` must be compiled
+again.
 
 **Submenus.** A menu whose title begins with `>` is not on the bar: it is a submenu. An
 entry whose *code* is that title opens it beside the entry, with a `>` at its right edge;
