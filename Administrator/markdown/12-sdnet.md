@@ -451,6 +451,13 @@ v1|remote user|salt (base64)|iterations|ClientKey (base64)|ServerKey (base64)|pi
 `pin` is the pin of the definition *when the login was made* (64 hex digits) and
 `created` is `yyyy-mm-dd`.
 
+**Uninstalling.** `deletesdcore.sh` removes `/var/lib/sd-net`, and with it every
+person's stored login, **if the accounts are deleted or the configuration is
+deleted** (either answer to its two questions), and keeps it only when both are
+kept; it says which it did. A stored login is as good as that server's password,
+and a reinstall that kept nothing has no server definitions for it to belong to.
+After a reinstall that deleted either, each person runs `set.netlogin` again.
+
 **It is outside the account directory on purpose.** An account's programs reach
 the operating system's files only through the account's own directory unless the
 account holds the `sh` or `os.execute` switch. Anything kept inside an account

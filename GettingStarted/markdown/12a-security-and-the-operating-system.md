@@ -107,6 +107,21 @@ typed in `command=`. Older lines in a file written before 7 October 2026 are
 upper case and are not rewritten, so match without regard to case when you
 search a long-lived file.
 
+**An account's gates are on the trail whenever they are given.** `modify.account`
+writes one line for each word it carries out (`modify.account sh-on account=fred`;
+several words in one command give several lines), and, since 19 October 2026,
+`create.account` records the gates it granted at creation as well:
+
+```
+2026-10-19 14:44:05 user=don uid=0 pid=4821 create.account account=jane type=user gates=ssh,sh-on,files-on,files-write-on
+2026-10-19 14:44:09 user=don uid=0 pid=4833 create.account account=bob type=user gates=none
+```
+
+`gates=` lists, in lower case and in the order of `create.account`'s syntax
+line, every word of the command that grants or withdraws an access, and says
+`none` when there is none. (An older line, `create.account account=jane
+type=user`, names none: read the `modify.account` lines after it.)
+
 **The refusals are the interesting half.** An entry saying somebody who is
 not SDSYS asked for SDSYS by name, or asked for an account they have not
 been granted, is the thing worth seeing. **Failed API logins are recorded

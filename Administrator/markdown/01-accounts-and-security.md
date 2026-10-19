@@ -771,21 +771,52 @@ modify.account account net-on | net-off
 modify.account account shared-read-on | shared-read-off
 modify.account account shared-write-on | shared-write-off
 modify.account account files-on | files-off
+modify.account account files-write-on | files-write-off
 modify.account account suspended | unsuspended
 ```
 
-**One action per command.** A second word is refused, before anything is
-changed, and the refusal names it, so a half-done change on a security verb
-cannot go unnoticed:
+**More than one action in a command** (from 19 Oct 2026). Any number of the
+words above except `add` and `delete` may follow the account, in one command:
+`modify.account fred sh-on os-on voc-on bp-on`. SD reads every word first and
+then carries out all of them, or none of them:
+
+* **An unknown word, two words that set one access to different states, or
+  `add` / `delete` among other words refuses the whole command before anything
+  is changed**, and the refusal names the word: `sh-on` with `sh-off`, `ssh`
+  with `api` (say `both`), and `files-off` with `files-write-on` are the
+  conflicts.
+* **The words are carried out in one fixed order whatever order they were
+  typed:** the route words, then the register switches in the order of the list
+  above, then the files words (`files-on` before `files-write-on`, which needs
+  it), and the suspension last. Each is reported and audited exactly as if it
+  had been given alone.
+* **A command of more than one action ends with a line** saying which were
+  carried out, and if one could not be (a refusal such as `sh-on` on a group
+  account, or a Linux group change that failed) the others are still carried out
+  and the line names the one that was not.
 
 ```
-:modify.account fred voc-off bp-off
-modify.account does one action at a time, and nothing was changed: bp-off was not carried out (give each action in a command of its own)
+:modify.account fred os-on sh-on
+Account fred has SH yes, OS.EXECUTE no
+Account fred has SH yes, OS.EXECUTE yes
+Account fred: 2 actions carried out: sh-on, os-on
+:modify.account fred sh-on sh-off
+sh-on and sh-off set the same access to different states, and nothing was changed: give one of them
+:modify.account fred voc-on bogus
+bogus is not a modify.account action, and nothing was changed: give modify.account with an account and no action to see them
+:modify.account hr voc-on sh-on
+Account hr has VOC.EDIT yes, BP.EDIT no, DICT.EDIT no
+hr is a group account and has no Linux user, so it has no shell to permit
+Account hr: NOT every action was carried out. Done: voc-on. Not done: sh-on
 ```
 
-`add` and `delete` take one user name the same way. (Until 18 Oct 2026 the
-second word was read by nobody: `voc-off` was done and `bp-off` dropped without
-a message.)
+`add` and `delete` take one user name and stand alone: among other words, or
+with a word after the user name, they are refused with the message
+*add and delete take a user name and stand alone, and nothing was changed: ...*.
+The same word twice is one action. (Until 18 Oct 2026 the second word was read
+by nobody: `voc-off` was done and `bp-off` dropped without a message; from 18
+Oct it was refused with *modify.account does one action at a time*; it is done
+since 19 Oct.)
 
 ### The other keywords
 
@@ -802,6 +833,7 @@ a message.)
 | **`shared-read-on`** \| **`shared-read-off`** | opening the files of the `shared` account by name. **On unless the field says no** (see *The shared account*) |
 | **`shared-write-on`** \| **`shared-write-off`** | writing to the files of the `shared` account. Off unless the field says yes |
 | **`files-on`** \| **`files-off`** | the files-only API login: membership of the Linux group `sdfiles` (see *The files-only route*). Independent of `ssh`/`api`/`both`/`none`: those words leave it alone |
+| **`files-write-on`** \| **`files-write-off`** | the right to CHANGE files over the files-only login: membership of the Linux group `sdfileswrite`, which needs `files-on` first (`files-off` takes both away) |
 | **`add`** \| **`delete`** *user* | put a Linux user in, or out of, the account's group |
 
 **The first group is absolute and the second is not.** `ssh`/`api`/`both`/
