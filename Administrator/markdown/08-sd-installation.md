@@ -154,6 +154,34 @@ installed SD starts with ssh, the API, `sh` and `OS.EXECUTE` all off, like
 any other new account, and the installer prints the `modify.account`
 commands that turn them on (as `sdsys`).
 
+### An upgrade puts a group account's record files back in its group
+
+**A group account made before 19 October 2026 has four files in the wrong
+group, and an upgrade that keeps the accounts corrects them.** `create.account
+group` used to leave `voc/%0`, `voc/%1`, `$hold.dic/%0` and `$hold.dic/%1`
+in the group `sdusers`, which every SD user belongs to. They are the two
+parts of the account's VOC and of the dictionary of its print-hold file, so
+any SD user could write them from outside SD. The installer now asks
+`sd-elevate` to give each of the four to the group of the account's own
+directory (owner `sdsys`, group `sdg_`*name*, mode unchanged at 664), for
+every group account **except `shared`**, whose group is `sdusers` by design.
+
+The step prints each file it changes and a count. It changes only a file that
+is not already right, so **a later install does nothing**. It leaves alone, and
+reports in a warning, an account whose directory is not in an `sdg_` group, and
+any path that is or sits behind a symbolic link (a member of the group can write
+in the account's directory, and the installer runs as root, so it never follows
+one). If `sd-elevate` refuses a file, for example one with a second hard link,
+that file is named in a warning and the install goes on; the warning says the
+command that gives it its group by hand:
+
+```sh
+sudo /usr/local/sbin/sd-elevate chown-account sdsys sdg_name /home/sd/group_accounts/name/voc/%0
+```
+
+A fresh install has only `shared`, so it has nothing to do here, and a group
+account made after the fix is made right in the first place.
+
 ## Uninstalling
 
 ```sh
