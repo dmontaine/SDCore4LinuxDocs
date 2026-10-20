@@ -133,6 +133,60 @@ gate logic checked in isolation.
 **To settle it.** A crontab entry pointed at an SD account, and a watch on
 whether it runs and is correctly permitted or refused.
 
+## SDNet: remote files between SD servers
+
+### Anything between two machines
+
+**Known.** The whole route has been run on one installed machine talking to itself over the
+loopback address (18 October 2026: a real TLS 1.3 handshake, the pinned key, the SCRAM login
+from the stored keys, reads, writes, locks and deletes through the `sdfiles` route and the
+write group), and in private sandboxes against a fake server written for the tests, including
+the two waits (`NETWAIT` against a listener that never answers, `NETREPLY` against a server that
+sends its acknowledgement byte and then goes silent).
+
+**Not known.** A second machine: a firewall in between, a name that has to be resolved, real
+latency, a connection that a router drops, and the key hash carried from one screen to the
+other. The two waits have only been timed against a listener on the same machine. And one wait
+is known not to hold: a server that completes the TLS handshake and then sends nothing at all,
+not even the acknowledgement byte, is waited for until it sends something or closes the
+connection, not for `NETREPLY` seconds (see `12`, "The bounds were timed"). Against a real
+server's own idle limit it has not been tried.
+
+**To settle it.** `witness-sdnet-two-machines.sh --role server-setup` on the machine to be
+reached and `--role client` on the other (both run by the owner with `sudo`; `gplbld` in the
+source). It has been run against a model of an install, never on two machines.
+
+### `files-off` and the other group changes on a real `/etc/group`
+
+**Known.** `modify.account` `files-on`, `files-off`, `files-write-on` and `files-write-off` run
+against a scratch group file and a stand-in for the privileged helper, in every case that matters:
+a person in one group or both, a removal that fails first, a removal that fails second (the
+write group has then gone: the screen and the audit trail say so), a helper that answers yes and
+changes nothing.
+
+**Not known.** The real helper, the sudoers line and the real group file doing the same, the
+installer over an installation that has `sdfiles` and not `sdfileswrite`, TLS 1.2 refused by the
+API port, requests 20 to 23, 29, 54 and 61 refused on a real files-only login, and the archive
+round trip for a person in `sdfileswrite`. Also the stop of a program that does not trap the
+error: "message 11500 with the write-group sentence" has been seen only as the answer the handler
+gives against the fake server, not as the program stopping on a real files-only login (the row
+`A4` of `witness-sdnet-files-route.sh` is that, and has not been run).
+
+**To settle it.** `witness-sdnet-writegroup.sh`, `witness-sdnet-files-route.sh`,
+`witness-sdnet-gaps.sh` and `witness-sdnet-groups.sh`, each run by the owner with `sudo` on an
+installation (and never run on one so far).
+
+### `MUSTLOCK` on a remote file
+
+**Known.** A fake server models it from the source (`op_dio3.c`) and the client's side of the
+answer is tested.
+
+**Not known.** A real server with `MUSTLOCK=1`. There is no script for it: it cannot be set on
+an installed system without putting every session under it.
+
+**To settle it.** A scratch installation with `MUSTLOCK=1` in `sd.conf`, and a write to a remote
+file with and without the lock held.
+
 ## SD BASIC statements that compile but were never run
 
 | | why not |

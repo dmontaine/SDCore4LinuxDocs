@@ -45,7 +45,7 @@ Write `ON ERROR` after the statement and read `STATUS()`; without it the program
 | `MUSTLOCK` is set and the record is not locked | `STATUS()` is 3023 | as for a local file |
 | the id is empty | the `ELSE` branch, `STATUS()` 3000 | as for a local file |
 
-The other machine's text in message 11500 is cut at 100 characters and anything that is not a printable character is dropped. A reply with no text is shown as `status n`.
+The other machine's text in message 11500 is cut at 100 characters and anything that is not a printable character is dropped. A reply with no text is shown as `status n`. The same holds for a `SELECT` of a remote file whose answer is such an error: it is message 11500 with the other machine's words (until 19 October 2026 the program was stopped with "READLIST generated an abort event", which `ON ERROR` cannot trap; no real server was seen to send this reply, the case is tested against a fake one).
 
 ## Locks
 
@@ -66,6 +66,7 @@ These were measured at the request layer, with the file opened by name and not t
 | a record written to a directory file | is **text**, one field to a line: the field mark becomes a line end, and it reads back as the same fields |
 | a directory file whose lines end CR LF | the record is read as its fields **with the CR kept** at the end of each |
 | a record of 1 MB, and one of 20 MB | written and read back byte for byte; the server accepts a request of that size |
+| an id holding a **mark** byte (251 to 255, the five marks) | refused by a `WRITE`: `ON ERROR`, `STATUS()` 3000, nothing stored; an id holding byte 247 to 250 is an ordinary one and is written and read back |
 
 Ids that differ only in case are two records in a directory file and one in a dynamic file, as on a local file, so a program that is moved from a local file to a remote one keeps the behaviour of the kind of file it is.
 

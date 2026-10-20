@@ -713,10 +713,19 @@ to let that login do.
   removal fails the command says so ("Unable to change remote access for *name*,
   status: *n*") and stops: a failure of the write group's removal leaves the person
   exactly as they were, and a failure of the second removal leaves them in `sdfiles`
-  alone, with read access and never write access without read. When the write group went
-  a line `Account fred has files-write no` comes before `Account fred has files no`.
+  alone, with read access and never write access without read. **In that second case the
+  command says what did happen before it says it failed**: it prints
+  `Account fred has files-write no` and writes the audit line
+  `modify.account files-write-off account=fred` for the removal that worked (the audit line
+  for `files-off` itself is written only when both removals worked), so the screen and the
+  trail agree with `/etc/group`. (Until 19 October 2026 it printed only the failure line and
+  wrote no audit line, although the person had lost the write right.) When the write group
+  went and the command went on to succeed, the same line `Account fred has files-write no`
+  comes before `Account fred has files no`.
   `files-on` removes a leftover `sdfileswrite` membership **before** it adds `sdfiles`,
-  and stops with the same failure message if it cannot.
+  and stops with the same failure message if it cannot; if the leftover went and the add
+  of `sdfiles` then fails, the person is left in neither group, and the command says so in
+  the same way (`files-write no` line, `files-write-off` audit line, then the failure).
 - **What it changes.** Without it a files-only login is refused: write (16), writeu (17),
   delete (18), deleteu (19), lock record (30), clearfile (31), file lock (32) and file
   unlock (33), the four locking reads (7 to 10), and a `READV` with a lock flag. They are
@@ -969,7 +978,7 @@ listed by `config`) say how long SD waits on another server. Both are in **secon
 | setting | what it bounds | default |
 |---|---|---|
 | `NETWAIT` | the connection: `set.server ... connect`, `set.netlogin`, and the first use of a defined server by an `OPEN` of a remote file | 5 |
-| `NETREPLY` | each wait for a reply from the server once connected, in the login and in every request | 30 |
+| `NETREPLY` | each wait for a reply from the server once connected, in the login and in every request (one case is not bounded: see "The bounds were timed", below) | 30 |
 
 A server that is slower than `NETREPLY` is treated as lost, as it always was (the 30 seconds
 were fixed in the programs); **a changing request that gets no answer is never sent again**
@@ -977,7 +986,10 @@ whatever the setting is. A `CLEARFILE` waits for the longer of five minutes and 
 because a big file takes longer than a reply bound. The login exchange of `set.netlogin`
 keeps its own 15 seconds for each packet. **A zero is refused**, and SD does not start with
 `NETWAIT=0` or `NETREPLY=0` in `sd.conf` (openQM reads zero as "wait for ever"; here
-that is never what an administrator of a pinned peer wants). The names are eight characters
+that is never what an administrator of a pinned peer wants). **A value that is too large is
+refused whatever it looks like in 16 bits**: `NETWAIT=65541` was read as 5 until 19 October 2026
+and SD started with a 5 second wait; the two are 32 bit values now and SD does not start
+(`PWDELAY` and `DHCACHE` are read the same way and still wrap). The names are eight characters
 or fewer because `config()` reads no longer one. openQM's `NETDELAY`, which keeps a
 connection open after the last file is closed, is not this and does not exist in SD.
 
@@ -987,7 +999,29 @@ largest string SD can hold (a little over a gigabyte), is treated as a lost conn
 nothing of it is read, a changing request answers 11509 as for any lost reply, and the
 connection is dropped. Before this the client read for as long as the server sent, and waited a
 whole `NETREPLY` for a reply that was never coming. Nothing is refused that a real record could
-need: the ceiling is the size of the largest record.
+need: the ceiling is the size of the largest record. **The ceiling applies once the login is
+over.** The login exchange itself has no ceiling on the length a reply announces (only the test
+for less than ten bytes), so a server whose key you have pinned, and which has turned hostile,
+can still announce a large length in a login reply and send slowly, for `NETREPLY` seconds a
+read; the pin is what you trust it with.
+
+**The bounds were timed**, in a private sandbox on 19 October 2026: with `NETWAIT=2` and a
+listener that never answers (its accept queue full), `set.server ... connect`, `set.netlogin`
+and the connection that a remote file's client makes (timed through the client's own login
+routine, which an `OPEN` calls, not through an `OPEN` statement) each gave up in about two
+seconds more than a refused connection costs; with `NETREPLY=3` a server that sent its acknowledgement byte, read the first
+login message and then said nothing was given up on in about three (the old fixed 30 would have
+run to the fake server's own 12-second hold).
+
+**One case is not bounded by `NETREPLY`, and was found by trying it:** a server that completes the
+TLS handshake and then sends nothing at all, not even the acknowledgement byte. The client waits
+until that server sends something or closes the connection. After the handshake a TLS 1.3 server
+sends its session tickets; they end the client's first read early, and the read that follows has
+no time limit. Against the test server, which closes a silent connection after 5 seconds, a
+client set to wait 3 seconds waited 5; with the tickets turned off in the test server it waited 3.
+A server you have pinned and that hangs this way holds the one session that is waiting on it, for
+as long as it stays that way. This is measured, reported to the owner and not changed in this
+release.
 
 ## What is audited
 
