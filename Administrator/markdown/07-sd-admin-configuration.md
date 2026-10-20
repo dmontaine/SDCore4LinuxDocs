@@ -115,7 +115,8 @@ The 28 are `CODEPAGE`, `DUMPDIR`, `EXCLREM`, `FILERULE`, `FLTDIFF`, `FSYNC`,
 `GDI`, `GRPSIZE`, `INTPREC`, `LPTRHIGH`, `LPTRWIDE`, `MAXCALL`, `MUSTLOCK`,
 `OBJECTS`, `OBJMEM`, `RECCACHE`, `RINGWAIT`, `SAFEDIR`, `SDCLIENT`, `SH`,
 `SH1`, `SORTMEM`, `SORTMRG`, `SORTWORK`, `SPOOLER`, `TEMPDIR`, `TERMINFO` and
-`YEARBASE`.
+`YEARBASE`. (The list predates `MAXRLOCK`, `PWDELAY` and, since 19 October 2026,
+`NETWAIT` and `NETREPLY`, which can be changed for the session in the same way.)
 
 Everything else takes effect only when SD is next started. That includes every
 limit which sizes the shared memory segment and every setting the API listener
@@ -137,6 +138,17 @@ reads.
 | `USPLIT` | 0 | `1`: interactive sessions take the lowest free user number and every other process (a phantom, an API session) the highest free one in 1 to `NUMUSERS`, so the two never meet. `FIXUSERS`, `PHANTOMS`, `PORTMAP` and `USERPOOL` are ignored while it is on. `config('USPLIT')` reads it |
 | `PHANTOMS` | unset | `base,range` — user numbers kept for phantoms started with `phantom user n`. Nobody else is given one: not a session, not an API session, not a phantom started without `user`. It must lie between 1 and the highest user number and must not overlap `FIXUSERS` or `PORTMAP`, or SD will not start. `config('PHANTOMS')` reads it as `base,range`, null when none are kept |
 | `CLEANUP` | 300 | Seconds between the checks that look for sessions that ended without logging out (a killed terminal, a lost connection) and clear them from the user table. 30 to 3600. The daemon wakes every ten seconds, so an interval is kept to within ten seconds; a very short one costs a pass over the user table that often. `config('CLEANUP')` reads it |
+
+## Other SD servers (SDNet)
+
+| Parameter | Default | Effect |
+|---|---|---|
+| `NETWAIT` | 5 | Seconds to wait for a connection to another SD server: `set.server ... connect`, `set.netlogin` and the first use of a defined server. 1 to 3600; **0 is refused and SD does not start with it** (openQM reads 0 as "wait for ever") |
+| `NETREPLY` | 30 | Seconds to wait for each reply from another SD server once connected. 1 to 3600, 0 refused. A server slower than this is treated as lost, and a change that got no answer is never sent again. A `CLEARFILE` waits the longer of 300 seconds and this |
+| `NETFILES` | 0 | Not read by SDNet. Bit 2 gates one old API request, number 29 (below). Leave it at 0 |
+
+Both waits are per computer. See [SDNet](12-sdnet.html#the-two-waits-netwait-and-netreply) for what they bound and
+the check on the length a reply announces.
 
 ## Files and locking
 
@@ -274,7 +286,8 @@ SDNet is the way a program opens a file that lives on another SD server: a VOC
 entry of type `N`, a server you define with `set.server`, and a per-account
 `net-on` switch, all off until SDSYS turns them on. It is built and is
 described on the SDNet page of this set, with what has and has not been tested
-(no two real machines have been connected yet). None of it reads `NETFILES`,
+(it has been run on one real installation talking to itself; no two real machines
+have been connected yet). None of it reads `NETFILES`,
 and the older SDNet that was removed on 9 September 2026 (a `server;file` VOC
 entry, with each server's password in `sd.conf`) is still gone: that form of
 name is refused. `NETFILES` is parsed, stored, shown by `config` and readable

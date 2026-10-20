@@ -66,10 +66,13 @@ that SDSYS has defined with `set.server` and a file on it; the verbs
 `set.netlogin` and `delete.netlogin` let a person store their own login (never
 the password) for a server. Nothing is open by default: an account needs the
 `net-on` switch, has to be named in the server's list, and a server is read
-only unless SDSYS defines it as `write`. It uses the other server's API port
+only unless SDSYS defines it as `write` **and** the administrator of the other
+server has also let that remote login change files there (`files-write-on` on
+that server). It uses the other server's API port
 over TLS and does not put a password in any file. The *Administrator* set's
-*SDNet* page describes it and says what has been tested; as that page says, no
-two real machines have been connected by it yet.
+*SDNet* page describes it and says what has been tested: it has been run in
+private tests and on one real installation talking to itself, and no two real
+machines have been connected by it yet.
 
 **The API is not affected.** `!sdclient` and the remote API are a separate
 mechanism and are unchanged. See [API access](09-api-access.html).
@@ -77,8 +80,11 @@ mechanism and are unchanged. See [API access](09-api-access.html).
 **`NETFILES` is still accepted in `sd.conf`**, so an existing configuration
 file will not stop SD starting, and the new SDNet does not use it. The only
 thing that reads it is the API server's old request to open an SDNet file,
-which is refused unless bit 2 of `NETFILES` is set; the value is 0 unless
-`sd.conf` sets it.
+which is refused unless bit 2 of `NETFILES` is set (and, since October 2026,
+unless the caller could `logto` that account and the account has `net-on`); the
+value is 0 unless `sd.conf` sets it. The two settings the new SDNet does read
+are `NETWAIT` and `NETREPLY`, the seconds to wait for a connection and for each
+reply.
 The *Administrator* set's *Configuration* page has the detail.
 
 ## Virtual file systems

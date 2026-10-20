@@ -74,7 +74,7 @@ not refused — the name is simply not recognised.**
 | **`copy.listp`** | **`copy.listp`** {{**`dict`**} *file*} {*name* … \| **`*`**} {**`(`***options*} |  |
 | **`copyp`** | **`copyp`** {**`dict`**} *file* *id* … {**`(options`**} |  |
 | **`count`** | **`count`** {**`dict`**} *file* {*selection*} |  |
-| **`create.account`** | **`create.account user`** *name* {**`ssh`** \| **`api`** \| **`both`** \| **`none`**} {**`sh-on`**} {**`os-on`**} {**`voc-on`**} {**`bp-on`**} {**`dict-on`**} {**`shared-read-off`**} {**`shared-write-on`**} {**`net-on`**} {**`files-on`**} {**`no.query`**}  ·  **`create.account group`** *name* {**`shared-read-off`**} {**`shared-write-on`**} {**`no.query`**}  ·  **`create.account other`** *name* *pathname* {**`shared-read-off`**} {**`shared-write-on`**} {**`no.query`**} | S |
+| **`create.account`** | **`create.account user`** *name* {**`ssh`** \| **`api`** \| **`both`** \| **`none`**} {**`sh-on`**} {**`os-on`**} {**`voc-on`**} {**`bp-on`**} {**`dict-on`**} {**`shared-read-off`**} {**`shared-write-on`**} {**`net-on`**} {**`files-on`**} {**`files-write-on`**} {**`no.query`**}  ·  **`create.account group`** *name* {**`shared-read-off`**} {**`shared-write-on`**} {**`no.query`**}  ·  **`create.account other`** *name* *pathname* {**`shared-read-off`**} {**`shared-write-on`**} {**`no.query`**} | S |
 | **`create.file`** | **`create.file`** {**`dict`**} *voc.name* {**`directory`**} {*parameters*} |  |
 | **`create.index`** | **`create.index`** *file* *field* … {**`no.nulls`**} {**`pathname`** *path*} |  |
 | **`cs`** | **`cs`** — the same verb as **`clr`** |  |
