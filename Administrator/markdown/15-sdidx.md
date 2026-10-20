@@ -120,6 +120,16 @@ place; writes the new path into the data header; **then deletes the old index
 files.** If it stops before the header is written, the copy at the target is
 left behind and the file is as before.
 
+**If the target directory cannot be made, it says so and changes nothing.** It
+prints `Cannot create directory` *akpath*`:` and the reason on standard output,
+and ends with status 1. The reason is the operating system's (for a parent you
+cannot write: *Permission denied*), or *a file of that name exists* when a
+component of the path is a file. *akpath* in the message is the whole path as you
+typed it, not the component that failed, and the indexes and the header are
+where they were. Before 19 October 2026 the tool ended with status 1 and printed
+nothing at all in these two cases. (*Run*, as an ordinary user, on a parent with
+mode 555 and on a path through a regular file.)
+
 * **With no `akpath`, it moves the indexes back** into the data file's own
   directory and clears the path in the header. *Run.*
 * **Only the index files are deleted from the old place** (*run*). It removes the
