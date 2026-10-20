@@ -19,7 +19,9 @@ with its reason and nothing changed). Only SDSYS sees any of it.
 > 17 October 2026 in place of the tighter arrangement, an *outbox* the account applies for itself,
 > which would have given `sdsys` no such access. If you do not want the membership, take it away
 > (`gpasswd -d sdsys sdu_`*name*): saves of copies to that account are then refused with a message,
-> and everything else works.
+> and everything else works. **That is undone by the next install or upgrade**, whose walk (below)
+> puts `sdsys` back in the group of every account without asking, and says so. There is no switch
+> that keeps it away; whether the walk should have one is a decision that has not been made.
 
 | file | key | holds |
 |---|---|---|
@@ -38,9 +40,15 @@ because a VOC record whose id is `file*id` would otherwise have the key of a dic
 
 All three are ordinary hashed files with case-insensitive ids, with a dictionary each, and each has
 an entry in the **SDSYS VOC and in no other VOC**: a new account is made from `newvoc`, which has
-none. Their directories are mode 0770 and their files 0660, so that SDSYS and its group are the only
-users who can read them; the journal is mode 0620, so that every SD user's session can append a line
-and nobody but SDSYS can read one.
+none. **Their directories are mode 0700 and their files 0600, owned by the `sdsys` user** (made
+under a umask of 077, and set again by `sync.masters` and by the install), so that nobody but
+`sdsys` (and root) can open them. They hold every account's pointer paths and I-types, and the
+group of an SDSYS session is `sdusers`, which every SD user is in: the group is not what keeps users
+out, and the files have no group bit and no other bit whatever group they are made in. (They were
+0770 and 0660 before the independent review of 19 October 2026, with a group that was never set; a
+system that has them so is put right by the next install, or by `sync.masters` run by `sdsys`.)
+The journal is mode 0620, owner `sdsys`, group `sdusers`, so that every SD user's session can append
+a line and nobody but SDSYS can read one.
 
 ## How the copies are kept (account to master)
 
@@ -88,15 +96,21 @@ line, applying a line twice does nothing, and a crash half way is repaired by th
 Lines for an account that is not registered, and lines that are not a line, are counted and skipped.
 When everything up to the end of the journal has been taken the journal is emptied, under the same
 lock that the hook appends under, so that a line cannot fall between the drain's last look and the
-emptying. A drain that finds nothing writes nothing.
+emptying. A drain that finds nothing writes nothing. **A last line with no newline** (a writer that
+died half way, or one forged: the journal is writable by every SD user's group so that they can
+append) is ended by the drain, so that the next line written is a line of its own and is not glued to
+it and refused with it; the hook also cuts the journal back when a write comes up short.
 
 ## Changing an account by saving its copy (master to account)
 
-SDSYS signs on, opens `voc_master` or `dict_master` (the drain has just made them true), and
-**saves a record**: with `ed`, or from a program's `write`. Nothing else is needed, and the check is
-made in the one place every write to a hashed file passes, so any other way of writing a record of a
-master file (another editor, `copy`, `writev`, `matwrite`) is checked in the same way. For example,
-to add a verb to account `acme` from the SDSYS account:
+SDSYS signs on, opens `voc_master` or `dict_master` (the drain has just made them true), **reads
+a record**, and **saves it**: with `ed` (which reads the record first), or from a program's `read`
+and `write`. Nothing else is needed, and the check is made in the one place every write to a hashed
+file passes, so any other way of writing a record of a master file (another editor, `copy`,
+`writev`, `matwrite`) is checked in the same way. **A save is of a record the session has READ**:
+the kernel remembers, for this session only, the last 128 master records it read (`read`, `readu`,
+`readv`, `matread`) and what each held, and a save is judged against that (step 5). For example, to
+add a verb to account `acme` from the SDSYS account:
 
 ```
 :ED VOC_MASTER acme*weekly.report
@@ -117,18 +131,30 @@ finished: a session of `acme`'s user that lists its VOC sees it.
 4. The account's record is **locked by a try-lock that returns at once**. A save never waits: the
    account's own process may hold the record and be waiting for the master, and a wait would be a
    deadlock nobody could see. If another session holds the lock, the save is refused and says who.
-5. **The account's record, as it is now, must be the one the copy was made from.** The kernel
-   compares its checksum with `master_state`'s. If the account has changed it since SDSYS opened
-   the master (the drain brings the copy and `master_state` up to date when SDSYS opens it), the
-   save is **refused and nothing is lost**: open the master file again, look at the record, and
-   make the edit again. A record the account has and the copy has never had is such a change, and
-   so is a record the account has made since. A *new* key (no such record in the account, none in
-   `master_state`) is simply a new record.
+5. **The account's record, as it is now, must be the one this session READ.** The kernel
+   compares its checksum with that of the record the session read (it remembers it when the
+   session reads a record of a master file). If the account has changed the record since,
+   the save is **refused and nothing is lost**: open the master file again, read the record,
+   and make the edit again. This is a comparison with what *you* read, and not with
+   `master_state` (the version of the last drain), because a drain made by anyone between
+   your read and your save - another administrator session opening a master file,
+   `check.masters`, `sync.masters` - moves `master_state` to the account's newer record, and a
+   save compared with that would overwrite the account's change. **A record this session has not read** (a program
+   that writes a master record without reading it; a record read so long ago that 128 others
+   have been read since) is refused when the account has a record of that name (message
+   11596: read it first), and when `master_state` remembers one the account has since deleted.
+   A *new* key (no such record in the account, none in `master_state`) is simply a new record.
 6. **The account's own file is written, by SDSYS's own process,** through the same write every
    other writer uses: so the file keeps its owner and group (it is written in place), its indices
-   are kept, and the write is journalled.
-7. `master_state` is brought up to date, so that a second save of the same key in the same session
-   is not taken for a change by the account. The lock is let go.
+   are kept, and the write is journalled. **The comparison of step 5 is made again inside this
+   write**, with the record's group locked in the file and before a byte is changed: a plain
+   `write` by the account's user takes no record lock, which the try-lock of step 4 cannot see, and
+   one that lands between step 5 and the write is therefore caught here, the save refused as in
+   step 5 and the user's text kept. The account's user can still write the record just after
+   SDSYS's write has finished; that is the later change of two writers, as it is anywhere.
+7. `master_state` is brought up to date, and so is what the session has read of the key, so that a
+   second save of the same key in the same session is not taken for a change by the account. The
+   lock is let go.
 8. The master record is written, as `write` would. (If that last write fails, the master and
    `master_state` are repaired by the next drain.)
 9. **One line is written to the audit trail**, in lower case: `master edit account=acme file=voc
@@ -150,10 +176,12 @@ only the status.
 | `Master record ... not saved: its key must be account*id or account*file*id of a registered account` | the key is not one | check the spelling |
 | `... %s is not a registered account` | no such account in the register | |
 | `... the account has no VOC` / `no dictionary of that name` | there is no such file to put it in | make it in the account first |
-| `... the record in acme has changed since this copy was made` | the account changed it after SDSYS opened the master | open the master file again and repeat the edit |
+| `... the record in acme has changed since you read it. Nothing was changed.` | the account changed it after this session read it (or deleted it) | open the master file again, read the record and repeat the edit |
+| `... this session has not read it, and the account has a record of that name` | the save is of a record this session has not read (or read so long ago that it has been forgotten) | read the record first, then save it |
 | `... the account's record is locked by user N, and a save never waits` | another session holds the record | try again later |
+| `... no lock could be taken on the account's record (the lock table is full or a limit was reached)` | no user holds it: the lock table is full, a deadlock was seen or this session is at its limit | try again later; `list.readu` |
 | `... this session cannot write the VOC of acme (see check.masters)` | the mode does not let the group write, or this session cannot use it | `check.masters`; the install's upgrade puts the modes right |
-| `... this session began before sdsys was put in group sdu_acme` | see below | sign on again as SDSYS and repeat the edit |
+| `... this session began before sdsys joined group sdu_acme` | see below | sign on again as SDSYS and repeat the edit |
 | `... sdsys is not in group sdu_acme (sd-elevate sdsys-join ...)` | the membership is not there | run `sudo /usr/local/sbin/sd-elevate sdsys-join sdu_acme` from the `sdsys` login, sign on again |
 | `... only SDSYS, signed on at a terminal, can change a master file` | not the administrator | |
 | `... the account's file could not be written (error)` | the write itself failed | `check.masters` |
@@ -161,7 +189,7 @@ only the status.
 **A session of SDSYS that began before the account was made, or before `sdsys` was put in its
 group, cannot write that account's files** until SDSYS signs on again. Linux fixes a process's
 groups when it starts and `sd` never reloads them, so the session is still without the group even
-though `/etc/group` now lists `sdsys`. The save says so (`began before sdsys was put in group`) and
+though `/etc/group` now lists `sdsys`. The save says so (`began before sdsys joined group`) and
 `check.masters` shows `norights ... stale-session`. Sign off and on as SDSYS. This is the only
 thing a new account asks of an administrator who has a session open.
 
@@ -204,8 +232,18 @@ Account acme: 466 VOC record(s), 4 dictionary file(s), 7 dictionary record(s)
    0 master record(s) written, 0 removed, 0 left out because the key is too long
 ```
 
-The first run on a system is the only one that writes a great deal. A run over four small accounts,
-session start included, took under a second, and a second run with nothing changed writes nothing.
+The first run on a system is the only one that writes a great deal; a second run with nothing
+changed writes nothing. **A full run makes one call to the kernel for all the accounts**, which
+reads each master file once into a sorted index and finds each account's records in it: the time
+grows about in step with the number of accounts. (It used to read every master file once for each
+account, and 204 accounts took 2.7 to 3.2 times as long as 104.) Measured on a private SD
+(19 October 2026, a machine with two virtual machines running), with accounts of about 500 VOC
+records and a few dictionary files each, a full `sync.masters` with nothing changed took 2.8 s for
+104 accounts and 4.3 s for 204 (11.9 s and 32.2 s before this was changed), and `check.masters`
+1.7 s and 2.6 s (4.5 s and 12.5 s before); the install runs a full `sync.masters`. Doubling the
+accounts took 1.5 times as long, not 2 and not 4 (a session start and the SDSYS account itself are
+the same for both). `sync.masters` with one account name still reads the master files once for that
+account.
 
 **`check.masters`** applies the journal and then **compares and reports; it changes nothing.** For
 every account (or the one named) it looks at the VOC and at every dictionary the account holds, and
@@ -216,10 +254,10 @@ prints a line for each of these, in the form *kind*: *account* *voc or dict* {*f
 | `differs` | the copy is not the account's record (an edit made outside SD, or a change the journal lost) |
 | `missing` | the account has the record and the copy does not |
 | `extra` | the copy has a record the account does not have: a dictionary the account no longer holds, a record deleted at the operating system level, or an account that is not registered |
-| `nonwritable` | the VOC, or a dictionary, has a directory without group search and write, or a subfile (`%0`, `%1`) without group write. A save of a copy is written as a member of the account's group, so it needs the modes |
+| `nonwritable` | the VOC, or a dictionary, has a directory without group search and write, or a subfile (`%0`, `%1`) without group write. A save of a copy is written as a member of the account's group, so it needs the modes. (The SDSYS account's own files are not asked this: `sdsys` writes them as their owner, and the master files' dictionaries among them are 0700.) |
 | `norights` | the modes are right and **this session** still cannot write the file. The last word says why: `mode` (the owner's permission, for a session that is the owner), `stale-session` (the group lists `sdsys` and this session began before it did: sign on again), `not-a-member` (the group does not list `sdsys`: `sd-elevate sdsys-join`), or `no-write` (anything else: a mount, an ACL) |
 | `toolong` | the key (*account*`*`*id*, or with the file) is longer than the system's `MAXIDLEN` less two characters (the state key is two longer), and cannot be copied |
-| `unreadable` | the file is there and could not be opened or read through |
+| `unreadable` | the file is there and could not be opened or read through; or (`unreadable: acme dict`, no file named) the account's directory could not be listed or its VOC could not be read, so the list of its dictionaries is not known: **no dictionary copy of that account is then called extra, and `sync.masters` deletes none of them** (a copy is never deleted for want of being able to read the original) |
 
 When there is a `nonwritable` or `norights` row a line follows that says what they mean. Then the
 *stale* and *resync* lines if the flags are up, then "Every master copy matches its account" when
@@ -319,24 +357,51 @@ are not writable, and the install's upgrade (`sd-elevate group-write`) puts them
 * **It finds the dictionaries an account holds** in the top level of its directory (`*.dic`) and
   those its VOC names that lie below it. A dictionary kept elsewhere is journalled when it is written
   but is not found by a full `sync.masters`. `sd-elevate group-write` looks for `*.dic` directories
-  at any depth below the account directory.
+  at any depth below the account directory. **A VOC or a dictionary that is a symbolic link to a place
+  outside the account's directory** (another account's dictionary, say) **is not the account's file**:
+  it is not copied under the account's keys, a save to it is refused as "the account has no dictionary
+  of that name", and nothing is opened through it.
+* **A dictionary key is case blind in its file part too.** `ZMONE*ZMF3*X` is `zmone`'s `zmf3.dic`
+  (every dictionary SD makes is named in lower case, and a name that is really there in capitals is
+  found as it is).
+* **A save of a record the session has not read is refused** when the account has the record (step 5):
+  a program that edits master records must read them first, as `ed` does.
 * **It cannot be shown to work on a machine with one operating-system user.** The sandbox suite shows
   every part but ownership and groups; `witness-masters.sh` (run by the owner as root, on a real
   install) shows the group membership, the modes, root changing only the account's own files, an
-  edit reaching a user's VOC at once, and the refusal for a session that began too early.
+  edit reaching a user's VOC at once, the refusal for a session that began too early, and that the
+  master files are owned by `sdsys`, have no group or other bit, and cannot be opened by a user who is
+  in `sdusers` (section 6). None of that has been run on an install yet.
 
 ## Cost
 
 A write to a VOC or a dictionary does the work above; **a write to any other file costs one test of a
-flag** (and one more, once per open file, to learn that it is none of the master files). The journal
-write is an `open`, a `write` and a `close`: measured in isolation about 5 microseconds on a memory
-file system and 12 to 13 microseconds on an ordinary disk. In SD, on a private SD with an ordinary
-session, a loop of 2,000 writes to a VOC took a median of 35 ms on the build before the master files,
-37 ms on the build before they existed and 41 ms with them (2 to 3 microseconds more for each write,
-which is about the size of the difference between two sandboxes on the same machine: the same loop
-of writes to a data file took 32 ms on the old build and 24 ms on both runs of the new one). Applying
-six thousand journal lines took under a third of a second. **The journal grows with the changes people
-make, not with use.** On a private SD, signing on and off, `who`, `list` and `sselect` wrote no VOC or
+flag** (and one more, once per open file, to learn that it is none of the master files). Measured on
+a private SD, on a memory file system, 100,000 writes of distinct records by an ordinary program,
+the median of three runs (19 October 2026):
+
+| | VOC record | dictionary record | data record |
+|---|---|---|---|
+| the build before the master files | 15.5 microseconds | 14.4 | 15.2 |
+| this build, before the master files exist (no journal) | 19.4 | 20.4 | 14.5 |
+| this build, with the master files and the journal | 21.6 | 20.1 | 13.1 |
+
+So **a write to a VOC or a dictionary costs about 4 to 6 microseconds more (25 to 40 percent)
+before the master files exist, and about 6 (40 percent) with them; a data file's writes are not
+touched.** The numbers move with the load of the machine: an earlier run the same day, on a quieter
+machine, gave 13.1, 18.3 and 19.5 microseconds for the VOC, the same differences on lower numbers.
+The journal's own append is the difference between the last two rows, 2 microseconds for the VOC and
+nothing that stands out of the noise for a dictionary; the rest is, as far as the code shows (not
+measured apart), paid before the hook knows whether the file is anyone's: it asks for the journal
+first, which on a system that has none is an `open` that fails and a `stat`. A program that writes the
+VOC or a dictionary in a loop pays for each write; the writes people make by hand are few. Applying
+the journal took 0.29 s for 5,000 waiting keys, 0.87 s for 20,000 and 1.69 s for 40,000, the open of
+the master and a session start included: about 40 microseconds for each key. A journal that reaches
+4 MB (about 90,000 lines of the length these loops wrote) takes no more and raises the resync flag.
+`check.masters` compares every record of every account: it took 27 s for one account that held about
+600,000 VOC records and as many dictionary records (the measurement above wrote them), the 91,422
+journal lines it applied first included, and it found 508,578 differences, the changes the full
+journal had dropped. **The journal grows with the changes people make, not with use.** On a private SD, signing on and off, `who`, `list` and `sselect` wrote no VOC or
 dictionary record at all; `create.file` wrote two (the pointer and the dictionary's `@id`),
 `delete.file` one, a new saved sentence (`.s`) one, and `save.list` one the first time (the
 `$savedlists` pointer). The record `$command.stack` is written once, when an account is made; the

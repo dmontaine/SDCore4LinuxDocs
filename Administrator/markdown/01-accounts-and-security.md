@@ -84,7 +84,9 @@ could change what any account runs. It is not reachable from the network
 warning given, over an arrangement in which the account applies the change
 itself. To withdraw it for an account, take `sdsys` out of that account's group
 (`gpasswd -d sdsys sdu_`*name*): saving a master record to that account is then
-refused with a message, and nothing else changes.
+refused with a message, and nothing else changes. **The next install or upgrade
+puts the membership back** (its walk adds `sdsys` to the group of every account,
+and says so); there is no switch that keeps it away.
 
 ## Making an account: `create.account`
 

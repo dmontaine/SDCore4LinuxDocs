@@ -54,7 +54,8 @@ user is removed with an uninstall and takes its memberships with it, and SDSYS
 needs them to change an account by saving its master record. This gives the
 `sdsys` user write access to those files in every account: see
 [The master files](19-the-master-files.html) in the administrator set. Running the
-installer again repeats it.
+installer again repeats it - so taking `sdsys` out of an account's group by hand
+(`gpasswd -d`) lasts only until the next install or upgrade, which puts it back.
 
 Two limits are worth knowing before you rely on it.
 
