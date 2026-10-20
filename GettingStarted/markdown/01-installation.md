@@ -137,7 +137,7 @@ a kept database, so your edits survive both an upgrade and a reinstall.
 |---|---|
 | `sdusers` | the Linux group every SD account belongs to. Everyone who uses SD needs it |
 | `sdsys` | the one administrator account — a real Linux user with its own home, shell and password, never `root` |
-| `sdu_<name>` | one supplementary group per account, created by `create.account` |
+| `sdu_<name>` | one supplementary group per account, created by `create.account`. **The `sdsys` user is a member of every one**, and an account's VOC and dictionaries can be written by its group, so that SDSYS can change an account by saving its master record. That gives the `sdsys` user write access to those files in every account |
 | `sd.service`, `sdclient.socket` | the `systemd` units that run SD and its API listener, enabled to start at boot |
 | the ssh boundary | a fenced block in `/etc/ssh/sshd_config`, `ForceCommand`ing every `sdusers` member except `sdsys` into `sd`, and denying `sdsys` a network login outright |
 

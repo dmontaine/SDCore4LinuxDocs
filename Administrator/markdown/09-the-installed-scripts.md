@@ -61,6 +61,8 @@ argument, and it comes first.
 | `groupadd`, `groupdel`, `addgroup`, `delgroup` | the account's own `sdu_`/`sdg_` group, and membership in it — this is what `modify.account add`/`delete` calls underneath |
 | `setgid`, `chown-account` | ownership and the setgid bit on an account directory, at creation |
 | `rmtree-account` | removes an account's directory tree, for `delete.account remove.home` |
+| `sdsys-join sdu_`*user* | puts the `sdsys` user, and no other, in an SD user's account group, so that SDSYS can save a master record into the account's files — see [The master files](19-the-master-files.html). Refuses every other group (`sdusers`, the route groups, `sdg_`, `sdu_root`, `sdu_sdsys`) and a group that does not exist |
+| `group-write` *account directory* | gives the account's own group write on the VOC and dictionaries of that one account — only where the account directory's group is its own (`sdu_`*name*, or `sdg_`*name* for a group account), never `sdusers`; modes only, links not followed |
 | `remote-api on \| local \| off \| show` | the `sdclient.socket` binding and the firewall rule (`ufw` or firewalld) — what `remote.api` calls |
 | `remote-ssh on \| off \| show` | the firewall rule for port 22 (`ufw` or firewalld) — what `remote.ssh` calls |
 | `cred-own query \| verify \| set` | an ordinary account's own write to `$cred`, which it cannot reach directly — what self-service `modify.password` calls |

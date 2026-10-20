@@ -57,7 +57,7 @@ Neither root can be changed. The installer does not ask.
 |---|---|
 | `sdusers` group | the Linux group every SD account belongs to |
 | `sdsys` user | the one administrator account — a real Linux user, its own home, shell and password |
-| `sdu_<name>` | one supplementary group per account, created by `create.account` |
+| `sdu_<name>` | one supplementary group per account, created by `create.account`; **the `sdsys` user is a member of every one**, and every account's VOC and dictionaries can be written by that group, so that SDSYS can change an account by saving its master record — this gives the `sdsys` user write access to those files in every account (see [The master files](19-the-master-files.html)). The install puts `sdsys` back in the groups of accounts it keeps |
 | `sd.service`, `sdclient.socket` | the `systemd` units, enabled at boot |
 | the ssh boundary | a fenced block in `/etc/ssh/sshd_config` — see [Remote access and the machine](05-remote-access-and-the-machine.html) |
 
