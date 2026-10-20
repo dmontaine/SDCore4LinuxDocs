@@ -47,6 +47,16 @@ registering an account from an older system, say. To refresh one account
 instead, `update.accounts` (no `all`) run **in that account** updates just
 it and offers to do the rest.
 
+**Every install, kept accounts or not, puts the `sdsys` user back in the group of
+every account and makes each account's VOC and dictionaries writable by that group**
+(it says what it did, and warns without stopping if it could not). The old `sdsys`
+user is removed with an uninstall and takes its memberships with it, and SDSYS
+needs them to change an account by saving its master record. This gives the
+`sdsys` user write access to those files in every account: see
+[The master files](19-the-master-files.html) in the administrator set. Running the
+installer again repeats it - so taking `sdsys` out of an account's group by hand
+(`gpasswd -d`) lasts only until the next install or upgrade, which puts it back.
+
 Two limits are worth knowing before you rely on it.
 
 > **SD only ever adds records to a VOC, never removes them.** An account

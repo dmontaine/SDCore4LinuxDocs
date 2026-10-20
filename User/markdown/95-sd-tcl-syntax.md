@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **191** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **194** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -24,7 +24,7 @@ not refused — the name is simply not recognised.**
 | | | |
 |---|---|---|
 | **every account** | 166 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 25 more | in `voc_template` but not `newvoc` |
+| **SDSYS only** | 28 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -48,6 +48,7 @@ not refused — the name is simply not recognised.**
 | **`catalogue`** | **`catalogue`** — the same verb as **`catalog`** |  |
 | **`cd`** | **`cd`** {**`dict`** \| **`data`**} *file* {*i-type* …} {**`no.query`**} {**`no.page`**}  ·  **`cd local`**  ·  **`cd all`** |  |
 | **`ced`** | **`ced`** {**`dict`**} *file* {*id* …}  ·  **`ced`** {**`dict`**} *file* **`*`** |  |
+| **`check.masters`** | **`check.masters`** {*account*} | S |
 | **`clean.account`** | **`clean.account`** | S |
 | **`clear.abort`** | **`clear.abort`** |  |
 | **`clear.data`** | **`clear.data`** |  |
@@ -127,6 +128,7 @@ not refused — the name is simply not recognised.**
 | **`list.item`** | **`list.item`** {**`dict`**} *file* {*selection*} |  |
 | **`list.label`** | **`list.label`** {**`dict`**} *file* {*selection*} {*fields*} |  |
 | **`list.locks`** | **`list.locks`** | S |
+| **`list.master.pending`** | **`list.master.pending`** | S |
 | **`list.phantoms`** | **`list.phantoms`** {**`user`** *name*} |  |
 | **`list.readu`** | **`list.readu`** {*user.no*} {**`detail`**} {**`wait`**} {**`no.page`**} {**`lptr`** {*n*}} | S |
 | **`list.servers`** | **`list.servers`** {*name*} | S |
@@ -214,6 +216,7 @@ not refused — the name is simply not recognised.**
 | **`status`** | **`status`** |  |
 | **`stop`** | **`stop`** |  |
 | **`sum`** | **`sum`** {**`dict`**} *file* {*selection*} *field* |  |
+| **`sync.masters`** | **`sync.masters`** {*account*} | S |
 | **`term`** | **`term`** \| *width*{`,`*lines*} {*type*} \| **`colour`** *bg*{`,`*fg*} \| **`default`** \| **`display`** |  |
 | **`time`** | **`time`** \| **`internal`** |  |
 | **`umask`** | **`umask`** {*mask*} |  |

@@ -71,6 +71,23 @@ hide in here.
 `sd` needs no elevation, no `sudo`, because being SDSYS already *is* the
 privilege.**
 
+**What the `sdsys` Linux user can write.** The `sdsys` user is a member of
+the Linux group of every user account (`sdu_`*name*), and every account's VOC
+and dictionaries can be written by that group, so that SDSYS can change an
+account's VOC or a dictionary by saving its master record (see
+[The master files](19-the-master-files.html)). **This gives the `sdsys` user
+write access to those files in every account**, and a VOC entry or an I-type
+is code that runs in the account: someone who took over the `sdsys` login
+could change what any account runs. It is not reachable from the network
+(`sdsys` has no remote access), and a process that is not a real login as
+`sdsys` is not an administrator. It was the owner's choice, made with that
+warning given, over an arrangement in which the account applies the change
+itself. To withdraw it for an account, take `sdsys` out of that account's group
+(`gpasswd -d sdsys sdu_`*name*): saving a master record to that account is then
+refused with a message, and nothing else changes. **The next install or upgrade
+puts the membership back** (its walk adds `sdsys` to the group of every account,
+and says so); there is no switch that keeps it away.
+
 ## Making an account: `create.account`
 
 ```
