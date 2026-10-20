@@ -133,6 +133,8 @@ account — **and every change is audited**, a Linux addition matching how
 the port's own account-tier changes used to be audited before tiers were
 removed.
 
+**What a connection costs while nobody has logged in.** Each API connection is one `sd -n -q` process, running as root until the client has logged in, and it is there before any login is checked. Since 20 Oct 2026 it ends when the connection does, and refuses a request that declares a length over 65,536 bytes (after the login the limit is the largest SD string; the client page, *How big a request may be*, has the rules), leaving a line in the system log. Before that date a client that closed at the wrong moment, or sent four bytes that read as a huge length, left its process running at 100% of a processor with nothing to end it but `kill`; a count of `sd -n -q` processes that does not fall back to the number of clients is the sign. **A client that connects, completes the handshake and then says nothing is still left waiting**: SD sets no time limit on a connection that has not logged in, and `remote.api local` or the firewall are what keep it to the people you intend.
+
 ## When a change fails
 
 Both report a failure rather than falling silent, and name what did not

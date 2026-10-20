@@ -77,6 +77,17 @@ A session is confined to its own account. An API session can open
 everything inside its own account and the shipped SDSYS files every
 account needs, but cannot open, rename, delete or list anything else.
 
+### How big a request may be, and what the server does with one it cannot accept
+
+Every request starts with a 4-byte length that counts the whole packet, itself included, and a 2-byte request code, so the smallest packet is 6 bytes. The client library never sends one that breaks the rules below, so a program using it does not meet them; they matter to a program that speaks the protocol itself, and to anyone probing the port.
+
+| When | The length of a packet may be |
+|---|---|
+| before the client has logged in (the server is still running as root) | 6 to 65,536 bytes. The login messages are all under 4 KB |
+| after the login | 6 to 1,073,741,832 bytes: the largest SD string (1,073,741,822) plus the 10 bytes of header the client library allows for, the number `SD_MAX_PACKET_BYTES` in the library |
+
+A packet that declares anything else (below 6, negative, or over the limit) is not read: the server ends the session at once and writes one line to the system log (`API packet length ... refused (before login)` or `(after login)`). The same test applies to the reply a client sends to an `INPUT` prompt. A client that closes its connection, however early, also ends its session at once; *before 20 Oct 2026 about half of the clients that completed the TLS handshake and closed straight away, and every one that sent four bytes that read as a huge length, left the server process running at 100% of a processor until it was killed.*
+
 ## Server status codes
 
 | Constant | Value | Meaning |
