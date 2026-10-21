@@ -46,6 +46,7 @@ refusal to install at all.
 | The elevation helper and ssh boundary script | `/usr/local/sbin` |
 | Configuration | `/etc/sd.conf` |
 | The SDSYS account | `/usr/local/sdsys` |
+| The SD BASIC guide and the knowledge pack for AI agents (text only) | `/usr/local/sdsys/agent-pack/guide` and `/usr/local/sdsys/agent-pack/pack` — see [Giving an AI Agent an Account](18-the-agent-account.html) |
 | User accounts | `/home/sd/user_accounts` |
 | Group accounts | `/home/sd/group_accounts` |
 
