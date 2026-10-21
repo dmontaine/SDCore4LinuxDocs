@@ -735,10 +735,13 @@ to let that login do.
   the same way (`files-write no` line, `files-write-off` audit line, then the failure).
 - **What it changes.** Without it a files-only login is refused: write (16), writeu (17),
   delete (18), deleteu (19), lock record (30), clearfile (31), file lock (32) and file
-  unlock (33), the four locking reads (7 to 10), and a `READV` with a lock flag. They are
+  unlock (33), a test of a lock (34, which is what `RECORDLOCKED()` sends; added on
+  20 October 2026), the four locking reads (7 to 10), and a `READV` with a lock flag. They are
   answered "This login cannot change or lock files here: ask the administrator for
   files-write-on (request *n*)" and **nothing is carried out**. Reads, selects, `READV` without
-  a lock, file information, the indices, a test of a lock and `RELEASE` still work.
+  a lock, file information, the indices and `RELEASE` still work. (A test of a lock names the
+  holder by his user number on this server, which a login that cannot lock has no business
+  with.)
 - **`sdapi` is not touched.** A remote user in `sdapi` has the whole API as before, with
   or without the write group, and `sdsys` is never made files-only.
 - **The refusal is in the audit trail of the target**, in lower case:
@@ -830,9 +833,9 @@ customers
 
 Opening it with `OPEN 'customers' TO f` (using the VOC name) gives a file variable that
 `READ`, `MATREAD`, `READV`, `SELECT`, `SELECTV`, `SSELECT`, `FILEINFO` and `CLOSE` work on, and,
-since 20 October 2026, `RECORDLOCKED()` (the other server says whether a record is locked and by
-whom; it changes nothing, so a read-only definition does not stop it) and `GETLOCKS()` (the local
-view, see "Writing and locking" below).
+since 20 October 2026, `GETLOCKS()` (the local view, see "Writing and locking" below).
+`RECORDLOCKED()` is **not** on this list: it needs a `write` definition and the write group like
+a lock (see "Writing and locking" below).
 `OPEN 'DICT', 'customers' TO d` opens the **dictionary** of the remote file, from the same
 server, and the same statements work on it. (Until 18 October 2026 a real server did not
 understand the request the client sends for a dictionary, which is `dict customers`
@@ -935,7 +938,7 @@ opened again.
 | `FILELOCK` | one request for the **whole file's** lock; a busy file (another user's file lock, or another user's lock on any record of the file) takes the `LOCKED` clause and `STATUS()` is the holder's user number on that server; with no `LOCKED` clause the statement asks again every quarter of a second. **Only for a server defined `write` and a login in the other server's `sdfileswrite` group** (S.72, 20 October 2026) |
 | `FILEUNLOCK` | one request; `STATUS()` afterwards is 0 (it was this session's and is free now), 3011 (another user's, still held) or 3012 (nobody held it), as for a local file. Same conditions as `FILELOCK`. It is never stopped by the definition being set back to `read`: giving a lock back changes no data |
 | `RELEASE` | the record form, the file form (which also gives the file lock back) and plain `RELEASE` (every lock this process holds on a write-mode server) |
-| `RECORDLOCKED()` | **works for a `read` definition too**: the other server's answer (-3 -2 -1 another user holds a file, update or read lock; 0 none; 1 2 3 this session holds a read, update or file lock), and `STATUS()` is the lock owner's user number on that server; allowed inside `BEGIN TRANSACTION` (it changes nothing) |
+| `RECORDLOCKED()` | the other server's answer (-3 -2 -1 another user holds a file, update or read lock; 0 none; 1 2 3 this session holds a read, update or file lock), and `STATUS()` is the lock owner's user number on that server. **Only for a server defined `write` and a login in the other server's `sdfileswrite` group**, like a lock (a first version on 20 October 2026 served a `read` definition and any files login; the same day the owner closed that). A `read` definition stops the program with message 11501 (`recordlocked`) and nothing is sent; a login without the write group is refused by the other server (message 11500 with its text, "request 34"). It is allowed inside `BEGIN TRANSACTION` for a `write` definition: it changes nothing, so a rollback has nothing to undo |
 | `GETLOCKS()` | **the local view, for either mode, and nothing is sent**: the one field of three counters (`NUMLOCKS`, the lock count, the peak) of *this* machine's lock table and no lock line. The locks of a remote file are held on the other server and never appear here, in `GETLOCKS()` or in `LIST.READU`, which is what openQM's QMNet documents too; look on the other server for them. `GETLOCKS()` is an internal-programs-only function |
 
 **A verb that takes the file lock now works.** `CLEAR.FILE` locks the file, clears it and gives the
@@ -965,6 +968,23 @@ holds it does. The first `FILELOCK` through each file variable is audited on the
 (`netfile filelock server=... file=...`); a file lock waited for is one line, not one for each
 request.
 
+**`RECORDLOCKED()` is held to the same two conditions** (decided on 20 October 2026, the day it was
+built). It asks the other server who holds a record, and the answer names the holder by his user
+number on that server, so it is not offered to a login that cannot lock. A `read` definition
+stops the program with message 11501 (`recordlocked`, "The file on server ... is read only:
+recordlocked is refused. Nothing was sent") and **nothing reaches the other server**. That is the
+clear text; the wall is on the other server, where request 34 is in the change set of the
+files-only route: a login that is only in `sdfiles` is refused with message 11521 and the line
+`api refused request=34 route=sdfiles write=off user=...` in that server's audit trail, whatever
+this machine's definition says, and a program is told by message 11500 with that text ("request
+34"). `RECORDLOCKED()` has no `ON ERROR` clause, so a refusal always stops the program. Inside
+`BEGIN TRANSACTION` it works for a `write` definition: it is a read of the lock table and changes
+nothing, so unlike a lock it has nothing for a rollback to undo. **One consequence:** under
+`MUSTLOCK` the check that this session holds the lock is the same request, so for a login
+without the write group the check itself is refused by the other server, and a write or delete
+ends with `STATUS()` 7000 and message 11500 naming request 34 instead of `STATUS()` 3023; nothing
+is written in either case.
+
 **Never repeated.** A change that gets no answer (the connection dropped, the server stopped)
 is *not* sent again: its outcome is not known. Without `ON ERROR` the program stops with
 message 11509 ("it is not known whether the change was made"); with `ON ERROR` `STATUS()` is
@@ -978,9 +998,10 @@ is a silent loss of the guarantee the program asked for); `CONFIGURE.FILE`, `ANA
 `FCONTROL`, the index statements, `OPENSEQ` and the other sequential-file statements, creating or
 deleting a remote file, and `WRITE ... CREATING.SEQKEY` (message 11511). Until 20 October 2026
 `FILELOCK`, `FILEUNLOCK`, `GETLOCKS` and `RECORDLOCKED()` were on this list; they work now, as
-the table above says. `MUSTLOCK` and
+the table above says (`RECORDLOCKED()` and the file lock for a `write` definition and the write
+group). `MUSTLOCK` and
 `$MODE AUTOLOCK` are honoured as for a local file: a write without the lock held is refused
-with `STATUS()` 3023.
+with `STATUS()` 3023 (for a login without the write group see `RECORDLOCKED()` above).
 
 **The local edit gates apply by the remote file's name.** A write, delete or clear of a remote
 file named `voc`, `bp`, `bp.out`, `*.bp`, `*.bp.out` or `*.dic`, or of a remote dictionary
@@ -1007,9 +1028,9 @@ and `CLEARFILE` done on the server's file. **Seen on 20 October 2026 (a scratch 
 `573d2d3` with the lock statements, on one real installation over the loopback address; 239 of
 239 rows of `witness-sdnet-files-route.sh`):** `FILELOCK` and `FILEUNLOCK` refused by the
 server for a login without the write group (message 11521, and `api refused request=32` and
-`request=33 route=sdfiles write=off` in its audit trail, never a refusal of request 34), refused
-by the client for a `read` definition and inside `BEGIN TRANSACTION`, `RECORDLOCKED()` served in
-all three; with the write group, `FILELOCK` shown in the **server's own `list.readu`** as a file lock
+`request=33 route=sdfiles write=off` in its audit trail; request 34 was served to that login in
+those runs, which the same day's S.72b closed, see above), refused by the client for a `read`
+definition and inside `BEGIN TRANSACTION`; with the write group, `FILELOCK` shown in the **server's own `list.readu`** as a file lock
 (type `FX`, no id) held by the client's session, a second session finding the file busy with the
 holder's user number in `STATUS()` and then waiting for it, `FILEUNLOCK` leaving 0 and 3012, and
 the lock gone from `list.readu` after `CLOSE`, after `RELEASE f`, after a bare `RELEASE` and after
@@ -1018,6 +1039,18 @@ recursion that `WRITEV` uses, `MUSTLOCK` on a real installation (it cannot be se
 putting every session under it), how the real server releases locks when a process ends other
 than by the cases above, and any run between two machines. The steps for what was not seen are
 in `gplbld/witness-sdnet-*.sh` in the source.
+
+**`RECORDLOCKED()` and the request-34 wall (S.72b, 20 October 2026): seen in the sandbox only.**
+The rules above (a `read` definition stops the program with message 11501 and nothing is sent;
+a login without the write group is refused by the other server with message 11521, the audit line
+`api refused request=34 route=sdfiles write=off`, and message 11500 at the client; `MUSTLOCK`
+refused for such a login; allowed inside `BEGIN TRANSACTION` for a `write` definition) were run
+against the test server, against the real `!apifilesok` for every request number and, for the audit
+line and the refusal, against a real `apisrvr` with a test device that marks the session as a
+files-only login. **Not yet run on a real installation:** the rows added to
+`gplbld/witness-sdnet-files-route.sh` for these rules are written and checked against their model,
+and not run; a real files-only login over SCRAM asking request 34 is the first thing the next
+witness run should see.
 
 ## The two waits: `NETWAIT` and `NETREPLY`
 

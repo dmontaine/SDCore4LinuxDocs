@@ -610,8 +610,8 @@ number this release has never heard of.
 | 11 to 15 | select; read the next id; clear a select list; read a saved list; release a lock |
 | 16 to 19 | write; write and keep the lock; delete; delete and keep the lock: **only with `files-write-on`** |
 | 26 | select on an index. Allowed because it is a select, with 37 to 39 |
-| 30 to 33 | lock a record; clear a file; lock and unlock a file: **only with `files-write-on`** |
-| 34 to 36 | ask whether a record is locked; list the indices |
+| 30 to 34 | lock a record; clear a file; lock and unlock a file; ask whether a record is locked (34, added on 20 October 2026: the answer names the holder by his user number on this server): **only with `files-write-on`** |
+| 35, 36 | list the indices |
 | 37 to 39 | select a list; select by an index value; select by an index key |
 | 40, 41 | file information; read one field (a `readv` that takes a lock is a change and needs `files-write-on`) |
 | 42 to 45 | set the left or right end of an index range (`setleft`, `setright`), and select within it (`selectleft`, `selectright`) |
