@@ -171,6 +171,7 @@ A packet that declares anything else (below 6, negative, or over the limit) is n
 | `SDMatch(src, template)` | Boolean | match a string against a pattern |
 | `SDMatchfield(src, template, component)` | String | extract a matched component |
 | `SDSubstr(...)` | String | substring (language-specific) |
+| `SDChecksum(data)` | Long | the number SD's own `checksum()` gives for the same string, worked out in the library **with no connection to SD**. A byte of 128 or more is taken as a signed character, as the server reads it. A check for accidental damage, not a hash for security (the message digests are the server's `digest()`); the null string is 0 |
 
 ### Command execution
 
