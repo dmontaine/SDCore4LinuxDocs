@@ -506,13 +506,72 @@ activity of other people is theirs to see only through an administrator. openQM'
 repeats the report every two seconds and takes `t`, `i`, `d` and `u` at the keyboard; this
 one shows it once — run it again for another look.
 
+## Moving data in and out: `import.csv`, `import.json`, `import.xml` and `convert.data`
+
+```
+import.csv pathname file {header} {delimiter x} {quote x} {escape x} {id column | generate} {dict} {overwriting}
+import.json pathname collection.file {id name | generate} {overwriting}
+import.xml pathname file {id name | generate} {overwriting}
+convert.data from.pathname to.pathname {from format} {as format} {header} {no.query}
+```
+
+**`import.csv`** reads a CSV file, named by its path, into the records of an SD
+file in one line. Each row is a record: the id is the **first column** (or the
+column `id` names; `generate` numbers the records 1, 2, 3 and keeps every column
+as a field), and the other columns are fields 1, 2, 3 in order. `header` says the
+first row names the columns and is not data; with `dict`, a name that has no item
+in the dictionary of the file gets a D item pointing at the field of its column.
+`delimiter`, `quote` and `escape` name a dialect, as on the
+[CSV page](11-sd-basic-csv-files.html), and a quoted field may hold a line break.
+Every cell is text: nothing is made a number.
+
+**`import.json`** reads a JSON array of objects, or a JSON Lines file, into a
+[collection file](20a-sd-tcl-collection-files.html), one record for each object, kept
+as it was. The id is the member `id` names (a string or a number), or `generate`.
+An element of the array that is not an object, or an object without that member, is
+skipped and counted.
+
+**`import.xml`** is the reverse of the `xml` keyword of the query processor
+([the report as XML](21-sd-tcl-query-processor.html)): a document in that shape,
+with or without `elements`, is read into the records of a file, the fields
+named by the dictionary of the file (a name is the item's id with what XML cannot
+have in a name made an underscore). The children of the root are the records; a
+single valued field is an attribute (or a child with text), a row of an
+association is a child with attributes or children of its own, and a multivalued
+field in no association is a child called *name*`_MV`. The id is the attribute
+or child `id` names, or the record's number. A value that has no field of that name in the
+dictionary is left out and counted (message 11862).
+
+All three leave alone a record that is **already there** and count it as skipped,
+unless `overwriting`, and end with *file: n record(s) written, m skipped*. Nothing is
+changed by a file that cannot be read (*is not valid JSON/XML ... near character n*) or by a
+file that is not there.
+
+**`convert.data`** writes a CSV, JSON, JSON Lines or XML file as another of them. The
+format is what each name ends in (`.csv`, `.json`, `.jsonl` or `.ndjson`, `.xml`), or what
+`from` (for the file read) and `as` (for the file written) say. A **table** — a CSV file
+with `header`, an array of JSON objects, a JSON Lines file, the children of the root of an
+XML document — goes to any of the four; to CSV the columns are the names in order of first
+appearance, and a value that is not text (a nested array or object) cannot be a CSV cell
+and is refused. To XML a table is `<table>` with a `<row>` for each row and a child for
+each column. A CSV file without `header` is an array of arrays (columns `c1`, `c2` ... in
+XML). A JSON object that is not a table goes to JSON as it is, to XML only when it is an
+XML element as `xparse()` gives it, and is refused for CSV and JSON Lines. A file that is
+there is asked about (*Overwrite(y/<n>)?*, Enter is no) unless `no.query`.
+
+**All four go through the same gates as `oswrite` and `write`.** The pathnames need the
+account's OS-access switch (`os-on`) for anything outside the account's own directory
+(*has no OS access ... cannot be reached by pathname*, and nothing is read or written),
+and the file or the path they write goes through the edit gates: a program file, VOC or
+dictionary changes only when the account has `bp.edit`, `voc.edit` or `dict.edit`.
+
 ## Who has these verbs
 
 **Every account has all of them now** — there is no longer a withheld set.
 `ct`, `list.files`, `set.file`, `analyse.file`, `analyze.file`, `clear.file`,
 `cname`, `configure.file`, `compare.files`, `copy`, `copyp`, `create.file`,
 `delete`, `delete.file`, `dump`, `file.stat`, `fixdir`, `find.file`, `fstat`,
-`fstat.user`, `hsm`,
+`fstat.user`, `hsm`, `import.csv`, `import.json`, `import.xml`, `convert.data`,
 `list.triggers`, `oscopy`, `rename`, `set.mode`, `set.trigger` are all in every
 account's VOC. (`set.mode` is there but refuses an account without the OS gate,
 as above.)
