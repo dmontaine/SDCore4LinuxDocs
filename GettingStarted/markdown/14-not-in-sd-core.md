@@ -81,7 +81,9 @@ mechanism and are unchanged. See [API access](09-api-access.html).
 file will not stop SD starting, and the new SDNet does not use it. The only
 thing that reads it is the API server's old request to open an SDNet file,
 which is refused unless bit 2 of `NETFILES` is set (and, since October 2026,
-unless the caller could `logto` that account and the account has `net-on`); the
+unless the caller could `logto` that account and the account has `net-on`, and, since
+20 October 2026, a file pointer that leads out of the account is followed only if the
+account has `os-on`); the
 value is 0 unless `sd.conf` sets it. The two settings the new SDNet does read
 are `NETWAIT` and `NETREPLY`, the seconds to wait for a connection and for each
 reply.

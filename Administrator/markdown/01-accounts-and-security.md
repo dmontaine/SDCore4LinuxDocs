@@ -757,6 +757,21 @@ directory is refused unless the account holds `os-on`. A refused open takes
 the `ELSE` branch with status 3035, like any other refusal here. **SDSYS is
 never refused.**
 
+**The API's request 29, "open an SDNet file", asks the same question** (since 20
+October 2026; it used to open any such pointer for a caller the `net-on` switch
+admitted, and the SDNet page of this set listed that as a limit). It asks it of the
+account **named in the request**, from that account's own register record, and not of
+the account the API session happens to be in: a file pointer in the named account's VOC
+must lead inside that account's own directory (`..` and links resolved, a directory
+that merely begins with the account's name is not inside), unless the account holds
+`os-on`. SDSYS entering its own account is never refused. It is stricter than the local
+rule in one way: the pointers SD itself put in every VOC (`syscom`, `$map`,
+`sd.voclib`, `dict.dict`, `newvoc`) lead out of the account and are refused here too,
+because a remote caller has no use for them. A refusal is error `ELSE` with status 3035
+and a line on the audit trail, `api refused request=29 reason=os gate off user=...
+account=... path=...`. The register is read at each request, so `os-off` applies to a
+session that is already signed on.
+
 **What this changes on an existing machine.** A Q-pointer that leads into an
 account its owner can no longer enter stops opening, and so does a hand-made
 file pointer to a directory outside the account in an account that does not

@@ -304,7 +304,13 @@ the planted record came back from the disk. The request now also refuses unless
 `SDCLIENT` is 0, the account has a register record (a path names none), the
 caller may enter the account by the same rule as `logto` (a member of its
 group, the account not suspended, the reason never told to the caller), and
-the account's `net-on` switch is on (SDSYS's own account excepted). Each
+the account's `net-on` switch is on (SDSYS's own account excepted). Since 20
+October 2026 it also asks the operating-system question of the file the VOC names:
+a file pointer that leads out of the account's directory is followed only if the
+account holds `os-on` (see *Accounts and Security*, the VOC pointers section), where
+before it was opened for any caller the other rules admitted (found by reading the
+source and then run on a private SD, which read a planted record from a directory
+outside every account). Each
 refusal is on the audit trail as `api refused request=29 reason=...`. The value
 is 0 unless `sd.conf` sets it, and the installer does not, so the request is
 refused as delivered. Leave it at 0: no client function in this set sends

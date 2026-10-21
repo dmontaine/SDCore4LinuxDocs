@@ -97,7 +97,11 @@ gates they ask are described below. Commands are shown here in lower case.
   `N` pointer does not read it. The one thing that does is the API server's old request
   29, "open an SDNet file": it needs bit 2 of `NETFILES` and, since 18 October 2026,
   the same account rules as `logto` and the account's NET switch, and a files-only login
-  can never make it (see [SD Admin Configuration](07-sd-admin-configuration.html)).
+  can never make it. Since 20 October 2026 it also refuses a VOC pointer that leads
+  out of the account unless the account holds `os-on` (status 3035, audit line
+  `api refused request=29 reason=os gate off ...`); it used to open one for any caller
+  the other rules admitted (see [SD Admin Configuration](07-sd-admin-configuration.html)
+  and the VOC pointers section of [Accounts and Security](01-accounts-and-security.html)).
   What you can set in `sd.conf` for SDNet is the two waits, `NETWAIT` and `NETREPLY`
   (below).
 
