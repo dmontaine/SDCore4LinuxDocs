@@ -119,8 +119,11 @@ exist.**
 | **`creating`** | `openseq` *path*`,` *id* `creating to` *file.var* `then` … `else` … ***(clause word)*** |
 | **`crop`** | `crop(`*a*`)` |
 | **`crt`** | `crt` *expr* {`:` …} {`:`} |
-| **`csv.mode`** | `csv.mode` *mode* {, *delimiter*} |
-| **`csvdq`** | `csvdq(`*line* {, *delimiter*}`)` |
+| **`csv.mode`** | `csv.mode` *mode* {, *delimiter* {, *quote* {, *escape*}}} |
+| **`csvbuild`** | `csvbuild(`*data* {, *mode* {, *dialect*}}`)` |
+| **`csvdq`** | `csvdq(`*line* {, *delimiter* {, *quote* {, *escape*}}}`)` |
+| **`csvopen`** | `csvopen(`*line* {, *delimiter* {, *quote* {, *escape*}}}`)` |
+| **`csvparse`** | `csvparse(`*text* {, *mode* {, *dialect*}}`)` |
 | **`current.level`** | clause of `enter` — run at the current command level ***(clause word)*** |
 
 ## D
@@ -137,7 +140,7 @@ exist.**
 | **`deletelist`** | `deletelist` *name* `then` … `else` … |
 | **`deleteseq`** | `deleteseq` *path* {`on error` …} `then` … `else` … |
 | **`deleteu`** | `deleteu` *file.var*, *id* {`on error` …} |
-| **`delimiter`** | `for each` *var* `in` *string* {`delimiter` *d*} … `next` *var* ***(clause word)*** |
+| **`delimiter`** | `for each` *var* `in` *string* {`delimiter` *d*} … `next` *var*; also a clause of `readcsv`, `matreadcsv`, `writecsv` and `matwritecsv` ***(clause word)*** |
 | **`dim`** | `dim` *name*`(`*rows* {, *cols*}`)`, … |
 | **`dimension`** | `dimension` *name*`(`*rows* {, *cols*}`)`, … — synonym of `dim` |
 | **`dir`** | `dir(`*a*`)` |
@@ -264,10 +267,14 @@ exist.**
 | | |
 |---|---|
 | **`jboolean`** | `jboolean(`*x*`)` |
-| **`jbuild`** | `jbuild(`*c* {, *mode*}`)` |
+| **`jbuild`** | `jbuild(`*c* {, *mode* {, *indent*}}`)` |
+| **`jmerge`** | `jmerge(`*target*, *patch*`)` |
 | **`jnull`** | `jnull()` |
 | **`jparse`** | `jparse(`*text* {, *mode*}`)` |
+| **`jpatch`** | `jpatch(`*document*, *operations*`)` |
+| **`jpath`** | `jpath(`*document*, *query*`)` |
 | **`jtype`** | `jtype(`*value*`)` |
+| **`jvalidate`** | `jvalidate(`*document*, *schema*`)` |
 
 ## K
 
@@ -311,7 +318,7 @@ exist.**
 | **`matchfield`** | `matchfield(`*a*, *b*, *c*`)` |
 | **`matparse`** | `matparse` *matrix* `from` *string* {, *delimiter*} |
 | **`matread`** | `matread` *matrix* `from` *file.var*, *id* {`on error` …} `then` … `else` … |
-| **`matreadcsv`** | `matreadcsv` *matrix* `from` *file.var* `then` … `else` … |
+| **`matreadcsv`** | `matreadcsv` *matrix* `from` *file.var* {`delimiter` *d*} {`quote` *q*} {`escape` *e*} `then` … `else` … |
 | **`matreadl`** | `matreadl` *matrix* `from` *file.var*, *id* {`locked` …} `then` … `else` … |
 | **`matreadu`** | `matreadu` *matrix* `from` *file.var*, *id* {`locked` …} `then` … `else` … |
 | **`matstr`** | `matstr(`*matrix*`)` |
@@ -412,7 +419,8 @@ exist.**
 | **`read`** | `read` *var* `from` *file.var*, *id* {`on error` …} `then` … `else` … |
 | **`read.socket`** | `read.socket(`*a*, *b*, *c*, *d*`)` |
 | **`readblk`** | `readblk` *var* `from` *file.var*, *length* `then` … `else` … |
-| **`readcsv`** | `readcsv` `from` *file.var* `to` *var*, … `then` … `else` … |
+| **`readcsv`** | `readcsv` `from` *file.var* {`delimiter` *d*} {`quote` *q*} {`escape` *e*} `to` *var*, … `then` … `else` … |
+| **`readjson`** | `readjson` *var* `from` *file.var* `then` … `else` … — `else` is end of file or a line that is not JSON |
 | **`readl`** | `readl` *var* `from` *file.var*, *id* {`locked` …} {`on error` …} `then` … `else` … |
 | **`readlist`** | `readlist` *var* {`from` *list.no*} `then` … `else` … |
 | **`readnext`** | `readnext` *id* {, *vm*} {`from` *list.no*} {`on error` …} `then` … `else` … |
@@ -586,7 +594,8 @@ exist.**
 | **`write`** | `write` *var* `to` *file.var*, *id* {`on error` …} — ***inside a transaction the lock must already be held***  ·  `write` *var* `to` *file.var* `creating.seqkey` *id.var* {`on error` …} — a hashed file numbers the record itself |
 | **`write.socket`** | `write.socket(`*a*, *b*, *c*, *d*`)` |
 | **`writeblk`** | `writeblk` *var* `to` *file.var* {`on error` …} |
-| **`writecsv`** | `writecsv` *value*, … `to` *file.var* `then` … `else` … |
+| **`writecsv`** | `writecsv` *value*, … `to` *file.var* {`delimiter` *d*} {`quote` *q*} {`escape` *e*} `then` … `else` … |
+| **`writejson`** | `writejson` *collection* `to` *file.var* `then` … `else` … |
 | **`writeseq`** | `writeseq` *var* `to` *file.var* {`on error` …} `then` … `else` … |
 | **`writeseqf`** | `writeseqf` *var* `to` *file.var* {`on error` …} `then` … `else` … |
 | **`writeu`** | `writeu` *var* `to` *file.var*, *id* {`on error` …}  ·  `writeu` *var* `to` *file.var* `creating.seqkey` *id.var* {`on error` …} |
@@ -597,7 +606,10 @@ exist.**
 
 | | |
 |---|---|
+| **`xbuild`** | `xbuild(`*element* {, *mode* {, *indent*}}`)` |
 | **`xlate`** | `xlate(`{*dict*`,`} *file.name*, *id*, *field*, *action*`)` |
+| **`xparse`** | `xparse(`*text* {, *mode*}`)` |
+| **`xpath`** | `xpath(`*element*, *query*`)` |
 | **`xtd`** | `xtd(`*a*`)` |
 
 ## Added from openQM 4, 15 Oct 2026
@@ -623,7 +635,7 @@ in one list. Each is described where its subject is.
 | **`last`** · **`lasts`** | `last(`*string*, *delimiter*`)` · `lasts(`*array*, *delimiter*`)` |
 | **`left`** · **`right`** | `left(`*string*, *n*`)` · `right(`*string*, *n*`)` |
 | **`matchess`** · **`matchfields`** · **`trimws`** | `matchess(`*array*, *template*`)` · `matchfields(`*array*, *template*, *n*`)` · `trimws(`*array*`)` |
-| **`matwritecsv`** | `matwritecsv` *matrix* `to` *file.var* `then` … `else` … — ***no `encoding`, no `on error`*** |
+| **`matwritecsv`** | `matwritecsv` *matrix* `to` *file.var* {`delimiter` *d*} {`quote` *q*} {`escape` *e*} `then` … `else` … — ***no `encoding`, no `on error`*** |
 | **`mergelist`** | `mergelist(`*list1*, *list2*, *modes*`)` |
 | **`movelist`** · **`movelistv`** | `movelist` *n* `to` *m* {`keep`}   ·   `movelistv` *n* `to` *var* {`keep`} |
 | **`nv`** · **`ns`** | `nv(`*array* {, *repeat*}`)` · `ns(`*array*`)` |

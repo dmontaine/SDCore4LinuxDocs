@@ -2,7 +2,8 @@ Title: SD Basic - JSON and Collection Files
 Subtitle: Turning a collection into JSON text and back, keeping collections in files, and joining a record that another record points to.
 
 This page continues [SD Basic - Data Collections](05b-sd-basic-data-collections.html).
-It covers the two functions that convert a collection to and from text, the kind of
+It covers the two functions that convert a collection to and from text, JSON Lines files,
+the functions that merge, patch, search and check a JSON document, the kind of
 file whose records **are** collections, and the functions that join one record to
 another. The commands that work on such a file from the command prompt are on
 [SD TCL - Data Collection Files](20a-sd-tcl-collection-files.html).
@@ -91,6 +92,161 @@ crt jbuild(jparse("{'a':1,'b':'x'}"), jb$squote.name + jb$squote.value)
 
 A collection that holds a **file variable** is written to a file with the element stored as a
 null, and `jbuild(c, jb$invalid)` asks for the same; without the mode it fails with 1019.
+
+### The indent of the pretty layout
+
+```
+text = jbuild(c, jb$pretty, indent)
+```
+
+`jb$pretty` puts one element to a line and indents each level by **two spaces**. A third
+argument names the text put in front of an element once for each level — up to 16 spaces
+and tabs, `char(9)` for a tab. Naming an indent asks for the pretty layout even when the
+mode does not say `jb$pretty`. An indent that is not white space, or a null string, is the two
+spaces.
+
+```
+c = jparse('{"a":[1,{"b":2}]}')
+crt jbuild(c, jb$pretty, '    ')
+```
+
+```
+{
+    "a": [
+        1,
+        {
+            "b": 2
+        }
+    ]
+}
+```
+
+## JSON Lines: `readjson` and `writejson`
+
+```
+readjson variable from file.variable then ... else ...
+writejson collection to file.variable then ... else ...
+```
+
+A **JSON Lines** file has one JSON value on each line. `readjson` reads the next line of a
+sequential file ([opened with `openseq`](10-sd-basic-sequential-files.html)) and puts it, as
+`jparse()` would, in *variable*; `writejson` writes a collection as one compact line, a line
+feed inside a string written as `\n`, so that it is one line. `to` may be written `on`.
+
+`readjson` skips a blank line. Its `else` branch is the end of the file (`status()` is 3006) or
+a line that is not JSON (`status()` is 1020, and the next `readjson` reads the line after it).
+`writejson`'s `else` branch is a value that is not an object or an array (`status()` 1020), a
+value with no JSON form (1019), or a failed write. The OS-access gate and the edit gates were
+asked at `openseq`, as for every sequential file.
+
+```
+openseq 'orders.jsonl' to f else stop
+loop
+   readjson o from f else exit
+   crt o{'id'} : ' ' : o{'total'}
+repeat
+closeseq f
+```
+
+## Changing, searching and checking a document
+
+Four functions take a document that is already a collection, or **JSON text**, which is parsed
+first. The root of a document is an object or an array, as `jparse()` has it; a bare number or
+string is refused (a null string, `status()` 1020). None of them changes its argument.
+
+### `jmerge()` — RFC 7396 merge patch
+
+```
+result = jmerge(target, patch)
+```
+
+The patch is merged into a copy of the target: a name in the patch whose value is `null` takes
+that name out of the target; an object in the patch merges into the object of the same name; any
+other value (an array too) replaces. This is the way to apply a partial update:
+
+```
+doc = jparse('{"a":"b","c":{"d":"e","f":"g"}}')
+crt jbuild(jmerge(doc, '{"a":"z","c":{"f":null}}'))
+```
+
+```
+{"a":"z","c":{"d":"e"}}
+```
+
+A patch that is not JSON gives a null string and `status()` 1020. A merge patch cannot set a
+value to `null` (that is what it uses for "remove"); use `jpatch()` for that.
+
+### `jpatch()` — RFC 6902 patch
+
+```
+result = jpatch(document, operations)
+```
+
+*operations* is an array of objects, applied in order to a copy of the document: `{"op": "add",
+"path": "/a/b", "value": 1}` and likewise `remove`, `replace`, `move` and `copy` (these two with
+a `"from"`) and `test` (the value at the path must equal `"value"`). A path is a JSON Pointer
+(RFC 6901): `/` between the steps, `~1` for a `/` and `~0` for a `~` in a name, **array
+elements numbered from 0**, and `-` the place after the last element; the empty path is the
+whole document. It is **all or nothing**: if an operation fails the result is a null string,
+`status()` is **1023** and `inmat()` is the number (from 1) of the operation that failed.
+
+### `jpath()` — JSONPath (RFC 9535)
+
+```
+matches = jpath(document, query)
+```
+
+The matches, copied, as an array (empty when nothing matches). The query starts with `$` and
+may use `.name` and `['name']`, `*`, `..` (every level below), indexes **from 0** (negative
+ones from the end), slices `[1:3]` and `[::-1]`, unions `[0,1]` and filters:
+
+| Query | Matches |
+|---|---|
+| `$.store.book[*].author` | the author of every book |
+| `$..author` | every `author`, at any depth |
+| `$..book[-1].title` | the title of the last book |
+| `$..book[:2].price` | the prices of the first two books |
+| `$..book[?@.price<10].title` | the titles of the books under 10 |
+| `$..book[?@.isbn]` | the books that have an `isbn` |
+| `$..book[?@.category=='fiction' && @.price>10]` | `&&`, `||` and `!` combine tests |
+| `$..book[?length(@.title) > 15]` | the functions are `length()`, `count()`, `match()` and `search()` |
+
+A query that is not well formed gives a null string, `status()` **1024** and `inmat()` the
+place it went wrong. **The index numbers are the RFC's, from 0**; the `c{'a/2'}` paths of a
+collection (previous page) count from 1.
+
+### `jvalidate()` — JSON Schema
+
+```
+faults = jvalidate(document, schema)
+```
+
+Checks a document against a JSON Schema (draft 2020-12) and gives an array of the faults found,
+**empty when the document is valid**. Each fault is an object with `path` (a JSON Pointer to the
+place, empty for the whole document), `keyword` (the schema keyword that failed) and `message`.
+The keywords it checks are `type`, `enum`, `const`, `minimum`, `maximum`, `exclusiveMinimum`,
+`exclusiveMaximum`, `multipleOf`, `minLength`, `maxLength`, `pattern`, `minItems`, `maxItems`,
+`uniqueItems`, `prefixItems`, `items`, `contains`, `minContains`, `maxContains`, `required`,
+`properties`, `patternProperties`, `additionalProperties`, `propertyNames`, `minProperties`,
+`maxProperties`, `dependentRequired`, `allOf`, `anyOf`, `oneOf`, `not`, `if` with `then` and
+`else`, `$ref` (into the same schema: `#` or `#/...`) and a `true` or `false` where a schema is
+expected. Every other keyword, `format` included, is let be. A length is a number of bytes: SD
+has no character sets.
+
+```
+schema = '{"type":"object","required":["name","age"],"properties":{"age":{"type":"integer","minimum":0}}}'
+faults = jvalidate('{"name":"Ann","age":-1}', schema)
+for i = 1 to inmat(faults)
+   crt faults{i, 'path'} : ' ' : faults{i, 'keyword'}
+next i
+```
+
+```
+/age minimum
+```
+
+Pattern matching (`pattern`, `patternProperties`, `match()` and `search()` in `jpath()`) uses
+POSIX extended regular expressions.
 
 ## Collection files
 
@@ -188,4 +344,8 @@ and `trans(zzcf, @id, name, 'X')`, with the item name unquoted. The query comman
 [SD Basic - Data Collections](05b-sd-basic-data-collections.html) ·
 [SD TCL - Data Collection Files](20a-sd-tcl-collection-files.html) ·
 [SD Basic - File Handling](07-sd-basic-file-handling.html) ·
+[SD Basic - XML](05d-sd-basic-xml.html) ·
+[SD Basic - CSV Files](11-sd-basic-csv-files.html) ·
+[SD TCL - The Query Processor](21-sd-tcl-query-processor.html) (the `json` and `json.lines` keywords) ·
+[SD TCL - Files and Records](20-sd-tcl-files-and-records.html) (`import.json` and `convert.data`) ·
 [SD TCL - The CED Data Collection Editor](27b-sd-tcl-ced.html).

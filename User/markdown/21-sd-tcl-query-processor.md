@@ -439,6 +439,82 @@ whole one.
 Printing, print units and `$hold` are in
 [SD TCL - Printing and Spooling](28-sd-tcl-printing-and-spooling.html).
 
+## A report as CSV or delimited text
+
+```
+csv {mode} {"delimiter"} {to pathname | as file id} {no.query | appending}
+delimiter "string" {to pathname | as file id} {no.query | appending}
+```
+
+`csv` makes the report comma separated values, one line for each record; `delimiter` puts
+your own string between the cells and does no quoting. Neither prints a page heading; the
+column headings are the first line unless `col.sup` is given, and on the screen the
+"n record(s) listed" line follows the report.
+
+| `csv` *mode* | a cell is put in double quotes when |
+|---|---|
+| **1** (the default) | it holds a double quote or the delimiter (RFC 4180); a quote inside is doubled |
+| **2** | it is not empty and not a number |
+| **3** | always, an empty cell too |
+
+The delimiter of `csv` is one character other than a double quote. In either keyword the string
+may hold `<tab>` for a tab and `^nnn` for the character whose three digit ASCII number is *nnn*.
+
+### Where it goes: `to` and `as`
+
+| | |
+|---|---|
+| **`to`** *pathname* | an operating system file. It is a path, so the account's OS access gate applies (a file outside the account's own directory needs `os` on) and so do the edit gates |
+| **`as`** *file id* | a **record** of a **directory file**: the file's name and the record's id |
+| **`no.query`** | replace what is there without asking |
+| **`appending`** | add to what is there |
+
+If the file or record is already there the report asks `... already exists. Overwrite(y/<n>)?`
+(Enter is no), unless `no.query` or `appending` was given. **The two words may not be used
+together**: the command says so and stops before it has opened anything. `to` or `as` also means
+`hdr.sup`, since the output is not paginated, and one command takes only one of the two.
+
+```
+list sales by @id name qty price csv as exports r1001 no.query
+```
+
+writes the record `r1001` of the directory file `exports`. **`as` is a write like any other.**
+The edit gates are asked of the file you named (a directory file that is a program file needs
+`bp.edit`), and the record is locked while the report is written, so a record another session
+holds is not waited for: the command names the holder (`Record 'r1001' is locked by user 5`)
+and writes nothing. The lock is given back when the command ends. `as` needs a directory
+file; a hashed file is refused (`AS needs a directory file, and sales is not one`).
+
+An `as` straight after a field is the old **synonym** (`name as who`) and stays that; the
+report's own `as` comes after `csv` or `delimiter` and its options.
+
+### A multivalued field is split over lines
+
+A field the dictionary calls multivalued (or `multi.value` makes one) gives **one line for
+each value**, and the other columns are **blank on the continuation lines**:
+
+```
+list sales by @id name qty price csv
+```
+
+```
+sales,name,qty,price
+r1,Ann,1,1.50
+,,2,2.00
+,,3,3.00
+r2,"Bob ""B"", Jr",5,3.25
+r3,Cy,,
+```
+
+A record has as many lines as its longest multivalued field has values, and a shorter field
+leaves blank cells. `rpt` after a single valued field repeats it on every line and `repeating`
+does that for all of them, the id too. A field that is **single valued** in the dictionary, or
+`single.value` after it, stays **one cell whatever its data holds**: the value marks are data
+and are written as they are. Total and break lines are a line each, as they always were.
+
+> **`encoding` is not here.** openQM lets `csv` and `delimiter` name a character encoding for the
+> file. SD has no character sets, so the word is not accepted.
+
 ## A report as XML
 
 ```
@@ -480,6 +556,37 @@ The text of the DTD and of the schema is SD's own: the openQM manual shows the
 data but not them. A character in a field name that is not a letter, digit,
 underscore, dot or dash becomes an underscore, and the tags are in the case
 the file and the dictionary give them.
+
+## A report as JSON
+
+```
+list sales sale date cust item qty price json
+list sales sale date cust item qty price json.lines
+```
+
+`json` makes the report a **JSON array** with one object for each record, and
+`json.lines` the same objects as **JSON Lines**: one object to a line, no brackets,
+no commas — the form `readjson` reads and `import.json` takes. The objects are
+made as the `xml` report groups its fields: a single valued field is a member
+(its text, in double quotes, with the characters JSON reserves escaped); a
+multivalued field that is in no association is an array of its values; and the
+fields of an **association** are an array of row objects, named for the
+association. A field with no value is left out. Nothing is made a number: a
+value is the text the field has.
+
+```
+[
+{"cust":"1056","date":"14 Oct 07","lines":[{"item":"003","price":"1.70","qty":"1"},{"item":"122","price":"44.50","qty":"3"}],"sale":"12140"}
+]
+```
+
+Like the `xml` report, a JSON report goes to the screen or the printer — **not** to
+`to` or `as` (use `list ... csv as` for a file of text, or `convert.data` to
+turn a CSV report into JSON) — and it cannot have breakpoints, totals or other
+arithmetic on a field. `json` and `json.lines` may not be combined with `xml`,
+`csv` or `delimiter` (the command says "Multiple use of DELIMITER or CSV
+options"), and the XML words `elements`, `with.dtd`, `dtd.only`, `with.schema` and
+`schema.only` are refused with them.
 
 ## Querying a dictionary
 
