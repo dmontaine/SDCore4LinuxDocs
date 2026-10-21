@@ -249,6 +249,12 @@ out newest first. A sort that is large enough to spill to a work file (the
 `SORTMEM` setting) may give equal keys in another order, and with `srt$unique`
 may keep another one of the duplicates. The order of equal keys is not
 something to rely on; the order of *different* keys is the same either way.
+Since 20 Oct 2026 many equal keys, or keys that arrive already in order, no longer
+make a sort slow: the keys of a run are collected and sorted once, so 100,000 equal
+keys take a fraction of a second where they took nearly three minutes. A sort with
+`srt$unique`, `srt$compound` or `srt$strict`, or with a right justified key that
+holds numbers and text together, is sorted as before and is not faster. Lowering
+`SORTMEM` is no longer a way to speed up a sort of equal keys.
 
 **The values of *flags*.** `srt$left` 0, `srt$right` 1, `srt$compound` 2,
 `srt$right.float` 3 and `srt$strict` 4 choose how two keys are compared, the
