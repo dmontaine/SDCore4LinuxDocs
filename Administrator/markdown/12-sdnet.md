@@ -1013,7 +1013,7 @@ user names (`ED`, `COPY` and the like) ask the same question.
 before it is changed; a `LIST` or `SORT` over such a file makes about twice the read requests.
 
 **What was and was not confirmed.** All of this was run in a private sandbox against a fake
-server written for the tests (834 rows in `gplbld/sandbox-netfile.py`, including a second session holding a lock, a
+server written for the tests (994 rows in `gplbld/sandbox-netfile.py`, including a second session holding a lock, a
 dropped connection before and after a write, a reply whose length cannot be true, and every
 refusal above), and the main paths on one real installation over the loopback address on
 18 October 2026. **Seen there (the Dev branch at `5315c65`, before the write group
