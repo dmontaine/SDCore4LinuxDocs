@@ -829,7 +829,10 @@ customers
 ```
 
 Opening it with `OPEN 'customers' TO f` (using the VOC name) gives a file variable that
-`READ`, `MATREAD`, `READV`, `SELECT`, `SELECTV`, `SSELECT`, `FILEINFO` and `CLOSE` work on.
+`READ`, `MATREAD`, `READV`, `SELECT`, `SELECTV`, `SSELECT`, `FILEINFO` and `CLOSE` work on, and,
+since 20 October 2026, `RECORDLOCKED()` (the other server says whether a record is locked and by
+whom; it changes nothing, so a read-only definition does not stop it) and `GETLOCKS()` (the local
+view, see "Writing and locking" below).
 `OPEN 'DICT', 'customers' TO d` opens the **dictionary** of the remote file, from the same
 server, and the same statements work on it. (Until 18 October 2026 a real server did not
 understand the request the client sends for a dictionary, which is `dict customers`
@@ -838,7 +841,8 @@ open dictionary": the test server the client was tried against had always accept
 The server now opens `dict` and a name, in any case, as a dictionary. A client on this
 release against a server that has not been updated still cannot open a dictionary.)
 **Nothing else does.** Every other statement
-given the file variable (writes, deletes, `CLEARFILE`, locks, `SELECTINDEX`...) stops with
+given the file variable (writes, deletes, `CLEARFILE`, locks including `FILELOCK` and
+`FILEUNLOCK`, `SELECTINDEX`...) stops with
 message 11501 (or, with `ON ERROR`, sets `STATUS()` and goes on), and nothing is sent to the
 other server. `OPENPATH`, `OPENTEMP`, `OPENSEQ` and `CALL "file program"` never see such a
 pointer.
@@ -928,13 +932,38 @@ opened again.
 | `CLEARFILE` | one request; a big file can take minutes, and the connection is only called lost after five |
 | `READU`, `READL`, `MATREADU/L`, `READVU/L` | the lock, then the read; a busy record takes the `LOCKED` branch (`STATUS()` is the holder) or, without a `LOCKED` clause, the statement tries again every quarter of a second until the lock is free |
 | `RECORDLOCKU`, `RECORDLOCKL` | the lock, with the same busy behaviour |
-| `RELEASE` | the record form, the file form and plain `RELEASE` (every lock this process holds on a write-mode server) |
+| `FILELOCK` | one request for the **whole file's** lock; a busy file (another user's file lock, or another user's lock on any record of the file) takes the `LOCKED` clause and `STATUS()` is the holder's user number on that server; with no `LOCKED` clause the statement asks again every quarter of a second. **Only for a server defined `write` and a login in the other server's `sdfileswrite` group** (S.72, 20 October 2026) |
+| `FILEUNLOCK` | one request; `STATUS()` afterwards is 0 (it was this session's and is free now), 3011 (another user's, still held) or 3012 (nobody held it), as for a local file. Same conditions as `FILELOCK`. It is never stopped by the definition being set back to `read`: giving a lock back changes no data |
+| `RELEASE` | the record form, the file form (which also gives the file lock back) and plain `RELEASE` (every lock this process holds on a write-mode server) |
+| `RECORDLOCKED()` | **works for a `read` definition too**: the other server's answer (-3 -2 -1 another user holds a file, update or read lock; 0 none; 1 2 3 this session holds a read, update or file lock), and `STATUS()` is the lock owner's user number on that server; allowed inside `BEGIN TRANSACTION` (it changes nothing) |
+| `GETLOCKS()` | **the local view, for either mode, and nothing is sent**: the one field of three counters (`NUMLOCKS`, the lock count, the peak) of *this* machine's lock table and no lock line. The locks of a remote file are held on the other server and never appear here, in `GETLOCKS()` or in `LIST.READU`, which is what openQM's QMNet documents too; look on the other server for them. `GETLOCKS()` is an internal-programs-only function |
+
+**A verb that takes the file lock now works.** `CLEAR.FILE` locks the file, clears it and gives the
+lock back, so until 20 October 2026 it stopped on a write-mode remote file with "filelock is not
+available for a file on server ..."; it now clears one, to the same two conditions as a `CLEARFILE`
+statement in a program (and the edit gates by the remote file's name still apply). The query
+processor's `LOCKING` keyword (`LIST customers LOCKING`) takes the same file lock and works the same
+way; a `read` definition still stops both, because `FILELOCK` is refused there.
 
 Locks are held by the connection: closing the file variable releases the locks taken through
-it, ending the process or a `LOGTO` closes the connection and releases them all, and a file
+it (a file lock too), ending the process or a `LOGTO` closes the connection and releases them all, and a file
 variable that merely goes out of scope has its close sent at the next prompt. Waiting is done
 by asking again, so it costs about four requests a second and two machines cannot detect a
-deadlock between them.
+deadlock between them. **The wait is never done by the other server:** the client always sends
+the "do not wait" form of a lock request (the wait flag of API request 32 is 0), so a wait cannot
+look like a lost connection and the break key ends it.
+
+**A file lock keeps everyone else out of a whole file** (they cannot take a read or update lock on
+any record of it, or a file lock). That is what `FILELOCK` is for, and it is also why it is held
+to the same two conditions as a write: your definition says `write` **and** the other server's
+administrator put this login in `sdfileswrite`. A login that is only in `sdfiles` is refused by
+the other server with message 11521 and the line `api refused request=32 route=sdfiles write=off
+user=...` in its audit trail. The administrator of the server that is reached sees a file lock in
+`list.readu` (type `FX`, on the server's own user number) and can clear one with
+`unlock file n filelock` (the *Sessions and locks* page); the lock also ends when the session that
+holds it does. The first `FILELOCK` through each file variable is audited on the client
+(`netfile filelock server=... file=...`); a file lock waited for is one line, not one for each
+request.
 
 **Never repeated.** A change that gets no answer (the connection dropped, the server stopped)
 is *not* sent again: its outcome is not known. Without `ON ERROR` the program stops with
@@ -943,9 +972,13 @@ message 11509 ("it is not known whether the change was made"); with `ON ERROR` `
 read the record to find out.
 
 **What is refused even with `write`.** A change or lock inside `BEGIN TRANSACTION` (message
-11510: a remote write can't be rolled back, so it never joins a local transaction); `FILELOCK`,
-`FILEUNLOCK`, `GETLOCKS`, `RECORDLOCKED()`, `CONFIGURE.FILE`, `ANALYSE.FILE`, `FCONTROL`, the
-index statements, and `WRITE ... CREATING.SEQKEY` (message 11511). `MUSTLOCK` and
+11510: a remote write can't be rolled back, so it never joins a local transaction; this holds for
+`FILELOCK` and `FILEUNLOCK` too, where openQM's QMNet lets them through without a rollback, which
+is a silent loss of the guarantee the program asked for); `CONFIGURE.FILE`, `ANALYSE.FILE`,
+`FCONTROL`, the index statements, `OPENSEQ` and the other sequential-file statements, creating or
+deleting a remote file, and `WRITE ... CREATING.SEQKEY` (message 11511). Until 20 October 2026
+`FILELOCK`, `FILEUNLOCK`, `GETLOCKS` and `RECORDLOCKED()` were on this list; they work now, as
+the table above says. `MUSTLOCK` and
 `$MODE AUTOLOCK` are honoured as for a local file: a write without the lock held is refused
 with `STATUS()` 3023.
 
@@ -970,7 +1003,17 @@ message 11509 came back), `CLEARFILE` of a remote file, a change refused inside
 gate that is off, a definition that says `read`, an account that is not listed, a wrong pin and
 a login removed from its group. **Seen at `c42aa13`, with the write group:** a write refused
 until `files-write-on`, and then `WRITE`, `WRITEU`, `DELETE`, `READU`, `RECORDLOCKU`, `READVU`
-and `CLEARFILE` done on the server's file. **Not measured:** the handler running inside the
+and `CLEARFILE` done on the server's file. **Seen on 20 October 2026 (a scratch build of `Dev`
+`573d2d3` with the lock statements, on one real installation over the loopback address; 239 of
+239 rows of `witness-sdnet-files-route.sh`):** `FILELOCK` and `FILEUNLOCK` refused by the
+server for a login without the write group (message 11521, and `api refused request=32` and
+`request=33 route=sdfiles write=off` in its audit trail, never a refusal of request 34), refused
+by the client for a `read` definition and inside `BEGIN TRANSACTION`, `RECORDLOCKED()` served in
+all three; with the write group, `FILELOCK` shown in the **server's own `list.readu`** as a file lock
+(type `FX`, no id) held by the client's session, a second session finding the file busy with the
+holder's user number in `STATUS()` and then waiting for it, `FILEUNLOCK` leaving 0 and 3012, and
+the lock gone from `list.readu` after `CLOSE`, after `RELEASE f`, after a bare `RELEASE` and after
+a program that ended holding it. **Not measured:** the handler running inside the
 recursion that `WRITEV` uses, `MUSTLOCK` on a real installation (it cannot be set without
 putting every session under it), how the real server releases locks when a process ends other
 than by the cases above, and any run between two machines. The steps for what was not seen are
@@ -1061,13 +1104,17 @@ netfile open server=hq file=customers mode=write
 netfile write server=hq file=customers
 netfile delete server=hq file=customers
 netfile clear server=hq file=customers
+netfile filelock server=hq file=customers
 netfile refused server=hq reason=mode
 netfile lost server=hq op=write
 ```
 
-`write` and `delete` are written the first time through a handle, `clear` every time, `refused
-... reason=mode` once per handle when the definition says `read` by then, and `lost` when a
-change got no answer. The refusals the kernel makes itself (a read-mode handle, a transaction,
+`write` and `delete` are written the first time through a handle, `clear` every time, `filelock`
+the first time a `FILELOCK` is tried through a handle (before the request, so an attempt the other
+server refuses is on the trail too; waiting for a busy file is many requests and one line),
+`refused ... reason=mode` once per handle when the definition says `read` by then, and `lost` when a
+change got no answer. A lost connection during a `FILELOCK`, `FILEUNLOCK` or `RECORDLOCKED()` is
+not a `lost` line: they change no data, so it is message 11497 and nothing else. The refusals the kernel makes itself (a read-mode handle, a transaction,
 an edit gate) write nothing.
 
 On the server that is reached, the files-only route writes, in lower case:
@@ -1091,8 +1138,10 @@ October 2026; the decision is made on both). All of them are written on the serv
 ## Steps that are left to run: the owner-run witnesses
 
 Everything above that says "not confirmed" is a step in one of these scripts, in
-`sdb_ai/sd64/gplbld/` of the source repository. **None of them has been run on a real
-installation yet.** Each is run with `sudo` from the owner's login, says on its first lines what
+`sdb_ai/sd64/gplbld/` of the source repository. **The files-route, write-group, gaps and
+two-machines scripts were run on real installations (the Debian 13 test machines) on 19 and 20
+October 2026; the first three again on 20 October on the build with the lock statements.** Each
+is run with `sudo` from the owner's login, says on its first lines what
 it changes and puts it back, refuses to start when anything it would make already exists, shows
 the text it got and the real state (the Linux groups, the audit trail, the server's file) next
 to each row, and fails a row whose session printed nothing. Each ends with a log in `/var/tmp`.
