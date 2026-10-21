@@ -146,11 +146,11 @@ sends its acknowledgement byte and then goes silent).
 
 **Not known.** A second machine: a firewall in between, a name that has to be resolved, real
 latency, a connection that a router drops, and the key hash carried from one screen to the
-other. The two waits have only been timed against a listener on the same machine. And one wait
-is known not to hold: a server that completes the TLS handshake and then sends nothing at all,
-not even the acknowledgement byte, is waited for until it sends something or closes the
-connection, not for `NETREPLY` seconds (see `12`, "The bounds were timed"). Against a real
-server's own idle limit it has not been tried.
+other. The two waits have only been timed against a listener on the same machine, with a
+private test server that says nothing in four different ways (it never answers the TLS hello,
+never sends the acknowledgement byte, or sends half of a record in place of the acknowledgement
+or of a reply; all four are given up on at the wait, since 20 October 2026, see `12`, "The silent
+server"). Against a real server that hangs, on another machine, it has not been tried.
 
 **To settle it.** `witness-sdnet-two-machines.sh --role server-setup` on the machine to be
 reached and `--role client` on the other (both run by the owner with `sudo`; `gplbld` in the

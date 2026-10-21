@@ -143,8 +143,8 @@ reads.
 
 | Parameter | Default | Effect |
 |---|---|---|
-| `NETWAIT` | 5 | Seconds to wait for a connection to another SD server: `set.server ... connect`, `set.netlogin` and the first use of a defined server. 1 to 3600; **0 is refused and SD does not start with it** (openQM reads 0 as "wait for ever") |
-| `NETREPLY` | 30 | Seconds to wait for each reply from another SD server once connected. 1 to 3600, 0 refused. A server slower than this is treated as lost, and a change that got no answer is never sent again. A `CLEARFILE` waits the longer of 300 seconds and this |
+| `NETWAIT` | 5 | Seconds to wait for a connection to another SD server: `set.server ... connect`, `set.netlogin` and the first use of a defined server. It bounds the TCP connect and then, again, the TLS handshake (the handshake had 15 seconds fixed until 20 October 2026). 1 to 3600; **0 is refused and SD does not start with it** (openQM reads 0 as "wait for ever") |
+| `NETREPLY` | 30 | Seconds to wait for each reply from another SD server once connected. 1 to 3600, 0 refused. A server slower than this is treated as lost, whatever it has sent meanwhile (the TLS session tickets, or half a record, no longer use the wait up: 20 October 2026), and a change that got no answer is never sent again. A `CLEARFILE` waits the longer of 300 seconds and this |
 | `NETFILES` | 0 | Not read by SDNet. Bit 2 gates one old API request, number 29 (below). Leave it at 0 |
 
 Both waits are per computer. See [SDNet](12-sdnet.html#the-two-waits-netwait-and-netreply) for what they bound and

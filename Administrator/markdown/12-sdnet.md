@@ -1064,8 +1064,8 @@ listed by `config`) say how long SD waits on another server. Both are in **secon
 
 | setting | what it bounds | default |
 |---|---|---|
-| `NETWAIT` | the connection: `set.server ... connect`, `set.netlogin`, and the first use of a defined server by an `OPEN` of a remote file | 5 |
-| `NETREPLY` | each wait for a reply from the server once connected, in the login and in every request (one case is not bounded: see "The bounds were timed", below) | 30 |
+| `NETWAIT` | the connection: `set.server ... connect`, `set.netlogin`, and the first use of a defined server by an `OPEN` of a remote file. **Each of the two steps of making it has this long: the TCP connect, then the TLS handshake** (until 20 October 2026 the handshake had 15 seconds fixed, whatever this said) | 5 |
+| `NETREPLY` | each wait for a reply from the server once connected, in the login and in every request, **whatever the server has sent meanwhile** (since 20 October 2026 the TLS session tickets, or half of a record, no longer use the wait up) | 30 |
 
 A server that is slower than `NETREPLY` is treated as lost, as it always was (the 30 seconds
 were fixed in the programs); **a changing request that gets no answer is never sent again**
@@ -1100,15 +1100,39 @@ seconds more than a refused connection costs; with `NETREPLY=3` a server that se
 login message and then said nothing was given up on in about three (the old fixed 30 would have
 run to the fake server's own 12-second hold).
 
-**One case is not bounded by `NETREPLY`, and was found by trying it:** a server that completes the
-TLS handshake and then sends nothing at all, not even the acknowledgement byte. The client waits
-until that server sends something or closes the connection. After the handshake a TLS 1.3 server
-sends its session tickets; they end the client's first read early, and the read that follows has
-no time limit. Against the test server, which closes a silent connection after 5 seconds, a
-client set to wait 3 seconds waited 5; with the tickets turned off in the test server it waited 3.
-A server you have pinned and that hangs this way holds the one session that is waiting on it, for
-as long as it stays that way. This is measured, reported to the owner and not changed in this
-release.
+**The silent server (fixed on 20 October 2026; the owner's word: "silent-server your choice").**
+A server that completes the TLS handshake and then sends nothing at all, not even the
+acknowledgement byte, was not given up on after `NETREPLY` seconds, and this was found by
+trying it. After the handshake a TLS 1.3 server sends its session tickets; they made the
+connection readable, the wait ended, and the read behind it took the tickets and then waited
+with no time limit of its own. The same wait followed any read that held only half of a TLS
+record (a server or a link that stops in the middle of a record). Against the test server,
+which closes a silent connection after 5 seconds, a client set to wait 3 seconds waited 5; a
+server that held the connection for 12 seconds was waited for 12. The read is now made without
+waiting and the wait is on the connection, for the time that is *left* of the caller's limit, so
+the tickets and a half record cost what they have used and no more. Measured on a private SD
+with `NETREPLY=3` and `NETWAIT=2` (the seconds are the session's own cost over a refused
+connection; the test is `gplbld/sandbox-netfile.py`, section `timeout`):
+
+| the server | before | now |
+|---|---|---|
+| completes the handshake, never sends the acknowledgement byte | 5.0 s | 3.0 s |
+| accepts the connection and never answers the TLS hello (`NETWAIT=2`) | 15.0 s | 2.0 s |
+| sends the acknowledgement byte as half of a TLS record | 12.0 s (to the test server's own close) | 3.0 s |
+| answers the first login message with half of a TLS record | 12.1 s (the same) | 3.1 s |
+| answers a request after 1.5 s (a slow server inside the limit) | 1.5 s | 1.5 s, and the record is read |
+
+What the caller sees is what it always saw for a lost connection: `set.netlogin` and the
+login of an `OPEN` say "No acknowledgement from host:port at the start of the session", "No
+reply from host:port during the login" or "The TLS handshake with host:port did not complete";
+a request that was sent and got no answer is message 11497 (message 11509 for a change, and
+**a change that got no answer is never sent again**). One more thing was found and is fixed
+in the same change: a reply that stopped in the *middle of its body* (the header read, part of
+the record not) was reported as "reply that cannot be used (answer -1)", message 11504, and the
+connection was kept although its stream was out of step; it is the same lost connection as a
+reply that never started now, with message 11497 and the connection dropped. A server that
+sends a little at a time and never stops is still waited for one read at a time, as before;
+the limit is for each read, not for a whole reply.
 
 ## What is audited
 
