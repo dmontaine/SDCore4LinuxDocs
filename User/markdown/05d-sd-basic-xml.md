@@ -133,8 +133,8 @@ What it takes:
 
 **Namespaces are names, not resolved addresses**: `//p:note` finds an element whose tag is written
 `p:note`, and `local-name()` leaves the prefix off. A query that is not well formed gives a null
-string, `status()` **1024** and `inmat()` the place; an argument that is not an element (JSON text,
-a collection without a `name`) gives a null string and `status()` 1020.
+string, `status()` **1024** and `inmat()` the place; an argument that is not a collection (JSON text,
+a string) gives a null string and `status()` 1020.
 
 ## What is not here
 
