@@ -282,6 +282,13 @@ These attach a key to an editing action, an exit from `input`, or a trap.
 `keycode()` then tells the program which one fired, so a form can act on F3
 without reading raw escape sequences.
 
+`bindkey('', -7)` asks `keycode()` to return an **Alt-letter** — a terminal sends
+Alt+x as Esc followed by x, which nothing is bound to, so `keycode()` would
+ring the bell and drop both — as those two characters, Esc first; `bindkey('', -8)`
+puts back the bell and the drop (the default). Each answers the state it found
+(1 or 0). The screen library asks for it for the length of every key it reads, so
+a `screen` program sees `alt-x` and nothing else needs to change.
+
 ## Prompts and headings
 
 ```
