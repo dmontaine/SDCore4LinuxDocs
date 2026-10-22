@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **198** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **199** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,7 +23,7 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 170 verbs | `newvoc`, identical for every ordinary account |
+| **every account** | 171 verbs | `newvoc`, identical for every ordinary account |
 | **SDSYS only** | 28 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
@@ -223,6 +223,7 @@ not refused — the name is simply not recognised.**
 | **`sync.masters`** | **`sync.masters`** {*account*} | S |
 | **`term`** | **`term`** \| *width*{`,`*lines*} {*type*} \| **`colour`** *bg*{`,`*fg*} \| **`default`** \| **`display`** |  |
 | **`time`** | **`time`** \| **`internal`** |  |
+| **`tool.keys`** | **`tool.keys`** |  |
 | **`umask`** | **`umask`** {*mask*} |  |
 | **`unlock`** | **`unlock file`** *n* {**`user`** *n*} *id* … \| **`all`** \| **`filelock`**  ·  **`unlock tasklock`** *n* … | S |
 | **`update.accounts`** | **`update.accounts`** {**`all`**} | S |

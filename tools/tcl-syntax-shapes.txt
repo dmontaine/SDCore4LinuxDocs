@@ -167,6 +167,7 @@ stop = **`stop`**
 sum = **`sum`** {**`dict`**} *file* {*selection*} *field*
 term = **`term`** | *width*{`,`*lines*} {*type*} | **`colour`** *bg*{`,`*fg*} | **`default`** | **`display`**
 time = **`time`** | **`internal`**
+tool.keys = **`tool.keys`**
 umask = **`umask`** {*mask*}
 unlock = **`unlock file`** *n* {**`user`** *n*} *id* … | **`all`** | **`filelock`**  ·  **`unlock tasklock`** *n* …
 update.accounts = **`update.accounts`** {**`all`**}

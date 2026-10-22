@@ -122,6 +122,46 @@ wy50            wy60            wyse50          wyse60          xterm
 on the release.) **A type that is not on it has no definition of its own**, and SD
 substitutes one for it.
 
+### What a key does: `tool.keys`
+
+```
+tool.keys
+```
+
+A full-screen diagnostic for the terminal and the keyboard, for anyone: it changes
+nothing and reads nothing private (it shows the terminal type, the window and the
+locale, which the session already knows). It needs a window of at least **140
+columns by 43 lines** and says so, with the size it found, if the window is
+smaller. Use it when a function key does nothing, an arrow prints `^[[A`, colour
+looks wrong or the mouse does not answer.
+
+| box | what it shows |
+|---|---|
+| **Terminal** | the terminal type SD is using (`TERM (SD)`, what `term` sets) and the one in the environment (`TERM (env)`), the window and the layout, the locale and whether the borders are line characters (UTF-8) or `+ - \|`, whether the terminal can show colour, the theme, how many mouse events have arrived, how keys are being read, and how many of the 52 keys in the grid have been seen |
+| **Last keys** | the 25 newest keys, newest first. **Names** (the start): the name the screen library reports for the key — `up`, `f5`, `ctrl-g`, `alt-s`, `mouse`, or the character itself with its code. **Raw** (Ctrl-R): the bytes the terminal sent, the first eight, in hex, with the characters beside them |
+| **Keys seen** | the arrows, home, end, paging, insert, delete, backspace, tab, back-tab, Enter, Esc, the twelve function keys, the control keys, an Alt-letter, a printable character and the mouse; a key is ticked, and drawn bold, once it has been pressed |
+| **Mouse** | the last mouse event (press, release, drag, wheel), where it was, and the counts |
+| **Box drawing** and **Styles** | the borders the library draws with, and the library's sixteen styles each drawn in itself, so the theme in force can be seen on this terminal |
+
+Every key is shown **before** the program acts on it. The program uses four:
+**Ctrl-L** clears what has been seen, **Ctrl-R** switches between names and raw
+bytes, **Ctrl-T** changes the theme (mono, classic, blue; a terminal that cannot
+show colour keeps mono and says so) and **Ctrl-Q** leaves, so a key that ends the
+program can only be tested by leaving.
+
+**A key that makes the terminal beep and shows nothing in names mode is one the
+terminal type does not name.** SD decodes keys with the terminfo entry for the
+type in force, so an F-key or an End key the entry does not list is dropped, and
+the rest of its bytes may show up as stray characters (the End sequence of an
+xterm sent to a `vt100` arrives as `~`). Press **Ctrl-R**, then press the key
+again: the bytes it sent are shown, which is what a terminfo entry needs. An
+Alt-letter shows as `alt-x` on a terminal that sends Alt+x as Esc and x.
+
+Make the window smaller while it runs and the cursor lock takes the keyboard
+with the message that the window is too small; make it larger again and the
+screen comes back. Ctrl-Q, then `y`, leaves from the lock. If the input ends (a
+piped session) the program ends.
+
 ## The wire: `pterm`
 
 ```
