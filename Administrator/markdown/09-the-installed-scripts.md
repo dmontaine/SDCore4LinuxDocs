@@ -93,6 +93,27 @@ installer runs `--install` non-fatally; a refusal here leaves SD
 installed and working, with the boundary not yet applied, and prints
 the command to apply it once the conflict is resolved.
 
+**The agent arm (added 21 October 2026).** The block has one more arm, written
+first after the one that denies `sdsys`: `Match Group sdagent,!sdsys`, with its
+own `ForceCommand /usr/local/sdsys/bin/sd-mcp` and the same four forwarding lines
+shut. A Linux user in the group **`sdagent`** can therefore reach the agent door
+and nothing else over ssh, never an interactive `sd`, even if the same user is in
+`sdusers` (sshd takes the first value, and this arm is first). **Nothing reads
+what the client typed:** the command a client gives arrives only in
+`SSH_ORIGINAL_COMMAND` and no script looks at it. The installer makes `sdagent`
+empty and adds nobody; you make an agent user by hand (a Linux user, then
+`sudo usermod -aG sdagent name`). **The program `sd-mcp` does not exist yet** (it
+arrives with the next part of the AI work), so until then a member's connection
+fails when sshd cannot run it, which is closed; the install does not check for it.
+A `Match` rule of your own that names `sdagent` is a conflict, like one naming
+`sdusers`, and `--install` refuses. The installer also makes the system user
+`sdai` (own group, no login shell, no home directory, in no SD group) for the
+model call the AI work adds later; nothing runs as it yet. Both are removed with
+the route groups on a full delete, and kept when the accounts are kept. **What was
+run:** the block under OpenSSH 10.0 on the Debian 13 test machine, with a private
+`sshd` and five throw-away users (15 checks: which arm sshd picks for each kind of
+user, five real logins). **Not run:** Fedora, Ubuntu, and a real `sd-mcp`.
+
 ## `sd-reconcile-accounts`
 
 ```sh
