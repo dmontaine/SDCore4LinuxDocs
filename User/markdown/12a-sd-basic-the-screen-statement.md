@@ -227,6 +227,7 @@ before, and with no `/` or `*` in it. `else` is taken if a widget cannot be adde
 | `screen frame f, id {at x,y} {size w,h} {title t}` | A border (it draws only the border; widgets added after it sit over it). |
 | `screen entry f, id {at x,y} {width n} {value v} {mask} {maxlen n}` | One line of text; a longer text scrolls. |
 | `screen check f, id, text {at x,y} {value 0 or 1}` | `[x] text`. |
+| `screen slider f, id, text {at x,y} {value 0 or 1}` | An on / off switch with a sliding knob: `[O--] text` when it is off and `[==O] text` when it is on. Space slides it the other way, Left slides it off, Right slides it on, a click slides it the other way. `screen get` answers 1 or 0 and `screen set f, id value v` sets it (any value but 0 is on). |
 | `screen radio f, id, items {at x,y} {value n} {across}` | One choice of several, one to a row (or side by side with `across`). |
 | `screen list f, id, items {at x,y} {size w,h} {value n} {multi}` | A list of values to choose from; `multi` lets several be picked. |
 | `screen combo f, id, items {at x,y} {width n} {value v}` | An entry field with a `[v]` that opens a list of choices. |
@@ -529,7 +530,7 @@ field 3 its data.
 | type | when | id | data |
 |---|---|---|---|
 | `button` | a button was pressed | its id | |
-| `change` | a check box, radio group, list, combo, tab strip, table, tree or scroll bar changed its value, or a viewport was scrolled by the user | its id | the new value (a viewport: its first column, a value mark and its first row) |
+| `change` | a check box, slider, radio group, list, combo, tab strip, table, tree or scroll bar changed its value, or a viewport was scrolled by the user | its id | the new value (a viewport: its first column, a value mark and its first row) |
 | `focus` | the focus moved | the widget it went to | the one it left |
 | `key` | a key the form had no use for (a function key, a Ctrl key) | | its name |
 | `resize` | the terminal's window changed size; the form has been drawn again at the new size | | the width, a value mark and the height |
@@ -625,7 +626,7 @@ console, ignores the request and sends nothing.
 With reporting on, **forms and dialogues take clicks without any help from the
 program**:
 
-- a click on a button presses it; on a check box ticks or unticks it; on a radio
+- a click on a button presses it; on a check box ticks or unticks it; on a slider slides it the other way; on a radio
   button chooses it; on a row of a list or table makes it the current one (and a second
   click on that row is Return); on a tab chooses it; in an entry field or a memo puts
   the cursor under the pointer; on a combo's `[v]` opens its list;
