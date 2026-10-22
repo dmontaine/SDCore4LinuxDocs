@@ -68,7 +68,8 @@ the password) for a server. Nothing is open by default: an account needs the
 `net-on` switch, has to be named in the server's list, and a server is read
 only unless SDSYS defines it as `write` **and** the administrator of the other
 server has also let that remote login change files there (`files-write-on` on
-that server). It uses the other server's API port
+that server); configuring, indexing, creating and deleting a remote file, and
+the file's counter, need a third permission there (`files-admin-on`). It uses the other server's API port
 over TLS and does not put a password in any file. The *Administrator* set's
 *SDNet* page describes it and says what has been tested: it has been run in
 private tests and on one real installation talking to itself, and no two real

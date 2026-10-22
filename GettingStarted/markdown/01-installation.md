@@ -187,7 +187,9 @@ dictionary, SDNet, and writing the shared account's files — yours too.
 On a machine you are testing on, **"y" opens all of them for your own account,
 and for nobody else's**: `both`, `sh-on`, `os-on`, `sd-on`, `voc-on`, `bp-on`,
 `dict-on`, `net-on`, `shared-write-on`, `files-on` and `files-write-on`, each
-given with `modify.account` while the install runs. The installer then reads
+given with `modify.account` while the install runs. **`files-admin-on` (the right
+to configure, index, create and delete files over the files-only route) is left
+out: it is given by hand.** The installer then reads
 the register and the Linux groups back, and prints either "Opened every access
 gate for …" or a warning that names each gate that did not open and the word to
 give for it. SDSYS closes any of them again with `modify.account <account>

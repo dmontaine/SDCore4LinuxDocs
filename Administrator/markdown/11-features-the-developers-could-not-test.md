@@ -172,6 +172,14 @@ error: "message 11500 with the write-group sentence" has been seen only as the a
 gives against the fake server, not as the program stopping on a real files-only login (the row
 `A4` of `witness-sdnet-files-route.sh` is that, and has not been run).
 
+**The administration group (21 October 2026).** `files-admin-on` and `files-admin-off`, and the chain of
+three groups (top-down removal, a failure half way reported), run against the scratch group file in
+`sandbox-filesgrp.py`; the server's requests 68 to 71 run end to end on a real `sd -Q` over pipes
+(`sandbox-fileadmin.py`) and against the fake server from the client (`sandbox-netfile.py`). **Not
+known:** a real files-only login in `sdfilesadmin` and `sdfileswrite` creating, indexing and deleting a
+file on a real server's disk, and the refusal of 68 to 71 without the group on a real login (phase D of
+`witness-sdnet-files-route.sh` is written and checked for syntax, and has not been run).
+
 **To settle it.** `witness-sdnet-writegroup.sh`, `witness-sdnet-files-route.sh`,
 `witness-sdnet-gaps.sh` and `witness-sdnet-groups.sh`, each run by the owner with `sudo` on an
 installation (and never run on one so far).

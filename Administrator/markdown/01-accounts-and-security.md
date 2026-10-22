@@ -91,7 +91,7 @@ and says so); there is no switch that keeps it away.
 ## Making an account: `create.account`
 
 ```
-create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {files-write-on} {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {files-write-on} {files-admin-on} {no.query}
 
 create.account group <name> {shared-read-off} {shared-write-on} {no.query}
 
@@ -552,7 +552,7 @@ that a login kept for SDNet (see [SDNet](12-sdnet.html)) never needs `sdapi`: th
 other server's administrator gives that login `sdfiles`, and whoever steals the
 stored login can open and read files on that server and cannot run a command
 there. **Changing files there is a further permission, `files-write-on` (the Linux
-group `sdfileswrite`)**, given separately and off for a new account (below, *Changing files: `files-write-on`*).
+group `sdfileswrite`)**, given separately and off for a new account (below, *Changing files: `files-write-on`*), and **administering them there - configure, index, create and delete a file, the file's counter - is a third, `files-admin-on` (the Linux group `sdfilesadmin`)**, off for every account (below, *Administering files: `files-admin-on`*).
 
 **Off for a new account, like every other door.** `create.account user` takes
 `files-on`; `modify.account` *name* `files-on` / `files-off` turns it on and off.
@@ -617,6 +617,9 @@ number this release has never heard of.
 | 42 to 45 | set the left or right end of an index range (`setleft`, `setright`), and select within it (`selectleft`, `selectright`) |
 | 46 | the mark mapping |
 | 49 | the server's revision |
+| 68, 69 | `write` and `writeu ... creating.seqkey` (the file's own counter gives the id): **only with `files-write-on` and `files-admin-on`** |
+| 70 | a verb run on this server for the login (`analyse.file`, `configure.file`, `create.index`, `build.index`, `delete.index`, `disable.index`, `create.file`, `delete.file`): **only with `files-write-on` and `files-admin-on`** |
+| 71 | `fcontrol`: **only with `files-write-on` and `files-admin-on`** |
 
 | refused | request |
 |---|---|
@@ -630,8 +633,8 @@ number this release has never heard of.
 | 52, 53 | `trans()` |
 | 54 | transactions |
 | 55 to 60 | evaluate and the conversions |
-| 61 to 69 | sequential files |
-| 0, 70 and above, anything else | no such request here |
+| 61 to 67 | sequential files |
+| 0, 72 and above, anything else | no such request here |
 
 A refused request is answered with "This login is for files only: request *n* is not
 allowed", **the request is not carried out**, and a line goes to the audit trail
@@ -674,11 +677,31 @@ without read. `files-on` takes a leftover write membership away before it adds `
 stops with the same message if it cannot. A
 refused change is answered "This login cannot change or lock files here: ask the
 administrator for files-write-on (request *n*)", is not carried out, and goes to the audit
-trail as `api refused request=16 route=sdfiles write=off user=fred`; the login line says
-`write=on` or `write=off`. `sdapi` members are not affected. Like `sdfiles`, the group is
+trail as `api refused request=16 route=sdfiles write=off admin=off user=fred`; the login line says
+`write=on` or `write=off` (and `admin=on` or `admin=off`). `sdapi` members are not affected. Like `sdfiles`, the group is
 read at login, so a change reaches the person at their next login. The account's manifest
 (`backup.account`) records it as `route.files.write`, and `restore.account` gives it back
 only to an account that is in `sdfiles`.
+
+### Administering files: `files-admin-on` and `files-admin-off`
+
+A files-only login may configure a file, build and delete its indices, create and delete a file,
+set or take the file's counter (`WRITE ... CREATING.SEQKEY`, `FCONTROL`) **only if the person is
+in both `sdfileswrite` and the Linux group `sdfilesadmin`**: `modify.account` *name*
+`files-admin-on` (needs `files-on` and `files-write-on` first, else "Account fred does not have
+files-write, so it cannot be given files-admin: use files-write-on first"), `files-admin-off`, and
+`files-admin-on` after `files-on` and `files-write-on` in `create.account user`. **It is off for
+every new account, and the installer's "Open every access gate ..." answer `y` does not turn it
+on.** The line printed is `Account fred has files-admin yes`, read back from the group file.
+The three groups are a chain, `sdfiles` < `sdfileswrite` < `sdfilesadmin`: `files-write-off` and
+`files-off` take the higher groups away first (administration, write, files), each removal read
+back, and a failure half way reports the removals that did happen; `files-on` and `files-write-on`
+take a stray higher membership away before they add. What the permission allows, what the server
+checks and how it is audited is in [SDNet](12-sdnet.html), *The administration group*. A
+refused request is answered "This login cannot administer files here: ask the administrator for
+files-admin-on (request *n*)" and nothing is carried out. The account's manifest records it as
+`route.files.admin`, and `restore.account` gives it back only to an account that is in
+`sdfiles` and `sdfileswrite`.
 
 **The route words are not one state.** `ssh`, `api`, `both` and `none` are
 absolute about the two routes they name, and **leave `files-on` alone**:
@@ -706,10 +729,11 @@ login finishes, so a connection already open keeps the route it started with.
 To take the route away from somebody who is connected now, `files-off` and end the
 connection.
 
-**Audit trail.** A files-only login writes `api login route=sdfiles write=off user=fred`
-(`write=on` for a person in `sdfileswrite`). Each refusal writes
-`api refused request=26 route=sdfiles write=off user=fred` (the number is the
-request; `write` is the state of the login, so a refusal with `write=on` is a request
+**Audit trail.** A files-only login writes `api login route=sdfiles write=off admin=off user=fred`
+(`write=on` for a person in `sdfileswrite`, `admin=on` for one in `sdfilesadmin`; the `admin=` word
+has been there since 21 October 2026). Each refusal writes
+`api refused request=26 route=sdfiles write=off admin=off user=fred` (the number is the
+request; `write` and `admin` are the state of the login, so a refusal with both `on` is a request
 no files-only login may make). A user in neither group, as before, has the refused login in the usual
 `api refused` form.
 

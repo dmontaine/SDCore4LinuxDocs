@@ -749,8 +749,10 @@ to let that login do.
 - **`sdapi` is not touched.** A remote user in `sdapi` has the whole API as before, with
   or without the write group, and `sdsys` is never made files-only.
 - **The refusal is in the audit trail of the target**, in lower case:
-  `api refused request=16 route=sdfiles write=off user=name`, and a login by this route is
-  written `api login route=sdfiles write=on user=name` or `write=off`. **The person at the
+  `api refused request=16 route=sdfiles write=off admin=off user=name`, and a login by this route is
+  written `api login route=sdfiles write=on admin=off user=name` (`write=off` for a login without the
+  group; the `admin=` word is the administration group, next section, and has been there since
+  21 October 2026 - before that the lines ended `write=on user=name`). **The person at the
   client is told why**: a program that does not trap the error with `ON ERROR` stops with
   message 11500, "Server *name* answered *write* with an error: This login cannot change or lock files
   here: ask the administrator for files-write-on (request 16)". (Before 19 October 2026 the
@@ -769,11 +771,80 @@ to let that login do.
   accepts it until the installer is run again; until then `files-write-on` says
   "sdfileswrite is not a valid Linux Group" and changes nothing.
 
+### The administration group: `sdfilesadmin` (21 October 2026)
+
+**QMNet's remote administration, behind a third permission that is off for everyone.** A files-only
+login that is in **both** `sdfileswrite` and the Linux group **`sdfilesadmin`** may, on that
+server and for the account it enters there, do the things below. They are requests 68 to 71 of the
+API, and they are the only door a files-only login has to them.
+
+| | |
+|---|---|
+| 68, 69 | `WRITE` and `WRITEU ... CREATING.SEQKEY`: the file's own counter on this server gives the id |
+| 70 | a verb run **on this server for the login**: `analyse.file`, `configure.file`, `create.index`, `build.index`, `delete.index`, `disable.index`, `create.file`, `delete.file` |
+| 71 | `FCONTROL(file, key {, value})` |
+
+- **Who gives it, and how.** SDSYS, one person at a time, on the server being reached:
+  `modify.account` *name* `files-admin-on`, taken away with `files-admin-off`, and
+  `files-admin-on` after `files-on` and `files-write-on` in `create.account user`. **It is off
+  for a new account, and the installer's question "Open every access gate for ...?" does not turn
+  it on** even when you answer `y` (you do that by hand). The installer makes the group, empty,
+  beside the other three.
+- **The chain is `sdfiles` < `sdfileswrite` < `sdfilesadmin`: each needs the ones below it, and
+  none is ever added over one above it.** `files-admin-on` needs `files-on` and `files-write-on`
+  first ("Account *name* does not have files-write, so it cannot be given files-admin: use
+  files-write-on first", message 11526, nothing changed). The group alone gives nothing: a login
+  in `sdfilesadmin` and not in `sdfileswrite` is refused 68 to 71 as a login without the write group
+  is (message 11521). `files-admin-off` takes away only the administration group.
+  `files-write-off` and `files-off` take away **the group above first** - administration, then
+  write, then files - each removal read back before the next, so a failure half way leaves the
+  person with the lower access and never the higher without it. If a step fails after an earlier
+  one went, the command says what did happen (`Account fred has files-admin no`, and the audit
+  line `modify.account files-admin-off account=fred`) before it reports the failure.
+  `files-on` and `files-write-on` take a stray `sdfilesadmin` membership away before they add
+  anything, so a leftover can never turn into administration nobody gave. A person who is in
+  `sdfilesadmin` alone is taken out of it by `files-off`, where it would have been told "already had
+  that access".
+- **What it allows is a real capability, and it is the server's own verbs.** A login with both groups
+  can create and **delete files**, build indices and reconfigure files in the account it enters on this
+  server, as that Linux user, without anyone at this server present. The request is audited on both
+  machines. The server runs the verb itself *for the login*, in the account the login entered, so that
+  account's switches apply as they would to the same person at a terminal: the edit switches
+  (`voc.edit`, `bp.edit`, `dict.edit`) are asked by the file's path for everything but the report
+  (`analyse.file`), and the shared account's structure rule holds (a files-only login is never SDSYS).
+- **What the server checks before it runs anything.** The verb is chosen by the number of the
+  operation and never read from the text. The file is **named by the open file** (the name it was
+  opened under on this connection), so a login cannot name one it did not open. The words are
+  letters, digits and `. _ -` with single blanks, at most 200 characters; `PATHNAME`, `LPTR`,
+  `FORCE` and `NO.QUERY` are refused, `DIRECTORY` is accepted only as the last word (it makes a
+  directory file), and a slash or a quote is refused (message 11530). `create.file` and
+  `delete.file` are run with `NO.QUERY` because the question was asked at the client. The file is
+  closed on this side before the verb runs and opened again after it (the verbs need the file
+  to themselves), so an index verb refuses, with the words "Cannot gain exclusive access", if another
+  process has the file open; nothing is changed then. Where the server's command execution is
+  switched off (`SDCLIENT`) the request is refused with message 5265.
+- **A refusal** says "This login cannot administer files here: ask the administrator for
+  files-admin-on (request *n*)" (message 11524), or the write-group text (11521) when the write
+  group is what is missing, and **nothing is carried out**. It is written
+  `api refused request=70 route=sdfiles write=on admin=off user=name`; an act is written, **before** the
+  verb runs, `api admin request=70 op=create.index file=customers user=name` (for `create.file` the
+  file named is the new one), so a killed command is still on the trail. A login is written
+  `api login route=sdfiles write=on admin=on user=name`.
+- **The group is read at login**, like the other two, so a change takes effect at the person's next
+  login on that server.
+- **On the client** the same four things are the statements and verbs of *Programming with a Remote
+  File* (User set): `WRITE ... CREATING.SEQKEY`, `FCONTROL`, the six verbs on an `N` pointer,
+  `CREATE.FILE name SERVER srv {AS remote}` and `DELETE.FILE` of a pointer. The server definition
+  must say `write` (the administrator of the client chose that), and the pointer is written only after
+  the server confirmed the file and removed in the same act that the server deleted it.
+- **Still refused on a remote file:** the statements that only read an index (`SELECTINDEX`,
+  `AKREAD` and the like), `OPENSEQ` and the other sequential-file statements.
+
 **The remote user must be a real account on that server.** It is still a Linux user,
 a member of `sdusers`, with an SD account of its own, and every gate that account has
 there applies to it. What `files-on` replaces is the need for `sdapi`, not for the
 account. An administrator who wants an SDNet login for a person on another SD server
-creates it there with `create.account user` *name* `files-on` (no `api`; add `files-write-on` only if the person is to change files there), then gives
+creates it there with `create.account user` *name* `files-on` (no `api`; add `files-write-on` only if the person is to change files there, and `files-admin-on` only if the person is to administer them), then gives
 the name and the password to the person, who runs `set.netlogin` here.
 
 **The client.** The SDNet client logs in with the stored login (made by
@@ -998,12 +1069,14 @@ read the record to find out.
 **What is refused even with `write`.** A change or lock inside `BEGIN TRANSACTION` (message
 11510: a remote write can't be rolled back, so it never joins a local transaction; this holds for
 `FILELOCK` and `FILEUNLOCK` too, where openQM's QMNet lets them through without a rollback, which
-is a silent loss of the guarantee the program asked for); `CONFIGURE.FILE`, `ANALYSE.FILE`,
-`FCONTROL`, the index statements, `OPENSEQ` and the other sequential-file statements, creating or
-deleting a remote file, and `WRITE ... CREATING.SEQKEY` (message 11511). Until 20 October 2026
+is a silent loss of the guarantee the program asked for); the statements that only read an index,
+`OPENSEQ` and the other sequential-file statements (message 11511). Until 20 October 2026
 `FILELOCK`, `FILEUNLOCK`, `GETLOCKS` and `RECORDLOCKED()` were on this list; they work now, as
 the table above says (`RECORDLOCKED()` and the file lock for a `write` definition and the write
-group). `MUSTLOCK` and
+group). **Until 21 October 2026 `CONFIGURE.FILE`, `ANALYSE.FILE`, `FCONTROL`, `CREATE.INDEX` and the
+other index verbs, creating or deleting a remote file and `WRITE ... CREATING.SEQKEY` were on it
+too; they work now for a login that also has the administration group (*The administration
+group*, above), and are refused here, with nothing sent, for a `read` definition.** `MUSTLOCK` and
 `$MODE AUTOLOCK` are honoured as for a local file: a write without the lock held is refused
 with `STATUS()` 3023 (for a login without the write group see `RECORDLOCKED()` above).
 
