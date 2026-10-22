@@ -230,6 +230,7 @@ Most controls take `color fg,bg` as their last clause (a label, entry, check box
 | `screen entry f, id {at x,y} {width n} {value v} {mask} {maxlen n} {color fg,bg}` | One line of text; a longer text scrolls. `color 'black','green'` draws the field in those colours, also while it has the focus. |
 | `screen check f, id, text {at x,y} {value 0 or 1} {place where} {color fg,bg}` | `text [x]`: the label, then the box. `place` says where the label is in relation to the box: `left` (the default), `right` (`[x] text`), `above` or `below` (the control is two rows high). A click on the box or on the label checks or unchecks it. |
 | `screen slider f, id, text {at x,y} {value 0 or 1} {attr style} {words w1,w2} {place where} {color fg,bg}` | An on / off switch with its label (`place` as for a check box; left by default): `text [off | ON]` when it is on and `text [OFF | on]` when it is off. `words 'left','right'` chooses the two words (the first is the off state, the second the on state): `[left | RIGHT]` and `[LEFT | right]`. The word in force is in capitals and in the style `attr` (any style of the theme: `bold`, `highlight`, `header`, `error`, `underline` ...; bold when you give none, which is a colour in a colour theme; `window` leaves it as the form's own, so that only the capitals show the state). Space slides it the other way, Left sets it off, Right sets it on; a click on a word sets that state and a click on the label slides it the other way. `screen get` answers 1 or 0 and `screen set f, id value v` sets it (any value but 0 is on). |
+| `screen selector f, id, text, words {at x,y} {value n} {attr style} {place where} {color fg,bg}` | One word of several in a row: `text [blue | green | RED | black]`, with `words` a dynamic array (`'blue':@vm:'green':@vm:'red':@vm:'black'`) of any length (an empty one makes the statement take its `else`). The word in force is in capitals and in the style `attr` (as for a slider: bold by default, `window` for the capitals alone), the others in lower case; `place` and `color` are as for a check box. Left and Right choose the previous and the next word and stop at the ends, Home and End the first and the last, Space the next word (the first after the last); a click on a word, the space after it or either bracket chooses it, a click on the label the next word. `screen get` answers the number of the word in force counted from one (3 for RED), `screen set f, id value n` chooses one (a number outside the words is brought into range) and `screen set f, id items words` gives it other words (the first is chosen). A change is a `change` event with the number. |
 | `screen radio f, id, items {at x,y} {value n} {across} {color fg,bg}` | One choice of several, one to a row (or side by side with `across`). |
 | `screen list f, id, items {at x,y} {size w,h} {value n} {multi} {color fg,bg}` | A list of values to choose from; `multi` lets several be picked. |
 | `screen combo f, id, items {at x,y} {width n} {value v} {color fg,bg}` | An entry field with a `[v]` that opens a list of choices. |
@@ -532,7 +533,7 @@ field 3 its data.
 | type | when | id | data |
 |---|---|---|---|
 | `button` | a button was pressed | its id | |
-| `change` | a check box, slider, radio group, list, combo, tab strip, table, tree or scroll bar changed its value, or a viewport was scrolled by the user | its id | the new value (a viewport: its first column, a value mark and its first row) |
+| `change` | a check box, slider, selector, radio group, list, combo, tab strip, table, tree or scroll bar changed its value, or a viewport was scrolled by the user | its id | the new value (a viewport: its first column, a value mark and its first row) |
 | `focus` | the focus moved | the widget it went to | the one it left |
 | `key` | a key the form had no use for (a function key, a Ctrl key) | | its name |
 | `resize` | the terminal's window changed size; the form has been drawn again at the new size | | the width, a value mark and the height |
@@ -628,7 +629,7 @@ console, ignores the request and sends nothing.
 With reporting on, **forms and dialogues take clicks without any help from the
 program**:
 
-- a click on a button presses it; on a check box ticks or unticks it; on a slider sets the word clicked (or slides it the other way if the text is clicked); on a radio
+- a click on a button presses it; on a check box ticks or unticks it; on a slider or selector sets the word clicked (a slider slides the other way, a selector goes to the next word, if the text is clicked); on a radio
   button chooses it; on a row of a list or table makes it the current one (and a second
   click on that row is Return); on a tab chooses it; in an entry field or a memo puts
   the cursor under the pointer; on a combo's `[v]` opens its list;
