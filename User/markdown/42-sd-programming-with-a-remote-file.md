@@ -32,7 +32,8 @@ OPEN 'DICT', 'customers' TO d ELSE ...        ;* the dictionary of the remote fi
 | `GETLOCKS()` (internal programs only) | works, **the local view only** (below) | works, the same |
 | inside `BEGIN TRANSACTION` | reads work | reads work, and so does `RECORDLOCKED()` (it changes nothing); a change or a lock (`FILELOCK` and `FILEUNLOCK` too) is refused: a remote write cannot be rolled back |
 | `WRITE ... CREATING.SEQKEY`, `FCONTROL`, `CONFIGURE.FILE`, `ANALYSE.FILE`, `CREATE.INDEX`, `BUILD.INDEX`, `DELETE.INDEX`, `DISABLE.INDEX`, `CREATE.FILE ... SERVER`, `DELETE.FILE` of a pointer | refused, nothing is sent | work **only if the remote login also has the administration group** (below, *Administering a remote file*) |
-| `OPENSEQ` and the other sequential-file statements, the statements that read an index (`SELECTINDEX`, `AKREAD` and the like) | refused | refused |
+| `INDICES()`, `SELECTINDEX`, `SETLEFT`, `SETRIGHT`, `SELECTLEFT`, `SELECTRIGHT` | work: they ask the other machine's indices (below, *Indices of a remote file*) | work, the same: no gate beyond opening the file |
+| `OPENSEQ` and the other sequential-file statements, the statements that read or change an index's tree (`AKREAD`, `AKWRITE`, `AKDELETE`, `CLEAR.AK`, `AKENABLE`, `AKMAP`) | refused | refused |
 
 Two things have to be true for a change to be made, a lock to be taken or `RECORDLOCKED()` to be asked, and they are on **two different machines**: the definition on *your* machine says `write` (the administrator of your machine chose that), and the remote login you use is also in the other machine's write group (the administrator of *that* machine chose that, with `modify.account <account> files-write-on`). Either one missing is a refusal, and the program can tell which (below). A definition that says `write` is looked up again at every change, so an administrator who switches it to `read` stops writes through a handle that is already open. **Administering the file is a third thing**, with its own group on the other machine (below).
 
@@ -80,7 +81,23 @@ These do on the other machine what they do on a local file, **for your remote lo
 
 **What it records.** The other machine writes `api admin request=70 op=create.index file=customers user=name` before it runs the verb, and this machine writes `netfile admin server=nfa file=customers op=create.index` (and `netfile fcontrol ... key=n`), so a killed command is still on both trails.
 
-**Not available:** the statements that only *read* an index (`SELECTINDEX`, `AKREAD` and the like) on a remote file are still refused, as are `OPENSEQ` and the other sequential-file statements. A change is never sent twice: a lost reply is message 11509, and the program must look at the file to find out what happened.
+**Not available:** the statements that read or change the tree of an index (`AKREAD`, `AKWRITE`, `AKDELETE`, `CLEAR.AK`, `AKENABLE`, `AKMAP`) on a remote file are still refused, as are `OPENSEQ` and the other sequential-file statements. A change is never sent twice: a lost reply is message 11509, and the program must look at the file to find out what happened.
+
+## Indices of a remote file
+
+A remote file's indices are the other machine's, and the statements that *query* them work on a remote file the way they do on a local one. They change nothing, so they need no write definition, no administration group and no gate of their own: a program that may open the file may use them, on a read definition as well as a write one, and inside `BEGIN TRANSACTION`.
+
+| Statement | What it does on a remote file |
+|---|---|
+| `INDICES(f)`, `INDICES(f, name)` | the names of the indices of the file on the other machine, and the description of one (null for a name that is not an index) |
+| `SELECTINDEX name FROM f TO n` | the indexed values, as a select list; `STATUS()` 1 and an empty list for an index that is not there |
+| `SELECTINDEX name, value FROM f TO n` | the ids that hold the value; `STATUS()` 0 and an empty list for a value nobody holds |
+| `SETLEFT name FROM f`, `SETRIGHT name FROM f` | put the scan at the left (lowest) or the right (highest) end |
+| `SELECTRIGHT name FROM f SETTING key TO n`, `SELECTLEFT ...` | the next key to the right (or left) of the scan, in `key`, with its ids as the select list; `STATUS()` 1 and nothing when there is no further key |
+
+The other machine keeps the position of a scan *for the open file*, so `SETLEFT` followed by `SELECTRIGHT` walks the keys in order, and `SELECTINDEX name, value` followed by `SELECTRIGHT` goes on from that value, as locally. Each call is one request (a scan that finds a key makes a second one to fetch its ids), so a scan is as slow as the line between the machines. A lost connection stops the statement with message 11497, as a lost `SELECT` does; these statements have no `ON ERROR` clause.
+
+The `INDICES()` that every query asks of every file now gets the other machine's answer, so `LIST`, `COUNT` and `SELECT ... WITH` on a remote file use the other machine's index when the field in the `WITH` clause has one, and read only the records the index names instead of every record. A file with no index is read as before.
 
 ## The 2-second cache
 

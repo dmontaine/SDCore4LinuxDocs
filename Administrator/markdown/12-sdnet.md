@@ -92,7 +92,9 @@ gates they ask are described below. Commands are shown here in lower case.
 - **Remote files.** A VOC pointer of type `N` opens a file on another server for
   reading, selecting and querying (see "Remote files, read only" below), and, only
   for a server defined with `write`, for writing and locking (see "Writing and
-  locking"). Indices, file locks and anything that makes or deletes a file are refused.
+  locking"). The index queries (`INDICES`, `SELECTINDEX`, `SETLEFT`, `SETRIGHT`, `SELECTLEFT`,
+  `SELECTRIGHT`) work on any remote file, read definition or write. Changes to an index and anything
+  that makes or deletes a file need the administration group (see "Writing and locking").
 - **`NETFILES`** in `sd.conf` is not what this uses. Opening a remote file through an
   `N` pointer does not read it. The one thing that does is the API server's old request
   29, "open an SDNet file": it needs bit 2 of `NETFILES` and, since 18 October 2026,
@@ -837,8 +839,12 @@ API, and they are the only door a files-only login has to them.
   `CREATE.FILE name SERVER srv {AS remote}` and `DELETE.FILE` of a pointer. The server definition
   must say `write` (the administrator of the client chose that), and the pointer is written only after
   the server confirmed the file and removed in the same act that the server deleted it.
-- **Still refused on a remote file:** the statements that only read an index (`SELECTINDEX`,
-  `AKREAD` and the like), `OPENSEQ` and the other sequential-file statements.
+- **Still refused on a remote file:** the statements that read or change the tree of an index
+  (`AKREAD`, `AKWRITE`, `AKDELETE`, `CLEAR.AK`, `AKENABLE`, `AKMAP`), `OPENSEQ` and the other
+  sequential-file statements. The statements that *query* an index (`INDICES`, `SELECTINDEX`,
+  `SETLEFT`, `SETRIGHT`, `SELECTLEFT`, `SELECTRIGHT`) are not in this list and have no gate of
+  their own: a login that is in `sdfiles` may use them on any file it can open, because they change
+  nothing.
 
 **The remote user must be a real account on that server.** It is still a Linux user,
 a member of `sdusers`, with an SD account of its own, and every gate that account has
@@ -920,7 +926,7 @@ The server now opens `dict` and a name, in any case, as a dictionary. A client o
 release against a server that has not been updated still cannot open a dictionary.)
 **Nothing else does.** Every other statement
 given the file variable (writes, deletes, `CLEARFILE`, locks including `FILELOCK` and
-`FILEUNLOCK`, `SELECTINDEX`...) stops with
+`FILEUNLOCK`, `AKREAD`...) stops with
 message 11501 (or, with `ON ERROR`, sets `STATUS()` and goes on), and nothing is sent to the
 other server. `OPENPATH`, `OPENTEMP`, `OPENSEQ` and `CALL "file program"` never see such a
 pointer.
@@ -931,7 +937,11 @@ the remote file in one reply and turns it into an ordinary select list; each rec
 needs is then one request to the server, so a query that reads every record of a big file costs
 one round trip per record, and a `WITH` clause reads each record. An id list given on the
 command line (`LIST customers 'c2'`) selects nothing and reads only those records.
-`INDICES(f)` is empty for a remote file, so the server's own indices are not used. A remote file
+`INDICES(f)` and the index query statements (`SELECTINDEX`, `SETLEFT`, `SETRIGHT`, `SELECTLEFT`,
+`SELECTRIGHT`) go to the server since 21 October 2026, so a `WITH` clause on a field the server has an
+index for asks the server's index (one request for the ids of a value, or a scan from one key to the
+next) and reads only the records it names; a file with no index is read as before. (Before that date
+`INDICES(f)` was empty for a remote file and the server's own indices were never used.) A remote file
 answers `FILEINFO(f, FL$TYPE)` with 7 (`FL$TYPE.NET`) and counts as case-insensitive, as every file
 on a current server is.
 
@@ -964,8 +974,7 @@ and the entries of a file go when it is closed, when it is `SELECT`ed again, and
 are kept as given, so `READ`s of `JACK` and `jack` are two entries. On the test server this halves
 the requests of a `SORT`; it does little for a `LIST` that reads every record once.
 
-**What is not here yet:** select by index and the server's indices, and saved lists on the
-remote side.
+**What is not here yet:** saved lists on the remote side.
 **What was confirmed:** all of it was run in a private sandbox against a fake server written
 for the tests, and on 18 October 2026 on one real installation (the same machine as server and
 client): `COUNT`, `LIST`, `LIST DICT` and `SORT` on a remote file, the opening of its dictionary,
