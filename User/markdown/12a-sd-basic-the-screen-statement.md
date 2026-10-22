@@ -227,7 +227,7 @@ before, and with no `/` or `*` in it. `else` is taken if a widget cannot be adde
 | `screen frame f, id {at x,y} {size w,h} {title t}` | A border (it draws only the border; widgets added after it sit over it). |
 | `screen entry f, id {at x,y} {width n} {value v} {mask} {maxlen n}` | One line of text; a longer text scrolls. |
 | `screen check f, id, text {at x,y} {value 0 or 1}` | `[x] text`. |
-| `screen slider f, id, text {at x,y} {value 0 or 1}` | An on / off switch with a sliding knob: `[O--] text` when it is off and `[==O] text` when it is on. Space slides it the other way, Left slides it off, Right slides it on, a click slides it the other way. `screen get` answers 1 or 0 and `screen set f, id value v` sets it (any value but 0 is on). |
+| `screen slider f, id, text {at x,y} {value 0 or 1} {attr style} {words w1,w2}` | An on / off switch: `[off | ON] text` when it is on and `[OFF | on] text` when it is off. `words 'left','right'` chooses the two words (the first is the off state, the second the on state): `[left | RIGHT] text` and `[LEFT | right] text`. The word in force is in capitals and in the style `attr` (any style of the theme: `bold`, `highlight`, `header`, `error`, `underline` ...; bold when you give none, which is a colour in a colour theme; `window` leaves it as the form's own, so that only the capitals show the state). Space slides it the other way, Left sets it off, Right sets it on; a click on a word sets that state and a click on the text slides it the other way. `screen get` answers 1 or 0 and `screen set f, id value v` sets it (any value but 0 is on). |
 | `screen radio f, id, items {at x,y} {value n} {across}` | One choice of several, one to a row (or side by side with `across`). |
 | `screen list f, id, items {at x,y} {size w,h} {value n} {multi}` | A list of values to choose from; `multi` lets several be picked. |
 | `screen combo f, id, items {at x,y} {width n} {value v}` | An entry field with a `[v]` that opens a list of choices. |
@@ -626,7 +626,7 @@ console, ignores the request and sends nothing.
 With reporting on, **forms and dialogues take clicks without any help from the
 program**:
 
-- a click on a button presses it; on a check box ticks or unticks it; on a slider slides it the other way; on a radio
+- a click on a button presses it; on a check box ticks or unticks it; on a slider sets the word clicked (or slides it the other way if the text is clicked); on a radio
   button chooses it; on a row of a list or table makes it the current one (and a second
   click on that row is Return); on a tab chooses it; in an entry field or a memo puts
   the cursor under the pointer; on a combo's `[v]` opens its list;
