@@ -439,6 +439,33 @@ a message does not need to say who wrote it. The log is
 the right way for a phantom or a scheduled job to report something a person will
 read later — there is no terminal to print to and no transcript kept.
 
+## Reading the documentation: `pdf`
+
+```
+pdf
+pdf name
+```
+
+`pdf` alone lists the documents (the PDF files the administrator has put in the
+shared account's `pdf` directory, without the `.pdf`), and `pdf name` shows one in
+the PDF reader installed on the computer you are sitting at. **It works in any
+account**, including one that is not allowed to run programs, because the reader it
+starts is one the administrator has allowed for this one purpose and the document
+is always one of those files, never a path you type.
+
+It needs two things from the administrator and one from you:
+
+* **a reader the administrator has allowed** (`set.viewer`). If none has been, `pdf`
+  says `No viewer has been allowed for documents`; it starts nothing;
+* **the documents installed** (`docs.install`); with none, `pdf` says there are no documents;
+* **a graphical session**: the reader opens on the display of the session you are
+  in. Over plain ssh, which has no display, `pdf` says so and does nothing.
+
+`pdf guide.pdf` is the same as `pdf guide`. A name that is not a lower case name of
+letters, digits, dot, dash and underscore, or is not in the list, is refused in words.
+The administrator's guide, *Operating-system access*, says what is checked each time a
+reader is started and why an allowed reader is not a shell.
+
 ## See also
 
 [SD TCL - The Command Processor](19-sd-tcl-command-processor.html) ·

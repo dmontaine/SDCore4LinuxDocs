@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **205** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **211** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,8 +23,8 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 174 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 31 more | in `voc_template` but not `newvoc` |
+| **every account** | 176 verbs | `newvoc`, identical for every ordinary account |
+| **SDSYS only** | 35 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -97,6 +97,7 @@ not refused — the name is simply not recognised.**
 | **`delete.server`** | **`delete.server`** *name* | S |
 | **`disable.index`** | **`disable.index`** *file* *index* … \| **`all`** |  |
 | **`display`** | **`display`** *text* |  |
+| **`docs.install`** | **`docs.install`** *directory*  —  copy the PDF files of a directory into the shared account's pdf directory (administrator) | S |
 | **`dump`** | **`dump`** {**`dict`**} *file* {*id* … \| **`*`**} {**`(options`**} |  |
 | **`echo`** | **`echo on`** \| **`off`** \| **`echo`** to toggle |  |
 | **`ed`** | **`ed`** {**`dict`**} *file* {*id* … \| **`creating.seqkey`**} |  |
@@ -144,6 +145,7 @@ not refused — the name is simply not recognised.**
 | **`list.union`** | **`list.union`** *list.1* {*list.2* {*tgt*}} {**`count.sup`**} |  |
 | **`list.vars`** | **`list.vars`** {*pattern*} |  |
 | **`listu`** | **`listu`** {**`detail`**} {**`no.page`**} {**`lptr`** {*n*}} | S |
+| **`load.help`** | **`load.help`**  —  load the shipped context help into the file context.help of the shared account (administrator) | S |
 | **`lock`** | **`lock`** *n* {**`no.wait`**} | S |
 | **`lock.tracer`** | **`lock.tracer`** **`on`** \| **`off`** \| {**`user`** *n*} {**`lptr`** {*n*}} {**`no.page`**} | S |
 | **`logmsg`** | **`logmsg`** *text* |  |
@@ -151,6 +153,7 @@ not refused — the name is simply not recognised.**
 | **`logto`** | **`logto`** *account* {**`reset`** {**`all`**}} |  |
 | **`make.index`** | **`make.index`** *file* *field* … {**`no.nulls`**} {**`pathname`** *path*} |  |
 | **`map`** | **`map`** {**`all`**} {**`lptr`** {*n*}} {**`file`** {*name*}} |  |
+| **`menu`** | **`menu`**  —  the full-screen menu (the home screen), also from the terminal it gave you |  |
 | **`merge.list`** | **`merge.list`** *list.no* *rel.op* *list.no* {**`to`** *list.no*} {**`count.sup`**} |  |
 | **`message`** | **`message`** *user.no* {**`immediate`**} {*text*} |  |
 | **`micro`** | **`micro`** {**`dict`**} *file* *record* |  |
@@ -166,6 +169,7 @@ not refused — the name is simply not recognised.**
 | **`oscopy`** | **`oscopy`** *source* *target* {**`overwrite`** \| **`append`**} |  |
 | **`pause`** | **`pause`** {*seconds*} |  |
 | **`pdebug`** | **`pdebug`** {*command*} |  |
+| **`pdf`** | **`pdf`** {*name*}  —  show a documentation PDF in the installed reader, in any account (the administrator allows the reader: **`set.viewer`**); without a name, lists the documents |  |
 | **`pdump`** | **`pdump`** *n* |  |
 | **`phantom`** | **`phantom`** {**`no.msg`**} {**`data`**} {**`group`**} {**`user`** *n*} {**`log`** *file*} *command* |  |
 | **`printer`** | **`printer`** {*unit*} **`query`** \| **`at`** *name* \| **`file`** *file* *record* \| **`width`** *n* \| **`lines`** *n* \| **`top.margin`** *n* \| **`bottom.margin`** *n* \| **`left.margin`** *n* \| **`keep.open`** \| **`close`** \| **`reset`** |  |
@@ -205,6 +209,7 @@ not refused — the name is simply not recognised.**
 | **`set.start.default`** | **`set.start.default`** {**`menu`** \| **`terminal`**}  —  where accounts with no start setting of their own start; without a word, says what it is | S |
 | **`set.tile`** | **`set.tile`** {*account* *tile* **`on`** \| **`off`**}  —  turn a home screen tile off or on for one account (tiles are on as delivered; sign out cannot be turned off); without arguments, says what is off | S |
 | **`set.trigger`** | **`set.trigger`** *file* *name* {*modes*} |  |
+| **`set.viewer`** | **`set.viewer`** {{**`add`** \| **`remove`**} **`pdf`** *program*}  —  the programs that may be started without **`os.execute`** to show a document (none is allowed as delivered); without arguments, lists them | S |
 | **`setptr`** | **`setptr`** *unit* \| **`default`**`,`*width*`,`*depth*`,`*top*`,`*bottom*`,`*mode* {`,`*options*}  ·  **`setptr display`**  ·  **`setptr`** *unit*`,`**`display`** |  |
 | **`settings.report`** | **`settings.report`** {*directory*} | S |
 | **`sh`** | **`sh`** *command* |  |
@@ -230,6 +235,7 @@ not refused — the name is simply not recognised.**
 | **`time`** | **`time`** \| **`internal`** |  |
 | **`tool.keys`** | **`tool.keys`** |  |
 | **`tool.menus`** | **`tool.menus`**  —  menu management (administrator): the home screen's tiles for each account, where each account starts, who may add their own programs | S |
+| **`tool.viewers`** | **`tool.viewers`**  —  the Bypass programs page (administrator): the readers **`pdf`** may start, those found on this machine | S |
 | **`umask`** | **`umask`** {*mask*} |  |
 | **`unlock`** | **`unlock file`** *n* {**`user`** *n*} *id* … \| **`all`** \| **`filelock`**  ·  **`unlock tasklock`** *n* … | S |
 | **`update.accounts`** | **`update.accounts`** {**`all`**} | S |

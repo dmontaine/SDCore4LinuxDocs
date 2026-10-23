@@ -137,10 +137,10 @@ DOCS = [
  """),
  ('User', '29-sd-tcl-the-terminal-and-the-session.md', """
    autologout bell clear.prompts clearinput clearprompts date date.format echo
-   hush list.term.types logmsg pterm sleep term time tool.keys
+   hush list.term.types logmsg pdf pterm sleep term time tool.keys
  """),
  ('User', '29a-sd-tcl-the-home-screen.md', """
-   exit home my.menu
+   exit home menu my.menu
  """),
  ('User', '30-sd-tcl-processes-and-phantoms.md', """
    pdebug pdump phantom pstat status
@@ -166,7 +166,7 @@ DOCS = [
    clear.locks list.locks list.readu listu lock logout unlock
  """),
  ('Administrator', '03-operating-system-access.md', """
-   sh !
+   sh ! docs.install load.help set.viewer tool.viewers
  """),
  # 22 Sep 26 - LINUX FORK.  grant/list.grants/revoke, append.sd.path and
  # ssh.server do not exist on this port (no os.users-style OS-access gate to

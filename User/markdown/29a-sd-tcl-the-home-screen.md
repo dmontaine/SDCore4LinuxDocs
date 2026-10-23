@@ -3,14 +3,17 @@ Subtitle: A start screen of tiles that every account can open: its tools, a term
 
 ```
 home
+menu
 exit
 ```
 
 **`home`** opens a full-screen start screen for the account you are signed in to:
-a page of **tiles**, each of which starts something. **`exit`** is the way back to
-it from the terminal it gives you. Your administrator decides, account by account,
+a page of **tiles**, each of which starts something. **`menu`** does the same (it is
+the plain word for "bring up the full-screen menu", at the prompt or in the terminal
+the screen gave you), and **`exit`** is the way back to it from that terminal.
+Your administrator decides, account by account,
 whether a session **starts** here or at the command prompt (see *Where a session
-starts*, below); you can always type `home` at the prompt to open it.
+starts*, below); you can always type `home` or `menu` at the prompt to open it.
 
 It needs a window of at least **140 columns by 43 lines** (the same as the other
 full-screen tools) and a real terminal. In a smaller window it says so, with the
