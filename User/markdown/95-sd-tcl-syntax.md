@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **202** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **205** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,8 +23,8 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 173 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 29 more | in `voc_template` but not `newvoc` |
+| **every account** | 174 verbs | `newvoc`, identical for every ordinary account |
+| **SDSYS only** | 31 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -154,9 +154,10 @@ not refused — the name is simply not recognised.**
 | **`merge.list`** | **`merge.list`** *list.no* *rel.op* *list.no* {**`to`** *list.no*} {**`count.sup`**} |  |
 | **`message`** | **`message`** *user.no* {**`immediate`**} {*text*} |  |
 | **`micro`** | **`micro`** {**`dict`**} *file* *record* |  |
-| **`modify.account`** | **`modify.account`** *account* **`add`** \| **`delete`** *user*  ·  *account* **`ssh`** \| **`api`** \| **`both`** \| **`none`**  ·  *account* **`sh-on`** \| **`sh-off`** \| **`os-on`** \| **`os-off`**  ·  *account* **`sd-on`** \| **`sd-off`**  ·  *account* **`voc-on`** \| **`voc-off`** \| **`bp-on`** \| **`bp-off`** \| **`dict-on`** \| **`dict-off`**  ·  *account* **`net-on`** \| **`net-off`**  ·  *account* **`shared-read-on`** \| **`shared-read-off`** \| **`shared-write-on`** \| **`shared-write-off`**  ·  *account* **`files-on`** \| **`files-off`** \| **`files-write-on`** \| **`files-write-off`** \| **`files-admin-on`** \| **`files-admin-off`**  ·  *account* **`start-menu`** \| **`start-terminal`** \| **`start-default`**  ·  *account* **`suspended`** \| **`unsuspended`**  ·  any number of these actions except **`add`** and **`delete`** may follow the account, in one command | S |
+| **`modify.account`** | **`modify.account`** *account* **`add`** \| **`delete`** *user*  ·  *account* **`ssh`** \| **`api`** \| **`both`** \| **`none`**  ·  *account* **`sh-on`** \| **`sh-off`** \| **`os-on`** \| **`os-off`**  ·  *account* **`sd-on`** \| **`sd-off`**  ·  *account* **`voc-on`** \| **`voc-off`** \| **`bp-on`** \| **`bp-off`** \| **`dict-on`** \| **`dict-off`**  ·  *account* **`net-on`** \| **`net-off`**  ·  *account* **`shared-read-on`** \| **`shared-read-off`** \| **`shared-write-on`** \| **`shared-write-off`**  ·  *account* **`files-on`** \| **`files-off`** \| **`files-write-on`** \| **`files-write-off`** \| **`files-admin-on`** \| **`files-admin-off`**  ·  *account* **`start-menu`** \| **`start-terminal`** \| **`start-default`**  ·  *account* **`pins-on`** \| **`pins-off`**  ·  *account* **`suspended`** \| **`unsuspended`**  ·  any number of these actions except **`add`** and **`delete`** may follow the account, in one command | S |
 | **`modify.password`** | **`modify.password`** {*account*} |  |
 | **`move.list`** | **`move.list`** *n* **`to`** *m* {**`keep`**} |  |
+| **`my.menu`** | **`my.menu`**  —  add your own programs to your home screen, when the administrator has allowed it (**`modify.account`** *account* **`pins-on`**) |  |
 | **`nano`** | **`nano`** {**`dict`**} *file* *record* |  |
 | **`nls`** | **`nls`** {**`currency`** \| **`thousands`** \| **`decimal`** {*value*}}  ·  **`nls default`** |  |
 | **`nselect`** | **`nselect`** *file* {*list.no*} |  |
@@ -202,6 +203,7 @@ not refused — the name is simply not recognised.**
 | **`set.queue`** | **`set.queue`** *queue* {, *width*, *depth*, *top*, *bottom*, *mode* {, *options*}}  ·  **`set.queue display`** {**`lptr`** {*unit*}}  ·  **`set.queue deleting`** *queue* |  |
 | **`set.server`** | **`set.server`** *name* *host* *port* *account* {*pin* \| **`connect`**} {**`read`** \| **`write`**} {**`accounts`** *a*`,`*b*`,`…} {**`no.query`**} | S |
 | **`set.start.default`** | **`set.start.default`** {**`menu`** \| **`terminal`**}  —  where accounts with no start setting of their own start; without a word, says what it is | S |
+| **`set.tile`** | **`set.tile`** {*account* *tile* **`on`** \| **`off`**}  —  turn a home screen tile off or on for one account (tiles are on as delivered; sign out cannot be turned off); without arguments, says what is off | S |
 | **`set.trigger`** | **`set.trigger`** *file* *name* {*modes*} |  |
 | **`setptr`** | **`setptr`** *unit* \| **`default`**`,`*width*`,`*depth*`,`*top*`,`*bottom*`,`*mode* {`,`*options*}  ·  **`setptr display`**  ·  **`setptr`** *unit*`,`**`display`** |  |
 | **`settings.report`** | **`settings.report`** {*directory*} | S |
@@ -227,6 +229,7 @@ not refused — the name is simply not recognised.**
 | **`term`** | **`term`** \| *width*{`,`*lines*} {*type*} \| **`colour`** *bg*{`,`*fg*} \| **`default`** \| **`display`** |  |
 | **`time`** | **`time`** \| **`internal`** |  |
 | **`tool.keys`** | **`tool.keys`** |  |
+| **`tool.menus`** | **`tool.menus`**  —  menu management (administrator): the home screen's tiles for each account, where each account starts, who may add their own programs | S |
 | **`umask`** | **`umask`** {*mask*} |  |
 | **`unlock`** | **`unlock file`** *n* {**`user`** *n*} *id* … \| **`all`** \| **`filelock`**  ·  **`unlock tasklock`** *n* … | S |
 | **`update.accounts`** | **`update.accounts`** {**`all`**} | S |

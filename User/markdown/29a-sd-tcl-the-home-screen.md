@@ -131,8 +131,45 @@ The screen is never given to a session that cannot use it: a window under 140 by
 a pipe, a phantom, an API server, or a `logto` that a program ran with `execute`
 (the home screen runs its own `logto` itself and shows the new account's page).
 
+## Tiles the administrator turns off
+
+Every tile is on as delivered, and the administrator can turn a tile off **for your
+account** (`set.tile`, or the *Menu management* page): it is then not on your page,
+and its menu entry cannot be chosen. If the **Terminal** tile is off and your account
+starts in the home screen, you are never given the command prompt: when the screen
+ends (a window too small, an error, the cursor lock) you are signed out. An account
+that starts at the prompt keeps it. Sign out cannot be turned off.
+
+## Your own programs: `my.menu`
+
+```
+my.menu
+```
+
+**Only if the administrator has allowed it for your account** (`pins-on`; it is off as
+delivered). Your home screen then has a group **My programs**, with a tile **Add a
+program** that opens `my.menu`, and a tile for each program you have added. A program
+is a **label** (up to 21 characters), a **command** (what you would type at your
+prompt), an optional three-character **glyph**, and whether the screen should **wait
+for Enter** when the command has finished printing.
+
+| key | does |
+|---|---|
+| F2 | add a program (it asks for the label, the command, the glyph and the wait) |
+| Enter | change the selected one |
+| F3 | remove it (asks first; Cancel is the default) |
+| F4, F6 | move it up or down the list |
+| Ctrl-Q | leave; the home screen is built again and shows the list |
+
+**It manages only your own list.** The standard tiles are the administrator's and
+are not touched. A program of yours runs the command exactly as you would type it,
+so it adds no access: the gates apply as at the prompt. The list is the record
+`home` of the file `&menus&` in your own account. If the administrator takes the
+permission away (`pins-off`) the group disappears from your screen and `my.menu`
+says it is not allowed; the list stays in your file.
+
 ## Not yet
 
-Tiles that the administrator assigns to an account, tiles you pin yourself,
-sub-menus that open and return, and the **menu builder** that edits all of them
-are planned and not built; today the page is the table above.
+Programs the administrator assigns to an account, sub-menus that open and return, a
+group of the last commands you ran, and a live line on a tile are planned and not
+built; today the page is the table above plus your own programs.

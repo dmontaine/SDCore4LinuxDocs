@@ -140,7 +140,7 @@ DOCS = [
    hush list.term.types logmsg pterm sleep term time tool.keys
  """),
  ('User', '29a-sd-tcl-the-home-screen.md', """
-   exit home
+   exit home my.menu
  """),
  ('User', '30-sd-tcl-processes-and-phantoms.md', """
    pdebug pdump phantom pstat status
@@ -149,7 +149,7 @@ DOCS = [
    release
  """),
  ('Administrator', '01-accounts-and-security.md', """
-   create.account modify.account modify.password set.start.default umask
+   create.account modify.account modify.password set.start.default set.tile tool.menus umask
  """),
  # THE MAINTENANCE VERBS MOVED TO 01a AND ONLY ONE OF THEM SAID SO.  tclmap
  # reported set.date and passed the other four, because 01 still MENTIONS

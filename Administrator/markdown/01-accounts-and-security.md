@@ -847,6 +847,7 @@ modify.account account shared-write-on | shared-write-off
 modify.account account files-on | files-off
 modify.account account files-write-on | files-write-off
 modify.account account start-menu | start-terminal | start-default
+modify.account account pins-on | pins-off
 modify.account account suspended | unsuspended
 ```
 
@@ -1002,6 +1003,56 @@ set.start.default                        says which it is now
   audited as `modify.account start-menu account=fred`, and `set.start.default menu` is audited
   as `set.start.default menu`.
 * `create.account` does not take the words yet: make the account, then use `modify.account`.
+
+### What the home screen shows: `set.tile`, `pins-on` and the menu management page
+
+```
+tool.menus
+```
+
+**Menu management** is a full-screen page for the administrator (SDSYS's VOC only; it
+is also a tile on the administrator's own home screen). It lists every account but
+SDSYS with where it starts, whether it may add its own programs, and the tiles turned
+off for it; for the account you select it shows the standard tiles with `[x]` on and
+`[ ]` off, and a box that says in plain words what the settings mean. **It writes
+nothing itself:** every change is the command it will run, shown with its effect in a
+box you answer *Run* or *Cancel* (Cancel is the button Enter chooses), run by the same
+verbs you can type, and the line under the page is the verb's own answer.
+
+```
+set.tile                          says which tiles are off, one line for each account that has any
+set.tile account tile off         turn a tile off for that account
+set.tile account tile on          turn it on again
+modify.account account pins-on    the person may add their own programs to their home screen
+modify.account account pins-off   they may not (the delivered state)
+```
+
+* **Tiles are on as delivered and are turned off one account at a time**; there is no
+  setting for every account. The standard tile ids are `editor`, `ide`, `ced`,
+  `terminal`, `keys`, `switch` and `signout`. **Sign out cannot be turned off**: a
+  person must always be able to leave. Any other id is accepted and said not to be
+  standard.
+* The setting is **field 17** of the account's register record (tile ids separated by
+  spaces). A tile that is off is not on the page, its menu entry cannot be chosen, and a
+  group with no tile left has no heading. It takes effect when the home screen is next
+  built (sign-on, F5, Switch account).
+* **The Terminal tile off is a wall for an account that starts in the home screen**: the
+  screen never leaves the person at the command prompt, whatever ends it, and signs them
+  out instead (a window too small to take the screen ends the session after the message).
+  An account that starts at the prompt (`start-terminal`) keeps it. **It is a wall only for
+  the prompt the screen gives**: the programs behind the other tiles are the account's own,
+  so an account that is to be kept to the screen should have the editor, IDE and record
+  editor tiles off as well, and a command that gives a shell needs `sh-on`, which is off as
+  delivered.
+* **`pins-on` is off as delivered.** An account that has it gets a group *My programs* on
+  its home screen and the verb `my.menu`, with which the person adds **their own**
+  programs (a label and a command they could type at their prompt): they manage only
+  their own list, never the standard tiles, and a program of theirs adds no access. It is
+  **field 18** of the register record, and the administrator always may. `pins-off` hides
+  the group and `my.menu` refuses; the list stays in the person's file.
+* `set.tile` says `Tile ide is now off for fred` (and `... was already off ...; nothing
+  changed`) and is audited as `set.tile off tile=ide account=fred`; `modify.account` says
+  `Account fred may add its own programs to the home screen: yes`.
 
 ### `suspended`/`unsuspended` is a state, not a tier
 
