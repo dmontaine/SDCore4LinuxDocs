@@ -91,7 +91,7 @@ and says so); there is no switch that keeps it away.
 ## Making an account: `create.account`
 
 ```
-create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {files-write-on} {files-admin-on} {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {files-write-on} {files-admin-on} {ai-on} {no.query}
 
 create.account group <name> {shared-read-off} {shared-write-on} {no.query}
 
@@ -702,6 +702,18 @@ refused request is answered "This login cannot administer files here: ask the ad
 files-admin-on (request *n*)" and nothing is carried out. The account's manifest records it as
 `route.files.admin`, and `restore.account` gives it back only to an account that is in
 `sdfiles` and `sdfileswrite`.
+
+### The AI: `ai-on` and `ai-off`
+
+An account may send text to the AI provider you have chosen (the `ai` verb) **only if the person is in
+the Linux group `sdaiusers`**: `modify.account` *name* `ai-on`, `ai-off`, and `ai-on` in
+`create.account user`. **It is off for every new account, and the installer's "Open every access gate
+..." answer does not turn it on**, because each request is paid for by whoever holds the provider's key.
+The line printed is `Account fred has ai yes`, read back from the group file. It stands alone (no
+other gate is needed), is for accounts that belong to a person (a group account is refused), and takes
+effect at the person's next request. The account's manifest records it as `route.ai`, and
+`restore.account` gives it back. Which provider, model and key, what leaves the machine, and the page
+that does all of this, `tool.ai`, are in [The AI Helper](20-the-ai-helper.html).
 
 **The route words are not one state.** `ssh`, `api`, `both` and `none` are
 absolute about the two routes they name, and **leave `files-on` alone**:

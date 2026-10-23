@@ -142,6 +142,9 @@ DOCS = [
  ('User', '29a-sd-tcl-the-home-screen.md', """
    exit home menu my.menu
  """),
+ ('User', '29b-sd-tcl-asking-the-ai.md', """
+   ai
+ """),
  ('User', '30-sd-tcl-processes-and-phantoms.md', """
    pdebug pdump phantom pstat status
  """),
@@ -167,6 +170,9 @@ DOCS = [
  """),
  ('Administrator', '03-operating-system-access.md', """
    sh ! docs.install load.help set.viewer tool.viewers
+ """),
+ ('Administrator', '20-the-ai-helper.md', """
+   set.ai tool.ai
  """),
  # 22 Sep 26 - LINUX FORK.  grant/list.grants/revoke, append.sd.path and
  # ssh.server do not exist on this port (no os.users-style OS-access gate to

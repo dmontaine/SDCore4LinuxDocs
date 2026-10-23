@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **211** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **214** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,8 +23,8 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 176 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 35 more | in `voc_template` but not `newvoc` |
+| **every account** | 177 verbs | `newvoc`, identical for every ordinary account |
+| **SDSYS only** | 37 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -32,6 +32,7 @@ not refused — the name is simply not recognised.**
 |---|---|---|
 | **`!`** | **`!`** *command* |  |
 | **`abort`** | **`abort`** {*message*} |  |
+| **`ai`** | **`ai`** *text*  —  ask the AI the administrator has chosen: you see what will be sent and say yes first; put text that ends with **`?`** in quotes (needs the account's **`ai`** gate: **`modify.account`** *account* **`ai-on`**) |  |
 | **`alias`** | **`alias`** *command* *target* |  |
 | **`analyse.file`** | **`analyse.file`** {**`dict`**} *file* {**`statistics`**} {**`lptr`**} |  |
 | **`analyse.index`** | **`analyse.index`** *file* {*index* {**`statistics`**} {**`detail`**}} {**`lptr`** {*n*}} {**`no.page`**} |  |
@@ -198,6 +199,7 @@ not refused — the name is simply not recognised.**
 | **`select.dir`** | **`select.dir`** *pathname* {**`to`** *n*} |  |
 | **`selectindex`** | **`selectindex`** {**`dict`**} *file* *index* {*value*} {**`to`** *n*} |  |
 | **`set`** | **`set`** *name* *value* |  |
+| **`set.ai`** | **`set.ai`**  ·  **`set.ai provider`** *name* \| **`none`**  ·  **`set.ai model`** *provider* *name* \| **`-`**  ·  **`set.ai key`** *provider* {**`clear`**}  ·  **`set.ai custom`** *name* *url* *format* *auth* *version* *maxparam* \| **`clear`**  ·  **`set.ai ca`** *path* \| **`-`**  ·  **`set.ai limit`** *name* *number*  —  the AI provider, model, key and limits for every account (administrator); the key is typed at the helper's own prompt | S |
 | **`set.backup.directory`** | **`set.backup.directory`** {*directory*} | S |
 | **`set.date`** | **`set.date`** *date* | S |
 | **`set.exit.status`** | **`set.exit.status`** *n* |  |
@@ -233,6 +235,7 @@ not refused — the name is simply not recognised.**
 | **`sync.masters`** | **`sync.masters`** {*account*} | S |
 | **`term`** | **`term`** \| *width*{`,`*lines*} {*type*} \| **`colour`** *bg*{`,`*fg*} \| **`default`** \| **`display`** |  |
 | **`time`** | **`time`** \| **`internal`** |  |
+| **`tool.ai`** | **`tool.ai`**  —  the AI choice page (administrator): the provider with a check box, its model and key, Custom, and which accounts may use the AI | S |
 | **`tool.keys`** | **`tool.keys`** |  |
 | **`tool.menus`** | **`tool.menus`**  —  menu management (administrator): the home screen's tiles for each account, where each account starts, who may add their own programs | S |
 | **`tool.viewers`** | **`tool.viewers`**  —  the Bypass programs page (administrator): the readers **`pdf`** may start, those found on this machine | S |
