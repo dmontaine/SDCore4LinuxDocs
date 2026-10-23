@@ -139,6 +139,9 @@ DOCS = [
    autologout bell clear.prompts clearinput clearprompts date date.format echo
    hush list.term.types logmsg pterm sleep term time tool.keys
  """),
+ ('User', '29a-sd-tcl-the-home-screen.md', """
+   exit home
+ """),
  ('User', '30-sd-tcl-processes-and-phantoms.md', """
    pdebug pdump phantom pstat status
  """),
@@ -146,7 +149,7 @@ DOCS = [
    release
  """),
  ('Administrator', '01-accounts-and-security.md', """
-   create.account modify.account modify.password umask
+   create.account modify.account modify.password set.start.default umask
  """),
  # THE MAINTENANCE VERBS MOVED TO 01a AND ONLY ONE OF THEM SAID SO.  tclmap
  # reported set.date and passed the other four, because 01 still MENTIONS

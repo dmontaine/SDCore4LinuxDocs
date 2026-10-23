@@ -846,6 +846,7 @@ modify.account account shared-read-on | shared-read-off
 modify.account account shared-write-on | shared-write-off
 modify.account account files-on | files-off
 modify.account account files-write-on | files-write-off
+modify.account account start-menu | start-terminal | start-default
 modify.account account suspended | unsuspended
 ```
 
@@ -963,6 +964,44 @@ off, which is how they are delivered, so every existing account can read the
 `sdfiles` group is made empty, and nobody is in it until you say so. You can then turn them off one account at a time,
 and a later install does not turn them back on. Only accounts made after the
 upgrade start with everything off.
+
+### Where a session starts: `start-menu`, `start-terminal`, `start-default` and `set.start.default`
+
+A session on a terminal starts either in the **home screen** (a screen of tiles: the
+account's tools, a terminal, switch account and sign out; the User's guide has the
+page `29a`) or at the **command prompt**. **You decide, account by account**, and you
+decide what an account with no setting of its own does:
+
+```
+modify.account fred start-terminal       fred starts at the prompt, whatever the default is
+modify.account fred start-menu           fred starts in the home screen, whatever the default is
+modify.account fred start-default        fred follows the default (the register field is made empty)
+set.start.default terminal               accounts that follow the default start at the prompt
+set.start.default menu                   ... or in the home screen
+set.start.default                        says which it is now
+```
+
+* **The default is `menu` as delivered.** `set.start.default` writes the word to the
+  file `start.default` in the sdsys directory; the file is absent until you use the verb,
+  and absent means menu.
+* **EVERY EXISTING ACCOUNT HAS NO SETTING OF ITS OWN**, so after an upgrade each follows
+  the default and starts in the home screen. To keep the old start for everyone, run
+  `set.start.default terminal` (as SDSYS); to keep it for some,
+  `modify.account name start-terminal`.
+* The setting is **field 16** of the account's register record. `modify.account` writes it;
+  nothing else needs to change, and it applies at the person's next sign-on, and when they type
+  `logto` at the prompt to enter the account. It may be set on any kind of account.
+* **It is not a wall.** Starting in the home screen confines nobody: its *Terminal* tile gives
+  the ordinary command prompt (and `exit` comes back). To keep a person from a prompt you would
+  need a setting that removes the prompt itself, which SD does not have.
+* The screen is never given to a session that cannot use it: a window under 140 by 43, a pipe,
+  a phantom, an API server, or a `logto` that a program ran with `execute`. Scripts and
+  scheduled jobs are unchanged.
+* `modify.account` says `Account fred starts at: menu` (or `terminal`, or `system default`) and
+  `fred already starts that way; nothing changed` when the word is the one already set. It is
+  audited as `modify.account start-menu account=fred`, and `set.start.default menu` is audited
+  as `set.start.default menu`.
+* `create.account` does not take the words yet: make the account, then use `modify.account`.
 
 ### `suspended`/`unsuspended` is a state, not a tier
 
