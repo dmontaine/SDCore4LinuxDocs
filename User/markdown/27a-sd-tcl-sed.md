@@ -251,6 +251,30 @@ named when the editor starts. The rule kinds are `file`, `record` and `first`
 `label`, `nocase` and `ident`; the styles are `comment`, `string`, `constant`,
 `keyword`, `type`, `preproc`, `special`, `error` and `todo`.
 
+## The AI in SED
+
+When the AI is on for your account (see [Asking the AI](29b-sd-tcl-asking-the-ai.html)) the
+**Tools** menu has two more items, **Ask the AI...** and **Explain the selection**; without the
+AI they are not there. They are also the commands **`AI`** (with the question after it if you like:
+`ai make the second line shorter`) and **`AI.SELECTION`**, typed after Esc X.
+
+* **Ask the AI...** takes the question on the message row (`AI>`).
+* **Explain the selection** uses the text between the mark (Esc `.`) and the cursor. With no mark
+  the message row says to set one, and nothing is sent.
+
+Whichever you use, **Enter shows everything that will be sent** — the provider and model, the
+fixed instruction, the record's lines (the whole record up to 24,000 bytes, else the lines round
+the cursor, and it says so), the selected text and your question — with Send and **Cancel, the
+default**. While the AI answers, Esc gives the request up.
+
+If you asked for a change, the answer shows it as a diff, one change after another: the line it is at,
+the old lines with `-`, the new ones with `+`. **Accept** puts the changes into the buffer and
+**Reject, the default, leaves it as it was.** Accepting is **one step for Undo (Ctrl-Z)**, and **nothing is saved**:
+Save is yours, and the edit gates apply to it as ever. A set of changes is taken whole or not at all: one
+whose old text is not in the record, is in it twice, overlaps another, is more than 8, or would
+show more than 30 lines, is ignored with a note. A buffer that is read only takes no changes. A command
+in the answer is ignored.
+
 ## Options
 
 Two records in the account's VOC change SED, and **both are optional**.

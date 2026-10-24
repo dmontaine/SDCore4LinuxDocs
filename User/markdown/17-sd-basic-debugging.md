@@ -424,6 +424,16 @@ be fed down a pipe.
 (Until 13 October 2026 the full-screen display needed AccuTerm, which kept the
 screen pictures; SD no longer supports AccuTerm.)
 
+## Asking the AI
+
+In the full-screen display, when the AI is on for your account (see
+[Asking the AI](29b-sd-tcl-asking-the-ai.html)), the command **`AI`** — or `AI` and a question, such as
+`ai why is y empty` — asks it about the stop. The AI is told the program and the line, the call stack
+and about fifty lines of the source round the stop. As everywhere, **Enter shows everything that will
+be sent first**, with Send and Cancel (the default); the answer is words in a box, and the debugger's
+screen is drawn again after it. Nothing in your program or the debugger is changed, and a command in
+the answer is ignored. Line mode and a phantom do not have it.
+
 ## Who has it
 
 Read out of an account's own VOC:

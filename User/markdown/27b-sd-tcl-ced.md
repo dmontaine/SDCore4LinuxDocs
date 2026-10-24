@@ -99,6 +99,25 @@ type and cannot be changed in the editor**, because a path cannot name it.
 key are switched off while it runs and back on when it ends. If its input ends (the
 terminal hangs up), it leaves without saving.
 
+## The AI in CED
+
+When the AI is on for your account (see [Asking the AI](29b-sd-tcl-asking-the-ai.html)) **F2** opens a
+menu of three; without the AI F2 does nothing.
+
+| | |
+|---|---|
+| Explain the selected element | asks the AI about the element the cursor is on (its path and, for a container, its contents) |
+| Ask the AI about this record | takes a question |
+| Undo the AI's last change | puts the record back as it was before the AI's last accepted change (one level) |
+
+The AI sees the record as **indented JSON, one element to a line**. As everywhere, Enter shows
+**everything that will be sent** first, with Send and Cancel (the default). The answer may propose
+changes to that text; they are shown as a diff, with Accept and Reject (the default). **A set of
+changes is accepted only if the result is still a JSON object or array**; otherwise it is ignored
+with a note and the record is not touched. Accepting marks the record changed — the usual quit
+question applies — and **saves nothing**: Ctrl-S is yours, and the edit gates apply to it as ever.
+After an accepted change you are back at the top level of the record. A command in the answer is ignored.
+
 ## !CED() — a collection in a variable
 
 ```
