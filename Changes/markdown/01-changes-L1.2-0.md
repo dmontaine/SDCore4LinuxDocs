@@ -15,8 +15,8 @@ change: what it does, why, and what it does not do. This document is the short f
 - Names are in lower case as SD writes them. `$mode` words, options and BASIC keywords are written the same way.
 - Everything that lets something reach beyond a program's own account, or leave the machine, is **off as delivered**.
   The administrator turns it on, account by account, and can turn it off again.
-- A comment at the end of a row (`<!--s 27 191-->`) names the spreadsheet items the row covers. It is for whoever
-  maintains this document and does not show on the page.
+- A comment at the end of a row, `<!--s` then item numbers then `-->`, names the spreadsheet items the row covers. It is
+  for whoever maintains this document and does not show on the page.
 
 ## Read this first: changes that alter what an existing system does
 
@@ -60,7 +60,6 @@ Administrator commands from the openQM list.
 | `lock.tracer` | Added | administrator only: logs every lock taken and released, with program and line, to the file `locktrace` <!--s g57--> |
 | `logout` | Changed | `logout n group` also ends the phantoms n started; `logout` of a session whose process has gone clears the entry and its locks <!--s 386--> |
 | `newvoc.mods` | Changed | applied to SDSYS's own VOC and kept across an upgrade that keeps the accounts <!--s 501--> |
-| `update.accounts` | Changed | brings the new verbs and keywords into every account <!--s 501 g102--> |
 
 ## API
 
@@ -93,7 +92,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `adds`, `subs`, `muls`, `divs` | Added | arithmetic element by element over two dynamic arrays <!--s 207--> |
 | `arg.present()`, `reusing()` | Added | whether the caller passed an argument, and whether with `reuse()` <!--s g108 g169--> |
 | `$basic.options` | Changed | a `mode` line takes a list and a minus turns a mode off; an `include` line names records or files that every program includes <!--s 406 407 290--> |
-| `bool()` and friends | Added | `bool()`, `is.null()`, `numeric()`: Boolean, SQL-null and numeric conversions <!--s g109 g144 g161--> |
+| `bool()` and friends | Added | `bool()`, `is.null()`, `numeric()`: Boolean, SQL-null and numeric conversions <!--s g109 g144 g161 451--> |
 | `bscan`, `root`, `key()` | Added | scan an alternate key index entry by entry, the openQM and Pick ways <!--s g110 g173--> |
 | `@build.time`, `@line` | Added | the time the program was compiled and the source line it stands on <!--s 506 211--> |
 | `call "file name"` | Added | calls a program compiled into a file without the catalogue <!--s 208--> |
@@ -139,7 +138,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `md5()`, `digest()` | Added | the md5 digest, and md5, sha1, sha256, sha384 or sha512 of a string or a file <!--s 63 g118--> |
 | `mergelist()` | Added | merges two lists by a mode; a mode for lists not in order; fixed for an empty list <!--s 420 539 566 g155--> |
 | `$mode autolock` | Added | a `write`, `matwrite` or `delete` with no lock takes an update lock and releases it <!--s g213--> |
-| `$mode conditional.statements` | Added | accepted; changes nothing, since `while` and `until` take these conditions anyway <!--s g217 206--> |
+| `$mode conditional.statements` | Added | accepted; changes nothing, since `while` and `until` take these conditions anyway <!--s g217 206 434--> |
 | `$mode debug.equates` | Added | keeps `equate` and `$define` tokens in the object so the debugger can show, set and watch them <!--s g218 246 239--> |
 | `$mode default.unass.args` | Added | an argument passed unassigned takes its default <!--s g219--> |
 | `$mode execute.clearlist` | Added | clears the default select list before each `execute` <!--s 521--> |
@@ -160,6 +159,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `$mode time.ms` | Added | `time()` and `system(12)` return seconds since midnight to the millisecond <!--s 581--> |
 | `$mode trap.unused.main` | Added | `trap.unused` for the program's own variables <!--s g227--> |
 | `$mode write.delete.then.else` | Added | `write`, `matwrite` and `delete` take `then` and `else`; a trigger that refuses takes `else` <!--s 368 496--> |
+| `no.query` on cataloguing | Added | the `basic` command, the `$catalogue` directive and the `catalogue` line of `$basic.options` take `no.query`, which stops the compiler asking before it removes an older entry <!--s 27 191--> |
 | `open ... non.transactional` | Added | a write through that file variable is not undone by a rollback <!--s 64--> |
 | `open.socket()` | Changed | takes a connect timeout <!--s 174--> |
 | `openseq` | Added | `creating` makes the file at once; `shared` lets several processes append; a block device can be opened <!--s 485 397 112--> |
@@ -242,10 +242,10 @@ File handling: opening, indexes, triggers, print files, sorting, sequential file
 | `fixdir` | Added | takes the carriage returns out of directory file items that came from a Windows system <!--s 458--> |
 | hashed files | Changed | a split that finds the disk nearly full stops before the file's size is changed; `sdfix -z` clears dead space <!--s 329 33--> |
 | `hold.file.logger` | Added | a catalogued subroutine called when a hold file print unit opens and closes <!--s 56--> |
-| `l-type` dictionary links | Added | usable in an `i`-type; links may follow links, up to ten <!--s 7--> |
+| `l-type` dictionary links | Added | usable in an `i`-type; links may follow links, up to ten, and reach `a`, `s` and `e` items <!--s 7 204 544--> |
 | `list.common detail` | Added | shows where each common block was created <!--s 362--> |
 | `list.index` | Changed | the report may go to a printer <!--s 73--> |
-| `list.triggers` | Added | every trigger subroutine used by the files of an account, multifiles and dictionaries included <!--s 74 187--> |
+| `list.triggers` | Added | every trigger subroutine used by the files of an account, multifiles, dictionaries and directory files included <!--s 74 187 321--> |
 | `listf`, `listfl`, `listfr` | Changed | list a multifile line by line, and take `with` and `without trigger`, `encryption` and `replication` <!--s 3 185--> |
 | print unit mode 3 | Changed | takes an update lock on the `$hold` item while it is written <!--s 53--> |
 | `rebuild.all.indices` | Added | rebuilds the indices of every file in the account <!--s 58--> |
@@ -341,7 +341,6 @@ Commands and VOC verbs that every account has, and the command language.
 | `delete` | Changed | a record another user holds locked is reported and skipped <!--s 50--> |
 | `delete.account` | Changed | not stopped by a file it cannot open when it looks for references <!--s 348--> |
 | `delete.common all except` | Added | deletes every named common block but those listed <!--s 425--> |
-| `$echo` | Added | traces execution of a paragraph <!--s g1--> |
 | `ed` | Changed | `l` with no text as the first command works; marks typed in input; `ev` on a compound `i`-type; line numbers show positions in edit values mode; `spool` closes the printer; external commands; automatic ids <!--s 264 268 320 331 375 446 523 305--> |
 | `fstat` | Changed | wider columns <!--s 55--> |
 | `fstat.user` | Added | file activity of each session <!--s g44--> |
@@ -355,7 +354,6 @@ Commands and VOC verbs that every account has, and the command language.
 | `listdict` | Added | a dictionary in the form Pick systems use; `d` and `i` records too <!--s 10 75--> |
 | `listu`, `who`, `pstat` | Changed | `!listu` too: show the account and the login name; `listu detail`; the blocking user and when a wait began <!--s 12 24 29 38 77 121 289 427 577--> |
 | `logto reset all` | Added | discards all programs, menus and paragraphs at every command level <!--s 30--> |
-| `loop` ... `repeat` | Added | a loop in a paragraph <!--s g59--> |
 | `map local`, `map no.page` | Added | list the locally catalogued programs; heading once <!--s 153 287--> |
 | `move.list` | Added | the command form of `movelist` <!--s g62--> |
 | `multisort` | Added | `!multisort` sorts several related lists by one of them <!--s 568--> |
@@ -368,13 +366,12 @@ Commands and VOC verbs that every account has, and the command language.
 | `redo` | Added | runs a command again and again, `times` and `every` <!--s 188--> |
 | saved list verbs | Changed | `save.list`, `get.list`, `delete.list`: `keep`, `deleting`, `count.sup`, a default name, a name left out, `in file` <!--s 2 384 387 401 494--> |
 | `selectindex` | Added | the command form of the statement <!--s 119--> |
-| `set.queue`, `sp.assign` | Added | Pick style form queues kept in the account's `$forms` file <!--s g83 g88 18--> |
+| `set.queue`, `sp.assign` | Added | Pick style form queues kept in the account's `$forms` file; `sp.assign` alone shows the default printer's queue and `set.queue deleting` removes one <!--s g83 g88 18 189 502--> |
 | `setptr` | Changed | `form.feed`, `inform`, `eject`, `as ... in file`; the digits of `next` <!--s 51 59 70 139 448--> |
 | `show.list` | Added | a page at a time, starring and clearing items <!--s 449-->|
 | `sort.list`, `select.dir` | Added | sort a saved list; select the files of a directory <!--s 158 465--> |
 | `sp.view` | Changed | `by field`; `x` deletes the item shown; shows where output goes for every print unit mode <!--s 450 560--> |
 | `term` | Changed | takes two numbers for the default printer; `term default` goes to 140 by 42 <!--s 466--> |
-| `umask` | Changed | a `umask` setting for direct, client and network sessions <!--s 5 143 g311--> |
 
 ## TOOLS
 
@@ -480,7 +477,7 @@ SD's own code. The sections above are the openQM items that were built, with the
 | `json` keyword | Added | queries can write JSON |
 | JSON merge, patch, path | Added | `jmerge()`, `jpatch()`, `jpath()`: RFC 7396 merge, RFC 6902 patch and JSONPath (RFC 9535) |
 | `readjson`, `writejson` | Added | read and write JSON Lines through `openseq` |
-| XML functions | Added | `xparse()`, `xbuild()`, `xpath()`: XML into a collection and back, and a path query |
+| XML functions | Added | `xparse()`, `xbuild()`, `xpath()`: XML into a collection and back, and a path query <!--s 515--> |
 
 ### Encryption
 
@@ -490,7 +487,7 @@ Three simple layers, with no vault and nothing on by default.
 |---|---|---|
 | `encrypt.key` | Added | asks for a key on a hidden prompt and puts it in the key ring |
 | key ring subroutines | Added | `!keyset`, `!keyclear`, `!keylist`: fill, empty and list the session's key ring, kept in the memory of its own process |
-| `sdkey()` and friends | Added | `sdsalt()`, `sdkey()`, `sdrandkey()`: a salt, a key from a passphrase, and a random key for `sdencrypt()` and `sddecrypt()`; open to every program |
+| `sdkey()` and friends | Added | `sdsalt()`, `sdkey()`, `sdrandkey()`: a salt, a key from a passphrase, and a random key for `sdencrypt()` and `sddecrypt()`, open to every program; every `sdencrypt()` uses a fresh random nonce <!--s 504 g116 g123--> |
 | `xe` conversion | Added | a dictionary item with `xe` (or `xe;name`) shows a field decrypted for a session that holds the key and the cipher text for one that does not; `iconv` encrypts |
 
 ### Files
@@ -534,20 +531,21 @@ Three simple layers, with no vault and nothing on by default.
 
 | Name | Change | What |
 |---|---|---|
+| `list.servers`, `delete.server` | Added | the administrator's list of defined servers, and removal of one <!--s g52 g26--> |
 | `net` gate | Added | per-account switch, off as delivered: `net-on` and `net-off` |
-| `netwait`, `netreply` | Added | `sd.conf` settings, 1 to 3600 seconds, for a connection and a reply; a silent server is given up on |
+| `netwait`, `netreply` | Added | `sd.conf` settings, 1 to 3600 seconds, for a connection and a reply; a silent server is given up on <!--s 235 g291--> |
 | remote file administration | Added | for a login in `sdfilesadmin`; `create.file ... server` and `delete.file` of a pointer |
 | remote files, a pointer | Added | a VOC entry whose first field is `n` points to a file on another server |
 | remote files, cache | Added | a short record cache; `logto` closes the connections |
 | remote files, index | Added | `indices`, `selectindex`, `setleft`, `setright`, `selectleft` and `selectright`; a query uses the other machine's index |
 | remote files, query | Added | `list`, `count`, `sort`, `select`, `list.item`, `list dict` on a remote file; `fileinfo` type 7 |
-| remote files, refusal | Changed | the server's own words are shown, not `status 0` |
+| remote files, refusal | Changed | the server's own words are shown, not `status 0`; a lost connection is an error <!--s 256--> |
 | remote files, reply checked | Changed | a reply that cannot be true is a lost connection at once |
 | remote files, write | Added | for a server defined `write`: `write`, `delete`, `clearfile`, the locking reads and release |
 | remote lock functions | Added | `recordlocked()`, `getlocks()`, `filelock`, `fileunlock`: work on a remote file |
 | remote `select` | Changed | fixed: a server error stopped the program with an abort |
 | SDNet logins | Added | `set.netlogin`, `delete.netlogin`: a person's login on a server, kept as derived values and never the password |
-| `set.server` | Added | defines a server; `connect` shows its key hash for you to confirm |
+| `set.server` | Added | defines a server; `connect` shows its key hash for you to confirm <!--s g84 147--> |
 | tls reads | Changed | fixed: a half record or a late ticket made a read wait without limit |
 
 ### Security
@@ -582,7 +580,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `option debug.rebind.keys` | Removed | still accepted, no longer does anything |
 | screen save and restore | Removed | `save.screen()` and `restore.screen`: still exist and do nothing the terminal could see |
 | `sdterm` terminal type | Removed | with SDTerm and SDConsole, and the `term display` line about them |
-| `sed` | Changed | the full-screen editor is back with a menu bar, the keys most editors have (`emacs` in `&sed.options&` keeps the old ones), undo and redo, syntax colour and the mouse |
+| `sed` | Changed | the full-screen editor is back with a menu bar, the keys most editors have (`emacs` in `&sed.options&` keeps the old ones), undo and redo, syntax colour and the mouse; its keys are decoded from the terminal's terminfo entry <!--s 365--> |
 | `sed`, `ide`, `ed` input ended | Changed | fixed: they used all of a processor for ever when their input had ended |
 | `term 120,36` at login | Removed | `login` no longer sends it |
 
@@ -597,6 +595,7 @@ feature was already there, or it does not apply. They are here so that nobody lo
 | `between` in a `when` clause | None | no change recorded <!--s 248--> |
 | `*` comment line in a paragraph | None | already works <!--s g2--> |
 | configuration file location | None | `sd.conf` is already in the SDSYS directory <!--s 14--> |
+| `$echo` | None | already there in L1.1-3 <!--s g1--> |
 | `errlog` permissions | None | the daemon asks for 0777 and the installer sets 775 (group `sdusers`): every SD user can write it, world write is deliberately not given <!--s 276--> |
 | `formlist` bad data | None | no change recorded <!--s 265--> |
 | hangup at the break key prompt | None | already ends the process by itself <!--s 266--> |
@@ -605,15 +604,19 @@ feature was already there, or it does not apply. They are here so that nobody lo
 | `itype()` | None | no change recorded <!--s 328--> |
 | `list.users` | None | removed in an earlier release with the other user verbs; the administrator uses `listu` and `tool.sessions` <!--s g53--> |
 | `locate` insertion position | None | also a very long numeric item: no change recorded <!--s 527 556--> |
+| `loop` ... `repeat` | None | already there in L1.1-3 <!--s g59--> |
 | `matbuild` trailing elements | None | unassigned elements at the end: no change recorded <!--s 557--> |
 | `matchfield()` `n-mx` pattern | None | at the start of the template: no change recorded <!--s 562--> |
 | memory alignment in `redim` | None | no change recorded <!--s 382--> |
 | negative default argument | None | for an optional argument: the defect cannot occur, because the feature it belongs to was not in SD <!--s 324--> |
 | Pick wildcards in `ne` | None | no change recorded <!--s 322--> |
 | `qmbasic.warnings` | None | present already as `sdbasic.warnings` (`option w`) <!--s g251--> |
+| `$qmcall` | None | already there as the `$sdcall` flag, which lets a restricted client session call a subroutine <!--s g212--> |
 | `readv` fatal error | None | no change recorded <!--s 559--> |
 | record cache and case | None | no change recorded <!--s 330--> |
-| `set.date` | None | SD has no such command to withdraw <!--s 78--> |
+| `set.date` | None | SD still has the command; nothing was withdrawn <!--s 78--> |
 | the inetd network server | None | SD opens no listening port of its own; sshd does <!--s 100--> |
 | the `u` format in a report | None | already wraps a long value as `t` and `l` do <!--s 531--> |
 | the user limit reached | None | login prints message 1000 and exits cleanly <!--s 275--> |
+| `umask` | None | the verb and the `sd.conf` parameter were already there in L1.1-3 <!--s 5 143 g311--> |
+| `update.account` | None | already there in L1.1-3 <!--s g102--> |
