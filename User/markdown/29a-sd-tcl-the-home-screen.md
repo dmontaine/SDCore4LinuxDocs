@@ -211,9 +211,9 @@ never what you asked or what came back.
 
 ## Not yet
 
-An AI line in the editors (SED, the IDE, CED) and the debugger, an AI menu item, a proposal that
-changes a record, and the AI line on the administrator's pages other than this one are planned
-and not built.
+An AI line in the IDE, with proposals as edits, is built (see [Programs and the
+catalogue](24-sd-tcl-programs-and-the-catalogue.html)). An AI line in SED, CED and the debugger,
+and the AI line on the administrator's pages other than this one, are planned and not built.
 
 Programs the administrator assigns to an account, sub-menus that open and return, a
 group of the last commands you ran, and a live line on a tile are planned and not

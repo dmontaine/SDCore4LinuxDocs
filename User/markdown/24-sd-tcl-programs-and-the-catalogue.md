@@ -316,6 +316,33 @@ the way back, which Run has because a program may have written something to
 read. Ctrl-E is the editor's *end of row* key in other programs that use
 `screen memo`; in the IDE it belongs to this and **End** ends a row.
 
+**The AI in the IDE** (since 24 October 2026). When the AI is on for your account (see
+[Asking the AI](29b-sd-tcl-asking-the-ai.html)) the IDE has an **AI** menu before Help and an
+**`AI>`** row under the editor and the messages table (the table is one row shorter); without the AI
+neither is there and nothing else changes. Tab goes round the panes to the AI row, or click it, or
+use the menu:
+
+| | |
+|---|---|
+| AI, Explain the error | asks the AI to explain the compile message the table has on its line, with the record |
+| AI, Explain the selection | the same for the text from the mark (Ctrl-G where it starts) to the cursor; with no mark the status line says to set one and nothing is sent |
+| AI, Ask about this record | puts you in the `AI>` row to type what you want |
+
+Whatever you ask, Enter shows **everything that will be sent** first: the provider and model, the
+fixed instruction, the record's lines (the whole record when it is under 24,000 bytes, else the
+lines round the cursor, and it says which), the line they start at, and your request, with Send and
+**Cancel, which is the default**. While the AI answers, Esc gives the request up.
+
+The AI may answer with words and, if it was asked for a change, with **edits**. Each is shown as a
+diff in the answer: `Change 1 of 2, at line 5:` and the old lines with `-` and the new with `+`.
+**Accept** puts the changes into the editor as **one step** (one Ctrl-Z takes them all back) and
+saves **nothing**; **Reject, the default, leaves the editor as it was.** The set is taken whole or
+not at all: an old text that is not in the record, is in it twice, or overlaps another edit, more
+than 8 edits, or a change that would show more than 30 lines, is ignored with a note and nothing is
+offered. If you changed the record while the AI was answering, its change no longer fits and
+nothing is applied. The IDE has nowhere to run a command, so a command in the answer is ignored.
+Saving, compiling and running stay your own acts.
+
 The other keys follow [SED](27a-sd-tcl-sed.html) where the two do the same:
 Ctrl-Q quits, Ctrl-L goes to a line, Ctrl-X, Ctrl-C and Ctrl-V cut, copy and
 paste, Ctrl-Z and Ctrl-Y undo and redo, Ctrl-F finds forward and Ctrl-B
