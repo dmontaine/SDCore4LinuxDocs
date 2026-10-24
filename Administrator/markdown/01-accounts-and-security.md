@@ -906,6 +906,69 @@ by nobody: `voc-off` was done and `bp-off` dropped without a message; from 18
 Oct it was refused with *modify.account does one action at a time*; it is done
 since 19 Oct.)
 
+### Every account against every gate: `tool.gates`
+
+```
+tool.gates
+```
+
+**The gate matrix** is a full-screen page for the administrator (SDSYS's VOC only; it
+is refused, before anything is read, to anyone else). One row for each registered
+account but SDSYS, one column for each gate the system has, in the order
+`modify.account` carries them out: `ssh api sh os sd voc bp dict net sh-rd sh-wr files
+f-wr f-adm ai sock`. A cell says **ON**, **off**, a **dash** (the gate does not apply
+to this kind of account: ssh, api, files and ai are routes for a person, and a group or
+other account has no Linux user of its own) or **plan** (not built yet; sockets). A star
+after a cell is a change you have queued; the cell shows the state it would have.
+Under the matrix a box says, for the cell under the cursor, what the gate is: its two
+words, what ON allows, what OFF still allows, when a change reaches the person, whether
+it reaches beyond SD and what it is as delivered. A second box lists the accounts that
+have a gate on which reaches beyond SD, and a third the live sessions of the account
+under the cursor.
+
+| Key | What it does |
+|---|---|
+| arrows, a click | move over the cells |
+| Enter or the space bar | queue the opposite state for the cell; again takes it back |
+| R | run the queued changes of the account on the cursor's row |
+| U | drop them |
+| T | queue OFF for every gate of that account that is off as delivered and on now |
+| F | change which accounts are shown: all, accounts of persons, accounts with a gate on that reaches beyond SD |
+| F5 | read the machine again (a queued change is kept) |
+| F1, `?`, a click on the `[?]` | explain the matrix |
+| Ctrl-Q | leave |
+
+**The page writes nothing itself.** The queued changes of one account become ONE
+command, `modify.account name word word ...`, shown with its effect in a box that is
+answered Run or Cancel (Enter alone is Cancel). The verb reads every word before it
+changes anything, so a conflict is refused whole. After the command the page reads the
+machine again and shows the verb's own words, so a cell changes because the system
+changed, never because the page said so. Every change is audited by the verb as if you
+had typed it.
+
+* **There is no key that queues everything ON**, and the installer's single question
+  (to open every gate for the installing user) stays its own. **T** is the only
+  "all": it queues OFF for what is on and off as delivered (`shared-read`, which is on
+  as delivered, is left alone).
+* **Turning ON a gate that is off as delivered says so**, and says that leaving it off is
+  the tighter choice. **Turning ON a gate that reaches beyond SD** (ssh, api, sh, os,
+  sd, net, files, files-write, files-admin, ai) **asks for the account's name to be
+  typed**; turning anything OFF does not.
+* **ssh and api are one setting** in the verb: the words `ssh`, `api`, `both` and `none`
+  SET the pair. The page therefore sends the one word that gives the pair of states you
+  queued, and its box says which.
+* **files-write needs files, and files-admin needs files-write.** A queue that breaks
+  that is refused by the page before the box opens, and the verb refuses it again.
+* **A group or other account cannot have `sh` or `os`:** the verb refuses them in both
+  directions (a shell granted to a group would be a shell granted to whoever its Linux
+  group admits). The page says so instead of queueing them.
+* **A change does not reach a session that is already running.** The box says when it
+  reaches the person: the next sign-on (voc, bp, dict), the next account entry (sh, os,
+  sd, net, shared), the next login (ssh, api, files) or the next request (ai).
+* **Home-screen settings are not gates and are not on this page:** `pins-on` / `pins-off`
+  and the three start words are managed on the menu management page (`tool.menus`,
+  below).
+
 ### The other keywords
 
 | | |

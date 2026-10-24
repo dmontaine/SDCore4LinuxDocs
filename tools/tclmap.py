@@ -152,7 +152,7 @@ DOCS = [
    release
  """),
  ('Administrator', '01-accounts-and-security.md', """
-   create.account modify.account modify.password set.start.default set.tile tool.menus umask
+   create.account modify.account modify.password set.start.default set.tile tool.gates tool.menus umask
  """),
  # THE MAINTENANCE VERBS MOVED TO 01a AND ONLY ONE OF THEM SAID SO.  tclmap
  # reported set.date and passed the other four, because 01 still MENTIONS
