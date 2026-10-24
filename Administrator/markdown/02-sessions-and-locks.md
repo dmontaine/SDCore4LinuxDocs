@@ -118,26 +118,36 @@ leaves your own session alone.
 
 ### When a session will not end
 
-`logout` **signals** a process. If the process has already gone — killed from
-outside SD, or lost with a terminal — there is nothing to signal, and the entry
-stays with **`(logout pending)`** beside it.
-
-**The entry matters because it holds a slot and an exclusive-access claim.**
-`NUMUSERS` counts it, and any verb that wants a file to itself — `build.index`
-is the usual one — is refused while it is there. **Recovery is not another
-`logout`:**
+`logout` **signals** a process. **If the process has already gone** — killed from
+outside SD, or lost with a terminal — there is nothing to signal, and `logout`
+finds that out first: it **clears the entry and releases every file, record,
+group and task lock the session still held**, and says so (then the text of
+message 10167, *User n was not running, so there was nothing to log out*):
 
 ```
-sd -cleanup
+LOGOUT reaped user 43 (pid 1799435, don) - process was gone.
 ```
 
-run as SDSYS, and a restart of `sd.service` if that does not take it.
+*Run on 24 October 2026 in a sandbox, against a session killed from outside
+with `kill -9` while it held a record lock: `logout 43` printed the line above,
+and afterwards `listu` did not list the user and `list.readu` did not show the
+lock.* The entry matters because **it holds a slot and an exclusive-access
+claim**: `NUMUSERS` counts it, and any verb that wants a file to itself —
+`build.index` is the usual one — is refused while it is there. So **the way to
+clear a dead session is `logout` *n*.**
+
+A session that is **alive and does not answer the signal** is the other case,
+and it keeps its entry with **`(logout pending)`** beside it; asking again
+signals it again. *That case was not run for this page.* `sd -cleanup`, run as
+SDSYS (and a restart of `sd.service` if that does not take it), is the
+remaining way to clear entries of sessions that are not going to end.
 
 **Confirm the session is actually dead before clearing it.** `pstat` *n*
 answers *(Not responding)* for a session with nothing behind it — it asks the
 process and waits about four seconds — and that is the difference between a dead
 entry and a busy one. `pstat` is a programmer verb and is documented in the user
-set.
+set. (`logout` itself only clears an entry whose process is not there; it
+signals a live one.)
 
 ## Keeping new sessions out while you work: `inhibit.login`
 
@@ -242,8 +252,11 @@ plain listing shows the cause of a hold-up and not its victims. **Ask for
 
 The `19 … RU zzlock31` row above is real, and it is a lock on a record in an
 account's `voc` file left behind by a session that was killed while holding it.
-**A dead session's locks are not released**, any more than its user-table entry
-is, and everything wanting that record waits for a process that is not there.
+**A dead session's locks are not released by its dying**, any more than its
+user-table entry is removed, and everything wanting that record waits for a
+process that is not there. **They are released when the entry is cleared**,
+which is `logout` *n* for a session whose process is gone (see *When a session
+will not end*), or the `tool.sessions` page's L key.
 
 **Take the user number to `pstat`.** *(Not responding)* means clear the session
 rather than wait for it.
@@ -407,6 +420,58 @@ any file, so nothing has to be written back.
 > because it is not yours. **`unlock tasklock` *n*, run as SDSYS, is the way
 > out** — that is what the forced form is for. It is recorded in the
 > project's fix lists.
+
+## Sessions and locks on one screen: `tool.sessions`
+
+```
+tool.sessions
+```
+
+**A full-screen page for the administrator** (SDSYS's VOC only; an ordinary account does
+not have the verb, and the page is refused before it reads anything to anyone who is not
+the administrator). It needs a window of 140 columns by 43 lines. The top list is every
+session — user number, Linux process, when it signed on, its kind (user, phantom, API or
+SDNet), the login user, the account it is in, where it came from, and whether it is yours
+(a star) or a logout is pending. The lower list is every lock — the user, the file number
+and path, the type (`FX` and `SX` lock a whole file, `RU` is read and update, `RL` is read,
+`WAIT` is a session waiting for a lock), the record id, since when, and whether a session
+with that user number is still signed on. Under the sessions the page says whether logins
+are inhibited and by whom, and under the locks it gives the lock limit, the number held
+now and the most there have been. **Both lists are read again every three seconds, with no
+key pressed, and on F5, and a refresh keeps the cursor on the same user or the same lock,
+not on the same row number.** A box under the lists explains the row under the cursor in
+plain sentences and shows the exact command its key would run.
+
+| Key | What it does |
+|---|---|
+| arrows, Page Up, Page Down, Home, End, a click | move in the list that has the focus |
+| Tab | change to the other list |
+| L (sessions) | `logout` the selected session; the user number is typed again to confirm. For a session whose process is gone the entry is cleared and its locks are released |
+| U (locks) | `unlock` the selected lock; the holder is not told |
+| I | `inhibit.login on` when logins are allowed, `off` when they are inhibited |
+| F5 | read again |
+| F1, ?, a click on the [?] | explain the page |
+| Ctrl-Q | leave |
+
+**The page changes nothing by itself.** Each of the three keys builds one command from
+values the page has read and checked, shows it in a box with what it does, and runs it
+only when you answer Run; Cancel is what Enter chooses. Those three commands are the only
+ones the page can run. **`logout` and `unlock` write no audit line of their own, so the
+page writes one for every command it ran** (`tool run app=tool.sessions command=...
+status=...`), as well as the line that says it was started (`tool start
+app=tool.sessions`); `inhibit.login` writes its own as well.
+
+What each key refuses, in words, before any box opens: `L` on the session the page runs
+in (leave it with Ctrl-Q); `U` on a `WAIT` row, which is a session waiting for a lock and
+not a lock; `U` on a record id with a character the page will not put in a command (only
+lower-case letters, digits, dot, dash and underscore go through) or an id that is one of
+the words `unlock` reads as a keyword (`all`, `file`, `user`, `filelock`, `tasklock`) —
+release those at the prompt with `unlock`. The lock table keeps record ids in upper case
+and shows them so; the page sends the id in lower case, which the verb folds.
+
+**Not on the page:** a message to a user, `logout all`, and any change to a session of an
+ordinary account's own work. An ordinary account has no such page: its own sessions are
+`!listu` from a program.
 
 ## Who has these verbs
 

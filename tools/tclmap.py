@@ -166,7 +166,7 @@ DOCS = [
    set.date settings.report update.accounts
  """),
  ('Administrator', '02-sessions-and-locks.md', """
-   clear.locks list.locks list.readu listu lock logout unlock
+   clear.locks list.locks list.readu listu lock logout tool.sessions unlock
  """),
  ('Administrator', '03-operating-system-access.md', """
    sh ! docs.install load.help set.viewer tool.viewers

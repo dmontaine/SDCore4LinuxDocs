@@ -100,6 +100,7 @@ load.help = **`load.help`**  —  load the shipped context help into the file co
 my.menu = **`my.menu`**  —  add your own programs to your home screen, when the administrator has allowed it (**`modify.account`** *account* **`pins-on`**)
 tool.menus = **`tool.menus`**  —  menu management (administrator): the home screen's tiles for each account, where each account starts, who may add their own programs
 tool.gates = **`tool.gates`**  —  for the administrator the gate matrix (every account against every per-account gate; queued changes run as one **`modify.account`** command); in any other account, what this account may do and why (read only)
+tool.sessions = **`tool.sessions`**  —  sessions, locks and logout on one screen (administrator): every session and every lock, read again every three seconds; each key runs one **`logout`**, **`unlock`** or **`inhibit.login`** command after a box answered Run
 hsm = **`hsm on`** | **`off`** | **`display`** {**`user`** *n*}
 hush = **`hush on`** | **`off`** | **`hush`** to toggle
 ide = **`ide`** {*file* *record*}
