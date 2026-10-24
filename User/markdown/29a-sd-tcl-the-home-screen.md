@@ -171,7 +171,49 @@ so it adds no access: the gates apply as at the prompt. The list is the record
 permission away (`pins-off`) the group disappears from your screen and `my.menu`
 says it is not allowed; the list stays in your file.
 
+## The AI line
+
+When the AI is on for your account (the administrator has chosen a provider, given it a
+model and a key, **and allowed your account**; see [Asking the AI](29b-sd-tcl-asking-the-ai.html))
+the home screen has one more row, just above the status line, that starts **`AI>`**. Without
+the AI there is no such row and nothing on this page changes.
+
+**Press Tab from the last tile (Sign out), or Back-tab from the first, or click the row**, type
+what you want in your own words, and press Enter:
+
+```
+AI> open the ide
+AI> show me who I am
+```
+
+Enter does not send anything. It shows **everything that will leave the machine**: the
+provider and the model, one fixed instruction, the list of what this page can do (the names of
+its tiles), what the page says about itself, and your request. **Cancel is the default button**,
+so Enter alone sends nothing; choose **Send** (press `s`) to send. While the AI answers the row
+says so and **Esc gives the request up**.
+
+The answer comes in a popup. It says what the AI said, and it may *propose* one thing:
+
+| The AI proposes | What you see | What happens |
+|---|---|---|
+| a **tile** of this page (Editor, IDE, Record editor, Terminal, Keys, and the administrator's tiles) | `The AI proposes: IDE - programs and files`, with **Accept** and Reject | **Accept** starts the tile exactly as a click on it would. Enter alone accepts, because a tile only opens a tool you could open anyway. |
+| a **command** | the command on a line of its own, with **Run** and Cancel | **Run** runs it as the Terminal tile's prompt would, and waits for Enter. **Enter alone cancels**: a command never runs unless you choose Run. |
+| nothing | only what it said, with Close | nothing |
+
+What it cannot do: it is never offered **Sign out** or **Switch account**; a tile that is not on
+your page is ignored, with a note; a command with a control character in it or of more than 200
+characters is not shown; anything that is not one JSON object is shown as words, with a note, and
+nothing is proposed. The accepted tile or command runs with **your** rights: the gates of your
+account apply as they would if you had typed it.
+
+The audit trail records that you asked (`ai request account=... program=tk_ai bytes.out=...`),
+never what you asked or what came back.
+
 ## Not yet
+
+An AI line in the editors (SED, the IDE, CED) and the debugger, an AI menu item, a proposal that
+changes a record, and the AI line on the administrator's pages other than this one are planned
+and not built.
 
 Programs the administrator assigns to an account, sub-menus that open and return, a
 group of the last commands you ran, and a live line on a tile are planned and not
