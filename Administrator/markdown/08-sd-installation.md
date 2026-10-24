@@ -144,12 +144,17 @@ records, so an account created before a verb was withdrawn keeps it.
 **An account made before the per-account switches existed has always been
 able to use `sh` and `OS.EXECUTE`, so the installer gives it both once.**
 In the same step it runs `upgrade_gates` as the administrator, and every
-user account that exists then has `sh-on` and `os-on` set (ssh and the API
-are left exactly as they were). Nobody loses a command they were using;
-SDSYS can then take either away one account at a time with `modify.account`
-*name* `sh-off` / `os-off`, and **a later install does not give them back**
-— the step runs once and leaves a marker. Group and `other` accounts are not
-touched, and accounts created after the upgrade start with every switch off.
+user account whose `sh` or `OS.EXECUTE` setting is still blank gets that
+setting switched on (ssh and the API are left exactly as they were). A
+blank means the account was made before the switches existed; every account
+made since holds an explicit `yes` or `no`. Nobody loses a command they were
+using; SDSYS can then take either away one account at a time with
+`modify.account` *name* `sh-off` / `os-off`, and **a later install does not
+give them back**: the step changes only a blank setting, never a `no`
+(neither the delivered default nor an administrator's `sh-off`), so it stays
+safe even when an upgrade that keeps the accounts removes the marker the
+step leaves. Group and `other` accounts are not touched, and accounts
+created after the upgrade start with every switch off.
 **A fresh install is not an upgrade**: the account it makes for whoever
 installed SD starts with ssh, the API, `sh` and `OS.EXECUTE` all off, like
 any other new account, and the installer prints the `modify.account`
