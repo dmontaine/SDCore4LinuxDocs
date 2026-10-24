@@ -913,7 +913,9 @@ tool.gates
 ```
 
 **The gate matrix** is a full-screen page for the administrator (SDSYS's VOC only; it
-is refused, before anything is read, to anyone else). One row for each registered
+is refused, before anything is read, to anyone else: in every other account the same verb
+is the account holder's read-only "what my account may do" page, described in the User
+set under *What this account may do*). One row for each registered
 account but SDSYS, one column for each gate the system has, in the order
 `modify.account` carries them out: `ssh api sh os sd voc bp dict net sh-rd sh-wr files
 f-wr f-adm ai sock`. A cell says **ON**, **off**, a **dash** (the gate does not apply

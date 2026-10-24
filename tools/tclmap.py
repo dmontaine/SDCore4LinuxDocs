@@ -137,7 +137,7 @@ DOCS = [
  """),
  ('User', '29-sd-tcl-the-terminal-and-the-session.md', """
    autologout bell clear.prompts clearinput clearprompts date date.format echo
-   hush list.term.types logmsg pdf pterm sleep term time tool.keys
+   hush list.term.types logmsg pdf pterm sleep term time tool.gates tool.keys
  """),
  ('User', '29a-sd-tcl-the-home-screen.md', """
    exit home menu my.menu

@@ -162,6 +162,38 @@ with the message that the window is too small; make it larger again and the
 screen comes back. Ctrl-Q, then `y`, leaves from the lock. If the input ends (a
 piped session) the program ends.
 
+### What this account may do: `tool.gates`
+
+```
+tool.gates
+```
+
+A full-screen page, for anyone, that answers "why can I not do that?" — it shows every
+**gate** the system has, the switches the administrator turns on or off for an account
+(`sh`, `os`, `sd`, `voc`, `bp`, `dict`, `net`, the shared account's read and write, and the
+routes `ssh`, `api`, `files`, `files-write`, `files-admin` and `ai`), each **ON** or **off
+for this session**. It needs a window of at least **140 columns by 43 lines**. (For the
+administrator the same verb is the gate matrix of every account; this is the page every
+other account gets.)
+
+The row under the cursor is explained in plain words: what ON lets you do, what you can
+still do with it off, whether it reaches beyond SD, as it is delivered, when a change
+reaches you, and the `modify.account` word the administrator would use to give it or
+withdraw it (for a gate that reaches beyond SD the administrator is asked to type your
+account's name first). Up and Down, PgUp, PgDn, Home and End move; **F5** asks the system
+again; **F1**, `?` or a click on the `[?]` explains the page; **Ctrl-Q** leaves.
+
+* **The page changes nothing, and has nothing that could.** It asks the system what the
+  session may do; it writes no file, runs no command and leaves no audit line. Only the
+  administrator changes a gate, with `modify.account`.
+* **It reports what the session holds, not what the register says now.** `sh`, `os`, `sd`,
+  `net` and the shared account were loaded when you entered this account, and `voc`, `bp`
+  and `dict` when you signed on (`logto` does not reload them): after the administrator
+  changes one, sign off and on again to see it. The route gates are membership of a Linux
+  group by your **login name**, read from the system each time (F5 shows a change).
+* **Every account starts with every gate off, except the right to read the shared
+  account.** A gate that is `plan` (raw sockets) is not built yet.
+
 ## The wire: `pterm`
 
 ```
