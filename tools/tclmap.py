@@ -195,7 +195,7 @@ DOCS = [
  """),
  # 19 Oct 26 - S.67 stage 1 (the master files): three verbs, in voc_template (SDSYS's set), not in newvoc.
  ('Administrator', '19-the-master-files.md', """
-   check.masters list.master.pending sync.masters
+   check.masters list.master.pending sync.masters tool.masters
  """),
 ]
 

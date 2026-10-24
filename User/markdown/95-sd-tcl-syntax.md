@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **216** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **217** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -24,7 +24,7 @@ not refused — the name is simply not recognised.**
 | | | |
 |---|---|---|
 | **every account** | 178 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 38 more | in `voc_template` but not `newvoc` |
+| **SDSYS only** | 39 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -238,6 +238,7 @@ not refused — the name is simply not recognised.**
 | **`tool.ai`** | **`tool.ai`**  —  the AI choice page (administrator): the provider with a check box, its model and key, Custom, and which accounts may use the AI | S |
 | **`tool.gates`** | **`tool.gates`**  —  for the administrator the gate matrix (every account against every per-account gate; queued changes run as one **`modify.account`** command); in any other account, what this account may do and why (read only) |  |
 | **`tool.keys`** | **`tool.keys`** |  |
+| **`tool.masters`** | **`tool.masters`**  —  the master files on one screen (administrator): set up or not, the journal, every account against its master copy, and **`sync.masters`** behind two keys after a box answered Run | S |
 | **`tool.menus`** | **`tool.menus`**  —  menu management (administrator): the home screen's tiles for each account, where each account starts, who may add their own programs | S |
 | **`tool.sessions`** | **`tool.sessions`**  —  sessions, locks and logout on one screen (administrator): every session and every lock, read again every three seconds; each key runs one **`logout`**, **`unlock`** or **`inhibit.login`** command after a box answered Run | S |
 | **`tool.viewers`** | **`tool.viewers`**  —  the Bypass programs page (administrator): the readers **`pdf`** may start, those found on this machine | S |

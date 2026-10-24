@@ -268,6 +268,48 @@ or refused. It comes from a change made to an account without the journal hearin
 **`list.master.pending`** shows the journal lines that have not been applied and the flags, and
 applies nothing. It says "Nothing is waiting in the journal" when there is nothing.
 
+### All of it on one screen: `tool.masters`
+
+```
+tool.masters
+```
+
+**A full-screen page for the administrator** (SDSYS's VOC only; an ordinary account has no such
+verb, and the page is refused before it reads anything to anyone who is not the administrator). It
+needs a window of 140 columns by 43 lines. The top box says whether the master files are set up
+(or prints the verb's own sentence that they are not), what the journal holds, whether the
+*stale* or *resync* flag is up, how many accounts were compared and how many differences there
+were, and why the last save of a master record in this session was refused. The list is every
+registered account with its state — *in sync* or *n differences* — and, last, any account that
+has master copies but is not registered (*not registered: n to remove*). The box under it lists
+the differences of the account under the cursor, one line each, and explains the state in plain
+words, with a sentence for each kind of difference present.
+
+| Key | What it does |
+|---|---|
+| arrows, Page Up, Page Down, Home, End, a click | move over the accounts |
+| S | `sync.masters` for every account |
+| Y | `sync.masters` *account* for the account under the cursor |
+| P | show the journal lines not yet applied in the lower box, and back |
+| F5 | check again |
+| F1, ?, a click on the [?] | explain the page |
+| Ctrl-Q | leave |
+
+**It reads when it opens, after a sync and on F5 — not on a timer, because a check reads every
+master file.** Like `check.masters` it first applies the journal, so a record an account's own
+session wrote a moment ago is not shown as a difference. **For every account the number it shows
+is the number `check.masters` prints**; the page's tests compare the two. S and Y each show the
+command and what it does in a box answered Run or Cancel (Cancel is what Enter chooses) and run
+the real `sync.masters` through the one routine that runs commands, which allows nothing else.
+S says, when the files are not set up, that it sets them up first. Y says that it does **not**
+clear the stale and resync flags — only S does. Y is refused, in words, for an account that is
+not registered (use S, which removes its copies) and before the files are set up. The verb
+writes its own audit line. **The page edits no master record and no account record**, and does
+not ask the kernel to sync, set up or note anything itself.
+
+**Not on the page:** the stale and resync flags are shown (as the verbs show them) but a test
+cannot make a journal write fail or overflow, so that display is read from the source and not run.
+
 ## Who is in the group, and what the files must say
 
 The save needs the `sdsys` user in the account's group **and** the account's files writable by that
