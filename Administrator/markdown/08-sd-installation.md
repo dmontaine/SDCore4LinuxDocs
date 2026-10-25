@@ -82,14 +82,18 @@ needs the group's write here (SD makes an account directory in the `sdsys` sessi
 the modes every time it runs, so installing again fixes an installation made before this change; to do it by hand,
 `sudo chmod 755 /home/sd /home/sd/user_accounts /home/sd/group_accounts`. The account directories themselves keep their own owner, group and setgid bit.
 
-**The audit trail** (`/usr/local/sdsys/audit`) is mode 0620, owner `sdsys`, group `sdusers`, **and append-only** (`chattr +a`). Every SD user's session runs as that user, so the group must be able
-to write; the attribute turns that write into an append, so no one but root can empty, rewrite, rename or delete the file, and the group cannot read it (read it with `sudo`).
-`sudo lsattr /usr/local/sdsys/audit` shows an `a`; the installer sets it, checks it and says `WARNING: could not make ... append-only` when a filesystem will not take it. **What this does not
-prevent:** a person with a shell who is in `sdusers` can still *add* a line of their own, so a line in the trail shows what was written, not that SD wrote it; the lines SD writes carry the
-user, the uid and the pid, and a forged line can claim any of them. **So every record is also sent to the system journal** (identifier `sd_Log`, facility `authpriv`, prefix `sd-audit `), whose daemon
-stamps the real uid and pid of the process that sent it; the sender cannot choose those two. To check a line, find its copy: `sudo journalctl -t sd_Log -o verbose | grep -B8 'the line'` shows `_UID` and `_PID`, and
-a line in the trail with no copy from that uid and pid is suspect. The journal must be kept on disk for this to survive a reboot (`/var/log/journal` present, or `Storage=persistent` in `journald.conf`), and whoever reads it
-must be root or in `adm` or `systemd-journal`. A writer that is not the user, which would make the trail itself trustworthy, is a further step. The error log (`errlog`) is mode 664,
+**The audit trail** (`/usr/local/sdsys/audit`) is mode 0600, owner `sdsys`, group `sdusers`, **and append-only** (`chattr +a`): the group cannot read it, write it or open it. (It was 0620 until 1.2-0, because
+every session runs as its user and so had to append to the file itself; that also let a member of `sdusers` add a line of their own that claimed any user.) **Now a session sends each record to the root daemon
+`sdlnxd`** over the Unix socket `/run/sd/audit.sock` (mode 0660, group `sdusers`, in a directory only root can write), and **the daemon writes the line**. The `user=` and the `pid=` on the line are the ones the
+kernel reports for the sending process, not anything in the record's text, so no one can make a line that names someone else; the text of a record comes after them, and the `uid=` is the SD user number the
+sender gave, which the daemon cannot check. `sudo=` is the user the kernel logged in, which survives `su` and `sudo`. A record is cut at 1900 bytes, its control characters become `?`, and one record is one line.
+Read the file with `sudo`; `sudo lsattr /usr/local/sdsys/audit` shows the `a` the installer sets and checks (`WARNING: could not make ... append-only` when a filesystem will not take it).
+
+**If the daemon is not running** (never started, stopped, or crashed; nothing restarts it, a restart of SD does) a session appends to the file itself, which works for `sdsys` and root, who own it, and fails for everyone
+else: the record is then in the system journal only. **So every record is also sent to the system journal** (identifier `sd_Log`, facility `authpriv`, prefix `sd-audit `), whose daemon stamps the real uid and pid
+of the process that sent it, whatever the text says. To check a line, find its copy: `sudo journalctl -t sd_Log -o verbose | grep -B8 'the line'` shows `_UID` and `_PID`. The journal must be kept on disk for this to
+survive a reboot (`/var/log/journal` present, or `Storage=persistent` in `journald.conf`), and whoever reads it must be root or in `adm` or `systemd-journal`. Still open: the daemon does not yet limit how fast one user can
+send, and does not rotate the file (it is rotated when SD starts). The error log (`errlog`) is mode 664,
 owner `sdsys`, group `sdusers` (it was 775): every session appends to it, and nothing runs it.
 
 SD's shared memory segment and its semaphores are made mode 0660 and belong to the group `sdusers`, so only SD users can attach them. An installation that
