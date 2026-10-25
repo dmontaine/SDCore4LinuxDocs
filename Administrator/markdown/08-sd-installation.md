@@ -68,6 +68,17 @@ in does not have it until they log out and back in, and until then cannot
 read the data tree at all. The symptom looks like a broken install and is
 not one.
 
+## File modes SD relies on, and checks
+
+SD trusts a program in its **global catalogue** (`/usr/local/sdsys/gcat`) to run as part of the system, because only `sdsys` can write there. **The kernel
+therefore refuses to load a global catalogue object that other users, or the group `sdusers`, can write**, and stops with
+`<name> in the global catalogue can be written by other users, so it was not loaded (chmod go-w it)`. The installer leaves every file in `gcat` mode 0755
+after its last compile, so an installation never meets the check. If you see the message, someone changed a mode: `chmod go-w` the file named, and look for
+why. **A fresh install made before this change left `gcat/$cproc` mode 0664 group `sdusers`; install again, or run `chmod go-w` on it by hand.**
+
+SD's shared memory segment and its semaphores are made mode 0660 and belong to the group `sdusers`, so only SD users can attach them. An installation that
+was started before this change keeps its old, wider modes until SD is stopped and started again. `ipcs -m` shows the mode of the segment.
+
 ## The daemon
 
 | | |
