@@ -216,6 +216,15 @@ digits and `. _ -`, ends in `.pdf` and does not begin with a dot, and the file b
 with `%PDF-`; anything else is skipped and named. A document already there is replaced;
 the copies are mode 0644. `pdf` alone lists what is installed.
 
+**The changes document comes with the installer.** A release package holds, beside
+`installsdcore.sh`, the document that lists what changed in the release as
+`sd-core-for-linux-<version>-changes.pdf`, `.html` and `.md`. The installer copies each
+of those three into the same `pdf` directory (owner `sdsys`, group `sdusers`, mode 644),
+so `pdf` lists the PDF and every account can read it, and the HTML and Markdown copies
+are there beside it. A file is copied only if it is a regular file (not a link) with a
+plain lower case name of the same shape. An installer that was not run from a package,
+such as one downloaded alone, finds nothing and says so; the install goes on.
+
 ### The context help: `load.help`
 
 The `[?]` button on the administrator's pages shows help kept in the file `context.help`

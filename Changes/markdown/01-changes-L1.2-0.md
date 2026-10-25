@@ -504,6 +504,7 @@ Three simple layers, with no vault and nothing on by default.
 | Name | Change | What |
 |---|---|---|
 | agent pack | Added | the guide and the knowledge pack are copied to `/usr/local/sdsys/agent-pack`, only when they match the installed version |
+| changes document | Added | a release package carries it beside the installer as `sd-core-for-linux-<version>-changes.pdf`, `.html` and `.md`, and the installer copies the three into the shared account's `pdf` directory, where `pdf` lists the PDF |
 | gates question | Added | the installer asks once whether to open every access gate for the installing user's own account; the answer is no unless `y` |
 | group account files | Changed | an upgrade puts the four record files of every kept group account back in the account's group |
 | installer source message | Changed | says which source it is downloading, the release tag or `main` |
