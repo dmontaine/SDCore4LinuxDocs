@@ -92,8 +92,18 @@ Read the file with `sudo`; `sudo lsattr /usr/local/sdsys/audit` shows the `a` th
 **If the daemon is not running** (never started, stopped, or crashed; nothing restarts it, a restart of SD does) a session appends to the file itself, which works for `sdsys` and root, who own it, and fails for everyone
 else: the record is then in the system journal only. **So every record is also sent to the system journal** (identifier `sd_Log`, facility `authpriv`, prefix `sd-audit `), whose daemon stamps the real uid and pid
 of the process that sent it, whatever the text says. To check a line, find its copy: `sudo journalctl -t sd_Log -o verbose | grep -B8 'the line'` shows `_UID` and `_PID`. The journal must be kept on disk for this to
-survive a reboot (`/var/log/journal` present, or `Storage=persistent` in `journald.conf`), and whoever reads it must be root or in `adm` or `systemd-journal`. Still open: the daemon does not yet limit how fast one user can
-send, and does not rotate the file (it is rotated when SD starts). The error log (`errlog`) is mode 664,
+survive a reboot (`/var/log/journal` present, or `Storage=persistent` in `journald.conf`), and whoever reads it must be root or in `adm` or `systemd-journal`.
+
+**One user cannot flood the trail.** The daemon takes at most 600 records from one operating-system user in any 60 seconds (counted from the user the kernel reports, not from anything in the text). The rest are dropped,
+and when that user's 60 seconds are over the daemon writes **one line** in the trail, `audit rate limit dropped=N taken=600 limit=600 window=60`, with that user's name and the pid of the last sender; it writes the
+line at once if the daemon is stopped inside the window. A dropped record still has its copy in the journal, because a session sends that whether or not the daemon took the record. The error log says how many records
+the bound dropped (`N over the rate bound`) each time the daemon reports. 600 a minute is far more than SD writes in ordinary use; the figure is fixed when SD is built (`AUDIT_RATE_MAX` and `AUDIT_RATE_WINDOW` in `sddefs.h`),
+not a setting.
+
+**The daemon rotates the file.** When the trail has reached 1 MB (`AUDIT_ROTATE_BYTES`) the daemon renames it to `audit.<date>-<time>` and starts a new one, as it writes, with no restart of SD: the new file has the old
+one's owner, mode and append-only flag, and the old one keeps the flag. The same code runs when SD starts (that is how a machine whose daemon is not running still rotates). If the flag will not lift, nothing is
+renamed, the trail stays whole and keeps growing, the error log says `N rotation(s) failed`, and the daemon tries again a minute later. SD deletes nothing; pruning the old files is yours, and starts with `chattr -a`. Still open: nothing
+restarts the daemon if it dies. The error log (`errlog`) is mode 664,
 owner `sdsys`, group `sdusers` (it was 775): every session appends to it, and nothing runs it.
 
 SD's shared memory segment and its semaphores are made mode 0660 and belong to the group `sdusers`, so only SD users can attach them. An installation that
