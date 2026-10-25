@@ -82,6 +82,16 @@ needs the group's write here (SD makes an account directory in the `sdsys` sessi
 the modes every time it runs, so installing again fixes an installation made before this change; to do it by hand,
 `sudo chmod 755 /home/sd /home/sd/user_accounts /home/sd/group_accounts`. The account directories themselves keep their own owner, group and setgid bit.
 
+**The audit trail** (`/usr/local/sdsys/audit`) is mode 0620, owner `sdsys`, group `sdusers`, **and append-only** (`chattr +a`). Every SD user's session runs as that user, so the group must be able
+to write; the attribute turns that write into an append, so no one but root can empty, rewrite, rename or delete the file, and the group cannot read it (read it with `sudo`).
+`sudo lsattr /usr/local/sdsys/audit` shows an `a`; the installer sets it, checks it and says `WARNING: could not make ... append-only` when a filesystem will not take it. **What this does not
+prevent:** a person with a shell who is in `sdusers` can still *add* a line of their own, so a line in the trail shows what was written, not that SD wrote it; the lines SD writes carry the
+user, the uid and the pid, and a forged line can claim any of them. **So every record is also sent to the system journal** (identifier `sd_Log`, facility `authpriv`, prefix `sd-audit `), whose daemon
+stamps the real uid and pid of the process that sent it; the sender cannot choose those two. To check a line, find its copy: `sudo journalctl -t sd_Log -o verbose | grep -B8 'the line'` shows `_UID` and `_PID`, and
+a line in the trail with no copy from that uid and pid is suspect. The journal must be kept on disk for this to survive a reboot (`/var/log/journal` present, or `Storage=persistent` in `journald.conf`), and whoever reads it
+must be root or in `adm` or `systemd-journal`. A writer that is not the user, which would make the trail itself trustworthy, is a further step. The error log (`errlog`) is mode 664,
+owner `sdsys`, group `sdusers` (it was 775): every session appends to it, and nothing runs it.
+
 SD's shared memory segment and its semaphores are made mode 0660 and belong to the group `sdusers`, so only SD users can attach them. An installation that
 was started before this change keeps its old, wider modes until SD is stopped and started again. `ipcs -m` shows the mode of the segment.
 
