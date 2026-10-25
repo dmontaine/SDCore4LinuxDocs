@@ -118,6 +118,13 @@ answer, not the verb's intention. The firewall rule is the installer's own
 (`ufw allow 4247/tcp`, or firewalld's port 4247/tcp, kept in its saved
 settings), so this verb and the install describe one state.
 
+**The local Unix socket is for SD users only.** `/tmp/sdsys/sdclient.socket` is mode 0660, group `sdusers`: the operating system refuses a connection from
+anyone else (root excepted) before SD sees it. Until 1.2-0 the unit named the group but not the mode, and systemd then makes a Unix socket 0666, so the
+group restricted nothing and anybody on the machine could reach the first stage of an API connection, which runs as root. `remote.api on`, `local` and `off`
+do not change the mode. A person who has just been added to `sdusers` must log out and in before the socket lets them through, as for the rest of the data
+tree. The installer adds `SocketMode=0660` to an existing `sdclient.socket` that has no `SocketMode=` line, and never touches one that has; to widen it on purpose,
+`systemctl edit sdclient.socket` and write `SocketMode=` in the drop-in. `ls -l /tmp/sdsys/sdclient.socket` shows the mode.
+
 **No SD session is ever ended by this verb**, which is where it differs
 most from the Windows original. SD Core for Windows's own listener opens
 only when SD itself starts, so changing it there restarts the whole
