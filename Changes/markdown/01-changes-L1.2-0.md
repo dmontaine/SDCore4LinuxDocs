@@ -555,6 +555,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 
 | Name | Change | What |
 |---|---|---|
+| account directory parents | Changed | the installer leaves `/home/sd`, `/home/sd/user_accounts` and `/home/sd/group_accounts` 755 (they were 775), so one SD user cannot rename another account's directory and put one of their own in its place; an install made before this is fixed by installing again |
 | global catalogue modes | Changed | the kernel refuses to load a global catalogue object that others or the group `sdusers` can write (message 11930), and the installer leaves everything in `gcat` 0755 after its last compile (a fresh install left `gcat/$cproc` 0664) |
 | operating system paths | Changed | `dir()`, `select.dir`, `oscopy`, `!oscopy`, `!ioscopy`, `deleteseq` of a path, `setptr ... as pathname`, `setpu` and a VOC pointer out of the account each ask the account's `os` switch, and `sd-on` for another SD account |
 | p-code a session runs | Changed | each session reads `bin/pcode` itself, and refuses a file that others or the group `sdusers` can write; the copy in the shared segment, which any SD user with a shell could change, is no longer run |

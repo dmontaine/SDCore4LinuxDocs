@@ -76,6 +76,12 @@ therefore refuses to load a global catalogue object that other users, or the gro
 after its last compile, so an installation never meets the check. If you see the message, someone changed a mode: `chmod go-w` the file named, and look for
 why. **A fresh install made before this change left `gcat/$cproc` mode 0664 group `sdusers`; install again, or run `chmod go-w` on it by hand.**
 
+`/home/sd`, `/home/sd/user_accounts` and `/home/sd/group_accounts` are mode 755, owner `sdsys`, group `sdusers`. They used to be 775: every SD user is in `sdusers`, so any of
+them could rename another account's directory and make one of their own under the same name, and the account's owner would then sign on to a VOC the other person wrote. Nothing
+needs the group's write here (SD makes an account directory in the `sdsys` session, which owns the parent, and the helper that runs as root does the rest). The installer sets
+the modes every time it runs, so installing again fixes an installation made before this change; to do it by hand,
+`sudo chmod 755 /home/sd /home/sd/user_accounts /home/sd/group_accounts`. The account directories themselves keep their own owner, group and setgid bit.
+
 SD's shared memory segment and its semaphores are made mode 0660 and belong to the group `sdusers`, so only SD users can attach them. An installation that
 was started before this change keeps its old, wider modes until SD is stopped and started again. `ipcs -m` shows the mode of the segment.
 
