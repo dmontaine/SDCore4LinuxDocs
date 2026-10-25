@@ -116,6 +116,18 @@ prefer it.
 > and you are certain nothing is using the file, run `listu` before looking for
 > anything more exotic.
 
+### When an index should be built again
+
+`build.index` throws the index away and makes it again from the records, so it is
+also the repair for an index that no longer says what the file says. Do it for an
+index that was built on L1.1-3 (it followed an upper-case copy of the record id)
+and for a **large index from which many records were deleted** before this release
+(three levels, some tens of thousands of different values): deleting the last
+value of a block could take a whole branch out of the index, so a lookup missed
+records that were still in the file and values of deleted records stayed listed.
+The data was never touched. `rebuild.all.indices` does it for every file of an
+account. An index that gives the right answers needs nothing.
+
 ## Asking what a file has
 
 ```

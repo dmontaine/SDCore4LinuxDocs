@@ -200,7 +200,7 @@ On a stock installation:
 | | |
 |---|---|
 | `config('FILERULE')` | `0` |
-| `config('GRPSIZE')` | `2` |
+| `config('GRPSIZE')` | `4` |
 | `config('MAXIDLEN')` | `63` |
 | `config('NUMFILES')` | `80` |
 | `config('NUMLOCKS')` | `100` |

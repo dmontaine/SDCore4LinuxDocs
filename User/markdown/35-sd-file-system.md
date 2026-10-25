@@ -44,7 +44,7 @@ group structure and resizes automatically as data grows or shrinks.
 | On disk | binary files in the account directory |
 | Record id | up to `MAXIDLEN`, which is 63 by default |
 | Readable by | SD only |
-| Group size | set by `GRPSIZE` in `sd.conf`, 2 KB by default |
+| Group size | set by `GRPSIZE` in `sd.conf`, 4 KB by default (2 KB until 25 Oct 2026; a file keeps the size it was made with) |
 | Resizing | automatic, at a load of 80% to grow and 50% to shrink |
 
 ### Group structure

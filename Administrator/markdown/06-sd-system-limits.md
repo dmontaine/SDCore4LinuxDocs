@@ -42,7 +42,7 @@ source notes that raising it would require major file-format changes.
 | | | |
 |---|---|---|
 | File types | **two** — directory and dynamic | compiled |
-| Group size for a dynamic file | **2 KB** by default, maximum **8** | `GRPSIZE` |
+| Group size for a dynamic file | **4 KB** by default (2 KB until 25 Oct 2026), maximum **8** | `GRPSIZE` |
 | Open files across all sessions | **80** | `NUMFILES` |
 | Maximum pathname length | **255** | compiled |
 | Sort keys in one query | **32** | compiled |
