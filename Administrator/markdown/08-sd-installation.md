@@ -60,6 +60,7 @@ Neither root can be changed. The installer does not ask.
 | `sdsys` user | the one administrator account — a real Linux user, its own home, shell and password |
 | `sdu_<name>` | one supplementary group per account, created by `create.account`; **the `sdsys` user is a member of every one**, and every account's VOC and dictionaries can be written by that group, so that SDSYS can change an account by saving its master record — this gives the `sdsys` user write access to those files in every account (see [The master files](19-the-master-files.html)). The install puts `sdsys` back in the groups of accounts it keeps |
 | `sd.service`, `sdclient.socket` | the `systemd` units, enabled at boot |
+| `sd-lnxd.service` | the unit that runs the daemon `sdlnxd` and starts it again if it fails; `sd.service` wants it, so there is nothing to enable (see [The audit trail](#the-daemon-is-restarted-if-it-dies) below) |
 | the ssh boundary | a fenced block in `/etc/ssh/sshd_config` — see [Remote access and the machine](05-remote-access-and-the-machine.html) |
 
 Group membership takes effect at the next login, the same as any Linux
@@ -89,7 +90,7 @@ kernel reports for the sending process, not anything in the record's text, so no
 sender gave, which the daemon cannot check. `sudo=` is the user the kernel logged in, which survives `su` and `sudo`. A record is cut at 1900 bytes, its control characters become `?`, and one record is one line.
 Read the file with `sudo`; `sudo lsattr /usr/local/sdsys/audit` shows the `a` the installer sets and checks (`WARNING: could not make ... append-only` when a filesystem will not take it).
 
-**If the daemon is not running** (never started, stopped, or crashed; nothing restarts it, a restart of SD does) a session appends to the file itself, which works for `sdsys` and root, who own it, and fails for everyone
+**If the daemon is not running** (stopped by hand, or in the few seconds before it is started again after a crash; see below) a session appends to the file itself, which works for `sdsys` and root, who own it, and fails for everyone
 else: the record is then in the system journal only. **So every record is also sent to the system journal** (identifier `sd_Log`, facility `authpriv`, prefix `sd-audit `), whose daemon stamps the real uid and pid
 of the process that sent it, whatever the text says. To check a line, find its copy: `sudo journalctl -t sd_Log -o verbose | grep -B8 'the line'` shows `_UID` and `_PID`. The journal must be kept on disk for this to
 survive a reboot (`/var/log/journal` present, or `Storage=persistent` in `journald.conf`), and whoever reads it must be root or in `adm` or `systemd-journal`.
@@ -102,8 +103,22 @@ not a setting.
 
 **The daemon rotates the file.** When the trail has reached 1 MB (`AUDIT_ROTATE_BYTES`) the daemon renames it to `audit.<date>-<time>` and starts a new one, as it writes, with no restart of SD: the new file has the old
 one's owner, mode and append-only flag, and the old one keeps the flag. The same code runs when SD starts (that is how a machine whose daemon is not running still rotates). If the flag will not lift, nothing is
-renamed, the trail stays whole and keeps growing, the error log says `N rotation(s) failed`, and the daemon tries again a minute later. SD deletes nothing; pruning the old files is yours, and starts with `chattr -a`. Still open: nothing
-restarts the daemon if it dies. The error log (`errlog`) is mode 664,
+renamed, the trail stays whole and keeps growing, the error log says `N rotation(s) failed`, and the daemon tries again a minute later. SD deletes nothing; pruning the old files is yours, and starts with `chattr -a`.
+
+### The daemon is restarted if it dies
+
+`sdlnxd` is run by its own `systemd` unit, `sd-lnxd.service`, and `systemd` starts it again two seconds after it **fails** (`Restart=on-failure`): `kill -9`, a crash or the out-of-memory killer. While it is down the
+audit records of ordinary users are in the journal only (see above) and lost sessions are not cleared down (the daemon scans for them every `CLEANUP` seconds, 300 by default); the new daemon takes up both at once.
+`sd.service` starts SD with `sd -start -nodaemon`, which does not fork a daemon of its own, and wants `sd-lnxd.service`; stopping `sd.service` stops the daemon with it (`BindsTo=`).
+Things to know:
+
+- **A stop is not a failure.** `sd -stop` ends the daemon with SIGTERM and it exits with status 0, so it is **not** started again. After an `sd -stop` by hand `systemctl restart sd.service` brings SD and the daemon back (or `systemctl start sd-lnxd` for the daemon alone while SD is running).
+- **A daemon that keeps failing is given up on.** Five starts in a minute and the unit is `failed`; `journalctl -u sd-lnxd` says why, and `sudo systemctl reset-failed sd-lnxd; sudo systemctl start sd-lnxd` starts it again once that is mended.
+- **One daemon at a time.** A second `sdlnxd` (started by hand, or by a plain `sd -start`) finds the first named in the shared segment and ends at once with status 0, saying so in the error log.
+- **`sd -restart` and a plain `sd -start`** still fork a daemon of their own, outside systemd, so nothing watches it. Use `systemctl restart sd.service`.
+- An installation made before this change has the new units after SD is deleted (keeping the accounts and the configuration) and installed again, as for any upgrade. If the old `sd.service` was left behind by a delete, the installer replaces it, and adds `sd-lnxd.service`, when it does not mention the new unit.
+
+The error log (`errlog`) is mode 664,
 owner `sdsys`, group `sdusers` (it was 775): every session appends to it, and nothing runs it.
 
 SD's shared memory segment and its semaphores are made mode 0660 and belong to the group `sdusers`, so only SD users can attach them. An installation that
