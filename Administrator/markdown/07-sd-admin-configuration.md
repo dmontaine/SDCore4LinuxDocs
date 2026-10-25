@@ -107,8 +107,8 @@ parameters it is the only one.
 config sortmem 8192
 ```
 
-That writes to the session's own copy of the settings, taken from shared memory
-when the session started. It does not reach `sd.conf`, it does not affect any
+That writes to the session's own copy of the settings, which the session read
+from `sd.conf` when it started. It does not reach `sd.conf`, it does not affect any
 other session, and it is gone when the session ends.
 
 The 28 are `CODEPAGE`, `DUMPDIR`, `EXCLREM`, `FILERULE`, `FLTDIFF`, `FSYNC`,
@@ -121,6 +121,16 @@ The 28 are `CODEPAGE`, `DUMPDIR`, `EXCLREM`, `FILERULE`, `FLTDIFF`, `FSYNC`,
 Everything else takes effect only when SD is next started. That includes every
 limit which sizes the shared memory segment and every setting the API listener
 reads.
+
+**Since 1.2-0 a session reads `sd.conf` itself when it starts.** It used to copy
+the settings the starter had left in the shared memory, which an SD user with a
+shell could change. So an edit to a setting a session keeps for itself (the 28
+above, and others such as `USRDIR`, `GRPDIR`, `CREATUSR`, `TIMEZONE` and `TXCHAR`)
+reaches the sessions started after it, without a restart. **A bad line in
+`sd.conf` stops a new session from starting**, with the message `sd -start`
+gives, until it is repaired; SD and the sessions already running are not
+affected. Every SD user's session now opens the file, so it must stay readable by
+them (as installed: mode 0644, owned by root). Edit the file with the same care as before.
 
 ## Sessions and limits
 

@@ -557,10 +557,14 @@ Fixes that close a way round a gate, and what the gates now ask.
 |---|---|---|
 | global catalogue modes | Changed | the kernel refuses to load a global catalogue object that others or the group `sdusers` can write (message 11930), and the installer leaves everything in `gcat` 0755 after its last compile (a fresh install left `gcat/$cproc` 0664) |
 | operating system paths | Changed | `dir()`, `select.dir`, `oscopy`, `!oscopy`, `!ioscopy`, `deleteseq` of a path, `setptr ... as pathname`, `setpu` and a VOC pointer out of the account each ask the account's `os` switch, and `sd-on` for another SD account |
+| p-code a session runs | Changed | each session reads `bin/pcode` itself, and refuses a file that others or the group `sdusers` can write; the copy in the shared segment, which any SD user with a shell could change, is no longer run |
 | print file refusal | Changed | outside the account: the message names the account instead of printing `%1` |
+| privileges of a session | Changed | the administrator, `sh`, `os.execute` and `sd.accounts` bits and the gates are held in the process; the copy in the shared segment, which any SD user with a shell could change, is only shown by `listu` |
+| `sd.conf` | Changed | every new session reads it: an edit to `SH`, `SPOOLER`, `USRDIR` and the other per-session settings reaches sessions started after it, and a bad line stops new sessions from starting until it is repaired (SD and running sessions are not affected) |
 | `sdlnxd` | Changed | the root daemon finds the system directory from its own path instead of the shared segment, and starts `sd -cleanup` with `execl`, no shell |
 | `setptr ... spooler`, `setpu` | Changed | fixed: the spooler string ran as a shell command for any account; only a session with the `os` switch may set it |
 | shared memory modes | Changed | the shared segment and the semaphores are 0660 and given to the group `sdusers`; they were 0666, open to every local user |
+| system directory | Changed | a session takes it from `SDSYS=` in `sd.conf`, not from the shared segment, which any SD user with a shell could change (the global catalogue, the register, the messages, the audit trail and the errlog follow it) |
 | `u` conversion names | Changed | `iconv` and `oconv`: fixed: a name that begins with a dollar sign called an internal subroutine from an ordinary program; it is refused now |
 
 ### System

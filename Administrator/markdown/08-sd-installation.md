@@ -79,6 +79,26 @@ why. **A fresh install made before this change left `gcat/$cproc` mode 0664 grou
 SD's shared memory segment and its semaphores are made mode 0660 and belong to the group `sdusers`, so only SD users can attach them. An installation that
 was started before this change keeps its old, wider modes until SD is stopped and started again. `ipcs -m` shows the mode of the segment.
 
+**A member of `sdusers` who has an operating-system shell can still write the segment**, because every SD user is in that group. So nothing a session *decides on* is read
+from it any more. A session takes these from places only SDSYS or root can write:
+
+| What | Where a session gets it now | It used to come from |
+|---|---|---|
+| the system directory (global catalogue, register, messages, audit trail, errlog) | `SDSYS=` in `sd.conf` | the segment |
+| the p-code every session runs | `bin/pcode`, read by the session itself; a copy that others or `sdusers` can write is refused | the segment |
+| the per-session settings (`SH`, `SPOOLER`, `USRDIR`, `GRPDIR`, `DUMPDIR`, `TEMPDIR` ...) | `sd.conf`, read by the session when it starts | a template in the segment |
+| the session's own administrator, `sh`, `os.execute` and `sd.accounts` bits and its gates | memory only that process can change | its entry in the segment |
+
+Two things follow. **`sd.conf` is read by every new session**, so an edit to one of the per-session settings reaches the sessions started after it, without a restart;
+the parameters that size or configure the segment still need one. And **a bad line in `sd.conf` stops a new session starting**, with the message `sd -start`
+gives, until the line is repaired. It does not stop SD or the sessions already running. If the segment's copy of the system directory differs from the
+file's, the file is used and one line goes to the system log.
+
+**What this does not close.** The lock table, the file table and the user table are still in the shared segment and still writable by an SD user with a
+shell: such a person can release other people's locks, log other sessions out or fill the user table. That is damage and denial of service, not a way to a
+privilege. The gates are walls for an SD *session*; a person with a shell is trusted with the segment. Giving SD users no login shell, or only the
+forced-command ssh route, is how an installation that cannot accept that closes it.
+
 ## The daemon
 
 | | |
