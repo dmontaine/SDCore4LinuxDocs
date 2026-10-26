@@ -103,9 +103,11 @@ entry or an I-type is code that runs in the account: someone who took over the
 network (`sdsys` has no remote access), and a process that is not a real login
 as `sdsys` is not an administrator. **Off is a default and a record of your
 decision, not a wall against a stolen `sdsys` login**, which has other ways into
-an account's code: the files `root` runs at the next start belong to `sdsys`,
-the global catalogue is the `sdsys` user's to write, and `sdsys` may run
-`sudo /usr/local/sbin/sd-elevate` with any arguments. What the default takes
+an account's code: the global catalogue is the `sdsys` user's to write, and
+`sdsys` may run `sudo /usr/local/sbin/sd-elevate` with any arguments. (The
+files `root` runs at the next start used to belong to `sdsys` as well; from
+1.2-0 they are `root`'s, see [Installation and the daemon](08-sd-installation.html#the-files-root-runs).)
+What the default takes
 away is the silent route; the switch is an audited act of the administrator and
 it can be taken back. Before 1.2-0 the membership was there for every account;
 an install that finds it asks once whether to keep it (see

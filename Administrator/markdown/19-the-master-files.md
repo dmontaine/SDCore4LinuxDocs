@@ -22,12 +22,17 @@ with its reason and nothing changed). Only SDSYS sees any of it.
 > runs.**
 >
 > **It is a default and a record of the administrator's decision. It is not a wall.** A person who has
-> taken over the `sdsys` login can reach the code of every account without any membership, by three
-> routes that this does not change: **the files that `root` runs belong to `sdsys`** (`bin/sd` and
-> `bin/sdlnxd` are run by `sd.service` and `sd-lnxd.service` as root, and `sdsys` can replace them);
-> **the global catalogue is the `sdsys` user's to write**, and every session loads programs from it;
-> and **`sdsys` may run `sudo /usr/local/sbin/sd-elevate` with any arguments**, which can put `sdsys`
-> back in a group, hand it an account's VOC directory or `%0`, or set an ordinary user's password. So
+> taken over the `sdsys` login can reach the code of every account without any membership, by two
+> routes that this does not change: **the global catalogue is the `sdsys` user's to write**, and every
+> session loads programs from it; and **`sdsys` may run `sudo /usr/local/sbin/sd-elevate` with any
+> arguments**, which can put `sdsys` back in a group, give it a group account's files, set the first
+> password of a user SD made, or add a person to an account's group (from 1.2-0 the helper no longer
+> takes a user account's directory, `voc` or `%0`, nor the password of a login SD did not make or that
+> already has one; see [The installed scripts](09-the-installed-scripts.html)). (A third route, that the
+> files `root` runs - `bin/sd`, `bin/sdlnxd`, `bin/sdidx` and `bin/pcode` - belonged to `sdsys`, is
+> closed from 1.2-0: the installer makes them `root`'s, see
+> [Installation and the daemon](08-sd-installation.html#the-files-root-runs). The other two are not
+> touched by that.) So
 > **do not read the switch as protection against a stolen `sdsys` login: it is not tighter against
 > one.** What it does is take away the *silent* route: until the administrator says so, no account's
 > group lists `sdsys`; saying so leaves an audit line (`modify.account sdsys-on account=acme`) and a
@@ -488,8 +493,8 @@ group-write`) puts them right, the ones made while the account was off included.
   install) shows the group membership and its two verbs, the modes, root changing only the account's
   own files, the refusal for an account that is off, the administrator's `sdsys-on` and the edit
   reaching a user's VOC at once, the refusal for a session that began too early, the installer's
-  one-time ruling, what is not lost when an account is off, the three routes of the first page
-  (that they are there), and that the master files are owned by `sdsys`, have no group or other bit,
+  one-time ruling, what is not lost when an account is off, the routes of the first page that remain
+  (that they are there; the files `root` runs are checked the other way, as `root`'s), and that the master files are owned by `sdsys`, have no group or other bit,
   and cannot be opened by a user who is in `sdusers` (section 6). **The version of the witness for
   1.2-0 has not been run on an install yet.**
 

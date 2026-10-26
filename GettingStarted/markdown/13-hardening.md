@@ -36,7 +36,8 @@ machine locally, as `sdsys`. There is no other route in to try instead.
 `/usr/local/sdsys/bin` holds the pcode library — the interpreter itself,
 which SD loads into shared memory at start-up and every session then runs.
 
-It is readable by SD users and writable only by SDSYS. Nothing needs to
+It is readable by SD users and writable only by root (from 1.2-0; it was
+SDSYS's before, see *The files root runs* in the Administrator set). Nothing needs to
 write it after an install — only the process that starts SD reads it, and
 `sd -start` already runs privileged (see [Running SD](03-running-sd.html)).
 

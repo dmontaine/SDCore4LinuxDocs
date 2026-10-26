@@ -422,6 +422,12 @@ SD's own code. The sections above are the openQM items that were built, with the
 | new account defaults | Changed | a new account has no ssh, no API, no shell and no `os.execute`; SDSYS opens each, account by account |
 | `restore.account` | Changed | fixed: no longer overwrites a different global program of the same name |
 | `sd-elevate` | Changed | new verb `sdsys-leave`, and `conf-set` (see `set.config`); `sdsys-join`, `sdsys-leave` and `group-write` write a line to the system log |
+| `sd-elevate akpath-set` | Changed | takes only a hashed file's directory (a plain `%0` with no second link) and an existing directory, both in one account |
+| `sd-elevate chown-account` | Changed | the `sdsys` shape takes only a group account's files, in that account's own group (`sdg_`*name*; `sdusers` for `shared`); the `root` shape takes only a directory or plain file the `sdsys` user owns, and a real run chowns through the open file; a user account's directory, `voc` and record files, `/etc/shadow` and the like are refused |
+| `sd-elevate environment` | Changed | fixes its `PATH`, runs its python isolated, and reads its test settings only on `--dry-run` or from a process that is not root |
+| `sd-elevate groupadd` | Changed | an `sdu_`*user* group is made only for an SD user that exists, with only `root` and that user in it |
+| `sd-elevate restore-place` | Changed | a group account is put back only in its own group, `sdg_`*name* |
+| `sd-elevate setpw`, `passwd` and `userdel` | Changed | act only on a user carrying the `SD account` comment, as `userdel-home` always did; `setpw` sets a first password only |
 | `sd-on` and `sd-off` | Added | per-account switch: programs may reach files under the directory of any SD account the user could `logto` |
 | `sdsys` operating system user | Changed | a member of no user account's group as delivered (a release before 1.2-0 put it in every one); `sdsys-on` puts it in one |
 | `sdsys-on` and `sdsys-off` | Added | per-account switch for the `sdsys` user's membership of the account's group (master edits, and SDSYS writing inside the account); off as delivered |
@@ -534,6 +540,7 @@ Three simple layers, with no vault and nothing on by default.
 | changes document | Added | a release package carries it beside the installer as `sd-core-for-linux-<version>-changes.pdf`, `.html` and `.md`, and the installer copies the three into the shared account's `pdf` directory, where `pdf` lists the PDF |
 | gates question | Added | the installer asks once whether to open every access gate for the installing user's own account; the answer is no unless `y` |
 | group account files | Changed | an upgrade puts the four record files of every kept group account back in the account's group |
+| immutable `bin` | Changed | `deletesdcore.sh` lifts the attribute before it removes the system directory |
 | installer source message | Changed | says which source it is downloading, the release tag or `main` |
 | `sdsys` user in kept groups | Changed | an install that keeps accounts and finds the `sdsys` user in their groups asks once whether to keep it there (no unless `y`, and no with no terminal), takes it out on no, and records the decision in `/home/sd/$groups.ruled` so a later install leaves what the administrator did |
 | `sdai` user | Added | made by the installer; removed with the accounts |
@@ -591,6 +598,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | audit trail rotation | Changed | the audit daemon rotates the trail by size as it writes (1 MB, to `audit.<date>-<time>`, new file with the old owner, mode and append-only flag), so a machine that never restarts SD still rotates; `sd -start` uses the same code |
 | audit trail writer | Changed | `sdlnxd` (root) writes the audit trail: a session sends each record over the Unix socket `/run/sd/audit.sock` and the daemon stamps `user=` and `pid=` from the kernel's credentials of the sender, so a person with a shell can no longer add a line that names someone else; the file is mode 0600 (it was 0620); with no daemon a session appends itself, which only `sdsys` and root can do, and the journal copy is then the only one |
 | error log mode | Changed | `errlog` is 664 (it was 775): every session appends to it and nothing runs it |
+| files root runs | Changed | the installer makes `/usr/local/sdsys/bin` and every file in it `root:root` with no group or other write, and makes `bin` immutable (`chattr +i`), so the `sdsys` user cannot replace `sd`, `sdlnxd`, `sdidx` or `pcode`, or rename `bin` away and put its own in its place; a failure to seal is warned about in the closing summary too |
 | global catalogue modes | Changed | the kernel refuses to load a global catalogue object that others or the group `sdusers` can write (message 11930), and the installer leaves everything in `gcat` 0755 after its last compile (a fresh install left `gcat/$cproc` 0664) |
 | operating system paths | Changed | `dir()`, `select.dir`, `oscopy`, `!oscopy`, `!ioscopy`, `deleteseq` of a path, `setptr ... as pathname`, `setpu` and a VOC pointer out of the account each ask the account's `os` switch, and `sd-on` for another SD account |
 | p-code a session runs | Changed | each session reads `bin/pcode` itself, and refuses a file that others or the group `sdusers` can write; the copy in the shared segment, which any SD user with a shell could change, is no longer run |

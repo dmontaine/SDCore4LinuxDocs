@@ -156,6 +156,46 @@ message is shown as it was written. The conversation of the phantom debugger (`p
 The secret is kept in no file and not in the segment. That another operating-system user cannot read the environment of this user's processes is the
 operating system's rule; it has been tested here with one user only.
 
+### The files root runs
+
+`sd.service` runs `bin/sd` as root (`sd -start` and `sd -stop`), `sd-lnxd.service` runs `bin/sdlnxd` as root, `sdclient@.service` (the first stage of every API connection)
+runs `bin/sd -n -q` as root, `sd-elevate akpath-set` runs `bin/sdidx` as root, and every session - that first stage included - reads `bin/pcode`. **A file that root runs
+must not be one that the `sdsys` login can replace.** Until 1.2-0 the installer's `chown -R sdsys:sdusers` left all of them `sdsys`'s, so whoever held that login could
+change one and have root run it at the next start. **Near its end the installer now makes `/usr/local/sdsys/bin` and every file in it `root:root`, with no group or other
+write, and makes the directory itself immutable** (`chattr +i`).
+
+| | owner, mode |
+|---|---|
+| `bin/sd`, `bin/sdlnxd`, `bin/sdidx` | `root:root` 755 |
+| `bin/pcode`, `bin/pcode.old` | `root:root`, readable by everyone, writable by root only |
+| `bin/sdfix`, `bin/sdconv`, `bin/sdtic`, `bin/sdclilib.so`, `bin/libsdcli.so` | `root:root` 755 (no unit runs them; they are in the same directory, and an administrator may run `sdfix` with `sudo`) |
+| `bin` itself | `root:root` 755, immutable |
+| `.sdcore-install`, `/usr/local/sbin/sd-elevate`, `sd-accarchive`, `sd-reconcile-accounts` | root's, as before |
+| everything else in `/usr/local/sdsys` | `sdsys:sdusers`, as before (the register, the global catalogue, `voc`, `bp`, the SDSYS account's files) |
+
+**Why the attribute.** The `sdsys` user owns `/usr/local/sdsys`, and the owner of a directory may rename any entry in it, whoever owns the entry. With the files root's
+and nothing more, `sdsys` could move `bin` out of the way and make a `bin` of its own, which `systemd` would run at the next start. The attribute stops that rename, and any new
+or removed entry in `bin`; only root can lift it. `lsattr -d /usr/local/sdsys/bin` shows an `i` when it holds. **If the file system does not keep the attribute** (the installer
+prints `WARNING: the root-run files were NOT all sealed`, says the directory `could not be made immutable`, and repeats a warning in its closing summary), the files are still root's, but `sdsys` can rename `bin` and put its own in its place, and nothing else closes that.
+
+What this changes for you:
+
+- **To put a new file into `bin`** (a hand-built `sd`, say): `sudo chattr -i /usr/local/sdsys/bin`, copy it in as root, then `sudo chattr +i /usr/local/sdsys/bin`.
+  Writing into a file that is already there with `cp` needs root and no change of the attribute; replacing it with `install` or `mv`, which make a new entry in the
+  directory, needs the attribute lifted. So do SD's own writes of `bin/pcode` when `SAFEDIR` is set in `sd.conf` (it is off as delivered), because they write a new file and
+  rename it.
+- **The two things that write `bin/pcode`** - `catalog ... pcode` and compiling a `recursive` program under `sd -internal` - are SD's own developers' tools. As the code
+  reads, they are root's from now on, and the second makes `bin/pcode.old` when it is not there yet, which needs the attribute lifted; the `sdsys` login does neither.
+  The installer's own passes ran as root and finished before this step. (The statement about these two tools is read from the source; the rest of this section was
+  measured on a Debian 13 install on 26 October 2026: `bin` and its files `root:root`, the `i` in `lsattr -d`, the `sdsys` login unable to write, make or rename an entry in
+  `bin` or to rename `bin` itself, SD and the audit daemon started from it and the daemon started again by `systemd` after a `kill -9`, and the `SDSYS` account still able to
+  compile, catalogue locally and globally, run a program and run `update.accounts all`.)
+- **`deletesdcore.sh`** lifts the attribute before it removes the directory, so a delete (with or without keeping the accounts) works as before.
+
+**What this does not close.** The global catalogue and the sudo helper `sd-elevate` are still routes from a stolen `sdsys` login to root-run or every-account code (see
+[The master files](19-the-master-files.html)); data that root reads but does not run (`terminfo`, `messages`) is still `sdsys`'s; and during the minutes of an install,
+before this step, `bin` is still `sdsys`'s - install while nobody holds that login (a first install has no such login yet).
+
 ## The daemon
 
 | | |
