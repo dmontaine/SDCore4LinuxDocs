@@ -541,6 +541,7 @@ Three simple layers, with no vault and nothing on by default.
 | gates question | Added | the installer asks once whether to open every access gate for the installing user's own account; the answer is no unless `y` |
 | group account files | Changed | an upgrade puts the four record files of every kept group account back in the account's group |
 | immutable `bin` | Changed | `deletesdcore.sh` lifts the attribute before it removes the system directory |
+| installer: the `sdsys` user's groups | Changed | an install that keeps the accounts leaves the `sdsys` user in the group of each group account (`sdg_shared` among them); it used to take it out of all of them |
 | installer source message | Changed | says which source it is downloading, the release tag or `main` |
 | `sdsys` user in kept groups | Changed | an install that keeps accounts and finds the `sdsys` user in their groups asks once whether to keep it there (no unless `y`, and no with no terminal), takes it out on no, and records the decision in `/home/sd/$groups.ruled` so a later install leaves what the administrator did |
 | `sdai` user | Added | made by the installer; removed with the accounts |
