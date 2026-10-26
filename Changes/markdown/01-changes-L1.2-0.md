@@ -420,7 +420,7 @@ SD's own code. The sections above are the openQM items that were built, with the
 | `modify.account files-off` | Changed | fixed: deals with a leftover `sdfileswrite` membership instead of making it live at the next `files-on` |
 | `net-on` and `net-off` | Added | per-account switch for SDNet, off as delivered |
 | new account defaults | Changed | a new account has no ssh, no API, no shell and no `os.execute`; SDSYS opens each, account by account |
-| `restore.account` | Changed | fixed: no longer overwrites a different global program of the same name |
+| `restore.account` | Changed | fixed: no longer overwrites a different global program of the same name; restoring the `shared` account puts it back in the group `sdusers` (it had been given `sdg_shared`, which no ordinary user is in) |
 | `sd-elevate` | Changed | new verb `sdsys-leave`, and `conf-set` (see `set.config`); `sdsys-join`, `sdsys-leave` and `group-write` write a line to the system log |
 | `sd-elevate akpath-set` | Changed | takes only a hashed file's directory (a plain `%0` with no second link) and an existing directory, both in one account |
 | `sd-elevate chown-account` | Changed | the `sdsys` shape takes only a group account's files, in that account's own group (`sdg_`*name*; `sdusers` for `shared`); the `root` shape takes only a directory or plain file the `sdsys` user owns, and a real run chowns through the open file; a user account's directory, `voc` and record files, `/etc/shadow` and the like are refused |
