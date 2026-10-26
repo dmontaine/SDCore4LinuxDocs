@@ -789,8 +789,7 @@ API, and they are the only door a files-only login has to them.
 - **Who gives it, and how.** SDSYS, one person at a time, on the server being reached:
   `modify.account` *name* `files-admin-on`, taken away with `files-admin-off`, and
   `files-admin-on` after `files-on` and `files-write-on` in `create.account user`. **It is off
-  for a new account, and the installer's question "Open every access gate for ...?" does not turn
-  it on** even when you answer `y` (you do that by hand). The installer makes the group, empty,
+  for a new account, and the installer does not turn it on** (you do that by hand). The installer makes the group, empty,
   beside the other three.
 - **The chain is `sdfiles` < `sdfileswrite` < `sdfilesadmin`: each needs the ones below it, and
   none is ever added over one above it.** `files-admin-on` needs `files-on` and `files-write-on`

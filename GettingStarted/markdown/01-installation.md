@@ -25,8 +25,7 @@ rather than partway through with `sudo`'s own error.
 
 **SD cannot be installed silently.** This is deliberate, not a missing
 feature. The script asks two questions whose answers cannot be defaulted
-safely — whether to open ssh and the API to other computers — and, on a first
-install, a third about your own account's access gates (below), and ends by
+safely — whether to open ssh and the API to other computers — and ends by
 setting three passwords at the terminal.
 
 **The installer does not ask where to put SD.** The roots are fixed. See
@@ -75,8 +74,7 @@ it is not. It writes nothing to the stick.
 ## What you are asked
 
 After confirming you want to continue, two questions about remote access,
-both defaulting to **no** (on a first install there is a third, about your own
-account, in *Your own account's access gates* below):
+both defaulting to **no**:
 
 ```
 Allow ssh access from other computers? enables sshd at boot, opens port 22 (y/N)
@@ -171,33 +169,19 @@ which the installer also stages where it can.
 
 ## Your own account's access gates
 
-On a first install — when the account the installer makes for you does not
-exist yet — there is a third question, also defaulting to **no**:
-
-```
-Open every access gate for <you>'s SD account? (y/N)
-```
-
 An SD account starts with every access gate closed: ssh, the API, the shell,
 `os.execute`, `sd.accounts`, saving changes to a VOC, a program file or a
-dictionary, SDNet, and writing the shared account's files — yours too.
-**Answering "no", or just pressing Enter, is the delivered state**, and
-`modify.account` opens any of them later, one word at a time.
+dictionary, SDNet, and writing the shared account's files — yours too, the
+account the installer makes for you. **The installer does not ask about it and
+does not open any of them**: that is the delivered state, and the installer
+prints the commands that open them. Signed in as SDSYS, `modify.account <account>
+<word>` opens any of them, one word at a time (`both`, `sh-on`, `os-on`, `sd-on`,
+`voc-on`, `bp-on`, `dict-on`, `net-on`, `shared-write-on`, `files-on`,
+`files-write-on`), and `modify.account <account> <word>-off` closes it again
+(`none` closes ssh and the API).
 
-On a machine you are testing on, **"y" opens all of them for your own account,
-and for nobody else's**: `both`, `sh-on`, `os-on`, `sd-on`, `voc-on`, `bp-on`,
-`dict-on`, `net-on`, `shared-write-on`, `files-on` and `files-write-on`, each
-given with `modify.account` while the install runs. **`files-admin-on` (the right
-to configure, index, create and delete files over the files-only route) is left
-out: it is given by hand.** The installer then reads
-the register and the Linux groups back, and prints either "Opened every access
-gate for …" or a warning that names each gate that did not open and the word to
-give for it. SDSYS closes any of them again with `modify.account <account>
-<word>-off` (`none` closes ssh and the API).
-
-This question is not about who can reach the computer from the network — that
-is still the two questions above. An upgrade does not ask it, because your
-account already exists: it keeps what it has.
+This is not about who can reach the computer from the network — that is the two
+questions above.
 
 ## Changing any of it afterwards
 

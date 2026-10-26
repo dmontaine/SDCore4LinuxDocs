@@ -374,8 +374,8 @@ modify.account acme sdsys-off
   nothing changed) and may be given in a command with other words. Both are audited, in lower case:
   `modify.account sdsys-on account=acme`, and `sd-elevate` writes a line of its own to the system log
   (`journalctl -t sd-elevate`).
-* **`create.account` does not switch it on**, and neither does the installer's "Open every access gate"
-  answer: the installing user's account is delivered off like every other. Type it.
+* **`create.account` does not switch it on**, and neither does the installer: the installing user's
+  account is delivered off like every other. Type it.
 
 **What is expected to stop working when an account is off.** A save of its master record (above). So
 is **SDSYS writing inside the account in any other way**: `logto` the account and make a file, edit a

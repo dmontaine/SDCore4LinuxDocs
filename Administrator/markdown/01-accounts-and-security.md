@@ -128,8 +128,7 @@ repairs the modes and changes nothing else; `sdsys-off` for an account that is
 off changes nothing. The two words conflict only with each other. **A session of
 SDSYS that is already running keeps the groups it started with**: sign on again
 after `sdsys-on`, and after `sdsys-off` that session still has the write until
-it ends. `create.account` does not switch it on and neither does the installer's
-"Open every access gate" answer.
+it ends. `create.account` does not switch it on and neither does the installer.
 
 ## Making an account: `create.account`
 
@@ -199,12 +198,8 @@ create.account account=fred type=user gates=pins-on start=menu
 
 **The installing user's own account is no exception**: the account the
 installer makes so that somebody can sign in starts with all of them off too,
-and the installer says so and how to change it. **The one exception is a
-choice made at the keyboard:** on a first install the installer asks "Open
-every access gate for that user's SD account? (y/N)", and only `y` or `yes`
-opens them — all of them, for that one account, by `modify.account` while the
-install runs, after which the installer reads the register and the Linux groups
-back and says which gates really opened. The accounts that keep their access
+and the installer says so and how to change it; **the installer asks no
+question about it and opens nothing**. The accounts that keep their access
 are the ones that already exist when you *upgrade* — see *Changing one*,
 below.
 
@@ -477,8 +472,7 @@ account already exists, the upgrade switches all three on, **once**, for every
 *user* account in the register, so that no such account loses what it had;
 group and other accounts, and accounts made afterwards, start with all three
 off. On a fresh install, the installing user's own account is made with all
-three off like any other, unless the person answered `y` to the installer's
-question about access gates, which turns them on for that account. If a different OS user runs the installer over
+three off like any other. If a different OS user runs the installer over
 existing accounts (so the installing user's account does not exist yet), the
 upgrade walk is not run, and the existing accounts stay off until SDSYS turns
 the switches on. The switches are kept in the account archive, but
@@ -754,8 +748,7 @@ in both `sdfileswrite` and the Linux group `sdfilesadmin`**: `modify.account` *n
 `files-admin-on` (needs `files-on` and `files-write-on` first, else "Account fred does not have
 files-write, so it cannot be given files-admin: use files-write-on first"), `files-admin-off`, and
 `files-admin-on` after `files-on` and `files-write-on` in `create.account user`. **It is off for
-every new account, and the installer's "Open every access gate ..." answer `y` does not turn it
-on.** The line printed is `Account fred has files-admin yes`, read back from the group file.
+every new account, and the installer does not turn it on.** The line printed is `Account fred has files-admin yes`, read back from the group file.
 The three groups are a chain, `sdfiles` < `sdfileswrite` < `sdfilesadmin`: `files-write-off` and
 `files-off` take the higher groups away first (administration, write, files), each removal read
 back, and a failure half way reports the removals that did happen; `files-on` and `files-write-on`
@@ -770,8 +763,8 @@ files-admin-on (request *n*)" and nothing is carried out. The account's manifest
 
 An account may send text to the AI provider you have chosen (the `ai` verb) **only if the person is in
 the Linux group `sdaiusers`**: `modify.account` *name* `ai-on`, `ai-off`, and `ai-on` in
-`create.account user`. **It is off for every new account, and the installer's "Open every access gate
-..." answer does not turn it on**, because each request is paid for by whoever holds the provider's key.
+`create.account user`. **It is off for every new account, and the installer
+does not turn it on**, because each request is paid for by whoever holds the provider's key.
 The line printed is `Account fred has ai yes`, read back from the group file. It stands alone (no
 other gate is needed), is for accounts that belong to a person (a group account is refused), and takes
 effect at the person's next request. The account's manifest records it as `route.ai`, and
@@ -1045,8 +1038,7 @@ machine again and shows the verb's own words, so a cell changes because the syst
 changed, never because the page said so. Every change is audited by the verb as if you
 had typed it.
 
-* **There is no key that queues everything ON**, and the installer's single question
-  (to open every gate for the installing user) stays its own. **T** is the only
+* **There is no key that queues everything ON.** **T** is the only
   "all": it queues OFF for what is on and off as delivered (`shared-read`, which is on
   as delivered, is left alone).
 * **Turning ON a gate that is off as delivered says so**, and says that leaving it off is
