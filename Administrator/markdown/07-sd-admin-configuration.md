@@ -132,6 +132,58 @@ gives, until it is repaired; SD and the sessions already running are not
 affected. Every SD user's session now opens the file, so it must stay readable by
 them (as installed: mode 0644, owned by root). Edit the file with the same care as before.
 
+## The parameters on one screen: `tool.config`
+
+```
+tool.config
+```
+
+A full-screen page in SDSYS's VOC only (a window of 140 columns by 43 lines or more), **which only
+looks**: it runs no command and writes no file, `sd.conf` included. Writing `sd.conf` from inside SD
+would be a new way to write a file only root owns; it is not built, and editing the file by hand and
+restarting SD stays the way to change a parameter.
+
+The page has three views. **P, the parameters**: one row for every parameter SD knows, from the table
+`config.table` in the system directory (`test-toolconfig-units.py` holds that table to the parser in
+`config.c`: a parameter the parser takes and the table lacks, or the reverse, fails it). The columns are
+the value this SD is running with (what `config()` reports), the value `sd.conf` says now (the file is
+read again, a parameter written twice counted the way SD counts it, the flag parameters added up),
+the default (what SD uses when the file does not say), when a change takes effect and whether anything
+acts on it:
+
+| Takes effect | Meaning |
+|---|---|
+| `session` | a session reads `sd.conf` itself when it starts, so an edit reaches the sessions started after it, and not the ones already running |
+| `restart` | the parameter sizes or starts the system (everything in the shared memory segment, the start-up command, the API's settings); it takes effect when SD is next started |
+| `now` | a program reads `sd.conf` each time it uses the parameter (`BACKUPDIR`), so a change needs no restart and no new session |
+
+| Status | Meaning |
+|---|---|
+| `live` | something acts on it |
+| `inert` | accepted and stored, and nothing acts on it (`CODEPAGE`, `EXCLREM`, `GDI`, `JNLDIR`, `JNLMODE`, `RINGWAIT`, `TXCHAR`) |
+| `retired` | accepted and ignored so that a file written earlier still starts SD (`APILOGIN`, `CREATUSR`) |
+| `file` | read from `sd.conf` by a program each time it is used, not by the kernel (`BACKUPDIR`) |
+| `unknown` | a name in the file that SD does not know |
+
+A row marked `*` is one where the file and the running SD disagree. The box at the foot says for that
+parameter whether the sessions started now will read the file's value (`session`) or SD keeps the old
+one until it is restarted (`restart`). **A name in the file that SD does not know is listed at the end
+as `unknown`, and the top of the page names it: SD does not start with it, and no new session starts
+while the file holds it** (the section *A name SD does not recognise stops it starting* above). `D`
+shows only the rows where the file and SD disagree, and `S` only the parameters the file sets.
+
+`SCREENTHEME`, `SDSYS`, `APILOGIN`, `BACKUPDIR` and `TXCHAR` cannot be read with the `config()` function
+(a name longer than eight characters, or one the function does not have); the page says
+`(not readable)` for what SD is running with and shows the file's value. `DEBUG` is not compared: the
+function reports it in another form than the file writes it.
+
+**B, the backup directory**: the directory saved with `set.backup.directory` and whether it is there;
+**R, the report**: the operating system part of `settings.report` (the ssh and API doors, the groups of
+`sdusers`, `sdssh` and `sdapi`, the services and the sudoers file), made when the view is opened and on
+F5. It holds no key and no password hash. `F5` reads the file, the backup directory and the report
+again; `F1` explains the page; `Ctrl-Q` leaves. Opening the page writes the audit line
+`tool start app=tool.config`; nothing else it does is written, because it changes nothing.
+
 ## Sessions and limits
 
 | Parameter | Default | Effect |

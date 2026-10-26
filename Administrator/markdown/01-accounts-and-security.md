@@ -906,6 +906,39 @@ by nobody: `voc-off` was done and `bp-off` dropped without a message; from 18
 Oct it was refused with *modify.account does one action at a time*; it is done
 since 19 Oct.)
 
+### The accounts on one screen: `tool.accounts`
+
+```
+tool.accounts
+```
+
+A full-screen page in SDSYS's VOC only (a window of 140 columns by 43 lines or more). The list is every
+registered account but SDSYS: its name, its kind (user, group or other), whether it is suspended, **the
+gates that are on for it** (read the way `tool.gates` reads them: the register and the Linux groups) and
+how many sessions are signed on in it. The box at the foot shows the account under the cursor as the
+register and `/etc/group` give it: its path, its Linux user and group, its routes, a group account's
+members, the gates that are on and who is signed on in it. **The gate switches are `tool.gates`'s, not
+this page's**: a new account has every gate off, as the verb makes it.
+
+| Key | Runs |
+|---|---|
+| `S` | `modify.account name suspended`, or `unsuspended` when the account is suspended already |
+| `A` | `modify.account group add user`, on a group account, for the Linux user you type |
+| `R` | `modify.account group delete user`, taking one away |
+| `C` | `create.account group name no.query`, `create.account other name path no.query`, or `create.account user name {none\|ssh\|api\|both}` |
+| `X` | `delete.account name {remove.home}`, after you type the account's name |
+
+Each shows its command and what it does in a box answered Run or Cancel, **and Cancel is what Enter
+chooses**. The verbs ask for the administrator again and write their own audit lines; the page runs
+nothing else. **Two of them are not run through the page**: creating a user account and deleting an
+account hand the terminal to the verb, because `create.account user` asks for the new person's password
+at a prompt of its own that shows nothing, and `delete.account` has no `no.query`, asks once for its own
+confirmation and is never to be sent down a pipe. Nothing typed at either prompt passes through the page;
+when the verb ends, the page takes the screen again and shows what is registered now. A suspended
+account is refused by LOGIN, ssh and the API; sessions already signed on in it keep running until they
+end; nothing changes in Linux, so lifting the suspension costs nothing. `F5` reads everything again, `F1`
+explains the page and `Ctrl-Q` leaves. Opening the page writes the audit line `tool start app=tool.accounts`.
+
 ### Every account against every gate: `tool.gates`
 
 ```

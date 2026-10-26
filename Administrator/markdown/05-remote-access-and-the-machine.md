@@ -142,6 +142,31 @@ removed.
 
 **What a connection costs while nobody has logged in.** Each API connection is one `sd -n -q` process, running as root until the client has logged in, and it is there before any login is checked. Since 20 Oct 2026 it ends when the connection does, and refuses a request that declares a length over 65,536 bytes (after the login the limit is the largest SD string; the client page, *How big a request may be*, has the rules), leaving a line in the system log. Before that date a client that closed at the wrong moment, or sent four bytes that read as a huge length, left its process running at 100% of a processor with nothing to end it but `kill`; a count of `sd -n -q` processes that does not fall back to the number of clients is the sign. **A client that connects, completes the handshake and then says nothing is still left waiting**: SD sets no time limit on a connection that has not logged in, and `remote.api local` or the firewall are what keep it to the people you intend.
 
+## Everything that reaches SD from outside, on one screen: `tool.remote`
+
+```
+tool.remote
+```
+
+A full-screen page in SDSYS's VOC only (a window of 140 columns by 43 lines or more) of five views,
+chosen with the keys `1` to `5`:
+
+| View | What it shows and does |
+|---|---|
+| `1` doors | what `remote.api` and `remote.ssh` say with no keyword: **the machine's own answer**, read back from the socket unit and the firewall, not what the page meant. `A` changes the API (`on`, `local` or `off`), `S` changes ssh (`on` or `off`); turning either **on** lets other computers reach this one, so its box wants the word `OPEN` typed |
+| `2` routes | every user account with the doors it has (`ssh`, `api`, `files`, `files-write`, `files-admin`) and the NET gate, and in words how it can be reached. It only shows: the switches are `tool.gates`'s |
+| `3` servers | the SDNet servers of the `netservers` file (read with `!netdefs`): name, address, remote account and mode, the pin shortened, the local accounts that may use it. `X` deletes the one under the cursor (`delete.server`, which does not ask itself, so the box is the question). `N` asks every field, checks them the way `set.server` does and gives **the terminal to the verb**, whose `connect` step shows the key the server presents and its hash and asks whether to trust it |
+| `4` connected | every session now by the door it came through: the user number, the kind (user, api, sdnet, phantom), the login user, the account and where it came from |
+| `5` TLS | this machine's TLS identity as `settings.report` gives it: the certificate fields and the public-key hash another SD server pins. Never the private key |
+
+The page runs three commands through the routine all the toolkit pages use, each only after a box that
+shows the command and what it does was answered Run (**Cancel is what Enter chooses**): `remote.api`,
+`remote.ssh` and `delete.server`, besides the two reports. `set.server` is run by the verb itself on the
+terminal. The verbs ask for the administrator again and write their own audit lines; the page writes
+nothing. A door that the firewall cannot gate is refused by `remote.ssh`, and the page shows the
+verb's words. `F5` reads everything again, `F1` explains the page and `Ctrl-Q` leaves. Opening the page
+writes the audit line `tool start app=tool.remote`.
+
 ## When a change fails
 
 Both report a failure rather than falling silent, and name what did not

@@ -410,6 +410,47 @@ write; SD ignores it otherwise), or creates the directory and gives it to
 > An earlier release refuses to start if `sd.conf` holds a `BACKUPDIR` line, so
 > take the line out before going back to one.
 
+## Backups and restores on one screen: `tool.backups`
+
+```
+tool.backups
+```
+
+A full-screen page in SDSYS's VOC only (a window of 140 columns by 43 lines or more). The top box
+names the saved backup directory, says how many archives it holds, and says **whether anyone else is
+signed on**: `backup.account` and `restore.account` both run only when every other session has logged
+out, and LOGIN refuses new ones while either runs, so the page lists the other sessions (the same
+check the verbs make) and **shows no box for a command while any is there**. The list is the archives
+of the directory (the files `SD-host-accounts-yyyymmdd-hhmmss.zip`), newest first: when each was made
+(from its name), its size, how many accounts it holds and for which product (from its manifest). The
+box at the foot shows the manifest of the one under the cursor, read without unpacking anything:
+the product, the SD version, the host and the date, and each account with its files, bytes and
+directories.
+
+| Key | Runs |
+|---|---|
+| `B` | `backup.account all` |
+| `A` | `backup.account name ...`, for the account names you type (a-z, 0-9, dot, dash, underscore; up to 20) |
+| `R` | `restore.account archive all no.query`, the archive under the cursor |
+| `D` | `set.backup.directory path`, for the absolute path you type |
+
+Each shows its command and what it does in a box answered Run or Cancel, **and Cancel is what Enter
+chooses**. The page runs those four commands and no other, through the routine all the toolkit pages
+use; the verbs ask for the administrator again and write their own audit lines. **A restore replaces
+every account the archive holds** with the account of the same name, so its box lists them, from the
+manifest, and wants the word `RESTORE` typed. The verb's own
+question (Enter is No) cannot be answered through a page, so the page gives `no.query` after its box
+has asked; it does not give it any other way. **A restore that would have to make an account is
+refused by the page**: a new user account asks for a password, and that question cannot be answered
+through a page, so the page checks that every account the archive holds is registered here already,
+and says which are not. Restore such an archive at the prompt.
+
+The packing of a backup and the placing of a restored account are done through the root helper
+(`sd-elevate backup-pack`, `restore-place`); where they cannot be done, the verb says why and the page
+shows its last line on the status line. `F5` reads the directory, the archives and the sessions again,
+`F1` explains the page and `Ctrl-Q` leaves. Opening the page writes the audit line
+`tool start app=tool.backups`.
+
 ## Recording the settings: `settings.report`
 
 ```

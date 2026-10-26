@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **217** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **222** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -24,7 +24,7 @@ not refused — the name is simply not recognised.**
 | | | |
 |---|---|---|
 | **every account** | 178 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 39 more | in `voc_template` but not `newvoc` |
+| **SDSYS only** | 44 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -235,11 +235,16 @@ not refused — the name is simply not recognised.**
 | **`sync.masters`** | **`sync.masters`** {*account*} | S |
 | **`term`** | **`term`** \| *width*{`,`*lines*} {*type*} \| **`colour`** *bg*{`,`*fg*} \| **`default`** \| **`display`** |  |
 | **`time`** | **`time`** \| **`internal`** |  |
+| **`tool.accounts`** | **`tool.accounts`**  —  the accounts on one screen (administrator): every account with its kind, suspension, gates that are on and sessions; **`modify.account`** (suspend, add or take away a person) and **`create.account`** behind a box answered Run, and **`delete.account`** after the name is typed, with the terminal given to the verb where it asks for a password or confirms | S |
 | **`tool.ai`** | **`tool.ai`**  —  the AI choice page (administrator): the provider with a check box, its model and key, Custom, and which accounts may use the AI | S |
+| **`tool.audit`** | **`tool.audit`**  —  the audit trail on one screen (administrator): read from its end a screen at a time, with filters by time, event, account, user and text, go to a time, follow, the rotated files, and the lines shown saved to a record of **`$HOLD`**; it runs no command | S |
+| **`tool.backups`** | **`tool.backups`**  —  backups and restores on one screen (administrator): the saved directory, the archives in it with the manifest of each, who else is signed on, and **`backup.account`**, **`restore.account`** and **`set.backup.directory`** behind a box answered Run | S |
+| **`tool.config`** | **`tool.config`**  —  the configuration on one screen (administrator): every parameter of **`sd.conf`** with what SD is running with, what the file says, the default and when a change takes effect, the backup directory and the operating system part of the settings report; it only looks and changes nothing | S |
 | **`tool.gates`** | **`tool.gates`**  —  for the administrator the gate matrix (every account against every per-account gate; queued changes run as one **`modify.account`** command); in any other account, what this account may do and why (read only) |  |
 | **`tool.keys`** | **`tool.keys`** |  |
 | **`tool.masters`** | **`tool.masters`**  —  the master files on one screen (administrator): set up or not, the journal, every account against its master copy, and **`sync.masters`** behind two keys after a box answered Run | S |
 | **`tool.menus`** | **`tool.menus`**  —  menu management (administrator): the home screen's tiles for each account, where each account starts, who may add their own programs | S |
+| **`tool.remote`** | **`tool.remote`**  —  everything that reaches SD from outside, on one screen (administrator): the two doors as the machine reports them (**`remote.api`** and **`remote.ssh`**, changed after a box and the word OPEN), the routes of each user account, the SDNet servers (**`delete.server`**; **`set.server`** with the terminal given to the verb), who is connected and this machine's TLS identity | S |
 | **`tool.sessions`** | **`tool.sessions`**  —  sessions, locks and logout on one screen (administrator): every session and every lock, read again every three seconds; each key runs one **`logout`**, **`unlock`** or **`inhibit.login`** command after a box answered Run | S |
 | **`tool.viewers`** | **`tool.viewers`**  —  the Bypass programs page (administrator): the readers **`pdf`** may start, those found on this machine | S |
 | **`umask`** | **`umask`** {*mask*} |  |

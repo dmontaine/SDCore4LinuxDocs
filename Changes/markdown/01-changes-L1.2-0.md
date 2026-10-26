@@ -428,9 +428,14 @@ SD's own code. The sections above are the openQM items that were built, with the
 | `shared-write-on` | Added | lets one account change the shared account's files (off as delivered) |
 | `ssh` and `api` | Changed | a new account gets neither; `create.account user name ssh`, `api` or `both` and `modify.account` change it |
 | `sync.masters` | Added | makes the first copy of every account's VOC and dictionary records and repairs a difference |
+| `tool.accounts` | Added | full-screen page of every account: its kind, suspension, the gates that are on and who is signed on; suspends or lifts, adds or takes away a person of a group account, creates (the verb asks for a password on the terminal) and deletes (after the name is typed) |
+| `tool.audit` | Added | full-screen page that reads the audit trail from its end, a screen at a time: filters by time, event, account, user and text, go to a time, follow, the rotated files, and the lines shown saved to a record; it changes nothing else |
+| `tool.backups` | Added | full-screen page for backups and restores: the saved directory, the archives in it with each manifest, who else is signed on (a backup and a restore need everyone else out), and `backup.account`, `restore.account` and `set.backup.directory` behind a box |
+| `tool.config` | Added | full-screen page that shows every `sd.conf` parameter with what SD is running with, what the file says, the default and when a change takes effect, and names a line SD does not know; it only looks and changes nothing |
 | `tool.gates` | Added | full-screen matrix of every account against every gate; changes go through `modify.account`, never by themselves; in any other account the same verb is a read-only page of what that session may do |
 | `tool.masters` | Added | full-screen page for the master files: set-up state, journal, each account against its copy; runs `sync.masters` |
 | `tool.menus` | Added | full-screen page for the home screen: where each account starts, which tiles are on, who may add programs |
+| `tool.remote` | Added | full-screen page for everything that reaches SD from outside: the API and ssh doors as the machine reports them (changed after a box, and the word OPEN to turn one on), the routes of each user account, the SDNet servers (delete, define with the terminal given to `set.server`), who is connected and this machine's TLS identity |
 | `tool.sessions` | Added | full-screen page of sessions and locks; logs a session out, releases a lock, stops new logins |
 | `voc-on` and `voc-off` | Added | per-account switch for saving a change to a VOC |
 

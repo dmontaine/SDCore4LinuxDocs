@@ -152,7 +152,7 @@ DOCS = [
    release
  """),
  ('Administrator', '01-accounts-and-security.md', """
-   create.account modify.account modify.password set.start.default set.tile tool.gates tool.menus umask
+   create.account modify.account modify.password set.start.default set.tile tool.accounts tool.gates tool.menus umask
  """),
  # THE MAINTENANCE VERBS MOVED TO 01a AND ONLY ONE OF THEM SAID SO.  tclmap
  # reported set.date and passed the other four, because 01 still MENTIONS
@@ -163,7 +163,7 @@ DOCS = [
  # explanation is not.  Each verb is assigned where it is actually explained.
  ('Administrator', '01a-account-maintenance.md', """
    backup.account clean.account config delete.account restore.account set.backup.directory
-   set.date settings.report update.accounts
+   set.date settings.report tool.backups update.accounts
  """),
  ('Administrator', '02-sessions-and-locks.md', """
    clear.locks list.locks list.readu listu lock logout tool.sessions unlock
@@ -182,7 +182,7 @@ DOCS = [
  # remote.api/remote.ssh stay, same verb names, ufw/systemd underneath
  # instead of the Windows firewall/service - see 05's own page.
  ('Administrator', '05-remote-access-and-the-machine.md', """
-   remote.api remote.ssh
+   remote.api remote.ssh tool.remote
  """),
  # 17 Oct 26 - S.65 slice 1 (SDNet): the three server-definition verbs, SDSYS's alone (voc_template).
  # 17 Oct 26 - S.65 slice 2b: delete.netlogin and set.netlogin, a person's own login on a server; in newvoc, so in every VOC.
@@ -196,6 +196,14 @@ DOCS = [
  # 19 Oct 26 - S.67 stage 1 (the master files): three verbs, in voc_template (SDSYS's set), not in newvoc.
  ('Administrator', '19-the-master-files.md', """
    check.masters list.master.pending sync.masters tool.masters
+ """),
+ # 25 Oct 26 - S.75 A5 (the audit trail page): tool.audit, in voc_template (SDSYS's set), not in newvoc.
+ ('Administrator', '21-the-audit-trail.md', """
+   tool.audit
+ """),
+ # 25 Oct 26 - S.75 A6 (the configuration page): tool.config, in voc_template (SDSYS's set), not in newvoc.
+ ('Administrator', '07-sd-admin-configuration.md', """
+   tool.config
  """),
 ]
 
