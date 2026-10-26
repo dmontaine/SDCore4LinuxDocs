@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **224** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **229** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,7 +23,7 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 180 verbs | `newvoc`, identical for every ordinary account |
+| **every account** | 185 verbs | `newvoc`, identical for every ordinary account |
 | **SDSYS only** | 44 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
@@ -239,14 +239,19 @@ not refused — the name is simply not recognised.**
 | **`tool.ai`** | **`tool.ai`**  —  the AI choice page (administrator): the provider with a check box, its model and key, Custom, and which accounts may use the AI | S |
 | **`tool.audit`** | **`tool.audit`**  —  the audit trail on one screen (administrator): read from its end a screen at a time, with filters by time, event, account, user and text, go to a time, follow, the rotated files, and the lines shown saved to a record of **`$HOLD`**; it runs no command | S |
 | **`tool.backups`** | **`tool.backups`**  —  backups and restores on one screen (administrator): the saved directory, the archives in it with the manifest of each, who else is signed on, and **`backup.account`**, **`restore.account`** and **`set.backup.directory`** behind a box answered Run | S |
+| **`tool.bulk`** | **`tool.bulk`**  —  a bulk update of one data file of the account: choose the records (conditions, a saved list or every record), up to ten operations from a closed set, a dry run that writes nothing, apply under record locks after a box that asks the file's name typed, and undo of the last run |  |
+| **`tool.catalog`** | **`tool.catalog`**  —  the programs of the account on one screen: compiled or not, current or stale, and where each is catalogued (private, local, global); compile it, catalogue it privately or locally, and take a catalogue entry out, each through its own verb after a box that shows the command |  |
 | **`tool.config`** | **`tool.config`**  —  the configuration on one screen (administrator): every parameter of **`sd.conf`** with what SD is running with, what the file says, the default and when a change takes effect, the backup directory and the operating system part of the settings report; it only looks and changes nothing | S |
+| **`tool.dict`** | **`tool.dict`** {*file*}  —  the dictionary of a file on one screen: its items by type with their heading, format, conversion and expression, described in words; make an item (the page writes the record itself, after a box, only if dict-edit is on), edit one in SED, delete or compile one through its verb, try one on a record; and the file's indices (make, build, delete, list) |  |
 | **`tool.files`** | **`tool.files`**  —  the files of the account on one screen: kind, records, modulus, size, indices, trigger; make, clear and delete a file, each through its own verb after a box that shows the command; analyse a file and list its indices and triggers by handing the terminal to the verb |  |
 | **`tool.gates`** | **`tool.gates`**  —  for the administrator the gate matrix (every account against every per-account gate; queued changes run as one **`modify.account`** command); in any other account, what this account may do and why (read only) |  |
 | **`tool.keys`** | **`tool.keys`** |  |
 | **`tool.masters`** | **`tool.masters`**  —  the master files on one screen (administrator): set up or not, the journal, every account against its master copy, and **`sync.masters`** behind two keys after a box answered Run | S |
 | **`tool.menus`** | **`tool.menus`**  —  menu management (administrator): the home screen's tiles for each account, where each account starts, who may add their own programs | S |
+| **`tool.query`** | **`tool.query`** {*file*}  —  the query and report builder: choose a file, mark its columns (break and total), set conditions, sorts and options, read the list / sort / count / sum sentence they make, run it into a results box, and save the query in your file &queries& and load it again; every sentence is checked before it runs |  |
 | **`tool.remote`** | **`tool.remote`**  —  everything that reaches SD from outside, on one screen (administrator): the two doors as the machine reports them (**`remote.api`** and **`remote.ssh`**, changed after a box and the word OPEN), the routes of each user account, the SDNet servers (**`delete.server`**; **`set.server`** with the terminal given to the verb), who is connected and this machine's TLS identity | S |
 | **`tool.sessions`** | **`tool.sessions`**  —  sessions, locks and logout on one screen (administrator): every session and every lock, read again every three seconds; each key runs one **`logout`**, **`unlock`** or **`inhibit.login`** command after a box answered Run | S |
+| **`tool.test`** | **`tool.test`**  —  the tests of the account on one screen: the test.* programs of its program files, run with run and judged by the last line N passed, M failed (pass, fail, no verdict; an abort is a fail); run one, all of those shown or the failed ones (after a box), read what a test printed, compile a test that has no object code through basic after a box that shows the command |  |
 | **`tool.viewers`** | **`tool.viewers`**  —  the Bypass programs page (administrator): the readers **`pdf`** may start, those found on this machine | S |
 | **`tool.voc`** | **`tool.voc`**  —  the vocabulary of the account on one screen: every VOC entry with its type, what it points at, whether a pointer works and how it differs from the shipped VOC; edit an entry in SED, delete one through `delete` after a box that asks its id typed |  |
 | **`umask`** | **`umask`** {*mask*} |  |

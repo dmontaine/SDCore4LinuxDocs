@@ -473,8 +473,13 @@ SD's own code. The sections above are the openQM items that were built, with the
 |---|---|---|
 | `menu` | Added | opens the full-screen menu (the home screen) from any account; `home` and `exit` stay |
 | `pdf` | Added | shows a document in the PDF reader the administrator has allowed, even for an account that may not run programs |
+| `tool.bulk` | Added | full-screen bulk update of one data file: records chosen by conditions, a saved list or all, up to ten operations, a dry run first, apply under record locks after a box that asks the file's name typed, and undo of the last run; for every account |
+| `tool.catalog` | Added | full-screen list of the account's program records (kind, compile time, size, current or stale, private / local / global catalogue) with compile (basic), catalogue privately or locally (catalog) and take an entry out (delete.catalog, decatalog), each the ordinary verb after a box; for every account, behind the bp-edit gate |
+| `tool.dict` | Added | full-screen dictionary of a file (items by type and what they show; make, edit, delete, compile and try an item; the file's indices: make, build, delete, list); for every account |
 | `tool.files` | Added | full-screen list of the account's files (kind, records, modulus, size, indices, trigger, case, dictionary) with make, clear and delete (each the ordinary verb, after a box) and analyse and the index and trigger lists (the terminal is handed to the verb); for every account |
 | `tool.keys` | Added | full-screen diagnostic for the terminal and the keyboard, for everyone |
+| `tool.query` | Added | full-screen query and report builder: file, columns (break and total), up to six conditions, four sort levels and options make a list / sort / count / sum sentence that is shown, checked, run into a results box (2000 lines), and can be saved to and loaded from the file `&queries&`; every sentence is checked again before it runs; for every account |
+| `tool.test` | Added | full-screen test runner: lists the `test.*` programs of the account's program files, runs one, all of those shown or the failed ones (after a box) with `run`, and judges each by its last line `N passed, M failed` (pass, fail, no verdict; an abort is a fail); shows what a test printed; compiles a test that has no object code through `basic` after a box; for every account |
 | `tool.voc` | Added | full-screen list of the account's VOC (type, what each entry points at, whether a pointer works, how it differs from the shipped VOC) with edit in SED and delete after a box; for every account |
 
 ### Data formats
