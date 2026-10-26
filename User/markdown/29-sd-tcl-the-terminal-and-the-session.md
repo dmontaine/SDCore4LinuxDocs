@@ -132,7 +132,7 @@ A full-screen diagnostic for the terminal and the keyboard, for anyone: it chang
 nothing and reads nothing private (it shows the terminal type, the window and the
 locale, which the session already knows). It needs a window of at least **140
 columns by 43 lines** and says so, with the size it found, if the window is
-smaller. Use it when a function key does nothing, an arrow prints `^[[A`, colour
+smaller (or bigger than 500 by 300, which it also refuses before it draws). Use it when a function key does nothing, an arrow prints `^[[A`, colour
 looks wrong or the mouse does not answer.
 
 | box | what it shows |

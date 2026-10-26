@@ -7,21 +7,39 @@ its copy**. The copies follow the accounts in one direction (a journal, below) a
 the copies in the other (a save of a copy is written into the account's own file at once, or refused
 with its reason and nothing changed). Only SDSYS sees any of it.
 
-> **Read this first: what it gives the `sdsys` user.** To write an edit into an account's own VOC or
-> dictionary, **the `sdsys` operating-system user is a member of every account's Linux group
-> (`sdu_`*name*), and every account's VOC and dictionaries can be written by that group.** This
-> gives the `sdsys` user **write access to those files in every account**, and to anything else in
-> an account that the account's group may write (files that SD sessions create are group-writable
-> under SD's usual umask, 002). A VOC entry or an
-> I-type is code that runs in the account, so a compromised `sdsys` login is a route into every
-> account. It is not a route in from the network (`sdsys` has no remote access at all), and a
-> process that is not a real `sdsys` login is not an administrator. The owner chose this on
-> 17 October 2026 in place of the tighter arrangement, an *outbox* the account applies for itself,
-> which would have given `sdsys` no such access. If you do not want the membership, take it away
-> (`gpasswd -d sdsys sdu_`*name*): saves of copies to that account are then refused with a message,
-> and everything else works. **That is undone by the next install or upgrade**, whose walk (below)
-> puts `sdsys` back in the group of every account without asking, and says so. There is no switch
-> that keeps it away; whether the walk should have one is a decision that has not been made.
+> **Read this first: what the grant is, and what it is not.** To write an edit into an account's own
+> VOC or dictionary, **the `sdsys` operating-system user has to be a member of that account's Linux
+> group (`sdu_`*name*), and the account's VOC and dictionaries have to be writable by that group.**
+> **As delivered, `sdsys` is a member of no user account's group**, so a save of a copy to a user
+> account is refused, with a message that names the way to switch it on. The administrator does that
+> **for one account at a time**: `modify.account acme sdsys-on`; `modify.account acme sdsys-off` takes
+> it away again. The membership gives the `sdsys` user **write access to everything the account's group
+> may write** - not only the VOC and the dictionaries (files that SD sessions create are group-writable
+> under SD's usual umask, 002) - and it is also, as far as the modes and the group show, what lets SDSYS
+> write inside the account in any other way (`logto` and an editor, an interactive `update.accounts`);
+> that part has been read from the modes and has not yet been measured on a real install. A VOC entry or an I-type is code that
+> runs in the account, so **while it is on, a compromised `sdsys` login can change what that account
+> runs.**
+>
+> **It is a default and a record of the administrator's decision. It is not a wall.** A person who has
+> taken over the `sdsys` login can reach the code of every account without any membership, by three
+> routes that this does not change: **the files that `root` runs belong to `sdsys`** (`bin/sd` and
+> `bin/sdlnxd` are run by `sd.service` and `sd-lnxd.service` as root, and `sdsys` can replace them);
+> **the global catalogue is the `sdsys` user's to write**, and every session loads programs from it;
+> and **`sdsys` may run `sudo /usr/local/sbin/sd-elevate` with any arguments**, which can put `sdsys`
+> back in a group, hand it an account's VOC directory or `%0`, or set an ordinary user's password. So
+> **do not read the switch as protection against a stolen `sdsys` login: it is not tighter against
+> one.** What it does is take away the *silent* route: until the administrator says so, no account's
+> group lists `sdsys`; saying so leaves an audit line (`modify.account sdsys-on account=acme`) and a
+> line in the system log (`sd-elevate`), and it can be taken back. It is not a route in from the
+> network (`sdsys` has no remote access at all), and a process that is not a real `sdsys` login is not
+> an administrator.
+>
+> **History.** The owner chose the membership of every account's group on 17 October 2026, with that
+> warning, in place of the tighter arrangement, an *outbox* the account applies for itself, which would
+> have given `sdsys` no such access. From 1.2-0 it is **off as delivered** and switched on per account.
+> An install that finds `sdsys` in the groups of accounts a release before 1.2-0 put it in asks once
+> whether to keep it there (below); the default answer takes it out.
 
 | file | key | holds |
 |---|---|---|
@@ -180,18 +198,20 @@ only the status.
 | `... this session has not read it, and the account has a record of that name` | the save is of a record this session has not read (or read so long ago that it has been forgotten) | read the record first, then save it |
 | `... the account's record is locked by user N, and a save never waits` | another session holds the record | try again later |
 | `... no lock could be taken on the account's record (the lock table is full or a limit was reached)` | no user holds it: the lock table is full, a deadlock was seen or this session is at its limit | try again later; `list.readu` |
-| `... this session cannot write the VOC of acme (see check.masters)` | the mode does not let the group write, or this session cannot use it | `check.masters`; the install's upgrade puts the modes right |
+| `... this session cannot write the VOC of acme (see check.masters)` | the mode does not let the group write, or this session cannot use it | `check.masters`; `modify.account acme sdsys-on` puts the modes right (it is repeatable) |
 | `... this session began before sdsys joined group sdu_acme` | see below | sign on again as SDSYS and repeat the edit |
-| `... sdsys is not in group sdu_acme (sd-elevate sdsys-join ...)` | the membership is not there | run `sudo /usr/local/sbin/sd-elevate sdsys-join sdu_acme` from the `sdsys` login, sign on again |
+| `... sdsys is not in the group of acme. Nothing was changed. Use modify.account acme sdsys-on` | **master edits to the account are switched off, which is how every user account is delivered** | `modify.account acme sdsys-on`, then sign on again as SDSYS |
 | `... only SDSYS, signed on at a terminal, can change a master file` | not the administrator | |
 | `... the account's file could not be written (error)` | the write itself failed | `check.masters` |
 
-**A session of SDSYS that began before the account was made, or before `sdsys` was put in its
-group, cannot write that account's files** until SDSYS signs on again. Linux fixes a process's
-groups when it starts and `sd` never reloads them, so the session is still without the group even
-though `/etc/group` now lists `sdsys`. The save says so (`began before sdsys joined group`) and
-`check.masters` shows `norights ... stale-session`. Sign off and on as SDSYS. This is the only
-thing a new account asks of an administrator who has a session open.
+**A session of SDSYS that began before `sdsys` was put in the account's group** (by
+`modify.account acme sdsys-on`, or by an install that kept it) **cannot write that account's files**
+until SDSYS signs on again. Linux fixes a process's groups when it starts and `sd` never reloads them,
+so the session is still without the group even though `/etc/group` now lists `sdsys`. The save says
+so (`began before sdsys joined group`) and `check.masters` shows `norights ... stale-session`. Sign
+off and on as SDSYS. The same holds the other way: `sdsys-off` does not remove the group from a
+session that is already running, so **a running SDSYS session keeps its write access until it
+ends**; a stolen running session keeps it too.
 
 **Two things are not delivered.**
 
@@ -254,15 +274,21 @@ prints a line for each of these, in the form *kind*: *account* *voc or dict* {*f
 | `differs` | the copy is not the account's record (an edit made outside SD, or a change the journal lost) |
 | `missing` | the account has the record and the copy does not |
 | `extra` | the copy has a record the account does not have: a dictionary the account no longer holds, a record deleted at the operating system level, or an account that is not registered |
-| `nonwritable` | the VOC, or a dictionary, has a directory without group search and write, or a subfile (`%0`, `%1`) without group write. A save of a copy is written as a member of the account's group, so it needs the modes. (The SDSYS account's own files are not asked this: `sdsys` writes them as their owner, and the master files' dictionaries among them are 0700.) |
-| `norights` | the modes are right and **this session** still cannot write the file. The last word says why: `mode` (the owner's permission, for a session that is the owner), `stale-session` (the group lists `sdsys` and this session began before it did: sign on again), `not-a-member` (the group does not list `sdsys`: `sd-elevate sdsys-join`), or `no-write` (anything else: a mount, an ACL) |
+| `nonwritable` | the VOC, or a dictionary, has a directory without group search and write, or a subfile (`%0`, `%1`) without group write. A save of a copy is written as a member of the account's group, so it needs the modes. **Said only of an account whose master edits are on** (the group lists `sdsys`; `modify.account acme sdsys-on` puts the modes right). (The SDSYS account's own files are not asked this: `sdsys` writes them as their owner, and the master files' dictionaries among them are 0700.) |
+| `norights` | the modes are right and **this session** still cannot write the file. The last word says why: `mode` (the owner's permission, for a session that is the owner), `stale-session` (the group lists `sdsys` and this session began before it did: sign on again), `not-a-member` (the group does not list `sdsys`; an account that is off never gets this row, it is counted - below), or `no-write` (anything else: a mount, an ACL). **Said only of an account whose master edits are on** |
 | `toolong` | the key (*account*`*`*id*, or with the file) is longer than the system's `MAXIDLEN` less two characters (the state key is two longer), and cannot be copied |
 | `unreadable` | the file is there and could not be opened or read through; or (`unreadable: acme dict`, no file named) the account's directory could not be listed or its VOC could not be read, so the list of its dictionaries is not known: **no dictionary copy of that account is then called extra, and `sync.masters` deletes none of them** (a copy is never deleted for want of being able to read the original) |
 
-When there is a `nonwritable` or `norights` row a line follows that says what they mean. Then the
-*stale* and *resync* lines if the flags are up, then "Every master copy matches its account" when
-there is no difference, and last **`Checked 5 account(s): 0 difference(s)`**. A listing stops at
-2,000 rows. (A `differs` after stage 2 no longer comes from editing a copy: a saved copy is delivered
+When there is a `nonwritable` or `norights` row a line follows that says what they mean. **Then,
+when any user account has master edits switched off, one line says how many** (`Master edits are
+switched off for 3 account(s): the sdsys user is not in their group. To switch one on: modify.account
+<account> sdsys-on`). **Those accounts are counted, once each, and are not differences**: nothing is
+said of their modes, and the number of differences does not include them. (An account counts as off
+when its files belong to another user and its group does not list `sdsys`; the SDSYS account, a group
+account and any account whose files `sdsys` owns are never off, because `sdsys` writes them as their
+owner. On a machine that has no `sdsys` user nothing is off.) Then the *stale* and *resync* lines if
+the flags are up, then "Every master copy matches its account" when there is no difference, and last
+**`Checked 5 account(s): 0 difference(s)`**. A listing stops at 2,000 rows. (A `differs` after stage 2 no longer comes from editing a copy: a saved copy is delivered
 or refused. It comes from a change made to an account without the journal hearing of it.)
 
 **`list.master.pending`** shows the journal lines that have not been applied and the flags, and
@@ -279,7 +305,8 @@ verb, and the page is refused before it reads anything to anyone who is not the 
 needs a window of 140 columns by 43 lines. The top box says whether the master files are set up
 (or prints the verb's own sentence that they are not), what the journal holds, whether the
 *stale* or *resync* flag is up, how many accounts were compared and how many differences there
-were, and why the last save of a master record in this session was refused. The list is every
+were, how many accounts have master edits switched off (a line of its own, when there are any), and
+why the last save of a master record in this session was refused. The list is every
 registered account with its state — *in sync* or *n differences* — and, last, any account that
 has master copies but is not registered (*not registered: n to remove*). The box under it lists
 the differences of the account under the cursor, one line each, and explains the state in plain
@@ -313,45 +340,89 @@ cannot make a journal write fail or overflow, so that display is read from the s
 ## Who is in the group, and what the files must say
 
 The save needs the `sdsys` user in the account's group **and** the account's files writable by that
-group. Both are arranged where an account is made, and repaired where one is brought forward.
+group. **As delivered neither is arranged for a user account: it is the administrator's act.** The state
+*is* the Linux group membership, as it is for `ssh` and the API (`sdssh`, `sdapi`); nothing is written
+to the register, and there is no row for it in the gate matrix (`tool.gates`).
 
-**A new user account** gets its group `sdu_`*name* from `create.account`, which makes it with `root`,
-`sdsys` and the user as members. If the group was already there (an attached user, an account made
-again) and does not list `sdsys`, `create.account` adds it through `sd-elevate sdsys-join`; if that
-fails it says so, with the command that repairs it, and still makes the account. A **group account**
-is made with `root` and `sdsys` in its group `sdg_`*name* and is owned by `sdsys`, so it needs
-nothing. **`delete.account` needs nothing**: the group goes with the account.
-
-**The install and every upgrade** run a walk over the register, before the master files are filled,
-which says what it did (the numbers below are an example):
+**`modify.account` *name* `sdsys-on` and `sdsys-off`** (a user account only; a group account has no
+group of its own for the `sdsys` user and is refused: it owns the files of a group account, so it needs
+nothing):
 
 ```
-Putting the sdsys user in the group of every account, and making each account's VOC and dictionaries writable by that group.
-  The sdsys user is put in the group of every account, and the VOC and dictionaries of each account are made writable by that group,
-  so that SDSYS can write a master edit into an account's own files.  This gives the sdsys user write access to those files in every account, and to anything else in an account that its group may write.
-  sdsys is now in the group sdu_acme (account acme)
-  acme: group-write: 3 directories and 6 file(s) changed, 0 already right, 0 skipped
-  sdsys put in the group of 1 account(s); it was in 1 already.  Modes made right for 1 account(s); 1 were right already; 1 left as they are (their directory's group is not the account's own, as the shared account's).
+modify.account acme sdsys-on
+modify.account acme sdsys-off
 ```
 
-This is what brings a kept install forward: when the old `sdsys` user is removed its memberships go
-with it. For each registered account, **`sdu_`*name* without `sdsys` gets it** (a group account's
-group is never asked: it has `sdsys` from the day it is made), and **an account directory directly
-below `/home/sd/user_accounts` or `/home/sd/group_accounts` has its VOC and dictionaries made group
-writable, but only when the directory's group is the register's own group for the account.** The
-shared account is not (its directory belongs to `sdusers`, and its modes are its own); neither is an
-account whose directory is somewhere else. A failure is a warning with the command that repairs it;
-it does not stop the install, and running the installer again repeats the walk.
+* **`sdsys-on`** puts the `sdsys` user in the account's group (`sd-elevate sdsys-join`) and then makes
+  the account's VOC and dictionaries group-writable (`sd-elevate group-write`). It says `Account acme:
+  master edits are on. The sdsys user is in the group of the account and can write everything that
+  group may write. Sign on again as SDSYS; a session already running does not have it`. **It can be
+  said again**: for an account that is already on it runs `group-write` again, which repairs a mode (a
+  VOC or dictionary that arrived by `restore.account` or a copy at the operating system level, and
+  that `check.masters` shows as `nonwritable`) and changes nothing else. The state it prints is read back from `/etc/group`: a read back that does not show the
+  wanted state is reported as a failure, never as a success (`Account acme: ... failed, status 2`).
+* **`sdsys-off`** takes the user out (`sd-elevate sdsys-leave`) and says `Account acme: master edits are
+  off`. For an account that is already off it says `acme already had that access; nothing changed`.
+  **It does not end a session of SDSYS that is already running** (a process keeps the groups it started
+  with), so that session keeps its write access until it ends.
+* The two words conflict only with each other (`modify.account acme sdsys-on sdsys-off` is refused,
+  nothing changed) and may be given in a command with other words. Both are audited, in lower case:
+  `modify.account sdsys-on account=acme`, and `sd-elevate` writes a line of its own to the system log
+  (`journalctl -t sd-elevate`).
+* **`create.account` does not switch it on**, and neither does the installer's "Open every access gate"
+  answer: the installing user's account is delivered off like every other. Type it.
 
-**Two `sd-elevate` verbs do the work, each confined**, and neither is more than the walk and
-`create.account` need:
+**What is expected to stop working when an account is off.** A save of its master record (above). So
+is **SDSYS writing inside the account in any other way**: `logto` the account and make a file, edit a
+program, catalogue; an interactive `update.accounts` for it; `sd -A`*account* from the operating
+system. (The installer's own `update.accounts all` runs as root and is not affected.) `create.account`,
+`delete.account`, `backup.account`, `restore.account`, `sync.masters`, `check.masters`, and reading the
+account (`logto` and a listing) are done by the root helper or only read the files, and are expected to
+work. **This is read from the modes and the code; it has not yet been measured on an install** (the
+witness, `witness-masters.sh` sections 3 to 5, is written to measure it). Before 1.2-0 that general
+write was there for every account, because the membership was; switch the account on for the time SDSYS
+needs to work inside it.
+
+**A new user account** gets its group `sdu_`*name* from `create.account` with `root` and the user as
+members, and no one else. A **group account** is made with `root` and `sdsys` in its group
+`sdg_`*name* and is owned by `sdsys`, so it needs nothing. **`delete.account` needs nothing**: the group
+goes with the account.
+
+**The install and every upgrade** make one decision, **once**, about the accounts that a release before
+1.2-0 put the `sdsys` user in the group of. The question is asked up front, with the installer's other
+questions, only while the marker `/home/sd/$groups.ruled` is absent and some `sdu_` group lists `sdsys`:
+
+```
+The sdsys user is in the group of 3 user account(s): an earlier release put it there, and it can write everything those groups may write in those accounts.
+As delivered now, the sdsys user is in no user account's group, and SDSYS puts it in one with modify.account <account> sdsys-on and takes it out with sdsys-off.
+This is asked once. Answer n to take it out of those groups now.
+Keep the sdsys user in the group of 3 account(s) (it can then write their files)? (y/N)
+```
+
+**The default is n**, and it is also the answer when no answer can be read (no terminal, a closed
+input; the installer prints `No answer could be read: N.`). With `n` the install runs
+`sd-elevate sdsys-leave` for each of those groups and prints each (`the sdsys user is no longer in the
+group sdu_acme`); with `y` it changes nothing. **Then it writes the marker**, so that the
+administrator's later `sdsys-on` or `sdsys-off` stands: with the marker present the installer does not
+ask and does not touch a group. A fresh install, and an upgrade that finds the user in no group, write
+the marker without asking. **If a group could not be left, the install warns (with the command that
+repairs it), goes on, and does not write the marker**: running the installer again asks again. The
+marker is in `/home/sd`, not in the sdsys directory, because `deletesdcore.sh` removes the sdsys
+directory in every cycle and would lose it; `/home/sd` is kept with the accounts and removed with them.
+(Taking the marker away asks the question again. The question lists only groups named `sdu_`*name* whose
+member list holds the whole name `sdsys`; `sdusers` and a group account's group are never asked about.)
+
+**Three `sd-elevate` verbs do the work, each confined**, and none is more than `modify.account` and the
+install need. Each leaves a line in the system log (`logger -t sd-elevate`) after it has changed
+something:
 
 | `sd-elevate` | does | refuses |
 |---|---|---|
 | `sdsys-join sdu_`*name* | puts the user `sdsys`, **and no other user**, in that group (`usermod -aG`: it adds, it never replaces) | any group that is not `sdu_`*user* of an SD user who exists (not `sdusers`, not a route group, not `sdg_`, not `sdu_root`, not `sdu_sdsys`), a group that does not exist |
+| `sdsys-leave sdu_`*name* | takes the user `sdsys`, **and no other user**, out of that group (`gpasswd -d sdsys`: it removes that one membership and no other); a group that does not list `sdsys` is answered `sdsys is not in sdu_`*name* with exit 0 and left as it is | the same groups as `sdsys-join`, and the same user part; the user is written in the helper, never an argument and never taken from the environment |
 | `group-write` *account directory* | gives the account's own group write on its VOC and its dictionaries (g+rwx and setgid on the directories, g+rw on the files in them) | an account directory that is not a direct child of `user_accounts` or `group_accounts`, or whose group is not `sdu_`*name* (`sdg_`*name* for a group account): never `sdusers`, which every account is in |
 
-`group-write` changes modes only, never owners or groups. It works on file descriptors opened
+`sdsys-join` and `sdsys-leave` change one membership of one user and nothing else. `group-write` changes modes only, never owners or groups. It works on file descriptors opened
 without following links, so a link a user plants in the tree cannot make root change another file;
 it changes only what has the account directory's owner (or `sdsys`) and the account's own group,
 leaves the other bits as they are, and does not leave the account directory's filesystem. It says
@@ -364,24 +435,28 @@ already group-writable (664 files, 775 directories). A user who changes the umas
 verb) would make them closed, so **SD gives a VOC or a dictionary that it has just made its group's
 write bit, whatever the umask**: the directory g+rwx and setgid, `%0` and `%1` g+rw. It does so
 **only where the account's own directory lets that group write** (if the directory is 755, nothing
-is added: a group that cannot write the account directory is not given the VOC), only to what the
+is added: a group that cannot write the account directory is not given the VOC), **and only where
+the `sdsys` user is in that group** (from 1.2-0: where master edits to the account are off, group
+write on a new VOC or dictionary would serve nobody, and nothing is forced), only to what the
 session itself has just made, and it adds group bits and takes nothing away. The data file next to
 a dictionary is not touched. A VOC or dictionary that arrives some other way (`restore.account`, a
 copy at the operating system level) keeps the modes it came with: `check.masters` lists any that
-are not writable, and the install's upgrade (`sd-elevate group-write`) puts them right.
+are not writable in an account that is on, and `modify.account` *name* `sdsys-on` (`sd-elevate
+group-write`) puts them right, the ones made while the account was off included.
 
 ## Accounts being made, restored and deleted
 
-* **`create.account`** puts `sdsys` in the account's group when it is not (above), and copies the
+* **`create.account`** makes the group of a user account without `sdsys` in it (master edits start
+  off; `modify.account` *name* `sdsys-on` switches them on), and copies the
   new account's VOC and dictionaries as soon as its register record is written. (The VOC is filled
   before the record exists, when the hook cannot yet tell whose it is.)
 * **`delete.account`** removes the account's copies, after the register record has gone.
 * **`restore.account`** copies the restored account, because a restore replaces its files at the
   operating system level. It does not change their modes; `check.masters` shows any that the
   archive did not keep group-writable.
-* **The installer** runs the walk above and then the whole of `sync.masters` on every install, after
-  the accounts have been brought forward and before the register is handed to `sdsys`, and prints a
-  warning, and goes on, if either did not finish.
+* **The installer** runs the one-time ruling above and then the whole of `sync.masters` on every
+  install, after the accounts have been brought forward and before the register is handed to `sdsys`,
+  and prints a warning, and goes on, if either did not finish.
 * **`update.accounts`**, like every other writer, writes through the hook and needs nothing more.
 
 ## What it does not do
@@ -410,10 +485,13 @@ are not writable, and the install's upgrade (`sd-elevate group-write`) puts them
   a program that edits master records must read them first, as `ed` does.
 * **It cannot be shown to work on a machine with one operating-system user.** The sandbox suite shows
   every part but ownership and groups; `witness-masters.sh` (run by the owner as root, on a real
-  install) shows the group membership, the modes, root changing only the account's own files, an
-  edit reaching a user's VOC at once, the refusal for a session that began too early, and that the
-  master files are owned by `sdsys`, have no group or other bit, and cannot be opened by a user who is
-  in `sdusers` (section 6). None of that has been run on an install yet.
+  install) shows the group membership and its two verbs, the modes, root changing only the account's
+  own files, the refusal for an account that is off, the administrator's `sdsys-on` and the edit
+  reaching a user's VOC at once, the refusal for a session that began too early, the installer's
+  one-time ruling, what is not lost when an account is off, the three routes of the first page
+  (that they are there), and that the master files are owned by `sdsys`, have no group or other bit,
+  and cannot be opened by a user who is in `sdusers` (section 6). **The version of the witness for
+  1.2-0 has not been run on an install yet.**
 
 ## Cost
 

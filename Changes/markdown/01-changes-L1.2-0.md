@@ -400,8 +400,11 @@ SD's own code. The sections above are the openQM items that were built, with the
 |---|---|---|
 | `bp-on` and `bp-off` | Added | per-account switch for saving a change to a program file (source or object code) |
 | `check.masters` | Added | compares every account's VOC and dictionary records with the master copy SDSYS keeps and reports each difference |
+| `check.masters` accounts off | Changed | says once how many accounts have master edits switched off; `nonwritable` and `norights` are said only of accounts that are on; `tool.masters` shows the count |
+| `create.account` | Changed | a user account's group is made with `root` and the user; the `sdsys` user is no longer put in it |
 | `create.account` audit line | Changed | the audit line ends `gates=` with every access the command granted, or `gates=none` |
 | `create.account group` | Changed | fixed: the four record files of a new group account now get the account's own group (they were left in `sdusers`) |
+| `create.account` start and pins words | Changed | takes `start-menu`, `start-terminal` and `pins-on` on any kind of account; a refused word makes nothing; the audit line gains `pins-on` and a `start=` tail |
 | `dict-on` and `dict-off` | Added | per-account switch for saving a change to a dictionary |
 | `docs.install` | Added | SDSYS puts a directory of PDFs into the shared account's `pdf` directory |
 | `files-admin-on` | Added | third remote permission: the login may configure, index, create and delete files on this server (group `sdfilesadmin`) |
@@ -412,15 +415,20 @@ SD's own code. The sections above are the openQM items that were built, with the
 | `master files` | Added | SDSYS keeps a copy of every account's VOC and dictionary records (`voc_master`, `dict_master`) current by a journal |
 | `master files` access | Changed | fixed: they were readable and writable by every SD user; they are owner sdsys, mode 0600 and 0700 |
 | `master files` saving | Added | saving an account's master copy writes it into the account at once, or refuses with the reason and changes nothing |
+| `master files` saving | Changed | an account whose group does not list `sdsys` (the delivered state) is refused with a message that names `modify.account <name> sdsys-on`; nothing is changed |
 | `modify.account` | Changed | takes more than one action in a command (`modify.account fred sh-on os-on voc-on`), all carried out or none |
 | `modify.account files-off` | Changed | fixed: deals with a leftover `sdfileswrite` membership instead of making it live at the next `files-on` |
 | `net-on` and `net-off` | Added | per-account switch for SDNet, off as delivered |
 | new account defaults | Changed | a new account has no ssh, no API, no shell and no `os.execute`; SDSYS opens each, account by account |
 | `restore.account` | Changed | fixed: no longer overwrites a different global program of the same name |
+| `sd-elevate` | Changed | new verb `sdsys-leave`, and `conf-set` (see `set.config`); `sdsys-join`, `sdsys-leave` and `group-write` write a line to the system log |
 | `sd-on` and `sd-off` | Added | per-account switch: programs may reach files under the directory of any SD account the user could `logto` |
-| `sdsys` operating system user | Changed | now a member of every account's group, so it can write each account's VOC and dictionaries |
+| `sdsys` operating system user | Changed | a member of no user account's group as delivered (a release before 1.2-0 put it in every one); `sdsys-on` puts it in one |
+| `sdsys-on` and `sdsys-off` | Added | per-account switch for the `sdsys` user's membership of the account's group (master edits, and SDSYS writing inside the account); off as delivered |
+| `set.config` | Added | changes one of 14 tuning parameters of `sd.conf` (administrator, through the root helper): a name on the helper's list and a whole number inside the range SD enforces; the old file is kept as `sd.conf.bak` |
 | `set.start.default` | Added | chooses where accounts start: the home screen or the command prompt |
 | `set.tile` | Added | switches a home screen tile on or off for an account; `set.tile` alone lists what is off |
+| `set.tile` standard ids | Changed | the seven development tiles and `recent` are standard ids (15 in all); the Back tile of a sub-menu cannot be turned off |
 | `set.viewer` | Added | allows one PDF reader for the `pdf` verb; none is allowed as delivered |
 | `sh` and `os` switches | Added | `sh-on`, `sh-off`, `os-on`, `os-off`: per-account switches for the shell and for `os.execute`, off for a new account |
 | `shared` account | Added | a group account whose files every account opens by name, with no `logto` or pointer; made by the installer |
@@ -431,10 +439,11 @@ SD's own code. The sections above are the openQM items that were built, with the
 | `tool.accounts` | Added | full-screen page of every account: its kind, suspension, the gates that are on and who is signed on; suspends or lifts, adds or takes away a person of a group account, creates (the verb asks for a password on the terminal) and deletes (after the name is typed) |
 | `tool.audit` | Added | full-screen page that reads the audit trail from its end, a screen at a time: filters by time, event, account, user and text, go to a time, follow, the rotated files, and the lines shown saved to a record; it changes nothing else |
 | `tool.backups` | Added | full-screen page for backups and restores: the saved directory, the archives in it with each manifest, who else is signed on (a backup and a restore need everyone else out), and `backup.account`, `restore.account` and `set.backup.directory` behind a box |
-| `tool.config` | Added | full-screen page that shows every `sd.conf` parameter with what SD is running with, what the file says, the default and when a change takes effect, and names a line SD does not know; it only looks and changes nothing |
+| `tool.config` | Added | full-screen page that shows every `sd.conf` parameter with what SD is running with, what the file says, the default and when a change takes effect, and names a line SD does not know; `E` changes one of 14 tuning parameters through `set.config` behind a box answered Run, and shows why and the line to add by hand for the rest |
 | `tool.gates` | Added | full-screen matrix of every account against every gate; changes go through `modify.account`, never by themselves; in any other account the same verb is a read-only page of what that session may do |
 | `tool.masters` | Added | full-screen page for the master files: set-up state, journal, each account against its copy; runs `sync.masters` |
 | `tool.menus` | Added | full-screen page for the home screen: where each account starts, which tiles are on, who may add programs |
+| `tool.menus` | Changed | a row for each development tile and the Recent group (17 rows in the Menu box) |
 | `tool.remote` | Added | full-screen page for everything that reaches SD from outside: the API and ssh doors as the machine reports them (changed after a box, and the word OPEN to turn one on), the routes of each user account, the SDNet servers (delete, define with the terminal given to `set.server`), who is connected and this machine's TLS identity |
 | `tool.sessions` | Added | full-screen page of sessions and locks; logs a session out, releases a lock, stops new logins |
 | `voc-on` and `voc-off` | Added | per-account switch for saving a change to a VOC |
@@ -526,6 +535,7 @@ Three simple layers, with no vault and nothing on by default.
 | gates question | Added | the installer asks once whether to open every access gate for the installing user's own account; the answer is no unless `y` |
 | group account files | Changed | an upgrade puts the four record files of every kept group account back in the account's group |
 | installer source message | Changed | says which source it is downloading, the release tag or `main` |
+| `sdsys` user in kept groups | Changed | an install that keeps accounts and finds the `sdsys` user in their groups asks once whether to keep it there (no unless `y`, and no with no terminal), takes it out on no, and records the decision in `/home/sd/$groups.ruled` so a later install leaves what the administrator did |
 | `sdai` user | Added | made by the installer; removed with the accounts |
 | shared account | Added | made by the installer; its help text and `pdf` directory are loaded |
 | stored SDNet logins | Changed | the uninstaller removes `/var/lib/sd-net` when the accounts or the configuration are deleted |
@@ -584,6 +594,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | global catalogue modes | Changed | the kernel refuses to load a global catalogue object that others or the group `sdusers` can write (message 11930), and the installer leaves everything in `gcat` 0755 after its last compile (a fresh install left `gcat/$cproc` 0664) |
 | operating system paths | Changed | `dir()`, `select.dir`, `oscopy`, `!oscopy`, `!ioscopy`, `deleteseq` of a path, `setptr ... as pathname`, `setpu` and a VOC pointer out of the account each ask the account's `os` switch, and `sd-on` for another SD account |
 | p-code a session runs | Changed | each session reads `bin/pcode` itself, and refuses a file that others or the group `sdusers` can write; the copy in the shared segment, which any SD user with a shell could change, is no longer run |
+| phantom start-up records | Changed | a phantom runs the command, `DATA` lines, log file name and option flags of its start-up records in `$ipc` only if the process that started it sealed them (HMAC-SHA256 under a secret given only to the new process, in its environment); a record that does not check is refused, audited as `phantom refused` and reported to the parent; the phantom debugger's conversation is not sealed |
 | print file refusal | Changed | outside the account: the message names the account instead of printing `%1` |
 | privileges of a session | Changed | the administrator, `sh`, `os.execute` and `sd.accounts` bits and the gates are held in the process; the copy in the shared segment, which any SD user with a shell could change, is only shown by `listu` |
 | `sd.conf` | Changed | every new session reads it: an edit to `SH`, `SPOOLER`, `USRDIR` and the other per-session settings reaches sessions started after it, and a bad line stops new sessions from starting until it is repaired (SD and running sessions are not affected) |
@@ -609,6 +620,8 @@ Fixes that close a way round a gate, and what the gates now ask.
 | AccuTerm terminal types | Removed | the eleven `-at` terminal types and AccuTerm's escape sequences |
 | `debugger` full-screen display | Added | on a terminal with an alternate screen the debugger takes the whole screen: source, breakpoints, messages and the command line; F1 help, F4 the program's screen |
 | home screen | Added | every account starts in a screen of tiles; arrows, Tab, letters, mouse, F5, F10 |
+| home screen Recent group | Added | `View > Recent group`: the tiles started last, newest first, six at most; off as delivered, the person's own record in `&menus&`; `set.tile account recent off` is the administrator's wall |
+| home screen sub-menus | Added | a tile can open a second page of tiles with a Back tile, Esc and the path on the status line; eight deep; the delivered page declares none yet |
 | `ide` | Added | tree, tabs, compile errors table, find, run, catalogue and debug; Ctrl-E hands a record to `sed` |
 | `ide` redraw | Changed | no flash; a click on the menu bar opens the menu; the active pane is marked `[*]` |
 | immediate messages | Changed | `message ... immediate` is shown in a box on any terminal |
@@ -618,6 +631,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `sed` | Changed | the full-screen editor is back with a menu bar, the keys most editors have (`emacs` in `&sed.options&` keeps the old ones), undo and redo, syntax colour and the mouse; its keys are decoded from the terminal's terminfo entry <!--s 365--> |
 | `sed`, `ide`, `ed` input ended | Changed | fixed: they used all of a processor for ever when their input had ended |
 | `term 120,36` at login | Removed | `login` no longer sends it |
+| toolkit pages: window limit and record-box titles | Changed | a window above 500 by 300 is refused before the screen is taken (it cost minutes); the boxes of a record write or delete are titled Write this record? / Delete this record? / Update these records? / Put these records back?; "Press Enter to return" names no screen |
 
 ## NO CHANGE
 

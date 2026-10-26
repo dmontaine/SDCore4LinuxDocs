@@ -91,7 +91,7 @@ is not a setting.
 | | |
 |---|---|
 | Makes a Linux user account | `useradd -m`, password locked until SD sets it |
-| Creates the group `sdu_<name>` | and writes it to the account record, with `root`, `sdsys` and the user in it. **The `sdsys` user is in the group of every account**, so that SDSYS can change the account's VOC and dictionaries by saving their master records; that gives the `sdsys` user write access to them. (If the group was already there without `sdsys`, `sdsys` is added.) |
+| Creates the group `sdu_<name>` | and writes it to the account record, with `root` and the user in it. **The `sdsys` user is not in it as delivered**: `modify.account` *name* `sdsys-on` puts it there, so that SDSYS can change the account's VOC and dictionaries by saving their master records (that gives the `sdsys` user write access to everything the group may write), and `sdsys-off` takes it out. (A group account's group has `root` and `sdsys`: `sdsys` owns its files.) |
 | Joins `sdusers` | which is what grants access to the data tree, and is what the ssh boundary matches against |
 | Prompts for a password | in SD, masked; it never goes on a command line |
 

@@ -152,7 +152,7 @@ local login.
 
 **`create.account`** · **`delete.account`** · **`modify.account`** ·
 **`update.accounts`** · **`clean.account`** · **`backup.account`** ·
-**`restore.account`** · **`set.backup.directory`** · **`settings.report`** ·
+**`restore.account`** · **`set.backup.directory`** · **`set.config`** · **`settings.report`** ·
 **`unlock`** · **`config`** ·
 **`listu`** · **`list.readu`** · **`list.locks`** · **`clear.locks`** ·
 **`lock`** · **`logout`** · **`set.date`** · **`remote.api`** ·

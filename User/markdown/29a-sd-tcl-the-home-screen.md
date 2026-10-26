@@ -78,8 +78,9 @@ date and time, Switch account and Sign out) stays where it is.
 | Page Down, Page Up | the first tile of the next and of the previous group |
 | a letter | the next tile whose label begins with it |
 | Enter, the space bar | start the tile |
+| Esc, Backspace | back one page, when you are in a sub-menu (below); on the top page they do nothing |
 | F5 | build the page again |
-| F10 | open the menu bar (File, Go, View, AI, Help) |
+| F10 | open the menu bar (File, Go, View, AI, Help): **Go** has Terminal, Switch account and Back (Back can be chosen only in a sub-menu); **View** has Refresh and the Recent group |
 | Ctrl-Q | sign out (asks first; **Cancel** is the button Enter chooses, so a stray Enter signs nobody out) |
 
 A **click** starts a tile; the **wheel** scrolls the page three rows; a click on the
@@ -130,8 +131,8 @@ accounts with no setting of their own do with `set.start.default menu` or
 when you type `logto` at the prompt to enter an account. Starting in the menu does
 not confine anyone: the Terminal tile is always there.
 
-The screen is never given to a session that cannot use it: a window under 140 by 43,
-a pipe, a phantom, an API server, or a `logto` that a program ran with `execute`
+The screen is never given to a session that cannot use it: a window under 140 by 43
+or over 500 by 300, a pipe, a phantom, an API server, or a `logto` that a program ran with `execute`
 (the home screen runs its own `logto` itself and shows the new account's page).
 
 ## Tiles the administrator turns off
@@ -170,6 +171,48 @@ so it adds no access: the gates apply as at the prompt. The list is the record
 `home` of the file `&menus&` in your own account. If the administrator takes the
 permission away (`pins-off`) the group disappears from your screen and `my.menu`
 says it is not allowed; the list stays in your file.
+
+## The Recent group
+
+```
+View > Recent group
+```
+
+A group of **the tiles you started last**, newest first, at the top of the page: six at
+most. **It is off as delivered.** Turn it on in the **View** menu (*Recent group (off)*; the
+same entry turns it off, and says what it is now). The first time it is on, SD makes the
+file `&menus&` in your own account if it is not there, as `my.menu` does, and keeps the
+list in its record `recent`; the list is one word `on`, then one id for each tile.
+
+* **What is kept is an id, never a command.** The group is built from the page as it is
+  now: a tile that the administrator has turned off, or that is not on your page, is not
+  shown, and a record that someone edited by hand cannot make the page offer a tile it does
+  not have. Starting a tile of the group runs the command of that tile, exactly as the tile
+  in its own group would, and puts it first.
+* **The tiles you added yourself (`my.menu`) are not kept here**: they are your own list
+  already.
+* **Turning it off forgets the list** (the record is deleted), and **while it is off nothing
+  is written**: starting a tile leaves your file as it was.
+* **The administrator can turn it off for your account** (`set.tile account recent off`, or
+  the *Menu management* page): the group is then not on your page, nothing is read or written
+  for it, and the View entry cannot be chosen. What you had kept stays in your file.
+* If the file `&menus&` cannot be made or written, turning the group on says so (*The
+  Recent group could not be turned on*) and leaves nothing behind. `my.menu` makes the file
+  the same way and meets the same limit.
+
+## Pages inside pages: sub-menus
+
+A tile can open a **second page of tiles**. The new page has a **Back** tile at the left of
+the header (your name moves right to make room), and the status line shows where you are:
+`[Home > Develop]`. **Esc**, **Backspace**, the Back tile and the *Back* entry of the Go menu
+each go back one page, with the tile you left selected.
+Pages can be nested **eight deep**; a page that is already open above cannot be opened again
+(*... is already open above this page*), and a menu none of whose tiles is on your page has no
+tile to open it. Switch account starts the other account at its top page.
+
+**No tile of the delivered page opens a sub-menu yet**: the mechanism is in the page table
+of the `home` program, and the delivered table has not used it. The tiles you start inside a
+sub-menu are kept by the Recent group like any other.
 
 ## The AI line
 
@@ -216,6 +259,7 @@ catalogue](24-sd-tcl-programs-and-the-catalogue.html)), and so are the AI in [SE
 [CED](27b-sd-tcl-ced.html) and [the debugger](17-sd-basic-debugging.html). The AI line on the
 administrator's pages other than this one is planned and not built.
 
-Programs the administrator assigns to an account, sub-menus that open and return, a
-group of the last commands you ran, and a live line on a tile are planned and not
-built; today the page is the table above plus your own programs.
+Programs the administrator assigns to an account, a menu builder for the holder
+(grouping one's own programs into sub-menus) and a live line on the account holder's tiles
+are planned and not built; today the page is the table above plus your own programs and, if
+you turn it on, the Recent group.

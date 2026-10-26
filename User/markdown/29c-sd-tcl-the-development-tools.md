@@ -7,10 +7,19 @@ tool.voc
 ```
 
 These pages are for **the account you are signed in to**. They work in every account (they are in
-everybody's vocabulary), they need a real terminal of at least **140 columns by 43 lines**, and they add no
+everybody's vocabulary), they need a real terminal of at least **140 columns by 43 lines** (and no bigger than **500 by 300**:
+a larger window is refused at once, in a line that gives the size it found, because taking such a screen
+costs time that grows with the square of its height), and they add no
 access: every change they make is a command you could have typed, run for you after a box that shows the
 exact command. A gate that is off for your account is met as the command's own refusal; the page shows
 the gates you hold, and never tries an operation to find out.
+
+The box that asks before a command is titled *Run this command?*. The few changes that are not commands -
+a record the page writes or deletes itself - say what they are about to do instead: *Write this record?*
+(an item of a dictionary in `tool.dict`, a saved query in `tool.query`), *Delete this record?* (a saved
+query), *Update these records?* and *Put these records back?* (`tool.bulk`). The default button is still
+Cancel. When a page hands the terminal to a command and asks *Press Enter to return*, Enter brings back
+the page.
 
 The home screen has a tile for each of them, in the group *Develop*.
 
@@ -170,8 +179,8 @@ and whether it has been compiled, and the record as it is stored.
 | F1, **?**, a click on **[?]** | help |
 | Ctrl-Q | leave |
 
-**Making an item.** N asks for the id (letters a-z, digits, dot, dash and underscore; capitals are put in lower
-case; an id that already exists in any case is refused), then the kind of item. For a data item it asks the
+**Making an item.** N asks for the id (letters a-z, digits, dot, dash and underscore, starting with a letter or a
+digit; capitals are put in lower case; an id that already exists in any case is refused), then the kind of item. For a data item it asks the
 number of the field (0 to 9999), the heading, the justification (L, R or T), the width (1 to 200), the
 conversion (checked against the conversions SD knows), single or multivalued and, for multivalued, the
 association. An A-type item is asked in the Pick layout (field, heading, association, conversion, correlative,

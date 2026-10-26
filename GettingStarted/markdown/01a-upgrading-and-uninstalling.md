@@ -47,15 +47,19 @@ registering an account from an older system, say. To refresh one account
 instead, `update.accounts` (no `all`) run **in that account** updates just
 it and offers to do the rest.
 
-**Every install, kept accounts or not, puts the `sdsys` user back in the group of
-every account and makes each account's VOC and dictionaries writable by that group**
-(it says what it did, and warns without stopping if it could not). The old `sdsys`
-user is removed with an uninstall and takes its memberships with it, and SDSYS
-needs them to change an account by saving its master record. This gives the
-`sdsys` user write access to those files in every account: see
-[The master files](19-the-master-files.html) in the administrator set. Running the
-installer again repeats it - so taking `sdsys` out of an account's group by hand
-(`gpasswd -d`) lasts only until the next install or upgrade, which puts it back.
+**The `sdsys` user is in no user account's group as delivered** (from 1.2-0), and
+an install does not put it there. A release before 1.2-0 did, for every account, so
+an install that keeps accounts and finds the `sdsys` user in their groups **asks once**
+whether to keep it there: the answer is no unless you type `y`, and it is also no
+when nothing can be read (no terminal). With no, it takes the user out of those
+groups and says so. After a `y`, or after a no that took the user out of every one of
+those groups, it records the decision in `/home/sd/$groups.ruled` (a group it could not
+leave is a warning and no record, so the next install asks again),
+and from then on the installer does not touch these groups, so what the administrator
+does with `modify.account` *name* `sdsys-on` and `sdsys-off` stands. See
+[The master files](19-the-master-files.html) in the administrator set for what
+the membership gives the `sdsys` user (write access to everything the account's group
+may write) and for what the default does and does not protect.
 
 Two limits are worth knowing before you rely on it.
 

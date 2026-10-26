@@ -58,7 +58,7 @@ Neither root can be changed. The installer does not ask.
 |---|---|
 | `sdusers` group | the Linux group every SD account belongs to |
 | `sdsys` user | the one administrator account — a real Linux user, its own home, shell and password |
-| `sdu_<name>` | one supplementary group per account, created by `create.account`; **the `sdsys` user is a member of every one**, and every account's VOC and dictionaries can be written by that group, so that SDSYS can change an account by saving its master record — this gives the `sdsys` user write access to those files in every account (see [The master files](19-the-master-files.html)). The install puts `sdsys` back in the groups of accounts it keeps |
+| `sdu_<name>` | one supplementary group per user account, created by `create.account` with `root` and the user in it; **the `sdsys` user is a member of none of them as delivered**. `modify.account` *name* `sdsys-on` puts it in one, so that SDSYS can change that account by saving its master record — which gives the `sdsys` user write access to everything the group may write (see [The master files](19-the-master-files.html)); `sdsys-off` takes it out. An install that finds it in the groups of accounts it keeps asks once whether to keep it there (the answer when nothing can be read is no) |
 | `sd.service`, `sdclient.socket` | the `systemd` units, enabled at boot |
 | `sd-lnxd.service` | the unit that runs the daemon `sdlnxd` and starts it again if it fails; `sd.service` wants it, so there is nothing to enable (see [The audit trail](#the-daemon-is-restarted-if-it-dies) below) |
 | the ssh boundary | a fenced block in `/etc/ssh/sshd_config` — see [Remote access and the machine](05-remote-access-and-the-machine.html) |
@@ -143,6 +143,18 @@ file's, the file is used and one line goes to the system log.
 shell: such a person can release other people's locks, log other sessions out or fill the user table. That is damage and denial of service, not a way to a
 privilege. The gates are walls for an SD *session*; a person with a shell is trusted with the segment. Giving SD users no login shell, or only the
 forced-command ssh route, is how an installation that cannot accept that closes it.
+
+**The file `$ipc`.** `$ipc`, in the system directory, is the one SD file every user's process has to write (it is `sdsys:sdusers` 0775), so a member of `sdusers`
+with a shell can write it as well. It holds working records and nothing a session is configured from: the lock that orders a phantom's start-up, the start-up
+records of a phantom (its command, the option flags it inherits, its `DATA` queue and its log file name), the messages waiting for a user, the phantom register
+that `status` shows, and the tables that `profiler`, `hsm` and `pstat` ask another session for. A phantom no longer takes its command, options, `DATA` lines or
+log file from it on trust. `phantom` seals the records with a secret that it makes for each phantom and gives only to the new process, in its environment, where
+only the same operating-system user (and root) can read it, and which the new process copies and overwrites at once. The phantom runs, stacks and sets nothing unless the seal on
+what it read checks; if it does not, the phantom ends at once, says so in its `como` log and to its parent, and writes `phantom refused` to the audit trail.
+SD does not run, stack or set anything from the other records (messages, the register and the profiler, `hsm` and `pstat` tables); they are only shown, and a
+message is shown as it was written. The conversation of the phantom debugger (`pdebug`) is still carried in `$ipc` and is trusted as the segment above is.
+The secret is kept in no file and not in the segment. That another operating-system user cannot read the environment of this user's processes is the
+operating system's rule; it has been tested here with one user only.
 
 ## The daemon
 

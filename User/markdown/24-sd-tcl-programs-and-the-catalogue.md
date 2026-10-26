@@ -223,19 +223,28 @@ With no record name it uses the active select list.
 ## Compiling dictionaries
 
 ```
-cd {dict | data} file {i-type}... {no.query} {no.page}
+cd file {i-type}... {no.query} {no.page}
 cd local
 cd all
+cd data file {i-type}...
 ```
 
 `compile.dict` is the same verb under its longer name. It compiles the A, C, I
-and S-type entries in a dictionary; with no names it does all of them, or uses
-the active select list if there is one.
+and S-type entries in the dictionary of *file*; with no names it does all of
+them, or uses the active select list if there is one. **The dictionary is the
+default: write the file's name and nothing before it** (`cd cust dbl`).
 
 | | |
 |---|---|
 | **`cd local`** | every dictionary in the account |
 | **`cd all`** | every dictionary visible from the account |
+| **`cd data file`** | reads the records of the file's *data* part as if they were dictionary items, and compiles those that look like one: a record whose first character is `C` or `I`, or `A` or `S` with something in field 8. Every other record is skipped without a word. It is for the rare file whose data holds items of that kind; on an ordinary data file a record that happens to begin with `C` or `I` is reported as a compilation error. Because it rewrites records it is held back by the edit gates as any change to a VOC, a dictionary or a program file is |
+
+> **Do not put `dict` before the file name.** An older description of this verb
+> gave the form `cd dict file`, but the word is not understood as a keyword:
+> `cd dict cust dbl` answers *File dict not found*, because `dict` is taken to be
+> the name of the file. `cd cust dbl` is the command that compiles the item
+> `dbl` of the dictionary of `cust`.
 
 Compiling a dictionary is a performance step, not a correctness one: it is what
 a query using those entries runs against.

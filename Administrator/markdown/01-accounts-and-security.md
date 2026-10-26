@@ -91,31 +91,52 @@ script) are not counted and write no line, because they are not a second person
 at the machine. Seeing the second session is not the same as stopping it; the
 audit line and the page are how you notice one you did not expect.
 
-**What the `sdsys` Linux user can write.** The `sdsys` user is a member of
-the Linux group of every user account (`sdu_`*name*), and every account's VOC
-and dictionaries can be written by that group, so that SDSYS can change an
-account's VOC or a dictionary by saving its master record (see
-[The master files](19-the-master-files.html)). **This gives the `sdsys` user
-write access to those files in every account**, and a VOC entry or an I-type
-is code that runs in the account: someone who took over the `sdsys` login
-could change what any account runs. It is not reachable from the network
-(`sdsys` has no remote access), and a process that is not a real login as
-`sdsys` is not an administrator. It was the owner's choice, made with that
-warning given, over an arrangement in which the account applies the change
-itself. To withdraw it for an account, take `sdsys` out of that account's group
-(`gpasswd -d sdsys sdu_`*name*): saving a master record to that account is then
-refused with a message, and nothing else changes. **The next install or upgrade
-puts the membership back** (its walk adds `sdsys` to the group of every account,
-and says so); there is no switch that keeps it away.
+**What the `sdsys` Linux user can write.** **As delivered, the `sdsys` user is a
+member of the Linux group of no user account** (`sdu_`*name*). The administrator
+switches it on for one account at a time, `modify.account` *name* `sdsys-on`,
+and off again, `sdsys-off` (below): with it on, SDSYS can change the account's
+VOC or a dictionary by saving its master record (see
+[The master files](19-the-master-files.html)). **While it is on, the `sdsys`
+user has write access to everything the account's group may write**, and a VOC
+entry or an I-type is code that runs in the account: someone who took over the
+`sdsys` login could change what that account runs. It is not reachable from the
+network (`sdsys` has no remote access), and a process that is not a real login
+as `sdsys` is not an administrator. **Off is a default and a record of your
+decision, not a wall against a stolen `sdsys` login**, which has other ways into
+an account's code: the files `root` runs at the next start belong to `sdsys`,
+the global catalogue is the `sdsys` user's to write, and `sdsys` may run
+`sudo /usr/local/sbin/sd-elevate` with any arguments. What the default takes
+away is the silent route; the switch is an audited act of the administrator and
+it can be taken back. Before 1.2-0 the membership was there for every account;
+an install that finds it asks once whether to keep it (see
+[The master files](19-the-master-files.html)).
+
+### The sdsys user in an account's group: `sdsys-on` and `sdsys-off`
+
+`modify.account` *name* `sdsys-on` puts the `sdsys` user in the account's
+Linux group and makes the account's VOC and dictionaries writable by that group;
+`sdsys-off` takes the user out. The state is the group membership, as it is for
+`ssh` and the API, so nothing is written to the register. The lines printed are
+`Account fred: master edits are on. ...` and `Account fred: master edits are
+off. ...`; the audit trail has `modify.account sdsys-on account=fred`, and
+`sd-elevate` writes a line to the system log. **User accounts only**: a group
+account is refused ("is not a user account"), because `sdsys` owns the files of a
+group account. `sdsys-on` can be given again to an account that is on, which
+repairs the modes and changes nothing else; `sdsys-off` for an account that is
+off changes nothing. The two words conflict only with each other. **A session of
+SDSYS that is already running keeps the groups it started with**: sign on again
+after `sdsys-on`, and after `sdsys-off` that session still has the write until
+it ends. `create.account` does not switch it on and neither does the installer's
+"Open every access gate" answer.
 
 ## Making an account: `create.account`
 
 ```
-create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {files-write-on} {files-admin-on} {ai-on} {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {files-write-on} {files-admin-on} {ai-on} {start-menu | start-terminal} {pins-on} {no.query}
 
-create.account group <name> {shared-read-off} {shared-write-on} {no.query}
+create.account group <name> {shared-read-off} {shared-write-on} {start-menu | start-terminal} {pins-on} {no.query}
 
-create.account other <name> <pathname> {shared-read-off} {shared-write-on} {no.query}
+create.account other <name> <pathname> {shared-read-off} {shared-write-on} {start-menu | start-terminal} {pins-on} {no.query}
 ```
 
 | | |
@@ -152,6 +173,26 @@ Account fred has shared.read yes, shared.write no
 Account fred has NET no
 Account fred has files no
 Account fred has files-write no
+```
+
+**Two words set up the home screen, in the same command** (they are not gates; *Where a
+session starts* and *What the home screen shows*, below): `start-menu` or `start-terminal`
+says where the new account starts, and `pins-on` lets the person add programs of their own
+to their home screen. Neither is typed, the account follows the system default
+(`set.start.default`) and may not add programs of its own. They are the words `modify.account`
+takes, and the verb says them back in the same lines (`Account fred starts at: menu`,
+`Account fred may add its own programs to the home screen: yes`); **any kind of account may have
+them**, a group or an `other` account included. Two different start words in one command are
+refused ("start-menu and start-terminal set the same access to different states ... give one of
+them") before anything is made, and so is a start word that is neither (a program that calls the
+account-making routine itself gets "Unexpected token"): the Linux user, the password and the
+directory come after, so a refused word creates **nothing**. The words that restate what an
+account has when they are left out, `start-default` and `pins-off`, are for `modify.account`
+only, as `shared-read-on` is. The audit line gains `pins-on` in its `gates=` list and, when a
+start word was typed, a tail `start=menu` or `start=terminal`:
+
+```
+create.account account=fred type=user gates=pins-on start=menu
 ```
 
 **The installing user's own account is no exception**: the account the
@@ -878,6 +919,7 @@ modify.account account shared-read-on | shared-read-off
 modify.account account shared-write-on | shared-write-off
 modify.account account files-on | files-off
 modify.account account files-write-on | files-write-off
+modify.account account sdsys-on | sdsys-off
 modify.account account start-menu | start-terminal | start-default
 modify.account account pins-on | pins-off
 modify.account account suspended | unsuspended
@@ -1132,7 +1174,9 @@ set.start.default                        says which it is now
   `fred already starts that way; nothing changed` when the word is the one already set. It is
   audited as `modify.account start-menu account=fred`, and `set.start.default menu` is audited
   as `set.start.default menu`.
-* `create.account` does not take the words yet: make the account, then use `modify.account`.
+* `create.account` takes `start-menu` and `start-terminal` too, so an account can be made
+  with its start in one command (see *Making an account*); `start-default` is not a word of
+  `create.account` (an account made without a start word follows the default already).
 
 ### What the home screen shows: `set.tile`, `pins-on` and the menu management page
 
@@ -1143,8 +1187,10 @@ tool.menus
 **Menu management** is a full-screen page for the administrator (SDSYS's VOC only; it
 is also a tile on the administrator's own home screen). It lists every account but
 SDSYS with where it starts, whether it may add its own programs, and the tiles turned
-off for it; for the account you select it shows the standard tiles with `[x]` on and
-`[ ]` off, and a box that says in plain words what the settings mean. **It writes
+off for it; for the account you select it shows the standard tiles (the seven of the
+account, the seven development tiles and the Recent group: 15 rows after the two settings
+above them) with `[x]` on and `[ ]` off, and a box that says in plain words what the
+settings mean. **It writes
 nothing itself:** every change is the command it will run, shown with its effect in a
 box you answer *Run* or *Cancel* (Cancel is the button Enter chooses), run by the same
 verbs you can type, and the line under the page is the verb's own answer.
@@ -1165,9 +1211,27 @@ modify.account account pins-off   they may not (the delivered state)
 
 * **Tiles are on as delivered and are turned off one account at a time**; there is no
   setting for every account. The standard tile ids are `editor`, `ide`, `ced`,
-  `terminal`, `keys`, `switch` and `signout`. **Sign out cannot be turned off**: a
-  person must always be able to leave. Any other id is accepted and said not to be
-  standard.
+  `terminal`, `keys`, `switch` and `signout`, the seven development tiles (`files`, `voc`,
+  `dict`, `query`, `bulk`, `catalog` and `test`) and `recent`, which is not a tile but the
+  Recent group (below): 15 ids, the ones the page draws and the rows of the *Menu* box of the
+  menu management page. **Sign out cannot be turned off**: a person must always be able to
+  leave. Any other id is accepted and said not to be standard (it would apply to a tile of
+  that name in a page of the account's own).
+* **`recent`: the Recent group.** A group at the top of the home screen with the tiles the
+  person started last, newest first, six at most. **It is off as delivered, and it is the
+  person's to turn on** (the *Recent group* entry of the View menu of their home screen); it
+  keeps its list in the person's own file `&menus&`, as the record `recent`, and writes
+  nothing while it is off. **`set.tile account recent off` is the administrator's wall:** the
+  group is then not on that account's page, nothing is read or written for it, and the View
+  entry cannot be chosen; the list the person kept stays in their file, and `set.tile
+  account recent on` gives the choice back (it does not turn the group on). The list holds
+  tile ids and never a command: each recent tile is built from the page as it is, so a tile
+  that is off for the account is not offered, and a record edited by hand cannot make the
+  page start anything it does not already offer.
+* **Sub-menus.** The home screen can open a second page of tiles from a tile, with a Back
+  tile, Esc and the path on the status line (the User's guide, page 29a). The delivered page
+  declares none, so there is nothing for you to set; a tile of a page of your own that opens
+  one is declared in the page table of the `home` program, not in a file.
 * The setting is **field 17** of the account's register record (tile ids separated by
   spaces). A tile that is off is not on the page, its menu entry cannot be chosen, and a
   group with no tile left has no heading. It takes effect when the home screen is next

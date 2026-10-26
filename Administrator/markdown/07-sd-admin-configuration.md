@@ -99,7 +99,8 @@ of contributors.
 ## Changing a parameter
 
 Editing `sd.conf` and restarting SD is the durable route, and for most
-parameters it is the only one.
+parameters it is the only one. Fourteen tuning parameters can also be changed from SD itself, with
+`set.config` or the `E` key of `tool.config` (see *Changing a parameter from SD*, below).
 
 **28 parameters can also be changed for the current session:**
 
@@ -138,10 +139,12 @@ them (as installed: mode 0644, owned by root). Edit the file with the same care 
 tool.config
 ```
 
-A full-screen page in SDSYS's VOC only (a window of 140 columns by 43 lines or more), **which only
-looks**: it runs no command and writes no file, `sd.conf` included. Writing `sd.conf` from inside SD
-would be a new way to write a file only root owns; it is not built, and editing the file by hand and
-restarting SD stays the way to change a parameter.
+A full-screen page in SDSYS's VOC only (a window of 140 columns by 43 lines or more). **It looks, and
+it can change 14 of the parameters**; it writes no file itself. A change is made by the verb
+`set.config` (see *Changing a parameter from SD*, below) through the root helper, and only after you
+have typed a value, the page has checked it against the range SD enforces and a box has shown the
+exact command and been answered Run. The other 49 parameters are not changed from SD; editing the
+file as root and restarting SD stays the way to change them.
 
 The page has three views. **P, the parameters**: one row for every parameter SD knows, from the table
 `config.table` in the system directory (`test-toolconfig-units.py` holds that table to the parser in
@@ -170,7 +173,9 @@ parameter whether the sessions started now will read the file's value (`session`
 one until it is restarted (`restart`). **A name in the file that SD does not know is listed at the end
 as `unknown`, and the top of the page names it: SD does not start with it, and no new session starts
 while the file holds it** (the section *A name SD does not recognise stops it starting* above). `D`
-shows only the rows where the file and SD disagree, and `S` only the parameters the file sets.
+shows only the rows where the file and SD disagree, and `S` only the parameters the file sets. The last
+column, `Change`, says `e` for a parameter the page can change (press `E`) and `by hand` for every
+other.
 
 `SCREENTHEME`, `SDSYS`, `APILOGIN`, `BACKUPDIR` and `TXCHAR` cannot be read with the `config()` function
 (a name longer than eight characters, or one the function does not have); the page says
@@ -181,8 +186,141 @@ function reports it in another form than the file writes it.
 **R, the report**: the operating system part of `settings.report` (the ssh and API doors, the groups of
 `sdusers`, `sdssh` and `sdapi`, the services and the sudoers file), made when the view is opened and on
 F5. It holds no key and no password hash. `F5` reads the file, the backup directory and the report
-again; `F1` explains the page; `Ctrl-Q` leaves. Opening the page writes the audit line
-`tool start app=tool.config`; nothing else it does is written, because it changes nothing.
+again; `E` changes the parameter under the cursor, or says why it cannot be changed here; `F1`
+explains the page; `Ctrl-Q` leaves. Opening the page writes the audit line
+`tool start app=tool.config`; a change writes the line of `set.config` (below), and nothing else the
+page does is written.
+
+### Changing a parameter from SD: `set.config` and the `E` key
+
+```
+set.config cleanup 600
+```
+
+The administrator's verb (SDSYS's VOC only). It changes **one** line of `/etc/sd.conf`: the first word
+is a parameter name (letters and digits; SD makes it capitals, as the file spells it) and the second a
+whole number of up to seven digits. It asks the root helper (`sd-elevate conf-set`, run through sudo)
+to make the change; the helper checks everything again and is the authority. `set.config` prints
+`CLEANUP is now 600 in sd.conf` and, for a parameter that sizes the system, that it takes effect when
+SD is next stopped and started (`sd -stop`, then `sd -start`), or, for one a session reads for itself,
+that sessions started from now on use it. A refusal prints the helper's own sentence after
+`sd.conf was not changed:` and writes nothing.
+
+**What the helper does.** It accepts only the 14 parameters in the first table below, and only a value
+inside the range `config.c` itself enforces for that parameter when SD starts (so it cannot accept
+what SD would refuse). It adds or replaces the line **inside the `[sd]` section**, the only place SD
+reads (a line appended after another section's header would be ignored without a word); a second
+line for the same parameter in an `[sd]` section is dropped, because SD keeps the last one; every
+other line is kept exactly as it was. The new file is written beside the old one, given the old
+file's owner and mode, and renamed over it, so a session that reads the file at that moment sees
+either the old text or the new, never half of it. **The file as it was is kept as `/etc/sd.conf.bak`**
+(one generation; a second change replaces it with the file as it was before that change). A change
+that says what the file already says writes nothing and leaves the `.bak` alone. The helper writes
+`/etc/sd.conf` and nothing a caller passes moves it; when the session reads another file (the
+`SD_CONFIG` variable) the page says so in its box. Only the user `sdsys` can ask: sudo's rule for `sdsys` lets it run the
+helper with any arguments, the rule for ordinary users names four exact argument lists and `conf-set`
+is not one of them, and the helper also refuses a caller sudo says is someone else. SD has no key
+that puts `sd.conf.bak` back; as root, `cp /etc/sd.conf.bak /etc/sd.conf` does.
+
+**One audit line** for each time the helper is asked: `set.config key=cleanup value=600 status=ok`, or
+`status=refused`. Every changeable parameter is a number, so the value is written.
+
+**On the page.** `E` on a row whose `Change` column says `e` asks for the new value (the question
+shows what SD runs with and what the file says), checks that it is a whole number inside the range
+before anything else happens, and then shows the exact command in the toolkit's box with a plain
+sentence about when it takes effect. Cancel, which is what Enter chooses, runs nothing. Run runs
+`set.config` and the page reads the file and SD's own values again and says what changed: the file's
+old and new value, and what SD is running with. `E` on any other row writes nothing: it shows why the
+parameter is not changed from SD, and the exact line to add by hand, as root, in the `[sd]` section
+of the file SD reads.
+
+**The 14 parameters** are the tuning ones: capacity, performance, timeouts and the printer's defaults.
+Each is range-checked by `config.c` and each only sizes or times something SD does (how many locks a
+process may hold, how deep a program may call, how long a sign-on waits for a user number, the cache
+sizes, the printer's defaults); none is a door, a path, a command, a log or a security setting:
+
+| Parameter | Range | Takes effect |
+|---|---|---|
+| `CLEANUP` | 30 to 3600 | restart |
+| `DHCACHE` | 0 to 1024 | session |
+| `GRPSIZE` | 1 to 8 | session |
+| `LGNWAIT` | 0 to 32767 | restart |
+| `LPTRHIGH` | 10 to 32767 | session |
+| `LPTRWIDE` | 10 to 1000 | session |
+| `MAXCALL` | 10 to 1000000 | session |
+| `MAXRLOCK` | 0 to 100000 | session |
+| `NETREPLY` | 1 to 3600 | session |
+| `NETWAIT` | 1 to 3600 | session |
+| `NUMLOCKS` | 1 to 32767 | restart |
+| `RECCACHE` | 0 to 32 | session |
+| `SORTMRG` | 2 to 10 | session |
+| `USPLIT` | 0 to 1 | restart |
+
+**The other 49 are not changed from SD**, and the helper refuses them by name (a name it does not
+know at all it refuses with a different sentence, because an unknown name in `sd.conf` stops SD from
+starting). They are the doors and what they allow (`NETFILES`, `SDCLIENT`, `PORTMAP`, `FILERULE`), every
+path and command, the log, dump and diagnostic settings, the security throttle `PWDELAY`, the sizes
+and combinations that `config.c` does not check or checks against each other, the ones that change
+what existing programs compute, and the ones nothing acts on. Change them by hand, as before. The page
+shows the same sentence in its box:
+
+| Parameter | Why it is not changed from SD |
+|---|---|
+| `APILOGIN` | Retired: nothing reads it, so there is nothing to tune. |
+| `BACKUPDIR` | A directory: set.backup.directory saves it, with its own checks of the path. |
+| `CMDSTACK` | Sizes a table in shared memory and config.c checks no range: a mistake shows only at the next start. |
+| `CODEPAGE` | Inert: nothing acts on it. |
+| `CREATUSR` | Retired: the value is read and thrown away. |
+| `DEADLOCK` | A diagnostic: 2 makes SD write a file of the locks involved; set it by hand while you hunt one. |
+| `DEBUG` | Debugging flags of the kernel: they change what SD writes and exposes. |
+| `DUMPDIR` | A directory: process dumps are written there and can hold what a session had in memory. |
+| `ERRLOG` | Sizes the error log; config.c checks no range, and a small size discards its oldest entries sooner. |
+| `EXCLREM` | Inert: nothing acts on it. |
+| `FDS` | Limits the file descriptors SD uses; config.c checks no range: a mistake shows at the next start. |
+| `FILERULE` | Decides which special file names a VOC entry may use, path: included; that is an access decision. |
+| `FIXUSERS` | Must agree with USERPOOL, PORTMAP and PHANTOMS: a wrong combination stops SD from starting. |
+| `FLTDIFF` | Changes how every program compares floating point numbers. |
+| `FSYNC` | Trades the safety of data against speed; flag bits that config.c does not check. |
+| `GDI` | Inert: nothing acts on it. |
+| `GRPDIR` | A directory: group accounts are made there. |
+| `INTPREC` | Changes the results of arithmetic in programs that already exist. |
+| `INVCASE` | Changes how every new session reads upper and lower case typed at the terminal. |
+| `JNLDIR` | Inert: SD has no journalling. |
+| `JNLMODE` | Inert: SD has no journalling. |
+| `MAXIDLEN` | Structural: the longest record id of the whole system, which reaches every file and program. |
+| `MUSTLOCK` | Makes a write fail unless the record is locked first, which can stop programs that exist. |
+| `NETFILES` | A door: bit 2 gates API request 29, a remote open of an account. |
+| `NUMFILES` | Sizes the open file table in shared memory; config.c checks no range. |
+| `NUMUSERS` | Sizes the user table, which bounds who can sign on; config.c checks no range. |
+| `OBJECTS` | Limits the programs a session keeps in memory; config.c checks no range. |
+| `OBJMEM` | Limits the memory those programs may take; config.c checks no range. |
+| `PDUMP` | Flag bits that say when a process dump is written; a dump can hold what a session had in memory. |
+| `PHANTOMS` | Must agree with USERPOOL, FIXUSERS and PORTMAP: a wrong combination stops SD from starting. |
+| `PORTMAP` | A door: gives a connection a user number from its port; must agree with USERPOOL and FIXUSERS. |
+| `PWDELAY` | A security throttle: the pause after a failed network sign-on; 0 removes it. |
+| `RINGWAIT` | Inert: nothing acts on it. |
+| `SAFEDIR` | Changes how SD replaces the files of a directory file, by writing a new one and renaming it. |
+| `SCREENTHEME` | Text that SD acts on; config.c checks no value. |
+| `SDCLIENT` | A door: restricts what an API session may do, and a lower value loosens it. |
+| `SDSYS` | The system directory: SD cannot start, or finds another system, if it is wrong. |
+| `SH` | A command SD runs as an interactive shell. |
+| `SH1` | A command SD runs for a shell command line. |
+| `SORTMEM` | A size in kilobytes that config.c does not check, so a mistake shows only when a sort runs. |
+| `SORTWORK` | A directory: the work files of a large sort are written there. |
+| `SPOOLER` | Text that names the spooler print jobs are handed to. |
+| `STARTUP` | A command SD runs when it starts. |
+| `TEMPDIR` | A directory: temporary files are written there. |
+| `TERMINFO` | A directory: terminal definitions are read from there. |
+| `TXCHAR` | Inert: nothing acts on it. |
+| `USERPOOL` | The highest user number: PORTMAP, FIXUSERS and PHANTOMS are checked against it; a mistake stops SD. |
+| `USRDIR` | A directory: user accounts are made there. |
+| `YEARBASE` | Changes how every program reads a two-digit year; config.c checks no range. |
+
+**What this does not do.** It does not restart SD: a `restart` parameter changes the file and the
+running SD keeps its old value until it is stopped and started. It does not reach a file other than
+`/etc/sd.conf`. It cannot change a parameter that `config.c` does not range-check, however useful that
+would be; such a parameter joins the list when SD itself checks it. And SD itself does not write the
+file as root: the verb asks the helper, and the helper is the one program that does.
 
 ## Sessions and limits
 
