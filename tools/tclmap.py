@@ -145,6 +145,9 @@ DOCS = [
  ('User', '29b-sd-tcl-asking-the-ai.md', """
    ai
  """),
+ ('User', '29c-sd-tcl-the-development-tools.md', """
+   tool.files tool.voc
+ """),
  ('User', '30-sd-tcl-processes-and-phantoms.md', """
    pdebug pdump phantom pstat status
  """),

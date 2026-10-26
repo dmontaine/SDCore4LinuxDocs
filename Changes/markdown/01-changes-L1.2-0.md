@@ -473,7 +473,9 @@ SD's own code. The sections above are the openQM items that were built, with the
 |---|---|---|
 | `menu` | Added | opens the full-screen menu (the home screen) from any account; `home` and `exit` stay |
 | `pdf` | Added | shows a document in the PDF reader the administrator has allowed, even for an account that may not run programs |
+| `tool.files` | Added | full-screen list of the account's files (kind, records, modulus, size, indices, trigger, case, dictionary) with make, clear and delete (each the ordinary verb, after a box) and analyse and the index and trigger lists (the terminal is handed to the verb); for every account |
 | `tool.keys` | Added | full-screen diagnostic for the terminal and the keyboard, for everyone |
+| `tool.voc` | Added | full-screen list of the account's VOC (type, what each entry points at, whether a pointer works, how it differs from the shipped VOC) with edit in SED and delete after a box; for every account |
 
 ### Data formats
 
