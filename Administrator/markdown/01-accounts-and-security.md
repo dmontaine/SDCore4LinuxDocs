@@ -71,6 +71,26 @@ hide in here.
 `sd` needs no elevation, no `sudo`, because being SDSYS already *is* the
 privilege.**
 
+**SDSYS may be signed on in more than one place, and when it is you can see it**
+(owner's decision, 26 Oct 2026). Nothing stops a second terminal window or a
+second local login of the `sdsys` user from starting `sd`, and one reason to
+want that is recovery: a session that is stuck at a page can be ended by
+`logout` from another. A limit of one would lock the administrator out until
+`sd -cleanup`. So the second session is made visible, three ways:
+
+| where | what it shows |
+|---|---|
+| the audit trail | one line, `sdsys second session others=<n>`, written by a session of SDSYS that signs on while *n* other sessions of SDSYS are on a terminal (after the `login account=sdsys` line it writes as always) |
+| `tool.sessions` | each of those rows says `sdsys x<n>` in its State column, the counts line says `SDSYS in <n> places`, and the box under the list says so for the row under the cursor |
+| the home screen | the Sessions and locks tile says `<m> signed, <n> sdsys` in place of `<m> signed on` |
+
+What counts is a session of the account `sdsys` that is **on a terminal**: a
+phantom, an API or SDNet process, a session being logged out, and a session with
+no terminal (a piped `sd 'command'`, `sd -internal`, a program started from a
+script) are not counted and write no line, because they are not a second person
+at the machine. Seeing the second session is not the same as stopping it; the
+audit line and the page are how you notice one you did not expect.
+
 **What the `sdsys` Linux user can write.** The `sdsys` user is a member of
 the Linux group of every user account (`sdu_`*name*), and every account's VOC
 and dictionaries can be written by that group, so that SDSYS can change an

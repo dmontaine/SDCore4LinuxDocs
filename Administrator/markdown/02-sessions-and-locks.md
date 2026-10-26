@@ -432,7 +432,10 @@ not have the verb, and the page is refused before it reads anything to anyone wh
 the administrator). It needs a window of 140 columns by 43 lines. The top list is every
 session — user number, Linux process, when it signed on, its kind (user, phantom, API or
 SDNet), the login user, the account it is in, where it came from, and whether it is yours
-(a star) or a logout is pending. The lower list is every lock — the user, the file number
+(a star) or a logout is pending. **When SDSYS is signed on in more than one place on a
+terminal, each of those rows also says `sdsys x<n>`, the counts line says `SDSYS in <n>
+places`, and the audit trail has a line `sdsys second session others=<n>` for each one that
+signed on while another was there** (see *Being SDSYS* in *Accounts and Security*). The lower list is every lock — the user, the file number
 and path, the type (`FX` and `SX` lock a whole file, `RU` is read and update, `RL` is read,
 `WAIT` is a session waiting for a lock), the record id, since when, and whether a session
 with that user number is still signed on. Under the sessions the page says whether logins
