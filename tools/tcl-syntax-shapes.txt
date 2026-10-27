@@ -253,6 +253,9 @@ list.shared = **`list.shared`**
 sync.masters = **`sync.masters`** {*account*}
 check.masters = **`check.masters`** {*account*}
 list.master.pending = **`list.master.pending`**
+# 27 Oct 26: S.87, the VOC deletion list.  Both verbs are in the voc_template only (SDSYS's set); their page is Administrator/01a.
+list.voc.removed = **`list.voc.removed`** {*account*}  —  the VOC records SD no longer ships and, with an account, what the next **`update.accounts`** would do in it (changes nothing)
+restore.voc = **`restore.voc`** *account* *id*  ·  **`restore.voc`** *account* **`all`**  —  put back the newest saved copy of a record the VOC update removed; never overwrites
 # 18 Oct 26: encryption layer 3.  encrypt.key is in every account's VOC (newvoc); the passphrase is read at a hidden prompt, never given as an argument.  Its page is User/06a.
 encrypt.key = **`encrypt.key set`** *name* *salt* {**`confirm`**}  ·  **`encrypt.key clear`** {*name*}  ·  **`encrypt.key list`**
 import.csv = **`import.csv`** *pathname* *file* {**`header`**} {**`delimiter`** *x*} {**`quote`** *x*} {**`escape`** *x*} {**`id`** *column* | **`generate`**} {**`dict`**} {**`overwriting`**}

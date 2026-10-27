@@ -79,10 +79,68 @@ update.accounts does not take everything
 Quietly ignoring it would run the interactive form while the caller believed
 they had asked for the other one.
 
-### It never takes anything away
+### What it takes away: the deletion list
 
-`update.accounts` only ever adds. A record removed from an account stays
-removed. To keep an edit of your own, mark the record — see below.
+The copy from `newvoc` only ever adds and changes. A record SD has **stopped
+shipping** (a second spelling of a keyword, say) would stay in every account
+that already had it, so SD ships a second thing next to `newvoc`: a **deletion
+list**, one small record for each VOC record a release has withdrawn. After
+`update.accounts` has copied the shipped records into an account, it works
+down the list and removes a listed record from that account's VOC, **but only
+when it is the record SD shipped.** Each removal is checked, saved, reported
+and audited:
+
+- **It must be the shipped record.** The list says what the record was: its
+  type, and for a keyword its number. An account that has its own record of
+  the same name (a paragraph you called `margin`, say) is **kept** and the
+  update says so (message 11901).
+- **A record marked `[locked]` is kept** (11902), as the copy from `newvoc`
+  keeps one. **A verb is the exception**, as it is everywhere in the update: a
+  locked verb that SD no longer ships is removed all the same and the update
+  says so (11903).
+- **A copy is saved first.** The record goes to
+  `sdsys/voc_removed.saved` under the account's name, the record's id, the date
+  and the time, with who ran the update. If the copy cannot be saved the record
+  is not removed (11904).
+- **It is reported:** `3 VOC record(s) removed, because SD no longer ships
+  them: margin stats supp` (11900), and on the audit trail one line for the
+  account, `voc update account=sales removed=3 differs=0 locked=0 ids=margin,stats,supp`.
+- **It runs before `newvoc.mods`**, so a record you add there on purpose has the
+  last word.
+- **A VOC the session may not write** ends that account's update, as for any
+  write (11983).
+
+The list is administrator-visible, and every removal can be undone:
+
+```
+list.voc.removed {account}
+restore.voc account id | restore.voc account all
+```
+
+```
+:list.voc.removed sales
+13 VOC record(s) that SD no longer ships:
+Name                          Went in   Use instead   sales
+margin                        1.2-0     left.margin   [would be removed]
+only                          1.2-0     id.only (written after the file name)   [kept: not the shipped record]
+```
+
+`list.voc.removed` prints the list with the release each record went in and
+what to write instead. With an account it also says what the next update would
+do in that account — removed, removed (a locked verb), kept (not the shipped
+record), kept (locked), or absent — and **changes nothing**.
+
+`restore.voc` puts back the newest saved copy of a record in an account, as it
+was. It never overwrites: if the account holds a record of that name now it says
+so (11918). `all` puts back every record of the account that has a saved copy.
+The next `update.accounts` will remove a restored record again, because the
+list has the last word; to keep one, give it a name SD does not ship or put it
+in `newvoc.mods`.
+
+Both verbs are SDSYS's, and are in the VOC of SDSYS only. The saved copies are
+kept across a `deletesdcore.sh` that keeps your accounts and an install.
+
+To keep an edit of your own to a record SD still ships, mark it — see below.
 
 ## Keeping your own version of a VOC record: `[locked]`
 

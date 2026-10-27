@@ -38,11 +38,15 @@ here:
 - **`suspended`/`unsuspended`** is a state, not a tier — nothing about the
   VOC moves either way, because every account's VOC is the whole of `newvoc`
   regardless.
-- **`update.accounts`** only ever adds VOC records it finds missing, from a
-  release that shipped verbs the account was created before. Since every
+- **`update.accounts`** adds the VOC records it finds missing, from a
+  release that shipped verbs the account was created before, and removes the
+  records on SD's deletion list (the ones a release has stopped shipping),
+  saving a copy of each first. Since every
   account already has the whole VOC, this now matters only after an
   *upgrade* — a fresh account never needs it, and **the installer runs
   `update.accounts all` for you** when you keep your accounts.
+  **`list.voc.removed`** shows the list and **`restore.voc`** puts a removed
+  record back.
 - **`delete.account`** keeps the Linux user's home directory unless you
   add `remove.home` — a person's own files and ssh keys live there.
 

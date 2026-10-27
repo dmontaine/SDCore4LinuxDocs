@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **230** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **232** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -24,7 +24,7 @@ not refused — the name is simply not recognised.**
 | | | |
 |---|---|---|
 | **every account** | 185 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 45 more | in `voc_template` but not `newvoc` |
+| **SDSYS only** | 47 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -145,6 +145,7 @@ not refused — the name is simply not recognised.**
 | **`list.triggers`** | **`list.triggers`** {*file* …} {**`lptr`** {*n*}} |  |
 | **`list.union`** | **`list.union`** *list.1* {*list.2* {*tgt*}} {**`count.sup`**} |  |
 | **`list.vars`** | **`list.vars`** {*pattern*} |  |
+| **`list.voc.removed`** | **`list.voc.removed`** {*account*}  —  the VOC records SD no longer ships and, with an account, what the next **`update.accounts`** would do in it (changes nothing) | S |
 | **`listu`** | **`listu`** {**`detail`**} {**`no.page`**} {**`lptr`** {*n*}} | S |
 | **`load.help`** | **`load.help`**  —  load the shipped context help into the file context.help of the shared account (administrator) | S |
 | **`lock`** | **`lock`** *n* {**`no.wait`**} | S |
@@ -189,6 +190,7 @@ not refused — the name is simply not recognised.**
 | **`report.src`** | **`report.src on`** \| **`off`** \| **`report.src`** to toggle |  |
 | **`report.style`** | **`report.style`** {*name* \| **`off`**} |  |
 | **`restore.account`** | **`restore.account`** *archive* *name* … {**`no.query`**}  ·  **`restore.account`** *archive* **`all`** {**`no.query`**}  ·  **`restore.account latest`** *name* … \| **`all`** {**`no.query`**} | S |
+| **`restore.voc`** | **`restore.voc`** *account* *id*  ·  **`restore.voc`** *account* **`all`**  —  put back the newest saved copy of a record the VOC update removed; never overwrites | S |
 | **`run`** | **`run`** {*file*} *record* {*arguments*} |  |
 | **`save.list`** | **`save.list`** *list* {**`from`** *list.no*} |  |
 | **`save.stack`** | **`save.stack`** {*name*} |  |
