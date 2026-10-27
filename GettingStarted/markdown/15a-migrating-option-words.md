@@ -2,7 +2,8 @@ Title: Migrating to SD: option words
 Subtitle: Every word of the option command, what it changes, and where else it is described.
 
 This page continues [Migrating to SD](15-migrating-to-sd.html). The words are the
-twenty-seven that `option` lists. (Eleven more, whose off behaviour is now the only one, were removed
+twenty-three that `option` lists. (Four more (`no.sel.list.query`, `catalogue.local`, `inherit.mfile.path`
+and `correlative.nocase`) and eleven before them, whose off behaviour is now the only one, were removed
 on 27 October 2026: `run.no.page`, `paginate.on.heading`, `pick.ml.conv.mask`, `chained.select`,
 `default.mv`, `query.string.comp`, `query.str.comp.all`, `assoc.all`, `query.footer.pause`,
 `query.merge.print` and `keep.old.object`. Twenty-two words that existed only to imitate other
@@ -43,14 +44,12 @@ page is where it is described.
 | word | what it does | also described in |
 |---|---|---|
 | `backslash.not.quote` | a backslash in a command line is an ordinary character, not a string quote: `with name = a\b` | here |
-| `catalogue.local` | `catalog` and `delete.catalog` use the local catalogue by default, not the private one | here |
 | `chain.keep.common` | `chain` keeps the unnamed common block | *SD Basic - Program Control* |
 | `clear.select` | the command processor clears select list 0 when a command ends, if the list was already active when it began; `keep.select` in a program keeps it | *SD Basic - Program Structure* |
 | `command.level.locks` | a file variable that goes keeps its locks until the program is back at the command processor | *SD Basic - Program Structure* |
 | `force.reload` | compiling or cataloguing a program also refreshes the subroutine links a running program holds | *SD Basic - Program Structure* |
 | `inherit` | a phantom starts with the option settings of the process that started it | *SD TCL - Processes and Phantoms* |
 | `no.phantom.notify` | set in a phantom, it stops the message sent to its parent when it ends | *SD Basic - Program Structure* |
-| `no.sel.list.query` | commands that can work through an active select list, such as `copy`, `delete`, `ct` and `ed`, do not ask *Use active select list?* first | here |
 | `stacked.account` | an `execute` of a command that does a `logto` leaves the process in the account it began in | *SD Basic - Program Structure* |
 
 ## Files
@@ -60,12 +59,10 @@ page is where it is described.
 | `dir.dtm` | writing a record to a directory file moves the directory's date and time modified, even when the record already existed | *SD Basic - Program Structure* |
 | `dir.sel.omit.hidden` | selecting a directory file leaves out names that begin with a dot | here |
 | `git` | a directory file keeps `.gitignore` and `.gitattributes` under their own names on disk; without it the leading dot becomes `%D` | *SD Basic - Program Structure* |
-| `inherit.mfile.path` | `create.file` puts a new multifile subfile in the directory of the default subfile | *SD Basic - Program Structure* |
 | `inherit.ownership` | `create.file` gives a new file the owner and group of the account directory. Turn it on for an account only as an administrator's decision | *SD Basic - Program Structure* |
 
 ## Correlatives and I-types
 
 | word | what it does | also described in |
 |---|---|---|
-| `correlative.nocase` | string operations in a correlative or an I-type ignore case; read when the item runs | *SD Basic - Program Structure* |
 | `correlative.reuse` | the array operators of a correlative or an I-type reuse the last value of a shorter array, as `reuse()` does | *SD Basic - Program Structure* |
