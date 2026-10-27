@@ -677,7 +677,7 @@ feature was already there, or it does not apply. They are here so that nobody lo
 | `matchfield()` `n-mx` pattern | None | at the start of the template: no change recorded <!--s 562--> |
 | memory alignment in `redim` | None | no change recorded <!--s 382--> |
 | negative default argument | None | for an optional argument: the defect cannot occur, because the feature it belongs to was not in SD <!--s 324--> |
-| Pick wildcards in `ne` | None | no change recorded <!--s 322--> |
+| Pick wildcards in `ne` | None | nothing to fix: the Pick wildcards (`option pick.wildcard`) were removed on 27 October 2026 <!--s 322--> |
 | `qmbasic.warnings` | None | present already as `sdbasic.warnings` (`option w`) <!--s g251--> |
 | `$qmcall` | None | already there as the `$sdcall` flag, which lets a restricted client session call a subroutine <!--s g212--> |
 | `readv` fatal error | None | no change recorded <!--s 559--> |
