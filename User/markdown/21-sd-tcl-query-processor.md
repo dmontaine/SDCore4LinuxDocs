@@ -390,7 +390,7 @@ options inside the text for page number, date and time.
 | **`calc`** | evaluate an I-type against the totals |
 | **`break.on`** *field* | start a new subtotal group when the field changes |
 | **`break.sup`** *field* | break on a field without printing it |
-| **`grand.total`** *"text"* · **`caption`** | label the final total line |
+| **`grand.total`** *"text"* | label the final total line (`caption` was a second name and was removed in 1.2-0) |
 
 `break.on` is what turns a flat listing into a report with subtotals; the field
 it breaks on almost always wants to be a sort key as well, or the groups come
@@ -429,7 +429,7 @@ whole one.
 |---|---|
 | **`lptr`** {*n*} | to print unit *n*, 0 by default |
 | **`crt`** | to the screen, overriding a default of print |
-| **`no.page`** · **`nopage`** | do not pause at the end of each screen |
+| **`no.page`** | do not pause at the end of each screen (`nopage` was a second spelling and was removed in 1.2-0) |
 | **`file`** | to a file rather than a device |
 
 Printing, print units and `$hold` are in

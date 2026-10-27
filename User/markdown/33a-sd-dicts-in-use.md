@@ -97,7 +97,8 @@ and every program that includes it picks up the change on recompile.
 
 **There is no verb that lists dictionary records by type.** `DICT`
 *file.name* displays the records, and `LIST DICT` *file.name* runs the
-query processor over them, but there is no `listd` or `listdict` verb.
+query processor over them, but there is no `listd` or `listdict` verb (`listdict`, a paragraph over `list dict`, was
+removed in 1.2-0; `list dict` *file* lists every item).
 `ED DICT` *file* *name* edits one record; `DICT` *file* displays
 several.
 
