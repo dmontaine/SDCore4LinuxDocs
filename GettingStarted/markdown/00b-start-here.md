@@ -72,7 +72,7 @@ so on. Nothing was renumbered when they were split.
 | **13** | [Other hardening](13-hardening.html) | Auditing, the shell permit list, and the rest |
 | **14** | [Not in SD Core](14-not-in-sd-core.html) | What has been removed, and what to use instead |
 | **15** | [Migrating to SD](15-migrating-to-sd.html) | Bringing programs and queries from another MultiValue database: where the compatibility words are set, and the words SD does not accept |
-| **15a** | [Option words](15a-migrating-option-words.html) | The thirty-nine words of the `option` command, one line each |
+| **15a** | [Option words](15a-migrating-option-words.html) | The twenty-seven words of the `option` command, one line each |
 | **15b** | [Mode words](15b-migrating-mode-words.html) | The names `$mode` accepts and the lines of a `$basic.options` record, one line each |
 
 ## The five things most likely to surprise you

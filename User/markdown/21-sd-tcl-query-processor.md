@@ -400,14 +400,10 @@ out scattered.
 The I-types of that line can read it as `@bpv`: the value the field had on the
 last record before the break. It is empty on a field without `X`.
 
-Three options (see [SD Basic - Program Structure](01-sd-basic-program-structure.html))
-change a report. With `option query.footer.pause` a report that has a page
-footer waits for Return after its last footer. With `option paginate.on.heading`,
-a `run ... no.page` that prints a heading or a footing still turns pagination on.
-With `option query.merge.print` a report sent to the default printer (`lptr`) does
-**not** close a printer that was already active when the report began — a program's own
-`printer on`, say — so the report and the program's output are **one print job**. None is on
-unless asked for.
+A report sent to the default printer (`lptr`) closes a printer that was already
+active when the report began — a program's own `printer on`, say — so the report and
+the program's output are **two print jobs**. (`option query.merge.print`, which kept them
+as one, was removed in 1.2-0, as were `query.footer.pause` and `paginate.on.heading`.)
 
 ## Taking only some of the records
 

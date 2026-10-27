@@ -10,7 +10,7 @@ list every word SD has, one line each.
 
 | | | |
 |---|---|---|
-| **15a** | [Option words](15a-migrating-option-words.html) | the thirty-nine words of the `option` command |
+| **15a** | [Option words](15a-migrating-option-words.html) | the twenty-seven words of the `option` command |
 | **15b** | [Mode words](15b-migrating-mode-words.html) | the names `$mode` accepts, and the lines of a `$basic.options` record |
 
 ## The rules the words follow

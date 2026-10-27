@@ -2,7 +2,10 @@ Title: Migrating to SD: option words
 Subtitle: Every word of the option command, what it changes, and where else it is described.
 
 This page continues [Migrating to SD](15-migrating-to-sd.html). The words are the
-thirty-nine that `option` lists. (Twenty-two words that existed only to imitate other
+twenty-seven that `option` lists. (Eleven more, whose off behaviour is now the only one, were removed
+on 27 October 2026: `run.no.page`, `paginate.on.heading`, `pick.ml.conv.mask`, `chained.select`,
+`default.mv`, `query.string.comp`, `query.str.comp.all`, `assoc.all`, `query.footer.pause`,
+`query.merge.print` and `keep.old.object`. Twenty-two words that existed only to imitate other
 products were removed on 27 October 2026; see the last section of
 [Migrating to SD](15-migrating-to-sd.html).) **All are off in a new session.** `option` *name* turns one
 on, `option` *name* `off` turns it off, `option` *name* `display` shows it. The last column
@@ -13,13 +16,7 @@ page is where it is described.
 
 | word | what it does | also described in |
 |---|---|---|
-| `assoc.all` | the query processor ignores the associations in the dictionary and treats every field as one association | *SD Basic - Program Structure* |
-| `default.mv` | a C, D or I-type dictionary item whose single/multivalue flag is blank counts as multivalued, not single valued | here |
 | `query.sort.no.case` | sorts ignore case (selection tests are left as they are) | here |
-| `query.str.comp.all` | data in a right-aligned item is compared as strings in every relation, so with `amt > 50` the value 9 is selected and 100 is not | here |
-| `query.string.comp` | `=` and `ne` always compare as strings: `with amt = "10.0"` no longer finds 10 | here |
-| `query.footer.pause` | a report with a page footer waits for Return after its last footer | *SD TCL - The Query Processor* |
-| `query.merge.print` | a report sent to the default printer does not close a printer that was already active, so report and program output are one print job | *SD TCL - The Query Processor* |
 | `$query.debug` | lets a query take the `debugging` keyword; a development aid, shown by `option` only while it is on. Do not use it in an application | here |
 
 ## Output and conversion
@@ -27,7 +24,6 @@ page is where it is described.
 | word | what it does | also described in |
 |---|---|---|
 | `numeric.exponent` | numbers in exponent form such as `123.45e-2` count as numeric | *SD Basic - Program Structure* |
-| `pick.ml.conv.mask` | a left bracket in an `ml` or `mr` code starts a format mask, as in `mr2(#10)`, instead of asking for negatives in round brackets | *SD Basic - Program Structure* |
 
 ## Errors and diagnostics
 
@@ -49,16 +45,12 @@ page is where it is described.
 | `backslash.not.quote` | a backslash in a command line is an ordinary character, not a string quote: `with name = a\b` | here |
 | `catalogue.local` | `catalog` and `delete.catalog` use the local catalogue by default, not the private one | here |
 | `chain.keep.common` | `chain` keeps the unnamed common block | *SD Basic - Program Control* |
-| `chained.select` | a select that finds records runs the first command in the data queue, as `chain` would; if it finds none the queue is cleared | *SD Basic - Program Structure* |
 | `clear.select` | the command processor clears select list 0 when a command ends, if the list was already active when it began; `keep.select` in a program keeps it | *SD Basic - Program Structure* |
 | `command.level.locks` | a file variable that goes keeps its locks until the program is back at the command processor | *SD Basic - Program Structure* |
 | `force.reload` | compiling or cataloguing a program also refreshes the subroutine links a running program holds | *SD Basic - Program Structure* |
 | `inherit` | a phantom starts with the option settings of the process that started it | *SD TCL - Processes and Phantoms* |
-| `keep.old.object` | a compile that fails leaves the previous object code in place | *SD Basic - Program Structure* |
 | `no.phantom.notify` | set in a phantom, it stops the message sent to its parent when it ends | *SD Basic - Program Structure* |
 | `no.sel.list.query` | commands that can work through an active select list, such as `copy`, `delete`, `ct` and `ed`, do not ask *Use active select list?* first | here |
-| `paginate.on.heading` | with `run` and `no.page`, a heading or footing still turns pagination on | *SD Basic - Program Structure* |
-| `run.no.page` | `run`, `debug` and a catalogued program started by name begin with screen pagination off | here |
 | `stacked.account` | an `execute` of a command that does a `logto` leaves the process in the account it began in | *SD Basic - Program Structure* |
 
 ## Files
