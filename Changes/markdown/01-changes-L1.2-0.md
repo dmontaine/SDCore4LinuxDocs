@@ -476,6 +476,7 @@ SD's own code. The sections above are the openQM items that were built, with the
 | api request 29 | Changed | fixed: opened any account's file for any login; now asks the `logto` rules, the `net` gate and `sdclient`, and the OS question for a pointer out of the account |
 | api requests 32 and 33 | Changed | fixed: file lock and unlock acted on the last file opened, not the file named |
 | api server loop | Changed | fixed: a client that hung up before its first request left a server process using 100% of a processor |
+| api server, last reply | Changed | fixed: a refused login (any reply sd sends as it ends) could be lost when systemd killed the TLS relay as sd exited; sd now waits up to two seconds for the relay to deliver it |
 | client library: restricted | Changed | fixed two faults under `sdclient 1` and `2`: a heap overrun on a refusal, and a refused call that still ran |
 | client library: `sdchecksum` | Added | a checksum computed on the client |
 | `creating.seqkey` over the API | Added | the server's record-id counter gives the id, over the API |
