@@ -32,6 +32,7 @@ change: what it does, why, and what it does not do. This document is the short f
 | Dictionary divide by zero | Changed | stopped the report; now gives zero |
 | `fileinfo(f, 1021)` | Changed | gave text such as `12 (don), 14 (ann)`; now the user numbers of the other sessions that have the file open, and the text form is key **1100** |
 | `intprec` and `sortmem` | Changed | were 13 and 1024; now **11** and **4096** (set the old values in `sd.conf` if you need them) |
+| Removed features | Removed | words and modes that existed to imitate other products (so far 22 `option` words and 7 `$mode` words), and other things: see [REMOVED](#removed) |
 | `sed` keys | Changed | were Emacs keys with Ctrl-X sequences; now the keys most editors have, and `emacs` in `&sed.options&` keeps the old layout |
 | `sed`, `ide`, `ced` | Changed | were 120 by 36 or less; now need a window of at least **140 by 42**, and `ed` is the editor for a smaller one |
 | `select file field` | Changed | a field not otherwise used was ignored; now it is `saving multivalued field`, so the list holds the values |
@@ -44,6 +45,8 @@ change: what it does, why, and what it does not do. This document is the short f
 
 **Built from the openQM list** (each row is an item on the feature spreadsheet): [ADMIN](#admin) · [API](#api) ·
 [BASIC](#basic) · [DATA](#data) · [FILES](#files) · [QUERY](#query) · [SYSTEM](#system) · [TCL](#tcl) · [TOOLS](#tools).
+
+**[REMOVED](#removed)**: what SD no longer has, and what to write instead.
 
 **[New Features Unique to SD Core](#new-features-unique-to-sd-core)**, not part of openQM and not on the spreadsheet:
 [Administration](#administration) · [AI](#ai) · [API and client library](#api-and-client-library) ·
@@ -141,12 +144,10 @@ Statements, functions, `$mode` words and compiler directives.
 | `md5()`, `digest()` | Added | the md5 digest, and md5, sha1, sha256, sha384 or sha512 of a string or a file <!--s 63 g118--> |
 | `mergelist()` | Added | merges two lists by a mode; a mode for lists not in order; fixed for an empty list <!--s 420 539 566 g155--> |
 | `$mode autolock` | Added | a `write`, `matwrite` or `delete` with no lock takes an update lock and releases it <!--s g213--> |
-| `$mode conditional.statements` | Added | accepted; changes nothing, since `while` and `until` take these conditions anyway <!--s g217 206 434--> |
 | `$mode debug.equates` | Added | keeps `equate` and `$define` tokens in the object so the debugger can show, set and watch them <!--s g218 246 239--> |
 | `$mode default.unass.args` | Added | an argument passed unassigned takes its default <!--s g219--> |
 | `$mode execute.clearlist` | Added | clears the default select list before each `execute` <!--s 521--> |
 | `$mode explicit` | Added | a variable must be named in a `dim` statement before it is used <!--s g220 234--> |
-| `$mode implied.stop` | Added | the code after the last `end` is a `stop`, not a `return` <!--s 81--> |
 | `$mode` lists | Changed | `$mode` takes several names separated by commas, each with an optional minus <!--s 105--> |
 | `$mode non.durable.txn` | Added | a committed nested transaction writes nothing until the outer one commits <!--s g221 442--> |
 | `$mode open.fail.zero.fvar` | Added | a failed `open` leaves 0 in the file variable <!--s 514--> |
@@ -361,7 +362,6 @@ Commands and VOC verbs that every account has, and the command language.
 | `move.list` | Added | the command form of `movelist` <!--s g62--> |
 | `multisort` | Added | `!multisort` sorts several related lists by one of them <!--s 568--> |
 | `option` words | Added | `catalogue.local`, `chained.select`, `command.level.locks`, `correlative.nocase`, `correlative.reuse`, `dir.dtm`, `dir.sel.omit.hidden`, `force.reload`, `git`, `inherit.mfile.path`, `inherit.ownership`, `keep.old.object`, `no.phantom.notify`, `numeric.exponent`, `paginate.on.heading`, `pick.ml.conv.mask`, `query.footer.pause`, `query.merge.print`, `spool.command`, `stacked.account`, `assoc.all`, `backslash.not.quote` <!--s 288 79 314 428 461 445 37 57 154 165 404 429 49 g230 g231 g232 g233 g237 g239 g240 g241 g242 g245 g247 g248--> |
-| `option` words that imitated other products | Removed | the shortcut `option pick` and 22 words: `assoc.unassoc.mv`, `pick.breakpoint`, `pick.breakpoint.u`, `pick.explode`, `pick.grand.total`, `pick.implied.eq`, `pick.null`, `pick.wildcard`, `qualified.display`, `with.implies.or`, `query.no.case`, `query.priority.and`, `ampm.upcase`, `crdb.upcase`, `no.date.wrapping`, `space.mct`, `lock.beep`, `ed.no.query.fd`, `create.file.upcase`, `select.keep.case`, `debug.rebind.keys`, `proc.a`; `option` now refuses them, and what they switched on is gone (the default behaviour stays) <!--s 60 322--> |
 | `oscopy` | Added | copy an operating system file; `overwrite`, `append` <!--s 369 517--> |
 | `phantom` | Added | `no.msg`, `data`, `log`, `group` and `user` options; `!phlog` gives a phantom's log record; a phantom started while SD is suspended gives back its place <!--s 87 137 364 483 31 385 280--> |
 | phantom and terminal lists | Added | `list.phantoms`, `list.term.types`: the phantoms and no one else; the terminal types <!--s 381 g49--> |
@@ -391,6 +391,24 @@ The debugger and the editors, from the openQM list. The full-screen tools that a
 | `sed` split point | Added | Window > Move split up / Move split down, and the commands `split.up` and `split.down` with a number of rows, move the line between the two windows <!--s 578-->|
 | `sed` view | Added | Search > View lines, or `view` and a text: a new read-only buffer holding only the lines of this one that contain the text <!--s 138-->|
 
+
+## REMOVED
+
+These were in L1.1-3 - or were added and taken out again during L1.2-0 - and **SD no longer has them**. Since 27 October 2026
+this is the one place where a removal is listed (the owner's instruction), whatever the area it belonged to. Most were removed
+on his instruction of that day because they existed only to make SD behave like another MultiValue product, or gave a second
+way to do something SD already does one way. **A program, a login paragraph or a `$basic.options` record that uses one has to
+be edited**; the last column says what to write instead. A program that was compiled with a removed mode keeps what it was
+compiled with until it is compiled again. More rows are added as the removal goes on.
+
+| Name | Change | What |
+|---|---|---|
+| AccuTerm terminal types | Removed | the eleven `-at` terminal types and AccuTerm's escape sequences |
+| `$mode` words that imitated other products | Removed | `prclose.default.0` (write `printer close on` *unit*), `unassigned.common` (a common variable starts as zero), `no.case.invert` (give `input` the `nocaseinvert` clause) and `optional.then.else` (a `read` takes a `then` or an `else`) are refused now with *Unrecognised mode name*; `conditional.statements`, `implied.stop` (end a program with `stop`) and `exception.save.stack` (write `saving.stack` on the `catch`) were added and removed within 1.2-0, so they never shipped <!--s 206 434 81 355--> |
+| `option` words that imitated other products | Removed | `option pick` and 22 words, refused now with *Option name not recognised*: `assoc.unassoc.mv`, `pick.breakpoint`, `pick.breakpoint.u`, `pick.explode`, `pick.grand.total`, `pick.implied.eq`, `pick.null`, `pick.wildcard`, `qualified.display`, `with.implies.or`, `query.no.case`, `query.priority.and`, `ampm.upcase`, `crdb.upcase`, `no.date.wrapping`, `space.mct`, `lock.beep`, `ed.no.query.fd`, `create.file.upcase`, `select.keep.case`, `debug.rebind.keys`, `proc.a`. SD does what it did with them off: write `with city = "Reno"`, use `like` for wildcards, brackets and `or` for the order of tests, `no.case` after an operator or `option query.sort.no.case` for case; times and amounts are `am`, `pm`, `cr`, `db`; a date such as 31 February rolls into the next month; a lock wait is silent; `fd` in `ed` asks first; `create.file` names a file in lower case <!--s 60 322--> |
+| screen save and restore | Removed | `save.screen()` and `restore.screen`: still exist and do nothing the terminal could see |
+| `sdterm` terminal type | Removed | with SDTerm and SDConsole, and the `term display` line about them |
+| `term 120,36` at login | Removed | `login` no longer sends it |
 
 ## New Features Unique to SD Core
 
@@ -632,7 +650,6 @@ Fixes that close a way round a gate, and what the gates now ask.
 | Name | Change | What |
 |---|---|---|
 | 140 by 42 layout | Changed | `ide`, `sed`, `ced` and the debugger: 140 by 42, refused below it, survive a window made smaller, take no keys while the cursor is off the screen |
-| AccuTerm terminal types | Removed | the eleven `-at` terminal types and AccuTerm's escape sequences |
 | `ced` data mode | Added | edits a multivalue record as a tree of fields, values and subvalues (a text or a list; a list never below the second level), so that nobody types a mark; started by `ide` F12 |
 | `debugger` full-screen display | Added | on a terminal with an alternate screen the debugger takes the whole screen: source, breakpoints, messages and the command line; F1 help, F4 the program's screen |
 | home screen | Added | every account starts in a screen of tiles; arrows, Tab, letters, mouse, F5, F10 |
@@ -645,11 +662,8 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `ide` marks as tokens | Added | a record that holds value, subvalue or text marks is shown with `:@vm:`, `:@sm:` and `:@tm:` and read back when saved, so nobody types a mark; a field that holds the text of a token is shown as it is |
 | `ide` redraw | Changed | no flash; a click on the menu bar opens the menu; the active pane is marked `[*]` |
 | immediate messages | Changed | `message ... immediate` is shown in a box on any terminal |
-| screen save and restore | Removed | `save.screen()` and `restore.screen`: still exist and do nothing the terminal could see |
-| `sdterm` terminal type | Removed | with SDTerm and SDConsole, and the `term display` line about them |
 | `sed` | Changed | the full-screen editor is back with a menu bar, the keys most editors have (`emacs` in `&sed.options&` keeps the old ones), undo and redo, syntax colour and the mouse; its keys are decoded from the terminal's terminfo entry <!--s 365--> |
 | `sed`, `ide`, `ed` input ended | Changed | fixed: they used all of a processor for ever when their input had ended |
-| `term 120,36` at login | Removed | `login` no longer sends it |
 | toolkit pages: window limit and record-box titles | Changed | a window above 500 by 300 is refused before the screen is taken (it cost minutes); the boxes of a record write or delete are titled Write this record? / Delete this record? / Update these records? / Put these records back?; "Press Enter to return" names no screen |
 
 ## NO CHANGE

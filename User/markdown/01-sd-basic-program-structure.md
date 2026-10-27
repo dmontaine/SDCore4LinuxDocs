@@ -405,7 +405,6 @@ additions; each is described by what it does and does **not** do.
 | **`default.unass.args`** | an argument that has a default value (see *Arguments that may be left out* above) also takes it when the caller passed the argument unassigned, not only when it was left out |
 | **`trap.unused.main`** | like `trap.unused`, but it warns only about a variable that is assigned a value in the program itself, not in an include record |
 | **`non.durable.txn`** | every `commit` the program contains is a *non-durable* commit: a transaction **nested** in another writes nothing at its `commit` but hands its records, deletions and locks to the enclosing transaction, which writes them when it commits or throws them away if it aborts. A commit that is not nested writes as ever. See [SD Basic - Locks and Transactions](14-sd-basic-locks-and-transactions.html) |
-| **`conditional.statements`** | accepted, and it changes nothing: `read`, `readu`, `readv`, `readnext`, `readseq`, `readblk`, `readcsv`, `matread`, `open`, `openpath`, `openseq`, `writeseq`, `writeblk`, `writecsv`, `seek`, `send`, `filelock`, `fileunlock`, `flush`, `getlist`, `locate`, `find` and `findstr` may always be the condition of `while` and `until` |
 
 ## Options that change how SD runs a program
 

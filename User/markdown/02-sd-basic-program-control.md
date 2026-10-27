@@ -217,7 +217,7 @@ catch account
 | `@exception` | the name as it was thrown (its case too) |
 | `@exception.data` | the second argument of `throw`; for a run time error, the message |
 | `@exception.origin` | the program (its object path), a field mark and the line the exception was thrown from, or -1 where the program has no line table |
-| `@exception.stack` | the call stack as `system(1002)` gives it, innermost first; filled only when the clause says `saving.stack` (or `$mode exception.save.stack`) |
+| `@exception.stack` | the call stack as `system(1002)` gives it, innermost first; filled only when the clause says `saving.stack` |
 
 `dumping` makes a process dump file, showing the call stack as it was, before the
 stack is unwound.

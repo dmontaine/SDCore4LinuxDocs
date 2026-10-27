@@ -5,6 +5,12 @@ This page continues [Migrating to SD](15-migrating-to-sd.html). A mode changes h
 program** is compiled: `$mode` *name* `{, name ...}` in the source, or a `mode` line in
 a `$basic.options` record. **All are off unless asked for.** A name SD does not have stops the
 compile with *Unrecognised mode name*; `$mode default` turns every mode off, `$mode -name` one.
+Seven names that existed to imitate other products were removed on 27 October 2026 and are
+refused now: `conditional.statements` (it did nothing: the file statements may always be the
+condition of `while` and `until`), `exception.save.stack` (write `saving.stack` on the `catch`),
+`implied.stop` (end a program with `stop`), `no.case.invert` (give `input` the `nocaseinvert`
+clause), `optional.then.else` (a `read` takes a `then` or an `else`), `prclose.default.0`
+(`printer close on` *unit*) and `unassigned.common` (a common variable starts as zero).
 The last column names the page of the User set that also describes the word; **here** means this
 page is where it is described. Some modes also work at the start of an I-type, which is
 described in *SD Dictionaries - Formats and Expressions*.
@@ -20,7 +26,6 @@ described in *SD Dictionaries - Formats and Expressions*.
 | `pick.readnext` | a `readnext` that takes its `else` leaves the id variable as it was | *SD Basic - Program Structure* |
 | `selectv` | `select` builds a select list variable, as `selectv` does, and the list variable is optional | *SD Basic - Select Lists* |
 | `pick.select` | `selectv` moves an active default select list to the variable instead of making a new selection | *SD Basic - Program Structure* |
-| `optional.then.else` | `read`, `readu`, `readl`, `readv`, `readvu` and `readvl` need no `then` or `else`. `matread` still does | here |
 | `execute.clearlist` | the default select list is cleared before each `execute`, unless it has a `passlist` clause | *SD Basic - Program Structure* |
 | `stdfil` | the default file variable: `open`, `read`, `write`, `delete`, `select` and the other file statements may be written without naming a file variable | *SD Basic - Program Structure* |
 | `stdfil.shared` | `stdfil` with one variable for the whole command level, shared by a program and the subroutines it calls | *SD Basic - Program Structure* |
@@ -49,11 +54,8 @@ described in *SD Dictionaries - Formats and Expressions*.
 | `for.store.before.test` | `for` stores the new value of the loop variable before it tests the end condition, so after `for i = 1 to 3` the variable holds 4 | here |
 | `pick.jump.range` | `on ... goto` and `on ... gosub` with an index out of range go on to the next statement, instead of jumping to the last label | here |
 | `pick.enter` | `enter` hands control to the named program for good, casting off the programs that called it down to the command processor. Without the mode `enter` is a `call` | here |
-| `implied.stop` | a program or subroutine that runs off its final `end` stops the run instead of returning to its caller | here |
 | `optional.final.end` | no warning when the final `end` is missing | here |
 | `partial.expressions` | `a and b` and `a or b` stop evaluating as soon as the answer is known | *SD Basic - Program Structure* |
-| `conditional.statements` | accepted and does nothing: the file and select statements may always be the condition of `while` and `until` | *SD Basic - Program Structure* |
-| `exception.save.stack` | every `catch` behaves as if `saving.stack` were given | *SD Basic - Program Control* |
 | `default.unass.args` | an argument with a default value takes it also when the caller passed the argument unassigned | *SD Basic - Program Structure* |
 
 ## Declarations and compiler warnings
@@ -61,7 +63,6 @@ described in *SD Dictionaries - Formats and Expressions*.
 | mode | what it does | also described in |
 |---|---|---|
 | `pick.matrix` | matrices have no zero element: `m(0)` is out of range | here |
-| `unassigned.common` | variables in a common block start unassigned, not as 0 | here |
 | `explicit` | every scalar must be named in a `dim` before it is used, or the compile fails with *Variable x has not been declared* | *SD Basic - Program Structure* |
 | `trap.unused` | the compiler warns of a variable that is given a value and never used | here |
 | `trap.unused.main` | as `trap.unused`, but only for variables given a value in the program itself, not in an include record | *SD Basic - Program Structure* |
@@ -73,9 +74,7 @@ described in *SD Dictionaries - Formats and Expressions*.
 | mode | what it does | also described in |
 |---|---|---|
 | `heading.no.eject` | `heading` behaves as `heading no.eject`: setting a heading does not start a new page | here |
-| `prclose.default.0` | `printer close` with no unit closes print unit 0 only; without the mode it closes every unit | here |
 | `no.echo.data` | an `input` that takes its answer from the data queue does not echo it | here |
-| `no.case.invert` | `input` ignores the terminal's case inversion, as if every `input` had the `nocaseinvert` clause | here |
 | `time.ms` | `time()` returns the seconds since midnight to the millisecond, with a fraction | *SD Dictionaries - Formats and Expressions* |
 
 ## The `$basic.options` record
