@@ -85,14 +85,16 @@ query.
 
 ### Pseudo-fields
 
-Field 2 is not always a literal field number. Three values have special
+Field 2 is not always a literal field number. One value has a special
 meaning:
 
 | Location | What it reads |
 |---|---|
 | `0` | the record id (`@ID`) |
-| `9998` | `@NI` — the number of items in a multivalued field set |
-| `9999` | the record length in bytes (`@NB`) |
+
+(`9998`, which read the item count, and `9999`, which read the length of the
+record in bytes, were removed in 1.2-0: they are ordinary field numbers now. Use
+an I-type with `@ni` or `len(@record)` for those two.)
 
 A dictionary record with location `0` is how the record id appears in a
 query. The `@ID` record in `voc.dic` has location `0` and display name

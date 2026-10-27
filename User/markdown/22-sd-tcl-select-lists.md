@@ -361,8 +361,9 @@ merge.list 3 intersect 4 to 6
 0 record(s) selected to select list 6
 ```
 
-The operator words are **`union`**, **`intersect`** (or `intersection`) and
-**`diff`** (or `difference`). `to` *n* names the target, defaulting to list 0,
+The operator words are **`union`**, **`intersect`** and **`diff`**
+(`intersection` and `difference`, which meant the same, were removed in 1.2-0).
+`to` *n* names the target, defaulting to list 0,
 and `count.sup` suppresses the count line.
 
 `list.diff` and `merge.list ... diff ...` give the records in the first list that

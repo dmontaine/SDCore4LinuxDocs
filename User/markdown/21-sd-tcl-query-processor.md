@@ -276,7 +276,7 @@ dictionary entry called `dispatch`.
 | | |
 |---|---|
 | **`id.sup`** | leave the record id out |
-| **`col.hdg`** *"text"* · **`display.name`** | override a column heading |
+| **`col.hdg`** *"text"* | override a column heading |
 | **`fmt`** *"code"* | override the format |
 | **`conv`** *"code"* | override the conversion |
 | **`as`** *name* | use another dictionary entry's formatting |
@@ -387,7 +387,7 @@ options inside the text for page number, date and time.
 | **`max`** · **`min`** | the largest and smallest value |
 | **`enum`** · **`enumerate`** | count the values rather than total them |
 | **`percent`** · **`pct`** · **`%P`** | express as a percentage |
-| **`calc`** · **`calculate`** | evaluate an I-type against the totals |
+| **`calc`** | evaluate an I-type against the totals |
 | **`break.on`** *field* | start a new subtotal group when the field changes |
 | **`break.sup`** *field* | break on a field without printing it |
 | **`grand.total`** *"text"* · **`caption`** | label the final total line |
