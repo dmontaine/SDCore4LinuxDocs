@@ -310,18 +310,14 @@ handler.
 ## Running something else
 
 ```
-execute expression {capturing variable} {returning variable} {passlist} {rtnlist variable} {stacklist}
-perform expression
+execute expression {capturing variable} {returning variable} {passlist variable} {rtnlist variable} {stacklist}
 chain expression
-enter name {(arguments)}
 ```
 
 | | |
 |---|---|
 | `execute` | runs a command **at a new level**; the current program resumes afterwards |
-| `perform` | as `execute`, but the command shares the caller's level — it can see and change the caller's select lists and files |
 | `chain` | replaces the current program; **nothing comes back** |
-| `enter` | transfers to another program, also without return, but keeps the current level |
 
 `execute 'WHO' capturing cap` puts the command's output in `cap`
 rather than on the screen, one field per line — `dcount(cap, @fm)` is `1` for
@@ -336,7 +332,7 @@ reads **-1**. The program carries on. **Test `@system.return.code` after any
 |---|---|
 | **capturing** *var* | the command's output goes to *var* instead of the terminal |
 | **returning** *var* | error messages go to *var* |
-| **passlist** | the caller's default select list is handed to the command |
+| **passlist** *var* | the select list held in *var* (made by `formlistv`, `getlistv`, `selectv` and the like) becomes the command's default select list. The variable is always named: `passlist` alone is refused |
 | **rtnlist** *var* | the command's select list comes back |
 | **stacklist** | the default select list is kept as it was, the place `readnext` had reached included, and put back when the command returns. The command is given the list as usual and may read, change or replace it. It cannot be combined with **passlist** or **rtnlist** (the compiler refuses it) |
 
@@ -356,7 +352,6 @@ sleep {seconds}
 nap milliseconds
 pause {timeout}
 wake user.number
-rqm {time}
 ```
 
 | | |
@@ -365,7 +360,6 @@ rqm {time}
 | `nap` | wait a number of **milliseconds** |
 | `pause` | wait until another process calls `wake`, or until the timeout expires |
 | `wake` | release a process that is paused |
-| `rqm` | release the processor briefly — the historical "release quantum" |
 
 `pause` and `wake` are how two SD sessions coordinate without polling. The user
 number `wake` needs is the one `@user.no` reports in the waiting process.
@@ -397,12 +391,11 @@ which is how a program cleans up rather than dying at an arbitrary point.
 ```
 null
 rem text
-remark text
 * text
 ```
 
 `null` is a statement that does nothing, for branches that must be present but
-empty. `rem`, `remark` and a leading `*` are comments; so is anything after
+empty. `rem` and a leading `*` are comments; so is anything after
 `;*` on a line.
 
 **`rem` is also a function.** `rem(a, b)` is the remainder — see

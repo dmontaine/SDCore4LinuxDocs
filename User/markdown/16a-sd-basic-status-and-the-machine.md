@@ -85,10 +85,9 @@ argument asks without setting:
 So the way to change it temporarily is to keep what the setting call returned
 and pass it back.
 
-## SENTENCE() and the @variables
+## @SENTENCE and the other @variables
 
-`sentence()` and `@sentence` are the same thing. Both hold
-the command line that started the program: `RUN BP ZZMATH`.
+`@sentence` holds the command line that started the program: `RUN BP ZZMATH`.
 
 | | Value |
 |---|---|

@@ -5,12 +5,13 @@ This page continues [Migrating to SD](15-migrating-to-sd.html). A mode changes h
 program** is compiled: `$mode` *name* `{, name ...}` in the source, or a `mode` line in
 a `$basic.options` record. **All are off unless asked for.** A name SD does not have stops the
 compile with *Unrecognised mode name*; `$mode default` turns every mode off, `$mode -name` one.
-Seven names that existed to imitate other products were removed on 27 October 2026 and are
+Seven names that existed to imitate other products were removed on 27 October 2026 (and an eighth, below) and are
 refused now: `conditional.statements` (it did nothing: the file statements may always be the
 condition of `while` and `until`), `exception.save.stack` (write `saving.stack` on the `catch`),
 `implied.stop` (end a program with `stop`), `no.case.invert` (give `input` the `nocaseinvert`
 clause), `optional.then.else` (a `read` takes a `then` or an `else`), `prclose.default.0`
-(`printer close on` *unit*) and `unassigned.common` (a common variable starts as zero).
+(`printer close on` *unit*) and `unassigned.common` (a common variable starts as zero). An eighth, `pick.enter`, went the same
+day with the `enter` statement it switched on (use `call`, or `chain` to hand control on for good).
 The last column names the page of the User set that also describes the word; **here** means this
 page is where it is described. Some modes also work at the start of an I-type, which is
 described in *SD Dictionaries - Formats and Expressions*.
@@ -44,7 +45,7 @@ described in *SD Dictionaries - Formats and Expressions*.
 | `pick.convert` | `convert(string, from, to)` in place of `convert(from, to, string)`, from the line where the mode is turned on | *SD Basic - Program Structure* |
 | `count.overlap` | `count` and `counts` find overlapping occurrences: `aa` in `aaaaaaaaa` is found 8 times, not 4 | *SD Basic - Program Structure* |
 | `index.overlap` | `index` and `indexs` count overlapping occurrences when finding the nth | *SD Basic - Program Structure* |
-| `change.no.overlap` | `change`, `ereplace` and `swap` given a starting occurrence pass over the earlier occurrences whole, not one character at a time | *SD Basic - Program Structure* |
+| `change.no.overlap` | `change` and `swap` given a starting occurrence pass over the earlier occurrences whole, not one character at a time | *SD Basic - Program Structure* |
 | `case.sensitive` | names of variables and labels are case sensitive: `abc` and `ABC` are two variables, `lab:` and `LAB:` two labels | here |
 
 ## Program flow
@@ -53,7 +54,6 @@ described in *SD Dictionaries - Formats and Expressions*.
 |---|---|---|
 | `for.store.before.test` | `for` stores the new value of the loop variable before it tests the end condition, so after `for i = 1 to 3` the variable holds 4 | here |
 | `pick.jump.range` | `on ... goto` and `on ... gosub` with an index out of range go on to the next statement, instead of jumping to the last label | here |
-| `pick.enter` | `enter` hands control to the named program for good, casting off the programs that called it down to the command processor. Without the mode `enter` is a `call` | here |
 | `optional.final.end` | no warning when the final `end` is missing | here |
 | `partial.expressions` | `a and b` and `a or b` stop evaluating as soon as the answer is known | *SD Basic - Program Structure* |
 | `default.unass.args` | an argument with a default value takes it also when the caller passed the argument unassigned | *SD Basic - Program Structure* |

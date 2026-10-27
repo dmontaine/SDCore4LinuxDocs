@@ -86,7 +86,7 @@ action, tokens, an automatic `$include`. Its lines are listed in
 | sort on text without regard to case | `option query.sort.no.case`; for one selection test, the `no.case` keyword after its operator |
 | must go on running through a divide by zero, a non-numeric value or an unassigned variable while you find them | `option sdbasic.warnings` |
 | expect a `read` that fails to leave its variable as it was | `$mode pick.read` |
-| use `locate` as UniVerse does, or `enter` to hand control on for good | `$mode uv.locate`, `$mode pick.enter` |
+| use `locate` as UniVerse does | `$mode uv.locate` |
 | use `for` loops whose variable must be stored before the end test | `$mode for.store.before.test` |
 | use matrices with no zero element | `$mode pick.matrix` |
 | need every program of a file compiled the same way | a `$basic.options` record |

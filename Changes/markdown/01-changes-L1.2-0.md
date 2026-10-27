@@ -32,7 +32,7 @@ change: what it does, why, and what it does not do. This document is the short f
 | Dictionary divide by zero | Changed | stopped the report; now gives zero |
 | `fileinfo(f, 1021)` | Changed | gave text such as `12 (don), 14 (ann)`; now the user numbers of the other sessions that have the file open, and the text form is key **1100** |
 | `intprec` and `sortmem` | Changed | were 13 and 1024; now **11** and **4096** (set the old values in `sd.conf` if you need them) |
-| Removed features | Removed | words and modes that existed to imitate other products (so far 22 `option` words and 7 `$mode` words), and other things: see [REMOVED](#removed) |
+| Removed features | Removed | words and modes that existed to imitate other products (so far 22 `option` words, 8 `$mode` words and 27 second spellings and forms of statements, clauses, functions and conversions), and other things: see [REMOVED](#removed) |
 | `sed` keys | Changed | were Emacs keys with Ctrl-X sequences; now the keys most editors have, and `emacs` in `&sed.options&` keeps the old layout |
 | `sed`, `ide`, `ced` | Changed | were 120 by 36 or less; now need a window of at least **140 by 42**, and `ed` is the editor for a smaller one |
 | `select file field` | Changed | a field not otherwise used was ignored; now it is `saving multivalued field`, so the list holds the values |
@@ -114,7 +114,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `compare()` | Changed | an `i` after `l` or `r` in the justification compares ignoring case; `compares()` does it over two arrays <!--s 307 g114--> |
 | `convert()` | Changed | `mcn-`, `mc/n-`, `mcs`, `mcp` with a quoted replacement character, `mt` with `m`, `md` options in any order <!--s 23 183 198 298 488--> |
 | `dir()` | Changed | includes the size of each file <!--s 366--> |
-| `ereplace()`, `fix()` | Added | replace with an occurrence and a start; a number with a fixed number of decimals <!--s 472--> |
+| `fix()` | Added | a number with a fixed number of decimals, rounded or cut off <!--s 472--> |
 | exceptions | Added | `try`, `catch`, `throw`, `caught()` and `@exception`; many run time errors are caught under openQM's `sys.` names; `dumping` and `saving.stack` <!--s 353 354 355 295 309--> |
 | `execute ... stacklist` | Added | keeps the default select list and puts it back when the command returns <!--s 61--> |
 | `execute.list` | Added | runs commands for each id of list 0 in turn <!--s g38--> |
@@ -151,7 +151,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `$mode` lists | Changed | `$mode` takes several names separated by commas, each with an optional minus <!--s 105--> |
 | `$mode non.durable.txn` | Added | a committed nested transaction writes nothing until the outer one commits <!--s g221 442--> |
 | `$mode open.fail.zero.fvar` | Added | a failed `open` leaves 0 in the file variable <!--s 514--> |
-| `$mode` overlap words | Added | `change.no.overlap`, `count.overlap`, `index.overlap`: whether `change`, `ereplace`, `swap`, `count`, `counts`, `index` and `indexs` see overlapping occurrences <!--s g214 g215 g216--> |
+| `$mode` overlap words | Added | `change.no.overlap`, `count.overlap`, `index.overlap`: whether `change`, `swap`, `count`, `counts`, `index` and `indexs` see overlapping occurrences <!--s g214 g215 g216--> |
 | `$mode partial.expressions` | Added | `a and b` and `a or b` stop evaluating as soon as the value is known <!--s 417--> |
 | `$mode pick.convert` | Added | Pick order of the arguments of `convert()` <!--s g222 507--> |
 | `$mode pick.readnext` | Added | `readnext` keeps the id variable when it takes its `else` <!--s 418--> |
@@ -171,7 +171,7 @@ Statements, functions, `$mode` words and compiler directives.
 | operating system files | Added | `oscopy`, `osread`, `oswrite`, `osdelete`, `!oscopy`, `!ioscopy`: copy, read, write and delete operating system files by name, held to the account's OS gate <!--s 369 517 g163 g164 g165--> |
 | `option()` | Added | reads and sets the state of an option <!--s 224 473--> |
 | `ospath()` | Added | keys `os$fullpathx`, `os$info`, `os$parent`, `os$uid`, `os$gid`, `os$modes`, `os$is.file` and `os$is.dir` <!--s 293 432 233--> |
-| `parse()` and `ttyget()` | Added | `parse()`, `sort.compare()`, `terminfo.ex()`, `ttyget()`, `ttyset`: split by a pattern; compare by a sort rule; a terminal capability; the terminal modes as an array <!--s g166 g183 g187 g190 g191--> |
+| `parse()` and `ttyget()` | Added | `parse()`, `sort.compare()`, `ttyget()`, `ttyset`: split by a pattern; compare by a sort rule; the terminal modes as an array <!--s g166 g183 g187 g190 g191--> |
 | `phantom` statement | Added | starts a phantom from a program; the log name may be a variable <!--s 390 351--> |
 | `precision inherit` | Added | takes the precision of the calling program <!--s 201--> |
 | `@pstat` | Added | text a program leaves for `pstat` to show <!--s 492--> |
@@ -192,7 +192,6 @@ Statements, functions, `$mode` words and compiler directives.
 | `status()` after a transaction | Added | 0 if it committed, 1021 if it rolled back <!--s 19--> |
 | string arithmetic | Added | `sadd`, `ssub`, `smul`, `sdiv`, `scmp`: exact string arithmetic on numbers of any length and any decimals <!--s 391 468--> |
 | substring assignment | Added | `s[3] = "xy"` overwrites the last three characters, and honours `pick.substr` for an element of a dynamic array <!--s 41 325--> |
-| `swapmarks()` | Changed | returns the data as it is <!--s 238 g186--> |
 | `trans()` family | Changed | `trans()`, `rtrans()`, `xlate()`: accept `a`, `s` and `c` items and an `l` link; a file that will not open takes the error action of the call <!--s 43 182 7--> |
 | variable names | Changed | a name with two or more underscores together (`a__b`) is valid <!--s 336--> |
 | `watch` | Changed | the debugger's `watch variable operator value` stops only when the condition is met <!--s 45--> |
@@ -409,6 +408,10 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | screen save and restore | Removed | `save.screen()` and `restore.screen`: still exist and do nothing the terminal could see |
 | `sdterm` terminal type | Removed | with SDTerm and SDConsole, and the `term display` line about them |
 | `term 120,36` at login | Removed | `login` no longer sends it |
+| second names for statements | Removed | `$insert` (write `$include`), `include` without the `$` (write `$include`), `com` (write `common`), `dimension` and `redimension` (write `dim` and `redim`), `enter` with `$mode pick.enter` (write `call`, or `chain` to hand control on for good), `perform` (write `execute`), `printerr` (write `inputerr`), `remark` (write `rem`), `rqm` (write `sleep`), `sub` (write `subroutine`, also after `local`, `private` and `public`) and `tclread` (read `@sentence`): the compiler refuses each <!--s 215--> |
+| second forms of statement clauses | Removed | `execute ... setting` (write `returning`), `execute ... passlist` with no variable (it did nothing: name the variable, or leave the clause out), `input ... for` and `input ... timeout` (write `waiting`), `opentemp ... ecs` (a word that was read and ignored: it is an ordinary name now, so the compiler warns that it is never assigned a value) and the bracketed Pick form `locate(expr, array, f, v; position; order)` (write `locate expr in array<f, v> setting position`) |
+| second names for functions and variables | Removed | `ereplace()` (write `change()`, which takes -1 for every occurrence), `sentence()` (read `@sentence`), `swapmarks()` (it returned its argument), `terminfo.ex()` (write `terminfo()`) and `@system.set` (write `@system.return.code`) <!--s 238 472 g186--> |
+| `mcd`, `mcdx`, `mcx` and `mcxd` conversions | Removed | second spellings of `mx`: an invalid conversion code now, STATUS 2 |
 
 ## New Features Unique to SD Core
 

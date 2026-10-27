@@ -129,18 +129,18 @@ MCL       MCU       MCC       MCT
 | `MCC` | capitalise each word |
 | `MCT` | title case — the first letter of every word: `hello there world` becomes `Hello There World` |
 
-### Radix conversion — MX, MO, MCD, MCX
+### Radix conversion — MX, MO
 
 ```
-MX        MO        MCD       MCX
+MX        MO
 ```
 
 | Code | What it does |
 |---|---|
 | `MX` | decimal to hexadecimal |
 | `MO` | decimal to octal |
-| `MCD` | hexadecimal to decimal |
-| `MCX` | decimal to hexadecimal (same as MX) |
+
+(`MCD`, `MCDX`, `MCX` and `MCXD`, which were second spellings of `MX`, were removed in 1.2-0: they are an invalid conversion code now, STATUS 2.)
 
 `MX0C` converts a hexadecimal string to characters. `MB0C` and `MO0C`
 do the same for binary and octal.

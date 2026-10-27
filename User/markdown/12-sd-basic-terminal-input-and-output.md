@@ -101,12 +101,6 @@ return the **null string** — so a program that formats a screen from
 `terminfo()` must cope with getting nothing back when it is run from a script
 or the API.
 
-`terminfo.ex(name)` is the same call under the name openQM gives the form that
-returns **every** string a capability has, separated by value marks. SD's
-terminal database holds one string for each capability, so what comes back is
-always the one value `terminfo(name)` gives (a null string for a capability the
-terminal does not have).
-
 ### Saving and restoring the terminal modes: `ttyget()` and `ttyset`
 
 ```
@@ -176,7 +170,7 @@ returns as soon as that many characters arrive, without waiting for Enter.
 | **raw** | read exactly *length* characters just as they arrive: a newline or an erase key is data, nothing is echoed; `input` only, and the length is required |
 | **panning** | scroll a field wider than the space it is shown in |
 | **upcase** | fold what is typed to upper case |
-| **timeout** *n* | give up after *n* seconds and take the `else` branch |
+| **waiting** *n* | give up after *n* seconds and take the `else` branch (`for` and `timeout`, which meant the same, were removed in 1.2-0) |
 
 ### A fill for the field
 
@@ -324,12 +318,8 @@ and the user with no way to know why.
 
 ## Reading the command line
 
-```
-tclread variable
-```
-
-Returns the command line that started the program, so a verb written in BASIC
-can parse its own arguments. `@sentence` holds the same thing.
+`@sentence` holds the command line that started the program, so a verb written
+in BASIC can parse its own arguments.
 
 ## The port's terminal, in one paragraph
 

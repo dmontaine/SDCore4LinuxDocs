@@ -80,7 +80,7 @@ phantom being debugged, not in your own session: the request is sent to the
 phantom, which answers with its own. In the phantom `@tty` is `phantom`. The
 `@variables` the debugger can show now include `@bpv`, `@conv`, `@ds`,
 `@exception` and its three companions, `@file.name`, `@filename`, `@lpv`, `@nd`,
-`@ni`, `@ns`, `@nv`, `@option`, `@pstat`, `@seqno`, `@system.set`,
+`@ni`, `@ns`, `@nv`, `@option`, `@pstat`, `@seqno`, `@system.return.code`,
 `@transaction.id`, `@transaction.level` and `@trigger.return.code`, as well as
 those it showed before.
 

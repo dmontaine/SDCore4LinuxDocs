@@ -103,7 +103,6 @@ exist.**
 | **`col1`** | `col1()` |
 | **`col2`** | `col2()` |
 | **`collection`** | `collection()`   ·   `collection(`*c*`)` |
-| **`com`** | `com` `/`*name*`/` *var*, … — synonym of `common` |
 | **`commit`** | `commit`, inside `begin transaction` … `end transaction` |
 | **`common`** | `common` `/`*name*`/` *var*, *matrix*`(`*n*`)`, … |
 | **`compare`** | `compare(`*a*, *b* {, *justification*}`)` |
@@ -124,7 +123,7 @@ exist.**
 | **`csvdq`** | `csvdq(`*line* {, *delimiter* {, *quote* {, *escape*}}}`)` |
 | **`csvopen`** | `csvopen(`*line* {, *delimiter* {, *quote* {, *escape*}}}`)` |
 | **`csvparse`** | `csvparse(`*text* {, *mode* {, *dialect*}}`)` |
-| **`current.level`** | clause of `enter` — run at the current command level ***(clause word)*** |
+| **`current.level`** | clause of `execute` — run at the current command level ***(clause word)*** |
 
 ## D
 
@@ -142,7 +141,6 @@ exist.**
 | **`deleteu`** | `deleteu` *file.var*, *id* {`on error` …} |
 | **`delimiter`** | `for each` *var* `in` *string* {`delimiter` *d*} … `next` *var*; also a clause of `readcsv`, `matreadcsv`, `writecsv` and `matwritecsv` ***(clause word)*** |
 | **`dim`** | `dim` *name*`(`*rows* {, *cols*}`)`, … |
-| **`dimension`** | `dimension` *name*`(`*rows* {, *cols*}`)`, … — synonym of `dim` |
 | **`dir`** | `dir(`*a*`)` |
 | **`disinherit`** | `disinherit` *object* |
 | **`display`** | `display` *expr* {`:` …} {`:`} |
@@ -162,20 +160,17 @@ exist.**
 |---|---|
 | **`ebcdic`** | `ebcdic(`*a*`)` |
 | **`echo`** | `echo on`   ·   `echo off`   ·   `echo` *expr* |
-| **`ecs`** | clause of `opentemp` — accepted and ignored ***(clause word)*** |
 | **`edit`** | clause of `keyedit`, and the `edit` verb at the command prompt ***(clause word)*** |
 | **`element.exists`** | `element.exists(`*c*, *path*`)` |
 | **`else`** | clause of `if`, and of every statement that has a `then` |
 | **`end`** | `end` — closes a program, a `then`, an `else`, a `case`, a transaction |
-| **`enter`** | `enter` *name*   ·   `enter @`*var* |
 | **`enumerate`** | `enumerate(`*c*`)` |
 | **`env`** | `env(`*a*`)` |
 | **`epoch`** | `epoch()` |
 | **`eqs`** | `eqs(`*a*, *b*`)` |
 | **`equ`** | `equ` *name* `to` *value* — synonym of `equate` |
 | **`equate`** | `equate` *name* `to` *value* {, *name* `to` *value*} … |
-| **`ereplace`** | `ereplace(`*string*, *old*, *new* {, *occurrence* {, *start*}}`)` |
-| **`execute`** | `execute` *cmd* {`capturing` *v*} {`returning` *v*} {`passlist` {*l*}} {`rtnlist` {*v*}} {`stacklist`} |
+| **`execute`** | `execute` *cmd* {`capturing` *v*} {`returning` *v*} {`passlist` *l*} {`rtnlist` *v*} {`stacklist`} |
 | **`exit`** | `exit` — leave the enclosing `loop` or `for` |
 | **`exp`** | `exp(`*a*`)` |
 | **`expand`** | `expand(`*c*`{`*path*`}` {, *file.var*}`)` |
@@ -369,7 +364,7 @@ exist.**
 | **`open.socket`** | `open.socket(`*addr*, *port*, *flags* {, *context*}`)` |
 | **`openpath`** | `openpath` *path* {`sync`} `to` *file.var* {`readonly`} {`on error` …} `then` … `else` … |
 | **`openseq`** | `openseq` *path* `to` *file.var* {`append`} {`overwrite`} {`readonly`} `then` … `else` … — ***`then` = it existed, `else` = it was created*** |
-| **`opentemp`** | `opentemp` {*path*} {`ecs`} {`non.transactional`} `to` *file.var* {`on error` …} `then` … `else` … |
+| **`opentemp`** | `opentemp` {*path*} {`non.transactional`} `to` *file.var* {`on error` …} `then` … `else` … |
 | **`ors`** | `ors(`*a*, *b*`)` |
 | **`os.error`** | `os.error()` |
 | **`os.execute`** | `os.execute` *command* {`capturing` *var*} |
@@ -384,16 +379,14 @@ exist.**
 |---|---|
 | **`page`** | `page` {*n*} |
 | **`panning`** | clause of `input` — pan a field wider than the screen ***(clause word)*** |
-| **`passlist`** | clause of `execute` — hand the active select list to the command ***(clause word)*** |
+| **`passlist`** | clause of `execute` — the select list held in a variable becomes the command's default list ***(clause word)*** |
 | **`pause`** | `pause` {*seconds*} |
 | **`pdump`** | `pdump` |
-| **`perform`** | `perform` *command* |
 | **`precision`** | `precision` *n* |
 | **`print`** | `print` *expr* {`:` …} {`:`}   ·   `print on` *unit* *expr* |
 | **`printcsv`** | `printcsv` {`on` *unit*} *value*, … {`:`} |
 | **`printer`** | `printer on`   ·   `printer off`   ·   `printer close`   ·   `printer file on` *unit* *file*, *record* |
 | **`printer.setting`** | `printer.setting(`*a*, *b*, *c*`)` |
-| **`printerr`** | `printerr` *message* |
 | **`private`** | `private` *var*, … |
 | **`procread`** | `procread` *var* `then` … `else` … |
 | **`procwrite`** | `procwrite` *var* |
@@ -433,12 +426,10 @@ exist.**
 | **`recordlocked`** | `recordlocked(`*file.var*, *id*`)` — ***-3 -2 -1 0 1 2 3*** |
 | **`recordlockl`** | `recordlockl` *file.var*, *id* {`locked` …} {`on error` …} |
 | **`recordlocku`** | `recordlocku` *file.var*, *id* {`locked` …} {`on error` …} |
-| **`redim`** | `redim` *name*`(`*rows* {, *cols*}`)` — the same as `redimension` |
-| **`redimension`** | `redimension` *name*`(`*rows* {, *cols*}`)` — changes the size of a matrix passed in as an argument |
+| **`redim`** | `redim` *name*`(`*rows* {, *cols*}`)` — changes the size of a matrix passed in as an argument |
 | **`regex`** | `regex(`*a*, *b*`)` |
 | **`release`** | `release` {*file.var* {, *id*}} {`on error` …} — bare `release` releases everything |
 | **`rem`** | `rem(`*a*, *b*`)` |
-| **`remark`** | `remark` *text* — synonym of `rem` |
 | **`remove`** | `remove` *value* `from` *arr* `setting` *delimiter.code* |
 | **`remove.break.handler`** | `remove.break.handler` |
 | **`repeat`** | `repeat` — closes a `loop` |
@@ -450,7 +441,6 @@ exist.**
 | **`rnd`** | `rnd(`*a*`)` |
 | **`root`** | `root` *file.name*, *index* `to` *scan.var* `then` … `else` … |
 | **`rollback`** | `rollback`, inside `begin transaction` … `end transaction` |
-| **`rqm`** | `rqm` {*seconds*} |
 | **`rtnlist`** | clause of `execute` — take the list the command left ***(clause word)*** |
 | **`rtrans`** | `rtrans(`*file.var*, *id*, *field*, *action*`)` |
 
@@ -483,7 +473,6 @@ exist.**
 | **`selectrightv`** | `selectrightv` *index* `from` *file.var* {`setting` *var*} `to` *list.var* — list 10 is its scratch list |
 | **`selectv`** | `selectv` {*file.var*} `to` *var* — read it back with `readnext … from` |
 | **`sendmail`** | `sendmail` *to*, *from*, *subject*, *body* {, *attachments*} `then` … `else` … |
-| **`sentence`** | `sentence()` — the same value as `@sentence` |
 | **`seq`** | `seq(`*a*`)` |
 | **`server.addr`** | `server.addr(`*a*`)` |
 | **`set`** | `set` *var* `on` *object* `to` *value* |
@@ -526,7 +515,6 @@ exist.**
 | **`stop`** | `stop` {*message*} |
 | **`str`** | `str(`*a*, *b*`)` |
 | **`strs`** | `strs(`*a*, *b*`)` |
-| **`sub`** | `sub` *name*`(`*arg*, …`)` — synonym of `subroutine` |
 | **`subr`** | `subr(`*"name"* {, *arg*, …}`)` |
 | **`subroutine`** | `subroutine` *name*`(`*arg*, …`)` |
 | **`subs`** | `subs(`*a*, *b*`)` |
@@ -535,7 +523,6 @@ exist.**
 | **`sum`** | `sum(`*a*`)` |
 | **`summation`** | `summation(`*a*`)` |
 | **`swap`** | `swap(`*string*, *from*, *to* {, *occurrences* {, *start*}}`)` |
-| **`swapmarks`** | `swapmarks(`*string*`)` — gives the string unchanged: SD has no ECS mode |
 | **`swapcase`** | `swapcase(`*a*`)` |
 | **`sysmsg`** | `sysmsg(`*number* {, *substitution*, …}`)` |
 | **`system`** | `system(`*a*`)` |
@@ -545,7 +532,6 @@ exist.**
 | | |
 |---|---|
 | **`tan`** | `tan(`*a*`)` |
-| **`tclread`** | `tclread` *var* |
 | **`terminfo`** | `terminfo(`*capability* {, *arg*, …}`)` |
 | **`then`** | clause of `if`, and of every statement that has an `else` ***(clause word)*** |
 | **`throw`** | `throw` *exception* {, *data*} — see page 02 |
@@ -648,7 +634,6 @@ in one list. Each is described where its subject is.
 | **`set.timezone`** | `set.timezone` *zone* |
 | **`signal`** | `signal(`*user.no*`)` |
 | **`sort.compare`** | `sort.compare(`*a*, *b*, *mode* {, *no.case*}`)` |
-| **`terminfo.ex`** | `terminfo.ex(`*capability*`)` |
 | **`ttyget`** · **`ttyset`** | `ttyget()`   ·   `ttyset` *settings* |
 | **`writelist`** | `writelist` *array* `to` *name* |
 
