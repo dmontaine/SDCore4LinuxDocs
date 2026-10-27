@@ -12,6 +12,10 @@ condition of `while` and `until`), `exception.save.stack` (write `saving.stack` 
 clause), `optional.then.else` (a `read` takes a `then` or an `else`), `prclose.default.0`
 (`printer close on` *unit*) and `unassigned.common` (a common variable starts as zero). An eighth, `pick.enter`, went the same
 day with the `enter` statement it switched on (use `call`, or `chain` to hand control on for good).
+Three more went later that day, each doing without the mode what it did with the mode off: `execute.clearlist`
+(the default select list is no longer cleared before an `execute`; `clearselect 0` does it), `open.fail.zero.fvar`
+(the file variable of a failed `open` stays unassigned) and `pick.readnext` (a `readnext` that takes its `else`
+sets the id variable to the null string).
 The last column names the page of the User set that also describes the word; **here** means this
 page is where it is described. Some modes also work at the start of an I-type, which is
 described in *SD Dictionaries - Formats and Expressions*.
@@ -24,13 +28,10 @@ described in *SD Dictionaries - Formats and Expressions*.
 | `string.locate` | an `ar` or `dr` locate no longer compares numbers as numbers: the values are compared as right-aligned text, so a list holding -5, 3 and 10 is in order as numbers but not as text | here |
 | `composite.readnext` | `readnext` on a list made with `by.exp` returns the whole entry (the id followed by the positions the list carries) instead of the id alone | here |
 | `pick.read` | `read`, `readu`, `readl`, `readv`, `readvu` and `readvl` leave the variable as it was when the record is not found, instead of making it null | here |
-| `pick.readnext` | a `readnext` that takes its `else` leaves the id variable as it was | *SD Basic - Program Structure* |
 | `selectv` | `select` builds a select list variable, as `selectv` does, and the list variable is optional | *SD Basic - Select Lists* |
 | `pick.select` | `selectv` moves an active default select list to the variable instead of making a new selection | *SD Basic - Program Structure* |
-| `execute.clearlist` | the default select list is cleared before each `execute`, unless it has a `passlist` clause | *SD Basic - Program Structure* |
 | `stdfil` | the default file variable: `open`, `read`, `write`, `delete`, `select` and the other file statements may be written without naming a file variable | *SD Basic - Program Structure* |
 | `stdfil.shared` | `stdfil` with one variable for the whole command level, shared by a program and the subroutines it calls | *SD Basic - Program Structure* |
-| `open.fail.zero.fvar` | a failed `open` or `openpath` leaves 0 in the file variable, not an unassigned one | *SD Basic - Program Structure* |
 | `write.delete.then.else` | `write`, `writeu`, `matwrite`, `matwriteu`, `delete` and `deleteu` take `then` and `else`; a trigger that refuses a write takes `else` | *SD Basic - Program Structure* |
 | `autolock` | `write`, `matwrite` and `delete` lock a record they do not already hold a lock on, for that statement. Not recommended: it hides the explicit locking SD's own programs use | *SD Basic - Program Structure* |
 | `non.durable.txn` | a `commit` of a nested transaction writes nothing but hands its records, deletions and locks to the enclosing transaction | *SD Basic - Locks and Transactions* |
