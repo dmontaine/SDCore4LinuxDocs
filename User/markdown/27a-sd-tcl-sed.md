@@ -108,9 +108,9 @@ cursor goes past it; a mode that is on is checked.
 |---|---|
 | **File** | Save · Save as · Open record · Import · Export · List records · Quit |
 | **Edit** | Undo · Redo · Set mark · Swap mark · Cut region · Copy region · Paste · Delete char · Kill line · Delete word · Close spaces · Upcase word · Lower case word · Capital initial · Upcase region · Downcase region · Align text · Toggle chars · Overlay mode |
-| **Search** | Forward search · Backward search · Replace · Query replace · Goto line · Top · Bottom · Page up · Page down · Case on · Case off · Word search · Basic word search |
+| **Search** | Forward search · Backward search · Replace · Query replace · Goto line · View lines · Top · Bottom · Page up · Page down · Case on · Case off · Word search · Basic word search |
 | **Buffer** | Next buffer · Previous buffer · Goto buffer · List buffers · Delete buffer · Up to list · Dive |
-| **Window** | Split window · Unsplit window · Toggle window · Refresh screen |
+| **Window** | Split window · Unsplit window · Toggle window · Move split up · Move split down · Refresh screen |
 | **Tools** | Compile · Compile and run · Format · Indent mode · Expand tabs · Stamp · Syntax colour · Mouse · Release lock · Keys in use · Run extension · Command · Start macro · End macro · Execute macro |
 
 **Several records can be open at once** — they are *buffers*, and a record
@@ -118,6 +118,22 @@ named in a list or opened with *Open record* becomes the next one. *List
 records* shows the records of the file and *Dive* opens the one the cursor is
 on; *Up to list* goes back. The **window** can be split in two, to look at
 two places at once.
+
+**Moving the split point** (*Window*, *Move split up* and *Move split down*, dim
+until the window is split) moves the line between the two windows by one row.
+On SED's command line **`split.up`** and **`split.down`** move it by the number
+of rows given (one without a number). Both windows keep at least two rows, a
+number that would take it further stops there, and the cursor stays in the
+window that is live.
+
+**Seeing only some of the lines** — *Search*, *View lines*, or **`view`** *text* on
+the command line (the prompt asks for the text when it is left out) — opens a
+new buffer that holds only the lines of this one that contain the text. The case
+of the text matters unless the search mode is `case_off`. The new buffer is
+**read-only and is not a record of any file**: nothing can be saved from it, it
+is named `--View--` and the text, and the buffer you came from is as it was.
+A text that no line holds is said so and no buffer is made. The commands have
+no key of their own; reach them from the menus or the command line.
 
 ## The keys
 
@@ -293,6 +309,8 @@ blanks:
 | **`syntax`** · **`no.syntax`** · **`syntax.light`** | colour on or off at the start; light palette |
 | **`mouse`** · **`no.mouse`** | the mouse on (the default) or off at the start |
 | **`no.invert`** | leave the case of typed letters alone |
+| **`scroll1`** | page up and page down move one line less than a page, so one line of the old page stays on the screen |
+| **`no.case.explore`** | the list of records (the explore list, `?` at the record prompt) is in order whatever the case of the ids, not capitals first; the list of files is not changed |
 
 **`&sed.bindings&`** is a file of key sets. SED loads the first that exists of:
 the record named in field 3 of `&sed.options&`; one named *login*-*terminal

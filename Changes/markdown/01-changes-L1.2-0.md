@@ -385,6 +385,10 @@ The debugger and the editors, from the openQM list. The full-screen tools that a
 | `debugger` | Changed | full-screen display on a terminal with an alternate screen; `/*` for every variable; `^`; `window n`; `set v = token`; a stop before each `case`; a blank line repeats the last command; `brk` lists the breakpoints <!--s 21 67 97 142 193 203 327 335 513 550--> |
 | `debugger` phantom | Changed | an `@variable` is read from the process being debugged <!--s 251-->|
 | `sed` | Changed | the full-screen editor takes `creating.seqkey` in place of a record id, like `ed` <!--s 446-->|
+| `sed` option `no.case.explore` | Added | in `&sed.options&`: the list of records is in order whatever the case of the ids, not capitals first <!--s 376-->|
+| `sed` option `scroll1` | Added | in `&sed.options&`: page up and page down move one line less than a page, so one line of the old page stays <!--s 463-->|
+| `sed` split point | Added | Window > Move split up / Move split down, and the commands `split.up` and `split.down` with a number of rows, move the line between the two windows <!--s 578-->|
+| `sed` view | Added | Search > View lines, or `view` and a text: a new read-only buffer holding only the lines of this one that contain the text <!--s 138-->|
 
 
 ## New Features Unique to SD Core
