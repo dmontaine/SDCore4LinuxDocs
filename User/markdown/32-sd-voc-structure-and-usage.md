@@ -168,9 +168,10 @@ verb guarded rather than absent.
 
 `IN` verbs are numbered, and the numbers are positional in the command
 processor's dispatch list. Several names share one: `off` and `quit` are
-both internal verb 1, `clr` and `cs` are both 2, and each of `clear.data`,
-`clear.input`, `clear.prompts` and `clear.select` has a run-together
-spelling (`cleardata` and the rest) pointing at the same number.
+both internal verb 1, and `clr` is internal verb 2. (`cs` for `clr`, and the
+run-together `cleardata`, `clearinput`, `clearprompts` and `clearselect` for
+`clear.data` and the rest, were second names for the same numbers and were
+removed in 1.2-0.)
 
 ### The four keyword-verbs
 

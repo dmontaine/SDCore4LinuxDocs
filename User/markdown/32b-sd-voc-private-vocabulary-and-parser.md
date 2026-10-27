@@ -21,11 +21,11 @@ The first word of a line is the command. The command processor looks for it
 in this order, and stops at the first place that has it:
 
 1. **The account's VOC.** The word as typed, then in lower case, then in
-   upper case, then with each hyphen changed to a dot (upper case, then lower
-   case): `zz-vdot` finds a VOC record called `zz.vdot`.
+   upper case. **There is no hyphen form** (it was removed in 1.2-0):
+   `zz-vdot` does not find a VOC record called `zz.vdot`.
 2. **The private vocabulary**, if the VOC has `$private.voc`. The word as
-   typed, then in lower case, then in upper case. **There is no hyphen form
-   here**: `zz-dot` does not find a private record called `zz.dot`.
+   typed, then in lower case, then in upper case; `zz-dot` does not find a
+   private record called `zz.dot` either.
 3. **The private catalogue and then the global one**, as page 32a describes.
 4. Otherwise `xx is not in your VOC`.
 

@@ -63,34 +63,14 @@ type `list voc` or `LIST VOC` and reach the same file.
 **Account names are the deliberate exception.** They are still folded upward,
 and that is what makes signing in case-insensitive.
 
-### A hyphen is accepted where the verb has a dot
+### A hyphen is not a dot
 
-After the three case attempts, the command processor tries the name again with
-any hyphens changed to dots. **So every dotted verb also answers to a hyphen.**
-
-```
-:clear-select
-Cleared numbered select list 0
-:clear.select
-Cleared numbered select list 0
-```
-
-This is a spelling variant rather than a second verb, and two controls show it:
-
-```
-:zzz-nosuch
-zzz-nosuch is not in your VOC
-:ct voc create-account
-Record 'create-account' not found
-```
-
-The first shows the fallback is not accepting anything at all. The second shows
-there is no `create-account` record in the VOC — the resolution happens in the
-command processor, not in the file.
-
-**The dotted spelling is the documented one** and is what every page here uses.
-The hyphen form is supported, and it is worth knowing because a typed hyphen
-will not produce the error you expect.
+The command processor tries the three case attempts and no more. **A verb
+typed with a hyphen where the name has a dot is not found**: `clear-select`
+answers `CLEAR-SELECT is not in your VOC`, and `clear.select` is the verb. (The
+hyphen form was the Pick spelling of a dotted verb. It was removed in release
+1.2-0; an account with a paragraph or script that types it must say the dotted
+name.)
 
 ### If the VOC has nothing, the catalogue is tried
 
@@ -133,9 +113,10 @@ for a site that wants a verb guarded rather than absent.
 
 There are **40 internal verb numbers**, and the numbers are positional in the
 command processor's dispatch list. Several names share one: `off` and `quit` are
-both internal verb 1, `clr` and `cs` are both 2, and each of `clear.data`,
-`clear.input`, `clear.prompts` and `clear.select` has a run-together spelling
-(`cleardata` and the rest) pointing at the same number.
+both internal verb 1, and `clr` is internal verb 2. (`cs` for `clr`, and the
+run-together `cleardata`, `clearinput`, `clearprompts` and `clearselect` for
+`clear.data` and the rest, were second names for the same numbers and were
+removed in 1.2-0.)
 
 ## Sentences and paragraphs
 

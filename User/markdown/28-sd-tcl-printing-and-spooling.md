@@ -166,29 +166,17 @@ itself does not recognise fails when the job is actually sent, not when
 ## Holding a unit open
 
 ```
-sp.open
-sp.close
+printer {unit} keep.open
+printer {unit} close
 ```
 
 By default a unit finishes its job and releases when the program closes it, so
-two reports become two print jobs. **`sp.open`** sets the keep-open flag so they
-become one; **`sp.close`** clears it again. The flag shows up in `setptr`'s
-Options column, which is the way to check it took:
-
-```
-:setptr display
-   0    80    66    0    0    1 
-:sp.open
-:setptr display
-   0    80    66    0    0    1 KEEP.OPEN
-:sp.close
-:setptr display
-   0    80    66    0    0    1 
-```
-
-**Neither verb prints anything.** The Options column is the only report you get,
-and it is worth looking at — a keep-open flag left set is why a report
-occasionally arrives stapled to the one before it.
+two reports become two print jobs. **`printer keep.open`** sets the keep-open flag
+so they become one; **`printer close`** clears it again and closes the unit. The
+flag shows up in `setptr display`'s Options column as `KEEP.OPEN`, which is the
+way to check it took. A keep-open flag left set is why a report occasionally
+arrives stapled to the one before it. (The verbs `sp.open` and `sp.close`, which
+did this for unit 0 only, were removed in 1.2-0.)
 
 ## Printing records
 

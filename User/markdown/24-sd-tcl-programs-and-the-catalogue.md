@@ -432,7 +432,7 @@ program in a phantom process"*. The debugger itself is covered in
 
 **Every account has all of them now**: `format`, `list.common`, `basic`,
 `catalog`, `catalogue`, `cd`, `compile.dict`, `debug`, `delete.catalog`,
-`delete.catalogue`, `delete.common`, `find.program`, `generate`, `ide`, `map`,
+`delete.common`, `find.program`, `generate`, `ide`, `map`,
 `run`.
 
 **Running a catalogued program never needed any of these anyway** — a

@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **232** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **222** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,7 +23,7 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 185 verbs | `newvoc`, identical for every ordinary account |
+| **every account** | 175 verbs | `newvoc`, identical for every ordinary account |
 | **SDSYS only** | 47 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
@@ -34,9 +34,8 @@ not refused — the name is simply not recognised.**
 | **`abort`** | **`abort`** {*message*} |  |
 | **`ai`** | **`ai`** *text*  —  ask the AI the administrator has chosen: you see what will be sent and say yes first; put text that ends with **`?`** in quotes (needs the account's **`ai`** gate: **`modify.account`** *account* **`ai-on`**) |  |
 | **`alias`** | **`alias`** *command* *target* |  |
-| **`analyse.file`** | **`analyse.file`** {**`dict`**} *file* {**`statistics`**} {**`lptr`**} |  |
 | **`analyse.index`** | **`analyse.index`** *file* {*index* {**`statistics`**} {**`detail`**}} {**`lptr`** {*n*}} {**`no.page`**} |  |
-| **`analyze.file`** | **`analyze.file`** — the same verb as **`analyse.file`** |  |
+| **`analyze.file`** | **`analyze.file`** {**`dict`**} *file* {**`statistics`**} {**`lptr`**} |  |
 | **`autologout`** | **`autologout`** {*minutes*} |  |
 | **`backup.account`** | **`backup.account`** *name* … {**`to`** *directory*}  ·  **`backup.account all`** {**`to`** *directory*} | S |
 | **`basic`** | **`basic`** {*file*} *record* {*record* …} |  |
@@ -59,10 +58,6 @@ not refused — the name is simply not recognised.**
 | **`clear.prompts`** | **`clear.prompts`** |  |
 | **`clear.select`** | **`clear.select`** {*list.no*} |  |
 | **`clear.stack`** | **`clear.stack`** |  |
-| **`cleardata`** | **`cleardata`** — the same verb as **`clear.data`** |  |
-| **`clearinput`** | **`clearinput`** — the same verb as **`clear.input`** |  |
-| **`clearprompts`** | **`clearprompts`** — the same verb as **`clear.prompts`** |  |
-| **`clearselect`** | **`clearselect`** — the same verb as **`clear.select`** |  |
 | **`clr`** | **`clr`** |  |
 | **`cname`** | **`cname`** *old.file* **`to`** *new.file* |  |
 | **`command.logging`** | **`command.logging`** {**`on`** \| **`off`**} |  |
@@ -80,7 +75,6 @@ not refused — the name is simply not recognised.**
 | **`create.account`** | **`create.account user`** *name* {**`ssh`** \| **`api`** \| **`both`** \| **`none`**} {**`sh-on`**} {**`os-on`**} {**`voc-on`**} {**`bp-on`**} {**`dict-on`**} {**`shared-read-off`**} {**`shared-write-on`**} {**`net-on`**} {**`files-on`**} {**`files-write-on`**} {**`files-admin-on`**} {**`ai-on`**} {**`start-menu`** \| **`start-terminal`**} {**`pins-on`**} {**`no.query`**}  ·  **`create.account group`** *name* {**`shared-read-off`**} {**`shared-write-on`**} {**`start-menu`** \| **`start-terminal`**} {**`pins-on`**} {**`no.query`**}  ·  **`create.account other`** *name* *pathname* {**`shared-read-off`**} {**`shared-write-on`**} {**`start-menu`** \| **`start-terminal`**} {**`pins-on`**} {**`no.query`**} | S |
 | **`create.file`** | **`create.file`** {**`dict`**} *voc.name* {**`directory`**} {*parameters*} {**`server`** *server* {**`as`** *remote.name*}} |  |
 | **`create.index`** | **`create.index`** *file* *field* … {**`no.nulls`**} {**`pathname`** *path*} |  |
-| **`cs`** | **`cs`** — the same verb as **`clr`** |  |
 | **`ct`** | **`ct`** {**`dict`**} *file* {*id* … \| **`*`**} {**`(options`**} |  |
 | **`date`** | **`date`** \| **`internal`** \| *n* \| *date* |  |
 | **`date.format`** | **`date.format on`** \| **`off`** \| **`display`** |  |
@@ -89,7 +83,6 @@ not refused — the name is simply not recognised.**
 | **`delete`** | **`delete`** {**`dict`**} *file* {*id* …} {**`no.query`**} |  |
 | **`delete.account`** | **`delete.account`** *account* {**`remove.home`**} | S |
 | **`delete.catalog`** | **`delete.catalog`** *name* … {**`global`** \| **`local`**} |  |
-| **`delete.catalogue`** | **`delete.catalogue`** — the same verb as **`delete.catalog`** |  |
 | **`delete.common`** | **`delete.common`** *name* |  |
 | **`delete.file`** | **`delete.file`** {**`dict`** \| **`data`**} *voc.name* {**`force`**} {**`no.query`**} |  |
 | **`delete.index`** | **`delete.index`** *file* *field* … \| **`all`** |  |
@@ -186,7 +179,6 @@ not refused — the name is simply not recognised.**
 | **`release`** | **`release`** *file* *id* …  ·  **`release filelock`** *file* |  |
 | **`remote.api`** | **`remote.api`** {**`on`** \| **`local`** \| **`off`**} | S |
 | **`remote.ssh`** | **`remote.ssh`** {**`on`** \| **`off`**} | S |
-| **`rename`** | **`rename`** — the same verb as **`cname`** |  |
 | **`report.src`** | **`report.src on`** \| **`off`** \| **`report.src`** to toggle |  |
 | **`report.style`** | **`report.style`** {*name* \| **`off`**} |  |
 | **`restore.account`** | **`restore.account`** *archive* *name* … {**`no.query`**}  ·  **`restore.account`** *archive* **`all`** {**`no.query`**}  ·  **`restore.account latest`** *name* … \| **`all`** {**`no.query`**} | S |
@@ -226,8 +218,6 @@ not refused — the name is simply not recognised.**
 | **`sort.label`** | **`sort.label`** {**`dict`**} *file* {*selection*} {*fields*} |  |
 | **`sort.list`** | **`sort.list`** *name* {**`from`** *file*} |  |
 | **`sp.assign`** | **`sp.assign`** {*options*} {, *setptr options*} |  |
-| **`sp.close`** | **`sp.close`** |  |
-| **`sp.open`** | **`sp.open`** |  |
 | **`sp.view`** | **`sp.view`** |  |
 | **`spool`** | **`spool`** *file* *id* … {**`lines`** *n* *m*} {**`lnum`**} {**`lptr`** *n*} |  |
 | **`sreformat`** | **`sreformat`** {**`dict`**} *file* {*selection*} {*fields*} |  |
