@@ -415,6 +415,9 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | second spellings of query keywords | Removed | `col.spcs` (write `col.spaces`), `display.name` (`col.hdg`), `evaluate` (`eval`), `calculate` (`calc`), `intersection` and `difference` (`intersect` and `diff`, also in `merge.list`), `margin` (`left.margin`), `stats` (`statistics`), `supp` (`hdr.sup`) and `only` (`id.only`): **a new account does not have their VOC records.** An account that already has them keeps them, because the VOC update adds and changes records and never deletes one; `delete voc` *name* removes one |
 | `only` and `id.only` before the file name | Removed | `list only customers` is refused: write `list customers id.only` |
 | `=>`, `=<` and `><` | Removed | the mirrored spellings of `>=`, `<=` and `<>`; as for the keyword synonyms, a new account has no record for them and an old account keeps its own |
+| `sd -l` | Removed | "apply new licence": SD has no licence, and it set a flag nothing read; `sd -l` is an unrecognised option now |
+| terminal types of old hardware | Removed | the Data General, MDC Prism, Prime and Televideo 910 definitions: `dg210 dg-ansi dg-generic dg6053-old dg100 prism2 prism4 prism5 prism7 prism8 prism9 prism12 prism14 p4 p5 p7 p8 p9 p12 p14 pt100 pt200 wren fenix pt100w pt200w wrenw fenixw pt250 pt250w tvi910` (31 of the 82 names `list.term.types` showed). Use `ansi`, `vt100` or `xterm` |
+| `system:account:file` file names | Removed | bit 2 of `FILERULE` and a Q-pointer's fourth field named a file on another system and opened nothing; the name form is gone and a Q-pointer with a fourth field is refused (3003) |
 | dictionary field numbers 9998 and 9999 | Removed | a `d`, `a` or `s` item whose location was 9998 gave the item count and one whose location was 9999 the record length in bytes; they are ordinary field numbers now. Write an I-type with `@ni` or `len(@record)` |
 
 ## New Features Unique to SD Core

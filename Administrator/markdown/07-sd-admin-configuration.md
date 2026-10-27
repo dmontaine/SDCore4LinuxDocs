@@ -361,7 +361,7 @@ the check on the length a reply announces.
 | `SAFEDIR` | 0 | When 1, directory files are updated by write-and-rename rather than in place |
 | `RECCACHE` | 0 | Records cached per file. Range 0 to 32 |
 | `FSYNC` | 0 | Bit flags controlling when SD forces data to disk |
-| `FILERULE` | 0 | Bit flags deciding which special VOC file references are honoured: bit 1 `account:file`, bit 4 `path:` followed by a pathname, and bit 2 `system:account:file`, which opens nothing on this port. See below the table of inert parameters |
+| `FILERULE` | 0 | Bit flags deciding which special VOC file references are honoured: bit 1 `account:file` and bit 4 `path:` followed by a pathname. Bit 2, which allowed `system:account:file`, a form that named another system and opened nothing on this port, was removed in 1.2-0 and does nothing. See below the table of inert parameters |
 
 ## Directories
 
@@ -518,13 +518,13 @@ request 29.
 
 `FILERULE` is **not** in this list, and is easy to mistake for it. It is a set
 of bits that decide which special VOC names are honoured when the name is not
-a VOC entry: bit 1 allows `account:file`, bit 4 allows `path:` followed by a
-pathname, and bit 2 allows `system:account:file`, a form that names another
-system. In a test with `FILERULE=7`, `sdsys:bp` and `path:/tmp` opened;
-`localhost:sdsys:bp` did not (the open failed with status 3003), because this
-port has nothing that reaches another system by that form. With `FILERULE`
-at 0, none of the three opened. The `path:` form is still held to the
-account's operating-system access switches.
+a VOC entry: bit 1 allows `account:file` and bit 4 allows `path:` followed by a
+pathname. (Bit 2 used to allow `system:account:file`, a form that named another
+system; this port had nothing that reached one, and the bit was removed in 1.2-0.
+A Q-pointer whose fourth field names another system is refused with status 3003,
+as it always was, and is not opened as a local file.) In a test with `FILERULE=7`,
+`sdsys:bp` and `path:/tmp` opened; with `FILERULE` at 0, neither did. The `path:`
+form is still held to the account's operating-system access switches.
 
 There is no licence parameter and no licence verb. SD Core for Windows is
 GPL v3 and is not licensed per site or per user; `config gpl` displays the
