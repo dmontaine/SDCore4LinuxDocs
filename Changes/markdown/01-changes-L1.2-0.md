@@ -640,6 +640,8 @@ Fixes that close a way round a gate, and what the gates now ask.
 | home screen sub-menus | Added | a tile can open a second page of tiles with a Back tile, Esc and the path on the status line; eight deep; the delivered page declares none yet |
 | `ide` | Added | tree, tabs, compile errors table, find, run, catalogue and debug; Ctrl-E hands a record to `sed` |
 | `ide` edit as fields | Added | F12 or Go, Edit as fields: the record goes to `ced` as fields, values and subvalues and comes back as text in the tab; `ced` writes nothing, the IDE's save does |
+| `ide` language of a record | Changed | chosen as `sed` chooses it - the file name, then the record id, then the first line (`#!/bin/sh`), then the languages a site added - where it was the suffix of the id alone |
+| `ide` marks as tokens | Added | a record that holds value, subvalue or text marks is shown with `:@vm:`, `:@sm:` and `:@tm:` and read back when saved, so nobody types a mark; a field that holds the text of a token is shown as it is |
 | `ide` redraw | Changed | no flash; a click on the menu bar opens the menu; the active pane is marked `[*]` |
 | immediate messages | Changed | `message ... immediate` is shown in a box on any terminal |
 | `option debug.rebind.keys` | Removed | still accepted, no longer does anything |

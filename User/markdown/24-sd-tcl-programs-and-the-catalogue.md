@@ -288,7 +288,7 @@ record. It needs a terminal and **stops in a phantom**.
 |---|---|
 | menu bar | the top row; F10 or Esc opens it, and a click on a title opens that menu (since 19 October 2026; a click on the bar beside the titles does nothing) |
 | tree | the account's files on the left. Return on a file lists its records (the first 2000), and Return again closes the list. Return on a record opens it. A letter jumps to the next entry that starts with it |
-| editor | on the right, a tab for each open record. **While it has the focus the character at the cursor is shown in the highlight style** (as well as the terminal's own cursor being put there), so the place shows on a terminal that draws its cursor poorly. It is the text area `screen memo` uses, so its keys are `memo`'s: selection, cut, copy and paste, undo and redo, find, line numbers. Text is coloured as SD BASIC, C, Python, JSON, shell or Markdown by the file and record name. **A horizontal scroll bar runs along its bottom row** (`<` and `>` at the ends, a thumb as long as the visible part is of the longest line; none to speak of when every line fits); clicking an arrow scrolls 8 columns and clicking the track a page |
+| editor | on the right, a tab for each open record. **While it has the focus the character at the cursor is shown in the highlight style** (as well as the terminal's own cursor being put there), so the place shows on a terminal that draws its cursor poorly. It is the text area `screen memo` uses, so its keys are `memo`'s: selection, cut, copy and paste, undo and redo, find, line numbers. Text is coloured as SD BASIC, C, Python, JSON, shell or Markdown **chosen as [SED](27a-sd-tcl-sed.html) chooses** (since 26 October 2026): by the name of the file, then the record id, then the first line - so a script with no suffix that begins `#!/bin/sh` is shell - and then the languages a site added in `&sed.syntax&`. **A horizontal scroll bar runs along its bottom row** (`<` and `>` at the ends, a thumb as long as the visible part is of the longest line; none to speak of when every line fits); clicking an arrow scrolls 8 columns and clicking the track a page |
 | table | under the editor: the compiler's errors, or search results |
 | pane marks | **`[*]` or `[-]` in the top right corner of each pane that can have the keyboard** (since 19 October 2026): the files (on the frame above the tree), the editor (on the frame above it), the tab strip (at its right end) and the messages (at the right end of their bar). `[*]` is on the pane that has the keyboard, `[-]` on the others; Tab moves it round in that order |
 | status line | **the pane that has the focus** first, in brackets (`[Files]`, `[Tabs]`, `[Editor]`, `[Messages]`: Tab goes round them in that order), then the record, the cursor's line and column, and a star when there are unsaved changes |
@@ -338,6 +338,25 @@ own save (F2) does the saving**, with the edit gate and the overwrite question a
 change. Leaving CED without keeping anything, or answering *No* to its question, leaves the
 tab as it was (*Back from the fields: bp prog is as it was*); if you pressed Ctrl-S and then
 changed more, *No* gives you what Ctrl-S kept. With no record open, F12 says so.
+
+**A record that holds marks is shown with the marks written as tokens** (since 26 October 2026), so
+that nobody types one. A value mark is `@vm`, a subvalue mark `@sm` and a text mark `@tm`, joined to
+the text beside them by a colon as in BASIC: the field *Don, Henry, June* with value marks between
+is shown as `Don:@vm:Henry:@vm:June`. A mark at the start or the end has no text beside it
+(`@vm:Henry`, `Don:@vm`), two together are `a:@vm:@vm:b`, and a text may hold colons
+(`10:30:@vm:x`). **Type a token and it is a mark**: add `:@vm:Jules` to the end of that line, press
+F2, and the record on disk holds a fourth value. Reading accepts upper case (`@VM`); the editor
+shows lower case. A token is the word on its own, at the start of the line or after a colon and at
+the end of the line or before a colon, so `x@vm` is text. Field marks are the lines, as they always
+were. The tab keeps the real record all the time; only the editor's text is converted, and only for
+a tab whose record **had marks when it was read** - so a program that mentions `@vm` in its source
+is never changed. The status line says *Marks are shown as @vm, @sm and @tm; typed so, they are read
+back as marks* when a record opens this way. **A record with a field that holds the text of a token
+- a field that is just `@vm` - cannot be shown so, because the text would be read back as a mark.**
+It is shown as it is, with the marks drawn as the characters they are, and the status line says
+*Marks are shown as characters: field 1 holds the text of a mark token*. Find in the records of a
+file looks at the real records, and replace works on the real record, so neither matches a token;
+the item mark is not converted.
 
 **The AI in the IDE** (since 24 October 2026). When the AI is on for your account (see
 [Asking the AI](29b-sd-tcl-asking-the-ai.html)) the IDE has an **AI** menu before Help and an
