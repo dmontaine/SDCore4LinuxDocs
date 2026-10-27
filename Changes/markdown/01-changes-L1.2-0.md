@@ -452,6 +452,7 @@ SD's own code. The sections above are the openQM items that were built, with the
 | `tool.menus` | Changed | a row for each development tile and the Recent group (17 rows in the Menu box) |
 | `tool.remote` | Added | full-screen page for everything that reaches SD from outside: the API and ssh doors as the machine reports them (changed after a box, and the word OPEN to turn one on), the routes of each user account, the SDNet servers (delete, define with the terminal given to `set.server`), who is connected and this machine's TLS identity |
 | `tool.sessions` | Added | full-screen page of sessions and locks; logs a session out, releases a lock, stops new logins |
+| `update.accounts all` by SDSYS | Changed | an account whose VOC SDSYS cannot write (the `sdsys` user is not in its group) is skipped with a line that says so, and the command goes on and ends with the counts, where it stopped with error 3018 at the first one; the administrator's own VOC is updated from `voc_template` |
 | `voc-on` and `voc-off` | Added | per-account switch for saving a change to a VOC |
 
 ### AI

@@ -379,7 +379,8 @@ modify.account acme sdsys-off
 
 **What is expected to stop working when an account is off.** A save of its master record (above). So
 is **SDSYS writing inside the account in any other way**: `logto` the account and make a file, edit a
-program, catalogue; an interactive `update.accounts` for it; `sd -A`*account* from the operating
+program, catalogue; an interactive `update.accounts` for it (`update.accounts
+all` skips such an account and says so, see [Account maintenance](01a-account-maintenance.html)); `sd -A`*account* from the operating
 system. (The installer's own `update.accounts all` runs as root and is not affected.) `create.account`,
 `delete.account`, `backup.account`, `restore.account`, `sync.masters`, `check.masters`, and reading the
 account (`logto` and a listing) are done by the root helper or only read the files, and are expected to

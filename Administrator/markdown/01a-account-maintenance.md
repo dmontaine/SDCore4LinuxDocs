@@ -53,6 +53,12 @@ With no keyword it updates the account you are standing in and then offers the
 rest, asking each time. **`all` is the unattended form**: it updates every
 registered account without asking.
 
+**SDSYS can write the VOC of a user account only if the account lists it** (`modify.account`
+*name* `sdsys-on`; the delivered state is that it does not). An `all` run by SDSYS skips such an
+account with a line that says so (message 11983), goes on to the next, and ends with the count of
+accounts updated and, if there were any, the count left as they were. The installer's own run is
+root's and updates every account.
+
 You will not normally type `all` yourself. The installer runs it during an
 upgrade, so a release that adds a VOC record reaches every existing account
 without anybody visiting them. Before that existed, an upgrade replaced the
