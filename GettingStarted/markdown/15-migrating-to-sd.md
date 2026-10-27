@@ -10,7 +10,7 @@ list every word SD has, one line each.
 
 | | | |
 |---|---|---|
-| **15a** | [Option words](15a-migrating-option-words.html) | the sixty-one words of the `option` command |
+| **15a** | [Option words](15a-migrating-option-words.html) | the thirty-nine words of the `option` command |
 | **15b** | [Mode words](15b-migrating-mode-words.html) | the names `$mode` accepts, and the lines of a `$basic.options` record |
 
 ## The rules the words follow
@@ -20,18 +20,18 @@ new program has every mode off. SD's own behaviour is the default, and a word on
 moves a program or a session away from it, on purpose.
 
 **One word changes one thing.** Each option and mode is a single, small difference:
-`query.no.case` makes selection tests ignore case, `pick.read` leaves a read
+`query.sort.no.case` makes sorts ignore case, `pick.read` leaves a read
 variable alone, and so on. **There is no switch that makes SD behave like D3, mvBase,
 UniData, jBASE or any other product as a whole.** `option d3`, `option mvbase`,
-`$mode d3` and `$mode mvbase` are refused. SD has two shortcuts that set several
-single-purpose words together, and nothing larger:
+`$mode d3` and `$mode mvbase` are refused, and so is `option pick`, which switched
+nine words on together and was removed on 27 October 2026. SD has one shortcut that
+sets several single-purpose words together, and nothing larger:
 
 | shortcut | sets |
 |---|---|
-| `option pick` | `assoc.unassoc.mv`, `pick.breakpoint`, `pick.breakpoint.u`, `pick.explode`, `pick.grand.total`, `pick.null`, `pick.wildcard`, `qualified.display`, `with.implies.or` |
 | `option sdbasic.warnings` | `div.zero.warning`, `non.numeric.warning`, `unass.warning` |
 
-Both only switch words on, and neither can be given `on`, `off` or `display`; turn
+It only switches words on and cannot be given `on`, `off` or `display`; turn
 the words off one at a time, or with `option all off`.
 
 **A word SD does not have is refused, not skipped.** `option` says *Option name not
@@ -83,11 +83,8 @@ action, tokens, an automatic `$include`. Its lines are listed in
 
 | if your programs or queries... | try |
 |---|---|
-| select on text without regard to case | `option query.no.case` (selection and sorting), or `option query.sort.no.case` for sorting alone |
-| were written with Pick-style selection, wildcards or report layout | `option pick`; add `pick.implied.eq`, `query.priority.and` or `default.mv` if the queries need them |
+| sort on text without regard to case | `option query.sort.no.case`; for one selection test, the `no.case` keyword after its operator |
 | must go on running through a divide by zero, a non-numeric value or an unassigned variable while you find them | `option sdbasic.warnings` |
-| print am/pm or cr/db in capitals | `option ampm.upcase`, `option crdb.upcase` |
-| convert dates such as 31 February and expect them refused | `option no.date.wrapping` |
 | expect a `read` that fails to leave its variable as it was | `$mode pick.read` |
 | use `locate` as UniVerse does, or `enter` to hand control on for good | `$mode uv.locate`, `$mode pick.enter` |
 | use `for` loops whose variable must be stored before the end test | `$mode for.store.before.test` |
@@ -105,7 +102,9 @@ SD refuses each of these.
 | `option x` *hex.string* | not provided; set the options one by one |
 | `option no.echo.data` | a compiler mode: `$mode no.echo.data` |
 | `option create.file.no.case`, `option create.dict.no.case` | not provided; give `no.case` on the `create.file` that makes the file (see [Lower case](11-lower-case.html)) |
-| `option keep.filename.case` | the nearest is `option create.file.upcase`, in 15a |
+| `option keep.filename.case` | not provided: a new file is always named in lower case (see [Lower case](11-lower-case.html)) |
+| `option pick`, `assoc.unassoc.mv`, `pick.breakpoint`, `pick.breakpoint.u`, `pick.explode`, `pick.grand.total`, `pick.implied.eq`, `pick.null`, `pick.wildcard`, `qualified.display`, `with.implies.or`, `query.no.case`, `query.priority.and` | removed on 27 October 2026, with the Pick style of query they switched on: write `with city = "Reno"`, put the text after a `break.on` field the way SD does, and use the `like` operator for wildcards, `or` and brackets for the order of tests, and `no.case` after an operator or `option query.sort.no.case` for case |
+| `option ampm.upcase`, `crdb.upcase`, `no.date.wrapping`, `space.mct`, `lock.beep`, `ed.no.query.fd`, `create.file.upcase`, `select.keep.case`, `debug.rebind.keys`, `proc.a` | removed on 27 October 2026: the output is as the default always was (`am`, `cr`, `db`), a date such as 31 February rolls into the next month, a lock wait is silent, and `fd` in `ed` asks before it deletes |
 | `option local.cat.relative`, `option no.sel.when.filter`, `option silent.tandem` | not provided |
 | `option pick.proc`, `option proc.if.no.case` | not provided: PROC is gone (see [Not in SD Core](14-not-in-sd-core.html)) |
 | `$mode d3`, `$mode mvbase` | not provided |
