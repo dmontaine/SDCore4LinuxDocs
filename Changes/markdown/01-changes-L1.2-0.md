@@ -632,12 +632,14 @@ Fixes that close a way round a gate, and what the gates now ask.
 |---|---|---|
 | 140 by 42 layout | Changed | `ide`, `sed`, `ced` and the debugger: 140 by 42, refused below it, survive a window made smaller, take no keys while the cursor is off the screen |
 | AccuTerm terminal types | Removed | the eleven `-at` terminal types and AccuTerm's escape sequences |
+| `ced` data mode | Added | edits a multivalue record as a tree of fields, values and subvalues (a text or a list; a list never below the second level), so that nobody types a mark; started by `ide` F12 |
 | `debugger` full-screen display | Added | on a terminal with an alternate screen the debugger takes the whole screen: source, breakpoints, messages and the command line; F1 help, F4 the program's screen |
 | home screen | Added | every account starts in a screen of tiles; arrows, Tab, letters, mouse, F5, F10 |
 | home screen Recent group | Added | `View > Recent group`: the tiles started last, newest first, six at most; off as delivered, the person's own record in `&menus&`; `set.tile account recent off` is the administrator's wall |
 | home screen at the same time | Changed | fixed: a session at the home screen kept the next session waiting at sign-on (the absent `start.default` file was read with a lock the program never let go); `osread` of a missing file left a lock too |
 | home screen sub-menus | Added | a tile can open a second page of tiles with a Back tile, Esc and the path on the status line; eight deep; the delivered page declares none yet |
 | `ide` | Added | tree, tabs, compile errors table, find, run, catalogue and debug; Ctrl-E hands a record to `sed` |
+| `ide` edit as fields | Added | F12 or Go, Edit as fields: the record goes to `ced` as fields, values and subvalues and comes back as text in the tab; `ced` writes nothing, the IDE's save does |
 | `ide` redraw | Changed | no flash; a click on the menu bar opens the menu; the active pane is marked `[*]` |
 | immediate messages | Changed | `message ... immediate` is shown in a box on any terminal |
 | `option debug.rebind.keys` | Removed | still accepted, no longer does anything |

@@ -303,6 +303,7 @@ record. It needs a terminal and **stops in a phantom**.
 | Ctrl-R | find a text in every record of the file the tree is on (the first 2000 records, 500 lines), listed in the table; Return opens the record at the line |
 | F11 | find in all the records of a file |
 | Ctrl-E · Go, Edit in SED | edit the record in [SED](27a-sd-tcl-sed.html) and come back (below) |
+| F12 · Go, Edit as fields | edit the record as a tree of fields, values and subvalues in [CED](27b-sd-tcl-ced.html) and come back (below) |
 
 Run and debug give the terminal to the program and come back to the IDE when
 you press Return. **Nothing runs if the compile failed.** If somebody else has
@@ -324,6 +325,19 @@ message, as it does from the command line. There is no *press Return* pause on
 the way back, which Run has because a program may have written something to
 read. Ctrl-E is the editor's *end of row* key in other programs that use
 `screen memo`; in the IDE it belongs to this and **End** ends a row.
+
+**F12 shows the record as fields, values and subvalues, so that nobody types a mark**
+(since 26 October 2026). The record in the open tab goes to [CED](27b-sd-tcl-ced.html) in its
+*data mode*: a list of the fields, each field a text or a list of its values, each value a text
+or a list of its subvalues. Dive into a field with Return, change a text with Return, add or
+delete with **Ins** and **Del**; the value and subvalue marks are put in from the shape of the
+tree when the record comes back. **Ctrl-S in CED keeps your changes and Ctrl-Q returns to the
+IDE**, which puts the new text in the tab and marks the record changed (*Back from the fields:
+bp prog is changed, save it to keep it*). **CED writes nothing and takes no lock: the IDE's
+own save (F2) does the saving**, with the edit gate and the overwrite question as for any other
+change. Leaving CED without keeping anything, or answering *No* to its question, leaves the
+tab as it was (*Back from the fields: bp prog is as it was*); if you pressed Ctrl-S and then
+changed more, *No* gives you what Ctrl-S kept. With no record open, F12 says so.
 
 **The AI in the IDE** (since 24 October 2026). When the AI is on for your account (see
 [Asking the AI](29b-sd-tcl-asking-the-ai.html)) the IDE has an **AI** menu before Help and an

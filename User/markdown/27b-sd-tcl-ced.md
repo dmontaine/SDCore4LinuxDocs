@@ -99,6 +99,32 @@ type and cannot be changed in the editor**, because a path cannot name it.
 key are switched off while it runs and back on when it ends. If its input ends (the
 terminal hangs up), it leaves without saving.
 
+## Data mode: a record of fields, values and subvalues
+
+CED has a second use, started by the [IDE](24-sd-tcl-programs-and-the-catalogue.html)'s **F12**
+(Go, *Edit as fields*; since 26 October 2026). The thing edited is an ordinary multivalue **record** shown as an array of its fields:
+a field is a text, or - if it holds value marks or subvalue marks - a list of its values; a
+value is a text, or a list of its subvalues; a subvalue is always a text. The top level is
+the record (the positions are the field numbers), **Return** on a list dives into it, and the
+path line shows `/2/1` for subvalue 1 of the first value of field 2. Nobody types a mark: they
+are put back from the shape of the tree.
+
+The keys are the ones above, with these differences:
+
+- **Only two types exist: string and array.** F4 turns a string into a list of one value (where a
+  list is allowed) and a list of nothing or of one string back into a string; Ins offers the
+  same two. **A list is never allowed below the second level** - a subvalue is always a string.
+- **Paste** is refused (*A record holds only text, and lists of values and subvalues: this is
+  not one*) when the copied element would make a list below a subvalue, as a field pasted into
+  the level of values would.
+- **Ctrl-S** makes the record from the tree and keeps it; if the tree cannot be a record (for
+  instance after an AI edit that put a number in a field) it says so, in the same words, and keeps
+  nothing. The IDE passes no file, so CED writes nothing and holds no lock; the IDE does the saving.
+- Rename (F3) does nothing: an array has no names.
+
+Text is shown exactly as stored: a text mark or an item mark inside a text is part of the text
+(the editor shows control characters as dots, as it always has).
+
 ## The AI in CED
 
 When the AI is on for your account (see [Asking the AI](29b-sd-tcl-asking-the-ai.html)) **F2** opens a
