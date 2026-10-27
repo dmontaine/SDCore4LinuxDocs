@@ -150,8 +150,6 @@ exist.**
 | **`downcase`** | `downcase(`*a*`)` |
 | **`dparse`** | `dparse` *string*, *delimiter*, *var*, … |
 | **`dparse.csv`** | `dparse.csv` *line*, *delimiter*, *var*, … |
-| **`dquote`** | `dquote(`*a*`)` |
-| **`dquotes`** | `dquotes(`*a*`)` |
 | **`dtx`** | `dtx(`*n* {, *digits*}`)` |
 
 ## E
@@ -522,7 +520,6 @@ exist.**
 | **`substrings`** | `substrings(`*a*, *b*, *c*`)` |
 | **`sum`** | `sum(`*a*`)` |
 | **`summation`** | `summation(`*a*`)` |
-| **`swap`** | `swap(`*string*, *from*, *to* {, *occurrences* {, *start*}}`)` |
 | **`swapcase`** | `swapcase(`*a*`)` |
 | **`sysmsg`** | `sysmsg(`*number* {, *substitution*, …}`)` |
 | **`system`** | `system(`*a*`)` |
@@ -593,7 +590,6 @@ exist.**
 | | |
 |---|---|
 | **`xbuild`** | `xbuild(`*element* {, *mode* {, *indent*}}`)` |
-| **`xlate`** | `xlate(`{*dict*`,`} *file.name*, *id*, *field*, *action*`)` |
 | **`xparse`** | `xparse(`*text* {, *mode*}`)` |
 | **`xpath`** | `xpath(`*element*, *query*`)` |
 | **`xtd`** | `xtd(`*a*`)` |

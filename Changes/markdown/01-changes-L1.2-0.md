@@ -172,7 +172,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `phantom` statement | Added | starts a phantom from a program; the log name may be a variable <!--s 390 351--> |
 | `precision inherit` | Added | takes the precision of the calling program <!--s 201--> |
 | `@pstat` | Added | text a program leaves for `pstat` to show <!--s 492--> |
-| `quotes()` family | Added | `quotes()`, `dquotes()`, `squotes()`: enclose every element of a dynamic array in quotes <!--s 11--> |
+| `quotes()` family | Added | `quotes()`, `squotes()`: enclose every element of a dynamic array in quotes <!--s 11--> |
 | `read` etc. as a condition | Added | `read`, `readnext`, `open` and the like may be the condition of `while` or `until` <!--s 206--> |
 | `recordlocku` | Changed | fixed: it did not always trap an illegal record id <!--s 528--> |
 | `redim` | Added | resizes a matrix passed to a subroutine as an argument <!--s 215--> |
@@ -189,7 +189,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `status()` after a transaction | Added | 0 if it committed, 1021 if it rolled back <!--s 19--> |
 | string arithmetic | Added | `sadd`, `ssub`, `smul`, `sdiv`, `scmp`: exact string arithmetic on numbers of any length and any decimals <!--s 391 468--> |
 | substring assignment | Added | `s[3] = "xy"` overwrites the last three characters, and honours `pick.substr` for an element of a dynamic array <!--s 41 325--> |
-| `trans()` family | Changed | `trans()`, `rtrans()`, `xlate()`: accept `a`, `s` and `c` items and an `l` link; a file that will not open takes the error action of the call <!--s 43 182 7--> |
+| `trans()` family | Changed | `trans()`, `rtrans()`: accept `a`, `s` and `c` items and an `l` link; a file that will not open takes the error action of the call <!--s 43 182 7--> |
 | variable names | Changed | a name with two or more underscores together (`a__b`) is valid <!--s 336--> |
 | `watch` | Changed | the debugger's `watch variable operator value` stops only when the condition is met <!--s 45--> |
 
@@ -411,6 +411,7 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | `only` and `id.only` before the file name | Removed | `list only customers` is refused: write `list customers id.only` |
 | `=>`, `=<` and `><` | Removed | the mirrored spellings of `>=`, `<=` and `<>`; as for the keyword synonyms, a new account has no record for them and an old account keeps its own |
 | eleven `option` words | Removed | `run.no.page` and `paginate.on.heading` (a run is paginated unless `run ... no.page` says not), `pick.ml.conv.mask` (a left bracket in `ml` / `mr` is the round-bracket negative style), `chained.select` (a select does not run the data queue), `default.mv` (a blank S/M flag is single valued), `query.string.comp` and `query.str.comp.all` (`=` and `ne` compare as BASIC does), `assoc.all` (the dictionary's associations are used), `query.footer.pause` (no pause after a page footer), `query.merge.print` (a report closes printer 0) and `keep.old.object` (a failed compile leaves no object code). Each behaves as it did with the option off; their numbers stay reserved |
+| `dquote()`, `dquotes()`, `swap()`, `xlate()` | Removed | second names of `quote()`, `quotes()`, `change()` and `trans()`: write those |
 | `caption`, `nopage`, `col.hdr.space` | Removed | `caption` and `nopage` were second names of `grand.total` and `no.page`; `col.hdr.space` (a blank line under the column headings) was added and taken out again: end a heading with a blank line <!--s 467--> |
 | `listdict`, `edit.list` | Removed | write `list dict` *file*, and `ed $savedlists` *name* <!--s 10 75--> |
 | loose forms of a dictionary expression | Removed | an `if` with no `then` or no `else` is refused again (messages 2950 and 2951), a hyphenated item name such as `cust-no` is read as a subtraction, and a format string straight after a value needs its operator <!--s 36 423 564--> |

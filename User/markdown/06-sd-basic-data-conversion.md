@@ -287,7 +287,7 @@ Evaluates a dictionary item — an I-type expression — against the record
 currently being processed, and returns what it computes. It is how a program
 uses the same derived field a query would, instead of duplicating the formula.
 
-`trans()`, `rtrans()` and `xlate()` fetch a field from another file and can
+`trans()` and `rtrans()` fetch a field from another file and can
 apply that file's own conversion; they are covered in
 [SD Basic - File Handling](07-sd-basic-file-handling.html) because they open a file to do it.
 

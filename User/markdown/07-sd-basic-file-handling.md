@@ -391,12 +391,11 @@ size and modification time per entry.
 ```
 trans({dict} file.name, record.id, field, action)
 rtrans({dict} file.name, record.id, field, action)
-xlate({dict} file.name, record.id, field, action)
 ```
 
-All three fetch one field of one record from a named file, opening it if
-needed. `trans` and `xlate` are the same function under two names; `rtrans`
-takes an already-open file variable instead of a name.
+Both fetch one field of one record from a file, opening it if needed. `trans`
+takes a file name; `rtrans` takes an already-open file variable instead.
+(`xlate` was a second name for `trans` and was removed in 1.2-0.)
 
 The *action* says what to do when the record is missing — **or when the file
 cannot be opened at all**, which takes the same action:

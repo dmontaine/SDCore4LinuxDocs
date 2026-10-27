@@ -8,15 +8,12 @@ Functions](04-sd-basic-string-functions.html).
 
 ```
 change(string, old, new {, count {, start}})
-swap(string, old, new {, count {, start}})
 substitute(array, old.list, new.list {, delimiter})
 convert(from.characters, to.characters, string)
 convert from.characters to to.characters in variable
 ```
 
-**`change()` and `swap()` are the same function** — the compiler emits the
-same operation for both. Use whichever reads better; there is no behavioural
-difference to choose between.
+(`swap()` was a second name for `change()` and was removed in 1.2-0.)
 
 The fourth and fifth arguments are frequently misread:
 
@@ -220,17 +217,15 @@ positions by hand.
 
 ```
 quote(expr)
-dquote(expr)
 squote(expr)
 ```
 
 | | |
 |---|---|
-| `quote()` · `dquote()` | wrap in double quotes — `"a"` |
+| `quote()` | wrap in double quotes — `"a"` |
 | `squote()` | wrap in single quotes — `'a'` |
 
-**`quote()` and `dquote()` are the same function** — the compiler emits the
-same operation for both, so there is nothing to choose between them.
+(`dquote()` and `dquotes()` were second names for `quote()` and `quotes()` and were removed in 1.2-0.)
 
 For CSV output do not build quoting by hand: `csvdq()` and the CSV statements
 handle embedded quotes and separators to RFC 4180, and are covered in
