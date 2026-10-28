@@ -130,7 +130,7 @@ the address they came from. See [Other hardening](13-hardening.html).
 
 | | |
 |---|---|
-| **Allowed** | everything inside its own account, and the shipped SDSYS files every account needs — messages, `syscom`, the dictionaries, `sd.voclib`. Ordinary programs are unaffected |
+| **Allowed** | everything inside its own account, and the shipped SDSYS files every account needs — messages, `syscom`, the dictionaries. Ordinary programs are unaffected |
 | **Not allowed** | opening, renaming, deleting or listing anything else |
 
 **A refused `OPEN` takes the `ELSE` branch**, distinguishing a containment

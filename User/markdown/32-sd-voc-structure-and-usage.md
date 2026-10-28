@@ -97,9 +97,9 @@ dictionary.
 | `2` | data path — a name in the account directory, or `@SDSYS/`*name* for a system file |
 | `3` | dictionary path, or empty if none |
 
-### The eight pointers into @SDSYS
+### The seven pointers into @SDSYS
 
-A stock account VOC carries eight F-records whose data path begins
+A stock account VOC carries seven F-records whose data path begins
 `@SDSYS/`. They point at files in the system directory that every account
 needs:
 
@@ -111,7 +111,6 @@ needs:
 | `syscom` | `@SDSYS/syscom` |
 | `$MAP` | `@SDSYS/...` |
 | `dict.dic` | `@SDSYS/...` |
-| `sd.voclib` | `@SDSYS/...` |
 | `$ipc` | (system IPC file) |
 
 These are **read-only to a network session**. The account-root gate in
@@ -199,16 +198,20 @@ followed with the same account test, so a chain cannot reach where its links alo
 
 ```
 001  R
-002  SD.VOCLIB
-003  listf
+002  mylib
+003  listbig
 ```
 
-This is `listf`. Field 2 is the file name, field 3 is the record id. An
-R-record is **re-read and re-parsed every time it is used**, so editing
-the referenced record changes what the command does without touching the
-VOC entry. The `LIST` family — `listf`, `listfl`, `listfr`, `listk`,
-`listpa`, `listph`, `listq`, `listr`, `lists`, `listv` — are all
-R-records pointing into `SD.VOCLIB`.
+This is an R-record called, say, `bigfiles`. Field 2 is the file name, field 3
+is the record id of the sentence in it. An R-record is **re-read and re-parsed
+every time it is used**, so editing the referenced record changes what the
+command does without touching the VOC entry. **SD ships no R-record any more**:
+the ten ready-made `list` sentences (`listf`, `listfl`, `listfr`, `listk`,
+`listpa`, `listph`, `listq`, `listr`, `lists`, `listv`) and the `sd.voclib` file
+that held them were removed in 1.2-0. To list the records of one type, ask the
+query processor: `list voc with type = "V"` (`"F"` for files, `"K"` for
+keywords, `"PA"` paragraphs, `"PH"` phrases, `"Q"` Q-pointers, `"R"` R-records,
+`"S"` sentences).
 
 ## The S record — a sentence
 

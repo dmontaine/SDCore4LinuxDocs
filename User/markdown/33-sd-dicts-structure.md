@@ -43,7 +43,6 @@ type `D` and the rest is a comment.
 | `D` | direct | references a field number in the data record |
 | `E` | element | like `D`, but field 2 is the **path** of an element of a **data collection** record instead of a field number — see [SD TCL - Data Collection Files](20a-sd-tcl-collection-files.html) |
 | `I` | indirect | an expression that returns a value — a virtual field |
-| `C` | calculated | like I but compiled with the BASIC compiler and returning via `@ANS` |
 | `A` | A-type | Pick-style data definition, with a different field layout |
 | `S` | S-type | identical to `A` in SD — kept for compatibility |
 | `L` | link | names another file and how to find the record in it, so that a query or an I-type can use its fields as `link%item` |
@@ -192,13 +191,15 @@ the dictionary, it compares the hash to the source — if they differ, the
 I-type is recompiled. This is why field 15 has a large number in a stock
 I-type record and is empty in a D-type record.
 
-## The C record — a calculated field
+## The C record — not supported
 
-A C-type is like an I-type but is compiled with the full BASIC compiler
-rather than the I-type expression compiler. The expression in field 2 is
-a complete BASIC program that returns its result in `@ANS`. C-types are
-rare in stock dictionaries — I-types cover most computed fields — but
-they exist for compatibility with applications that use them.
+SD has no C-type item. Another system's C item was a calculated field written
+as a complete BASIC program that returned its result in `@ANS`; SD does not
+compile or run one. `compile.dict` refuses it with the message *C-type
+dictionary item NAME is not compiled: write it as an I-type* and makes no
+object code, and a query that uses it gets no value. Write the calculation
+as an I-type; when it needs more than an expression can say, the I-type can
+call a catalogued subroutine with `SUBR()` (see above).
 
 ## The A record — a Pick-style field
 
@@ -274,7 +275,7 @@ as the same expression written with `TRANS()`:
 TRANS("TITLES", FIELD(@ID, "-", 1), TITLE, "X")
 ```
 
-The item may be a D, I, C, A, S or E item of the other file. It takes the column
+The item may be a D, I, A, S or E item of the other file. It takes the column
 heading, format, conversion and association that item has, unless the I-type or the
 query says otherwise. A query treats the result as multivalued, because the id
 expression may give several ids.

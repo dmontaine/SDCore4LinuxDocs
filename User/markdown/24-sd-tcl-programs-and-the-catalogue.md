@@ -228,7 +228,7 @@ compile.dict all
 compile.dict data file {i-type}...
 ```
 
-It compiles the A, C, I
+It compiles the A, I
 and S-type entries in the dictionary of *file*; with no names it does all of
 them, or uses the active select list if there is one. **The dictionary is the
 default: write the file's name and nothing before it** (`compile.dict cust dbl`).
@@ -237,7 +237,7 @@ default: write the file's name and nothing before it** (`compile.dict cust dbl`)
 |---|---|
 | **`compile.dict local`** | every dictionary in the account |
 | **`compile.dict all`** | every dictionary visible from the account |
-| **`compile.dict data file`** | reads the records of the file's *data* part as if they were dictionary items, and compiles those that look like one: a record whose first character is `C` or `I`, or `A` or `S` with something in field 8. Every other record is skipped without a word. It is for the rare file whose data holds items of that kind; on an ordinary data file a record that happens to begin with `C` or `I` is reported as a compilation error. Because it rewrites records it is held back by the edit gates as any change to a VOC, a dictionary or a program file is |
+| **`compile.dict data file`** | reads the records of the file's *data* part as if they were dictionary items, and compiles those that look like one: a record whose first character is `I`, or `A` or `S` with something in field 8. Every other record is skipped without a word. It is for the rare file whose data holds items of that kind; on an ordinary data file a record that happens to begin with `I` is reported as a compilation error. Because it rewrites records it is held back by the edit gates as any change to a VOC, a dictionary or a program file is |
 
 > **Do not put `dict` before the file name.** An older description of this verb
 > gave the form `compile.dict dict file`, but the word is not understood as a keyword:

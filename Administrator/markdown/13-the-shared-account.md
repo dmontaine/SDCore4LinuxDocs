@@ -56,8 +56,7 @@ An `open` of a name looks, in this order, at:
    its own entry.
 2. **Whether the lookup applies at all.** Only an `open` follows `shared` — a file `open`
    (data, or `open dict`). `openseq`, `deleteseq` and `call "file prog"` never do. The
-   session must not be the local administrator, must have `shared.read` on, and must not have asked
-   for a `name,component` form.
+   session must not be the local administrator and must have `shared.read` on.
 3. **The shape of the name.** 1 to 63 characters; the first a letter or a digit, the rest letters,
    digits or one of `. _ - $`. **A name that begins with `$ & ! * _` or `%` is never looked
    up**, which keeps `$savedlists`, `$hold` and every `&...&` file each account's own.
@@ -65,8 +64,8 @@ An `open` of a name looks, in this order, at:
    looked up.
 5. **The register record of `shared`.** It must exist, must not be suspended, and must hold an
    absolute path. A suspended or missing `shared` shares nothing.
-6. **`shared`'s own VOC.** It must hold the name as an **F** entry (a file pointer), and not a
-   multifile. Q, N, V, K, X and every other kind of entry are never followed.
+6. **`shared`'s own VOC.** It must hold the name as an **F** entry (a file pointer); a value in
+   its field 4 is ignored. Q, N, V, K, X and every other kind of entry are never followed.
 7. **The pathname field** of that entry (the dictionary's field for `open dict`): no `@` token,
    and a relative name is taken from `shared`'s directory.
 8. **The kernel's test of the path.** The file must exist and lie strictly *inside* `shared`'s

@@ -106,9 +106,9 @@ several.
 the query processor and there is no shipped example. It exists for
 applications that need cross-file joins in a query.
 
-**The `C` type is rare.** Stock dictionaries use `D` for direct fields
-and `I` for computed ones. `C` exists for compatibility and is
-functionally a subset of `I` — use `I` for new computed fields.
+**There is no `C` type.** Stock dictionaries use `D` for direct fields
+and `I` for computed ones. A `C` item (a calculated field written as a BASIC
+program) is refused by `compile.dict` with message 11993 — write it as an `I`.
 
 ## See also
 

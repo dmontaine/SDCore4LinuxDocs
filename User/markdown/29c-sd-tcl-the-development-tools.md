@@ -150,7 +150,7 @@ One row for each item of the dictionary, in id order:
 | column | what it says |
 |---|---|
 | Id | the item's id |
-| Type | `D` data, `A` and `S` the Pick layout, `I` computed, `C` calculated, `E` an element of a data collection, `L` a link, `PH` a phrase, `X` text; any other type is shown as its first character |
+| Type | `D` data, `A` and `S` the Pick layout, `I` computed, `E` an element of a data collection, `L` a link, `PH` a phrase, `X` text; any other type is shown as its first character |
 | Field | the number of the field a `D`, `A` or `S` item shows (0 is the record id), or `computed` |
 | Heading | the column heading |
 | Format | width and justification, such as `10R` |
@@ -169,7 +169,7 @@ and whether it has been compiled, and the record as it is stored.
 | **N** | make an item: asks the id, then the type (data, A-type or indirect) and the fields that type needs, one at a time, checking each answer |
 | **E** | edit the item in SED (`sed dict file item`): the terminal is handed to SED, and Enter brings the page back at the same item |
 | **D** | delete the item (`delete dict file item`) after a box, with the item's id typed |
-| **C** | compile an A, S, I or C item (`compile.dict file item`) after a box |
+| **C** | compile an A, S or I item (`compile.dict file item`) after a box |
 | **T** | try the item on a record of the file: asks the record's id and shows the value the query processor would compute for it, and the same value as a query prints it |
 | **I** or Tab | the indices pane |
 | **F** | back to the list of files |
@@ -191,9 +191,9 @@ writes the record itself**, as an ordinary record write to the dictionary - it i
 writes. Before it writes, the page asks the system whether this session may change that dictionary, as SED and
 the IDE do, and when it may not it shows the system's own words and writes nothing.
 
-**Trying an item.** T asks the id of a record of the data file. A D item gives its field; an I or C item, and an
+**Trying an item.** T asks the id of a record of the data file. A D item gives its field; an I item, and an
 A or S item that has a correlative, must have been compiled first (C does it), and T says so, before it asks for
-a record, if it has not. The page shows the value (several values are shown between bars) and, for a D, I or C
+a record, if it has not. The page shows the value (several values are shown between bars) and, for a D or I
 item with a conversion or a format, the value as a query prints it: the conversion first, then the format. An
 item that holds no value (text, a link, a phrase) is refused with its type. The page writes nothing and runs no
 command of its own, but an item that calls a subroutine of the account runs that subroutine, as a query would.
@@ -230,7 +230,7 @@ on for an account with `modify.account` (see *Accounts and Security*). The dicti
 follow the shared account's own rules and are not changed from here.
 
 **Limits.** The page makes data, A-type and indirect items; other kinds (links, phrases, text, collection
-elements, S and C types) are listed, described, tried where they hold a value, and edited in SED. It does not copy
+elements, S types) are listed, described, tried where they hold a value, and edited in SED. It does not copy
 items between files, and it does not edit the master dictionary (that is the administrator's). Indices are made
 with the verb's defaults (`no.nulls`, `no.case` and `pathname` are typed at the prompt), and the list of files
 counts indices only for dynamic files. A dictionary of more than 3,000 items shows the first 3,000 and says so.

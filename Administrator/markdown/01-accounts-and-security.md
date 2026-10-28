@@ -356,9 +356,7 @@ with no trigger name, is not asked), `copy.list` into the file or with
 pathname, `compile.dict data` (which compiles records of an ordinary file as dictionary
 items), `generate` (the `$include` record of a dictionary, and the include
 record it writes to the target file), `como on ... in`, and the `.s` and `.d`
-stack commands on an existing VOC record. `create.file` naming a file that
-already exists (adding a part to a multifile, or converting a single file to a
-multifile) is asked too; making a new file is not. The private catalogue
+stack commands on an existing VOC record. Making a new file is not asked. The private catalogue
 directory (`cat`, or whatever `$private.catalog` names) counts as a program
 file. For programs, `create.file` and `opentemp` of a new file inside such a
 place, `ospath` with keys 5, 13 and 14, and the socket trace file
@@ -839,7 +837,7 @@ another account. For everybody but SDSYS:
 
 | | |
 |---|---|
-| **a file pointer (F-type)** | must lead **inside the account's own directory**, or inside the directory of an account a Q-pointer was followed into (below), or be **the pointer SD itself put in the VOC** — the same id, with the same path, as in `newvoc` (`syscom`, `$map`, `sd.voclib`, `dict.dict`, `voc`, `newvoc`, `$acc`). An account that holds `os-on` may go anywhere its Linux user can. Anything else is refused with status 3035 |
+| **a file pointer (F-type)** | must lead **inside the account's own directory**, or inside the directory of an account a Q-pointer was followed into (below), or be **the pointer SD itself put in the VOC** — the same id, with the same path, as in `newvoc` (`syscom`, `$map`, `dict.dict`, `voc`, `newvoc`, `$acc`). An account that holds `os-on` may go anywhere its Linux user can. Anything else is refused with status 3035 |
 | **a Q-pointer** into a **registered account** | is followed only if the user **could `logto` that account**: a member of its Linux group, and the account not suspended — `logto`'s own test — **whether or not the account holds `os-on`**. SD's own Q-pointer, `sd.accounts` (which leads into SDSYS, an account nobody can `logto`), is exempt because it is exactly what SD put there |
 | **a Q-pointer** that **names a path** | is an operating-system path, and the `os-on` question |
 
@@ -858,7 +856,7 @@ must lead inside that account's own directory (`..` and links resolved, a direct
 that merely begins with the account's name is not inside), unless the account holds
 `os-on`. SDSYS entering its own account is never refused. It is stricter than the local
 rule in one way: the pointers SD itself put in every VOC (`syscom`, `$map`,
-`sd.voclib`, `dict.dict`, `newvoc`) lead out of the account and are refused here too,
+`dict.dict`, `newvoc`) lead out of the account and are refused here too,
 because a remote caller has no use for them. A refusal is error `ELSE` with status 3035
 and a line on the audit trail, `api refused request=29 reason=os gate off user=...
 account=... path=...`. The register is read at each request, so `os-off` applies to a

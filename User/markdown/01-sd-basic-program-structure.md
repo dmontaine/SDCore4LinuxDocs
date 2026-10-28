@@ -185,8 +185,7 @@ search incfile,@
 ```
 
 A file in the list that does not exist, or does not hold the record, is passed over;
-the include is an error only when the last has not got it either. A C-type dictionary item has no
-source file, so `@` is skipped for it.
+the include is an error only when the last has not got it either.
 
 ## Matrices
 

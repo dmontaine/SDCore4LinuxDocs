@@ -42,14 +42,14 @@ you are not in `sdusers`.
 
 ```
 who
-listf
+list voc with type = "F"
 term
 ```
 
 | | |
 |---|---|
 | **`who`** | the account you are standing in |
-| `listf` | the files in it |
+| `list voc with type = "F"` | the files in it |
 | **`term`** | your terminal type and page size |
 
 **`term` also reports the page size, and SD's default is 140 × 42 — not

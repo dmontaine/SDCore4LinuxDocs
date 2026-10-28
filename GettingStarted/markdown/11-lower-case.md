@@ -21,8 +21,7 @@ A name that matches exactly still wins, so nothing that works today changes. A
 name that exists in **no** case is still reported as not found.
 
 This order is used everywhere: the parser, the query processor, `run`,
-multifile resolution, the `login` paragraph lookup, and `set.file`'s default
-`qfile` pointer.
+the `login` paragraph lookup, and `set.file`'s default `qfile` pointer.
 
 ## What is spelled in lower case, and that is the whole of it
 
