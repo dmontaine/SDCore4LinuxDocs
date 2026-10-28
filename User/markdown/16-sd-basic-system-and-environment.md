@@ -32,7 +32,6 @@ system(key)
 | `25` | is this a phantom? | `0` |
 | `26` | prompt character | `?` |
 | `1000` | `capturing` in effect? | `0` |
-| `1001` | case inversion on? | `0` |
 | `1029` | internal subroutine depth | `0` at the top, `1` inside a `gosub` |
 | `1030` | login time, internal | `1851017987` |
 | `1031` | operating system process id | `605` (example) |

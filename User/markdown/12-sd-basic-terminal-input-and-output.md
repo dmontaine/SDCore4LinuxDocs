@@ -121,7 +121,7 @@ ttyset saved
 | Field | Mode | `pterm` |
 |---|---|---|
 | 1 | is Ctrl-C the break key? (0 or 1) | `break on` / `off` |
-| 2 | is case inversion on? (0 or 1) | `case invert` / `noinvert` |
+| 2 | always `0` (was: is case inversion on) | |
 | 3 | the break character, as a number (3 for Ctrl-C) | `break` *c* |
 | 4 | the output newline characters | `newline` |
 | 5 | the input return key, as a character code | `return` |
@@ -260,7 +260,7 @@ keycode()
 | | |
 |---|---|
 | `keyin()` | wait for one keystroke and return it |
-| `keyinc()` | as `keyin()`, but translate an escape sequence into a single key code |
+| `keyinc()` | the same as `keyin()` |
 | `keyinr()` | raw — no translation at all |
 | `keyready()` | true if a keystroke is waiting; does not consume it |
 | `keycode()` | the code of the key that ended the last `input` |

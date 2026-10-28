@@ -333,7 +333,6 @@ exist.**
 | **`next`** | `next` *var* — closes a `for` |
 | **`no.echo`** | clause of `input` and `input @` — show nothing of what is typed ***(clause word)*** |
 | **`nobuf`** | `nobuf` *file.var* `then` … `else` … |
-| **`nocaseinvert`** | clause of `input` — do not invert the case of typed letters ***(clause word)*** |
 | **`non.transactional`** | `open` *name* `non.transactional` {`readonly`} `to` *file.var* …   ·   `openpath` *path* `non.transactional` {`readonly`} `to` *file.var* … ***(clause word)*** |
 | **`not`** | `not(`*a*`)` |
 | **`nots`** | `nots(`*a*`)` |

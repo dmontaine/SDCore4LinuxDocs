@@ -200,7 +200,6 @@ again; **F1**, `?` or a click on the `[?]` explains the page; **Ctrl-Q** leaves.
 ```
 :pterm display
 Break trapping: On  (char ^C)
-Case inversion: Off
 Input newline:  CR
 Output newline: CRLF
 Binary mode (client to server): Off
@@ -216,7 +215,6 @@ gone quiet — it takes a keyword and `display` is one of them. The full set:
 | **`pterm display`** | the settings above |
 | **`pterm lptr`** | send them to the default printer |
 | **`pterm break on`** \| **`off`** \| *c* | enable, disable, or set the break character |
-| **`pterm case invert`** \| **`noinvert`** | case inversion on input |
 | **`pterm newline cr`** \| **`lf`** \| **`crlf`** | the output line ending |
 | **`pterm return cr`** \| **`lf`** | the input line ending |
 | **`pterm binary on`** \| **`off`** | pass bytes through untranslated |

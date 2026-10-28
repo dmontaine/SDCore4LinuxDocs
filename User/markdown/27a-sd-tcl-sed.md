@@ -307,7 +307,6 @@ blanks:
 | **`word`** · **`bword`** | search for whole words, or whole SD BASIC words |
 | **`syntax`** · **`no.syntax`** · **`syntax.light`** | colour on or off at the start; light palette |
 | **`mouse`** · **`no.mouse`** | the mouse on (the default) or off at the start |
-| **`no.invert`** | leave the case of typed letters alone |
 | **`scroll1`** | page up and page down move one line less than a page, so one line of the old page stays on the screen |
 | **`no.case.explore`** | the list of records (the explore list, `?` at the record prompt) is in order whatever the case of the ids, not capitals first; the list of files is not changed |
 

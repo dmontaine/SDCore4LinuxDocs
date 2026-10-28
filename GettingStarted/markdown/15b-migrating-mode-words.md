@@ -8,8 +8,7 @@ compile with *Unrecognised mode name*; `$mode default` turns every mode off, `$m
 Seven names that existed to imitate other products were removed on 27 October 2026 (and an eighth, below) and are
 refused now: `conditional.statements` (it did nothing: the file statements may always be the
 condition of `while` and `until`), `exception.save.stack` (write `saving.stack` on the `catch`),
-`implied.stop` (end a program with `stop`), `no.case.invert` (give `input` the `nocaseinvert`
-clause), `optional.then.else` (a `read` takes a `then` or an `else`), `prclose.default.0`
+`implied.stop` (end a program with `stop`), `no.case.invert` (terminal case inversion is gone altogether), `optional.then.else` (a `read` takes a `then` or an `else`), `prclose.default.0`
 (`printer close on` *unit*) and `unassigned.common` (a common variable starts as zero). An eighth, `pick.enter`, went the same
 day with the `enter` statement it switched on (use `call`, or `chain` to hand control on for good).
 Three more went later that day, each doing without the mode what it did with the mode off: `execute.clearlist`

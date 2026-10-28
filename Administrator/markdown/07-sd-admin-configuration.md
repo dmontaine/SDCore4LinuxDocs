@@ -284,7 +284,6 @@ shows the same sentence in its box:
 | `GDI` | Inert: nothing acts on it. |
 | `GRPDIR` | A directory: group accounts are made there. |
 | `INTPREC` | Changes the results of arithmetic in programs that already exist. |
-| `INVCASE` | Changes how every new session reads upper and lower case typed at the terminal. |
 | `JNLDIR` | Inert: SD has no journalling. |
 | `JNLMODE` | Inert: SD has no journalling. |
 | `MAXIDLEN` | Structural: the longest record id of the whole system, which reaches every file and program. |

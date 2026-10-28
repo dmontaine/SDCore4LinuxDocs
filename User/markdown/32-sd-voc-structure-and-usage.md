@@ -229,7 +229,6 @@ command with its first arguments filled in.
 001  PA
 002  TERM ANSI
 003  TERM 120,36
-004  PTERM CASE NOINVERT
 ```
 
 This is `login`, the paragraph that runs at sign-on. A paragraph holds
