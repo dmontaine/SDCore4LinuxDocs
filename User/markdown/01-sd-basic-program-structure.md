@@ -71,7 +71,6 @@ shares all its variables. The nesting limit is **256 levels**.
 ```
 call name {(argument, ...)}
 call @variable {(argument, ...)}
-call "file name" {(argument, ...)}
 subr(name {, argument, ...})
 ```
 
@@ -79,19 +78,10 @@ subr(name {, argument, ...})
 |---|---|
 | `call name` | the name is fixed at compile time |
 | `call @variable` | the name is taken from the variable at run time |
-| `call "file name"` | the Pick style call: the program *name* compiled into *file*, found without the catalogue (below) |
 | `subr()` | the function form — use it where you want the result in an expression |
 
-**`call "file name"`** loads a compiled program straight from the object directory of a file.
-*file* is the name the VOC gives the file whose programs they are, such as `bp`, and
-*name* is the program; the object directory is the VOC entry *file*`.out` that `basic` made.
-The string may also be held in a variable (`call @nm`). Case does not matter, and the
-program does not have to be catalogued. **The file must be a VOC name**, found by the lookup
-`open` makes, so a Q-pointer follows the account's OS-access gate exactly as it does for
-`open`, and an operating system path (`/tmp`, `../bp`) is refused as an illegal call name, as is
-a program name beginning `$ ! * _`. A string with no space in it is not this form and is a compile
-error. Because the object is not looked up in the catalogue, a later `catalog` or `delete.catalog`
-does not change which program a file-form call reaches, but recompiling the program does.
+There is no call by file and program name (`call "bp prog"`): a program is
+called by its catalogued name.
 
 **Arguments are passed by reference, not by value.** A subroutine that
 assigns to one of its parameters changes the caller's variable. That is how a

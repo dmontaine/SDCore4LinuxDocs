@@ -69,14 +69,13 @@ exist.**
 | **`bittest`** | `bittest(`*a*, *b*`)` |
 | **`bitxor`** | `bitxor(`*a*, *b*`)` |
 | **`break`** | `break on`   ·   `break off`   ·   `break` *n* |
-| **`bscan`** | `bscan` *indexed.value* {, *ids*} `from` *file.var* {, *value*} `using` *index* {`reset`} {`by` `a` \| `d`} `then` … `else` … — see [SD Basic - Alternate Key Indexes](09-sd-basic-alternate-key-indexes.html) |
 | **`by`** | clause of `locate` and `sselect` — `by` `'AL'`, `'AR'`, `'DL'`, `'DR'` ***(clause word)*** |
 
 ## C
 
 | | |
 |---|---|
-| **`call`** | `call` *name*`(`*arg*, …`)`   ·   `call @`*var*`(`*arg*, …`)`   ·   `call "`*file* *name*`"(`*arg*, …`)` |
+| **`call`** | `call` *name*`(`*arg*, …`)`   ·   `call @`*var*`(`*arg*, …`)` |
 | **`capturing`** | clause of `execute` and `os.execute` — take the output ***(clause word)*** |
 | **`case`** | `case` *condition*, inside `begin case` … `end case` |
 | **`catalogued`** | `catalogued(`*a*`)` |
@@ -270,7 +269,6 @@ exist.**
 | | |
 |---|---|
 | **`keycode`** | `keycode(`{*timeout*}`)` |
-| **`key`** | `key(`*operator*, *scan.var*, *index.key*, *item.id*`)` `then` … `else` … — the brackets are optional; operators `c` `l` `n` `p` `r` `v` `x` |
 | **`keyedit`** | `keyedit` *key*, *action* |
 | **`keyexit`** | `keyexit` *key*, *action* |
 | **`keyin`** | `keyin(`{*timeout*}`)` |
@@ -431,7 +429,6 @@ exist.**
 | **`returning`** | clause of `execute` — take the command's error text ***(clause word)*** |
 | **`reuse`** | `reuse(`*a*`)` |
 | **`rnd`** | `rnd(`*a*`)` |
-| **`root`** | `root` *file.name*, *index* `to` *scan.var* `then` … `else` … |
 | **`rollback`** | `rollback`, inside `begin transaction` … `end transaction` |
 | **`rtnlist`** | clause of `execute` — take the list the command left ***(clause word)*** |
 | **`rtrans`** | `rtrans(`*file.var*, *id*, *field*, *action*`)` |
