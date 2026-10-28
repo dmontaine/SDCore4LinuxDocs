@@ -141,7 +141,8 @@ record the query processor lists, and the result is the field value.
 
 An I-type expression is a single SD BASIC expression. It can use:
 
-- **Field references**: `F2` is field 2 of the current record. `@RECORD`
+- **Field references**: a D-type item such as `F2` (field 2 of the current record) —
+  a name is a field only if the dictionary has an item of that name. `@RECORD`
   is the whole record as a dynamic array.
 - **Pseudo-variables**: `@ID` (the record id), `@NI` (number of values
   in the longest multivalued field), `@NB` (record length), `@FILE.NAME`,

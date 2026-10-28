@@ -261,12 +261,11 @@ The query processor and the dictionary.
 |---|---|---|
 | `a;nocase` correlative | Added | makes the string operations of one correlative case insensitive <!--s 103--> |
 | `absent.ignore` | Added | do not print the `not found` list for ids that are not in the file <!--s 25--> |
-| `break.on "'lu'"` | Changed | the `l` is ignored when `u` is also given <!--s 40--> |
 | `break.on "'n'"` | Added | starts a new page and numbers it 1 again <!--s 16--> |
 | `by.exp` | Changed | more than one `by.exp` in the same association is sorted <!--s 572--> |
 | `csv ... as file id` | Added | writes the report as a record of a directory file; a multivalued field is split over lines <!--s 159--> |
 | `csv 3` | Added | every item quoted, numbers too <!--s 26--> |
-| dictionary expressions | Changed | `fn` for a field, divide by zero is zero (an `if` with a part missing, a format after a value and hyphens in names were added and removed again, see REMOVED) <!--s 36 48 270 271 423 547 564--> |
+| dictionary expressions | Changed | divide by zero is zero (an `if` with a part missing, a format after a value and hyphens in names were added and removed again, see REMOVED) <!--s 36 48 270 271 423 547 564--> |
 | `for`, `from none` | Added | `search file for "text"`; `from none` ignores an active list 0 <!--s 190 378--> |
 | `if` in a dictionary item | Added | field 8 of an `a` or `s` item may hold an `if` expression <!--s 104--> |
 | `in`, `not.in` | Added | test a value against a saved list or a file record <!--s 94--> |
@@ -413,6 +412,7 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | `inputclear` | Removed | write `clearinput`; the file type constant `FL$TYPE.SH` (a static hashed file SD never had) is gone too |
 | `@am`, `@svm`, `@user`, `@user.no`, `@filename` | Removed | second names of variables that stay: write `@fm`, `@sm`, `@logname`, `@userno` and `@file.name` (a dictionary item of your own that says `@filename` stops compiling until changed) |
 | `go`, `go to`, and `#` before a compiler directive | Removed | write `goto` (also in `on ... goto`) and `$ifdef`, `$define`, `$include` |
+| second spellings of query words | Removed | `avg`, `enum`, `vert`, `percent`, `pct`, `%`, `header`, `footer`, `first`, `#` and `&`: write `average`, `enumerate`, `vertically`, `percentage`, `heading`, `footing`, `sample`, `ne` and `and`; a `break.on` control `l` is no longer ignored when `u` is given too; and a name that is `f` and a number is a field only if the dictionary has an item of that name <!--s 40 547--> |
 | terminal case inversion | Removed | `pterm case invert` / `noinvert` (and the line in `pterm display`), `input ... nocaseinvert`, the `invcase` setting of `sd.conf` (a kept `sd.conf` is cleaned by the installer), `system(1001)`, `pterm(PT$INVERT)` and the `no.invert` option of `sed`; `keyinc()` is now the same as `keyin()`, and field 2 of `ttyget()` is always 0. Type in the case you want <!--s 399--> |
 | `nano` | Removed | the second external editor, with its syntax file and the page about it (the shared parts moved to the `micro` page): write `micro`, `sed` or `ed` |
 | `set.queue`, `sp.assign`, `getpu(pu$form.queue)`, `system(1066)` | Removed | Pick style form queues were added and taken out again in this release: use `setptr` with the settings you want <!--s g83 g88 18 189 502--> |

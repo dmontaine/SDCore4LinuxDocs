@@ -162,7 +162,7 @@ use:
 |---|---|
 | `@ID` | the record id |
 | `@RECORD` | the entire data record as a dynamic array |
-| *n* or `F`*n* | field *n* of the data record — `F2` is field 2 |
+| *n* | field *n* of the data record (a name such as `F2` is a D-type item of that name, as in `dict.dic` and `voc.dic`) |
 | `@NI` | the number of values in the longest multivalued field |
 | `@NB` | the record length in bytes |
 | `@FILE.NAME` | the name of the file being queried |

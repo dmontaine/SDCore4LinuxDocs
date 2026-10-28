@@ -82,7 +82,7 @@ spellings in a row returned identical counts on the same data.
 | | |
 |---|---|
 | equal | `=` · `eq` |
-| not equal | `#` · `ne` · `not` |
+| not equal | `ne` · `not` |
 | less than | `<` · `lt` · `before` |
 | less or equal | `<=` · `le` |
 | greater than | `>` · `gt` · `after` |
@@ -99,10 +99,10 @@ spellings in a row returned identical counts on the same data.
 
 ### Joining clauses
 
-`and` (or `&`) and `or` join clauses. **Each clause repeats `with`:**
+`and` and `or` join clauses. **Each clause repeats `with`:**
 
 ```
-count voc with dispatch # "" and with dispatch # "CA"
+count voc with dispatch ne "" and with dispatch ne "CA"
 ```
 
 ```
@@ -281,7 +281,7 @@ dictionary entry called `dispatch`.
 | **`conv`** *"code"* | override the conversion |
 | **`as`** *name* | use another dictionary entry's formatting |
 | **`col.spaces`** *n* | change the gap between columns |
-| **`vert`** · **`vertically`** | one field per line instead of columns (see *A vertical report*) |
+| **`vertically`** | one field per line instead of columns (see *A vertical report*) |
 | **`dbl.spc`** | a blank line between records |
 | **`col.sup`** · **`col.hdr.sup`** · **`hdr.sup`** | suppress column headings, both, or the page heading |
 | **`count.sup`** | suppress the trailing record count |
@@ -289,7 +289,7 @@ dictionary entry called `dispatch`.
 
 ## A vertical report
 
-`vert` (or `vertically`) prints one field to a line, the name of the field, a
+`vertically` prints one field to a line, the name of the field, a
 colon and the value. **A second value of a multivalued field repeats the colon**;
 a line that wrapped because the value was longer than the column has none, so
 the two can be told apart:
@@ -379,14 +379,14 @@ options inside the text for page number, date and time.
 | | |
 |---|---|
 | **`total`** *field* | a column total |
-| **`average`** · **`avg`** | the mean |
+| **`average`** | the mean |
 | **`median`** | the middle value: **the mean of the two in the middle when there is an even number**, a null counted as zero (left out with `no.nulls`), and a value that is not a number left out. At a break it is the median of that group, at the end of the report of every value. Where the values 150, 40, 30, 20 and 10 have an `average` of 50, their `median` is 30 |
 | **`mode`** | the value that comes most often, at the end of the report and at each breakpoint; **if several come as often, the first one is shown**. A null is a value (left out with `no.nulls`), and the values need not be numbers |
 | **`range`** | the largest value less the smallest, numbers only (a value that is not a number is left out, a null counts as zero unless `no.nulls`) |
 | **`rpt`** | repeats a single valued field on every line of a report on a multivalued one, in place of printing it on the first line only |
 | **`max`** · **`min`** | the largest and smallest value |
-| **`enum`** · **`enumerate`** | count the values rather than total them |
-| **`percent`** · **`pct`** · **`%P`** | express as a percentage |
+| **`enumerate`** | count the values rather than total them |
+| **`percentage`** | express as a percentage |
 | **`calc`** | evaluate an I-type against the totals |
 | **`break.on`** *field* | start a new subtotal group when the field changes |
 | **`break.sup`** *field* | break on a field without printing it |
@@ -409,7 +409,7 @@ as one, was removed in 1.2-0, as were `query.footer.pause` and `paginate.on.head
 
 | | |
 |---|---|
-| **`sample`** *n* · **`first`** *n* | the first *n* records |
+| **`sample`** *n* | the first *n* records |
 | **`sampled`** *n* | every *n*th record |
 
 A sampled listing says so in its trailing line — `Sample of 3 record(s) listed`
