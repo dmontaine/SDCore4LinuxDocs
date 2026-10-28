@@ -32,7 +32,7 @@ change: what it does, why, and what it does not do. This document is the short f
 | Dictionary divide by zero | Changed | stopped the report; now gives zero |
 | `fileinfo(f, 1021)` | Changed | gave text such as `12 (don), 14 (ann)`; now the user numbers of the other sessions that have the file open, and the text form is key **1100** |
 | `intprec` and `sortmem` | Changed | were 13 and 1024; now **11** and **4096** (set the old values in `sd.conf` if you need them) |
-| Removed features | Removed | words and modes that existed to imitate other products (so far 22 `option` words, 8 `$mode` words, 32 second spellings and forms of statements, clauses, functions and conversions, and 13 query keyword records and a dictionary convention), and other things: see [REMOVED](#removed) |
+| Removed features | Removed | words and modes that existed to imitate other products (so far 28 `option` words, 30 `$mode` words, 32 second spellings and forms of statements, clauses, functions and conversions, and 13 query keyword records and a dictionary convention), and other things: see [REMOVED](#removed) |
 | `sed` keys | Changed | were Emacs keys with Ctrl-X sequences; now the keys most editors have, and `emacs` in `&sed.options&` keeps the old layout |
 | `sed`, `ide`, `ced` | Changed | were 120 by 36 or less; now need a window of at least **140 by 42**, and `ed` is the editor for a smaller one |
 | `select file field` | Changed | a field not otherwise used was ignored; now it is `saving multivalued field`, so the list holds the values |
@@ -138,23 +138,15 @@ Statements, functions, `$mode` words and compiler directives.
 | `matwritecsv` | Added | one CSV line of every element of a matrix <!--s g154--> |
 | `digest()` | Added | the md5, sha1, sha256, sha384 or sha512 digest of a string or a file (`md5()` was added and removed again, see REMOVED) <!--s 63 g118--> |
 | `mergelist()` | Added | merges two lists by a mode; a mode for lists not in order; fixed for an empty list <!--s 420 539 566 g155--> |
-| `$mode autolock` | Added | a `write`, `matwrite` or `delete` with no lock takes an update lock and releases it <!--s g213--> |
 | `$mode debug.equates` | Added | keeps `equate` and `$define` tokens in the object so the debugger can show, set and watch them <!--s g218 246 239--> |
 | `$mode default.unass.args` | Added | an argument passed unassigned takes its default <!--s g219--> |
 | `$mode explicit` | Added | a variable must be named in a `dim` statement before it is used <!--s g220 234--> |
 | `$mode` lists | Changed | `$mode` takes several names separated by commas, each with an optional minus <!--s 105--> |
 | `$mode non.durable.txn` | Added | a committed nested transaction writes nothing until the outer one commits <!--s g221 442--> |
-| `$mode` overlap words | Added | `change.no.overlap`, `count.overlap`, `index.overlap`: whether `change`, `swap`, `count`, `counts`, `index` and `indexs` see overlapping occurrences <!--s g214 g215 g216--> |
 | `$mode partial.expressions` | Added | `a and b` and `a or b` stop evaluating as soon as the value is known <!--s 417--> |
-| `$mode pick.convert` | Added | Pick order of the arguments of `convert()` <!--s g222 507--> |
-| `$mode pick.select` | Added | `selectv` moves a default list to its target <!--s g223--> |
-| `$mode selectv` | Added | `select`, `selectv` and `sselectv` without `to`, and `readnext` without `from`, use the program's default select list variable <!--s 85--> |
-| `$mode stdfil` | Added | the default file variable: file statements may be written without naming one <!--s 17--> |
-| `$mode stdfil.shared` | Added | one default file variable for every program and subroutine of a command level <!--s g225--> |
 | `$mode strict.equate` | Added | warns when a name given to `equate` or `$define` is also a statement or function name <!--s 582--> |
 | `$mode time.ms` | Added | `time()` and `system(12)` return seconds since midnight to the millisecond <!--s 581--> |
 | `$mode trap.unused.main` | Added | `trap.unused` for the program's own variables <!--s g227--> |
-| `$mode write.delete.then.else` | Added | `write`, `matwrite` and `delete` take `then` and `else`; a trigger that refuses takes `else` <!--s 368 496--> |
 | `no.query` on cataloguing | Added | the `basic` command, the `$catalogue` directive and the `catalogue` line of `$basic.options` take `no.query`, which stops the compiler asking before it removes an older entry <!--s 27 191--> |
 | `open ... non.transactional` | Added | a write through that file variable is not undone by a rollback <!--s 64--> |
 | `open.socket()` | Changed | takes a connect timeout <!--s 174--> |
@@ -183,7 +175,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `sselectv`, `sselectn` | Added | sorted selects into a select list variable; `right.aligned` and `descending` <!--s 209 243 367--> |
 | `status()` after a transaction | Added | 0 if it committed, 1021 if it rolled back <!--s 19--> |
 | string arithmetic | Added | `sadd`, `ssub`, `smul`, `sdiv`, `scmp`: exact string arithmetic on numbers of any length and any decimals <!--s 391 468--> |
-| substring assignment | Added | `s[3] = "xy"` overwrites the last three characters, and honours `pick.substr` for an element of a dynamic array <!--s 41 325--> |
+| substring assignment | Added | `s[3] = "xy"` overwrites the last three characters <!--s 41 325--> |
 | `trans()` family | Changed | `trans()`, `rtrans()`: accept `a`, `s` and `c` items and an `l` link; a file that will not open takes the error action of the call <!--s 43 182 7--> |
 | variable names | Changed | a name with two or more underscores together (`a__b`) is valid <!--s 336--> |
 | `watch` | Changed | the debugger's `watch variable operator value` stops only when the condition is met <!--s 45--> |
@@ -439,6 +431,7 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | `system:account:file` file names | Removed | bit 2 of `FILERULE` and a Q-pointer's fourth field named a file on another system and opened nothing; the name form is gone and a Q-pointer with a fourth field is refused (3003) |
 | eleven `sd.conf` settings, `sd -<n>`, and the `gdi` and `raw` words of `setptr` | Removed | `apilogin`, `codepage`, `creatusr`, `exclrem`, `fixusers`, `gdi`, `jnldir`, `jnlmode`, `portmap`, `ringwait` and `txchar` (the first two groups did nothing; `fixusers` and `portmap` gave a connection a fixed user number): a line naming one stops SD from starting, so the installer takes it out of a kept `sd.conf`; `config('...')` no longer answers them and `config` no longer lists them; `tool.config` has no `inert` or `retired` status left; `sd -<n>` (start with a given user number) is gone; `setptr` always uses its raw mode, and its `gdi` and `raw` words are no longer keywords |
 | six `option` words and `keep.select` | Removed | `unass.warning`, `div.zero.warning` and `non.numeric.warning` (with the shortcut `sdbasic.warnings`): an unassigned variable, a divide by zero and a non-numeric value are always errors, so test the value first; `inherit`: a phantom starts with every option off; `query.sort.no.case`: a sort is by case (`sp.view ... by field no.case` still ignores it, by sorting the list itself); `clear.select` and the `keep.select` statement: a select list left active is left for the next command, and `clear.select` clears it <!--s 14 140 412 403 g148--> |
+| twenty-two `$mode` words | Removed | `string.locate`, `composite.readnext`, `pick.read`, `selectv`, `pick.select`, `stdfil`, `stdfil.shared`, `write.delete.then.else`, `autolock`, `pick.substr`, `pick.substr.assign`, `compatible.append`, `pick.convert`, `count.overlap`, `index.overlap`, `change.no.overlap`, `case.sensitive`, `for.store.before.test`, `pick.jump.range`, `optional.final.end`, `pick.matrix` and `heading.no.eject`: each is refused with *Unrecognised mode name*, and the program does what it did with the mode off (the `keep.select` statement went in the same way with `option clear.select`); write `heading no.eject` for the last, and name the file variable for `stdfil`. `selectv` *file* `to` *var* stays a statement. The programs that used `$mode stdfil` and `$mode selectv` had no replacement; an I-type may no longer say `$mode count.overlap`, `index.overlap`, `change.no.overlap` or `compatible.append` <!--s 17 85 368 496 507 g213 g214 g215 g216 g222 g223 g225-->
 | dictionary field numbers 9998 and 9999 | Removed | a `d`, `a` or `s` item whose location was 9998 gave the item count and one whose location was 9999 the record length in bytes; they are ordinary field numbers now. Write an I-type with `@ni` or `len(@record)` |
 
 ## New Features Unique to SD Core

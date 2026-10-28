@@ -1084,8 +1084,8 @@ the table above says (`RECORDLOCKED()` and the file lock for a `write` definitio
 group). **Until 21 October 2026 `CONFIGURE.FILE`, `ANALYSE.FILE`, `FCONTROL`, `CREATE.INDEX` and the
 other index verbs, creating or deleting a remote file and `WRITE ... CREATING.SEQKEY` were on it
 too; they work now for a login that also has the administration group (*The administration
-group*, above), and are refused here, with nothing sent, for a `read` definition.** `MUSTLOCK` and
-`$MODE AUTOLOCK` are honoured as for a local file: a write without the lock held is refused
+group*, above), and are refused here, with nothing sent, for a `read` definition.** `MUSTLOCK`
+is honoured as for a local file (`$MODE AUTOLOCK`, which took the lock itself, was removed on 27 October 2026): a write without the lock held is refused
 with `STATUS()` 3023 (for a login without the write group see `RECORDLOCKED()` above).
 
 **The local edit gates apply by the remote file's name.** A write, delete or clear of a remote

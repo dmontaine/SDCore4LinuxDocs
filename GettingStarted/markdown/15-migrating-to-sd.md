@@ -21,8 +21,8 @@ new program has every mode off. SD's own behaviour is the default, and a word on
 moves a program or a session away from it, on purpose.
 
 **One word changes one thing.** Each option and mode is a single, small difference:
-`pick.read` leaves a read
-variable alone, and so on. **There is no switch that makes SD behave like D3, mvBase,
+`uv.locate` makes `locate` work
+as UniVerse's does, and so on. **There is no switch that makes SD behave like D3, mvBase,
 UniData, jBASE or any other product as a whole.** `option d3`, `option mvbase`,
 `$mode d3` and `$mode mvbase` are refused, and so is `option pick`, which switched
 nine words on together and was removed on 27 October 2026. SD has no shortcut that
@@ -78,10 +78,7 @@ action, tokens, an automatic `$include`. Its lines are listed in
 | if your programs or queries... | try |
 |---|---|
 | compare text without regard to case in a selection test | the `no.case` keyword after its operator (a sort is by case, and there is no option to change that) |
-| expect a `read` that fails to leave its variable as it was | `$mode pick.read` |
 | use `locate` as UniVerse does | `$mode uv.locate` |
-| use `for` loops whose variable must be stored before the end test | `$mode for.store.before.test` |
-| use matrices with no zero element | `$mode pick.matrix` |
 | need every program of a file compiled the same way | a `$basic.options` record |
 
 ## Words other products have that SD does not accept
