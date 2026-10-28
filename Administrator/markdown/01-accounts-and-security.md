@@ -353,7 +353,7 @@ with no trigger name, is not asked), `copy.list` into the file or with
 `deleting` from it, `delete.list ... in`, `get.list ... deleting in`,
 `save.list ... in`, `sort.list ... from`, `reformat ... to` (and the
 `Output file:` prompt), `list ... pageseq`, a delimited report written `to` a
-pathname, `cd data` (which compiles records of an ordinary file as dictionary
+pathname, `compile.dict data` (which compiles records of an ordinary file as dictionary
 items), `generate` (the `$include` record of a dictionary, and the include
 record it writes to the target file), `como on ... in`, and the `.s` and `.d`
 stack commands on an existing VOC record. `create.file` naming a file that
@@ -840,7 +840,7 @@ another account. For everybody but SDSYS:
 | | |
 |---|---|
 | **a file pointer (F-type)** | must lead **inside the account's own directory**, or inside the directory of an account a Q-pointer was followed into (below), or be **the pointer SD itself put in the VOC** — the same id, with the same path, as in `newvoc` (`syscom`, `$map`, `sd.voclib`, `dict.dict`, `voc`, `newvoc`, `$acc`). An account that holds `os-on` may go anywhere its Linux user can. Anything else is refused with status 3035 |
-| **a Q-pointer** into a **registered account** | is followed only if the user **could `logto` that account**: a member of its Linux group, and the account not suspended — `logto`'s own test — **whether or not the account holds `os-on`**. SD's own two Q-pointers, `sd.accounts` (which leads into SDSYS, an account nobody can `logto`) and `md`, are exempt because they are exactly what SD put there |
+| **a Q-pointer** into a **registered account** | is followed only if the user **could `logto` that account**: a member of its Linux group, and the account not suspended — `logto`'s own test — **whether or not the account holds `os-on`**. SD's own Q-pointer, `sd.accounts` (which leads into SDSYS, an account nobody can `logto`), is exempt because it is exactly what SD put there |
 | **a Q-pointer** that **names a path** | is an operating-system path, and the `os-on` question |
 
 So `set.file` into somebody else's account works only for a user who may enter

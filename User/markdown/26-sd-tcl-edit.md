@@ -71,12 +71,12 @@ everything in this section is equally true of [micro](27-sd-tcl-micro.html).
 |---|---|
 | **the working copy** | the record is copied into `$hold` as *record*`.editing`, and the editor is run on that. It is removed on every exit, including the ones that fail |
 | **saving** | *"Save? &lt;Y&gt;es, &lt;N&gt;o"*, then for a `bp` record *"Compile?"* and *"Catalogue?"* |
-| **a `dict` record** | is always saved and re-compiled with `cd` |
+| **a `dict` record** | is always saved and re-compiled with `compile.dict` |
 | **finishing** | *"&lt;E&gt;xit or &lt;R&gt;e-edit"*, so a compile error can be fixed without starting again |
 
 **A compiled dictionary record is truncated to its first 15 fields while you
 edit it**, which is what you want: the fields after them are the compiled form,
-and `cd` rebuilds them when you save.
+and `compile.dict` rebuilds them when you save.
 
 ## Marks, and how to type one
 

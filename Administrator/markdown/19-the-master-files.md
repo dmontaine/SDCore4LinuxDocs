@@ -79,7 +79,7 @@ a line and nobody but SDSYS can read one.
 VOC or a dictionary has been written, or deleted, or the file cleared; after such a file is made,
 removed or renamed (`create.file`, `delete.file`, an `ospath` delete and `osrename`); and
 after `oscopy` or `ioscopy` has copied something into one. It does not matter who wrote: a user
-program, `ed`, `create.file`, `cd` compiling an I-type, `copy`, an `$internal` verb, SD itself, **or
+program, `ed`, `create.file`, `compile.dict` compiling an I-type, `copy`, an `$internal` verb, SD itself, **or
 SDSYS's own save of a copy** (the write it makes into the account is journalled like any other).
 A **transaction** is journalled when it commits, because that is when the file is written, and a
 rolled-back transaction is not journalled at all.

@@ -61,7 +61,7 @@ An `open` of a name looks, in this order, at:
 3. **The shape of the name.** 1 to 63 characters; the first a letter or a digit, the rest letters,
    digits or one of `. _ - $`. **A name that begins with `$ & ! * _` or `%` is never looked
    up**, which keeps `$savedlists`, `$hold` and every `&...&` file each account's own.
-4. **The standard VOC.** A name that is in the standard VOC (`md`, `$acc` and the like) is never
+4. **The standard VOC.** A name that is in the standard VOC (`syscom`, `$acc` and the like) is never
    looked up.
 5. **The register record of `shared`.** It must exist, must not be suspended, and must hold an
    absolute path. A suspended or missing `shared` shares nothing.

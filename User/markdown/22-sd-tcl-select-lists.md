@@ -306,15 +306,10 @@ are told apart by writing the file first (`copy.listp $savedlists reports`). Aft
 
 ## Combining two lists
 
-**There are two sets of verbs and they take different things. this is the
-easiest mistake on the page.**
+`merge.list` works on **list numbers**: the numbered lists in your session.
+(To combine saved lists, pick them up with `get.list` first.)
 
-| | takes | |
-|---|---|---|
-| **`list.union`** · **`list.inter`** · **`list.diff`** | **saved list names** | reads and writes `$savedlists` |
-| **`merge.list`** | **list numbers** | works on the numbered lists in your session |
-
-All four commands find a key of one list in the other without scanning it
+It finds a key of one list in the other without scanning it
 (since 16 Oct 2026), so lists of tens of thousands of keys merge in seconds
 where the time used to grow with the product of the two lengths. The result
 is what it always was: a union keeps the first list and adds each new key of
@@ -322,34 +317,7 @@ the second once; an intersection gives the keys of the second list that are in
 the first, a key repeated in the second repeated; a difference takes away one
 occurrence in the first list for each key of the second.
 
-Giving a number to `list.union` does not do the numbered thing — it looks for a
-saved list with that name and fails:
-
-```
-list.union 3 4 5
-```
-
-```
-First source list does not exist
-```
-
-### By name
-
-```
-list.union zzos zzin zzboth
-list.inter zzos zzin zzover
-```
-
-```
-47 records saved to select list 'zzboth'
-0 records saved to select list 'zzover'
-```
-
-Both write a **saved** list, not a numbered one, so `get.list` is how you pick
-the result up. The two answers above check each other: the sources hold 2 and 45
-records with nothing in common, so the union is 47 and the intersection is 0.
-
-### By number
+### Example
 
 ```
 merge.list 3 union 4 to 5
@@ -366,7 +334,7 @@ The operator words are **`union`**, **`intersect`** and **`diff`**
 `to` *n* names the target, defaulting to list 0,
 and `count.sup` suppresses the count line.
 
-`list.diff` and `merge.list ... diff ...` give the records in the first list that
+`merge.list ... diff ...` gives the records in the first list that
 are not in the second, so **the order of the two arguments matters** where it
 does not for union and intersection.
 

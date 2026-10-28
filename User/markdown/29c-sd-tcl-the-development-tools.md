@@ -207,13 +207,13 @@ finds nothing, and the box under the list says so.
 
 | key | does |
 |---|---|
-| **N** | make an index: pick an item of the dictionary from a list; `make.index file item` defines the index and builds it |
+| **N** | make an index: pick an item of the dictionary from a list; `create.index file item` defines the index and then `build.index file item` builds it |
 | **B** | build the index under the cursor again from the records (`build.index file index`) |
 | **D** | delete it (`delete.index file index`) after a box, with its name typed |
 | **L** | list it in full (`list.index file index detail`): the terminal is handed to the verb, which prints its report; Enter brings the page back |
 | **I**, Tab or Esc | back to the items pane |
 
-`make.index` is used rather than `create.index` because an index that is defined and not built is a trap;
+N runs both verbs after one box, because an index that is defined and not built is a trap;
 B builds one that is left over. Building and deleting need the file to themselves: if another session has the
 file open the verb says so and nothing changes. The page itself keeps no file open while it waits.
 

@@ -201,7 +201,8 @@ An E-type item can be indexed as a D-type item can, **including one whose path h
 key). The index is kept up to date as records are written and deleted, and a query with a `with` clause on the item uses it.
 
 ```
-make.index stock city
+create.index stock city
+build.index stock city
 selectindex stock city Boston
 list stock city
 ```

@@ -159,7 +159,7 @@ none of this.
 rather than being left to surprise you.
 
 **A compiled dictionary record is truncated to its first 15 fields** while
-you edit it, and recompiled with `cd` when you save.
+you edit it, and recompiled with `compile.dict` when you save.
 
 ### An editor is not a hole, but it is worth thinking about
 
@@ -199,11 +199,11 @@ returned, above.) See [Not in SD Core](14-not-in-sd-core.html).
 | **`fstat`** | file statistics |
 | **`hsm`** | hashed-file statistics monitoring |
 | **`set.trigger`** | attach a trigger |
-| **`cd`** | change directory |
+| **`compile.dict`** | compile the I-types of a dictionary |
 
 ## Indexes
 
-**`create.index`** · **`delete.index`** · **`build.index`** · **`make.index`** · **`list.index`**
+**`create.index`** · **`delete.index`** · **`build.index`** · **`list.index`**
 
 ## Bulk record editing
 

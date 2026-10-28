@@ -12,36 +12,23 @@ marks a word typed as it stands; braces mark an optional part.
 > Linux, against a six-record file whose field 1 held five `V` and one
 > `K`.
 
-## Use `make.index`
+## Create it, then build it
 
-**That is the whole of this page's advice.** `create.index` and `build.index`
-are two halves of what `make.index` does in one command, and **the half that is
-easy to miss is the second one**:
+**That is the whole of this page's advice.** `create.index` defines an index and
+`build.index` fills it, and **the half that is easy to miss is the second one**.
+Run both, in that order; what each prints is shown in the next two sections.
+(`make.index`, which did both in one command, was added and removed again in 1.2-0.)
 
-```
-make.index zzak f2
-```
-
-```
-Added index for f2
-Building index 'f2'...
-6 records processed
-Populating index...
-```
-
-Use the two-step form only when you have a reason to separate them.
-
-## The five verbs
+## The four verbs
 
 | | |
 |---|---|
 | **`create.index`** *file* *field*… | define an index. **Does not populate it** |
 | **`build.index`** *file* *field*… \| **all** | populate it from the records already there |
-| **`make.index`** *file* *field*… | both, in one command |
 | **`list.index`** *file* *field*… | what indexes the file has, and whether they work |
 | **`delete.index`** *file* *field*… \| **all** | remove them |
 
-`create.index` and `make.index` also take:
+`create.index` also takes:
 
 | | |
 |---|---|
@@ -107,8 +94,7 @@ Building index 'f1'...
 Populating index...
 ```
 
-**`make.index` does not have this problem**, which is the practical reason to
-prefer it.
+Run `build.index` before anything else has the file open.
 
 > **A session that was killed rather than logged out also holds the file.**
 > Its entry stays in the user table, `listu` still lists it, and `build.index`
@@ -317,7 +303,7 @@ Deleting the file removes its indexes with it.
 ## Who has these verbs
 
 **Every account has all of them now** — `create.index`, `build.index`,
-`make.index`, `delete.index`, `disable.index`, `list.index`, `analyse.index`,
+`delete.index`, `disable.index`, `list.index`, `analyse.index`,
 `selectindex` and `rebuild.all.indices`.
 An index changes how a query runs, not how data is written, so there was never a
 reason to withhold them even under the old model.
