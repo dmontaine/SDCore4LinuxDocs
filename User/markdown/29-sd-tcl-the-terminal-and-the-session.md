@@ -269,21 +269,18 @@ prints anything**, and `bell` with no keyword is an error rather than a toggle:
 ## Clearing type-ahead and stored prompts
 
 ```
-clearinput      clear.input
-clearprompts    clear.prompts
+clear.input
+clear.prompts
 ```
 
-**`clearinput`** discards anything typed ahead but not yet read.
-**`clearprompts`** discards the inline prompt and response text a previous
+**`clear.input`** discards anything typed ahead but not yet read.
+**`clear.prompts`** discards the inline prompt and response text a previous
 command left behind. Neither prints anything.
 
-**Each has two spellings and they are the same verb.** `clear.input` and
-`clear.prompts` are separate VOC records pointing at the same internal verb
-number as the run-together forms, which is the pattern described on
-[SD TCL - The Command Processor](19-sd-tcl-command-processor.html). Use
-whichever reads better; nothing distinguishes them.
+(The run-together spellings `clearinput` and `clearprompts` were second names
+for the same verbs and were removed in 1.2-0.)
 
-> **Neither can be demonstrated down a pipe, and `clearinput` should not be
+> **Neither can be demonstrated down a pipe, and `clear.input` should not be
 > sent down one at all.** In a piped session the input stream *is* the script,
 > so discarding unread input discards the commands that have not run yet —
 > including the `off` that would have ended the session. **A run that did this

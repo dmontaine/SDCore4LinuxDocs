@@ -58,7 +58,7 @@ open. The line between the boxes shows the **gates your session holds** (`voc-ed
 | **N** | make a file: asks for a name, then *dynamic* or *directory*, then shows `create.file name` in a box |
 | **C** | clear the file under the cursor (`clear.file name`) |
 | **D** | delete it (`delete.file name no.query`) |
-| **A** | run `analyse.file` on it: the terminal is handed to the verb, which prints its report; Enter brings the page back |
+| **A** | run `analyze.file` on it: the terminal is handed to the verb, which prints its report; Enter brings the page back |
 | **I** | run `list.index` on it (its indices, in full), the same way |
 | **T** | run `list.triggers` on it, the same way |
 | **/** or F11 | show only the names that hold some text (empty shows them all) |

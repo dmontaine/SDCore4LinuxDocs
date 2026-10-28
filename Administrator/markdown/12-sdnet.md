@@ -783,7 +783,7 @@ API, and they are the only door a files-only login has to them.
 | | |
 |---|---|
 | 68, 69 | `WRITE` and `WRITEU ... CREATING.SEQKEY`: the file's own counter on this server gives the id |
-| 70 | a verb run **on this server for the login**: `analyse.file`, `configure.file`, `create.index`, `build.index`, `delete.index`, `disable.index`, `create.file`, `delete.file` |
+| 70 | a verb run **on this server for the login**: `analyze.file`, `configure.file`, `create.index`, `build.index`, `delete.index`, `disable.index`, `create.file`, `delete.file` |
 | 71 | `FCONTROL(file, key {, value})` |
 
 - **Who gives it, and how.** SDSYS, one person at a time, on the server being reached:
@@ -812,7 +812,7 @@ API, and they are the only door a files-only login has to them.
   machines. The server runs the verb itself *for the login*, in the account the login entered, so that
   account's switches apply as they would to the same person at a terminal: the edit switches
   (`voc.edit`, `bp.edit`, `dict.edit`) are asked by the file's path for everything but the report
-  (`analyse.file`), and the shared account's structure rule holds (a files-only login is never SDSYS).
+  (`analyze.file`), and the shared account's structure rule holds (a files-only login is never SDSYS).
 - **What the server checks before it runs anything.** The verb is chosen by the number of the
   operation and never read from the text. The file is **named by the open file** (the name it was
   opened under on this connection), so a login cannot name one it did not open. The words are
@@ -1081,7 +1081,7 @@ is a silent loss of the guarantee the program asked for); the statements that on
 `OPENSEQ` and the other sequential-file statements (message 11511). Until 20 October 2026
 `FILELOCK`, `FILEUNLOCK`, `GETLOCKS` and `RECORDLOCKED()` were on this list; they work now, as
 the table above says (`RECORDLOCKED()` and the file lock for a `write` definition and the write
-group). **Until 21 October 2026 `CONFIGURE.FILE`, `ANALYSE.FILE`, `FCONTROL`, `CREATE.INDEX` and the
+group). **Until 21 October 2026 `CONFIGURE.FILE`, `ANALYZE.FILE`, `FCONTROL`, `CREATE.INDEX` and the
 other index verbs, creating or deleting a remote file and `WRITE ... CREATING.SEQKEY` were on it
 too; they work now for a login that also has the administration group (*The administration
 group*, above), and are refused here, with nothing sent, for a `read` definition.** `MUSTLOCK`

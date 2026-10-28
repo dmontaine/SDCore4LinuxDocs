@@ -107,7 +107,7 @@ counter at 1; `write … creating.seqkey` skips an id that already names a recor
 ## Looking at a file
 
 ```
-analyse.file {dict} file {statistics} {lptr}
+analyze.file {dict} file {statistics} {lptr}
 ```
 
 Without `statistics` it reports the shape: the account, the file name, the path,
@@ -198,7 +198,7 @@ A summary of one file, opened the way any program would open it: its type
 pathname, and a line for each of these that is true of it — *File uses case
 insensitive record ids*, *File has indices*, *File has trigger* name, *File is
 read only*. A name that is not in the VOC, or a file that will not open, is said
-so. Unlike `analyse.file` it does not walk the file.
+so. Unlike `analyze.file` it does not walk the file.
 
 ## Permission bits of records: `set.mode`
 
@@ -288,8 +288,8 @@ cname old.file.name to new.file.name
 cname {dict} file.name old.record.name to new.record.name
 ```
 
-A comma may be used instead of `to`. `rename` is the same verb under the other
-name. `@system.return.code` is `0` on success and `-1` if the arguments were
+A comma may be used instead of `to`. (`rename`, a second name for this verb, was
+removed in 1.2-0.) `@system.return.code` is `0` on success and `-1` if the arguments were
 wrong.
 
 **`cname` on a file renames the VOC record too**, which is the point — the
@@ -451,7 +451,7 @@ trigger=zztrig
 modes=127
 ```
 
-`select`, `count` and `analyse.file` do not count it as a record, `clear.file` leaves it (and so the trigger), and no record id
+`select`, `count` and `analyze.file` do not count it as a record, `clear.file` leaves it (and so the trigger), and no record id
 can reach it: `%` is one of the characters SD rewrites in a directory file's record ids, so a program that writes the id
 `%header%` makes an ordinary record under another name. The file is not locked away, though: anyone who can write to the
 directory can change it with an editor, just as anyone who can write to it can add or remove records, so the trigger is only
@@ -560,11 +560,11 @@ dictionary changes only when the account has `bp.edit`, `voc.edit` or `dict.edit
 ## Who has these verbs
 
 **Every account has all of them now** — there is no longer a withheld set.
-`ct`, `list.files`, `set.file`, `analyse.file`, `analyze.file`, `clear.file`,
+`ct`, `list.files`, `set.file`, `analyze.file`, `clear.file`,
 `cname`, `configure.file`, `compare.files`, `copy`, `create.file`,
 `delete`, `delete.file`, `dump`, `file.stat`, `fixdir`, `find.file`, `fstat`,
 `fstat.user`, `hsm`, `import.csv`, `import.json`, `import.xml`, `convert.data`,
-`list.triggers`, `oscopy`, `rename`, `set.mode`, `set.trigger` are all in every
+`list.triggers`, `oscopy`, `set.mode`, `set.trigger` are all in every
 account's VOC. (`set.mode` is there but refuses an account without the OS gate,
 as above.)
 
@@ -581,7 +581,7 @@ that is how they are usually driven over more than a handful of ids.
 **`reformat` and `sreformat`** rewrite records through a dictionary and are run
 by the query processor, so they are documented with it.
 
-**There is no verb that repairs a damaged file.** `analyse.file statistics` will
+**There is no verb that repairs a damaged file.** `analyze.file statistics` will
 tell you a file is badly overflowed; `configure.file` is what acts on that.
 
 ## See also

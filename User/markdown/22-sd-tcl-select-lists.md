@@ -70,7 +70,7 @@ clear.select all
 Cleared all numbered select lists
 ```
 
-`clearselect` is the same verb, spelled without the dot.
+(`clearselect`, the same verb spelled without the dot, was removed in 1.2-0.)
 
 ## Building a list
 
@@ -164,7 +164,7 @@ list kept in 3 is made the one the next command uses.
 
 ```
 select voc with type = 'F'
-execute.list analyse.file () ; pause
+execute.list analyze.file () ; pause
 ```
 
 Runs its commands, separated by semicolons, for each id of list 0 in turn: the

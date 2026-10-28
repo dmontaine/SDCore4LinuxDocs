@@ -49,10 +49,10 @@ group structure and resizes automatically as data grows or shrinks.
 ### Group structure
 
 A dynamic file is divided into **groups**. Each group is a bucket holding the
-records that hash to it. `analyse.file` reports the structure of a real file:
+records that hash to it. `analyze.file` reports the structure of a real file:
 
 ```
-:analyse.file zzauditf
+:analyze.file zzauditf
 Account           : /home/sd/user_accounts/don
 File name         : zzauditf
 Path name         : /home/sd/user_accounts/don/zzauditf
@@ -97,7 +97,7 @@ records that will not fit however the file is sized — the *large record size*
 in the listing above is the threshold at which a record is stored separately
 instead.
 
-`analyse.file` reports the distribution; `fstat` reports read and write
+`analyze.file` reports the distribution; `fstat` reports read and write
 statistics.
 
 ## The dictionary file
@@ -134,14 +134,14 @@ An account directory contains:
 ## File analysis
 
 ```
-analyse.file customers
-analyse.file customers statistics
+analyze.file customers
+analyze.file customers statistics
 fstat customers on
 ```
 
 | | |
 |---|---|
-| `analyse.file` | the file's structure — type, group size, modulus, load factors and size, as shown above. `statistics` adds the group distribution, a histogram of record lengths and (since 16 Oct 2026) a **histogram of group utilisation**: how many groups use up to 10%, 20% … 100% of their size, and how many are *over 100%*, which means they have overflow blocks. A group is counted with its overflow blocks, so a heavily overflowed file shows its groups in the last bar. The report stops at each page; answer `S` to see it all |
+| `analyze.file` | the file's structure — type, group size, modulus, load factors and size, as shown above. `statistics` adds the group distribution, a histogram of record lengths and (since 16 Oct 2026) a **histogram of group utilisation**: how many groups use up to 10%, 20% … 100% of their size, and how many are *over 100%*, which means they have overflow blocks. A group is counted with its overflow blocks, so a heavily overflowed file shows its groups in the last bar. The report stops at each page; answer `S` to see it all |
 | `fstat` | read and write counts. It is a **switch**: `fstat` *file* `on` starts collecting, `off` stops, and `fstat` alone reports. `fstat global` covers every file and `fstat reset` clears the counters |
 
 `fstat` collects nothing until it is turned on, so a report immediately after

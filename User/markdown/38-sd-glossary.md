@@ -146,7 +146,7 @@ can hold any number of subvalues.
 **Overflow** — in a dynamic file, the condition where a group has more
 data than fits in its primary bucket and additional buckets are
 chained to it. Excessive overflow degrades performance and is reported
-by `analyse.file`.
+by `analyze.file`.
 
 ## P
 

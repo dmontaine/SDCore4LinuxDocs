@@ -145,7 +145,7 @@ forced-command ssh route, is how an installation that cannot accept that closes 
 
 **The file `$ipc`.** `$ipc`, in the system directory, is the one SD file every user's process has to write (it is `sdsys:sdusers` 0775), so a member of `sdusers`
 with a shell can write it as well. It holds working records and nothing a session is configured from: the lock that orders a phantom's start-up, the start-up
-records of a phantom (its command, the option flags it inherits, its `DATA` queue and its log file name), the messages waiting for a user, the phantom register
+records of a phantom (its command, its `DATA` queue and its log file name), the messages waiting for a user, the phantom register
 that `status` shows, and the tables that `profiler`, `hsm` and `pstat` ask another session for. A phantom no longer takes its command, options, `DATA` lines or
 log file from it on trust. `phantom` seals the records with a secret that it makes for each phantom and gives only to the new process, in its environment, where
 only the same operating-system user (and root) can read it, and which the new process copies and overwrites at once. The phantom runs, stacks and sets nothing unless the seal on

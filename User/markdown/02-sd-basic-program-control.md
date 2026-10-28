@@ -273,7 +273,7 @@ exception, `catch sys.program` the ones in that group, and so on down.
 | `sys.program.datatype.null_string` | a null string where one is not allowed |
 | `sys.program.div_zero` | divide by zero |
 | `sys.program.invalid_matrix_index` | a subscript out of range |
-| `sys.program.invalid_matrix_size` | an argument matrix too small for the subroutine, or a Pick style matrix that cannot be resized or has no elements |
+| `sys.program.invalid_matrix_size` | an argument matrix too small for the subroutine |
 | `sys.program.invalid_argct` | the wrong number of arguments in a `call` |
 | `sys.program.invalid_call_name` | a call name that cannot be a program name |
 | `sys.program.not_found` | the subroutine is not in the catalogue, or cannot be loaded |

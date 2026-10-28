@@ -675,7 +675,7 @@ number this release has never heard of.
 | 46 | the mark mapping |
 | 49 | the server's revision |
 | 68, 69 | `write` and `writeu ... creating.seqkey` (the file's own counter gives the id): **only with `files-write-on` and `files-admin-on`** |
-| 70 | a verb run on this server for the login (`analyse.file`, `configure.file`, `create.index`, `build.index`, `delete.index`, `disable.index`, `create.file`, `delete.file`): **only with `files-write-on` and `files-admin-on`** |
+| 70 | a verb run on this server for the login (`analyze.file`, `configure.file`, `create.index`, `build.index`, `delete.index`, `disable.index`, `create.file`, `delete.file`): **only with `files-write-on` and `files-admin-on`** |
 | 71 | `fcontrol`: **only with `files-write-on` and `files-admin-on`** |
 
 | refused | request |

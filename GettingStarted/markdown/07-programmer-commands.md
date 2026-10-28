@@ -19,7 +19,7 @@ extra at all.
 |---|---|
 | **`basic`** | compile SD BASIC source |
 | **`catalog`** | add to the catalogue |
-| **`delete.catalog`** · **`delete.catalogue`** | remove from it |
+| **`delete.catalog`** | remove from it |
 | **`compile.dict`** | compile dictionary items |
 | **`run`** | run a compiled program |
 | **`map`** | show a program's map |
@@ -184,7 +184,7 @@ returned, above.) See [Not in SD Core](14-not-in-sd-core.html).
 |---|---|
 | **`create.file`** · **`delete.file`** · **`clear.file`** | the life of a file |
 | **`configure.file`** | change a file's configuration |
-| **`analyse.file`** · **`analyze.file`** | report on a file's internals |
+| **`analyze.file`** | report on a file's internals |
 | **`fstat`** | file statistics |
 | **`hsm`** | hashed-file statistics monitoring |
 | **`set.trigger`** | attach a trigger |
@@ -200,10 +200,9 @@ returned, above.) See [Not in SD Core](14-not-in-sd-core.html).
 |---|---|
 | **`copy`** | copy records |
 | **`delete`** | delete records |
-| **`rename`** | rename records |
 | **`reformat`** · **`sreformat`** | reformat |
 | **`sort.item`** | sort |
-| **`cname`** | change a record's name |
+| **`cname`** | rename a file or change a record's name |
 | **`delete.common`** | clear a common block |
 
 ## What actually gates these
