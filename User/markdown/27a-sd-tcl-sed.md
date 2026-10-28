@@ -144,7 +144,7 @@ have rebound.
 |---|---|
 | **`Ctrl-S`** | save |
 | **`Ctrl-Q`** | quit. A changed record asks *Quit without saving?* in a small box where **No** is the default |
-| **`Ctrl-O`** · **`Ctrl-W`** | open a record · write the record under another name |
+| **`Ctrl-O`** · **`Ctrl-W`** | open a record · close the buffer (a changed buffer asks *Delete modified buffer?*; the only buffer cannot be closed, **`Ctrl-Q`** leaves). *Save as* has no key: it is on the File menu |
 | **`Ctrl-Z`** · **`Ctrl-Y`** | undo · redo (see *Undo and redo*, below) |
 | **`Esc .`** | set the mark |
 | **`Ctrl-C`** · **`Ctrl-X`** · **`Ctrl-V`** | copy, cut and paste the text between the mark and the cursor (`Esc W` and `Esc Y` also copy and paste) |
@@ -160,7 +160,9 @@ have rebound.
 | **`Ctrl-D`** · **`Esc D`** | delete a character · delete a word |
 | **`Ctrl-K`** | kill the rest of the line |
 | **`Esc U`** · **`Esc L`** · **`Esc C`** | upcase, lower-case or capitalise the word |
-| **`Esc N`** · **`Esc P`** | next buffer · previous buffer |
+| **`Ctrl-Page Down`** · **`Ctrl-Page Up`** | next buffer · previous buffer (they were `Esc N` and `Esc P`, which no longer do anything) |
+| **`Alt-Page Down`** · **`Alt-Page Up`** | the same two, for a terminal that keeps the Ctrl forms for its own tabs |
+| **`F5`** | compile the record and run it (*Compile and run* on the Tools menu): a changed record is saved first, and a program that does not compile stops with *Press RETURN to resume editing* |
 | **`Esc X`** | the command line (see *Colour for the language* and the commands below) |
 
 `Esc` followed at once by a letter is a command of the editor's own; `Esc` on
@@ -168,6 +170,23 @@ its own opens the menu bar. `Ctrl-X` is no longer a prefix, so the old
 `Ctrl-X` sequences are gone: the actions that had one (split the window, list
 the buffers, import, export and the rest) are reached through the menus, which
 show the key of each item that has one.
+
+**Ctrl-Page Down and Ctrl-Page Up** are sent by most terminal programs, but a
+terminal can keep them for its own tabs (GNOME Terminal does) and the Linux
+console does not send them. **Alt-Page Down and Alt-Page Up** do the same two
+things; GNOME Terminal leaves them to the program. Where neither reaches SED, use *Next buffer* and
+*Previous buffer* on the Buffer menu, or *Goto buffer*. **SED does not recognise a
+key sequence it has no binding for as a whole**: the characters after the first
+few can be typed into the record, so a key that your terminal sends in a form SED
+does not know (Shift-F5, say) can put characters such as `;5~` in the text.
+
+**What changed on 28 October 2026.** `Ctrl-W` used to write the record under
+another name; it now closes the buffer, as it does in the IDE and in most editors,
+and *Save as* is on the File menu only. `Ctrl-Page Down` and `Ctrl-Page Up` replace
+`Esc N` and `Esc P`, and `F5` is new. The old Emacs layout (see *Options*) and a
+key set of your own in `&sed.bindings&` keep the keys they have: in the Emacs layout
+`Ctrl-X Ctrl-W` is still *Save as*, `Esc N` and `Esc P` still switch buffers and
+`Ctrl-X K` closes one.
 
 ## Undo and redo
 

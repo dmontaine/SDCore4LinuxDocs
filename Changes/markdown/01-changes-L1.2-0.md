@@ -33,7 +33,7 @@ change: what it does, why, and what it does not do. This document is the short f
 | `fileinfo(f, 1021)` | Changed | gave text such as `12 (don), 14 (ann)`; now the user numbers of the other sessions that have the file open, and the text form is key **1100** |
 | `intprec` and `sortmem` | Changed | were 13 and 1024; now **11** and **4096** (set the old values in `sd.conf` if you need them) |
 | Removed features | Removed | words and modes that existed to imitate other products (so far 55 `option` words, 35 `$mode` words, and the second spellings and forms of statements, clauses, functions, conversions, TCL verbs and query keywords, each listed in [REMOVED](#removed)), and other things: see [REMOVED](#removed) |
-| `sed` keys | Changed | were Emacs keys with Ctrl-X sequences; now the keys most editors have, and `emacs` in `&sed.options&` keeps the old layout |
+| `sed` keys | Changed | were Emacs keys with Ctrl-X sequences; now the keys most editors have (Ctrl-PageDown / Ctrl-PageUp, and Alt-PageDown / Alt-PageUp for a terminal that keeps the Ctrl keys for its own tabs, switch buffers), and `emacs` in `&sed.options&` keeps the old layout |
 | `sed`, `ide`, `ced` | Changed | were 120 by 36 or less; now need a window of at least **140 by 42**, and `ed` is the editor for a smaller one |
 | `select file field` | Changed | a field not otherwise used was ignored; now it is `saving multivalued field`, so the list holds the values |
 | The default terminal | Changed | was 120 columns by 36 lines; now **140 by 42** (a LIST fills 41 lines before it pauses) |
@@ -638,6 +638,7 @@ Three simple layers, with no vault and nothing on by default.
 | `screen slider` | Added | an on and off switch with words of your choice |
 | `screen` statement | Added | menus, dialogues and forms from BASIC; colour; tabs, text areas, tables; the mouse |
 | terminal type at sign-on | Changed | taken from the terminal's `TERM`: xterm, xterm-256color, VTE, Konsole, tmux, screen, alacritty, kitty, foot, rxvt and st are `xterm`, the console is `linux`; the account's login paragraph no longer forces `TERM LINUX` |
+| text area keys | Changed | `screen memo` and the IDE's editor: Ctrl-A selects all (Home is the start of the row), Ctrl-O no longer copies (Ctrl-C does), F3 finds the next and Shift-F3 the one before (Ctrl-N found the next), Ctrl-D duplicates the line (Delete joins lines) and Ctrl-K cuts the whole line into the clipboard, where it cut to the end of the row |
 | themes | Added | `mono`, `classic` and `blue`; colour works on the Linux console terminal type |
 | window size | Changed | SD reads the terminal's window size at the start and when it is resized; `@crtwide` and `@crthigh` follow it |
 
@@ -711,9 +712,13 @@ Fixes that close a way round a gate, and what the gates now ask.
 | home screen sub-menus | Added | a tile can open a second page of tiles with a Back tile, Esc and the path on the status line; eight deep; the delivered page declares none yet |
 | `ide` | Added | tree, tabs, compile errors table, find, run, catalogue and debug; Ctrl-E hands a record to `sed` |
 | `ide` edit as fields | Added | F12 or Go, Edit as fields: the record goes to `ced` as fields, values and subvalues and comes back as text in the tab; `ced` writes nothing, the IDE's save does |
+| `ide` key map | Changed | the settled keys: Ctrl-S is the only save key (F2 went); F5 runs, F7 debugs, F8 compiles, F9 builds (compile and catalogue); F6 and Shift-F6 are the next and previous pane (the tree has no key of its own: F6 / Shift-F6, the Go menu entry Files and records or the mouse reach it, because F3 is the text area's find next); Ctrl-PageDown and Ctrl-PageUp, and Alt-PageDown and Alt-PageUp for a terminal that keeps the Ctrl keys for its own tabs (GNOME Terminal), are the next and previous tab; Ctrl-N is New record, Ctrl-O Open record (a record that exists; names with a dollar sign are refused) and Ctrl-W closes the record (it asks when there are changes); Save as, Write a copy and Find in the records are menu entries with no key; the tree no longer lists the `$` entries |
 | `ide` language of a record | Changed | chosen as `sed` chooses it - the file name, then the record id, then the first line (`#!/bin/sh`), then the languages a site added - where it was the suffix of the id alone |
 | `ide` marks as tokens | Added | a record that holds value, subvalue or text marks is shown with `:@vm:`, `:@sm:` and `:@tm:` and read back when saved, so nobody types a mark; a field that holds the text of a token is shown as it is |
+| `ide` name form | Added | New record (Ctrl-N), the first save of an untitled buffer, Save as and Write a copy (both in the File menu) ask for the file and the record on one form; a refusal by the account's edit gate or a record that exists is said in the form, which stays open |
 | `ide` redraw | Changed | no flash; a click on the menu bar opens the menu; the active pane is marked `[*]` |
+| `ide` save | Changed | takes the record's lock and writes on error: a refusing trigger or a full disk is reported and the text kept, where it ended the IDE and lost every tab; Save as moves the editor to the new record; an edit-gate refusal is shown whole in a box; Catalogue says so only when `catalog` did |
+| `ide` untitled buffer | Added | a bare `ide` opens an editable "Untitled 1" with the cursor in it; New record writes nothing until it is saved; the arrows stay in the editor at its first and last line |
 | immediate messages | Changed | `message ... immediate` is shown in a box on any terminal |
 | `sed` | Changed | the full-screen editor is back with a menu bar, the keys most editors have (`emacs` in `&sed.options&` keeps the old ones), undo and redo, syntax colour and the mouse; its keys are decoded from the terminal's terminfo entry <!--s 365--> |
 | `sed`, `ide`, `ed` input ended | Changed | fixed: they used all of a processor for ever when their input had ended |

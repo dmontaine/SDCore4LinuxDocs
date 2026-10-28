@@ -263,7 +263,7 @@ another page, is passed over.
 | list | up, down, home, end, page up, page down; a letter jumps; with `multi` the space bar picks |
 | combo | as an entry field; down or F4 opens the list |
 | tabs | left, right, home, end |
-| memo | the arrow keys, home, end, page up and down; typing, Return (splits the line), backspace, delete (both join lines at the ends), Ctrl-K; Ctrl-A and Ctrl-E go to the ends of the row; Ctrl-B and Ctrl-F a word back and on; Ctrl-G the mark, Ctrl-X cut, Ctrl-C or Ctrl-O copy, Ctrl-V paste; Ctrl-Z undo, Ctrl-Y redo; Ctrl-T find, Ctrl-N the next one |
+| memo | the arrow keys, home, end, page up and down; typing, Return (splits the line), backspace, delete (both join lines at the ends); Home and Ctrl-E go to the ends of the row; Ctrl-P and Ctrl-U a word back and on; Ctrl-A selects all, Ctrl-G the mark, Ctrl-X cut, Ctrl-C copy, Ctrl-V paste; Ctrl-D duplicates the line, Ctrl-K cuts the whole line into the clipboard; Ctrl-Z undo, Ctrl-Y redo; Ctrl-F or Ctrl-T find, Ctrl-B find backward, F3 the next one |
 | table | up, down, home, end, page up, page down; left and right the current column; F3 sorts by it; `<` and `>` its width; a letter jumps to the next row whose first cell starts with it; with `multi` the space bar marks the row |
 | tree | up, down, home, end, page up, page down; right opens a node (or goes to the first one under it); left closes it (or goes to the node it is under); the space bar opens or closes; a letter jumps |
 | scrollbar | up and down (left and right when it is horizontal), page up, page down, home, end |
@@ -321,7 +321,9 @@ work by *row*, so a wrapped line is several rows.
 
 **Selection and the clipboard.** The selection runs from the *mark* to the cursor.
 Ctrl-G sets the mark where the cursor is (and takes it away again); the selected text
-is drawn in the `highlight` style. Ctrl-X cuts it, Ctrl-C or Ctrl-O copies it, Ctrl-V
+is drawn in the `highlight` style. **Ctrl-A selects all the text** (since 28 October 2026;
+Home is the start of the row). Ctrl-X cuts the selection, Ctrl-C copies it (Ctrl-O does not:
+since 28 October 2026 a program may use it for opening a record), Ctrl-V
 puts what was cut or copied in at the cursor. The clipboard belongs to the library, so
 it passes from one text area to another. Typing, Return, backspace and delete on a
 selection replace or delete it. A `readonly` area can select and copy, and nothing else.
@@ -330,11 +332,18 @@ selection replace or delete it. A `readonly` area can select and copy, and nothi
 characters (or of backspaces, or of deletes) is one step, and so is replacing a
 selection by typing over it.
 
-**Find.** Ctrl-T asks for text on the bottom row of the area and selects the first
-place it is found from the cursor on; Ctrl-N finds the next one. Case is ignored and the
+**Lines.** **Ctrl-D duplicates the line** the cursor is on, below it, and **Ctrl-K cuts the
+whole line** into the clipboard (since 28 October 2026; they joined lines and cut to the end
+of the row before). Ctrl-V at the start of a line puts a cut line back above it. Delete
+joins lines.
+
+**Find.** Ctrl-F or Ctrl-T asks for text on the bottom row of the area and selects the first
+place it is found from the cursor on; Ctrl-B asks and looks backward. **F3 finds the next one and Shift-F3 the one before**
+(since 28 October 2026; the next was Ctrl-N, which a program may use for a new record), and so does
+Return on the question, which starts with the last text. Case is ignored and the
 search goes on past the end of the text to its start. A bell means there is none.
 
-Ctrl-B and Ctrl-F move a word back and on.
+Ctrl-P and Ctrl-U move a word back and on.
 
 ### The table
 
