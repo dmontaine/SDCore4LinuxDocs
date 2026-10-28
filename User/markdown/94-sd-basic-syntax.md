@@ -243,7 +243,6 @@ exist.**
 | **`inmat`** | `inmat()`   ·   `inmat(`*matrix*`)` |
 | **`input`** | `input` *var* {, *length* {, *fill*}} {`:`} {`_`} {`hidden`} {`no.echo`} {`raw`} {`overlay`} {`upcase`} {`waiting` *n*} |
 | **`inputblk`** | `inputblk(`*a*`)` |
-| **`inputclear`** | `inputclear` |
 | **`inputcsv`** | `inputcsv` *var*, … |
 | **`inputerr`** | `inputerr` *message* |
 | **`inputfield`** | `inputfield` *var*, *length* {, *mask*} |

@@ -2,7 +2,7 @@ Title: Migrating to SD: option words
 Subtitle: Every word of the option command, what it changes, and where else it is described.
 
 This page continues [Migrating to SD](15-migrating-to-sd.html). The words are the
-twenty-three that `option` lists. (Four more (`no.sel.list.query`, `catalogue.local`, `inherit.mfile.path`
+twenty that `option` lists. (Three more (`chain.keep.common`, `backslash.not.quote` and `correlative.reuse`), then four more (`no.sel.list.query`, `catalogue.local`, `inherit.mfile.path`
 and `correlative.nocase`) and eleven before them, whose off behaviour is now the only one, were removed
 on 27 October 2026: `run.no.page`, `paginate.on.heading`, `pick.ml.conv.mask`, `chained.select`,
 `default.mv`, `query.string.comp`, `query.str.comp.all`, `assoc.all`, `query.footer.pause`,
@@ -43,8 +43,6 @@ page is where it is described.
 
 | word | what it does | also described in |
 |---|---|---|
-| `backslash.not.quote` | a backslash in a command line is an ordinary character, not a string quote: `with name = a\b` | here |
-| `chain.keep.common` | `chain` keeps the unnamed common block | *SD Basic - Program Control* |
 | `clear.select` | the command processor clears select list 0 when a command ends, if the list was already active when it began; `keep.select` in a program keeps it | *SD Basic - Program Structure* |
 | `command.level.locks` | a file variable that goes keeps its locks until the program is back at the command processor | *SD Basic - Program Structure* |
 | `force.reload` | compiling or cataloguing a program also refreshes the subroutine links a running program holds | *SD Basic - Program Structure* |
@@ -65,4 +63,3 @@ page is where it is described.
 
 | word | what it does | also described in |
 |---|---|---|
-| `correlative.reuse` | the array operators of a correlative or an I-type reuse the last value of a shorter array, as `reuse()` does | *SD Basic - Program Structure* |

@@ -224,7 +224,7 @@ statements, and the user then types blind at the command prompt.
 
 ```
 inputerr message
-inputclear
+clearinput
 cleardata
 data expression
 ```
@@ -232,7 +232,7 @@ data expression
 | | |
 |---|---|
 | `inputerr` | show a message on the status line without disturbing the screen |
-| `inputclear` | discard anything typed ahead |
+| `clearinput` | discard anything typed ahead (`inputclear` was a second name and was removed in 1.2-0) |
 | `data` | **stack** a value for the next `input` to consume |
 | `cleardata` | discard what `data` stacked |
 

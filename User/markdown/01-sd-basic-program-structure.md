@@ -419,7 +419,6 @@ additions; each is described by what it does and does **not** do.
 | **`dir.dtm`** | writing a record to a directory file moves the directory's date and time modified. The system moves it only when a name is added or removed, so a replaced record leaves it as it was. **Closing a written sequential file does not do this** |
 | **`no.phantom.notify`** | set inside a phantom, it stops the message the phantom sends to its parent when it ends (*Phantom nn : Normal termination.*) |
 | **`spool.command`** | shows the operating system command that prints a job, just before it runs; a diagnostic aid |
-| **`correlative.reuse`** | the array operators of a correlative or an I-type act as if `reuse()` had been applied to each operand: the last value of a shorter array is used again for the missing ones, where otherwise they count as zero. Read when the correlative runs |
 | **`clear.select`** | the command processor clears the default select list (list 0) when a command ends **if the list was already active when the command began**: a list the command made itself is kept, so `select` followed by `list` still works. A program that was meant to use what is left of a list and leave it says **`keep.select`**, and then the list stays (below) |
 
 ### `keep.select`

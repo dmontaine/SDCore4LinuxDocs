@@ -341,9 +341,9 @@ is what the program finds afterwards. Note that a `select` command that
 meets an active list selects *from that list* (an intersection): a command that
 means to replace the list must `clear.select` first.
 
-> **`chain` discards unnamed common by default.** The `chain.keep.common`
-> option preserves it — `option chain.keep.common` — which is the setting a
-> ported application usually needs.
+> **`chain` discards unnamed common.** (The option `chain.keep.common`, which
+> kept it, was removed in 1.2-0: pass what the next program needs in named common
+> or in the data queue.)
 
 ## Waiting
 
