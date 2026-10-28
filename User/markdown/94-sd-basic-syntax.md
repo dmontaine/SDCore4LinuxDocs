@@ -601,7 +601,6 @@ in one list. Each is described where its subject is.
 | **`formlistv`** | `formlistv` *array* `to` *var* |
 | **`getlistv`** | `getlistv` *name* `to` *var* {`setting` *count*} `then` … `else` … |
 | **`groupstore`** | `groupstore` *new* `in` *var* `using` *i*, *n* {, *delimiter*} |
-| **`keep.select`** | `keep.select` |
 | **`last`** · **`lasts`** | `last(`*string*, *delimiter*`)` · `lasts(`*array*, *delimiter*`)` |
 | **`matchess`** · **`matchfields`** · **`trimws`** | `matchess(`*array*, *template*`)` · `matchfields(`*array*, *template*, *n*`)` · `trimws(`*array*`)` |
 | **`matwritecsv`** | `matwritecsv` *matrix* `to` *file.var* {`delimiter` *d*} {`quote` *q*} {`escape` *e*} `then` … `else` … — ***no `encoding`, no `on error`*** |

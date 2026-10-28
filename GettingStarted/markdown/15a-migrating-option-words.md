@@ -2,7 +2,7 @@ Title: Migrating to SD: option words
 Subtitle: Every word of the option command, what it changes, and where else it is described.
 
 This page continues [Migrating to SD](15-migrating-to-sd.html). The words are the
-twenty that `option` lists. (Three more (`chain.keep.common`, `backslash.not.quote` and `correlative.reuse`), then four more (`no.sel.list.query`, `catalogue.local`, `inherit.mfile.path`
+fourteen that `option` lists. (Six more (`unass.warning`, `div.zero.warning`, `non.numeric.warning`, `inherit`, `query.sort.no.case` and `clear.select`, with the shortcut `sdbasic.warnings` and the `keep.select` statement), then three more (`chain.keep.common`, `backslash.not.quote` and `correlative.reuse`), then four more (`no.sel.list.query`, `catalogue.local`, `inherit.mfile.path`
 and `correlative.nocase`) and eleven before them, whose off behaviour is now the only one, were removed
 on 27 October 2026: `run.no.page`, `paginate.on.heading`, `pick.ml.conv.mask`, `chained.select`,
 `default.mv`, `query.string.comp`, `query.str.comp.all`, `assoc.all`, `query.footer.pause`,
@@ -17,7 +17,6 @@ page is where it is described.
 
 | word | what it does | also described in |
 |---|---|---|
-| `query.sort.no.case` | sorts ignore case (selection tests are left as they are) | here |
 | `$query.debug` | lets a query take the `debugging` keyword; a development aid, shown by `option` only while it is on. Do not use it in an application | here |
 
 ## Output and conversion
@@ -30,9 +29,6 @@ page is where it is described.
 
 | word | what it does | also described in |
 |---|---|---|
-| `unass.warning` | an unassigned variable is reported as a warning and read as null, or as zero in arithmetic, and the program goes on | here |
-| `div.zero.warning` | a divide by zero is a warning and gives zero | *SD Basic - Math Functions* |
-| `non.numeric.warning` | a non-numeric value where a number is needed is a warning and counts as zero | *SD Basic - Numeric Tests and Formatting* |
 | `dump.on.error` | a fatal run-time error writes a process dump file (`sddump.`*n*) in the dump directory | here |
 | `show.stack.on.error` | a fatal run-time error also prints the call stack: program, line and object address | here |
 | `suppress.abort.msg` | `abort` prints its own message but not the line saying where it was executed | here |
@@ -43,10 +39,8 @@ page is where it is described.
 
 | word | what it does | also described in |
 |---|---|---|
-| `clear.select` | the command processor clears select list 0 when a command ends, if the list was already active when it began; `keep.select` in a program keeps it | *SD Basic - Program Structure* |
 | `command.level.locks` | a file variable that goes keeps its locks until the program is back at the command processor | *SD Basic - Program Structure* |
 | `force.reload` | compiling or cataloguing a program also refreshes the subroutine links a running program holds | *SD Basic - Program Structure* |
-| `inherit` | a phantom starts with the option settings of the process that started it | *SD TCL - Processes and Phantoms* |
 | `no.phantom.notify` | set in a phantom, it stops the message sent to its parent when it ends | *SD Basic - Program Structure* |
 | `stacked.account` | an `execute` of a command that does a `logto` leaves the process in the account it began in | *SD Basic - Program Structure* |
 

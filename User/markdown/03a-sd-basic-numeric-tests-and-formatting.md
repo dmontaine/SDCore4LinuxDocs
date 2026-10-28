@@ -45,9 +45,10 @@ With `a` holding `1`, `2`, `3` as values, and `b` holding a field of
 > because a numeric test would read the null string as zero and cannot tell it
 > from a genuine maximum of zero.
 
-While developing, `option non.numeric.warning` makes SD report a non-numeric
-value used where a number was expected, which turns a class of silent wrong
-answers into something you can see. It is off by default. `option` on its own
+A non-numeric value used where a number was expected stops the program with a
+runtime error, so a class of silent wrong answers is something you can see.
+(Until 27 October 2026 `option non.numeric.warning` turned the error into a
+warning that read the value as zero; the option is gone.) `option` on its own
 lists every option and its current state; `option all off` clears them.
 
 Negative values are handled correctly: `maximum()` of `-5` and `-3` is `-3`.

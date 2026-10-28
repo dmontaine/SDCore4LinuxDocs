@@ -409,22 +409,6 @@ additions; each is described by what it does and does **not** do.
 | **`dir.dtm`** | writing a record to a directory file moves the directory's date and time modified. The system moves it only when a name is added or removed, so a replaced record leaves it as it was. **Closing a written sequential file does not do this** |
 | **`no.phantom.notify`** | set inside a phantom, it stops the message the phantom sends to its parent when it ends (*Phantom nn : Normal termination.*) |
 | **`spool.command`** | shows the operating system command that prints a job, just before it runs; a diagnostic aid |
-| **`clear.select`** | the command processor clears the default select list (list 0) when a command ends **if the list was already active when the command began**: a list the command made itself is kept, so `select` followed by `list` still works. A program that was meant to use what is left of a list and leave it says **`keep.select`**, and then the list stays (below) |
-
-### `keep.select`
-
-```
-keep.select
-```
-
-A program that finds a select list active, takes some of it and ends leaves the
-rest behind, where the next command may take it up by accident. With `option
-clear.select` on, the command processor clears list 0 as the command ends. A
-program that **means** to leave what is left of the list for the next command
-says `keep.select` and it stays. The word belongs to the command that ran it and
-is forgotten when that command ends, so a second command that does not say it
-loses the list. **Without `option clear.select` the statement does nothing**,
-since nothing was going to clear the list.
 
 ## What is not here
 

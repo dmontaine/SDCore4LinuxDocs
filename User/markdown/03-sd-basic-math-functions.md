@@ -73,14 +73,10 @@ evaluated before the expression around it.
 
 ### Dividing by zero
 
-Dividing by zero stops the program with a runtime error. That can be turned
-into a warning that yields zero and carries on:
-
-```
-option div.zero.warning
-```
-
-The option applies to `/`, `div()`, `idiv()` and `rdiv()` alike.
+Dividing by zero stops the program with a runtime error, in `/`, `div()`,
+`idiv()` and `rdiv()` alike. (Until 27 October 2026 `option div.zero.warning`
+turned the error into a warning that yielded zero; the option is gone. Test the
+divisor before you divide.)
 
 ## Dividing to a whole number
 

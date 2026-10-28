@@ -191,8 +191,9 @@ program's own text and is not cleared for it.
 `fork` and `exec` and goes through login of its own, so **nothing your session
 holds in memory reaches it** — no `@`-variables, no unnamed common, no open
 files, no active select list. **The command string is the only thing passed**,
-through a record in SD's `$IPC` file, and the session's option settings go with
-it only when the `INHERIT` option is set.
+through a record in SD's `$IPC` file. The session's option settings do not go
+with it: a phantom starts with every option off. (Until 27 October 2026
+`option inherit` passed them on; the option is gone.)
 
 ## What phantoms have I started: `status`
 
