@@ -212,7 +212,6 @@ exist.**
 | **`getnls`** | `getnls(`*a*`)` |
 | **`getpu`** | `getpu(`*a*, *b*`)` |
 | **`getrem`** | `getrem(`*a*`)` |
-| **`go`** | `go` *label* — synonym of `goto` |
 | **`gosub`** | `gosub` *label* {, *arg*, …} |
 | **`goto`** | `goto` *label* |
 | **`gts`** | `gts(`*a*, *b*`)` |
