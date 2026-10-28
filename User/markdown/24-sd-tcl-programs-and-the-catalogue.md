@@ -431,7 +431,7 @@ program in a phantom process"*. The debugger itself is covered in
 ## Who has these verbs
 
 **Every account has all of them now**: `format`, `list.common`, `basic`,
-`catalog`, `catalogue`, `cd`, `compile.dict`, `debug`, `delete.catalog`,
+`catalog`, `cd`, `compile.dict`, `debug`, `delete.catalog`,
 `delete.common`, `find.program`, `generate`, `ide`, `map`,
 `run`.
 

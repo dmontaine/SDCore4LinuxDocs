@@ -86,8 +86,8 @@ the VOC; the first one found is used. One entry to a line.
 
 | line | what it does | also described in |
 |---|---|---|
-| `catalogue` {`local`\|`global`} {`no.query`} | a program that compiles with no errors is catalogued under its own name, as the `catalog` verb would, in the mode given; `no.query` leaves out the question about replacing. `catalog` is accepted too | here |
-| `no.catalogue` | cancels an earlier `catalogue` line | here |
+| `catalog` {`local`\|`global`} {`no.query`} | a program that compiles with no errors is catalogued under its own name, as the `catalog` verb would, in the mode given; `no.query` leaves out the question about replacing | here |
+| `no.catalog` | cancels an earlier `catalog` line | here |
 | `define` *name* {*value*} | defines a token as `$define` does, for `$ifdef` and for use in the source; the value is a number or a quoted string | here |
 | `debugging` | every program is compiled for the debugger | here |
 | `include` *file* *record* | an automatic `$include` of the record at the top of every program; line numbers stay as written | here |

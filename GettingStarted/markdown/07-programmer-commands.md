@@ -18,7 +18,7 @@ extra at all.
 | | |
 |---|---|
 | **`basic`** | compile SD BASIC source |
-| **`catalog`** · **`catalogue`** | add to the catalogue |
+| **`catalog`** | add to the catalogue |
 | **`delete.catalog`** · **`delete.catalogue`** | remove from it |
 | **`compile.dict`** | compile dictionary items |
 | **`run`** | run a compiled program |

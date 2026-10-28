@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **222** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **221** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,7 +23,7 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 175 verbs | `newvoc`, identical for every ordinary account |
+| **every account** | 174 verbs | `newvoc`, identical for every ordinary account |
 | **SDSYS only** | 47 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
@@ -45,7 +45,6 @@ not refused — the name is simply not recognised.**
 | **`break`** | **`break on`** \| **`off`** \| **`on user`** *n* |  |
 | **`build.index`** | **`build.index`** *file* *field* … \| **`all`** |  |
 | **`catalog`** | **`catalog`** {*file* {*call.name*}} {*program*} {**`local`** \| **`global`** \| **`pcode`**} {**`no.xref`**} |  |
-| **`catalogue`** | **`catalogue`** — the same verb as **`catalog`** |  |
 | **`cd`** | **`cd`** *file* {*i-type* …} {**`no.query`**} {**`no.page`**}  ·  **`cd data`** *file* {*i-type* …}  ·  **`cd local`**  ·  **`cd all`** |  |
 | **`ced`** | **`ced`** {**`dict`**} *file* {*id* …}  ·  **`ced`** {**`dict`**} *file* **`*`** |  |
 | **`check.masters`** | **`check.masters`** {*account*} | S |
