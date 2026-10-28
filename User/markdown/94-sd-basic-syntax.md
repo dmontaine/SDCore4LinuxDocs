@@ -43,7 +43,6 @@ exist.**
 | **`abss`** | `abss(`*a*`)` |
 | **`accept.socket.connection`** | `accept.socket.connection(`*a*, *b*`)` |
 | **`acos`** | `acos(`*a*`)` |
-| **`adds`** | `adds(`*a*, *b*`)` |
 | **`alpha`** | `alpha(`*a*`)` |
 | **`ands`** | `ands(`*a*, *b*`)` |
 | **`append`** | clause of `openseq`, and of `edit` ***(clause word)*** |
@@ -145,7 +144,6 @@ exist.**
 | **`disinherit`** | `disinherit` *object* |
 | **`display`** | `display` *expr* {`:` …} {`:`} |
 | **`div`** | `div(`*a*, *b*`)` |
-| **`divs`** | `divs(`*a*, *b*`)` |
 | **`do`** | `loop` … `do` … `repeat` |
 | **`downcase`** | `downcase(`*a*`)` |
 | **`dparse`** | `dparse` *string*, *delimiter*, *var*, … |
@@ -317,12 +315,10 @@ exist.**
 | **`matwriteu`** | `matwriteu` *matrix* `to` *file.var*, *id* {`on error` …} |
 | **`max`** | `max(`*a*, *b*`)` |
 | **`maximum`** | `maximum(`*a*`)` |
-| **`md5`** | `md5(`*a*`)` |
 | **`min`** | `min(`*a*, *b*`)` |
 | **`minimum`** | `minimum(`*a*`)` |
 | **`mod`** | `mod(`*a*, *b*`)` |
 | **`mods`** | `mods(`*a*, *b*`)` |
-| **`muls`** | `muls(`*a*, *b*`)` |
 | **`mvdate`** | `mvdate(`*epoch*`)` |
 | **`mvdate.time`** | `mvdate.time(`*epoch*`)` |
 | **`mvepoch`** | `mvepoch(`*date_time*`)` · `mvepoch(`*date*`,` *time*`)` |
@@ -513,7 +509,6 @@ exist.**
 | **`strs`** | `strs(`*a*, *b*`)` |
 | **`subr`** | `subr(`*"name"* {, *arg*, …}`)` |
 | **`subroutine`** | `subroutine` *name*`(`*arg*, …`)` |
-| **`subs`** | `subs(`*a*, *b*`)` |
 | **`substitute`** | `substitute(`*arr*, *from*, *to*, *delimiter*`)` |
 | **`substrings`** | `substrings(`*a*, *b*, *c*`)` |
 | **`sum`** | `sum(`*a*`)` |
@@ -610,10 +605,8 @@ in one list. Each is described where its subject is.
 | **`formlistv`** | `formlistv` *array* `to` *var* |
 | **`getlistv`** | `getlistv` *name* `to` *var* {`setting` *count*} `then` … `else` … |
 | **`groupstore`** | `groupstore` *new* `in` *var* `using` *i*, *n* {, *delimiter*} |
-| **`is.alnum`** · **`is.alpha`** · **`is.digit`** · **`is.graph`** · **`is.mark`** · **`is.space`** | `is.alnum(`*a*`)` and so on |
 | **`keep.select`** | `keep.select` |
 | **`last`** · **`lasts`** | `last(`*string*, *delimiter*`)` · `lasts(`*array*, *delimiter*`)` |
-| **`left`** · **`right`** | `left(`*string*, *n*`)` · `right(`*string*, *n*`)` |
 | **`matchess`** · **`matchfields`** · **`trimws`** | `matchess(`*array*, *template*`)` · `matchfields(`*array*, *template*, *n*`)` · `trimws(`*array*`)` |
 | **`matwritecsv`** | `matwritecsv` *matrix* `to` *file.var* {`delimiter` *d*} {`quote` *q*} {`escape` *e*} `then` … `else` … — ***no `encoding`, no `on error`*** |
 | **`mergelist`** | `mergelist(`*list1*, *list2*, *modes*`)` |

@@ -290,32 +290,18 @@ Digits, punctuation and mark characters are left alone.
 > comparison people reach for `fold` expecting is `compare()` or, for whole
 > files, the no-case file option described under [SD Basic - File Handling](07-sd-basic-file-handling.html).
 
-## Ends of a string, and the last element: `left`, `right`, `last`
+## The last element: `last`
 
 ```
-left(string, n)
-right(string, n)
 last(string, delimiter)
 lasts(array, delimiter)
 ```
 
-`left(s, n)` is `s[1, n]` and `right(s, n)` is `s[n]` (its last *n* characters,
-shortened if the string is shorter). A count under 1 is taken as 1 by `left()`
-and as 0 by `right()`. `last(s, d)` is the final element of a string delimited
-by *d*, which is `field(s, d, dcount(s, d))`; `lasts()` does it to each element
-of a dynamic array.
-
-## Testing one character: the `is.` functions
-
-```
-is.alnum(s)   is.alpha(s)   is.digit(s)
-is.graph(s)   is.mark(s)    is.space(s)
-```
-
-Each is true if the **first character** of the argument is a letter or digit,
-a letter, a digit, a printing character, one of the mark characters, or white
-space. **A null string is false** for all six. They look at one character: a
-test of a whole string is `matches`.
+`last(s, d)` is the final element of a string delimited by *d*, which is
+`field(s, d, dcount(s, d))`; `lasts()` does it to each element of a dynamic
+array. The first or last *n* characters of a string are `s[1, n]` and `s[n]`;
+SD has no `left()` or `right()`, and no single-character `is.` tests: a test
+of a whole string is `matches`.
 
 ## Changing part of a delimited string: `groupstore`
 
@@ -342,18 +328,16 @@ With `s = '1*2*3*4*5'`:
 
 *string* may be an element of an array, as `a(2)`.
 
-## Message digests: `md5()` and `digest()`
+## Message digests: `digest()`
 
 ```
-md5(string)
 digest(string, is.file, mode)
 ```
 
-`md5` gives the 32 hexadecimal characters of the string's MD5 digest. `digest`
-does the same for **`MD5`, `SHA1`, `SHA256`, `SHA384` and `SHA512`** (the mode in
+`digest` gives the hexadecimal digest of a string for **`MD5`, `SHA1`, `SHA256`, `SHA384` and `SHA512`** (the mode in
 either case), and with *is.file* true the string is the pathname of a file and
 the file's contents are what is digested, read a block at a time, so a large file
-is fine. The result is lower case hexadecimal, the same form as `md5`, and
+is fine. The result is lower case hexadecimal (32 characters for `MD5`), and
 `status()` is `0`; **on any failure the result is the null string and `status()`
 says why**:
 
