@@ -71,7 +71,7 @@ administrator loosens it, account by account, for the people who need it:
 | `ssh` · `api` · `both` | the remote route(s). `none` is the default |
 | `files-on` | the files-only API route: an API login that can open, read, write and select from files and do nothing else (no commands, no subroutine calls, no `logto`). `api` gives the whole API and wins when an account has both |
 | `sh-on` | the `sh` verb and `!` |
-| `os-on` | `OS.EXECUTE`, `nano` and `micro`, the embedded Python, and files or directories of the operating system named by their path outside the account's own directory |
+| `os-on` | `OS.EXECUTE`, `micro`, the embedded Python, and files or directories of the operating system named by their path outside the account's own directory |
 | `voc-on` | saving a change to the account's VOC |
 | `bp-on` | saving a change to a program file (`bp`, `bp.out`, `*.bp`, `*.bp.out`), and compiling and cataloguing. A new account needs it before it can save or compile its first program |
 | `dict-on` | saving a change to a dictionary (a file whose name ends `.dic`) |
@@ -115,8 +115,8 @@ ungranted.
 define files and indexes, run the bulk record editors, inspect processes —
 none of that is withheld. What an account cannot do is administer: create,
 delete, or suspend another account; change system-wide configuration. And
-reaching the operating system — the `sh` verb, `OS.EXECUTE`, `nano` and
-`micro`, the embedded Python, a file or directory of the operating system
+reaching the operating system — the `sh` verb, `OS.EXECUTE`, `micro`,
+the embedded Python, a file or directory of the operating system
 by its path outside the account's own directory — takes the switch above:
 see
 [Security and the operating system](12a-security-and-the-operating-system.html#the-shell-and-operating-system-access-are-per-account-switches).

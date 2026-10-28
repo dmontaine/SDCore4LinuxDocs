@@ -21,11 +21,11 @@ does inline, or does not do the way Windows does:**
 |---|---|
 | `deny-logon.ps1` | nothing — an ordinary account's console login is not denied here at all (S.41: being at the console is being on the machine as that Linux user, which SD's `sh-on`/`os-on` switches do not govern). See *Security and the operating system* in the Getting Started set |
 | `install-service.ps1` | a `systemd` unit file (`sd.service`, `sdclient.socket`), installed with `install`, not a script that creates a service |
-| `install-editors.ps1` | `apt-get install micro` and the `nano` syntax file copy, both inline in `installsdcore.sh` |
+| `install-editors.ps1` | `apt-get install micro`, inline in `installsdcore.sh` |
 | `upgrade-voc.ps1` | `update.accounts all`, run inline by `installsdcore.sh` as the administrator when the accounts were kept |
 | `sync-route-groups.ps1`, `sd-path.ps1` | nothing to run by hand — the installer makes the `sdssh`, `sdapi` and `sdfiles` route groups once, and `modify.account` moves an account in and out of them; there is no PATH toggle, and `sd` is symlinked into `/usr/local/bin` at install time |
 | the `secure-*` family (eleven scripts) | inline `chown`/`chmod` calls in `installsdcore.sh`, at the specific paths that need them (`$cred` 700, `batch.jobs` 750, and so on — see *Security* in the Getting Started set) |
-| `micro-home.ps1` | nothing installed — `nano`/`micro`'s own program (`gpl.bp/edit`) copies its syntax file into the caller's `~/.config/micro/syntax` itself, on first use, with no privilege needed. Self-healing, and it reaches an account made after the install without anything to re-run |
+| `micro-home.ps1` | nothing installed — `micro`'s own program (`gpl.bp/edit`) copies its syntax file into the caller's `~/.config/micro/syntax` itself, on first use, with no privilege needed. Self-healing, and it reaches an account made after the install without anything to re-run |
 
 ## What Windows automates that this port does not, yet
 

@@ -125,7 +125,7 @@ records that exist only in `voc_template`.
 keyword, a file pointer, a sentence or a paragraph, and only some are verbs.
 Counted directly from the shipped directories (`newvoc`/`voc_template`),
 matching what `count voc` reports in a freshly created account. (The
-TCL-verb subset specifically — 144, `sh`/`!`/`nano`/`micro`/`umask`
+TCL-verb subset specifically — 144, `sh`/`!`/`micro`/`umask`
 included — is counted separately in the *User* set's SD TCL syntax card.)
 
 ## Configuration

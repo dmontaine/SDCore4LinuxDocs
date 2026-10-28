@@ -9,7 +9,7 @@ down a pipe, and anything you want to automate.
 
 The other three are full-screen. [sed](27a-sd-tcl-sed.html) is also written in SD
 BASIC and runs inside SD, so it needs no operating-system permission either;
-[nano](26-sd-tcl-edit.html) and [micro](27-sd-tcl-micro.html) hand the record to a
+[micro](27-sd-tcl-micro.html) hands the record to a
 full-screen program. Use one of those when you are sitting at a terminal and want
 to see the whole record at once. A record that is a data collection has an editor
 of its own, [ced](27b-sd-tcl-ced.html).
@@ -456,13 +456,11 @@ is reported as line 2.
 
 ## Who has it
 
-**Every account has `ed`, `edit`, `nano` and `micro`, and all of them
-simply run** — unlike SD Core for Windows, there is no permission behind
-`nano`/`micro` to grant first. See [The nano Screen
-Editor](26-sd-tcl-edit.html).
+**Every account has `ed`, `edit` and `micro`; `ed` and `edit` always run**,
+and `micro` needs the account's `os-on` switch. See [The micro Screen
+Editor](27-sd-tcl-micro.html).
 
 ## See also
 
-[SD TCL - The nano Screen Editor](26-sd-tcl-edit.html) ·
 [SD TCL - The micro Screen Editor](27-sd-tcl-micro.html) ·
 [SD TCL - Programs and the Catalogue](24-sd-tcl-programs-and-the-catalogue.html).

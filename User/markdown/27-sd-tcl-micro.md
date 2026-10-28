@@ -5,9 +5,10 @@ Subtitle: The capable one — SD BASIC highlighting, a command bar, split window
 micro {dict} file record
 ```
 
-`micro` opens a record in **micro**, a full-screen editor that does rather more
-than [nano](26-sd-tcl-edit.html) does. Two things make it the one to use for
-programming:
+`micro` opens a record in **micro**, a full-screen editor, and is the one
+external editor SD hands records to. (`edit` is a second name for the line editor
+[ed](25-sd-tcl-ed.html); the NANO verb was added and removed again in 1.2-0.)
+Two things make it the one to use for programming:
 
 | | |
 |---|---|
@@ -15,8 +16,8 @@ programming:
 | **it has a command bar and a help screen** | so everything it can do is reachable and readable without leaving the editor |
 
 It also has multiple files open at once, split windows, a plugin system and
-rebindable keys. **If you only want to change one line in a record**, `nano`
-is less to think about.
+rebindable keys. **If you only want to change one line in a record**, `ed`
+works anywhere, with no screen to learn.
 
 SD folds case, so a command may be typed in either case. Commands are shown here
 in lower case. In the tables, *italics* mark something you supply and **bold**
@@ -27,13 +28,12 @@ marks a word typed as it stands; braces mark an optional part.
 > micro and calls it; it does not implement it, so where a binding differs
 > the editor is right.
 
-## Both editors are installed with SD
+## micro is installed with SD
 
 **You do not install anything.** `micro` is installed by SD's installer as
-an ordinary package. `nano` normally ships with the distribution already;
-the installer adds SD's own BASIC syntax highlighting to it.
+an ordinary package.
 
-If either could not happen — an offline machine, or one whose policy blocks
+If that could not happen — an offline machine, or one whose policy blocks
 the package manager — the verb says so, rather than opening nothing and
 reporting the record unchanged.
 
@@ -104,20 +104,32 @@ recognises. A record edited out of any other file is plain text.
 
 ## What SD does around the editor
 
-The two full-screen editors are separate programs with a shared wrapper.
-The working copy, the save and compile questions, and the refusals are the
-same for both, and they are set out on
-[SD TCL - The nano Screen Editor](26-sd-tcl-edit.html#what-sd-does-around-the-editor).
+| | |
+|---|---|
+| **the working copy** | the record is copied into `$hold` as *record*`.editing`, and micro is run on that. It is removed on every exit, including the ones that fail |
+| **saving** | *"Save? &lt;Y&gt;es, &lt;N&gt;o"*, then for a `bp` record *"Compile?"* and *"Catalogue?"* |
+| **a `dict` record** | is always saved and re-compiled with `compile.dict` |
+| **finishing** | *"&lt;E&gt;xit or &lt;R&gt;e-edit"*, so a compile error can be fixed without starting again |
 
-In short: the record is copied into `$hold`, micro is run on the copy, and on
-the way out SD asks whether to save it and — for a `bp` record — whether to
-compile and catalogue it. Both `nano` and `micro` need a real terminal and
-refuse a session driven down a pipe:
+**A compiled dictionary record is truncated to its first 15 fields while you
+edit it**, which is what you want: the fields after them are the compiled form,
+and `compile.dict` rebuilds them when you save.
+
+`micro` needs a real terminal and refuses a session driven down a pipe:
 
 ```
 :micro bp zzed
 micro needs a terminal to draw on, and this session has none.
 ed, the line editor, works anywhere.
+```
+
+Both usage errors name the verb you typed:
+
+```
+:micro
+No file name specified.  Usage: micro {dict} <file> <record>
+:micro bp
+No record name specified.  Usage: micro {dict} <file> <record>
 ```
 
 ## Marks, and how to type one
@@ -135,20 +147,34 @@ character, and `~` is the only escape character.**
 | `~,` | a literal `,`, where one would otherwise read as a separator |
 
 **Marks in a row are separated by a comma** — a text mark, a text mark and a
-value mark is `~!,~!,~~`. The conversion is lossless: no record is refused and
-none is mangled. The full rules are on
-[SD TCL - The nano Screen Editor](26-sd-tcl-edit.html#marks-and-how-to-type-one).
+value mark is `~!,~!,~~`. Written token against token a run of marks cannot be
+read, so SD puts a comma between them. **Type the comma yourself when you enter
+marks in a row.** It is a separator and not data — which is why a literal comma
+standing in exactly that position, between two marks, is written `~,`.
+
+**The conversion is lossless: no record is refused and none is mangled**,
+whatever it contains. A tilde is written `~-` **only where the character after
+it would make the pair look like a token** — another `~`, a backtick, a `!`, a
+`-`, a `,`, or a mark. Everywhere else a tilde is left exactly as you wrote it,
+so `a~b` is still `a~b` and ordinary source reads normally.
+
+## The gate — `os-on`, off for a new account
+
+**`micro` needs the account's `os-on` switch**, the same one as `OS.EXECUTE`
+(and not `sh-on`: an account can be refused the shell and still run the editor,
+or the reverse). SDSYS turns it on with `modify.account` *name* `os-on`; a new
+account does not have it, and an account without it is told so when it types
+the verb. With it the editor runs at once, and what it can read or write outside
+SD is exactly what the account's Linux user may touch, because they are the
+same permissions. See the *Administrator* set's *Accounts and Security* chapter,
+"The operating-system switches: `sh-on` and `os-on`".
 
 ## Who has these verbs
 
-**Every account has `micro`, `nano`, `edit` and `ed` in its VOC, and `ed`
-and `edit` always run.** `micro` and `nano` need the account's `os-on`
-switch, which SDSYS turns on and a new account does not have — the same
-switch as `OS.EXECUTE`. See [SD TCL - The nano Screen
-Editor](26-sd-tcl-edit.html#the-gate-os-on-off-for-a-new-account).
+**Every account has `micro`, `edit` and `ed` in its VOC, and `ed` and `edit`
+always run.** `micro` needs the account's `os-on` switch, as above.
 
 ## See also
 
-[SD TCL - The nano Screen Editor](26-sd-tcl-edit.html) ·
 [SD TCL - The ed Line Editor](25-sd-tcl-ed.html) ·
 [SD TCL - Programs and the Catalogue](24-sd-tcl-programs-and-the-catalogue.html).

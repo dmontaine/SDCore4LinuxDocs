@@ -259,7 +259,7 @@ stays inside SD.
 | | |
 |---|---|
 | **`sh-on`** · `sh-off` | the `sh` verb and `!` |
-| **`os-on`** · `os-off` | `OS.EXECUTE` in a BASIC program, the screen editors `nano` and `micro`, the embedded Python, **and reaching an operating-system file or directory by its path outside the account's own directory** |
+| **`os-on`** · `os-off` | `OS.EXECUTE` in a BASIC program, the screen editor `micro`, the embedded Python, **and reaching an operating-system file or directory by its path outside the account's own directory** |
 
 That last clause is the one that is easy to miss. Without `os-on` an
 account can still open every file it reaches **through its VOC** —

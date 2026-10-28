@@ -13,7 +13,7 @@ SDSYS turns it on (`modify.account` *name* `sh-on` / `os-on`):
 |---|---|---|
 | **`sh`** and `!` | a shell at the `:` prompt | `sh-on` |
 | `OS.EXECUTE` | the operating system from inside a BASIC program | `os-on` |
-| **`nano`** and **`micro`** | a text editor, running outside SD | `os-on` |
+| **`micro`** | a text editor, running outside SD | `os-on` |
 | the embedded Python | arbitrary code in the account's own process | `os-on` |
 | a file or directory of the operating system **by its path**, outside the account's own directory | `OPENSEQ` and `OPENPATH` with a path, `DIR()` and `select.dir`, `DELETESEQ` of a path, `!OSCOPY`, `!IOSCOPY` and the `oscopy` verb, `sed` given a `path:` name, printing into a file by path | `os-on` |
 

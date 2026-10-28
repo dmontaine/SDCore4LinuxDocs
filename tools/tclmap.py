@@ -84,7 +84,7 @@ DOCS = [
    nls
  """),
  ('User', '19-sd-tcl-command-processor.md', """
-   abort clear.data clear.input cleardata clr cs
+   abort clear.data clear.input clr
    display go if message off pause quit redo report.src stop break
  """),
  # The command stack, the @-variables and the session verbs left 19 for 19a
@@ -95,9 +95,9 @@ DOCS = [
    set set.exit.status who who.am.i
  """),
  ('User', '20-sd-tcl-files-and-records.md', """
-   analyse.file analyze.file clear.file cname compare.files configure.file
-   convert.data copy copyp create.file ct delete delete.file dump fixdir fstat
-   hsm import.csv import.json import.xml list.files list.triggers oscopy rename
+   analyze.file clear.file cname compare.files configure.file
+   convert.data copy create.file ct delete delete.file dump fixdir fstat
+   hsm import.csv import.json import.xml list.files list.triggers oscopy
    set.file set.trigger
  """),
  ('User', '21-sd-tcl-query-processor.md', """
@@ -105,23 +105,20 @@ DOCS = [
    sort.label sreformat sum
  """),
  ('User', '22-sd-tcl-select-lists.md', """
-   clear.select clearselect copy.list copy.listp delete.list form.list get.list
-   list.diff list.inter list.union merge.list nselect qselect save.list select
+   clear.select copy.list delete.list form.list get.list
+   merge.list nselect qselect save.list select
    select.dir sort.list sselect
  """),
  ('User', '23-sd-tcl-alternate-key-indexes.md', """
-   build.index create.index delete.index list.index make.index
+   build.index create.index delete.index list.index
    rebuild.all.indices selectindex
  """),
  ('User', '24-sd-tcl-programs-and-the-catalogue.md', """
-   basic catalog catalogue cd compile.dict debug decatalog delete.catalog
-   delete.catalogue delete.common format generate list.common map run
+   basic catalog compile.dict debug decatalog delete.catalog
+   delete.common format generate list.common map run
  """),
  ('User', '25-sd-tcl-ed.md', """
-   ed
- """),
- ('User', '26-sd-tcl-edit.md', """
-   edit nano
+   ed edit
  """),
  ('User', '27-sd-tcl-micro.md', """
    micro
@@ -133,10 +130,10 @@ DOCS = [
    ced
  """),
  ('User', '28-sd-tcl-printing-and-spooling.md', """
-   printer setptr sp.close sp.open sp.view spool como report.style
+   printer setptr sp.view spool como report.style
  """),
  ('User', '29-sd-tcl-the-terminal-and-the-session.md', """
-   autologout bell clear.prompts clearinput clearprompts date date.format echo
+   autologout bell clear.prompts date date.format echo
    hush list.term.types logmsg pdf pterm sleep term time tool.gates tool.keys
  """),
  ('User', '29a-sd-tcl-the-home-screen.md', """

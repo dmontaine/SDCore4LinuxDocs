@@ -10,8 +10,7 @@ sed
 `sed` edits one record of one file, using the whole screen. It is written in SD
 BASIC and runs **inside** SD, as [ed](25-sd-tcl-ed.html) does, so it is not a
 program SD hands the record to: **it needs no operating-system permission** for
-a record of an SD file, where [nano](26-sd-tcl-edit.html) and
-[micro](27-sd-tcl-micro.html) need the account's `os-on` switch. It draws the
+a record of an SD file, where [micro](27-sd-tcl-micro.html) needs the account's `os-on` switch. It draws the
 whole screen, so it wants a terminal; for a phantom, an API session or a script
 use `ed`.
 

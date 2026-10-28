@@ -122,7 +122,6 @@ message = **`message`** *user.no* {**`immediate`**} {*text*}
 micro = **`micro`** {**`dict`**} *file* *record*
 modify.account = **`modify.account`** *account* **`add`** | **`delete`** *user*  ·  *account* **`ssh`** | **`api`** | **`both`** | **`none`**  ·  *account* **`sh-on`** | **`sh-off`** | **`os-on`** | **`os-off`**  ·  *account* **`sd-on`** | **`sd-off`**  ·  *account* **`voc-on`** | **`voc-off`** | **`bp-on`** | **`bp-off`** | **`dict-on`** | **`dict-off`**  ·  *account* **`net-on`** | **`net-off`**  ·  *account* **`shared-read-on`** | **`shared-read-off`** | **`shared-write-on`** | **`shared-write-off`**  ·  *account* **`files-on`** | **`files-off`** | **`files-write-on`** | **`files-write-off`** | **`files-admin-on`** | **`files-admin-off`**  ·  *account* **`sdsys-on`** | **`sdsys-off`**  ·  *account* **`start-menu`** | **`start-terminal`** | **`start-default`**  ·  *account* **`pins-on`** | **`pins-off`**  ·  *account* **`suspended`** | **`unsuspended`**  ·  any number of these actions except **`add`** and **`delete`** may follow the account, in one command
 modify.password = **`modify.password`** {*account*}
-nano = **`nano`** {**`dict`**} *file* *record*
 nls = **`nls`** {**`currency`** | **`thousands`** | **`decimal`** {*value*}}  ·  **`nls default`**
 nselect = **`nselect`** *file* {*list.no*}
 off = **`off`**

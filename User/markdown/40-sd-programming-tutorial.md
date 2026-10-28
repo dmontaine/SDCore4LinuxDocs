@@ -26,7 +26,7 @@ already have `bp` — every account gets one.
 **A new account must be given `bp-on` before it can save or compile a
 program.** Without it `ed bp hello` refuses to save and `basic bp hello` is
 refused, and the message says which switch is missing. SDSYS gives it with
-`modify.account` *name* `bp-on`; `nano` and `micro` need `os-on` as well. See
+`modify.account` *name* `bp-on`; `micro` needs `os-on` as well. See
 *Saving changes to a VOC, a program file or a dictionary* in *Managing
 accounts*, in the GettingStarted set.
 
@@ -39,8 +39,8 @@ here you compile, catalogue and run programs. The programs themselves
 are written in SDBasic, which is a different language from TCL.
 
 Your `bp` file is an ordinary Linux directory. You can write programs
-in `ed` from inside SD, in `nano` or `micro` — every account can run
-them, unconditionally — or in any text editor you like. The folder is
+in `ed` from inside SD, in `micro` (once the account has `os-on`) or in any
+text editor you like. The folder is
 on disk at:
 
 ```

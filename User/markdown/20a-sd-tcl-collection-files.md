@@ -218,7 +218,7 @@ and `/c{path}` shows one element: see [SD Basic - Debugging](17-sd-basic-debuggi
 ## What does not work, and what was not tried
 
 `readv` and `writev` of a field number have no meaning on a collection file, and `matread` is refused. **`analyze.file` does not
-say that a file holds collections**, and `micro` and `nano` were not tried on a collection record: use `ced` or `ed`.
+say that a file holds collections**, and `micro` was not tried on a collection record: use `ced` or `ed`.
 
 ## See also
 

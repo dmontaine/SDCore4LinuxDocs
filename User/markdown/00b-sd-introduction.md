@@ -94,7 +94,7 @@ inserting, then `fi` to file and exit.
 
 `sed` is a full-screen editor that runs inside SD, with drop-down menus and
 colour for SD BASIC that you turn on when you want it; any account may use it.
-An account can also use `nano` or `micro` (both full-screen editors with
+An account can also use `micro` (a full-screen editor with
 syntax highlighting) once the administrator has given it the `os-on` switch;
 a new account does not have it. `edit` aliases `ed` here, not a full-screen
 editor.
@@ -112,7 +112,7 @@ dots, so `clear-select` reaches `clear.select` too.
 
 A program lives in a `bp` file — a directory file, which is an ordinary
 Linux directory with one file per program. You can write it in `ed`,
-in `nano`, in `micro`, or in any text editor you like — the folder is on
+in `micro`, or in any text editor you like — the folder is on
 disk at:
 
 ```
@@ -120,7 +120,7 @@ disk at:
 ```
 
 A new account must be given `bp-on` by SDSYS before it can save a program in
-`bp` or compile it, and `os-on` as well before it can use `nano` or `micro`.
+`bp` or compile it, and `os-on` as well before it can use `micro`.
 
 Compile and catalogue it from inside SD:
 
@@ -157,7 +157,7 @@ are not in SD Core for Linux:
 |---|---|
 | The old SDNet (`server;file` in a VOC entry) | Removed in September 2026, and a name with a semicolon in it stays unresolved. A new SDNet replaces it: it is off until the administrator turns it on, and it opens a file on another SD server through an `N` entry in the VOC (the *Administrator* set's *SDNet* page describes it). The API is the other way to reach another SD server |
 | `ENCRYPT.FIELD` verb | Removed; `sdencrypt()` and `sddecrypt()` in SDBasic are the supported route |
-| `update.record`, `modify` editors | Gone; use `sed`, `nano`, `micro` or `ed` |
+| `update.record`, `modify` editors | Gone; use `sed`, `micro` or `ed` |
 | PROC language | Removed; use paragraphs instead |
 | `SET.LANGUAGE`, `LOAD.LANGUAGE` | Removed; SD Core is English only (NLS, for currency and separators, is kept) |
 | Unattended install | Not supported; the installer asks questions and sets passwords that cannot be scripted around |

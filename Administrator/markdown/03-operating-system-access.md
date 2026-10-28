@@ -98,7 +98,7 @@ is message 10053 and names the Linux user, who is the account's own user.
 editors, the embedded Python, or reaching an operating-system file by its path.
 They are governed by the other switch, `os-on`, which is independent: `sh-off`
 leaves it alone, and an account can be refused the shell and still run
-`nano`. See [Accounts and
+`micro`. See [Accounts and
 Security](01-accounts-and-security.html#the-operating-system-switches-sh-on-and-os-on)
 for everything `os-on` covers.
 

@@ -120,7 +120,7 @@ and puts `sd` on `PATH` at install time rather than as a toggle.
 **A new account cannot use `sh`, `!` or `OS.EXECUTE` until you say so.**
 Each is a per-account switch, off at creation, that SDSYS turns on and off
 with `modify.account` *name* `sh-on` / `sh-off` (the `sh` verb and `!`) and
-`os-on` / `os-off` (`OS.EXECUTE`, the editors `nano` and `micro`, the
+`os-on` / `os-off` (`OS.EXECUTE`, the editor `micro`, the
 embedded Python, and operating-system files by path outside the account's
 own directory). The two are independent, and each reports where the account
 now stands ("Account fred has SH yes, OS.EXECUTE no"); a change reaches the
