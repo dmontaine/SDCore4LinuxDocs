@@ -132,16 +132,16 @@ included — is counted separately in the *User* set's SD TCL syntax card.)
 
 | | |
 |---|---|
-| Parameters accepted in `sd.conf` | **50** |
-| Parameters the `config` verb displays | **42** |
-| Parameters readable with `config()` | **47** |
-| Parameters settable for the current session | **28** |
-| Parameters accepted that do nothing | **7** |
+| Parameters accepted in `sd.conf` | **51** |
+| Parameters the `config` verb displays | **50** |
+| Parameters readable with `config()` | **48** |
+| Parameters settable for the current session | **24** |
 
-The seven inert parameters (`JNLMODE`, `JNLDIR`, `CREATUSR`, `CODEPAGE`,
-`EXCLREM`, `RINGWAIT` and `TXCHAR`), and why each is inert, are listed under
-*Configuration* in this set. `CREATUSR` is the one a site is most likely to have
-in an existing `sd.conf`. `NETFILES` used to be counted here; it is not inert,
-though it is not what SDNet uses either, and *Configuration* says what does
-read it. The count was 6 until 18 October 2026, when `JNLMODE` and `JNLDIR`,
-which the Configuration page had listed as live, were found to be inert.
+The verb displays `DEBUG` and `FDS` only when they are set, and `TIMEZONE`,
+which is not a file parameter. No parameter is accepted and ignored any more:
+on 27 October 2026 the eleven that were (`APILOGIN`, `CODEPAGE`, `CREATUSR`,
+`EXCLREM`, `FIXUSERS`, `GDI`, `JNLDIR`, `JNLMODE`, `PORTMAP`, `RINGWAIT` and
+`TXCHAR`) were removed, and a line naming one now stops SD from starting;
+*Configuration* in this set says how the installer takes them out of a kept
+`sd.conf`. `NETFILES` is not what SDNet uses, and *Configuration* says what does
+read it.

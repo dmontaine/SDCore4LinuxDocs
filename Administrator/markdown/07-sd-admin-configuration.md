@@ -50,10 +50,13 @@ anything.
 An unrecognised parameter is not ignored. The parser abandons the file with
 `Unrecognised configuration parameter`, and SD does not start.
 
-That is why obsolete names are still parsed rather than deleted. `CREATUSR` has
-done nothing since 14 August 2026, but a configuration file copied from a Linux
-installation still carries it, and removing the branch would turn a tidy-up
-into a failure to start.
+That is why a name SD has dropped has to be taken out of the file. On 27 October
+2026 eleven parameters were removed (`APILOGIN`, `CODEPAGE`, `CREATUSR`,
+`EXCLREM`, `FIXUSERS`, `GDI`, `JNLDIR`, `JNLMODE`, `PORTMAP`, `RINGWAIT` and
+`TXCHAR`), and `INVCASE` before them. The installer removes those lines from a
+`sd.conf` it restores when you keep the configuration across a re-install, and
+says which it removed. A file copied in by hand must have them taken out before SD will
+start.
 
 Range failures behave the same way. `GRPSIZE`, `INTPREC`, `LPTRHIGH`,
 `LPTRWIDE`, `MAXCALL`, `RECCACHE`, `SORTMRG` and `MAXIDLEN` are bounds-checked
@@ -67,7 +70,7 @@ The `config` verb reports what is in force:
 ```
 :config
 Virtual Machine Version Number W1.0-0
-APILOGIN  1
+CLEANUP   300 seconds
 CMDSTACK  99
 DEADLOCK  0
 DUMPDIR   /usr/local/sdsys/dumps
@@ -76,10 +79,9 @@ ERRLOG    50 kb
 YEARBASE  1930
 ```
 
-SD accepts **50** parameters on this port (`APIPORT` and `NETDIRS` do not
-exist here — see *The API*, below) and the verb prints **42** of them.
-Eight are accepted in the file and never displayed: `CODEPAGE`, `CREATUSR`,
-`DEBUG`, `FDS`, `FIXUSERS`, `PORTMAP`, `SDSYS` and `TXCHAR`.
+SD accepts **51** parameters on this port (`APIPORT` and `NETDIRS` do not
+exist here — see *The API*, below). The verb prints all of them except
+`BACKUPDIR` and `SDSYS`, and `DEBUG` and `FDS` only when they are set.
 
 The `config()` function reads one parameter from a program:
 
@@ -87,8 +89,8 @@ The `config()` function reads one parameter from a program:
 group.size = config('GRPSIZE')
 ```
 
-**47 parameters are readable this way.** The three that are not are `CREATUSR`,
-which stores nothing, `SDSYS`, and `TXCHAR`. The name is truncated to eight
+**48 parameters are readable this way.** The three that are not are `BACKUPDIR`,
+`SCREENTHEME` and `SDSYS`. The name is truncated to eight
 characters before it is matched; no parameter name is longer than eight, so
 that only shows up if you pass something which is not a parameter.
 
@@ -102,7 +104,7 @@ Editing `sd.conf` and restarting SD is the durable route, and for most
 parameters it is the only one. Fourteen tuning parameters can also be changed from SD itself, with
 `set.config` or the `E` key of `tool.config` (see *Changing a parameter from SD*, below).
 
-**28 parameters can also be changed for the current session:**
+**24 parameters can also be changed for the current session:**
 
 ```
 config sortmem 8192
@@ -112,11 +114,10 @@ That writes to the session's own copy of the settings, which the session read
 from `sd.conf` when it started. It does not reach `sd.conf`, it does not affect any
 other session, and it is gone when the session ends.
 
-The 28 are `CODEPAGE`, `DUMPDIR`, `EXCLREM`, `FILERULE`, `FLTDIFF`, `FSYNC`,
-`GDI`, `GRPSIZE`, `INTPREC`, `LPTRHIGH`, `LPTRWIDE`, `MAXCALL`, `MUSTLOCK`,
-`OBJECTS`, `OBJMEM`, `RECCACHE`, `RINGWAIT`, `SAFEDIR`, `SDCLIENT`, `SH`,
-`SH1`, `SORTMEM`, `SORTMRG`, `SORTWORK`, `SPOOLER`, `TEMPDIR`, `TERMINFO` and
-`YEARBASE`. (The list predates `MAXRLOCK`, `PWDELAY` and, since 19 October 2026,
+The 24 are `DUMPDIR`, `FILERULE`, `FLTDIFF`, `FSYNC`, `GRPSIZE`, `INTPREC`,
+`LPTRHIGH`, `LPTRWIDE`, `MAXCALL`, `MUSTLOCK`, `OBJECTS`, `OBJMEM`, `RECCACHE`,
+`SAFEDIR`, `SDCLIENT`, `SH`, `SH1`, `SORTMEM`, `SORTMRG`, `SORTWORK`,
+`SPOOLER`, `TEMPDIR`, `TERMINFO` and `YEARBASE`. (The list predates `MAXRLOCK`, `PWDELAY` and, since 19 October 2026,
 `NETWAIT` and `NETREPLY`, which can be changed for the session in the same way.)
 
 Everything else takes effect only when SD is next started. That includes every
@@ -125,8 +126,8 @@ reads.
 
 **Since 1.2-0 a session reads `sd.conf` itself when it starts.** It used to copy
 the settings the starter had left in the shared memory, which an SD user with a
-shell could change. So an edit to a setting a session keeps for itself (the 28
-above, and others such as `USRDIR`, `GRPDIR`, `CREATUSR`, `TIMEZONE` and `TXCHAR`)
+shell could change. So an edit to a setting a session keeps for itself (the 24
+above, and others such as `USRDIR`, `GRPDIR` and `TIMEZONE`)
 reaches the sessions started after it, without a restart. **A bad line in
 `sd.conf` stops a new session from starting**, with the message `sd -start`
 gives, until it is repaired; SD and the sessions already running are not
@@ -143,7 +144,7 @@ A full-screen page in SDSYS's VOC only (a window of 140 columns by 43 lines or m
 it can change 14 of the parameters**; it writes no file itself. A change is made by the verb
 `set.config` (see *Changing a parameter from SD*, below) through the root helper, and only after you
 have typed a value, the page has checked it against the range SD enforces and a box has shown the
-exact command and been answered Run. The other 49 parameters are not changed from SD; editing the
+exact command and been answered Run. The other 37 parameters are not changed from SD; editing the
 file as root and restarting SD stays the way to change them.
 
 The page has three views. **P, the parameters**: one row for every parameter SD knows, from the table
@@ -163,8 +164,6 @@ acts on it:
 | Status | Meaning |
 |---|---|
 | `live` | something acts on it |
-| `inert` | accepted and stored, and nothing acts on it (`CODEPAGE`, `EXCLREM`, `GDI`, `JNLDIR`, `JNLMODE`, `RINGWAIT`, `TXCHAR`) |
-| `retired` | accepted and ignored so that a file written earlier still starts SD (`APILOGIN`, `CREATUSR`) |
 | `file` | read from `sd.conf` by a program each time it is used, not by the kernel (`BACKUPDIR`) |
 | `unknown` | a name in the file that SD does not know |
 
@@ -177,7 +176,7 @@ shows only the rows where the file and SD disagree, and `S` only the parameters 
 column, `Change`, says `e` for a parameter the page can change (press `E`) and `by hand` for every
 other.
 
-`SCREENTHEME`, `SDSYS`, `APILOGIN`, `BACKUPDIR` and `TXCHAR` cannot be read with the `config()` function
+`SCREENTHEME`, `SDSYS` and `BACKUPDIR` cannot be read with the `config()` function
 (a name longer than eight characters, or one the function does not have); the page says
 `(not readable)` for what SD is running with and shows the file's value. `DEBUG` is not compared: the
 function reports it in another form than the file writes it.
@@ -256,36 +255,28 @@ sizes, the printer's defaults); none is a door, a path, a command, a log or a se
 | `SORTMRG` | 2 to 10 | session |
 | `USPLIT` | 0 to 1 | restart |
 
-**The other 49 are not changed from SD**, and the helper refuses them by name (a name it does not
+**The other 37 are not changed from SD**, and the helper refuses them by name (a name it does not
 know at all it refuses with a different sentence, because an unknown name in `sd.conf` stops SD from
-starting). They are the doors and what they allow (`NETFILES`, `SDCLIENT`, `PORTMAP`, `FILERULE`), every
+starting). They are the doors and what they allow (`NETFILES`, `SDCLIENT`, `FILERULE`), every
 path and command, the log, dump and diagnostic settings, the security throttle `PWDELAY`, the sizes
-and combinations that `config.c` does not check or checks against each other, the ones that change
-what existing programs compute, and the ones nothing acts on. Change them by hand, as before. The page
+and combinations that `config.c` does not check or checks against each other, and the ones that change
+what existing programs compute. Change them by hand, as before. The page
 shows the same sentence in its box:
 
 | Parameter | Why it is not changed from SD |
 |---|---|
-| `APILOGIN` | Retired: nothing reads it, so there is nothing to tune. |
 | `BACKUPDIR` | A directory: set.backup.directory saves it, with its own checks of the path. |
 | `CMDSTACK` | Sizes a table in shared memory and config.c checks no range: a mistake shows only at the next start. |
-| `CODEPAGE` | Inert: nothing acts on it. |
-| `CREATUSR` | Retired: the value is read and thrown away. |
 | `DEADLOCK` | A diagnostic: 2 makes SD write a file of the locks involved; set it by hand while you hunt one. |
 | `DEBUG` | Debugging flags of the kernel: they change what SD writes and exposes. |
 | `DUMPDIR` | A directory: process dumps are written there and can hold what a session had in memory. |
 | `ERRLOG` | Sizes the error log; config.c checks no range, and a small size discards its oldest entries sooner. |
-| `EXCLREM` | Inert: nothing acts on it. |
 | `FDS` | Limits the file descriptors SD uses; config.c checks no range: a mistake shows at the next start. |
 | `FILERULE` | Decides which special file names a VOC entry may use, path: included; that is an access decision. |
-| `FIXUSERS` | Must agree with USERPOOL, PORTMAP and PHANTOMS: a wrong combination stops SD from starting. |
 | `FLTDIFF` | Changes how every program compares floating point numbers. |
 | `FSYNC` | Trades the safety of data against speed; flag bits that config.c does not check. |
-| `GDI` | Inert: nothing acts on it. |
 | `GRPDIR` | A directory: group accounts are made there. |
 | `INTPREC` | Changes the results of arithmetic in programs that already exist. |
-| `JNLDIR` | Inert: SD has no journalling. |
-| `JNLMODE` | Inert: SD has no journalling. |
 | `MAXIDLEN` | Structural: the longest record id of the whole system, which reaches every file and program. |
 | `MUSTLOCK` | Makes a write fail unless the record is locked first, which can stop programs that exist. |
 | `NETFILES` | A door: bit 2 gates API request 29, a remote open of an account. |
@@ -294,10 +285,8 @@ shows the same sentence in its box:
 | `OBJECTS` | Limits the programs a session keeps in memory; config.c checks no range. |
 | `OBJMEM` | Limits the memory those programs may take; config.c checks no range. |
 | `PDUMP` | Flag bits that say when a process dump is written; a dump can hold what a session had in memory. |
-| `PHANTOMS` | Must agree with USERPOOL, FIXUSERS and PORTMAP: a wrong combination stops SD from starting. |
-| `PORTMAP` | A door: gives a connection a user number from its port; must agree with USERPOOL and FIXUSERS. |
+| `PHANTOMS` | Must agree with USERPOOL: a wrong combination stops SD from starting. |
 | `PWDELAY` | A security throttle: the pause after a failed network sign-on; 0 removes it. |
-| `RINGWAIT` | Inert: nothing acts on it. |
 | `SAFEDIR` | Changes how SD replaces the files of a directory file, by writing a new one and renaming it. |
 | `SCREENTHEME` | Text that SD acts on; config.c checks no value. |
 | `SDCLIENT` | A door: restricts what an API session may do, and a lower value loosens it. |
@@ -310,8 +299,7 @@ shows the same sentence in its box:
 | `STARTUP` | A command SD runs when it starts. |
 | `TEMPDIR` | A directory: temporary files are written there. |
 | `TERMINFO` | A directory: terminal definitions are read from there. |
-| `TXCHAR` | Inert: nothing acts on it. |
-| `USERPOOL` | The highest user number: PORTMAP, FIXUSERS and PHANTOMS are checked against it; a mistake stops SD. |
+| `USERPOOL` | The highest user number: PHANTOMS is checked against it; a mistake stops SD. |
 | `USRDIR` | A directory: user accounts are made there. |
 | `YEARBASE` | Changes how every program reads a two-digit year; config.c checks no range. |
 
@@ -331,11 +319,9 @@ file as root: the verb asks the helper, and the helper is the one program that d
 | `MAXCALL` | 10000 | Maximum subroutine call depth. Range 10 to 1000000 |
 | `CMDSTACK` | 99 | Depth of the command stack |
 | `FDS` | unset | Limit on file descriptors. No limit when unset |
-| `FIXUSERS` | unset | `base,range` — user numbers reserved for sessions that ask for a specific number |
-| `PORTMAP` | unset | `base_port,base_user,range` — gives a session a fixed user number derived from the port its connection arrived on. Refused if the range overlaps `FIXUSERS` |
 | `USERPOOL` | 1023 | The highest user number handed out; user numbers rotate through 1 to this, 0 always takes the lowest free one |
-| `USPLIT` | 0 | `1`: interactive sessions take the lowest free user number and every other process (a phantom, an API session) the highest free one in 1 to `NUMUSERS`, so the two never meet. `FIXUSERS`, `PHANTOMS`, `PORTMAP` and `USERPOOL` are ignored while it is on. `config('USPLIT')` reads it |
-| `PHANTOMS` | unset | `base,range` — user numbers kept for phantoms started with `phantom user n`. Nobody else is given one: not a session, not an API session, not a phantom started without `user`. It must lie between 1 and the highest user number and must not overlap `FIXUSERS` or `PORTMAP`, or SD will not start. `config('PHANTOMS')` reads it as `base,range`, null when none are kept |
+| `USPLIT` | 0 | `1`: interactive sessions take the lowest free user number and every other process (a phantom, an API session) the highest free one in 1 to `NUMUSERS`, so the two never meet. `PHANTOMS` and `USERPOOL` are ignored while it is on. `config('USPLIT')` reads it |
+| `PHANTOMS` | unset | `base,range` — user numbers kept for phantoms started with `phantom user n`. Nobody else is given one: not a session, not an API session, not a phantom started without `user`. It must lie between 1 and the highest user number, or SD will not start. `config('PHANTOMS')` reads it as `base,range`, null when none are kept |
 | `CLEANUP` | 300 | Seconds between the checks that look for sessions that ended without logging out (a killed terminal, a lost connection) and clear them from the user table. 30 to 3600. The daemon wakes every ten seconds, so an interval is kept to within ten seconds; a very short one costs a pass over the user table that often. `config('CLEANUP')` reads it |
 
 ## Other SD servers (SDNet)
@@ -384,7 +370,6 @@ can be listed or read.
 
 | Parameter | Default | Effect |
 |---|---|---|
-| `APILOGIN` | 1 | Whether the API requires authentication. `0` is the weaker setting, not the safer one |
 | `SDCLIENT` | 0 | Restricts what an API session may do. Non-zero disables file access outright (no file can be opened, so no dictionary can be evaluated either) and refuses `SDIConv`, `SDOConv`, `SDIConvs` and `SDOConvs` a conversion code that reads a file (`T` with a file) or calls a program (`U`); any non-zero value also refuses `SDOpenSeq` and `SDExecute`; `2` additionally refuses any subroutine not compiled as callable from a client (a subroutine whose name begins with `$` must be so compiled at every setting, `0` included). Before 15 Oct 2026 the refusal at `2` was reported but the subroutine still ran |
 
 **There is no `APIPORT` and no `NETDIRS` on this port — a real structural
@@ -411,7 +396,6 @@ does not lift that confinement — see *Accounts and Security*.)
 | `LPTRWIDE` | 80 | Default page width for the printer. Range 10 to 1000 |
 | `LPTRHIGH` | 66 | Default page depth for the printer. Range 10 to 32767 |
 | `SPOOLER` | empty | The spooler to hand print jobs to |
-| `GDI` | 0 | Selects the Windows printing interface used by default |
 
 ## Sorting
 
@@ -465,22 +449,9 @@ operating-system switches: `sh-on` and `os-on`"); the setting says which
 shell it is, the switch says who may use it. Operating system access has its
 own page in this set.
 
-## Parameters that are accepted and do nothing
+## `NETFILES` and SDNet
 
-These are parsed so that an existing `sd.conf` still loads. None of them
-changes SD's behaviour, and none should be offered to a site as a control.
-
-| Parameter | Why it is inert |
-|---|---|
-| `JNLMODE` | Stored, shown by `config` and readable with `config('JNLMODE')`. SD has no journalling: nothing reads the value and nothing writes a journal. Checked by setting `JNLMODE=3` and `JNLDIR` to an empty directory, writing 50 records and deleting one: the directory stayed empty and `fileinfo(f, 1010)`, the file's journal number, was 0 |
-| `JNLDIR` | The same: stored, shown, readable with `config('JNLDIR')`, and used by nothing. The journal error codes 8801 to 8804 are in the error table, and nothing in the kernel raises them (searched in the source) |
-| `CREATUSR` | SD has accounts rather than accounts and users, so `create.account` always creates the operating system account and there is nothing to opt in to. The value is discarded as it is read |
-| `CODEPAGE` | Stored, readable and settable. Nothing acts on it |
-| `EXCLREM` | Stored, readable and settable. It described leaving remote files out of an account save. Nothing reads it |
-| `RINGWAIT` | Stored, readable and settable. Nothing acts on it |
-| `TXCHAR` | Stored, and not readable — there is no `config('TXCHAR')` |
-
-**`NETFILES` is not in this list, but it is not what SDNet uses either.**
+**`NETFILES` is not what SDNet uses.**
 SDNet is the way a program opens a file that lives on another SD server: a VOC
 entry of type `N`, a server you define with `set.server`, and a per-account
 `net-on` switch, all off until SDSYS turns them on. It is built and is

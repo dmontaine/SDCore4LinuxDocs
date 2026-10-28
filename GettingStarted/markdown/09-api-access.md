@@ -103,10 +103,6 @@ user@host` still works, but the design expects a direct connection to
 port 4247 once you have opened it — tunnelling is only for a `local`-only
 install reached from elsewhere.
 
-> **`APILOGIN` is not an off switch.** It decides whether the API demands a
-> password. `APILOGIN=0` is the **weaker** setting, not the safer one. Do not
-> reach for it.
-
 ## Reaching the port is not getting in
 
 A caller must clear two gates, in this order:

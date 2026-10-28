@@ -244,7 +244,7 @@ config contrib             display the contributors
 ```
 :config
 Virtual Machine Version Number L1.1-3
-APILOGIN  1
+CLEANUP   300 seconds
 CMDSTACK  99
 DEADLOCK  0
 DUMPDIR   /usr/local/sdsys/dumps

@@ -157,7 +157,7 @@ What has gone is the TCL verb that encrypted a field in place, and
 
 | Gone | Notes |
 |---|---|
-| `CREATUSR` | `config` no longer lists it; `config('CREATUSR')` returns nothing. A `CREATUSR` line in `sd.conf` is still accepted and ignored — `create.account` always creates the Linux user, there is nothing to opt in to |
+| `CREATUSR` | `config` no longer lists it; `config('CREATUSR')` returns nothing. The parameter itself was removed on 27 October 2026, and a `CREATUSR` line in `sd.conf` now stops SD from starting (the installer takes it out of a kept file) — `create.account` always creates the Linux user, there is nothing to opt in to |
 | `grant`/`revoke`/`list.grants` | folded into `modify.account add`/`delete` — see [Accounts](05-account-types.html) |
 | the `os.users` permit list | the file is gone; `sh-on`/`sh-off`/`os-on`/`os-off` are kept, and they set two fields of the account's own register record instead — see [Security and the operating system](12a-security-and-the-operating-system.html) |
 
