@@ -92,10 +92,10 @@ and pass it back.
 | | Value |
 |---|---|
 | `@who` | `DON` — **upper case** |
-| `@logname`, `@user` | `don` — **lower case** |
+| `@logname` | `don` — **lower case** |
 | `@path` | `/home/sd/user_accounts/don` |
 | `@sdsys` | `/usr/local/sdsys` |
-| `@user.no` | `67`, the same as `system(18)` |
+| `@userno` | `67`, the same as `system(18)` |
 | `@tty` | **empty in a piped session** |
 | `@system.return.code` | `1` |
 | `@user.return.code` | `0` |

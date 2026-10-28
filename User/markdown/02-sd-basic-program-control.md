@@ -362,7 +362,7 @@ wake user.number
 | `wake` | release a process that is paused |
 
 `pause` and `wake` are how two SD sessions coordinate without polling. The user
-number `wake` needs is the one `@user.no` reports in the waiting process.
+number `wake` needs is the one `@userno` reports in the waiting process.
 
 ## Interrupting
 

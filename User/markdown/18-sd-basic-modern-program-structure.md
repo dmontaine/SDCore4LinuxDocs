@@ -283,7 +283,7 @@ element, as `mat m = value` does.
 | a number | `5`, `-7`, `1.5` |
 | a string | `"text"` or `'text'` |
 | `char(n)` | `char(65)` for `A` |
-| a constant `@`-variable | `@fm @vm @sm @tm @im @am @svm @true @false` |
+| a constant `@`-variable | `@fm @vm @sm @tm @im @true @false` |
 
 Anything else — a variable name, a changing `@`-variable such as `@userno`, an expression such as
 `5 + 1` — is a compile error, message 11394. After `public a = 5` the `+ 1` is not a statement.

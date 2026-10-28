@@ -166,7 +166,7 @@ use:
 | `@NI` | the number of values in the longest multivalued field |
 | `@NB` | the record length in bytes |
 | `@FILE.NAME` | the name of the file being queried |
-| `@USER.NO` | the user number of the session |
+| `@USERNO` | the user number of the session |
 | `@PATH` | the account path |
 
 It can call `SUBR()` to invoke a catalogued subroutine, use `TRANS()` to
