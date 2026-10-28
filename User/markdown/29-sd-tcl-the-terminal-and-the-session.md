@@ -149,13 +149,16 @@ bytes, **Ctrl-T** changes the theme (mono, classic, blue; a terminal that cannot
 show colour keeps mono and says so) and **Ctrl-Q** leaves, so a key that ends the
 program can only be tested by leaving.
 
-**A key that makes the terminal beep and shows nothing in names mode is one the
-terminal type does not name.** SD decodes keys with the terminfo entry for the
-type in force, so an F-key or an End key the entry does not list is dropped, and
-the rest of its bytes may show up as stray characters (the End sequence of an
-xterm sent to a `vt100` arrives as `~`). Press **Ctrl-R**, then press the key
-again: the bytes it sent are shown, which is what a terminfo entry needs. An
-Alt-letter shows as `alt-x` on a terminal that sends Alt+x as Esc and x.
+**A key that makes the terminal beep and shows nothing in names mode is one SD
+has no name for.** SD understands the usual keys of every terminal in both
+cursor-key modes (the arrows, Home, End, Insert, Delete, Page Up and Down,
+Shift-Tab, F1 to F12, and the Ctrl, Shift and Alt forms of them such as
+`ctrl-left` and `ctrl-pgup`), then adds those of the terminfo entry for the type
+in force. A control sequence it has no name for is ignored whole: it is no longer
+typed into your text. A byte of 128 or more is never a key. Press **Ctrl-R**,
+then press the key again: the bytes it sent are shown, which is what a terminfo
+entry needs. An Alt-letter shows as `alt-x` on a terminal that sends Alt+x as Esc
+and x. Pasted text arrives as one `paste` key, however long it is.
 
 Make the window smaller while it runs and the cursor lock takes the keyboard
 with the message that the window is too small; make it larger again and the

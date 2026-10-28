@@ -21,10 +21,16 @@ Page depth: 36
 Device    : linux
 ```
 
-The default terminal type is `linux`.
+SD takes the type from your terminal's `TERM` when you sign on. `xterm`,
+`xterm-256color`, the VTE and Konsole terminals, `tmux`, `screen`, `alacritty`,
+`kitty`, `foot`, `rxvt` and `st` are signed on as `xterm`; the Linux console is
+`linux`; a name SD has no entry for falls back to `linux`. You can still type
+`term xterm` or `term linux`: the keys work either way.
 
-> Existing accounts keep their old setting until their VOC is updated.
-> Until then, `term linux` sets it for the session.
+> Before this release every account's `login` paragraph said `term linux`, so a
+> graphical terminal was signed on as `linux` and its F1 to F5 and Home keys did
+> not work. Existing accounts lose that line the next time their VOC is updated;
+> until then `term xterm` sets it for the session.
 
 ## What ships
 
