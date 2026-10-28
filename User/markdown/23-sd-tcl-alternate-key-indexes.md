@@ -217,8 +217,8 @@ selectindex stock name Smith
 
 The first list holds `Brown`, `Green`, `Jones`, `Smith` and `White` — the values,
 not record ids — so a `list stock` after it looks for records called `Brown` and
-reports each as not found. Save it (`save.list`, then `copy.listp name (t`) to see
-it. The second list holds `1001`, and `list stock name` after it lists that record.
+reports each as not found. Save it (`save.list`) and look at it with `show.list`.
+The second list holds `1001`, and `list stock name` after it lists that record.
 
 **The value is matched as the index holds it**, so for a date or a number it is
 the internal form, as in the statement. The index name is looked up as typed, then in

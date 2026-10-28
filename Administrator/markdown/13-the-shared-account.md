@@ -99,7 +99,7 @@ any name. The administrator's own `open` does not follow `shared` either: SDSYS 
 | a member of `sdg_shared`, in `logto shared` | — | only if the account `shared` has `shared-write-on` | likewise | no |
 
 * **A record write** — `write`, `writev`, `matwrite`, `delete`, `clearfile`, and the verbs that save
-  into a file the user names (`copy ... to`, `ed`, `copyp`, `save.list` and the rest) — needs
+  into a file the user names (`copy ... to`, `ed`, `save.list` and the rest) — needs
   `shared.write`. Without it SD says "A file in the shared account can only be changed by an account
   that has shared.write (SDSYS can give it: modify.account *account* shared-write-on)".
 * **A shared dictionary** needs `shared.write` **and** the sign-on account's `dict-on`. A write

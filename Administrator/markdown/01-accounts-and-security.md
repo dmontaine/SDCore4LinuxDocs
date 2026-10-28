@@ -343,7 +343,7 @@ the `ON ERROR` status). The verbs and statements that change a file the
 person names ask the same question first, before they lock or change
 anything, and give the reason: `sed`, `ide` and `ced` show it in their
 message line, and every other verb prints it (the same text as above) and
-stops. They are `ed`, `edit`, `copy` and `copyp` into the file or moving
+stops. They are `ed`, `edit` and `copy` into the file or moving
 records out of it, `delete`, `clear.file`, `cname` of a record, `delete.file`
 of a program file or of a dictionary on its own, `fixdir`, `format`,
 `map file` (asked before the "will be cleared and overwritten" question),

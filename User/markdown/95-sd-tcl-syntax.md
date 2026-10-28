@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **216** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **212** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,7 +23,7 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 169 verbs | `newvoc`, identical for every ordinary account |
+| **every account** | 165 verbs | `newvoc`, identical for every ordinary account |
 | **SDSYS only** | 47 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
@@ -67,8 +67,6 @@ not refused — the name is simply not recognised.**
 | **`convert.data`** | **`convert.data`** *from.pathname* *to.pathname* {**`from`** *format*} {**`as`** *format*} {**`header`**} {**`no.query`**} |  |
 | **`copy`** | **`copy from`** {**`dict`**} *src* {**`to`** {**`dict`**} *tgt*} {*id* …} {**`(options`**} |  |
 | **`copy.list`** | **`copy.list`** *list* {**`,`***new*} {**`from`** *src*} {**`to`** *tgt*} {*options*} |  |
-| **`copy.listp`** | **`copy.listp`** {{**`dict`**} *file*} {*name* … \| **`*`**} {**`(`***options*} |  |
-| **`copyp`** | **`copyp`** {**`dict`**} *file* *id* … {**`(options`**} |  |
 | **`count`** | **`count`** {**`dict`**} *file* {*selection*} |  |
 | **`create.account`** | **`create.account user`** *name* {**`ssh`** \| **`api`** \| **`both`** \| **`none`**} {**`sh-on`**} {**`os-on`**} {**`voc-on`**} {**`bp-on`**} {**`dict-on`**} {**`shared-read-off`**} {**`shared-write-on`**} {**`net-on`**} {**`files-on`**} {**`files-write-on`**} {**`files-admin-on`**} {**`ai-on`**} {**`start-menu`** \| **`start-terminal`**} {**`pins-on`**} {**`no.query`**}  ·  **`create.account group`** *name* {**`shared-read-off`**} {**`shared-write-on`**} {**`start-menu`** \| **`start-terminal`**} {**`pins-on`**} {**`no.query`**}  ·  **`create.account other`** *name* *pathname* {**`shared-read-off`**} {**`shared-write-on`**} {**`start-menu`** \| **`start-terminal`**} {**`pins-on`**} {**`no.query`**} | S |
 | **`create.file`** | **`create.file`** {**`dict`**} *voc.name* {**`directory`**} {*parameters*} {**`server`** *server* {**`as`** *remote.name*}} |  |
@@ -195,7 +193,6 @@ not refused — the name is simply not recognised.**
 | **`set.file`** | **`set.file`** *account* *file* *pointer* |  |
 | **`set.mode`** | **`set.mode`** {**`dict`**} *file* {**`all`** \| **`from`** *listno* \| *id* …} {**`no.query`**} *mode* |  |
 | **`set.netlogin`** | **`set.netlogin`** *server* |  |
-| **`set.queue`** | **`set.queue`** *queue* {, *width*, *depth*, *top*, *bottom*, *mode* {, *options*}}  ·  **`set.queue display`** {**`lptr`** {*unit*}}  ·  **`set.queue deleting`** *queue* |  |
 | **`set.server`** | **`set.server`** *name* *host* *port* *account* {*pin* \| **`connect`**} {**`read`** \| **`write`**} {**`accounts`** *a*`,`*b*`,`…} {**`no.query`**} | S |
 | **`set.start.default`** | **`set.start.default`** {**`menu`** \| **`terminal`**}  —  where accounts with no start setting of their own start; without a word, says what it is | S |
 | **`set.tile`** | **`set.tile`** {*account* *tile* **`on`** \| **`off`**}  —  turn a home screen tile off or on for one account (tiles are on as delivered; sign out cannot be turned off; *tile* **`recent`** is the Recent group); without arguments, says what is off | S |
@@ -211,7 +208,6 @@ not refused — the name is simply not recognised.**
 | **`sort.item`** | **`sort.item`** {**`dict`**} *file* {*selection*} |  |
 | **`sort.label`** | **`sort.label`** {**`dict`**} *file* {*selection*} {*fields*} |  |
 | **`sort.list`** | **`sort.list`** *name* {**`from`** *file*} |  |
-| **`sp.assign`** | **`sp.assign`** {*options*} {, *setptr options*} |  |
 | **`sp.view`** | **`sp.view`** |  |
 | **`spool`** | **`spool`** *file* *id* … {**`lines`** *n* *m*} {**`lnum`**} {**`lptr`** *n*} |  |
 | **`sreformat`** | **`sreformat`** {**`dict`**} *file* {*selection*} {*fields*} |  |

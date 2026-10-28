@@ -215,7 +215,6 @@ account's `$savedlists` file and outlives it.
 | **`delete.list`** *name* | delete the saved list |
 | **`copy.list`** *name* {`,`*new*} {**from** *file*} {**to** *file*} | copy one, or `*` for all |
 | **`sort.list`** *name* {**from** *file*} | sort a saved list, in place |
-| **`copy.listp`** {{**dict**} *file*} {*name* ... \| `*`} {`(`*options*} | the Pick form of `copy.list`: show a saved list, or copy it to another file |
 
 Both default to list 0, and `save.list` defaults the name to the list number.
 **`save.list`** takes **`keep`** to leave the active list as it was (it has always
@@ -273,36 +272,6 @@ sort.list reports
 A list that is not there is *Saved select list 'name' not found*, and no name is
 *Source list name required*.
 
-### `copy.listp`
-
-```
-copy.listp {{dict} file} {name ... | *} {(options}
-```
-
-The Pick form of `copy.list`, and the **same program as `copyp`**: its options and
-its `To:` question are `copyp`'s (`d` delete the source, `i` leave out the id, `n`
-no pagination, `o` overwrite, `p` to the printer, `s` leave out field numbers, `t`
-to the terminal). What differs is that the source file is **`$savedlists`**, where
-saved lists are kept, unless one is named. `*` is every saved list.
-
-```
-copy.listp reports (t
-```
-
-```
-Item reports
-0001 a.txt
-0002 b.txt
-0003 c.txt
-0004 subdir
-1 record(s) copied.
-```
-
-With `copy.listp *` and `t`, every saved list is shown. **When two or more words come
-before the options, the first is the source file if it opens as a file, and
-every word is a list name if it does not**; a file and a list with the same name
-are told apart by writing the file first (`copy.listp $savedlists reports`). After
-`dict` the next word is always the file. `copyp` itself still needs a file name.
 
 ## Combining two lists
 

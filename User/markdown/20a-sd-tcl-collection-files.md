@@ -171,25 +171,12 @@ ct stock 1001
 | `list.item` | the record as its compact JSON text |
 | `ed` file id · `edit` | the record shown as `ct` shows it, **a line to an element**, filed back as JSON text. The file makes a collection of what comes back, and refuses it — *Write error 1020 - Data not saved* — if it is not a JSON object or array, leaving the stored record as it was |
 | [`ced`](27b-sd-tcl-ced.html) | a full-screen editor that shows the elements of one level and their **types** |
-| `copy` · `copyp` | between two collection files the collection is copied; **from** a collection file **to a file that is not one**, the record's JSON text is written (in the compact form the file holds); **to** a collection file, the JSON text of a record is made into a collection |
+| `copy` | between two collection files the collection is copied; **from** a collection file **to a file that is not one**, the record's JSON text is written (in the compact form the file holds); **to** a collection file, the JSON text of a record is made into a collection |
 | `compare.files` | collection records are compared **as their JSON text**, in which the names are always in order, so two equal collections are the same |
 | `search` · `scan` | look at the JSON text of the record |
 
-```
-copyp stock 1002 (t
-```
-
-```
-Item 1002
-0001 {
-0002   "address": {
-0003     "city": "Boston"
-0004   },
-...
-```
-
 **Text that is not JSON copied into a collection file is refused** — *Error 1020 writing record* — and stops the
-copy, as any write error does (with the `d` option of `copyp` the source record that was not copied is not deleted).
+copy, as any write error does (with `deleting` the source record that was not copied is not deleted).
 `unload` into a collection file is the same, and `load` of lines from a collection record gives the lines of its JSON.
 **OpenQM's rule is that a copy goes between two collection files or between two files that are not.** SD **also copies between the two
 kinds**, a deliberate addition, so that a collection file can be exported to, and loaded from, text files, which a directory

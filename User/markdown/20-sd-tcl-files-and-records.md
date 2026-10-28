@@ -277,14 +277,6 @@ to give the copy; a bare *s* keeps the id. Options:
 negative on error.
 
 ```
-copyp {dict} filename id... {(options}
-```
-
-The Pick-style copy. Its options are single letters in a trailing bracket:
-`d` delete source, `i` suppress the id, `n` no pagination, `o` overwrite,
-`p` to the printer, `s` suppress field numbers, `t` to the terminal.
-
-```
 delete {dict} file.name {record.name} {no.query}
 delete {dict} file.name all
 ```
@@ -569,7 +561,7 @@ dictionary changes only when the account has `bp.edit`, `voc.edit` or `dict.edit
 
 **Every account has all of them now** — there is no longer a withheld set.
 `ct`, `list.files`, `set.file`, `analyse.file`, `analyze.file`, `clear.file`,
-`cname`, `configure.file`, `compare.files`, `copy`, `copyp`, `create.file`,
+`cname`, `configure.file`, `compare.files`, `copy`, `create.file`,
 `delete`, `delete.file`, `dump`, `file.stat`, `fixdir`, `find.file`, `fstat`,
 `fstat.user`, `hsm`, `import.csv`, `import.json`, `import.xml`, `convert.data`,
 `list.triggers`, `oscopy`, `rename`, `set.mode`, `set.trigger` are all in every

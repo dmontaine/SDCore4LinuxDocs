@@ -271,49 +271,6 @@ No default report style has been set
 
 which is what a fresh account reports. **`off`** clears it again.
 
-## Form queues: `set.queue` and `sp.assign`
-
-**Every account has `set.queue`, `sp.assign`, `block.print` and `block.term`.**
-
-```
-set.queue queue {, width, depth, top.margin, bottom.margin, mode {, options}}
-set.queue display {lptr {unit}}
-set.queue deleting queue
-sp.assign {options} {, setptr.options}
-```
-
-A **form queue** is a number from 0 to 999 that stands for the settings a `setptr`
-would be given for a print unit. `set.queue` defines one: the width, depth, top and
-bottom margins, the mode (**1** printer, **3** hold file, **6** both) and
-the options, which are `setptr`'s as typed, with commas between them. `display` lists
-them, and `deleting` removes one.
-
-`sp.assign` sets a print unit from a queue and does a `setptr` with them. Its options,
-in one word:
-
-| | |
-|---|---|
-| *n* | the number of copies (digits at the start) |
-| `f` *qno* or `q` *qno* | the form queue, 0 to 999 (default 0) |
-| `h` | hold file: mode 3 with `s`, otherwise mode 6 (printed, and kept) |
-| `s` | suppress printing: only with `h` |
-| `o` | keep the print unit open until `printer close` |
-| `r` *unit* | the print unit (default 0) |
-
-The `setptr` options after a comma are added at the end and so override the queue's.
-Options of the queue that do not belong to the mode in use are left out: `at`, `banner`,
-`form` and `options` are for printing, `as` and `inform` for a hold file. With no options
-at all it says which form queue print unit 0 was last given, and the `setptr` report
-follows. A program asks the same with `getpu(pu$form.queue, unit)`, and `system(1066)`
-gives the queue last assigned to **any** unit (-1 until one has been).
-
-**The queues live in the account's own directory file `$forms`**, one record for each
-queue, made the first time a queue is set. openQM keeps them in one file shared by every
-account; here a definition that any account could change would change where everybody
-else's reports go, so each account has its own. An account that wants another's can point
-its `$forms` VOC entry at it. (A *hashed* file of that name cannot be made — the name begins
-with a dollar sign — which is why it is a directory file.)
-
 ## Large letters: `block.print` and `block.term`
 
 ```

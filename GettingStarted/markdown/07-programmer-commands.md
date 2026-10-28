@@ -209,7 +209,7 @@ returned, above.) See [Not in SD Core](14-not-in-sd-core.html).
 
 | | |
 |---|---|
-| **`copy`** · **`copyp`** | copy records |
+| **`copy`** | copy records |
 | **`delete`** | delete records |
 | **`rename`** | rename records |
 | **`reformat`** · **`sreformat`** | reformat |
