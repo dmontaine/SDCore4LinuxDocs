@@ -20,8 +20,8 @@ QM, and ScarletDME — and SD is one of its direct descendants.
 The three delimiters that make it work are **field marks**, **value
 marks** and **subvalue marks** — control characters that separate the
 levels inside a single string. A dynamic array in SDBasic is a string
-that carries these marks, and `extract`, `insert`, `delete` and
-`replace` work on them directly.
+that carries these marks, and the angle-bracket forms (`a<f,v>`), `ins` and
+`del` work on them directly.
 
 ## What SD is
 
@@ -93,7 +93,7 @@ to insert, type your lines, a full stop on its own line to stop
 inserting, then `fi` to file and exit.
 
 `sed` is a full-screen editor that runs inside SD, with drop-down menus and
-colour for SD BASIC that you turn on when you want it; any account may use it.
+color for SD BASIC that you turn on when you want it; any account may use it.
 An account can also use `micro` (a full-screen editor with
 syntax highlighting) once the administrator has given it the `os-on` switch;
 a new account does not have it. `edit` aliases `ed` here, not a full-screen
@@ -122,7 +122,7 @@ disk at:
 A new account must be given `bp-on` by SDSYS before it can save a program in
 `bp` or compile it, and `os-on` as well before it can use `micro`.
 
-Compile and catalogue it from inside SD:
+Compile and catalog it from inside SD:
 
 ```
 basic bp myprog

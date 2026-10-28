@@ -218,8 +218,8 @@ itself administrator rights. That was demonstrated, not theorised.
 
 ## See also
 
-[Operating System Access](03-operating-system-access.html) covers the `sh` and
-`!` verbs, which are the other thing an ordinary account cannot reach.
+[Operating System Access](03-operating-system-access.html) covers the `sh`
+verb, which is the other thing an ordinary account cannot reach.
 [Encryption and the SDEXT interface](04-sd-encryption.html) explains why
 `sdext` is on this page and what it costs an application.
 

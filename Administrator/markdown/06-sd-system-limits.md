@@ -125,17 +125,17 @@ records that exist only in `voc_template`.
 keyword, a file pointer, a sentence or a paragraph, and only some are verbs.
 Counted directly from the shipped directories (`newvoc`/`voc_template`),
 matching what `count voc` reports in a freshly created account. (The
-TCL-verb subset specifically — 144, `sh`/`!`/`micro`/`umask`
+TCL-verb subset specifically — 144, `sh`/`micro`/`umask`
 included — is counted separately in the *User* set's SD TCL syntax card.)
 
 ## Configuration
 
 | | |
 |---|---|
-| Parameters accepted in `sd.conf` | **51** |
-| Parameters the `config` verb displays | **50** |
-| Parameters readable with `config()` | **48** |
-| Parameters settable for the current session | **24** |
+| Parameters accepted in `sd.conf` | **50** |
+| Parameters the `config` verb displays | **49** |
+| Parameters readable with `config()` | **47** |
+| Parameters settable for the current session | **23** |
 
 The verb displays `DEBUG` and `FDS` only when they are set, and `TIMEZONE`,
 which is not a file parameter. No parameter is accepted and ignored any more:

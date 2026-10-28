@@ -70,7 +70,7 @@ administrator loosens it, account by account, for the people who need it:
 |---|---|
 | `ssh` · `api` · `both` | the remote route(s). `none` is the default |
 | `files-on` | the files-only API route: an API login that can open, read, write and select from files and do nothing else (no commands, no subroutine calls, no `logto`). `api` gives the whole API and wins when an account has both |
-| `sh-on` | the `sh` verb and `!` |
+| `sh-on` | the `sh` verb |
 | `os-on` | `OS.EXECUTE`, `micro`, the embedded Python, and files or directories of the operating system named by their path outside the account's own directory |
 | `voc-on` | saving a change to the account's VOC |
 | `bp-on` | saving a change to a program file (`bp`, `bp.out`, `*.bp`, `*.bp.out`), and compiling and cataloguing. A new account needs it before it can save or compile its first program |

@@ -53,7 +53,7 @@ An unrecognised parameter is not ignored. The parser abandons the file with
 That is why a name SD has dropped has to be taken out of the file. On 27 October
 2026 eleven parameters were removed (`APILOGIN`, `CODEPAGE`, `CREATUSR`,
 `EXCLREM`, `FIXUSERS`, `GDI`, `JNLDIR`, `JNLMODE`, `PORTMAP`, `RINGWAIT` and
-`TXCHAR`), and `INVCASE` before them. The installer removes those lines from a
+`TXCHAR`), and `INVCASE` before them; `FILERULE` followed on 28 October 2026. The installer removes those lines from a
 `sd.conf` it restores when you keep the configuration across a re-install, and
 says which it removed. A file copied in by hand must have them taken out before SD will
 start.
@@ -79,7 +79,7 @@ ERRLOG    50 kb
 YEARBASE  1930
 ```
 
-SD accepts **51** parameters on this port (`APIPORT` and `NETDIRS` do not
+SD accepts **50** parameters on this port (`APIPORT` and `NETDIRS` do not
 exist here — see *The API*, below). The verb prints all of them except
 `BACKUPDIR` and `SDSYS`, and `DEBUG` and `FDS` only when they are set.
 
@@ -89,7 +89,7 @@ The `config()` function reads one parameter from a program:
 group.size = config('GRPSIZE')
 ```
 
-**48 parameters are readable this way.** The three that are not are `BACKUPDIR`,
+**47 parameters are readable this way.** The three that are not are `BACKUPDIR`,
 `SCREENTHEME` and `SDSYS`. The name is truncated to eight
 characters before it is matched; no parameter name is longer than eight, so
 that only shows up if you pass something which is not a parameter.
@@ -104,7 +104,7 @@ Editing `sd.conf` and restarting SD is the durable route, and for most
 parameters it is the only one. Fourteen tuning parameters can also be changed from SD itself, with
 `set.config` or the `E` key of `tool.config` (see *Changing a parameter from SD*, below).
 
-**24 parameters can also be changed for the current session:**
+**23 parameters can also be changed for the current session:**
 
 ```
 config sortmem 8192
@@ -114,7 +114,7 @@ That writes to the session's own copy of the settings, which the session read
 from `sd.conf` when it started. It does not reach `sd.conf`, it does not affect any
 other session, and it is gone when the session ends.
 
-The 24 are `DUMPDIR`, `FILERULE`, `FLTDIFF`, `FSYNC`, `GRPSIZE`, `INTPREC`,
+The 23 are `DUMPDIR`, `FLTDIFF`, `FSYNC`, `GRPSIZE`, `INTPREC`,
 `LPTRHIGH`, `LPTRWIDE`, `MAXCALL`, `MUSTLOCK`, `OBJECTS`, `OBJMEM`, `RECCACHE`,
 `SAFEDIR`, `SDCLIENT`, `SH`, `SH1`, `SORTMEM`, `SORTMRG`, `SORTWORK`,
 `SPOOLER`, `TEMPDIR`, `TERMINFO` and `YEARBASE`. (The list predates `MAXRLOCK`, `PWDELAY` and, since 19 October 2026,
@@ -126,7 +126,7 @@ reads.
 
 **Since 1.2-0 a session reads `sd.conf` itself when it starts.** It used to copy
 the settings the starter had left in the shared memory, which an SD user with a
-shell could change. So an edit to a setting a session keeps for itself (the 24
+shell could change. So an edit to a setting a session keeps for itself (the 23
 above, and others such as `USRDIR`, `GRPDIR` and `TIMEZONE`)
 reaches the sessions started after it, without a restart. **A bad line in
 `sd.conf` stops a new session from starting**, with the message `sd -start`
@@ -144,7 +144,7 @@ A full-screen page in SDSYS's VOC only (a window of 140 columns by 43 lines or m
 it can change 14 of the parameters**; it writes no file itself. A change is made by the verb
 `set.config` (see *Changing a parameter from SD*, below) through the root helper, and only after you
 have typed a value, the page has checked it against the range SD enforces and a box has shown the
-exact command and been answered Run. The other 37 parameters are not changed from SD; editing the
+exact command and been answered Run. The other 36 parameters are not changed from SD; editing the
 file as root and restarting SD stays the way to change them.
 
 The page has three views. **P, the parameters**: one row for every parameter SD knows, from the table
@@ -255,9 +255,9 @@ sizes, the printer's defaults); none is a door, a path, a command, a log or a se
 | `SORTMRG` | 2 to 10 | session |
 | `USPLIT` | 0 to 1 | restart |
 
-**The other 37 are not changed from SD**, and the helper refuses them by name (a name it does not
+**The other 36 are not changed from SD**, and the helper refuses them by name (a name it does not
 know at all it refuses with a different sentence, because an unknown name in `sd.conf` stops SD from
-starting). They are the doors and what they allow (`NETFILES`, `SDCLIENT`, `FILERULE`), every
+starting). They are the doors and what they allow (`NETFILES`, `SDCLIENT`), every
 path and command, the log, dump and diagnostic settings, the security throttle `PWDELAY`, the sizes
 and combinations that `config.c` does not check or checks against each other, and the ones that change
 what existing programs compute. Change them by hand, as before. The page
@@ -272,7 +272,6 @@ shows the same sentence in its box:
 | `DUMPDIR` | A directory: process dumps are written there and can hold what a session had in memory. |
 | `ERRLOG` | Sizes the error log; config.c checks no range, and a small size discards its oldest entries sooner. |
 | `FDS` | Limits the file descriptors SD uses; config.c checks no range: a mistake shows at the next start. |
-| `FILERULE` | Decides which special file names a VOC entry may use, path: included; that is an access decision. |
 | `FLTDIFF` | Changes how every program compares floating point numbers. |
 | `FSYNC` | Trades the safety of data against speed; flag bits that config.c does not check. |
 | `GRPDIR` | A directory: group accounts are made there. |
@@ -346,7 +345,6 @@ the check on the length a reply announces.
 | `SAFEDIR` | 0 | When 1, directory files are updated by write-and-rename rather than in place |
 | `RECCACHE` | 0 | Records cached per file. Range 0 to 32 |
 | `FSYNC` | 0 | Bit flags controlling when SD forces data to disk |
-| `FILERULE` | 0 | Bit flags deciding which special VOC file references are honoured: bit 1 `account:file` and bit 4 `path:` followed by a pathname. Bit 2, which allowed `system:account:file`, a form that named another system and opened nothing on this port, was removed in 1.2-0 and does nothing. See below the table of inert parameters |
 
 ## Directories
 
@@ -486,15 +484,12 @@ is 0 unless `sd.conf` sets it, and the installer does not, so the request is
 refused as delivered. Leave it at 0: no client function in this set sends
 request 29.
 
-`FILERULE` is **not** in this list, and is easy to mistake for it. It is a set
-of bits that decide which special VOC names are honoured when the name is not
-a VOC entry: bit 1 allows `account:file` and bit 4 allows `path:` followed by a
-pathname. (Bit 2 used to allow `system:account:file`, a form that named another
-system; this port had nothing that reached one, and the bit was removed in 1.2-0.
-A Q-pointer whose fourth field names another system is refused with status 3003,
-as it always was, and is not opened as a local file.) In a test with `FILERULE=7`,
-`sdsys:bp` and `path:/tmp` opened; with `FILERULE` at 0, neither did. The `path:`
-form is still held to the account's operating-system access switches.
+There is no `FILERULE` parameter any more (removed 28 October 2026). A name that
+is in no VOC record is not found: the `account:file` and `path:` forms of a file
+name are gone, and so is the old `system:account:file` form. To reach a file in
+another account or directory, put a Q-pointer or an F-pointer in the VOC, where
+the operating-system access switches apply to it. A Q-pointer whose fourth field
+names another system is refused with status 3003 and is not opened as a local file.
 
 There is no licence parameter and no licence verb. SD Core for Windows is
 GPL v3 and is not licensed per site or per user; `config gpl` displays the

@@ -104,11 +104,10 @@ the name of a VOC verb.
 means an SDSYS session** — logged in to the machine locally, as `sdsys`.
 Without it you get *"Command requires administrator privileges"*. **The
 same gate applies to an implicit global
-catalogue** — one chosen by a `*`, `!`, `_`, `$` or `-` prefix on the call name
+catalogue** — one chosen by a `!`, `_` or `$` prefix on the call name
 rather than by the `global` keyword — so the prefix is not a way round it.
-The hyphen was added on 16 Oct 2026: `catalog bp -name` catalogues the program
-`name` globally as `-name`, a program calls it with `call @nm(args)` where `nm`
-holds `-name`, and `delete.catalog -name` removes it.
+The prefix characters `*` and `-` were removed in 1.2-0: `catalog bp *name` and
+`catalog bp -name` are refused.
 
 Private and local cataloguing need none of this and work in a programmer's own
 account.

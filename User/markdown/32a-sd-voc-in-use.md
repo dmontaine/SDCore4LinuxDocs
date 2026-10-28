@@ -138,10 +138,10 @@ each type is on the line of that subfile's pathname, and the first begins with
 `Mult` (`Mult DH` on the first line, `Dir` on the second for a multifile of a
 hashed and a directory subfile).
 
-The three can take a `with` or `without` clause on **`trigger`**,
+The three can take a `with` or `with no` clause on **`trigger`**,
 **`encryption`** or **`replication`**, as `listf with trigger` for the files
 that have a trigger function. SD has neither encryption nor replication, so
-`with encryption` and `with replication` select nothing and `without` selects
+`with encryption` and `with replication` select nothing and `with no` selects
 every file. Any other query processor words may be added after them, as for
 every sentence.
 
@@ -212,8 +212,8 @@ one kind, `.s` writes two, and everything else is done with `ED` or with
 that ships is type `PQ`, so this can only be met in a VOC record somebody
 wrote.
 
-**`menu` records are dispatched but no menu ships.** Type `M` is handled
-and there is no shipped example to look at.
+**The `M` (menu) record type is removed.** A VOC record of that type is no
+longer dispatched; the home screen (`home`, or `menu`) is the menu system.
 
 **`EDIT` runs.** It was once exactly the kind of VOC entry described
 above — present but undispatchable, its type field reading

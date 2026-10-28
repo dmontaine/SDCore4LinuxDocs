@@ -223,8 +223,8 @@ compulsory**. A program that omits the `else` does not compile.
 `read` fetches the whole record by id. The `then` branch fires if the
 record exists; the `else` branch fires if it does not.
 
-`rec<1>` is **field extraction** — the angle brackets are the
-shorthand for `extract(rec, 1, 0, 0)`. Field 1, field 2, field 3.
+`rec<1>` is **field extraction** — the angle brackets pick field 1 out of
+the record. Field 1, field 2, field 3.
 Dynamic arrays are covered in [SD Basic - Dynamic Arrays](05-sd-basic-dynamic-arrays.html).
 
 ## 5. A program that writes

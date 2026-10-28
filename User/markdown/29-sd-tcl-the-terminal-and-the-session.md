@@ -15,7 +15,7 @@ something you type as it stands.
 ```
 term                             display the settings
 term {width} {, lines} {type}    set them
-term colour {bgc}{,fgc}          set display colour
+term color {bgc}{,fgc}           set display color
 term default                     back to the defaults
 term display                     show the terminfo bindings
 ```
@@ -111,8 +111,7 @@ list.term.types
 ```
 
 ```
-5051            adds4000        addsviewpoint   ansi            ansi-generic    dec-vt100
-dec-vt330       dec-vt340       dec-vt400
+ansi            ansi-generic    dec-vt100       dec-vt330       dec-vt340       dec-vt400
 ...
 wy50            wy60            wyse50          wyse60          xterm
 51 terminal type(s)
@@ -133,7 +132,7 @@ A full-screen diagnostic for the terminal and the keyboard, for anyone: it chang
 nothing and reads nothing private (it shows the terminal type, the window and the
 locale, which the session already knows). It needs a window of at least **140
 columns by 43 lines** and says so, with the size it found, if the window is
-smaller (or bigger than 500 by 300, which it also refuses before it draws). Use it when a function key does nothing, an arrow prints `^[[A`, colour
+smaller (or bigger than 500 by 300, which it also refuses before it draws). Use it when a function key does nothing, an arrow prints `^[[A`, color
 looks wrong or the mouse does not answer.
 
 | box | what it shows |

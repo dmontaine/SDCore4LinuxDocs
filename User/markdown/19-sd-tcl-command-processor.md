@@ -40,7 +40,6 @@ with a type character:
 | `K` | a query-processor keyword, which may also be a verb (see below) |
 | `S` | a sentence: one stored command line |
 | `PA` | a paragraph: several stored command lines, with flow control |
-| `M` | a menu |
 | `Q` | an indirect pointer to a file in another account |
 | `F` | a file |
 | `R` | a pointer to a record in another file, re-read and re-parsed |
@@ -100,7 +99,7 @@ Field 2 of a verb record says how to run it, and field 3 says what to run:
 |---|---|---|
 | `CA` | *name* | a catalogued program — 95 of the shipped verbs |
 | `IN` | *n* | internal verb *n*, handled by the command processor itself — 43 |
-| `OS` | *text* | an operating-system command — `sh` and `!` |
+| `OS` | *text* | an operating-system command — `sh` |
 | `CS` | *path* | a locally catalogued function |
 
 Field 4 carries dispatch options and **field 5 names a security subroutine**. If

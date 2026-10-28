@@ -11,7 +11,7 @@ SDSYS turns it on (`modify.account` *name* `sh-on` / `os-on`):
 
 | | What it is | The switch |
 |---|---|---|
-| **`sh`** and `!` | a shell at the `:` prompt | `sh-on` |
+| **`sh`** | a shell at the `:` prompt | `sh-on` |
 | `OS.EXECUTE` | the operating system from inside a BASIC program | `os-on` |
 | **`micro`** | a text editor, running outside SD | `os-on` |
 | the embedded Python | arbitrary code in the account's own process | `os-on` |

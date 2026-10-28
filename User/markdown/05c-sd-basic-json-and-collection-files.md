@@ -145,7 +145,7 @@ loop
    readjson o from f else exit
    crt o{'id'} : ' ' : o{'total'}
 repeat
-closeseq f
+close f
 ```
 
 ## Changing, searching and checking a document

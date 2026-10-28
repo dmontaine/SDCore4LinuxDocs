@@ -53,17 +53,16 @@ above, `dcount(a, @fm)` is `3` and `dcount(a<2>, @vm)` is `2`.
 
 ```
 array<field {, value {, subvalue}}>
-extract(array, field {, value {, subvalue}})
 ```
 
-The angle-bracket form and `extract()` are the same operation.
+The angle-bracket form is the only way to read a piece; the function `extract()`
+is gone.
 
 | Expression on `f1^v1\|v2^f3` | Result |
 |---|---|
 | `a<2>` | `v1\|v2` — the whole field, marks and all |
 | `a<2,2>` | `v2` |
 | `a<2,1,1>` | `v1` |
-| `extract(a, 2, 1)` | `v1` |
 | `a<9>` | *empty* |
 
 **Reading past the end is not an error.** `a<9>` on a three-field array
@@ -78,34 +77,19 @@ is `f1`.
 
 ```
 array<field {, value {, subvalue}}> = expression
-replace(array, field, value, subvalue, expression)
-insert(array, field, value, subvalue, expression)
-delete(array, field {, value {, subvalue}})
+ins expression before array<field {, value {, subvalue}}>
+del array<field {, value {, subvalue}}>
 ```
 
-| Expression on `f1^v1\|v2^f3` | Result |
+| Statement on `f1^v1\|v2^f3` | Result |
 |---|---|
 | `b<2,2> = 'NEW'` | `f1^v1\|NEW^f3` |
-| `replace(a, 2, 2, 0, 'R')` | `f1^v1\|R^f3` |
-| `insert(a, 2, 2, 0, 'I')` | `f1^v1\|I\|v2^f3` — pushes the rest along |
-| `delete(a, 2, 1)` | `f1^v2^f3` — removes one value |
-| `delete(a, 2)` | `f1^f3` — removes the whole field |
+| `ins 'I' before b<2,2>` | `f1^v1\|I\|v2^f3` — pushes the rest along |
+| `del b<2,1>` | `f1^v2^f3` — removes one value |
+| `del b<2>` | `f1^f3` — removes the whole field |
 
-The assignment form is what almost all code uses. `replace()` and `insert()`
-exist for when you need the result as an expression rather than assigned back.
-
-> **`replace()` and `insert()` count their arguments greedily, and the short
-> forms need a semicolon.** `replace(a, 2, 2, 'R')` **does not compile** — the
-> parser takes `2` as the value, `'R'` as the subvalue, and then demands the
-> replacement string it never got. Either give all five arguments, or separate
-> the final one with a semicolon.
->
-> | Call | Result |
-> |---|---|
-> | `replace(a, 2, 2, 0, 'R')` | `f1^v1\|R^f3` |
-> | `replace(a, 2; 'S')` | `f1^S^f3` — replaces the whole field |
-> | `replace(a, 2, 2; 'T')` | `f1^v1\|T^f3` |
-> | `replace(a, 2, 2, 'R')` | **compile error** |
+The functions `replace()`, `insert()` and `delete()` are gone; use these
+statements, which change the variable in place.
 
 ### Appending
 
@@ -117,7 +101,7 @@ A subscript of `-1` appends:
 | `b<2,-1> = 'AV'` | `f1^v1\|v2\|AV^f3` — a new value in field 2 |
 
 **Writing past the end pads with empty fields rather than failing.**
-`insert(a, 9, 0, 0, 'FAR')` on a three-field array gives
+`b<9> = 'FAR'` on a three-field array gives
 `f1^v1|v2^f3^^^^^^FAR` — five empty fields appear to fill the gap. A loop with
 an off-by-one index therefore grows the record silently instead of raising
 anything.

@@ -317,7 +317,7 @@ Nothing else in the string-handling group has been removed. `dparse` and
 `dparse.csv` are statements rather than functions and are covered in
 [SD Basic - Data Conversion](06-sd-basic-data-conversion.html) and [SD Basic - CSV Files](11-sd-basic-csv-files.html); `iconv()`, `oconv()`,
 `fmt()`, `char()`, `seq()`, `ascii()` and `ebcdic()` are in
-[SD Basic - Data Conversion](06-sd-basic-data-conversion.html); `extract()`, `insert()`, `delete()`, `replace()`,
+[SD Basic - Data Conversion](06-sd-basic-data-conversion.html); the angle-bracket forms, `ins`, `del`,
 `locate`, `remove`, `raise()`, `lower()`, `vslice()` and `dcount()` used
 against marks are in [SD Basic - Dynamic Arrays](05-sd-basic-dynamic-arrays.html).
 

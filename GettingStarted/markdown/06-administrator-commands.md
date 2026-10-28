@@ -115,11 +115,11 @@ one account's — see [ssh access](08-ssh-access.html) and
 server as an installable feature (the distribution's own package does that)
 and puts `sd` on `PATH` at install time rather than as a toggle.
 
-## The shell — `sh` and `!`
+## The shell — `sh`
 
-**A new account cannot use `sh`, `!` or `OS.EXECUTE` until you say so.**
+**A new account cannot use `sh` or `OS.EXECUTE` until you say so.**
 Each is a per-account switch, off at creation, that SDSYS turns on and off
-with `modify.account` *name* `sh-on` / `sh-off` (the `sh` verb and `!`) and
+with `modify.account` *name* `sh-on` / `sh-off` (the `sh` verb) and
 `os-on` / `os-off` (`OS.EXECUTE`, the editor `micro`, the
 embedded Python, and operating-system files by path outside the account's
 own directory). The two are independent, and each reports where the account
@@ -130,7 +130,7 @@ permissions, never as root. SDSYS is never refused. See the *Administrator*
 set's *Accounts and security* chapter, "The operating-system switches:
 `sh-on` and `os-on`".
 
-**`sh` and `!` run one command at a time, and both refuse a command that
+**`sh` runs one command at a time, and refuses a command that
 contains `;`, `|`, `&`, `$`, a backquote, `<`, `>` or a newline** — "Error 2
 executing operating system command", before anything runs. That is a safety
 measure against an accidental injection in a one-liner, applied to every
@@ -162,6 +162,6 @@ local login.
 **`lock`** · **`logout`** · **`set.date`** · **`remote.api`** ·
 **`remote.ssh`** · **`umask`**
 
-**`sh`, `!` and `modify.password` are not on this list** — every account
-has them; what SDSYS has that an ordinary account does not is the right to
+**`modify.password` is not on this list** — every account
+has it; what SDSYS has that an ordinary account does not is the right to
 name a different account with `modify.password`.

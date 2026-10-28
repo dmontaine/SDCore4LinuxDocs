@@ -215,7 +215,7 @@ anything in this page as a boundary.
 | | |
 |---|---|
 | File permissions | ordinary Linux file permissions on the data tree — see [Security](12-security.html) |
-| Reaching the operating system | the account's own switches, off for a new account: `sh-on` for `sh` and `!`, `os-on` for `OS.EXECUTE`, `micro`, the embedded Python and OS files named by path outside the account's own directory (which `sed` also asks for) |
+| Reaching the operating system | the account's own switches, off for a new account: `sh-on` for `sh`, `os-on` for `OS.EXECUTE`, `micro`, the embedded Python and OS files named by path outside the account's own directory (which `sed` also asks for) |
 | What an API session may open | the containment gate, rooted at the account the session stands in |
 
 **`micro` needs `os-on`**, the same switch as `OS.EXECUTE`

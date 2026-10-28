@@ -11,7 +11,7 @@ remove variable from array setting delimiter
 ```
 
 `remove` takes the next element off the front of *array* and reports which mark
-followed it. It is much faster than repeated `extract()` on a long record,
+followed it. It is much faster than repeated `a<f,v>` reads on a long record,
 because it does not rescan from the start each time.
 
 **The delimiter code is the mark's level, and zero means the end.** For

@@ -278,10 +278,10 @@ for changing an installation.
 
 **`config gpl` and `config contrib` shell out to `less`**, against two plain
 files in the system directory (`sdsys/licence`, `sdsys/contrib`) — not a VOC
-record, despite reading like one. `gpl.bp/config` runs `!less
-sdsys/licence` and `!less sdsys/contrib` directly. That works because
+record, despite reading like one. `gpl.bp/config` runs `sh less
+sdsys/licence` and `sh less sdsys/contrib` directly. That works because
 SDSYS runs it — `config` is one of SDSYS's own verbs, and SDSYS is never
-refused by the `sh` switch that gates `!` for every other account.
+refused by the `sh-on` switch that gates `sh` for every other account.
 
 ## Setting the session's date: `set.date`
 

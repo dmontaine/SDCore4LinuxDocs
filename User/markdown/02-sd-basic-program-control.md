@@ -276,7 +276,7 @@ exception, `catch sys.program` the ones in that group, and so on down.
 | `sys.program.invalid_matrix_size` | an argument matrix too small for the subroutine |
 | `sys.program.invalid_argct` | the wrong number of arguments in a `call` |
 | `sys.program.invalid_call_name` | a call name that cannot be a program name |
-| `sys.program.not_found` | the subroutine is not in the catalogue, or cannot be loaded |
+| `sys.program.not_found` | the subroutine is not in the catalog, or cannot be loaded |
 | `sys.program.load_error` · `load_error.read_error` | object code that is damaged or cannot be read |
 | `sys.program.invalid_data_size` | a string or element over its limit |
 | `sys.program.invalid_in_txn` | a file operation a transaction does not allow |
@@ -418,6 +418,7 @@ Core for Windows). A program using one will not compile.
 | `enter.package` · `exit.package` · `package` | |
 | `trace` | |
 | `errmsg` | |
+| `procread` · `procwrite` · `@pib` · `@sib` · `@pob` · `@sob` | the PROC interface |
 
 **`errmsg` is not in the compiler's statement table, and has not been since
 July 2024.** `errmsg 1000` is rejected with *"Unrecognised statement"*, the
@@ -428,9 +429,10 @@ with nothing behind it. That was wrong: `BCOMP` removed the table entry on
 changed, and a tool that read the table by matching quoted names picked it up
 from the comment.
 
-`procread` and `procwrite` **do** compile, despite appearing on the SD 0.8.0
-removed list; `procread` was restored afterwards. Both were checked, not
-assumed.
+`procread` and `procwrite` are gone as well, with the PROC language they
+served, and so are the variables `@pib`, `@sib`, `@pob` and `@sob`. A program
+using one will not compile. (The 1.2-0 programme removed them; earlier versions
+of this page said they compiled.)
 
 ## See also
 

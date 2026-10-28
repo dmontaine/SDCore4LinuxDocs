@@ -32,7 +32,6 @@ load-bearing and the remaining thirty are not.**
 | `K` | keyword | a query-processor keyword; four of these are also verbs |
 | `S` | sentence | one stored command line |
 | `PA` | paragraph | several stored command lines, with flow control |
-| `M` | menu | dispatched, but no menu ships |
 | `Q` | Q-pointer | an indirect pointer to a file in another account |
 | `F` | file | a file — local, or pointing into `@SDSYS` |
 | `R` | remote | a pointer to a record in another file, re-read and re-parsed |
@@ -56,7 +55,6 @@ VOC, 424 records, by each record's own field-1 type character:
 | `F` | 15 |
 | `R` | 10 |
 | `PA` | 4 |
-| `PH` | 2 |
 | `S` | 2 |
 | `Q` | 2 |
 | `X` | 1 |
@@ -149,7 +147,7 @@ target, and the remaining fields carry options.
 |---|---|---|
 | `CA` | *catalogue name* | a catalogued program — 95 of the shipped verbs |
 | `IN` | *number* | internal verb *n*, handled by the command processor itself — 43 verbs |
-| `OS` | *text* | an operating-system command — `sh` and `!`, and nothing else |
+| `OS` | *text* | an operating-system command — `sh`, and nothing else |
 | `CS` | *path* | a locally catalogued function |
 
 Those four rows account for all but four of SDSYS's 144 `V` records. The
@@ -247,13 +245,16 @@ text as typed-ahead input.
 002  GRAND.TOTAL "'L'"
 ```
 
-This is `no.grand.total`. A phrase is a stored fragment that is
+A phrase is a stored fragment that is
 substituted into a command line wherever its name appears. `PH` is
 treated as `S` for most purposes — the difference is that a phrase is
 designed to be used inside another command rather than typed on its own.
+The record above is a phrase a site might add: named `gt.l`, say, it
+expands to `grand.total "'L'"` wherever `gt.l` appears in a query.
 
-`without` is also `PH`, holding `WITH NO` — so `list stock without qty`
-expands to `list stock with no qty`.
+**No phrase ships in the VOC.** The two that did, `no.grand.total` and
+`without`, were removed in 1.2-0; write `grand.total "'L'"` and `with no`
+in the command instead.
 
 ## The K record — a keyword
 
@@ -265,8 +266,7 @@ expands to `list stock with no qty`.
 This is `#`, the comment keyword. Field 2 is the keyword number the query
 processor uses. Keywords are not commands in their own right; they are
 the words the query processor — `LIST`, `SELECT`, `SORT` and the rest —
-recognises inside a command line. `all` is `K` with number 5; `after` is
-`K` with a number; `and` is `K`.
+recognises inside a command line. `all` is `K` with number 5; `and` is `K`.
 
 **A K record can also be a command.** When its fields 3 onwards are another
 VOC record (a `V` record, say), typing the K record's name runs that record as

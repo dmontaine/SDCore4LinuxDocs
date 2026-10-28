@@ -83,19 +83,20 @@ spellings in a row returned identical counts on the same data.
 |---|---|
 | equal | `=` · `eq` |
 | not equal | `ne` · `not` |
-| less than | `<` · `lt` · `before` |
+| less than | `<` · `lt` |
 | less or equal | `<=` · `le` |
-| greater than | `>` · `gt` · `after` |
+| greater than | `>` · `gt` |
 | greater or equal | `>=` · `ge` |
-| matches a pattern | `like` · `matches` · `matching` |
-| does not match | `unlike` · `not.matching` |
-| sounds like | `said` · `spoken` |
+| matches a pattern | `like` |
+| does not match | `unlike` |
+| sounds like | `said` |
 | is in a list | `in` |
 | is not in a list | `not.in` |
 
-`before` and `after` read well on dates and are the same operators as `<` and
-`>`. All three spellings of *not equal* returned **331** on the same query, and
-`<`, `lt` and `before` all returned **381**.
+All three spellings of *not equal* returned **331** on the same query, and
+`<` and `lt` both returned **381**. (The words `before`, `after`, `equal`,
+`greater`, `less`, `matches`, `matching`, `not.matching` and `spoken` were removed in 1.2-0:
+in a query they are taken as record ids.)
 
 ### Joining clauses
 
@@ -256,9 +257,8 @@ sort voc with dispatch = "OS" by @id dispatch processor
 
 ```
 @ID.................   Dsp   Processor...............
-!                      OS
 sh                     OS
-2 record(s) listed
+1 record(s) listed
 ```
 
 `@id` is the record id, and it is a field name like any other.

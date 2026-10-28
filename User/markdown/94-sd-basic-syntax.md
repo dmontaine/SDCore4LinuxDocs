@@ -95,9 +95,8 @@ exist.**
 | **`clearfile`** | `clearfile` *file.var* {`on error` …} |
 | **`clearinput`** | `clearinput` |
 | **`clearselect`** | `clearselect` {*list.no*} |
-| **`close`** | `close` *file.var* {`on error` …} |
+| **`close`** | `close` *file.var* {`on error` …} — closes any file variable, sequential or not |
 | **`close.socket`** | `close.socket` *socket* |
-| **`closeseq`** | `closeseq` *file.var* |
 | **`col1`** | `col1()` |
 | **`col2`** | `col2()` |
 | **`collection`** | `collection()`   ·   `collection(`*c*`)` |
@@ -133,7 +132,7 @@ exist.**
 | **`debug`** | `debug` — needs `basic` *file* *record* `debugging` |
 | **`deffun`** | `deffun` *name*`(`*arg*, …`)` {`calling` *"cat.name"*} {`local`} |
 | **`del`** | `del` *arr*`<`*f* {, *v* {, *sv*}}`>` |
-| **`delete`** | `delete` *file.var*, *id* {`on error` …}   ·   `delete(`*arr*, *f* {, *v* {, *sv*}}`)` |
+| **`delete`** | `delete` *file.var*, *id* {`on error` …} |
 | **`deletelist`** | `deletelist` *name* `then` … `else` … |
 | **`deleteseq`** | `deleteseq` *path* {`on error` …} `then` … `else` … |
 | **`deleteu`** | `deleteu` *file.var*, *id* {`on error` …} |
@@ -163,13 +162,11 @@ exist.**
 | **`env`** | `env(`*a*`)` |
 | **`epoch`** | `epoch()` |
 | **`eqs`** | `eqs(`*a*, *b*`)` |
-| **`equ`** | `equ` *name* `to` *value* — synonym of `equate` |
 | **`equate`** | `equate` *name* `to` *value* {, *name* `to` *value*} … |
 | **`execute`** | `execute` *cmd* {`capturing` *v*} {`returning` *v*} {`passlist` *l*} {`rtnlist` *v*} {`stacklist`} |
 | **`exit`** | `exit` — leave the enclosing `loop` or `for` |
 | **`exp`** | `exp(`*a*`)` |
 | **`expand`** | `expand(`*c*`{`*path*`}` {, *file.var*}`)` |
-| **`extract`** | `extract(`*arr*, *f* {, *v* {, *sv*}}`)` |
 
 ## F
 
@@ -246,7 +243,6 @@ exist.**
 | **`inputnull`** | `inputnull` *char* |
 | **`inputtrap`** | `inputtrap` *chars* `goto` *label* {, *label* …}   ·   `inputtrap` *chars* `gosub` *label* {, *label* …} |
 | **`ins`** | `ins` *value* `before` *arr*`<`*f* {, *v* {, *sv*}}`>` |
-| **`insert`** | `insert(`*arr*, *f* {, *v* {, *sv*}}, *value*`)` |
 | **`int`** | `int(`*a*`)` |
 | **`itype`** | `itype(`*compiled.i.type*`)` |
 
@@ -377,8 +373,6 @@ exist.**
 | **`printer`** | `printer on`   ·   `printer off`   ·   `printer close`   ·   `printer file on` *unit* *file*, *record* |
 | **`printer.setting`** | `printer.setting(`*a*, *b*, *c*`)` |
 | **`private`** | `private` *var*, … |
-| **`procread`** | `procread` *var* `then` … `else` … |
-| **`procwrite`** | `procwrite` *var* |
 | **`program`** | `program` *name* |
 | **`public`** | `public` *var*, … |
 | **`pwr`** | `pwr(`*a*, *b*`)` |
@@ -422,7 +416,6 @@ exist.**
 | **`remove`** | `remove` *value* `from` *arr* `setting` *delimiter.code* |
 | **`remove.break.handler`** | `remove.break.handler` |
 | **`repeat`** | `repeat` — closes a `loop` |
-| **`replace`** | `replace(`*arr*, *f* {, *v* {, *sv*}}, *value*`)` |
 | **`restore.screen`** | `restore.screen` *image*, *restore.cursor* |
 | **`return`** | `return` {`to` *label*}   ·   `return(`*value*`)` from a function |
 | **`returning`** | clause of `execute` — take the command's error text ***(clause word)*** |
@@ -503,7 +496,6 @@ exist.**
 | **`stop`** | `stop` {*message*} |
 | **`str`** | `str(`*a*, *b*`)` |
 | **`strs`** | `strs(`*a*, *b*`)` |
-| **`subr`** | `subr(`*"name"* {, *arg*, …}`)` |
 | **`subroutine`** | `subroutine` *name*`(`*arg*, …`)` |
 | **`substitute`** | `substitute(`*arr*, *from*, *to*, *delimiter*`)` |
 | **`substrings`** | `substrings(`*a*, *b*, *c*`)` |

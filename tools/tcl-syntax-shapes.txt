@@ -21,7 +21,6 @@
 # These lines come from documents 19 to 31 of the User set and 01 to 03 of the
 # Administrator set, where they were measured against a running system.
 
-! = **`!`** *command*
 abort = **`abort`** {*message*}
 alias = **`alias`** *command* *target*
 analyze.file = **`analyze.file`** {**`dict`**} *file* {**`statistics`**} {**`lptr`**}
@@ -170,7 +169,7 @@ sselect = **`sselect`** {**`dict`**} *file* {*selection*} {*list.no*}
 status = **`status`**
 stop = **`stop`**
 sum = **`sum`** {**`dict`**} *file* {*selection*} *field*
-term = **`term`** | *width*{`,`*lines*} {*type*} | **`colour`** *bg*{`,`*fg*} | **`default`** | **`display`**
+term = **`term`** | *width*{`,`*lines*} {*type*} | **`color`** *bg*{`,`*fg*} | **`default`** | **`display`**
 time = **`time`** | **`internal`**
 tool.bulk = **`tool.bulk`**  —  a bulk update of one data file of the account: choose the records (conditions, a saved list or every record), up to ten operations from a closed set, a dry run that writes nothing, apply under record locks after a box that asks the file's name typed, and undo of the last run
 tool.catalog = **`tool.catalog`**  —  the programs of the account on one screen: compiled or not, current or stale, and where each is catalogued (private, local, global); compile it, catalogue it privately or locally, and take a catalogue entry out, each through its own verb after a box that shows the command

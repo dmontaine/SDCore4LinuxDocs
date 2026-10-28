@@ -258,7 +258,7 @@ stays inside SD.
 
 | | |
 |---|---|
-| **`sh-on`** · `sh-off` | the `sh` verb and `!` |
+| **`sh-on`** · `sh-off` | the `sh` verb |
 | **`os-on`** · `os-off` | `OS.EXECUTE` in a BASIC program, the screen editor `micro`, the embedded Python, **and reaching an operating-system file or directory by its path outside the account's own directory** |
 
 That last clause is the one that is easy to miss. Without `os-on` an
@@ -359,7 +359,7 @@ record it writes to the target file), `como on ... in`, and the `.s` and `.d`
 stack commands on an existing VOC record. `create.file` naming a file that
 already exists (adding a part to a multifile, or converting a single file to a
 multifile) is asked too; making a new file is not. The private catalogue
-directory (`cat`, or whatever `$private.catalogue` names) counts as a program
+directory (`cat`, or whatever `$private.catalog` names) counts as a program
 file. For programs, `create.file` and `opentemp` of a new file inside such a
 place, `ospath` with keys 5, 13 and 14, and the socket trace file
 (`set.socket.mode` with `skt$info.trace`) are refused with status 3035. `cname`
@@ -870,10 +870,11 @@ file pointer to a directory outside the account in an account that does not
 hold `os-on`. The accounts that existed at an upgrade hold `os-on`, so their
 own pointers keep working; the Q-pointer rule applies to them too.
 
-**`filerule`**, the `sd.conf` setting that turns on the `path:name` and
-`account:name` forms of a file name, is off unless you set it. If you do, the
-`path:` form is held to the `os-on` rule like the rest, and the `account:name`
-form is a Q-pointer and is held to the Q-pointer rule above.
+There are no `path:name` or `account:name` forms of a file name any more (the
+`sd.conf` setting `FILERULE` that turned them on was removed on 28 October 2026): a
+name that is in no VOC record is not found. A file outside the account is reached
+only through a VOC pointer, which is held to the `os-on` rule and the Q-pointer rule
+above.
 
 ### What `os-on` actually costs
 
@@ -1065,7 +1066,7 @@ had typed it.
 | | |
 |---|---|
 | **`ssh`** \| **`api`** \| **`both`** \| **`none`** | what the account's remote access **is**. Absolute: `api` takes ssh away |
-| **`sh-on`** \| **`sh-off`** | the `sh` verb and `!` |
+| **`sh-on`** \| **`sh-off`** | the `sh` verb |
 | **`os-on`** \| **`os-off`** | `OS.EXECUTE`, the screen editors, the embedded Python, and operating-system paths outside the account's own directory (see above) |
 | **`sd-on`** \| **`sd-off`** | the directories of other SD accounts the user could `logto` (see above) |
 | **`voc-on`** \| **`voc-off`** | saving a change to a VOC (see *The edit switches*) |

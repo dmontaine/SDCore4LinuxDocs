@@ -42,7 +42,7 @@ local subroutine name {(arguments)}
 local function name {(arguments)}
 ```
 
-These live inside the program that uses them rather than in the catalogue, and
+These live inside the program that uses them rather than in the catalog, and
 they can declare `private` variables of their own — which is how you get a
 routine whose working variables do not collide with the rest of the program.
 
@@ -71,14 +71,15 @@ shares all its variables. The nesting limit is **256 levels**.
 ```
 call name {(argument, ...)}
 call @variable {(argument, ...)}
-subr(name {, argument, ...})
 ```
 
 | | |
 |---|---|
 | `call name` | the name is fixed at compile time |
 | `call @variable` | the name is taken from the variable at run time |
-| `subr()` | the function form — use it where you want the result in an expression |
+
+There is no function form of `call` (`subr()` is gone). Where you want a result
+in an expression, declare a function with `deffun` and call that.
 
 There is no call by file and program name (`call "bp prog"`): a program is
 called by its catalogued name.
@@ -150,7 +151,6 @@ make `assigned()` false again after using it.
 
 ```
 equate name to value
-equ name to value
 ```
 
 `equate` is resolved at compile time and costs nothing at run time. It can name
@@ -322,13 +322,11 @@ reusing(name)
 
 An argument may be given a **default value**: a number (a minus sign allowed),
 a string in single or double quotes (not one that holds both kinds), `@true` or
-`@false`. The program then needs `var.args`, or `$mode default.unass.args`, or the
-compiler refuses it (*Default argument values need the VAR.ARGS option or $MODE
-DEFAULT.UNASS.ARGS*); a default that is anything else, such as a variable or an
+`@false`. The program then needs `var.args`, or the
+compiler refuses it; a default that is anything else, such as a variable or an
 expression, is *A default argument value must be a number, a string, @TRUE or
 @FALSE*. When the caller passes fewer arguments than there are, the missing ones
-take their defaults; with `$mode default.unass.args` one that was passed
-**unassigned** takes it too. `arg.count()` is still the number the caller passed,
+take their defaults. `arg.count()` is still the number the caller passed,
 not what the defaults make of the rest. The program's own lines keep their line
 numbers.
 
@@ -378,7 +376,6 @@ additions; each is described by what it does and does **not** do.
 | **`partial.expressions`** | `A and B` does not evaluate `B` when `A` is false, and `A or B` does not evaluate `B` when `A` is true. That makes `if idx matches '1-2N' and s<idx> # 0` safe, and a function with a side effect on the right-hand side runs only when it is needed. **The value of every expression is the same as without the mode**; only what is evaluated changes |
 | **`debug.equates`** | a program compiled for the debugger also keeps its `equate` and `$define` tokens in the object, so the debugger can show, `set` and `watch` them (see *Debugging*). It makes the object a little larger; programs compiled without the mode are as they were |
 | **`explicit`** | every scalar has to be named in a `dim` statement before it is used, or the compiler refuses the program with *Variable xx has not been declared* |
-| **`default.unass.args`** | an argument that has a default value (see *Arguments that may be left out* above) also takes it when the caller passed the argument unassigned, not only when it was left out |
 | **`trap.unused.main`** | like `trap.unused`, but it warns only about a variable that is assigned a value in the program itself, not in an include record |
 | **`non.durable.txn`** | every `commit` the program contains is a *non-durable* commit: a transaction **nested** in another writes nothing at its `commit` but hands its records, deletions and locks to the enclosing transaction, which writes them when it commits or throws them away if it aborts. A commit that is not nested writes as ever. See [SD Basic - Locks and Transactions](14-sd-basic-locks-and-transactions.html) |
 
@@ -390,14 +387,9 @@ additions; each is described by what it does and does **not** do.
 
 | option | what it does |
 |---|---|
-| **`force.reload`** | an unload event (compiling or cataloguing a program) also refreshes the subroutine links a running program holds, so the next `call` loads the current object code |
-| **`numeric.exponent`** | numbers in exponent form, such as `123.45E-2`, are numeric |
-| **`command.level.locks`** | a file variable that goes (a subroutine returns, or the variable is given another file) keeps its locks until the program is back at the command processor: the file stays open, out of sight, and is closed when the program that was running at that command level returns, or when the `execute` that started the level ends. Without the option the file is closed at once and the locks go with it. **A `close` statement still closes the file at once** |
-| **`stacked.account`** | an `execute` of a command that does a `logto` leaves the process in the account it began in. Without the option the process stays in the account the command went to. The revert is `logto`'s change undone, not a new entry: no membership test, no `on.logto` or `login` paragraph runs, and the account's `sh` and `os.execute` switches go back to the ones the first account had, so nothing the visited account granted is kept. **A `logto` typed at the prompt is not reverted.** The revert is made when the command ends in the ordinary way; what an aborted command leaves was not measured |
 | **`inherit.ownership`** | `create.file` gives a new file (the directory and everything in it) the **owner and group of the account directory** in place of those of the user who made it. A user may only hand a file to a group they belong to, which the account's own group is, and not to another owner: where the system refuses nothing is said, as in openQM. **Off by default, and the group it gives is the account's, so its members then have on the file what they have on the account:** turn it on for an account in its `login` paragraph, as an administrator's decision |
 | **`git`** | a directory file keeps `.gitignore` and `.gitattributes` under their own names on the disk. Without it the leading dot of every such name is replaced by `%D`, which git does not read. **Only these two names**: any other name with a leading dot is mapped as ever |
 | **`dir.dtm`** | writing a record to a directory file moves the directory's date and time modified. The system moves it only when a name is added or removed, so a replaced record leaves it as it was. **Closing a written sequential file does not do this** |
-| **`no.phantom.notify`** | set inside a phantom, it stops the message the phantom sends to its parent when it ends (*Phantom nn : Normal termination.*) |
 | **`spool.command`** | shows the operating system command that prints a job, just before it runs; a diagnostic aid |
 
 ## What is not here

@@ -1,10 +1,11 @@
 Title: Operating System Access
-Subtitle: The `sh` and `!` verbs, and the per-account switch that decides who may use them.
+Subtitle: The `sh` verb, and the per-account switch that decides who may use it.
 
-`sh` runs a Linux command from the SD prompt. `!` is the same verb under a
-shorter name. **Each account has its own switch for them, `sh-on`, and a new
-account does not have it** — SDSYS turns it on, account by account, with
-`modify.account`. Without it both verbs refuse.
+`sh` runs a Linux command from the SD prompt. (The `!` form, a shorter name for
+the same verb, was removed on 28 October 2026: write `sh command`.) **Each
+account has its own switch for it, `sh-on`, and a new account does not have
+it** — SDSYS turns it on, account by account, with `modify.account`. Without it
+the verb refuses.
 
 > **This document is separate so that it can be withheld.** It links to
 > nothing outside the administrator set. Where a user-set page is worth naming,
@@ -16,11 +17,10 @@ in lower case.
 > **The listings below were produced by running them**, on a build of SD Core
 > for Linux made from the tree, in an account that had `sh-on`.
 
-## The two verbs
+## The verb
 
 ```
 sh command
-! command
 ```
 
 Everything after the verb is the command. It runs in the account's own
@@ -29,10 +29,6 @@ directory, at the account's own Linux permissions:
 ```
 :sh echo hello-from-the-shell
 hello-from-the-shell
-:! echo via-the-bang-form
-via-the-bang-form
-:!echo no-space-needed
-no-space-needed
 ```
 
 **There is no interactive shell at the prompt.** A bare `sh`, with nothing
@@ -40,9 +36,9 @@ after it, is refused with the same "Error 2" as below, so a script, a phantom
 or a scheduled job that types it does not hang waiting for somebody at a
 keyboard. For a session of your own, use the local login.
 
-## One rule about the shape of the command, for both verbs and for everybody
+## One rule about the shape of the command, for everybody
 
-**Both verbs refuse a command that contains `;`, `|`, `&`, `$`, a backquote,
+**The verb refuses a command that contains `;`, `|`, `&`, `$`, a backquote,
 `<`, `>` or a newline**, before anything runs:
 
 ```
@@ -80,7 +76,7 @@ so a change reaches the account the next time it is entered. A session that is
 already open keeps what it started with. To take the shell from somebody who is
 signed in now, change the switch and then end their session.
 
-| | `sh` and `!` |
+| | `sh` |
 |---|---|
 | the account has `sh-on` | runs the command, subject to the rule above |
 | SDSYS | runs it, whatever the register says |
@@ -121,7 +117,7 @@ the local login. See also
 
 ## Who has these verbs
 
-`sh` and `!` are in every account's VOC — there is no tier to withhold them.
+`sh` is in every account's VOC — there is no tier to withhold it.
 **Having the verb is not having the permission**: an account without `sh-on`
 has the verb and is refused by it.
 

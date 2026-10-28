@@ -187,9 +187,6 @@ because the record itself is valid PROC and it is the interpreter that is gone.
 Nothing that ships is type `PQ`, so this can only be met in a VOC record
 somebody wrote.
 
-**`menu` records are dispatched but no menu ships.** Type `M` is handled and
-there is no shipped example to look at.
-
 ## Who has these verbs
 
 Everything on this page is in a **standard** account except the last two, which
@@ -203,9 +200,8 @@ are administrator-only:
 have a verb does not have the VOC record for it — the name is simply not
 recognised rather than refused.
 
-**The two `OS` verbs are the exception and are not documented here.** `sh` and
-`!` reach the Windows shell, are administrator-tier, and are gated a second time
-by a list of who may use them. They are in the **administrator documentation**,
+**The `OS` verb is the exception and is not documented here.** `sh`
+reaches the operating-system shell and is gated by a per-account switch. It is in the **administrator documentation**,
 under *Operating System Access*, which is a separate set.
 
 ## See also

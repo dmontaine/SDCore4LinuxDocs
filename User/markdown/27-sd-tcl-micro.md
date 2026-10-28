@@ -107,7 +107,7 @@ recognises. A record edited out of any other file is plain text.
 | | |
 |---|---|
 | **the working copy** | the record is copied into `$hold` as *record*`.editing`, and micro is run on that. It is removed on every exit, including the ones that fail |
-| **saving** | *"Save? &lt;Y&gt;es, &lt;N&gt;o"*, then for a `bp` record *"Compile?"* and *"Catalogue?"* |
+| **saving** | *"Save? &lt;Y&gt;es, &lt;N&gt;o"*, then for a `bp` record *"Compile?"* and *"Catalog?"* |
 | **a `dict` record** | is always saved and re-compiled with `compile.dict` |
 | **finishing** | *"&lt;E&gt;xit or &lt;R&gt;e-edit"*, so a compile error can be fixed without starting again |
 

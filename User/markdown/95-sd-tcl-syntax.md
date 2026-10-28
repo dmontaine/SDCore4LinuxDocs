@@ -12,7 +12,7 @@ folds case, so any of this may be typed in either case.
 > **This page is generated, and it is checked for completeness rather
 > than proof-read for it.** The roster is computed from SD's own VOC:
 > every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **211** verbs, and `tools/mktclsyntax.py` refuses to
+> has, which is **210** verbs, and `tools/mktclsyntax.py` refuses to
 > write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
@@ -23,14 +23,13 @@ not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
-| **every account** | 164 verbs | `newvoc`, identical for every ordinary account |
+| **every account** | 163 verbs | `newvoc`, identical for every ordinary account |
 | **SDSYS only** | 47 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
 | | syntax | who |
 |---|---|---|
-| **`!`** | **`!`** *command* |  |
 | **`abort`** | **`abort`** {*message*} |  |
 | **`ai`** | **`ai`** *text*  —  ask the AI the administrator has chosen: you see what will be sent and say yes first; put text that ends with **`?`** in quotes (needs the account's **`ai`** gate: **`modify.account`** *account* **`ai-on`**) |  |
 | **`alias`** | **`alias`** *command* *target* |  |
@@ -215,7 +214,7 @@ not refused — the name is simply not recognised.**
 | **`stop`** | **`stop`** |  |
 | **`sum`** | **`sum`** {**`dict`**} *file* {*selection*} *field* |  |
 | **`sync.masters`** | **`sync.masters`** {*account*} | S |
-| **`term`** | **`term`** \| *width*{`,`*lines*} {*type*} \| **`colour`** *bg*{`,`*fg*} \| **`default`** \| **`display`** |  |
+| **`term`** | **`term`** \| *width*{`,`*lines*} {*type*} \| **`color`** *bg*{`,`*fg*} \| **`default`** \| **`display`** |  |
 | **`time`** | **`time`** \| **`internal`** |  |
 | **`tool.accounts`** | **`tool.accounts`**  —  the accounts on one screen (administrator): every account with its kind, suspension, gates that are on and sessions; **`modify.account`** (suspend, add or take away a person) and **`create.account`** behind a box answered Run, and **`delete.account`** after the name is typed, with the terminal given to the verb where it asks for a password or confirms | S |
 | **`tool.ai`** | **`tool.ai`**  —  the AI choice page (administrator): the provider with a check box, its model and key, Custom, and which accounts may use the AI | S |

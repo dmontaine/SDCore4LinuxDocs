@@ -60,7 +60,6 @@ Dynamic files take parameters, all optional:
 | `group.size` *n* | group size in 1 KB units |
 | `large.record` *n* | the size above which a record is stored separately |
 | `split.load` *n* · `merge.load` *n* | the load factors that trigger growth and shrink |
-| `version` *n* | file format version |
 | `directory` *path* | put the file at *path* instead of in the account |
 | `no.case` | record ids are case-insensitive |
 | `no.resize` | disable automatic resizing |
@@ -86,9 +85,8 @@ The parameters are the `create.file` ones, plus `immediate` to do the work now
 rather than lazily, and `dynamic` or `directory` to change the file's kind.
 `default` puts the settings back.
 
-**Two of them restructure the whole file.** Changing `group.size` or `version`
-requires a full restructure; the rest take effect without one. Plan for the time
-and the disk on a large file.
+**Changing `group.size` restructures the whole file**; the other parameters take effect without
+a restructure. Plan for the time and the disk on a large file.
 
 **`reporting`** shows how far the work has got: a line *1000 records converted* at every thousand
 and the total at the end, when `dynamic` or `directory` converts the file, and *n groups moved* in the same way
@@ -100,7 +98,7 @@ on and off. For a directory file, `binary` turns on mark mapping.
 **`next` *n*** sets the next record id that `write … creating.seqkey` will give out in a
 **hashed** file (see [SD Basic - File Handling](07-sd-basic-file-handling.html)); **`next query`** says
 what it is (*The next sequential record id is 103*). A new file's counter is 1, `clear.file` keeps it (SD's behaviour), and rebuilding a file
-with a different group size or version carries the counter over. A file made by `copy` starts its own
+with a different group size carries the counter over. A file made by `copy` starts its own
 counter at 1; `write … creating.seqkey` skips an id that already names a record. A directory file is refused:
 *NEXT applies to a hashed file only*.
 

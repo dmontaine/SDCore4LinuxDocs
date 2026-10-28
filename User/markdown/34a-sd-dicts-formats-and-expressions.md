@@ -185,13 +185,12 @@ An I-type may begin with `$MODE`, a list of mode names and a semicolon, as a pro
 
 ```
 $MODE NOCASE.STRINGS ; COUNT(F1, 'AA')
-$MODE NOCASE.STRINGS,TIME.MS ; INDEX(F1, 'AA', 3)
+$MODE NOCASE.STRINGS ; INDEX(F1, 'AA', 3)
 ```
 
 | mode | |
 |---|---|
 | `NOCASE.STRINGS` | string comparisons and the string functions ignore case |
-| `TIME.MS` | `TIME()` returns the seconds since midnight to the millisecond, as a number with a fraction |
 
 These are the same modes, with the same meanings, as in
 [SD Basic - Program Structure](01-sd-basic-program-structure.html).
