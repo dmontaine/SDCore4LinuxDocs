@@ -101,7 +101,7 @@ SD refuses each of these.
 | `option qmbasic.warnings` | the shortcut is `option sdbasic.warnings` |
 | `option x` *hex.string* | not provided; set the options one by one |
 | `option no.echo.data` | a compiler mode: `$mode no.echo.data` |
-| `option create.file.no.case`, `option create.dict.no.case` | not provided; give `no.case` on the `create.file` that makes the file (see [Lower case](11-lower-case.html)) |
+| `option create.file.no.case`, `option create.dict.no.case` | not provided; every file `create.file` makes is case insensitive (see [Lower case](11-lower-case.html)) |
 | `option keep.filename.case` | not provided: a new file is always named in lower case (see [Lower case](11-lower-case.html)) |
 | `option pick`, `assoc.unassoc.mv`, `pick.breakpoint`, `pick.breakpoint.u`, `pick.explode`, `pick.grand.total`, `pick.implied.eq`, `pick.null`, `pick.wildcard`, `qualified.display`, `with.implies.or`, `query.no.case`, `query.priority.and` | removed on 27 October 2026, with the Pick style of query they switched on: write `with city = "Reno"`, put the text after a `break.on` field the way SD does, and use the `like` operator for wildcards, `or` and brackets for the order of tests, and `no.case` after an operator or `option query.sort.no.case` for case |
 | `option ampm.upcase`, `crdb.upcase`, `no.date.wrapping`, `space.mct`, `lock.beep`, `ed.no.query.fd`, `create.file.upcase`, `select.keep.case`, `debug.rebind.keys`, `proc.a` | removed on 27 October 2026: the output is as the default always was (`am`, `cr`, `db`), a date such as 31 February rolls into the next month, a lock wait is silent, and `fd` in `ed` asks before it deletes |

@@ -17,7 +17,6 @@ record. The record id is the file name.
 | Record id | the file name |
 | Readable by | any text editor or Linux program |
 | Record ids | matched case insensitively |
-| `create.file` option | `no.case` for explicit case-insensitive ids |
 
 The `bp` file is a directory file. VOC, `batch.jobs`, and the
 dictionaries are all directory files.

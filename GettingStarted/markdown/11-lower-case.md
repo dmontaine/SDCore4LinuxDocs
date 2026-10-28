@@ -51,11 +51,10 @@ commands, VOC entries, source, account ids — never the records an
 application stores in its own files. What you put in your own data keeps
 whatever case you gave it.
 
-**`create.file`** also takes a `no.case` option, which creates a file whose
-record ids are treated as case insensitive regardless: SD writes records
-preserving the casing given by whatever performs the write, and reads
-locate records regardless of casing. That is an opt-in choice for a file
-where you want it, not the system default.
+Every file `create.file` makes treats record ids as case insensitive (there is
+no `no.case` or `case` word to give it): SD writes records preserving the
+casing given by whatever performs the write, and reads locate records
+regardless of casing.
 
 ## One correction worth reading
 
