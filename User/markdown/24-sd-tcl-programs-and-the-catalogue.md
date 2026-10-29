@@ -342,9 +342,22 @@ up and down arrows stop at the first and last line.
 of the VOC, or a record of a data file. The kind decides the marks (below) and the gate that a save
 asks: a program asks `bp.edit`, a dictionary item `dict.edit` and a VOC record `voc.edit`, as SED and
 `ed` do, and the refusal is shown in a box that says which switch and what the administrator can do.
-Compile and Catalogue on a dictionary item say it is not a program. A collection-file record is
-refused with a message for now; a dictionary named in the New record form is not yet taken (use
-`ide dict`).
+Compile and Catalogue on a dictionary item say it is not a program. A dictionary named in the New
+record form is not yet taken (use `ide dict`).
+
+**A record of a collection file opens as the text of its JSON** (since 29 October 2026; it was refused
+before), one element to a line, in a tab of its own. You edit the text as any other; **Ctrl-S parses it and
+writes the COLLECTION to the file**, and the tab keeps the text in the same layout (`jbuild` with the pretty
+mode, the layout `ct` shows) so that a text you typed compact is not "changed" for ever. Text that is not a
+JSON object or array is refused in a box that says where the parse stopped, and the record on the disk is
+untouched. **Edit as fields (F12) hands the collection to CED** (the data collection editor, which writes
+nothing and takes no lock) and brings the JSON text of what CED kept back into the tab; the save is the IDE's.
+A record that is not there opens as a new `{}`. Compile, run, debug, catalog, SED, Save as and the include do
+not apply to such a tab (the IDE says so); **Write a copy keeps its JSON text in a record of an ordinary
+file, and a text cannot be saved into a collection file under a new name** (New record makes a record of
+it). A record that is neither an object nor an array (a plain value) is refused, and the lock goes back.
+The record is locked while the tab is open, as any record is. Find in the records still skips collection
+files.
 
 **A record open in a tab is locked for as long as the tab is open** (since 28 October 2026), as in
 SED. If another session already holds it the tab opens **read-only** and the status line says which
@@ -525,7 +538,7 @@ with the recovery copy on it is moved to your home, with it off it stays where i
 the recovery copy off does not delete copies that exist. `sed` and `ced` keep none.
 
 **What it does not do:** it has no replace across records, no project files and no completion, and it does
-not yet edit collection-file records, and it opens an operating-system file only by `path:` (it cannot make
+edit collection-file records only as JSON text or fields, and it opens an operating-system file only by `path:` (it cannot make
 one, save under another path or browse directories yet; SED's own `path:` form no longer opens one).
 
 **The IDE is laid out for 140 columns by 43 lines or more** (it was 140 by 42
