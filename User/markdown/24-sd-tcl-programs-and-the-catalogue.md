@@ -276,17 +276,24 @@ The names are sorted on their own; the program is the one that executed the
 ## One screen for the lot: `ide`
 
 ```
-ide {file record}
+ide {file {record}}
+ide dict file {record}
+ide voc {record}
 ```
 
 Opens a full-screen environment for BASIC programs and the other text records
 of an account, built on the screen library. `ide file record` starts on that
-record. It needs a terminal and **stops in a phantom**.
+record. **`ide dict file record` starts on an item of the file's dictionary and `ide voc record` on a
+record of the account's VOC** (since 28 October 2026). A record that does not exist yet opens as a new,
+unsaved one, after the account's gate allows it; **`creating.seqkey` in place of the record name takes the
+file's next sequential id** (in quotes it is a record of that name). With a select list active,
+`ide file` opens the first ten records of the list in tabs and lists them all. It needs a terminal and
+**stops in a phantom**.
 
 | part | what it is |
 |---|---|
 | menu bar | the top row; F10 or Esc opens it, and a click on a title opens that menu (since 19 October 2026; a click on the bar beside the titles does nothing) |
-| tree | the account's files on the left (**the entries whose names start with a dollar sign - `$acc`, `$hold`, `$map`, `$release` - are not listed**, since 28 October 2026: they belong to SD itself). Return on a file lists its records (the first 2000), and Return again closes the list. Return on a record opens it. A letter jumps to the next entry that starts with it |
+| tree | the account's files on the left (**the entries whose names start with a dollar sign - `$acc`, `$hold`, `$map`, `$release` - are not listed**, since 28 October 2026: they belong to SD itself). Return on a file lists its records (the first 2000, and a message says when there are more; a big file is no longer read whole first), and Return again closes the list. **A file that has a dictionary shows the dictionary as a node of its own under it** (since 28 October 2026), read only when you open it, and its items are listed the same way. Return on a record opens it. A letter jumps to the next entry that starts with it |
 | editor | on the right, a tab for each open record. **While it has the focus the character at the cursor is shown in the highlight style** (as well as the terminal's own cursor being put there), so the place shows on a terminal that draws its cursor poorly. It is the text area `screen memo` uses, so its keys are `memo`'s: selection, cut, copy and paste, undo and redo, find, line numbers. Text is coloured as SD BASIC, C, Python, JSON, shell or Markdown **chosen as [SED](27a-sd-tcl-sed.html) chooses** (since 26 October 2026): by the name of the file, then the record id, then the first line - so a script with no suffix that begins `#!/bin/sh` is shell - and then the languages a site added in `&sed.syntax&`. **A horizontal scroll bar runs along its bottom row** (`<` and `>` at the ends, a thumb as long as the visible part is of the longest line; none to speak of when every line fits); clicking an arrow scrolls 8 columns and clicking the track a page |
 | table | under the editor: the compiler's errors, or search results |
 | pane marks | **`[*]` or `[-]` in the top right corner of each pane that can have the keyboard** (since 19 October 2026): the files (on the frame above the tree), the editor (on the frame above it), the tab strip (at its right end) and the messages (at the right end of their bar). `[*]` is on the pane that has the keyboard, `[-]` on the others; Tab moves it round in that order |
@@ -312,6 +319,8 @@ record. It needs a terminal and **stops in a phantom**.
 | Search, Find in the records | find a text in every record of the file the tree is on (the first 2000 records, 500 lines), listed in the table; Return opens the record at the line. It has no key (F11 was it) |
 | Ctrl-E · Go, Edit in SED | edit the record in [SED](27a-sd-tcl-sed.html) and come back (below) |
 | F12 · Go, Edit as fields | edit the record as a tree of fields, values and subvalues in [CED](27b-sd-tcl-ced.html) and come back (below) |
+| Tab · Shift-Tab | in the editor, **indent and outdent** the line or the selected lines (below); in the tree, the tabs, the messages and every form Tab moves to the next control as before |
+| Go, Open the include | the record that the `$include` line at the cursor names, in a tab: one name is looked for in the file the tab is in and then in `syscom`, two words name the file; a collection-file record is passed over, and one that is not found says where it looked. It has no key |
 
 **A bare `ide` opens "Untitled 1"** (since 28 October 2026): an editable buffer, coloured as a
 program, with the cursor in it and the tree two keys away (Shift-F6 twice) or in the Go menu. Type, then save: **the name form** asks
@@ -327,6 +336,40 @@ lock**, and if the file refuses it (a trigger, a full disk) the IDE says so and 
 editor. A refusal by the edit gate on a save is shown whole in a box. **Catalogue reports "Catalogued"
 only if `catalog` said it added the program**; otherwise its answer is shown in a box. In the editor the
 up and down arrows stop at the first and last line.
+
+**Each tab has a kind** (since 28 October 2026): a program, an item of a file's dictionary, a record
+of the VOC, or a record of a data file. The kind decides the marks (below) and the gate that a save
+asks: a program asks `bp.edit`, a dictionary item `dict.edit` and a VOC record `voc.edit`, as SED and
+`ed` do, and the refusal is shown in a box that says which switch and what the administrator can do.
+Compile and Catalogue on a dictionary item say it is not a program. A collection-file record is
+refused with a message for now; a dictionary named in the New record form is not yet taken (use
+`ide dict`).
+
+**A record open in a tab is locked for as long as the tab is open** (since 28 October 2026), as in
+SED. If another session already holds it the tab opens **read-only** and the status line says which
+user holds it: it cannot be changed or saved, and Write a copy keeps its text under another name.
+Closing the tab, quitting, a lost connection or any other way out gives the locks back; Run, Debug,
+SED and CED keep them while they run. **An IDE left open therefore blocks other sessions and batch
+writes on those records** until it is closed, AUTOLOGOUT ends it or the administrator's
+`tool.sessions` page unlocks them. A new record is locked for its creation, and one that another
+session is making is refused. Compile, Run, Debug and Catalogue work on a read-only tab that has no
+changes (they save first only when there is something to save).
+
+**A record that holds characters outside ASCII (bytes 128 to 247) opens read-only too** (since
+28 October 2026): another character set's letters, or UTF-8. The editor shows such a character a byte at a
+time and could not be trusted to keep it as it is, so Save, Save as, Write a copy, Replace, Edit as
+fields and an AI edit are refused, in a box, and nothing is decoded or changed. The marks 248 to 255
+are SD's own and go through the token form below.
+
+**Tab and Shift-Tab indent and outdent in the editor** (since 28 October 2026): Tab puts blanks in up to
+the next stop (every 3 columns) or, with lines selected, indents them; Shift-Tab takes the indent out;
+each is one undo step and neither ever puts a tab character in. This is the IDE's editor only: a
+program's own `screen memo` keeps its Tab. F6 and Shift-F6 move between the panes.
+
+**If `autologout` is set** (the default is off) **the status line counts down the last 60 seconds** before
+the session would be signed out: *Idle: signing out in 42 s*, followed by *; unsaved changes will be
+lost* when there are any, or *; a recovery copy is kept* when the recovery copy below is on. Any key
+stops it. It reads the same inactivity clock that `autologout` uses, so a wait for the AI counts.
 
 Run and debug give the terminal to the program and come back to the IDE when
 you press Return. **Nothing runs if the compile failed.** If somebody else has
@@ -363,7 +406,9 @@ tab as it was (*Back from the fields: bp prog is as it was*); if you pressed Ctr
 changed more, *No* gives you what Ctrl-S kept. With no record open, F12 says so.
 
 **A record that holds marks is shown with the marks written as tokens** (since 26 October 2026), so
-that nobody types one. A value mark is `@vm`, a subvalue mark `@sm` and a text mark `@tm`, joined to
+that nobody types one. Since 28 October 2026 this follows the tab's kind: **a dictionary item, a VOC record
+and a record of a data file are always shown so, even one that had no marks when it was read**, so that a mark
+can be typed into it; **a program never is**. A value mark is `@vm`, a subvalue mark `@sm` and a text mark `@tm`, joined to
 the text beside them by a colon as in BASIC: the field *Don, Henry, June* with value marks between
 is shown as `Don:@vm:Henry:@vm:June`. A mark at the start or the end has no text beside it
 (`@vm:Henry`, `Don:@vm`), two together are `a:@vm:@vm:b`, and a text may hold colons
@@ -372,8 +417,8 @@ Ctrl-S, and the record on disk holds a fourth value. Reading accepts upper case 
 shows lower case. A token is the word on its own, at the start of the line or after a colon and at
 the end of the line or before a colon, so `x@vm` is text. Field marks are the lines, as they always
 were. The tab keeps the real record all the time; only the editor's text is converted, and only for
-a tab whose record **had marks when it was read** - so a program that mentions `@vm` in its source
-is never changed. The status line says *Marks are shown as @vm, @sm and @tm; typed so, they are read
+a tab of a dictionary item, a VOC record or a data record (a program tab never is, so a program
+that mentions `@vm` in its source is never changed). The status line says *Marks are shown as @vm, @sm and @tm; typed so, they are read
 back as marks* when a record opens this way. **A record with a field that holds the text of a token
 - a field that is just `@vm` - cannot be shown so, because the text would be read back as a mark.**
 It is shown as it is, with the marks drawn as the characters they are, and the status line says
@@ -425,19 +470,24 @@ and scroll bars use line-drawing characters; elsewhere `+ - |`. The colours are
 the blue theme.
 
 **A recovery copy of text you have not saved** (since 28 October 2026), **if the administrator has turned it
-on for your account** (`modify.account` *account* `recovery-on`; it is off as delivered). Then the IDE copies the
-text of every changed record into the directory `$recovery` of your account, readable only by you, after a
-second without typing, before it hands the screen to a program, and when the session ends. The copy is
-deleted when you save, close or quit normally. If the terminal closes, the connection drops or the IDE is
-aborted, the next time you open that record the IDE asks whether to **use the copy**, **delete it**, or
-**not open the record**; a text typed in an untitled buffer is offered in a new tab. The record itself is
-not changed until you save. It is kept only in a user account for its own person, not in a group or other
-account and not for the administrator; the copies are included in
-`backup.account` archives; and `sed` and `ced` keep none.
+on for your account** (`modify.account` *account* `recovery-on`, for a user account; it is off as delivered). Then
+the IDE copies the text of every changed record after a second without typing, before it hands the screen to a
+program, and when the session ends. **The copies are in your own Linux home**, in
+`~/.local/state/sd/recovery/<account>/` (the home the password database gives your Linux user, never the `HOME`
+variable), readable only by you and **outside every account, so `backup.account` never contains them**. They are
+made only when your home and every directory below it are a real directory of yours that nobody else can write,
+and every directory above the home belongs to root or to you and cannot be written by group or other (a sticky
+one such as `/tmp` excepted): a home under a group-writable directory gets no copies. The copy is deleted when
+you save, close or quit normally. If the terminal closes, the connection drops or the IDE is aborted, the next
+time you open that record the IDE asks whether to **use the copy**, **delete it**, or **not open the record**
+(which keeps it); a text typed in an untitled buffer is offered in a new tab. The record itself is not changed
+until you save. A copy that the first version left in the directory `$recovery` of your account is still offered:
+with the recovery copy on it is moved to your home, with it off it stays where it is until you answer. Turning
+the recovery copy off does not delete copies that exist. `sed` and `ced` keep none.
 
-**What it does not do:** it does not lock records while they are open (the check
-at saving is what protects against a second editor), has no replace across
-records, no project files and no completion.
+**What it does not do:** it has no replace across records, no project files and no completion, and it does
+not yet edit collection-file records or operating-system files (SED's `path:` form no longer opens one
+either).
 
 **The IDE is laid out for 140 columns by 43 lines or more** (it was 140 by 42
 until 28 October 2026, and 60 by 16 before 18 October); a bigger window is used

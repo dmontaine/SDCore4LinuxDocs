@@ -19,7 +19,11 @@ It needs a window of at least **140 columns by 43 lines** (the same as the other
 full-screen tools) and a real terminal. In a smaller window it says so, with the
 size it found, and leaves you at the prompt; in a session with no terminal (a
 pipe, a phantom, a script) it says `home needs a terminal` and reads nothing, so
-a script is never taken for someone typing.
+a script is never taken for someone typing. **In a bigger window the tiles spread over
+the whole window** (since 28 October 2026): as many columns of tiles as fit, each tile a little
+wider, and the page follows the window when it is resized; at 140 by 43 it looks as it always did.
+If the window is made smaller than 140 by 43 while the home screen is up, it holds the keyboard
+behind a warning that gives both sizes until the window is big enough again.
 
 ## What is on it
 

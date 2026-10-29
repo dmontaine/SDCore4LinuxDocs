@@ -14,6 +14,13 @@ access: every change they make is a command you could have typed, run for you af
 exact command. A gate that is off for your account is met as the command's own refusal; the page shows
 the gates you hold, and never tries an operation to find out.
 
+**In a window bigger than 140 by 43 the pages use the whole window** (since 28 October 2026): the lists show
+more rows, the boxes are wider, a long explanation is wrapped at the width of its box instead of being cut,
+and a page follows the window when it is resized, also while a question or a menu is open. At 140 by 43 each
+page looks exactly as it did. 140 by 43 is still the smallest window: if the window is made smaller while a
+page is up, the page holds the keyboard behind a warning that gives both sizes, until the window is big enough
+again (Ctrl-Q, then y, leaves). The administrator's pages and the home screen do the same.
+
 The box that asks before a command is titled *Run this command?*. The few changes that are not commands -
 a record the page writes or deletes itself - say what they are about to do instead: *Write this record?*
 (an item of a dictionary in `tool.dict`, a saved query in `tool.query`), *Delete this record?* (a saved
@@ -115,7 +122,7 @@ the **gates your session holds**, as `tool.files` does.
 | key | does |
 |---|---|
 | Up, Down, PgUp, PgDn, Home, End | move the cursor |
-| **E** | edit the entry in SED (`sed voc name`): the terminal is handed to SED, and Enter brings the page back at the same entry |
+| **E** | edit the entry in the [IDE](24-sd-tcl-programs-and-the-catalogue.html) (`ide voc name`; since 28 October 2026 it was SED): the terminal is handed to the IDE, and leaving it brings the page back at the same entry |
 | **D** | delete the entry (`delete voc name`) after a box that shows the command, with the id typed |
 | **T** | choose the type shown: all, verbs, files, pointers, paragraphs and sentences, other |
 | **S** | choose the state shown: all, only the entries that differ from the shipped VOC, only broken pointers |
@@ -125,10 +132,10 @@ the **gates your session holds**, as `tool.files` does.
 | F1, **?**, a click on **[?]** | help |
 | Ctrl-Q | leave |
 
-**The page writes nothing itself.** A record is changed by SED, which the page starts, or by `delete`, which
+**The page writes nothing itself.** A record is changed by the IDE, which the page starts, or by `delete`, which
 it runs; both are ordinary commands with their ordinary checks. Writing the VOC by hand needs the
-**`voc-edit`** gate: without it SED's save and the delete are refused by the kernel and the entry is left as
-it was. A VOC pointer made by an ordinary command such as `create.file` is not held back by the gate.
+**`voc-edit`** gate: without it the IDE's save and the delete are refused and the entry is left as
+it was (the IDE says why, in a box). A VOC pointer made by an ordinary command such as `create.file` is not held back by the gate.
 
 **An id the page does not give to a command.** As in `tool.files`, only ids of letters a-z, digits, dot,
 dash and underscore are put into a command. A VOC id may have much else (a capital, `$`, `%`, `&`); such an
@@ -176,7 +183,7 @@ and whether it has been compiled, and the record as it is stored.
 |---|---|
 | Up, Down, PgUp, PgDn, Home, End | move the cursor |
 | **N** | make an item: asks the id, then the type (data, A-type or indirect) and the fields that type needs, one at a time, checking each answer |
-| **E** | edit the item in SED (`sed dict file item`): the terminal is handed to SED, and Enter brings the page back at the same item |
+| **E** | edit the item in the [IDE](24-sd-tcl-programs-and-the-catalogue.html) (`ide dict file item`; since 28 October 2026 it was SED): the terminal is handed to the IDE, and leaving it brings the page back at the same item |
 | **D** | delete the item (`delete dict file item`) after a box, with the item's id typed |
 | **C** | compile an A, S or I item (`compile.dict file item`) after a box |
 | **T** | try the item on a record of the file: asks the record's id and shows the value the query processor would compute for it, and the same value as a query prints it |
@@ -231,7 +238,7 @@ file open the verb says so and nothing changes. The page itself keeps no file op
 index then ask for the id or name, **typed**; a wrong one does nothing. The commands are the ordinary verbs, so
 their checks are the checks, and what the verb says is what the status line shows.
 
-**Gates.** Writing a dictionary needs the **`dict-edit`** gate: without it the page's own write (N), SED's save
+**Gates.** Writing a dictionary needs the **`dict-edit`** gate: without it the page's own write (N), the IDE's save
 (E) and the `delete` verb (D) are refused, and the record is left as it was. Compiling an item (C) and making,
 building and deleting indices are not held back by it. The page shows whether you hold `dict-edit`, asked of the
 system, and the box for N and D says when the change is expected to be refused. The administrator turns the gate
@@ -239,7 +246,7 @@ on for an account with `modify.account` (see *Accounts and Security*). The dicti
 follow the shared account's own rules and are not changed from here.
 
 **Limits.** The page makes data, A-type and indirect items; other kinds (links, phrases, text, collection
-elements, S types) are listed, described, tried where they hold a value, and edited in SED. It does not copy
+elements, S types) are listed, described, tried where they hold a value, and edited in the IDE. It does not copy
 items between files, and it does not edit the master dictionary (that is the administrator's). Indices are made
 with the verb's defaults (`no.nulls`, `no.case` and `pathname` are typed at the prompt), and the list of files
 counts indices only for dynamic files. A dictionary of more than 3,000 items shows the first 3,000 and says so.
@@ -257,7 +264,7 @@ item or index with such a name is listed, but the page does not give it to a ver
 and typing it at the prompt is then your own act. Making an item (N) with such an id is refused, and the question says why.
 
 **Which lines are boxes.** Deleting, compiling, and making, building and deleting an index show the exact command
-in a box. Making an item (N) shows the record the page writes, which no verb takes. Editing in SED (E) and listing
+in a box. Making an item (N) shows the record the page writes, which no verb takes. Editing in the IDE (E) and listing
 an index (L) hand the terminal over with no box.
 
 ## tool.query - the query and report builder

@@ -975,7 +975,8 @@ since 19 Oct.)
 tool.accounts
 ```
 
-A full-screen page in SDSYS's VOC only (a window of 140 columns by 43 lines or more). The list is every
+A full-screen page in SDSYS's VOC only (a window of 140 columns by 43 lines or more; in a bigger window this page, like every
+administrator page, uses the whole window, with more rows and wider boxes, and follows a resize). The list is every
 registered account but SDSYS: its name, its kind (user, group or other), whether it is suspended, **the
 gates that are on for it** (read the way `tool.gates` reads them: the register and the Linux groups) and
 how many sessions are signed on in it. The box at the foot shows the account under the cursor as the
@@ -1150,26 +1151,41 @@ Account fred keeps a recovery copy of unsaved editor text: yes
 
 With `recovery-on` the `ide` of that account copies the text of every record it has changed and not
 saved: after a second without typing, before it hands the screen to a program, and when the session
-ends. A hung-up terminal, a lost connection or an abort then does not lose the text. The copy sits in
-the directory `$recovery` of the account, one file per record, readable only by the person; it is
-deleted when the person saves, closes or quits normally, and the next time the record is opened the
-`ide` asks whether to use the copy, delete it, or leave the record unopened. The record itself is never
-changed until the person saves. `sed` and `ced` keep no copies.
+ends. A hung-up terminal, a lost connection or an abort then does not lose the text. **Since 28 October 2026
+the copy sits in the person's own Linux home**, in `~/.local/state/sd/recovery/<account>/` (the home the
+password database gives their Linux user, never the `HOME` variable), one file per record, readable only by
+the person, **outside every account**; it is deleted when the person saves, closes or quits normally, and the
+next time the record is opened the `ide` asks whether to use the copy, delete it, or leave the record
+unopened (which keeps it). The record itself is never changed until the person saves. `sed` and `ced` keep
+no copies.
 
 * **Off as delivered.** `create.account` and an existing account have it off until you say so. `recovery-off`
   is the word for `modify.account` only (as `pins-off` is); `create.account` takes `recovery-on` alone, and
   the audit line of a `create.account` that used it ends `gates=` with `recovery-on` among the words.
-* **User accounts only, and never for the administrator.** A group or other account is entered by several
-  people, any of whom could replace the directory, and SDSYS signed on in somebody else's account would be
-  writing into a directory that person controls. `recovery-on` for a group or other account is refused
+* **User accounts only, as the verbs have it.** `recovery-on` for a group or other account is refused
   ("... is not a user account, and a recovery copy is kept only in a user account, for its own person; nothing
-  was changed"), and neither kind of account, nor the administrator, ever gets a copy.
-* **You cannot read the copies, by design.** `modify.account` runs as `sdsys`; the directory and the files are
+  was changed"). That was needed while the copies sat in a directory of the account that several people
+  could replace; with the copies in each person's own home the technical reason is gone, and the refusal is
+  now only a rule of the two verbs, kept until it is decided to allow the switch for those accounts. The
+  administrator is not given a copy either, by the same rule.
+* **Where, and when there are none.** The copies are made only when the person's home and every directory
+  below it (`.local`, `state`, `sd`, `recovery`, the account's own) are real directories of that Linux user
+  that nobody else can write, and every directory **above** the home belongs to root or to that user and
+  cannot be written by group or other (a sticky one such as `/tmp` excepted). A home under a group-writable
+  directory therefore gets no copies, and the `ide` says the copy could not be written; the text is still in
+  the editor. A person who runs SD as root has no home that is trusted and gets none.
+* **You cannot read the copies, by design.** `modify.account` runs as `sdsys`; the directories and the files are
   mode 700 and 600 for the person. `recovery-off` stops new copies; copies already made stay and are still
   offered to the person.
+* **Copies the first version left.** A copy in the directory `$recovery` of the account (kept there until
+  28 October 2026) is still offered once: with `recovery-on` it is moved to the person's home, with the
+  switch off it stays where it is until the person answers (use it or delete it; leaving the record
+  unopened keeps it).
 * **When it reaches a session.** `recovery-off` stops new copies at once. A running `ide` learned at its start
   whether to keep copies, so `recovery-on` reaches it the next time the person starts the `ide`.
-* **The copies are part of the account.** `backup.account` archives include them, and `restore.account`
+* **The copies are not part of the account.** `backup.account` archives do not contain them (they are in the
+  person's home, not in the account), so a text that was not saved never ends up in a backup that
+  the administrator can read; the person's own backup of their home does contain them. `restore.account`
   puts the account back with the switch it had.
 
 ### Where a session starts: `start-menu`, `start-terminal`, `start-default` and `set.start.default`

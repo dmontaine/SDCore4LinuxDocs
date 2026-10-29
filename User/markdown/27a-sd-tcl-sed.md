@@ -32,7 +32,7 @@ marks a word typed as it stands; braces mark an optional part.
 | `sed bp creating.seqkey` | edit a new record under the file's next sequential id (the counter `write … creating.seqkey` uses); also with `dict`, and typed at the *Record name* prompt. The id is taken when the edit begins, so a record never filed leaves a gap. A directory file or a file opened read only is refused; in quotes it is an ordinary id |
 | `sed` *file* | with a select list active, SED offers to edit its records one after another; with none, it asks for the record names until you give a null one |
 | `sed` | asks for the file name, then the record name |
-| a file name written `path:/home/pat/notes.txt` | an operating-system file by its path. An account needs `os-on` for a path outside its own directory; without it SED says the account has no OS access |
+| a file name written `path:/home/pat/notes.txt` | **no longer opens anything** (since 28 October 2026). The `path:` form of a file name went with `FILERULE` when the second ways of naming a file were removed; SED still asks the account's OS gate first (an account without `os-on` is told it has no OS access) and then cannot open the file, and it no longer retries the name in upper case. `ide` will edit operating-system files behind the same gate; until then, [micro](27-sd-tcl-micro.html) edits them |
 
 With a select list, SED shows the first id and asks whether to use the list
 (`Y` or `N`). Leaving one record goes on to the next.
@@ -342,7 +342,7 @@ prefix of most of the less common actions again). The command line's
 ## What SED edits
 
 It edits **a record of any SD file** — program source, a dictionary item, a
-record of a data file — and, by `path:`, an operating-system file. It locks
+record of a data file. (It edited an operating-system file by `path:` until the `path:` form of a file name was removed.) It locks
 the record while it is open. **A second user who opens a record someone else
 holds gets it read-only**, and cannot save it; a record that does not exist yet
 and is being created by someone else is refused. *Release lock*, on the Tools

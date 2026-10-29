@@ -138,7 +138,10 @@ The Hot Spot Monitor. `display` is the default. It counts each program's
 opens, reads, writes and deletes as well as its calls and processor time, and
 the report has a column for each. **What a program asks for through the `open`
 of a name (its VOC lookup), or through `readv` and `writev`, which read and
-write the record themselves, is not counted against it.**
+write the record themselves, is not counted against it.** `hsm user n` shows
+another session's program names and file names, and since 28 October 2026 each
+control character, `del`, byte from 128 to 159 and mark character in them is shown as `?`,
+so that a session cannot send a code to your terminal by what it opens (as `pstat` does).
 
 ```
 profiler on {user n} {event ...}
@@ -154,6 +157,10 @@ are `call` (a subroutine), `open`, `read` (including `readu`, `readv` and
 `matread`), `write`, `delete`, `openseq`, `readseq`, `writeseq`, `execute` (the
 first 32 characters of the command) and `object` (a call of a class module's
 object). Name some after `on` to log only those; none means all of them.
+
+The names the display shows (files, subroutines, commands, programs) are made safe to
+print in the same way, since 28 October 2026: a control character, `del`, a byte from 128 to 159 or
+a mark character is shown as `?`.
 
 `display` is a list of the event types with a count of each. Type the **number** of
 a line to open it: the names the events were on (the file, the subroutine, the
