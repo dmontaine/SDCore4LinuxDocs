@@ -34,7 +34,7 @@ change: what it does, why, and what it does not do. This document is the short f
 | `intprec` and `sortmem` | Changed | were 13 and 1024; now **11** and **4096** (set the old values in `sd.conf` if you need them) |
 | Removed features | Removed | words and modes that existed to imitate other products (so far 55 `option` words, 35 `$mode` words, and the second spellings and forms of statements, clauses, functions, conversions, TCL verbs and query keywords, each listed in [REMOVED](#removed)), and other things: see [REMOVED](#removed) |
 | `sed` keys | Changed | were Emacs keys with Ctrl-X sequences; now the keys most editors have (Ctrl-PageDown / Ctrl-PageUp, and Alt-PageDown / Alt-PageUp for a terminal that keeps the Ctrl keys for its own tabs, switch buffers), and `emacs` in `&sed.options&` keeps the old layout |
-| `sed`, `ide`, `ced` | Changed | were 120 by 36 or less; now need a window of at least **140 by 42**, and `ed` is the editor for a smaller one |
+| `sed`, `ide`, `ced` | Changed | were 120 by 36 or less; now need a window of at least **140 by 42** (the `ide` **140 by 43**), and `ed` is the editor for a smaller one |
 | `select file field` | Changed | a field not otherwise used was ignored; now it is `saving multivalued field`, so the list holds the values |
 | The default terminal | Changed | was 120 columns by 36 lines; now **140 by 42** (a LIST fills 41 lines before it pauses) |
 | The group size of a new file | Changed | was 2 KB (1 KB when `sd.conf` did not say); now **4 KB** on a new installation. An installed system keeps its `sd.conf`, and so its 2, and a file keeps the size it has |
@@ -715,7 +715,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 
 | Name | Change | What |
 |---|---|---|
-| 140 by 42 layout | Changed | `ide`, `sed`, `ced` and the debugger: 140 by 42, refused below it, survive a window made smaller, take no keys while the cursor is off the screen |
+| 140 by 42 layout | Changed | `sed`, `ced` and the debugger: 140 by 42, refused below it, survive a window made smaller, take no keys while the cursor is off the screen (the `ide` is 140 by 43, see its window lock) |
 | `ced` data mode | Added | edits a multivalue record as a tree of fields, values and subvalues (a text or a list; a list never below the second level), so that nobody types a mark; started by `ide` F12 |
 | `debugger` full-screen display | Added | on a terminal with an alternate screen the debugger takes the whole screen: source, breakpoints, messages and the command line; F1 help, F4 the program's screen |
 | home screen | Added | every account starts in a screen of tiles; arrows, Tab, letters, mouse, F5, F10 |
@@ -734,6 +734,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `ide` redraw | Changed | no flash; a click on the menu bar opens the menu; the active pane is marked `[*]` |
 | `ide` save | Changed | takes the record's lock and writes on error: a refusing trigger or a full disk is reported and the text kept, where it ended the IDE and lost every tab; Save as moves the editor to the new record; an edit-gate refusal is shown whole in a box; Catalogue says so only when `catalog` did |
 | `ide` untitled buffer | Added | a bare `ide` opens an editable "Untitled 1" with the cursor in it; New record writes nothing until it is saved; the arrows stay in the editor at its first and last line |
+| `ide` window lock and foot | Changed | needs 140 by 43 (was 140 by 42) and has the toolkit's foot: the status line, a border and a row of function keys on the last three rows; a window made smaller while it runs holds the keyboard behind a warning that gives both sizes and says unsaved text is lost unless the recovery copy is on, whatever the cursor is doing (the warning is worded shorter in a very small window); `sed` and `ced` keep the cursor-based lock |
 | immediate messages | Changed | `message ... immediate` is shown in a box on any terminal |
 | `sed` | Changed | the full-screen editor is back with a menu bar, the keys most editors have (`emacs` in `&sed.options&` keeps the old ones), undo and redo, syntax colour and the mouse; its keys are decoded from the terminal's terminfo entry <!--s 365--> |
 | `sed`, `ide`, `ed` input ended | Changed | fixed: they used all of a processor for ever when their input had ended |

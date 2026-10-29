@@ -439,21 +439,28 @@ account and not for the administrator; the copies are included in
 at saving is what protects against a second editor), has no replace across
 records, no project files and no completion.
 
-**The IDE is laid out for 140 columns by 42 lines or more** (it was 60 by 16
-until 18 October 2026); a bigger window is used whole, as before. **A window
-smaller than 140 by 42 when the IDE starts is refused**, in words (*IDE needs a
-window of at least 140 columns by 42 lines; this one is 100 by 30*), and nothing
-is drawn; `ed` is the editor for a small window. The window measured is the one on
-the screen, or the display `term w,h` gave if that is smaller. If the window is
-made smaller while the IDE runs, the layout does not shrink with it: the IDE shows
-the **upper left corner** of its 140 by 42 layout and nothing past the edge, and
-draws the whole layout again when the window is made bigger. While the cursor of
-the editor, the tree or a question is **off the screen** the IDE does not take
-keys, because you would be typing where you cannot see: a warning in reverse
-video fills the upper left, every key is thrown away, the warning goes by itself
-when the window is big enough, and **Ctrl-Q, then y** leaves the IDE without
-saving. [SED](27a-sd-tcl-sed.html) describes all of it; the IDE and
-[CED](27b-sd-tcl-ced.html) behave the same way.
+**The IDE is laid out for 140 columns by 43 lines or more** (it was 140 by 42
+until 28 October 2026, and 60 by 16 before 18 October); a bigger window is used
+whole. **A window smaller than 140 by 43 when the IDE starts is refused**, in words
+(*IDE needs a window of at least 140 columns by 43 lines; this one is 100 by 30*),
+and nothing is drawn; `ed` is the editor for a small window. The window measured is
+the one on the screen, or the display `term w,h` gave if that is smaller. The last
+three rows are the IDE's foot, the same as the toolkit pages': the status line, a
+border and a row of function keys (Esc menu, F1 help, Ctrl-S save and the build
+keys; the row is cut at the right edge of the window, the keys named first
+staying).
+
+**If the window is made smaller than that while the IDE runs, the IDE locks**,
+whatever the cursor is doing: a warning in reverse video fills the upper left
+corner, every key and mouse click is thrown away, and nothing of the IDE is drawn
+meanwhile. The warning gives the size of the window and the size the IDE needs,
+says that **Ctrl-Q, then y** leaves and that **text you have not saved is lost
+unless the recovery copy is on**, and is worded shorter in a very small window so
+that it always fits (the sizes are always on its first row). When the window is big
+enough again the warning goes by itself and the whole layout, foot included, is
+drawn again with everything as it was. [SED](27a-sd-tcl-sed.html) and
+[CED](27b-sd-tcl-ced.html) have a different lock, which looks at the cursor, not
+at the window.
 
 ## The two that are not like the others
 
