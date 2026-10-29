@@ -77,6 +77,12 @@ what the verb says is what the status line shows.
 digits, dot, dash and underscore. A file whose name has anything else (a capital, an `&`, a `$`) is listed and
 described, and the page says which verb to type at the prompt for it instead.
 
+**A VOC keyword is not a file name** (since 28 October 2026). A name that the VOC holds as a keyword,
+`all` for one, is refused as the name of a file to make, clear, delete or report on, with the words *... is a
+keyword of the VOC, which a command would read as that keyword and not as a name: this page does not give it
+to a command*. The verb would read the word as the keyword, not as your file (`delete voc all` empties the
+VOC), and the question it asks would go to the output the page captures, where nobody reads it.
+
 **Gates.** Making a new file, and clearing or deleting an ordinary data file, are not held back by the
 edit gates: the new VOC pointer is a side effect of an ordinary command. The gates matter for the
 protected kinds: clearing or deleting a **program file** (such as `bp`) needs `bp-edit`, and a
@@ -126,7 +132,10 @@ it was. A VOC pointer made by an ordinary command such as `create.file` is not h
 
 **An id the page does not give to a command.** As in `tool.files`, only ids of letters a-z, digits, dot,
 dash and underscore are put into a command. A VOC id may have much else (a capital, `$`, `%`, `&`); such an
-entry is listed and shown, and the page says which command to type for it instead.
+entry is listed and shown, and the page says which command to type for it instead. **Delete does not offer a
+keyword either** (since 28 October 2026): an entry of type K, `all` for one, is refused with the page's
+words, because `delete voc all` would not delete that entry but ask to empty the VOC. Type the command at the
+prompt if you mean it.
 
 ## tool.dict - the dictionary of a file
 
@@ -285,7 +294,7 @@ In the Results box Up, Down, PgUp, PgDn, Home and End scroll, Left and Right mov
 
 **Everything that is run is checked first.** A sentence the page runs starts with `list`, `sort`, `count` or `sum`, names the chosen file, and then holds only words from a fixed list, numbers, the items of that file's dictionary and values in double quotes. A word that sends the output somewhere else or writes (`to`, `saving`, `lptr`, `csv`, `as`, `file` and others) is refused, even when it is the name of a dictionary item. So is a semicolon, a single quote and a word the page does not know. The sentence the boxes make, a sentence you edit and a sentence a saved query holds are checked again by the same routine just before they run. An item whose name has a character the page does not use, or is also a word of the query language or a VOC keyword, is listed but cannot be marked. A phrase (`PH`) is not listed.
 
-**Saved queries** are records of the file `&queries&` in your account. The page makes the file when you save the first query, after a box that shows `create.file &queries& dynamic`. Every save is a box too, and replacing a saved query asks its name typed. A saved query is data: when it is loaded every part is checked against the file's dictionary, the operator table and the quoting rule, and what does not pass is dropped and counted in the status line. Deleting one with X also asks its name typed.
+**Saved queries** are records of the file `&queries&` in your account. The page makes the file when you save the first query, after a box that shows `create.file &queries& dynamic`. Every save is a box too, and replacing a saved query asks its name typed. A saved query is data: when it is loaded every part is checked against the file's dictionary, the operator table and the quoting rule, and what does not pass is dropped and counted in the status line. Deleting one with X also asks its name typed. **Before every save and every delete the page checks the file** (since 28 October 2026): `&queries&` must be an ordinary data file standing in your own account directory under that name, of no protected kind, and one your gates allow you to change. An entry `&queries&` in your VOC that leads somewhere else, to the program file `bp` for example, is refused (*nothing was saved* / *nothing was deleted*, with the reason). A record that is not a saved query (its first field is not `query1`) is never written over or deleted from here: *... is not a query this page saved ...: it was not changed*. `tool.bulk` makes the same check of its undo file.
 
 **Limits.** One file at a time. No run-time prompts, no VOC paragraph, no printing (`lptr`) and no output to a file or a list. The phrases and the `$query.defaults` record of a dictionary belong to the account and are expanded by the query processor; the page does not list a phrase and cannot see the defaults.
 

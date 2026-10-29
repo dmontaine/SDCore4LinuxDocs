@@ -312,6 +312,17 @@ executes `autologout 10` (`SDExecute("AUTOLOGOUT 10")`) has its server session e
 ten minutes in which it sent nothing, and its next request fails at once
 (see [SD Client API](37-sd-client-api.html)). The setting belongs to the one session that gave it.
 
+**It works in the full-screen programs too** (since 28 October 2026). The screen library, `ide`, the
+home screen and every tool page wait for a key one second at a time, and each of those waits used to
+start the timer again, so a session left in one of them was never logged out. SD now adds up the time
+spent waiting across such short waits: only a key actually typed (or the break key) starts the period
+again, and the logout is the same as at the prompt. A page left open without typing, `tool.sessions`
+included, is therefore logged out like any other session. A program that waits for a key with no time
+limit behaves as before, and a timed wait exactly as long as the `autologout` period still ends with a
+plain timeout. **A program that polls the keyboard with very short timed `keyin`s and does work between
+them counts as waiting**, because the polls add up with nothing typed: `autologout` can end it, and
+only a key resets the count.
+
 ## The command echo: `echo`
 
 ```

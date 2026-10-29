@@ -81,10 +81,11 @@ in the same box. **y** leaves SED, with the record unlocked and any change not
 saved; any other key goes back to the warning. This question is not SED's own
 *Quit without saving?*, which may be on a row you cannot see.
 
-A session that has `autologout` set waits for the keyboard alone, so that the
-time-out can still fire: SED notices a new window size at the next key rather
-than within a second, and the warning goes at the first key after the window is
-big enough.
+SED looks at the window size every second, with or without `autologout`: the
+warning goes within a second of the window being made big enough. (Until 28 October
+2026 a session that had `autologout` set waited for the keyboard alone and noticed a
+new size only at the next key; SD now counts idle time across the one-second waits, so
+`autologout` still fires.)
 
 **If SED's input ends** (a pipe that has been used up, as in a script or a test; a
 terminal does not end like this), SED leaves in the same way as after *y* above: the

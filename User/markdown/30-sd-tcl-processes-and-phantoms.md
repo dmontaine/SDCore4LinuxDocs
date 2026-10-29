@@ -58,6 +58,13 @@ and the address in hexadecimal.
 For a process that is **waiting for a lock**, `pstat` also shows when the wait
 began, as `list.readu detail` already did.
 
+**What `pstat` prints is another session's text, and it is made safe first** (since 28 October 2026).
+The command, the record it waits for, its program names and its account are shown with each control
+character, `del`, byte from 128 to 159 and mark character as `?`, so that a session cannot send a code to
+your terminal by what it types or locks. The text of `@pstat` (below) gets the same treatment, except that
+its marks are still shown as spaces. A long command or `@pstat` text used to be saved in the status record
+with the wrong length; that is fixed.
+
 ### The levels are additive
 
 | | |

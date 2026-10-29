@@ -424,6 +424,17 @@ On a UTF-8 terminal (`LC_ALL`, `LC_CTYPE` or `LANG` says UTF-8) the frame, menus
 and scroll bars use line-drawing characters; elsewhere `+ - |`. The colours are
 the blue theme.
 
+**A recovery copy of text you have not saved** (since 28 October 2026), **if the administrator has turned it
+on for your account** (`modify.account` *account* `recovery-on`; it is off as delivered). Then the IDE copies the
+text of every changed record into the directory `$recovery` of your account, readable only by you, after a
+second without typing, before it hands the screen to a program, and when the session ends. The copy is
+deleted when you save, close or quit normally. If the terminal closes, the connection drops or the IDE is
+aborted, the next time you open that record the IDE asks whether to **use the copy**, **delete it**, or
+**not open the record**; a text typed in an untitled buffer is offered in a new tab. The record itself is
+not changed until you save. It is kept only in a user account for its own person, not in a group or other
+account and not for the administrator; the copies are included in
+`backup.account` archives; and `sed` and `ced` keep none.
+
 **What it does not do:** it does not lock records while they are open (the check
 at saving is what protects against a second editor), has no replace across
 records, no project files and no completion.

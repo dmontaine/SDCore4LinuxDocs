@@ -133,7 +133,7 @@ it ends. `create.account` does not switch it on and neither does the installer.
 ## Making an account: `create.account`
 
 ```
-create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {files-write-on} {files-admin-on} {ai-on} {start-menu | start-terminal} {pins-on} {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {files-write-on} {files-admin-on} {ai-on} {start-menu | start-terminal} {pins-on} {recovery-on} {no.query}
 
 create.account group <name> {shared-read-off} {shared-write-on} {start-menu | start-terminal} {pins-on} {no.query}
 
@@ -174,6 +174,7 @@ Account fred has shared.read yes, shared.write no
 Account fred has NET no
 Account fred has files no
 Account fred has files-write no
+Account fred keeps a recovery copy of unsaved editor text: no
 ```
 
 **Two words set up the home screen, in the same command** (they are not gates; *Where a
@@ -195,6 +196,11 @@ start word was typed, a tail `start=menu` or `start=terminal`:
 ```
 create.account account=fred type=user gates=pins-on start=menu
 ```
+
+**One more word, for a user account only: `recovery-on`** makes the account's `ide` keep a recovery copy of
+text that was not saved (*The recovery copy*, below). It is off when the word is left out, a group or `other`
+account is refused it before anything is made, and `recovery-off` is for `modify.account` only. The verb says
+it back in a line, `Account fred keeps a recovery copy of unsaved editor text: yes` (`no` when the word was left out).
 
 **The installing user's own account is no exception**: the account the
 installer makes so that somebody can sign in starts with all of them off too,
@@ -908,6 +914,7 @@ modify.account account sd-on | sd-off
 modify.account account voc-on | voc-off
 modify.account account bp-on | bp-off
 modify.account account dict-on | dict-off
+modify.account account recovery-on | recovery-off
 modify.account account net-on | net-off
 modify.account account shared-read-on | shared-read-off
 modify.account account shared-write-on | shared-write-off
@@ -1070,6 +1077,7 @@ had typed it.
 | **`voc-on`** \| **`voc-off`** | saving a change to a VOC (see *The edit switches*) |
 | **`bp-on`** \| **`bp-off`** | saving a change to a program file, and compiling and cataloguing |
 | **`dict-on`** \| **`dict-off`** | saving a change to a dictionary |
+| **`recovery-on`** \| **`recovery-off`** | whether the `ide` keeps a recovery copy of text that was not saved (see *The recovery copy*). Not a gate; **off as delivered**; user accounts only |
 | **`net-on`** \| **`net-off`** | the right to use a server defined for SDNet (see *The NET switch*) |
 | **`shared-read-on`** \| **`shared-read-off`** | opening the files of the `shared` account by name. **On unless the field says no** (see *The shared account*) |
 | **`shared-write-on`** \| **`shared-write-off`** | writing to the files of the `shared` account. Off unless the field says yes |
@@ -1130,6 +1138,39 @@ off, which is how they are delivered, so every existing account can read the
 `sdfiles` group is made empty, and nobody is in it until you say so. You can then turn them off one account at a time,
 and a later install does not turn them back on. Only accounts made after the
 upgrade start with everything off.
+
+### The recovery copy: `recovery-on` and `recovery-off`
+
+```
+modify.account account recovery-on | recovery-off
+create.account user <name> recovery-on
+:modify.account fred recovery-on
+Account fred keeps a recovery copy of unsaved editor text: yes
+```
+
+With `recovery-on` the `ide` of that account copies the text of every record it has changed and not
+saved: after a second without typing, before it hands the screen to a program, and when the session
+ends. A hung-up terminal, a lost connection or an abort then does not lose the text. The copy sits in
+the directory `$recovery` of the account, one file per record, readable only by the person; it is
+deleted when the person saves, closes or quits normally, and the next time the record is opened the
+`ide` asks whether to use the copy, delete it, or leave the record unopened. The record itself is never
+changed until the person saves. `sed` and `ced` keep no copies.
+
+* **Off as delivered.** `create.account` and an existing account have it off until you say so. `recovery-off`
+  is the word for `modify.account` only (as `pins-off` is); `create.account` takes `recovery-on` alone, and
+  the audit line of a `create.account` that used it ends `gates=` with `recovery-on` among the words.
+* **User accounts only, and never for the administrator.** A group or other account is entered by several
+  people, any of whom could replace the directory, and SDSYS signed on in somebody else's account would be
+  writing into a directory that person controls. `recovery-on` for a group or other account is refused
+  ("... is not a user account, and a recovery copy is kept only in a user account, for its own person; nothing
+  was changed"), and neither kind of account, nor the administrator, ever gets a copy.
+* **You cannot read the copies, by design.** `modify.account` runs as `sdsys`; the directory and the files are
+  mode 700 and 600 for the person. `recovery-off` stops new copies; copies already made stay and are still
+  offered to the person.
+* **When it reaches a session.** `recovery-off` stops new copies at once. A running `ide` learned at its start
+  whether to keep copies, so `recovery-on` reaches it the next time the person starts the `ide`.
+* **The copies are part of the account.** `backup.account` archives include them, and `restore.account`
+  puts the account back with the switch it had.
 
 ### Where a session starts: `start-menu`, `start-terminal`, `start-default` and `set.start.default`
 

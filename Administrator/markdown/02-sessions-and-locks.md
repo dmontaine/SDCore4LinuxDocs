@@ -221,6 +221,13 @@ User File Path........................... Type Id..............................
 | **`Type`** | `RU` update · `RL` read · `FX` exclusive file lock · `SX` shared file lock · `WAIT` a session waiting for one |
 | **`Id`** | the record id; blank for a file lock |
 
+**An id is another user's text, and it is shown safely** (since 28 October 2026). Any user may lock a record
+whose id holds an escape sequence, and the listing, the deadlock report and `tool.sessions` would have sent that
+sequence to **your** terminal, the administrator's. Now a control character, `del`, a byte from 128 to 159 and a
+mark character in an id, a path or a user name are each shown as `?`. The same holds for `getlocks()` and
+`system(1083)` in a program. The locks themselves are not changed (`unlock` and `release` act on the real id),
+and `fileinfo(f, 1039)` still gives a program its own ids exactly.
+
 A file lock has no id:
 
 ```
