@@ -433,6 +433,15 @@ the word; the selection if there is one; at the end of a line it joins the next 
 Again the IDE's editor only. A terminal that sends nothing for these keys, or something SD does not name,
 leaves them without effect; Home, End, Ctrl-U and Ctrl-P still move.
 
+**Overwrite mode, auto-indent, tab width and Format** (since 29 October 2026). **Ins**, or *View, Overwrite
+mode*, makes a typed character replace the one under the cursor (the status line shows `[overwrite]`; at the end
+of a line, and over a selection, typing inserts as ever). *View, Auto-indent* makes Return begin the new line
+with the blanks the line begins with (as many as stand before the cursor). *View, Tab width* asks for a number
+from 1 to 8 for Tab and Shift-Tab (3 to begin with). *Build, Format the program* lays the program in the tab
+out again with the rules of the `format` verb, indenting by the tab width; it changes the text as one undo step
+and saves nothing, and leaves a program that has problems, or a record that is not a program, as it is.
+None of the three modes is kept between sessions. A cut or a paste of more than 100 lines is done at once.
+
 **If `autologout` is set** (the default is off) **the status line counts down the last 60 seconds** before
 the session would be signed out: *Idle: signing out in 42 s*, followed by *; unsaved changes will be
 lost* when there are any, or *; a recovery copy is kept* when the recovery copy below is on. Any key
