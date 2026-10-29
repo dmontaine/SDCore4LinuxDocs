@@ -427,6 +427,12 @@ the next stop (every 3 columns) or, with lines selected, indents them; Shift-Tab
 each is one undo step and neither ever puts a tab character in. This is the IDE's editor only: a
 program's own `screen memo` keeps its Tab. F6 and Shift-F6 move between the panes.
 
+**Ctrl-Home and Ctrl-End, Ctrl-Left and Ctrl-Right, Ctrl-Del** (since 29 October 2026): the start and the
+end of the text, a word back and a word on, and delete the word at the cursor (the blanks before it and
+the word; the selection if there is one; at the end of a line it joins the next line, as one undo step).
+Again the IDE's editor only. A terminal that sends nothing for these keys, or something SD does not name,
+leaves them without effect; Home, End, Ctrl-U and Ctrl-P still move.
+
 **If `autologout` is set** (the default is off) **the status line counts down the last 60 seconds** before
 the session would be signed out: *Idle: signing out in 42 s*, followed by *; unsaved changes will be
 lost* when there are any, or *; a recovery copy is kept* when the recovery copy below is on. Any key
@@ -465,6 +471,10 @@ own save (Ctrl-S) does the saving**, with the edit gate and the overwrite questi
 change. Leaving CED without keeping anything, or answering *No* to its question, leaves the
 tab as it was (*Back from the fields: bp prog is as it was*); if you pressed Ctrl-S and then
 changed more, *No* gives you what Ctrl-S kept. With no record open, F12 says so.
+**A record of an ordinary file whose text is a JSON object or array** (since 29 October 2026, with no
+value or subvalue mark in it) goes to CED as the *tree of the JSON*, as a collection file's record
+does, and comes back as the JSON text in the same layout; anything else (marks in the record, text
+that does not parse, text that does not begin with `{` or `[`) is shown as fields, as above.
 
 **A record that holds marks is shown with the marks written as tokens** (since 26 October 2026), so
 that nobody types one. Since 28 October 2026 this follows the tab's kind: **a dictionary item, a VOC record
