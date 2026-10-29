@@ -279,6 +279,7 @@ The names are sorted on their own; the program is the one that executed the
 ide {file {record}}
 ide dict file {record}
 ide voc {record}
+ide path:/full/name
 ```
 
 Opens a full-screen environment for BASIC programs and the other text records
@@ -354,6 +355,38 @@ writes on those records** until it is closed, AUTOLOGOUT ends it or the administ
 `tool.sessions` page unlocks them. A new record is locked for its creation, and one that another
 session is making is refused. Compile, Run, Debug and Catalogue work on a read-only tab that has no
 changes (they save first only when there is something to save).
+
+**A file of the operating system opens in a tab of its own** (since 28 October 2026): `ide
+path:/full/name`, or `path:/full/name` typed in the *File* entry of Open (Ctrl-O) - or `path:` there and the
+full name in the *Record* entry. **The name is the full path, as you typed it** (its case is not changed):
+it starts with a slash, has no `.` or `..` part, no doubled slash and no control character, and a path with
+blanks is fine on the command line. The tab strip shows `os` and the last part of the name; the status line
+shows the whole path. The file must exist; **New, Save as and Write a copy do not take a path** (they say
+so), and **compile, run, debug, catalogue, SED, edit as fields and open the include do not apply to such a
+tab** (the IDE says why). How it behaves:
+
+- **The account's gates apply, and the kernel asks them.** An account without the OS gate can open and save
+  only files inside its own directory (a link inside the account that leads out of it is outside); an account
+  with `os-on`, and SDSYS, can reach what the Linux user can. A file in a VOC, a dictionary, a program file or
+  the shared account that the account may not change opens read-only. All of it is done by the program
+  `!ide_osfile`, which is **not** an internal program, so the kernel puts the same questions to it that it puts
+  to your own `openseq`, `readblk` and `writeblk`; the IDE itself contains no statement that opens a file.
+- **It is written where it is.** Saving writes the new text over the file and cuts it to the new length: the
+  same inode, owner, mode and links (a file renamed over it would change all four). The IDE reads the file once
+  more just before it writes and asks *has been changed by someone else, Overwrite it?* (Cancel is the default)
+  when it is not what it read - or is no longer text. If the write fails, a box says the file may be partly
+  written and your text stays in the editor.
+- **Bytes are not converted.** Lines end with LF, or with CR LF when *every* line does (then they stay CR LF); a
+  CR anywhere else is an ordinary character shown as a reverse letter, and a tab is kept as a tab. Whether the
+  last line had its line end is remembered: none is added to a file that had none. A file with a **NUL or a
+  byte from 248 to 255** (SD's own marks), a file **over 2 MB**, a **directory, device, pipe or socket** is
+  refused with a message; a file with **bytes from 128 to 247** (another character set, or UTF-8) opens
+  read-only, as a record does.
+- **The file is locked while the tab is open**, as a record is: a second session that tries to open it is told
+  it is in use, and closing the tab (or any other way out) gives the lock back. A tab for a file you may not
+  write (permissions, or an edit gate) opens read-only and says so.
+- **No recovery copy is kept** for such a tab, whatever the account's switch: the copy would be kept in your
+  home, and the file may be anywhere.
 
 **A record that holds characters outside ASCII (bytes 128 to 247) opens read-only too** (since
 28 October 2026): another character set's letters, or UTF-8. The editor shows such a character a byte at a
@@ -486,8 +519,8 @@ with the recovery copy on it is moved to your home, with it off it stays where i
 the recovery copy off does not delete copies that exist. `sed` and `ced` keep none.
 
 **What it does not do:** it has no replace across records, no project files and no completion, and it does
-not yet edit collection-file records or operating-system files (SED's `path:` form no longer opens one
-either).
+not yet edit collection-file records, and it opens an operating-system file only by `path:` (it cannot make
+one, save under another path or browse directories yet; SED's own `path:` form no longer opens one).
 
 **The IDE is laid out for 140 columns by 43 lines or more** (it was 140 by 42
 until 28 October 2026, and 60 by 16 before 18 October); a bigger window is used
