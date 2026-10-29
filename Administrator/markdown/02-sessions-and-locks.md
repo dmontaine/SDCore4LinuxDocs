@@ -442,7 +442,10 @@ SDNet), the login user, the account it is in, where it came from, and whether it
 (a star) or a logout is pending. **When SDSYS is signed on in more than one place on a
 terminal, each of those rows also says `sdsys x<n>`, the counts line says `SDSYS in <n>
 places`, and the audit trail has a line `sdsys second session others=<n>` for each one that
-signed on while another was there** (see *Being SDSYS* in *Accounts and Security*). The lower list is every lock — the user, the file number
+signed on while another was there** (see *Being SDSYS* in *Accounts and Security*). **Ctrl-O
+opens an output pane** (six rows, between the row box and the foot) that keeps the commands the
+page ran, with what each answered, newest first; Ctrl-PgUp and Ctrl-PgDn scroll it and Esc puts
+it away. It is kept in memory for this run of the page only. The lower list is every lock — the user, the file number
 and path, the type (`FX` and `SX` lock a whole file, `RU` is read and update, `RL` is read,
 `WAIT` is a session waiting for a lock), the record id, since when, and whether a session
 with that user number is still signed on. Under the sessions the page says whether logins
