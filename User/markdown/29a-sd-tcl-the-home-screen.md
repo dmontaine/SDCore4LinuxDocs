@@ -82,8 +82,9 @@ date and time, Switch account and Sign out) stays where it is.
 | a letter | the next tile whose label begins with it |
 | Enter, the space bar | start the tile |
 | Esc, Backspace | back one page, when you are in a sub-menu (below); on the top page Esc opens the menu bar, as F10 does, and Backspace does nothing |
+| F1 | help on the home screen |
 | F5 | build the page again |
-| F10 | open the menu bar (File, Go, View, AI, Help): **Go** has Terminal, Switch account and Back (Back can be chosen only in a sub-menu); **View** has Refresh and the Recent group |
+| F10 | open the menu bar (File, Go, View, AI, Help): **Go** has Terminal, Switch account and Back (Back can be chosen only in a sub-menu); **View** has Refresh and the Recent group; **AI** has *Ask the AI*, which moves the focus to the AI line, when the AI is on, and a dimmed *AI is off* when it is not |
 | Ctrl-Q | sign out (asks first; **Cancel** is the button Enter chooses, so a stray Enter signs nobody out) |
 
 A **click** starts a tile; the **wheel** scrolls the page three rows; a click on the

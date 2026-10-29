@@ -30,13 +30,14 @@ the page.
 
 The home screen has a tile for each of them, in the group *Develop*.
 
-**Every page has a menu bar on its top row** (since 30 October 2026), made from the page's own key table, so
+**Every page has a menu bar on its top row** (since 29 October 2026), made from the page's own key table, so
 the bar, the key row at the foot and the keys cannot disagree. **F10**, **Alt and the letter** marked in a
-title, or a **click** on a title opens a menu; **Esc** opens the first one when the page has nothing of its
+title, or a **click** on a title opens a menu; **Esc** opens the first menu that does not begin with Quit
+(so Esc and Enter never leave a page by accident; F10 opens *File*) when the page has nothing of its
 own that Esc closes first (a name filter, a sub-view, the Indices pane of `tool.dict`, a result list: Esc
 closes that, and the next Esc opens the bar). Up, Down, Left and Right move, Enter chooses, Esc leaves. An
-entry is shown dimmed when the page cannot do it now, and **Quit is always the last entry of its menu**, so
-Esc and Enter never leave a page by accident. Choosing an entry does exactly what its key does, through
+entry is shown dimmed when the page cannot do it now, and **Quit is the last entry of any menu that has
+other entries**. Choosing an entry does exactly what its key does, through
 the page's own checks and boxes: the bar adds no access and runs no command by itself.
 
 ## tool.files - the files of the account
