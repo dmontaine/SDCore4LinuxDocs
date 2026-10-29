@@ -361,9 +361,11 @@ path:/full/name`, or `path:/full/name` typed in the *File* entry of Open (Ctrl-O
 full name in the *Record* entry. **The name is the full path, as you typed it** (its case is not changed):
 it starts with a slash, has no `.` or `..` part, no doubled slash and no control character, and a path with
 blanks is fine on the command line. The tab strip shows `os` and the last part of the name; the status line
-shows the whole path. The file must exist; **New, Save as and Write a copy do not take a path** (they say
-so), and **compile, run, debug, catalogue, SED, edit as fields and open the include do not apply to such a
-tab** (the IDE says why). How it behaves:
+shows the whole path (blanks inside a name are kept as typed). The file must exist; **New, Save as and Write a
+copy do not take a path as the name they write to** (they say so), and **compile, run, debug, catalog, SED, edit
+as fields, Save as and open the include do not apply to such a tab** (the IDE says why). **Write a copy does
+work on it**: it keeps the tab's text in a record, which is the way out when a save failed or the file was
+replaced. How it behaves:
 
 - **The account's gates apply, and the kernel asks them.** An account without the OS gate can open and save
   only files inside its own directory (a link inside the account that leads out of it is outside); an account
@@ -374,8 +376,12 @@ tab** (the IDE says why). How it behaves:
 - **It is written where it is.** Saving writes the new text over the file and cuts it to the new length: the
   same inode, owner, mode and links (a file renamed over it would change all four). The IDE reads the file once
   more just before it writes and asks *has been changed by someone else, Overwrite it?* (Cancel is the default)
-  when it is not what it read - or is no longer text. If the write fails, a box says the file may be partly
-  written and your text stays in the editor.
+  when it is not what it read - or is no longer text. **A file that was removed, or replaced by another one
+  renamed over it** (an editor or `git` may do that) is refused outright: the tab holds the old file, which
+  nothing links to, so a write would only appear to work. The file is read back after the write and must be the
+  bytes meant; if the write fails, a box says the file may be partly written and your text stays in the editor.
+  **A program you run from the IDE that does a bare `release` lets go of the file's lock**; the save still reads
+  the file again first.
 - **Bytes are not converted.** Lines end with LF, or with CR LF when *every* line does (then they stay CR LF); a
   CR anywhere else is an ordinary character shown as a reverse letter, and a tab is kept as a tab. Whether the
   last line had its line end is remembered: none is added to a file that had none. A file with a **NUL or a
