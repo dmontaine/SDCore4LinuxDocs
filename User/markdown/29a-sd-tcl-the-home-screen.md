@@ -81,7 +81,7 @@ date and time, Switch account and Sign out) stays where it is.
 | Page Down, Page Up | the first tile of the next and of the previous group |
 | a letter | the next tile whose label begins with it |
 | Enter, the space bar | start the tile |
-| Esc, Backspace | back one page, when you are in a sub-menu (below); on the top page they do nothing |
+| Esc, Backspace | back one page, when you are in a sub-menu (below); on the top page Esc opens the menu bar, as F10 does, and Backspace does nothing |
 | F5 | build the page again |
 | F10 | open the menu bar (File, Go, View, AI, Help): **Go** has Terminal, Switch account and Back (Back can be chosen only in a sub-menu); **View** has Refresh and the Recent group |
 | Ctrl-Q | sign out (asks first; **Cancel** is the button Enter chooses, so a stray Enter signs nobody out) |
@@ -162,10 +162,11 @@ for Enter** when the command has finished printing.
 
 | key | does |
 |---|---|
-| F2 | add a program (it asks for the label, the command, the glyph and the wait) |
+| Ctrl-N | add a program (it asks for the label, the command, the glyph and the wait) |
 | Enter | change the selected one |
-| F3 | remove it (asks first; Cancel is the default) |
-| F4, F6 | move it up or down the list |
+| Del | remove it (asks first; Cancel is the default) |
+| U, D | move it up or down the list |
+| Esc, F10 | open the menu bar (File, Program): the same actions by name; with no program in the list, Change, Remove and the moves are shown dimmed |
 | Ctrl-Q | leave; the home screen is built again and shows the list |
 
 **It manages only your own list.** The standard tiles are the administrator's and
