@@ -118,8 +118,8 @@ account the person **signed on** to decides, so `logto` neither gives nor takes
 the switch (and, unlike `sh-on` and `os-on`, it is read at sign-on only), and a
 change reaches the person the next time they sign on. A refusal names the
 switch: "A program file can only be changed by an account that has bp.edit
-(SDSYS can give it: modify.account *name* bp-on)". The editors `sed`, `ide`
-and `ced` show that in their message line; every other verb prints it.
+(SDSYS can give it: modify.account *name* bp-on)". The editors `sed` and `ide`
+show that in their message line; every other verb prints it.
 
 When the installer is run by the user whose own account already exists, the
 upgrade switches all three on, once, for the *user* accounts in the register.

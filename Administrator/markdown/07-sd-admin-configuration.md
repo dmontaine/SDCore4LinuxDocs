@@ -89,10 +89,7 @@ The `config()` function reads one parameter from a program:
 group.size = config('GRPSIZE')
 ```
 
-**47 parameters are readable this way.** The three that are not are `BACKUPDIR`,
-`SCREENTHEME` and `SDSYS`. The name is truncated to eight
-characters before it is matched; no parameter name is longer than eight, so
-that only shows up if you pass something which is not a parameter.
+**48 parameters are readable this way.** The two that are not are `BACKUPDIR` and `SDSYS`. A name of more than sixteen characters is not found (the function answers an empty string and `status()` is not 0); no parameter name is that long, so that only shows up if you pass something which is not a parameter.
 
 Two further forms exist. `config lptr` reports the settings of the default
 printer, and `config gpl` and `config contrib` display the licence and the list
@@ -176,8 +173,7 @@ shows only the rows where the file and SD disagree, and `S` only the parameters 
 column, `Change`, says `e` for a parameter the page can change (press `E`) and `by hand` for every
 other.
 
-`SCREENTHEME`, `SDSYS` and `BACKUPDIR` cannot be read with the `config()` function
-(a name longer than eight characters, or one the function does not have); the page says
+`SDSYS` and `BACKUPDIR` cannot be read with the `config()` function (a name longer than sixteen characters, or one the function does not have); the page says
 `(not readable)` for what SD is running with and shows the file's value. `DEBUG` is not compared: the
 function reports it in another form than the file writes it.
 
@@ -425,7 +421,7 @@ does not lift that confinement — see *Accounts and Security*.)
 
 | Parameter | Default | Effect |
 |---|---|---|
-| `SCREENTHEME` | unset (`mono`) | The colour theme that a program using the `SCREEN` statement gets when it does not choose one: `mono`, `classic` or `blue`. `mono` uses only reverse video and underline and reads on any terminal. A name that is not a theme, or a colour theme on a terminal that cannot show colour, is ignored without an error and the screen stays `mono`. A program that asks for a theme gets that one. A program reads the value with `config('SCREENTHEME')` |
+| `SCREENTHEME` | unset (`mono`); `blue` in the shipped `sd.conf` | The colour theme that a program using the `SCREEN` statement gets when it does not choose one: `mono`, `classic`, `dark`, `light` or `blue`. `mono` uses only reverse video, underline and bold and reads on any terminal. The shipped `sd.conf` says `SCREENTHEME=blue`, so the toolkit pages and any program that opens a screen show blue on a colour terminal on a fresh install; a restored `/etc/sd.conf` that has no `SCREENTHEME` line gets `SCREENTHEME=blue` added by the installer (an existing line, `mono` included, is left alone). A terminal with no colour (vt100, a phantom, a pipe) is `mono` whatever the line says, and so is a name that is not a theme, without an error. A program that asks for a theme gets that one. A program reads the value with `config('SCREENTHEME')` |
 
 ## The shell
 

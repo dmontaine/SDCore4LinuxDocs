@@ -347,7 +347,7 @@ Capitals do not matter.
 such a file is refused with a message that names the missing switch (or sets
 the `ON ERROR` status). The verbs and statements that change a file the
 person names ask the same question first, before they lock or change
-anything, and give the reason: `sed`, `ide` and `ced` show it in their
+anything, and give the reason: `sed` and `ide` show it in their
 message line, and every other verb prints it (the same text as above) and
 stops. They are `ed`, `edit` and `copy` into the file or moving
 records out of it, `delete`, `clear.file`, `cname` of a record, `delete.file`
@@ -1156,7 +1156,7 @@ the copy sits in the person's own Linux home**, in `~/.local/state/sd/recovery/<
 password database gives their Linux user, never the `HOME` variable), one file per record, readable only by
 the person, **outside every account**; it is deleted when the person saves, closes or quits normally, and the
 next time the record is opened the `ide` asks whether to use the copy, delete it, or leave the record
-unopened (which keeps it). The record itself is never changed until the person saves. `sed` and `ced` keep
+unopened (which keeps it). The record itself is never changed until the person saves. `sed` keeps
 no copies.
 
 * **Off as delivered.** `create.account` and an existing account have it off until you say so. `recovery-off`
@@ -1237,8 +1237,8 @@ tool.menus
 **Menu management** is a full-screen page for the administrator (SDSYS's VOC only; it
 is also a tile on the administrator's own home screen). It lists every account but
 SDSYS with where it starts, whether it may add its own programs, and the tiles turned
-off for it; for the account you select it shows the standard tiles (the seven of the
-account, the seven development tiles and the Recent group: 15 rows after the two settings
+off for it; for the account you select it shows the standard tiles (the six of the
+account, the seven development tiles and the Recent group: 14 rows after the two settings
 above them) with `[x]` on and `[ ]` off, and a box that says in plain words what the
 settings mean. **It writes
 nothing itself:** every change is the command it will run, shown with its effect in a
@@ -1260,10 +1260,10 @@ modify.account account pins-off   they may not (the delivered state)
 ```
 
 * **Tiles are on as delivered and are turned off one account at a time**; there is no
-  setting for every account. The standard tile ids are `editor`, `ide`, `ced`,
+  setting for every account. The standard tile ids are `editor`, `ide`,
   `terminal`, `keys`, `switch` and `signout`, the seven development tiles (`files`, `voc`,
   `dict`, `query`, `bulk`, `catalog` and `test`) and `recent`, which is not a tile but the
-  Recent group (below): 15 ids, the ones the page draws and the rows of the *Menu* box of the
+  Recent group (below): 14 ids, the ones the page draws and the rows of the *Menu* box of the
   menu management page. **Sign out cannot be turned off**: a person must always be able to
   leave. Any other id is accepted and said not to be standard (it would apply to a tile of
   that name in a page of the account's own).

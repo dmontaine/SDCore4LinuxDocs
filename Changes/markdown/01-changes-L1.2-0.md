@@ -34,7 +34,7 @@ change: what it does, why, and what it does not do. This document is the short f
 | `intprec` and `sortmem` | Changed | were 13 and 1024; now **11** and **4096** (set the old values in `sd.conf` if you need them) |
 | Removed features | Removed | words and modes that existed to imitate other products (so far 55 `option` words, 35 `$mode` words, and the second spellings and forms of statements, clauses, functions, conversions, TCL verbs and query keywords, each listed in [REMOVED](#removed)), and other things: see [REMOVED](#removed) |
 | `sed` keys | Changed | were Emacs keys with Ctrl-X sequences; now the keys most editors have (Ctrl-PageDown / Ctrl-PageUp, and Alt-PageDown / Alt-PageUp for a terminal that keeps the Ctrl keys for its own tabs, switch buffers), and `emacs` in `&sed.options&` keeps the old layout |
-| `sed`, `ide`, `ced` | Changed | were 120 by 36 or less; now need a window of at least **140 by 42** (the `ide` **140 by 43**), and `ed` is the editor for a smaller one |
+| `sed`, `ide`, `!ced()` | Changed | were 120 by 36 or less; now need a window of at least **140 by 42** (the `ide` **140 by 43**), and `ed` is the editor for a smaller one |
 | `select file field` | Changed | a field not otherwise used was ignored; now it is `saving multivalued field`, so the list holds the values |
 | The default terminal | Changed | was 120 columns by 36 lines; now **140 by 42** (a LIST fills 41 lines before it pauses) |
 | The group size of a new file | Changed | was 2 KB (1 KB when `sd.conf` did not say); now **4 KB** on a new installation. An installed system keeps its `sd.conf`, and so its 2, and a file keeps the size it has |
@@ -62,10 +62,12 @@ Administrator commands from the openQM list.
 
 | Name | Change | What |
 |---|---|---|
+| `config()` name limit | Changed | a parameter name may be up to sixteen characters (was eight), so `config('SCREENTHEME')` finds the setting; a longer name is not found |
 | `inhibit.login` | Added | administrator only: stops new sessions while maintenance is done; a killed backup no longer locks everybody out <!--s 387 g46--> |
 | `lock.tracer` | Added | administrator only: logs every lock taken and released, with program and line, to the file `locktrace` <!--s g57--> |
 | `logout` | Changed | `logout n group` also ends the phantoms n started; `logout` of a session whose process has gone clears the entry and its locks <!--s 386--> |
 | `newvoc.mods` | Changed | applied to SDSYS's own VOC and kept across an upgrade that keeps the accounts <!--s 501--> |
+| `SCREENTHEME` | Changed | readable with `config()`; the shipped `sd.conf` says `SCREENTHEME=blue` and the installer adds that line to a restored `sd.conf` that has none (an existing line, `mono` included, is kept); a terminal with no colour stays `mono` |
 
 ## API
 
@@ -184,8 +186,7 @@ Data collections, JSON, XML, CSV and the verbs that import them.
 
 | Name | Change | What |
 |---|---|---|
-| `ced` | Added | full-screen editor for a data collection, or for JSON text in an ordinary file |
-| `!ced()` | Added | edits a collection held in a variable |
+| `!ced()` | Added | full-screen editor for a collection held in a variable (the editor is also reached from `ide` F12; there is no `ced` command) |
 | collection arrays | Added | `mat()`, `c{list, n}`, `ins ... as`, `del`, `inmat()` on an array |
 | collection file verbs | Added | `ed`, `copy`, `compare.files`: work on a collection file; the post-write trigger no longer crashes the process |
 | collection files | Added | `create.file name collection`; records are collections stored as JSON; `read` and `write` them whole; `ct` shows JSON <!--s 304--> |
@@ -538,7 +539,7 @@ SD's own code. The sections above are the openQM items that were built, with the
 |---|---|---|
 | `agent-pack` | Added | a guide (examples compiled and run), a generated reference of 3,932 entries and a Claude Code skill, in the source and installed under `/usr/local/sdsys/agent-pack` |
 | `ai` gate | Added | per-account switch, `ai-on` and `ai-off` (also on `create.account`); off as delivered |
-| `ai` in the editors | Added | the debugger, `sed` and `ced`: ask about what you are looking at; a preview of everything sent; proposed changes shown as diffs and never saved by the AI |
+| `ai` in the editors | Added | the debugger, `sed` and the collection editor: ask about what you are looking at; a preview of everything sent; proposed changes shown as diffs and never saved by the AI |
 | `ai` proposal box | Changed | shows every line of a proposed change, command or request in full, not cut at the box edge; a proposed change that would take more than 30 rows to show is not offered |
 | `ai` row in the home screen | Added | type what you want, see what will be sent, accept one proposed tile or command |
 | `ai` row in the ide | Added | explain an error or a selection, ask about the record, accept or reject proposed edits as a diff |
@@ -645,12 +646,14 @@ Three simple layers, with no vault and nothing on by default.
 | redraw | Changed | the library writes only the text that changed, so a screen no longer flashes |
 | resize inside a dialog | Changed | a resize that arrives while a question, a menu or the AI box is open is kept and given to the page afterwards; it used to be lost |
 | `screen selector` | Added | a choice of one word among several |
+| `screen set` | Changed | a `value`, `text` or `items` clause written as `''` empties the control, a clause left out changes nothing, and a written `''` on `enabled`, `wrap`, `readonly` or `visible` changes nothing; programs compiled before need compiling again |
 | `screen slider` | Added | an on and off switch with words of your choice |
 | `screen` statement | Added | menus, dialogues and forms from BASIC; colour; tabs, text areas, tables; the mouse |
 | terminal type at sign-on | Changed | taken from the terminal's `TERM`: xterm, xterm-256color, VTE, Konsole, tmux, screen, alacritty, kitty, foot, rxvt and st are `xterm`, the console is `linux`; the account's login paragraph no longer forces `TERM LINUX` |
 | text area keys | Changed | `screen memo` and the IDE's editor: Ctrl-A selects all (Home is the start of the row), Ctrl-O no longer copies (Ctrl-C does), F3 finds the next and Shift-F3 the one before (Ctrl-N found the next), Ctrl-D duplicates the line (Delete joins lines) and Ctrl-K cuts the whole line into the clipboard, where it cut to the end of the row |
 | text area undo | Changed | `screen memo`: Ctrl-Z gives back exactly what was there; a record holding value, subvalue or text marks came back changed |
 | text from data | Changed | the library never sends a control character to the terminal: one in a record, a record id, a file name or an AI answer is drawn as a reverse letter (ESC as `[`), one cell each; UTF-8 text and line drawing are unchanged |
+| theme roles | Added | five new styles, `warning`, `success`, `readonly`, `busy` and `focus`, with a look in every theme (bold, underline and reverse only in `mono`), and `error` gets a `mono` look; programs that include `sl.h` need compiling again |
 | themes | Added | `mono`, `classic` and `blue`; colour works on the Linux console terminal type |
 | window size | Changed | SD reads the terminal's window size at the start and when it is resized; `@crtwide` and `@crthigh` follow it |
 
@@ -716,8 +719,8 @@ Fixes that close a way round a gate, and what the gates now ask.
 
 | Name | Change | What |
 |---|---|---|
-| 140 by 42 layout | Changed | `sed`, `ced` and the debugger: 140 by 42, refused below it, survive a window made smaller, take no keys while the cursor is off the screen (the `ide` is 140 by 43, see its window lock) |
-| `ced` data mode | Added | edits a multivalue record as a tree of fields, values and subvalues (a text or a list; a list never below the second level), so that nobody types a mark; started by `ide` F12 |
+| 140 by 42 layout | Changed | `sed`, the collection editor and the debugger: 140 by 42, refused below it, survive a window made smaller, take no keys while the cursor is off the screen (the `ide` is 140 by 43, see its window lock) |
+| `!ced()` data mode | Added | edits a multivalue record as a tree of fields, values and subvalues (a text or a list; a list never below the second level), so that nobody types a mark; started by `ide` F12 |
 | `debugger` full-screen display | Added | on a terminal with an alternate screen the debugger takes the whole screen: source, breakpoints, messages and the command line; F1 help, F4 the program's screen |
 | home screen | Added | every account starts in a screen of tiles; arrows, Tab, letters, mouse, F5, F10 |
 | home screen `ai` line | Changed | Enter alone accepts a proposal that only opens one of the delivered tools but rejects a proposal of one of your own programs or of the Terminal tile (decided for the proposal, not for the page); it cannot run a command when the account's Terminal tile is off |
@@ -729,7 +732,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `ide` autologout countdown | Added | with `autologout` set, the status line counts down the last 60 seconds before the session is signed out and says whether unsaved changes will be lost; any key stops it; it reads the inactivity clock `autologout` itself uses |
 | `ide` collection-file records | Added | a record of a data collection file opens as the text of its JSON (one element to a line) and Ctrl-S parses it and writes the collection; text that is not a JSON object or array is refused with the record untouched; F12 hands the collection to `ced`; a missing record opens as a new `{}`; compile, SED, Save as and the include do not apply; a text is not saved into a collection file under a new name |
 | `ide` dictionary items and VOC records | Added | `ide dict file item` and `ide voc record` edit them; the tree shows a file's dictionary as a node of its own; a save asks `dict.edit` or `voc.edit` as a program asks `bp.edit`; they show marks as tokens; `creating.seqkey` takes the file's next sequential id; a record that does not exist opens as a new one; an active select list opens its first records |
-| `ide` edit as fields | Added | F12 or Go, Edit as fields: the record goes to `ced` as fields, values and subvalues and comes back as text in the tab; `ced` writes nothing, the IDE's save does |
+| `ide` edit as fields | Added | F12 or Go, Edit as fields: the record goes to the collection editor as fields, values and subvalues and comes back as text in the tab; the editor writes nothing, the IDE's save does |
 | `ide` editing commands | Added | Search, List matching lines (SED's VIEW: the lines that hold a text, in the table), Query replace (Yes, No, All, Quit; one undo step), Find options (match case, whole words), Upcase and Downcase the selection, Import a record here, Export the selection; Build, Run a command (its output in the table; a command that aborts is stopped and the IDE stays up); View, Refresh; none writes a record. In a record shown with `:@vm:` marks Replace changes the record's text, never a mark's token; a text to find is at most 256 characters |
 | `ide` go to line | Changed | takes line,column, and field,value,subvalue in a record shown with `:@vm:` marks, as well as a line |
 | `ide` key map | Changed | the settled keys: Ctrl-S is the only save key (F2 went); F5 runs, F7 debugs, F8 compiles, F9 builds (compile and catalogue); F6 and Shift-F6 are the next and previous pane (the tree has no key of its own: F6 / Shift-F6, the Go menu entry Files and records or the mouse reach it, because F3 is the text area's find next); Ctrl-PageDown and Ctrl-PageUp, and Alt-PageDown and Alt-PageUp for a terminal that keeps the Ctrl keys for its own tabs (GNOME Terminal), are the next and previous tab; Ctrl-N is New record, Ctrl-O Open record (a record that exists; names with a dollar sign are refused) and Ctrl-W closes the record (it asks when there are changes); Save as, Write a copy and Find in the records are menu entries with no key; the tree no longer lists the `$` entries |

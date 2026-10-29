@@ -170,7 +170,7 @@ ct stock 1001
 | `ct` | the record as **JSON, one element to a line**, indented (the `jb$pretty` layout) |
 | `list.item` | the record as its compact JSON text |
 | `ed` file id · `edit` | the record shown as `ct` shows it, **a line to an element**, filed back as JSON text. The file makes a collection of what comes back, and refuses it — *Write error 1020 - Data not saved* — if it is not a JSON object or array, leaving the stored record as it was |
-| [`ced`](27b-sd-tcl-ced.html) | a full-screen editor that shows the elements of one level and their **types** |
+| [`!ced()`](27b-sd-tcl-ced.html) | a full-screen editor that shows the elements of one level and their **types**; a program calls it, and the `ide` starts it with F12 (there is no `ced` command) |
 | `copy` | between two collection files the collection is copied; **from** a collection file **to a file that is not one**, the record's JSON text is written (in the compact form the file holds); **to** a collection file, the JSON text of a record is made into a collection |
 | `compare.files` | collection records are compared **as their JSON text**, in which the names are always in order, so two equal collections are the same |
 | `search` · `scan` | look at the JSON text of the record |
@@ -218,7 +218,7 @@ and `/c{path}` shows one element: see [SD Basic - Debugging](17-sd-basic-debuggi
 ## What does not work, and what was not tried
 
 `readv` and `writev` of a field number have no meaning on a collection file, and `matread` is refused. **`analyze.file` does not
-say that a file holds collections**, and `micro` was not tried on a collection record: use `ced` or `ed`.
+say that a file holds collections**, and `micro` was not tried on a collection record: use the `ide` (F12) or `ed`.
 
 ## See also
 

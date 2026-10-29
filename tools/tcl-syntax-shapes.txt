@@ -30,7 +30,6 @@ bell = **`bell on`** | **`off`**
 break = **`break on`** | **`off`** | **`on user`** *n*
 build.index = **`build.index`** *file* *field* … | **`all`**
 catalog = **`catalog`** {*file* {*call.name*}} {*program*} {**`local`** | **`global`** | **`pcode`**} {**`no.xref`**}
-ced = **`ced`** {**`dict`**} *file* {*id* …}  ·  **`ced`** {**`dict`**} *file* **`*`**
 clean.account = **`clean.account`**
 clear.abort = **`clear.abort`**
 clear.data = **`clear.data`**

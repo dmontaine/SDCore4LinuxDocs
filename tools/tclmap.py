@@ -126,9 +126,6 @@ DOCS = [
  ('User', '27a-sd-tcl-sed.md', """
    sed
  """),
- ('User', '27b-sd-tcl-ced.md', """
-   ced
- """),
  ('User', '28-sd-tcl-printing-and-spooling.md', """
    printer setptr sp.view spool como report.style
  """),

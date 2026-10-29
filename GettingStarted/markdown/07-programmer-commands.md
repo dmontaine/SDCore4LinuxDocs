@@ -38,7 +38,6 @@ extra at all.
 | **`ed`** | the line editor. Needs nothing installed. `edit` is an alias for it |
 | **`sed`** | a **full-screen** editor that runs inside SD, with drop-down menus and colour for SD BASIC and five other languages |
 | **`micro`** | a **full-screen** editor — opens the record in `micro` |
-| **`ced`** | the data collection editor: a record that is a collection, one level at a time |
 | **`debug`** | the BASIC debugger |
 | **`pstat`** · **`pdebug`** · **`pdump`** · **`dump`** | process introspection |
 
@@ -220,7 +219,7 @@ anything in this page as a boundary.
 
 **`micro` needs `os-on`**, the same switch as `OS.EXECUTE`
 (not `sh-on`): an account can be refused `sh` and still run `micro`,
-and the reverse. **`sed` and `ced` need neither**, because they run
+and the reverse. **`sed` needs neither**, because they run
 inside SD; `sed` asks for `os-on` only when it is given an operating-system
 path outside the account's own directory. SDSYS sets it with
 `modify.account` *name* `os-on`. What `micro` can then open is

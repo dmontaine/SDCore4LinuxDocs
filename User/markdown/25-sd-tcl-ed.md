@@ -12,7 +12,7 @@ BASIC and runs inside SD, so it needs no operating-system permission either;
 [micro](27-sd-tcl-micro.html) hands the record to a
 full-screen program. Use one of those when you are sitting at a terminal and want
 to see the whole record at once. A record that is a data collection has an editor
-of its own, [ced](27b-sd-tcl-ced.html).
+of its own, [the collection editor](27b-sd-tcl-ced.html), reached from the IDE (F12) or by `call !ced`.
 **`edit` is not another program** — it is a second name for `ed` itself,
 since there is no Linux program to alias it to the way SD Core for
 Windows aliases it to Microsoft Edit.

@@ -562,7 +562,7 @@ on a `focus` or `button` event. `screen hide f` puts the screen back.
 | | |
 |---|---|
 | `screen get f, id returning v` | An entry or combo: the text. A check: 1 or 0. A radio: the number of the choice. A list: the number of the current item (with `multi`, the numbers picked, as values). Tabs: the tab. A table: the number of the current row in the rows given (with `multi`, the numbers of the rows marked). A tree: the code of the current node. A scroll bar: the number of the first line shown. A viewport: its first column and first row, from 0, with a value mark between. A memo: the text, one line to a field. A label: its text. |
-| `screen set f, id {value v} {text t} {items i} {enabled e} {wrap b} {readonly b} {visible b}` | `value` sets what `get` answers (a memo: replaces the text; tabs: chooses a tab; a scroll bar: moves it). `text` is a caption. `items` replaces the choices of a radio or list, or the rows of a table (the order of rows comes back). `enabled 0` takes a widget out of the focus ring. `wrap` and `readonly` (1 or 0) change a memo. `visible 0` hides any widget - it is not drawn and takes no focus - and `visible 1` shows it again. A form that is on the screen is redrawn at once. |
+| `screen set f, id {value v} {text t} {items i} {enabled e} {wrap b} {readonly b} {visible b}` | `value` sets what `get` answers (a memo: replaces the text; tabs: chooses a tab; a scroll bar: moves it). `text` is a caption. `items` replaces the choices of a radio or list, or the rows of a table (the order of rows comes back). `enabled 0` takes a widget out of the focus ring. `wrap` and `readonly` (1 or 0) change a memo. `visible 0` hides any widget - it is not drawn and takes no focus - and `visible 1` shows it again. A form that is on the screen is redrawn at once. **A clause written empty is not a clause left out:** a written `value`, `text` or `items` of `''` empties the control (an empty `value` on a check box, slider, radio group or list counts as 0); a clause left out changes nothing; and a written `''` on `enabled`, `wrap`, `readonly` or `visible` changes nothing, so an empty `readonly` cannot make a read-only memo editable. A program compiled before this rule must be compiled again. |
 | `screen focus f, id` | The next `run` starts with the focus there. |
 | `screen values f returning c` | A collection with the value of every entry, check, radio, list, combo, progress, tabs and table, named by id: `c{'name'}`. A memo is left out (ask for it with `get`). |
 | `screen hide f` | Puts the screen back under a form shown by `wait`. |
@@ -589,6 +589,15 @@ works on a terminal with colour and one without.
 | `desktop` | what `screen clear`, `text` and `box` draw on |
 | `text` | the text of a memo or a table |
 | `header` | the heading row of a table |
+| `error` | an error message (in `mono`: reverse and bold) |
+| `warning`, `success` | a warning, and a success message |
+| `readonly` | a control that can be read but not changed |
+| `busy` | a screen that is waiting for something |
+| `focus` | the control that has the keyboard focus |
+
+Every theme gives `warning`, `success`, `readonly`, `busy` and `focus` a look; in `mono`
+they use only bold, underline and reverse. A program that includes `sl.h` must be compiled
+again to use them (a normal install does this).
 
 ```
 screen theme name {returning current} {then ... else ...}
@@ -601,7 +610,9 @@ on any terminal; **`classic`**, dark text on light dialogues over a blue desktop
 the **syntax colours** added, for a dark and a light terminal background (the colours that
 `screen memo ... syntax` and SED's colour for the language use; `classic` and `blue`
 have them too, `mono` has none). **A program that never asks gets `mono`**, unless
-the administrator has set `SCREENTHEME=` in `sd.conf` to the theme the site wants; a
+the administrator has set `SCREENTHEME=` in `sd.conf` to the theme the site wants (the
+shipped `sd.conf` says `SCREENTHEME=blue`; a program with no `SCREENTHEME` line at all stays
+`mono`, and a terminal with no colour is `mono` whatever the line says); a
 program that asks for a theme gets the one it asked for.
 `screen theme` gives `else` for a name that is not a theme, on a terminal that cannot
 show colour and in a phantom, and leaves the theme as it was; `returning` holds the name

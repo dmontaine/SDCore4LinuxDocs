@@ -34,9 +34,9 @@ behind a warning that gives both sizes until the window is big enough again.
    Thursday 22 Oct 2026  -  18:52
 
    My tools
-     [=]                  </>                    [ ]
-     Editor               IDE                    Record editor
-     edit a record        programs and files     fields of a record
+     [=]                  </>
+     Editor               IDE
+     edit a record        programs and files
 
    Everyone
      >_                                          ^K
@@ -48,7 +48,6 @@ behind a warning that gives both sizes until the window is big enough again.
 |---|---|
 | **Editor** | runs `sed` (it asks which file and record) |
 | **IDE** | runs `ide` |
-| **Record editor** | runs `ced` |
 | **Terminal** | leaves the screen for the ordinary command prompt (below) |
 | **Keys** | runs `tool.keys`, the terminal and keyboard diagnostic |
 | **Switch account** | a list of the accounts you may enter; then the home screen of the one you pick |
@@ -243,7 +242,7 @@ The answer comes in a popup. It says what the AI said, and it may *propose* one 
 
 | The AI proposes | What you see | What happens |
 |---|---|---|
-| a **tile** that opens a tool (Editor, IDE, Record editor, Keys, and the administrator's tiles) | `The AI proposes: IDE - programs and files`, with **Accept** and Reject | **Accept** starts the tile exactly as a click on it would. Enter alone accepts, because the tile only opens a tool you could open anyway. |
+| a **tile** that opens a tool (Editor, IDE, Keys, and the administrator's tiles) | `The AI proposes: IDE - programs and files`, with **Accept** and Reject | **Accept** starts the tile exactly as a click on it would. Enter alone accepts, because the tile only opens a tool you could open anyway. |
 | the **Terminal** tile, or one of **your own programs** on the page | the same, with **Accept** and Reject | **Accept** starts it as a click would. **Enter alone rejects**: the Terminal tile leaves the screen for the command prompt and a program of yours runs a command you wrote, so neither starts unless you choose Accept. This is decided for the proposal: having a program of your own on the page does not change what Enter does for the other tiles. |
 | a **command** | the command on a line of its own, with **Run** and Cancel | **Run** runs it as the Terminal tile's prompt would, and waits for Enter. **Enter alone cancels**: a command never runs unless you choose Run. |
 | nothing | only what it said, with Close | nothing |
