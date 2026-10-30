@@ -420,7 +420,10 @@ operating system, which is the way out when a save failed or the file was replac
 the first save of an untitled buffer, Write a copy and Export the selection, type `path:/full/name` in the
 *File* entry (or `path:` there and the full name in the *Record* entry), spelled as for Open. The form asks the
 account's operating system access and its edit gate for operating system files first and says a refusal in
-the form, which stays open.
+the form, which stays open. **The edit gate looks only below the account's own directory.** An account that
+holds `os-on` is trusted with the whole machine, so for a name outside its own directory the edit gates
+(`voc.edit`, `dict.edit`, `bp.edit`) are not asked, as for `OPENSEQ` and the other operating-system routes
+(Administrator, *Accounts and security*); inside its own directory they are.
 
 | from | what is made, and what the tab does |
 |---|---|
