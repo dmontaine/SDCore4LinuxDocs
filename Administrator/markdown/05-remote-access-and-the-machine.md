@@ -125,6 +125,14 @@ do not change the mode. A person who has just been added to `sdusers` must log o
 tree. The installer adds `SocketMode=0660` to an existing `sdclient.socket` that has no `SocketMode=` line, and never touches one that has; to widen it on purpose,
 `systemctl edit sdclient.socket` and write `SocketMode=` in the drop-in. `ls -l /tmp/sdsys/sdclient.socket` shows the mode.
 
+**The first stage of a connection is confined** (since 30 October 2026). The unit that starts one server for each connection, `sdclient@.service`, sets the safe part of systemd's
+sandbox: `ProtectKernelTunables`, `ProtectKernelModules`, `ProtectKernelLogs`, `ProtectControlGroups`, `ProtectClock`, `ProtectHostname`, `RestrictRealtime`, `RestrictNamespaces`,
+`LockPersonality` and `SystemCallArchitectures=native`. That stage runs as root until a session has logged in, so a fault in the reader would otherwise have all of root's reach; these
+settings take from it what it never uses. **They are not the whole sandbox, on purpose:** `NoNewPrivileges` and a capability bound would stop the `sudo sd-elevate` that a session
+runs, and `ProtectSystem`, `ProtectHome` and `PrivateTmp` would stop it writing the system directory and the accounts. A fresh install has the settings; **an upgrade that keeps the
+unit files keeps the old one** - copy `usr/lib/systemd/system/sdclient@.service` from the source over `/usr/lib/systemd/system/sdclient@.service` and run `systemctl daemon-reload`
+(`systemctl show sdclient@x.service -p RestrictNamespaces` says `yes` when it is in force). To loosen one, `systemctl edit sdclient@.service` and set it to `no` in the drop-in.
+
 **No SD session is ever ended by this verb**, which is where it differs
 most from the Windows original. SD Core for Windows's own listener opens
 only when SD itself starts, so changing it there restarts the whole
