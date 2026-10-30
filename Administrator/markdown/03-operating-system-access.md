@@ -11,6 +11,11 @@ the verb refuses.
 > nothing outside the administrator set. Where a user-set page is worth naming,
 > it is named in words.
 
+**The switch is a wall for an SD *session*.** A person who already has a Linux
+shell on the machine does not need it; what such a person can and cannot do to
+SD is in [SD installation](08-sd-installation.html), *What this does not
+close*.
+
 SD folds case, so a command may be typed in either case. Commands are shown here
 in lower case.
 

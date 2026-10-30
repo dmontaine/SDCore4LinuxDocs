@@ -142,8 +142,12 @@ file's, the file is used and one line goes to the system log.
 shell: such a person can release other people's locks, log other sessions out or fill the user table. That is damage and denial of service, not a way to a
 privilege. The gates are walls for an SD *session*; a person with a shell is trusted with the segment. Giving SD users no login shell, or only the
 forced-command ssh route, is how an installation that cannot accept that closes it.
+The installer leaves a new user's login shell as the operating system's default, because any tighter default would also stop the forced-command ssh route and a
+console login that starts `sd`; `sudo usermod -s shell user` changes it for one user. (sshd runs a forced command through the user's login shell, so a shell
+that refuses commands closes that route too: choose per user, and see *Remote access and the machine*.)
 
-**The file `$ipc`.** `$ipc`, in the system directory, is the one SD file every user's process has to write (it is `sdsys:sdusers` 0775), so a member of `sdusers`
+**The file `$ipc`.** `$ipc`, in the system directory, is the one SD file every user's process has to write (it is `sdsys:sdusers`, directories 2770 and files 0660 since 30 October 2026, where it was 0775: an operating-system user
+who is not in `sdusers` can no longer read the commands, `DATA` lines and messages it holds), so a member of `sdusers`
 with a shell can write it as well. It holds working records and nothing a session is configured from: the lock that orders a phantom's start-up, the start-up
 records of a phantom (its command, its `DATA` queue and its log file name), the messages waiting for a user, the phantom register
 that `status` shows, and the tables that `profiler`, `hsm` and `pstat` ask another session for. A phantom no longer takes its command, options, `DATA` lines or

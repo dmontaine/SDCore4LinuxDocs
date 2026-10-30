@@ -44,6 +44,15 @@ Command requires administrator privileges
 `delete.account sdsys` would have been refused anyway — you cannot delete
 `SDSYS` — and it never got that far.
 
+**A gate is a wall for an SD *session*, not for a person who has a shell on the
+machine.** Every SD user is in the operating-system group `sdusers`, and a
+member who has a shell can write SD's shared memory (the lock, file and user
+tables): such a person can release other people's locks or log sessions out,
+which is damage and denial of service, not a way to become SDSYS or to turn a
+gate on. How far that matters, and how an installation that cannot accept it
+closes it, is in [SD installation](08-sd-installation.html), *What this does
+not close*.
+
 **Being SDSYS means being logged in to the machine as the `sdsys` Linux
 user, at its own password, on a local session** — the keyboard, or a
 desktop-sharing view of it (VNC, TeamViewer). Nothing else grants it:
