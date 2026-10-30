@@ -328,7 +328,7 @@ file's next sequential id** (in quotes it is a record of that name). With a sele
 | Ctrl-L · Go, Go to line | **a line; line,column; or, in a record shown with `:@vm:` marks, field,value,subvalue** (the field is the line, the value follows the (v-1)th `:@vm:`, the subvalue the (s-1)th `:@sm:` inside it; the tokens are found in any case, and a value or subvalue past the last goes to the last; **two marks side by side - an empty value - count as one, so use the line and column there**). A number is made whole (`1.5` is 1) and one above 99,999,999 is taken as 99,999,999; a number under 1 or a word is not taken |
 | Search, Find in the records | find a text in every record of the file the tree is on (the first 2000 records, 500 lines), listed in the table; Return opens the record at the line. The text is at most 256 characters. It has no key (F11 was it) |
 | Ctrl-E · Go, Edit in SED | edit the record in [SED](27a-sd-tcl-sed.html) and come back (below) |
-| F12 · Go, Edit as fields | edit the record as a tree of fields, values and subvalues in [CED](27b-sd-tcl-ced.html) and come back (below) |
+| F12 · Go, Edit as fields | edit the record as a tree of fields, values and subvalues in the IDE's own fields view - the editor of [CED](27b-sd-tcl-ced.html), shown inside the editor's rectangle - and come back (below) |
 | Tab · Shift-Tab | in the editor, **indent and outdent** the line or the selected lines (below); in the tree, the tabs, the messages and every form Tab moves to the next control as before |
 | Go, Open the include | the record that the `$include` line at the cursor names, in a tab: one name is looked for in the file the tab is in and then in `syscom`, two words name the file; a collection-file record is passed over, and one that is not found says where it looked. It has no key |
 
@@ -359,8 +359,8 @@ before), one element to a line, in a tab of its own. You edit the text as any ot
 writes the COLLECTION to the file**, and the tab keeps the text in the same layout (`jbuild` with the pretty
 mode, the layout `ct` shows) so that a text you typed compact is not "changed" for ever. Text that is not a
 JSON object or array is refused in a box that says where the parse stopped, and the record on the disk is
-untouched. **Edit as fields (F12) hands the collection to CED** (the data collection editor, which writes
-nothing and takes no lock) and brings the JSON text of what CED kept back into the tab; the save is the IDE's.
+untouched. **Edit as fields (F12) shows the collection in the fields view** (CED's editor, inside the IDE; it writes
+nothing and takes no lock) and brings the JSON text of what you kept back into the tab; the save is the IDE's.
 A record that is not there opens as a new `{}`. Compile, run, debug, catalog, SED, Save as and the include do
 not apply to such a tab (the IDE says so); **Write a copy keeps its JSON text in a record of an ordinary
 file, and a text cannot be saved into a collection file under a new name** (New record makes a record of
@@ -504,15 +504,18 @@ read. Ctrl-E is the editor's *end of row* key in other programs that use
 `screen memo`; in the IDE it belongs to this and **End** ends a row.
 
 **F12 shows the record as fields, values and subvalues, so that nobody types a mark**
-(since 26 October 2026). The record in the open tab goes to [CED](27b-sd-tcl-ced.html) in its
-*data mode*: a list of the fields, each field a text or a list of its values, each value a text
-or a list of its subvalues. Dive into a field with Return, change a text with Return, add or
-delete with **Ins** and **Del**; the value and subvalue marks are put in from the shape of the
-tree when the record comes back. **Ctrl-S in CED keeps your changes and Ctrl-Q returns to the
-IDE**, which puts the new text in the tab and marks the record changed (*Back from the fields:
-bp prog is changed, save it to keep it*). **CED writes nothing and takes no lock: the IDE's
+(since 26 October 2026; in the IDE's own form since 30 October 2026). The record in the open tab is
+shown in the *fields view* - the editor of [CED](27b-sd-tcl-ced.html) in its *data mode*, drawn in the
+editor's rectangle with the tree, the tab strip and the messages still on the screen: a list of the
+fields, each field a text or a list of its values, each value a text or a list of its subvalues. Dive
+into a field with Return, change a text with Return, add or delete with **Ins** and **Del**; the value
+and subvalue marks are put in from the shape of the tree when the record comes back. **While the view
+is up it has the keyboard to itself** - the tabs, the menu bar and the other panes wait (a later change
+will let them work beside it). **Ctrl-S in the view keeps your changes and Ctrl-Q or F12 returns to
+the editor**, which puts the new text in the tab and marks the record changed (*Back from the fields:
+bp prog is changed, save it to keep it*). **The view writes nothing and takes no lock: the IDE's
 own save (Ctrl-S) does the saving**, with the edit gate and the overwrite question as for any other
-change. Leaving CED without keeping anything, or answering *No* to its question, leaves the
+change. Leaving the view without keeping anything, or answering *No* to its question, leaves the
 tab as it was (*Back from the fields: bp prog is as it was*); if you pressed Ctrl-S and then
 changed more, *No* gives you what Ctrl-S kept. With no record open, F12 says so.
 **A record of an ordinary file whose text is a JSON object or array** (since 29 October 2026, with no
