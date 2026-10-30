@@ -46,6 +46,8 @@ and the next `writeseq` takes *its* `else` branch.
 | **append** | position at the end, so writes add to what is there |
 | **overwrite** | truncate on open |
 | **readonly** | open without taking a write lock |
+| **creating** | when the name does not exist, make the file now (an existing file is opened as without the word). **The file is made exclusively** (since 30 October 2026): if something has taken the name by the moment it is made, or the name is a symbolic link that leads nowhere, nothing is created and `status()` is 6032 - where before the open found the file that had appeared, or made the link's target. The directory it goes in must be there; it is never made |
+| **shared** | includes `creating`, but keeps open-or-create, so that several processes can add to one file; it is not exclusive, except that a name that is a symbolic link leading nowhere is refused with `status()` 6032 as it is for `creating` |
 
 ## Reading
 

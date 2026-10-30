@@ -294,7 +294,7 @@ file's next sequential id** (in quotes it is a record of that name). With a sele
 | part | what it is |
 |---|---|
 | menu bar | the top row; F10 or Esc opens it, and a click on a title opens that menu (since 19 October 2026; a click on the bar beside the titles does nothing) |
-| tree | the account's files on the left (**the entries whose names start with a dollar sign - `$acc`, `$hold`, `$map`, `$release` - are not listed**, since 28 October 2026: they belong to SD itself). Return on a file lists its records (the first 2000, and a message says when there are more; a big file is no longer read whole first), and Return again closes the list. **A file that has a dictionary shows the dictionary as a node of its own under it** (since 28 October 2026), read only when you open it, and its items are listed the same way. Return on a record opens it. A letter jumps to the next entry that starts with it |
+| tree | the account's files on the left (**the entries whose names start with a dollar sign - `$acc`, `$hold`, `$map`, `$release` - are not listed**, since 28 October 2026: they belong to SD itself). Return on a file lists its records (the first 2000, and a message says when there are more; a big file is no longer read whole first), and Return again closes the list. **A file that has a dictionary shows the dictionary as a node of its own under it** (since 28 October 2026), read only when you open it, and its items are listed the same way. Return on a record opens it. A letter jumps to the next entry that starts with it. **An account that has operating system access (the administrator, or `os-on`) also sees an *Operating system files* node after its files** (since 30 October 2026): Return on it lists `/`, Return on a directory lists its entries (directories first, then files, each in the order of the names; 1000 at most) and again closes it, and Return on a file opens it in a tab, as `path:/full/name` does. Names that hold a control character or a byte from 248 to 255 cannot be shown or put in a path; a message says how many entries were left out. An account without the access has no node |
 | editor | on the right, a tab for each open record. **While it has the focus the character at the cursor is shown in the highlight style** (as well as the terminal's own cursor being put there), so the place shows on a terminal that draws its cursor poorly. It is the text area `screen memo` uses, so its keys are `memo`'s: selection, cut, copy and paste, undo and redo, find, line numbers. Text is coloured as SD BASIC, C, Python, JSON, shell or Markdown **chosen as [SED](27a-sd-tcl-sed.html) chooses** (since 26 October 2026): by the name of the file, then the record id, then the first line - so a script with no suffix that begins `#!/bin/sh` is shell - and then the languages a site added in `&sed.syntax&`. **A horizontal scroll bar runs along its bottom row** (`<` and `>` at the ends, a thumb as long as the visible part is of the longest line; none to speak of when every line fits); clicking an arrow scrolls 8 columns and clicking the track a page |
 | table | under the editor: the compiler's errors, or search results |
 | pane marks | **`[*]` or `[-]` in the top right corner of each pane that can have the keyboard** (since 19 October 2026): the files (on the frame above the tree), the editor (on the frame above it), the tab strip (at its right end) and the messages (at the right end of their bar). `[*]` is on the pane that has the keyboard, `[-]` on the others; Tab moves it round in that order |
@@ -307,10 +307,10 @@ file's next sequential id** (in quotes it is a record of that name). With a sele
 | F5 · Build, Run | compile and run |
 | F7 · Build, Debug | compile with debugging and run the debugger |
 | Ctrl-S · File, Save | save the record (an untitled buffer asks for its file and name first; an unchanged record says *No changes to save*). **Ctrl-S is the only save key**; F2 no longer saves |
-| Ctrl-N · File, New record | a new record: the name form, then a buffer that is not on the disk until it is saved |
+| Ctrl-N · File, New record | a new record: the name form, then a buffer that is not on the disk until it is saved. **`path:/full/name` there makes an empty file of the operating system and opens it in a tab** (below) |
 | Ctrl-O · File, Open record | the name form, for a record that exists; a file whose name starts with a dollar sign is refused |
-| File, Save as | the name form; the tab becomes the new record and it is saved. The old record is as it was on the disk. It has no key |
-| File, Write a copy | the name form; the text is written to another record and the editor stays on the record it had. It has no key |
+| File, Save as | the name form; the tab becomes the new record and it is saved. The old record is as it was on the disk. **With `path:/full/name` the tab becomes a new file of the operating system** (below). It has no key |
+| File, Write a copy | the name form; the text is written to another record and the editor stays on the record it had. **With `path:/full/name` the text is written to a new file of the operating system** and no tab or lock is kept. It has no key |
 | Ctrl-W · File, Close record | closes the record's tab; with unsaved changes it asks whether to save them, discard them or cancel |
 | Ctrl-PageDown · Go, Next tab | the next record tab; Ctrl-PageUp (Go, Previous tab) the one before. **Alt-PageDown and Alt-PageUp do the same** (the second tab keys): GNOME Terminal keeps Ctrl-PageUp and Ctrl-PageDown for its own tabs, so use the Alt keys there |
 | F6 · Go, Next pane | the keyboard goes to the next pane, as Tab does. **Shift-F6** (Go, Previous pane) goes to the one before, as Shift-Tab does |
@@ -321,8 +321,8 @@ file's next sequential id** (in quotes it is a record of that name). With a sele
 | Search, Query replace | each match is shown with its line and asked about: **Yes, No, All, Quit**; the answers are collected and the text is set once at the end, so one Ctrl-Z undoes the lot. A Quit keeps the Yes answers given before it |
 | Search, Find options | **C** = match case, **W** = whole words (a letter, a digit, `.`, `_`, `$` or `%` next to the match makes it part of another word); a blank answer is neither. As delivered the case is matched (how Replace always compared) and any word is found. The options are for List matching lines, Replace and Query replace; the text area's own Find (Ctrl-F, F3) ignores case and is not changed |
 | Search, Upcase the selection · Downcase the selection | the characters between the mark (**Ctrl-G** sets it where the cursor is) and the cursor change case; the rest of the text does not; one undo step |
-| Search, Import a record here | the name form (the record must exist); its lines go in at the cursor, one undo step. A record that holds value, subvalue or text marks or characters outside ASCII, a collection file's record and an operating system file are refused, with the reason |
-| Search, Export the selection | the name form (a record that is not there, as Write a copy asks); the selected text is written to it, under the account's edit gate and the record's lock, as the record when the selection is whole lines of a record shown with `:@vm:` marks (the tokens are written as the marks; a part of a line is written as the text shown). It works on a read-only tab, but not on a record that holds characters outside ASCII |
+| Search, Import a record here | the name form (the record must exist); its lines go in at the cursor, one undo step. A record that holds value, subvalue or text marks or characters outside ASCII and a collection file's record are refused, with the reason. **`path:/full/name` imports a file of the operating system** (since 30 October 2026): from the text of the tab that holds the file, if there is one, else from the file itself, read through the account's gates and closed again; a file the IDE would not open (a NUL or a byte from 248 to 255, over 2 MB, a directory, a device) is refused as Open refuses it |
+| Search, Export the selection | the name form (a record that is not there, as Write a copy asks); the selected text is written to it, under the account's edit gate and the record's lock, as the record when the selection is whole lines of a record shown with `:@vm:` marks (the tokens are written as the marks; a part of a line is written as the text shown). It works on a read-only tab, but not on a record that holds characters outside ASCII. **`path:/full/name` writes the selection to a new file of the operating system** (below) |
 | Build, Run a command | **a command of the account's TCL, typed in a question**, is run as the prompt would run it - through the same command processor, so with the same gates - and what it printed is in the table at the bottom (500 lines at most). The changed texts' recovery copies are kept first and the tabs' locks taken again after. **A command that aborts (a program with a run-time error, `abort`) is stopped and the IDE stays up**; it prints nothing in the table. A command that asks the keyboard for an answer is not for this, and neither is one that changes the account (`logto`): the IDE goes on in the account the command left |
 | View, Refresh | draws the screen again from what the IDE holds |
 | Ctrl-L · Go, Go to line | **a line; line,column; or, in a record shown with `:@vm:` marks, field,value,subvalue** (the field is the line, the value follows the (v-1)th `:@vm:`, the subvalue the (s-1)th `:@sm:` inside it; the tokens are found in any case, and a value or subvalue past the last goes to the last; **two marks side by side - an empty value - count as one, so use the line and column there**). A number is made whole (`1.5` is 1) and one above 99,999,999 is taken as 99,999,999; a number under 1 or a word is not taken |
@@ -383,11 +383,11 @@ path:/full/name`, or `path:/full/name` typed in the *File* entry of Open (Ctrl-O
 full name in the *Record* entry. **The name is the full path, as you typed it** (its case is not changed):
 it starts with a slash, has no `.` or `..` part, no doubled slash and no control character, and a path with
 blanks is fine on the command line. The tab strip shows `os` and the last part of the name; the status line
-shows the whole path (blanks inside a name are kept as typed). The file must exist; **New, Save as and Write a
-copy do not take a path as the name they write to** (they say so), and **compile, run, debug, catalog, SED, edit
-as fields, Save as and open the include do not apply to such a tab** (the IDE says why). **Write a copy does
-work on it**: it keeps the tab's text in a record, which is the way out when a save failed or the file was
-replaced. How it behaves:
+shows the whole path (blanks inside a name are kept as typed). Open needs the file to exist (**New, Save as,
+Write a copy and Export make one: see *Making a file of the operating system* below**), and **compile, run,
+debug, catalog, SED, edit as fields, Save as and open the include do not apply to such a tab** (the IDE says
+why). **Write a copy does work on it**: it keeps the tab's text in a record, or in another new file of the
+operating system, which is the way out when a save failed or the file was replaced. How it behaves:
 
 - **The account's gates apply, and the kernel asks them.** An account without the OS gate can open and save
   only files inside its own directory (a link inside the account that leads out of it is outside); an account
@@ -415,6 +415,38 @@ replaced. How it behaves:
   write (permissions, or an edit gate) opens read-only and says so.
 - **No recovery copy is kept** for such a tab, whatever the account's switch: the copy would be kept in your
   home, and the file may be anywhere.
+
+**Making a file of the operating system** (since 30 October 2026). In the name form of New (Ctrl-N), Save as,
+the first save of an untitled buffer, Write a copy and Export the selection, type `path:/full/name` in the
+*File* entry (or `path:` there and the full name in the *Record* entry), spelled as for Open. The form asks the
+account's operating system access and its edit gate for operating system files first and says a refusal in
+the form, which stays open.
+
+| from | what is made, and what the tab does |
+|---|---|
+| New | an **empty** file, opened in a tab of its own |
+| Save as, the first save of an untitled buffer | the file, holding the tab's text. **The tab becomes the file**: the record it had is as it was on the disk, its lock is given back and its recovery copy is dropped; the file is locked while the tab is open, as any file of the operating system is |
+| Write a copy, Export the selection | the file, holding the text (or the selection). No tab is made and no lock is kept |
+
+- **The file is made before anything else changes.** When it cannot be made, the tab, the record and its lock
+  are as they were. The text read back from the disk is what the tab holds afterwards.
+- **A file that is there is never replaced.** A name taken by a file with content, by a link that leads nowhere
+  or by a file someone else made a moment ago is refused (*was not made: a file with that name is there already*,
+  message 11762); open it to change it. An existing **empty** plain file is filled. A name that is a directory,
+  device, pipe or socket says it is not a plain file (11749).
+- **The directory it goes in must be there**; the IDE never makes one. A missing directory, or a directory the
+  operating system or the account's edit gate does not let this session make a file in, is refused with the
+  error number (11763).
+- **Text with a NUL or a byte from 248 to 255, or more than 2 MB (2,097,152 bytes), is refused before any file
+  is touched** (11765); the text stays in the editor.
+- **A write that fails** (a full disk) says so in a box (11764): the file was made and an empty or partly
+  written one may be there. The text is still in the editor.
+- **The new file's mode is 0666 less the session's umask**, the mode `openseq ... creating` gives (the IDE has
+  no setting of its own), and its owner is the Linux user the session runs as.
+- **Nothing outside the account is reachable without the account's operating system access.** The IDE contains
+  no statement that opens a file: the file is made by `openseq ... creating` in `!ide_osfile`, so the kernel's
+  checks (the account's OS gate, the edit gates for a VOC, a dictionary, a program file or the shared account)
+  apply as for a program of your own. An account without the access can make files inside its own directory only.
 
 **A record that holds characters outside ASCII (bytes 128 to 247) opens read-only too** (since
 28 October 2026): another character set's letters, or UTF-8. The editor shows such a character a byte at a
@@ -566,8 +598,9 @@ with the recovery copy on it is moved to your home, with it off it stays where i
 the recovery copy off does not delete copies that exist. `sed` keeps none.
 
 **What it does not do:** it has no replace across records, no project files and no completion, and it does
-edit collection-file records only as JSON text or fields, and it opens an operating-system file only by `path:` (it cannot make
-one, save under another path or browse directories yet; SED's own `path:` form no longer opens one).
+edit collection-file records only as JSON text or fields, and an operating-system file is a plain text file in one piece (no NUL, no byte from 248 to 255, 2 MB at
+most; a file with content is never replaced by a new one, no directory is made, and there is no rename, delete
+or change of mode; SED's own `path:` form no longer opens one).
 
 **The IDE is laid out for 140 columns by 43 lines or more** (it was 140 by 42
 until 28 October 2026, and 60 by 16 before 18 October); a bigger window is used
