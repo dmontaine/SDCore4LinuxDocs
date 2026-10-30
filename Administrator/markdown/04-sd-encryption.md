@@ -118,11 +118,14 @@ is encrypted with a fresh nonce), `total` adds cipher text, an index holds ciphe
 text and no plaintext reaches the disk, and `copy` moves the stored value. The
 User page lists each.
 
-**`encrypt.key` applies no strength rule to the passphrase.** The rule for SD
-passwords is not applied, because this is not an SD password: nothing is stored
-or compared. The tighter alternative, applying that rule or a minimum length, is
-a decision for the owner. A site that wants one can write it into the
-application that asks for the passphrase.
+**`encrypt.key set` refuses a passphrase of fewer than 12 characters** (since 30
+October 2026; message 11994), after it has seen that the two typed copies match.
+That is its only rule. The rule for SD passwords is not applied, because this is
+not an SD password: nothing is stored or compared. `sdkey()`, the function a
+program calls, is unchanged and takes any passphrase that is not empty, so a site
+that wants a stricter or a looser rule writes it into the application that asks
+for the passphrase. A long phrase of words is a better passphrase than eight
+characters of every kind.
 
 ## The SDEXT interface
 

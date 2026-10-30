@@ -92,8 +92,9 @@ encrypt.key clear salary
 
 `set` takes the salt that `sdsalt()` made. **Use `confirm` the first time:** it asks for the
 passphrase twice, because data encrypted under a mistyped passphrase cannot be read again.
-`clear` with no name empties the ring. The verb applies no strength rule to the passphrase;
-a long phrase of words is a better one than eight characters of every kind.
+`clear` with no name empties the ring. The verb refuses a passphrase of fewer than 12
+characters (since 30 October 2026) and has no other rule; `sdkey()` itself takes any passphrase that is not empty. A long phrase of
+words is a better passphrase than eight characters of every kind.
 
 ### What is stored
 

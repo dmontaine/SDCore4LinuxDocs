@@ -600,7 +600,7 @@ Three simple layers, with no vault and nothing on by default.
 
 | Name | Change | What |
 |---|---|---|
-| `encrypt.key` | Added | asks for a key on a hidden prompt and puts it in the key ring |
+| `encrypt.key` | Added | asks for a key on a hidden prompt and puts it in the key ring; `set` refuses a passphrase of fewer than 12 characters (`sdkey()` takes any that is not empty) |
 | key ring subroutines | Added | `!keyset`, `!keyclear`, `!keylist`: fill, empty and list the session's key ring, kept in the memory of its own process |
 | `sdkey()` and friends | Added | `sdsalt()`, `sdkey()`, `sdrandkey()`: a salt, a key from a passphrase, and a random key for `sdencrypt()` and `sddecrypt()`, open to every program; every `sdencrypt()` uses a fresh random nonce <!--s 504 g116 g123--> |
 | `xe` conversion | Added | a dictionary item with `xe` (or `xe;name`) shows a field decrypted for a session that holds the key and the cipher text for one that does not; `iconv` encrypts |
