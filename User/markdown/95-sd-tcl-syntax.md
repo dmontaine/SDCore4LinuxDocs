@@ -213,7 +213,7 @@ not refused — the name is simply not recognised.**
 | **`stop`** | **`stop`** |  |
 | **`sum`** | **`sum`** {**`dict`**} *file* {*selection*} *field* |  |
 | **`sync.masters`** | **`sync.masters`** {*account*} | S |
-| **`tape.import`** | **`tape.import`** *image* **`to`** *account* {**`from`** *account*} {**`format as`**} {**`list`**} {**`no.query`**} | S |
+| **`tape.import`** | **`tape.import`** *image* **`to`** *account* {**`from`** *account*} {**`format`** **`as`** \| **`r83`** \| **`jbs`** \| **`fs`** \| **`mv`**} {**`list`**} {**`no.query`**} | S |
 | **`term`** | **`term`** \| *width*{`,`*lines*} {*type*} \| **`color`** *bg*{`,`*fg*} \| **`default`** \| **`display`** |  |
 | **`time`** | **`time`** \| **`internal`** |  |
 | **`tool.accounts`** | **`tool.accounts`**  —  the accounts on one screen (administrator): every account with its kind, suspension, gates that are on and sessions; **`modify.account`** (suspend, add or take away a person) and **`create.account`** behind a box answered Run, and **`delete.account`** after the name is typed, with the terminal given to the verb where it asks for a password or confirms | S |

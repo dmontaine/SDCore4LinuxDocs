@@ -239,4 +239,4 @@ import.csv = **`import.csv`** *pathname* *file* {**`header`**} {**`delimiter`** 
 import.json = **`import.json`** *pathname* *collection.file* {**`id`** *name* | **`generate`**} {**`overwriting`**}
 import.xml = **`import.xml`** *pathname* *file* {**`id`** *name* | **`generate`**} {**`overwriting`**}
 convert.data = **`convert.data`** *from.pathname* *to.pathname* {**`from`** *format*} {**`as`** *format*} {**`header`**} {**`no.query`**}
-tape.import = **`tape.import`** *image* **`to`** *account* {**`from`** *account*} {**`format as`**} {**`list`**} {**`no.query`**}
+tape.import = **`tape.import`** *image* **`to`** *account* {**`from`** *account*} {**`format`** **`as`** | **`r83`** | **`jbs`** | **`fs`** | **`mv`**} {**`list`**} {**`no.query`**}

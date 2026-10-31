@@ -11,7 +11,7 @@ SDSYS account's VOC and in no other, and no one can be given it.
 ## The command
 
 ```
-tape.import image to account {from account} {format as} {list} {no.query}
+tape.import image to account {from account} {format as|r83|jbs|fs|mv} {list} {no.query}
 ```
 
 | Word | Meaning |
@@ -19,13 +19,38 @@ tape.import image to account {from account} {format as} {list} {no.query}
 | *image* | the absolute path of the save image: a file, never a device. A path with `.` or `..` in it, a doubled slash or a slash at the end is refused. |
 | `to` *account* | the name of a **new** user account. An account that exists is refused; nothing is merged into it. |
 | `from` *account* | the account the image holds, if you want it checked. An image holds one account in this release. |
-| `format as` | the layout the old `ACCOUNT.SAVE` wrote. It is the only layout read, so the word changes nothing; any other layout is refused. |
+| `format` *layout* | the layout of the image: `as` (the default, what the old `ACCOUNT.SAVE` wrote), or `r83`, `jbs`, `fs` or `mv`. See [The layouts](#the-layouts). Any other word is a syntax error; `ultfs` is refused by name. |
 | `list` | read the image to the end, say what it holds, make nothing. |
 | `no.query` | do not ask whether to go on. A new user account still asks for its password, as `create.account` does: the account is a Linux user. |
 
 `tape.import` reads the whole image **before** it makes anything. An image it cannot understand is
 refused with a code and a sentence (*The image was refused: R-NOEOF (no end-of-file block after the
 data)*), and nothing has been made. Only then does it ask, make the account, and fill it.
+
+## The layouts
+
+`as` is what the old `ACCOUNT.SAVE` wrote, and it is the only layout that has been checked against an
+image a program really wrote. `r83`, `jbs`, `fs` and `mv` are read **as the original reader of the old
+tape subsystem read them**, and **no real image of any of them has been seen**: an image of one of them
+may be refused although it is good, and a good result does not prove that the system which wrote it wrote
+what this reader expects.
+
+| Word | What the reader expects |
+|---|---|
+| `as` | three labels, with an end-of-file block and a descriptor block between them, then the data |
+| `r83` | two labels, with any number of end-of-file blocks between them, then the data |
+| `jbs`, `fs` | one label, then the data (the two words read alike) |
+| `mv` | one label, then the data, which may contain header tokens; they are left out and logged |
+
+For the layouts other than `as` a label only has to begin with an item mark, `L`, a block size and some
+printable text. A block has a pad of NULs or spaces, or none at all (block size `0200`). File numbers are
+hexadecimal. Items of the types `F` and `E` are read like ordinary items. The end of the account is marked
+`XX`, `XC` or `X`. The account the image holds is the one the first file header of the data names; the
+name must be printable and at most 64 characters.
+
+These are refused, each with its own code: `format ultfs` (the original reader's own tests disagree about
+where an Ultimate save's data starts); an item of the types `B` and `R`, of the large form `L`, or of the
+binary form of another system; and a save made by `T-DUMP`.
 
 ## What is made
 
@@ -48,6 +73,7 @@ files access, no edit gates. Turn on what the person needs with `modify.account`
 * A **binary item**: the old `ACCOUNT.SAVE` stored a record that holds an item mark, a compiled program
   among them, in a form of its own. It is counted and left out. Nothing from an image is ever compiled,
   catalogued or run.
+* A **header token** of the layouts other than `as`: it holds no record.
 * An **index definition**. The files are made; build the indices with `build.index`.
 * A second part of a file with the same name, and a file number that has two headers.
 
@@ -73,9 +99,9 @@ removal itself fails, the message says which step did not complete, and what to 
 
 ## What it does not do
 
-* It reads only the layout the old `ACCOUNT.SAVE` wrote. Images from other systems' own save programs
-  are not tested; they may be refused, and an image that is read is no proof that another system wrote it
-  the way this reader understands it.
+* It reads the layout the old `ACCOUNT.SAVE` wrote, and the others only as [described above](#the-layouts).
+  Images from other systems' own save programs are not tested; they may be refused, and an image that is
+  read is no proof that another system wrote it the way this reader understands it.
 * It does not restore into an existing account, and it does not merge.
 * It does not build indices, compile programs, or make a user's password: the person is given a password
   as for any new user account.
