@@ -9,17 +9,22 @@ have forgotten its arguments, it is here. If you want to know what it
 braces an optional part, and a vertical bar separates alternatives. SD
 folds case, so any of this may be typed in either case.
 
-> This page lists every verb SD ships (**209** of them). The shapes come from the
+> **This page is generated, and it is checked for completeness rather
+> than proof-read for it.** The roster is computed from SD's own VOC:
+> every verb record in `newvoc`, plus the ones only `voc_template`
+> has, which is **210** verbs, and `tools/mktclsyntax.py` refuses to
+> write the page if any of them has no line. The shapes come from the
 > subject documents, where each verb is described in full.
 
-**The "who" column is the VOC, not an opinion.** It is taken from the
-vocabulary SD installs, so it says what an account actually gets. **A verb your account does not have is
+**The "who" column is the VOC, not an opinion.** It is computed by
+reading `newvoc` and `voc_template` directly, so it cannot drift from
+what an account actually gets. **A verb your account does not have is
 not refused — the name is simply not recognised.**
 
 | | | |
 |---|---|---|
 | **every account** | 162 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 47 more | in `voc_template` but not `newvoc` |
+| **SDSYS only** | 48 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -208,6 +213,7 @@ not refused — the name is simply not recognised.**
 | **`stop`** | **`stop`** |  |
 | **`sum`** | **`sum`** {**`dict`**} *file* {*selection*} *field* |  |
 | **`sync.masters`** | **`sync.masters`** {*account*} | S |
+| **`tape.import`** | **`tape.import`** *image* **`to`** *account* {**`from`** *account*} {**`format as`**} {**`list`**} {**`no.query`**} | S |
 | **`term`** | **`term`** \| *width*{`,`*lines*} {*type*} \| **`color`** *bg*{`,`*fg*} \| **`default`** \| **`display`** |  |
 | **`time`** | **`time`** \| **`internal`** |  |
 | **`tool.accounts`** | **`tool.accounts`**  —  the accounts on one screen (administrator): every account with its kind, suspension, gates that are on and sessions; **`modify.account`** (suspend, add or take away a person) and **`create.account`** behind a box answered Run, and **`delete.account`** after the name is typed, with the terminal given to the verb where it asks for a password or confirms | S |

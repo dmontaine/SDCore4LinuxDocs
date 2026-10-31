@@ -171,6 +171,10 @@ DOCS = [
  ('Administrator', '20-the-ai-helper.md', """
    set.ai tool.ai
  """),
+ # 30 Oct 26 - S.92 (TAPE.IMPORT): tape.import, in voc_template (SDSYS's set), not in newvoc.
+ ('Administrator', '22-importing-a-tape-image.md', """
+   tape.import
+ """),
  # 22 Sep 26 - LINUX FORK.  grant/list.grants/revoke, append.sd.path and
  # ssh.server do not exist on this port (no os.users-style OS-access gate to
  # wrap, and no SD-managed ssh server/PATH tool - the distribution owns

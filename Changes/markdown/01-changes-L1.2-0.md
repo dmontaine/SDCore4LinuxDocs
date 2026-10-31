@@ -566,6 +566,7 @@ has, with the changes they made.
 |---|---|---|
 | `menu` | Added | opens the full-screen menu (the home screen) from any account; `home` and `exit` stay |
 | `pdf` | Added | shows a document in the PDF reader the administrator has allowed, even for an account that may not run programs |
+| `tape.import` | Added | makes a new user account from a save image written by the old `ACCOUNT.SAVE` (administrator): the image is read to its end before anything is made, then the files, dictionaries and records are written into the new account while it is made; what cannot be used or is binary is left out and logged in `tape.log`; a failure removes the account again |
 | `tool.bulk` | Added | full-screen bulk update of one data file: records chosen by conditions, a saved list or all, up to ten operations, a dry run first, apply under record locks after a box that asks the file's name typed, and undo of the last run; for every account |
 | `tool.catalog` | Added | full-screen list of the account's program records (kind, compile time, size, current or stale, private / local / global catalogue) with compile (basic), catalogue privately or locally (catalog) and take an entry out (delete.catalog, decatalog), each the ordinary verb after a box; for every account, behind the bp-edit gate |
 | `tool.dict` | Added | full-screen dictionary of a file (items by type and what they show; make, edit, delete, compile and try an item; the file's indices: make, build, delete, list); for every account |
