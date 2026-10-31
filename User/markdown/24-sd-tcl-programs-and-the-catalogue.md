@@ -280,6 +280,7 @@ ide file record record ...
 ide file *
 ide dict file {record}
 ide dict file record /form
+ide dict file record /text
 ide voc {record}
 ide path:/full/name
 ```
@@ -542,8 +543,13 @@ value or subvalue mark in it) goes to CED as the *tree of the JSON*, as a collec
 does, and comes back as the JSON text in the same layout; anything else (marks in the record, text
 that does not parse, text that does not begin with `{` or `[`) is shown as fields, as above.
 
-**A dictionary item can be edited as a form** (since 31 October 2026): **Go, Dictionary item as form**, or
-`ide dict file record /form`, which opens the item as a form straight away. The form fills the screen
+**A dictionary item opens as a form** (since 31 October 2026): `ide dict file record` (a record that is not
+there yet opens as a new D item) and **Return on an item in the tree** show the item as a form first, and so
+does the **E** of TOOL.DICT, which hands the item to the IDE. `ide dict file record /text` opens it as text;
+**Edit as text** and **Esc** in the form leave the item as text in its tab, and **Go, Dictionary item as
+form** (or `/form` on the command line) shows the form for the tab you are in. A record found by a search,
+items opened together from a list, Ctrl-O, an item already in a tab, an item another session holds (it is
+read-only) and an item the form cannot show open as text, as before. The form fills the screen
 (140 by 43) over the IDE: a numbered **label and entry for each field the item's type has**, and nothing
 else. The first row is the **Type** (D, E, I, L, PH or X); choose another with Left and Right and the
 rows change to those of that type, keeping what was typed for the rows the two types share.
