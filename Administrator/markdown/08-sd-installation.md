@@ -155,7 +155,13 @@ log file from it on trust. `phantom` seals the records with a secret that it mak
 only the same operating-system user (and root) can read it, and which the new process copies and overwrites at once. The phantom runs, stacks and sets nothing unless the seal on
 what it read checks; if it does not, the phantom ends at once, says so in its `como` log and to its parent, and writes `phantom refused` to the audit trail.
 SD does not run, stack or set anything from the other records (messages, the register and the profiler, `hsm` and `pstat` tables); they are only shown, and a
-message is shown as it was written. The conversation of the phantom debugger (`pdebug`) is still carried in `$ipc` and is trusted as the segment above is.
+message is shown as it was written. The conversation of the phantom debugger (`pdebug`) is not carried in `$ipc` at all: its messages are records of a directory file in the
+private store of the person who runs `pdebug`, `.local/state/sd/pdebug` below that user's Linux home. SD finds the home in the password database (never from `$HOME`), makes the
+directories on the way when they are missing, and uses the store only when every directory from the home down is a real directory that nobody else can write and the store
+itself is readable by its owner alone. A `pdebug` and the phantom it debugs therefore reach each other only when both run as the same operating-system user, which is how
+they are started in practice; the form in which `pdebug` waits and a phantom is started afterwards by the same person works as before. `pdebug` says it cannot start (message
+11948) when the store cannot be set up, and a phantom that finds no store, or a `pdebug` that has gone, behaves as if no `pdebug` were waiting. The store survives a restart of
+SD, which `$ipc` did not, so `pdebug` removes the records of its own user number when it starts, and a phantom ignores a start record whose `pdebug` has gone.
 The secret is kept in no file and not in the segment. That another operating-system user cannot read the environment of this user's processes is the
 operating system's rule; it has been tested here with one user only.
 
