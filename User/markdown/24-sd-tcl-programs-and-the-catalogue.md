@@ -504,20 +504,28 @@ read. Ctrl-E is the editor's *end of row* key in other programs that use
 `screen memo`; in the IDE it belongs to this and **End** ends a row.
 
 **F12 shows the record as fields, values and subvalues, so that nobody types a mark**
-(since 26 October 2026; in the IDE's own form since 30 October 2026). The record in the open tab is
-shown in the *fields view* - the editor of [CED](27b-sd-tcl-ced.html) in its *data mode*, drawn in the
-editor's rectangle with the tree, the tab strip and the messages still on the screen: a list of the
-fields, each field a text or a list of its values, each value a text or a list of its subvalues. Dive
-into a field with Return, change a text with Return, add or delete with **Ins** and **Del**; the value
-and subvalue marks are put in from the shape of the tree when the record comes back. **While the view
-is up it has the keyboard to itself** - the tabs, the menu bar and the other panes wait (a later change
-will let them work beside it). **Ctrl-S in the view keeps your changes and Ctrl-Q or F12 returns to
-the editor**, which puts the new text in the tab and marks the record changed (*Back from the fields:
-bp prog is changed, save it to keep it*). **The view writes nothing and takes no lock: the IDE's
-own save (Ctrl-S) does the saving**, with the edit gate and the overwrite question as for any other
-change. Leaving the view without keeping anything, or answering *No* to its question, leaves the
-tab as it was (*Back from the fields: bp prog is as it was*); if you pressed Ctrl-S and then
-changed more, *No* gives you what Ctrl-S kept. With no record open, F12 says so.
+(since 26 October 2026; in the IDE's own form since 30 October 2026, as a pane of the tab since the
+same day). The record in the open tab is shown in the *fields pane* - the editor of
+[CED](27b-sd-tcl-ced.html) in its *data mode*, drawn in the editor's rectangle with the tree, the tab
+strip and the messages still on the screen: a list of the fields, each field a text or a list of its
+values, each value a text or a list of its subvalues. Dive into a field with Return, go up with
+**Esc**, **Left** or **Backspace** (Esc at the top is the IDE's own Esc and opens the menu bar), change
+a text with Return, add or delete with **Ins** and **Del**, change the type with **Ctrl-T**, rename with
+**F3**, and copy, cut and paste with **Ctrl-C**, **Ctrl-X** and **Ctrl-V**; the value and subvalue
+marks are put in from the shape of the tree. **The pane is a part of the tab, not a mode of the IDE**:
+the tabs, the menu bar, F6 and every IDE key keep working, each tab remembers whether it shows its
+text or its fields, and a resize keeps the pane where it was. **Each change you make is in the tab's
+text at once**, so the tab is marked changed (a star on the status line and on the pane's path line),
+and **Ctrl-S is the IDE's own save** of that text, with the edit gate and the overwrite question as
+for any other change. **F12 again shows the text**; going back and forth without a change touches
+nothing, and after a change **one Ctrl-Z in the text area takes the whole visit back** (*Back from the
+fields: bp prog is changed, save it to keep it*; *... is as it was* when nothing changed). The pane
+writes nothing and takes no lock. **Commands that work on the text of the record** - Replace, the case
+changes, Import and Export, Format, Go to line, Open the include and the AI line - **wait while the pane
+is up** (*This works on the text of the record: show the text first (F12), then do it*). If something
+else changes the text under the pane (the overwrite question's *Reload*, SED), the pane follows it,
+staying in the same container when it can; text that is no longer a record the fields can show ends the
+pane and the text is shown, untouched. With no record open, F12 says so.
 **A record of an ordinary file whose text is a JSON object or array** (since 29 October 2026, with no
 value or subvalue mark in it) goes to CED as the *tree of the JSON*, as a collection file's record
 does, and comes back as the JSON text in the same layout; anything else (marks in the record, text

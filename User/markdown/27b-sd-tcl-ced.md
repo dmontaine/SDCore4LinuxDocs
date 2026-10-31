@@ -102,6 +102,9 @@ The keys are the ones above, with these differences:
 - **Ctrl-S** makes the record from the tree and keeps it; if the tree cannot be a record (for
   instance after an AI edit that put a number in a field) it says so, in the same words, and keeps
   nothing. The IDE passes no file, so CED writes nothing and holds no lock; the IDE does the saving.
+  **In the IDE** the editor is a pane of the tab (since 30 October 2026): there Ctrl-S is the IDE's own
+  save, **Ctrl-T** is the change of type, **Ctrl-C / Ctrl-X / Ctrl-V** are copy, cut and paste, **F12**
+  shows the text again, and the engine's change is in the tab's text as soon as it is made.
 - Rename (F3) does nothing: an array has no names.
 
 Text is shown exactly as stored: a text mark or an item mark inside a text is part of the text
