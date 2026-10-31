@@ -14,11 +14,8 @@ the real cause.
 *Italics* mark something you supply, **bold** a word typed as it stands, and
 braces an optional part.
 
-> **This page is generated from `BCOMP`'s own tables** by
-> `tools/mksyntax.py`, the same script that builds the User set's syntax card,
-> and the two **partition** the roster: every name the compiler accepts is on
-> exactly one of them, and the script refuses to write either page if that
-> stops being true.
+> This page and the User set's syntax card **partition** the roster: every name
+> the compiler accepts is on exactly one of them.
 
 ## The three kinds, and how each one fails
 

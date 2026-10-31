@@ -80,8 +80,8 @@ hide in here.
 `sd` needs no elevation, no `sudo`, because being SDSYS already *is* the
 privilege.**
 
-**SDSYS may be signed on in more than one place, and when it is you can see it**
-(owner's decision, 26 Oct 2026). Nothing stops a second terminal window or a
+**SDSYS may be signed on in more than one place, and when it is you can see it.**
+Nothing stops a second terminal window or a
 second local login of the `sdsys` user from starting `sd`, and one reason to
 want that is recovery: a session that is stuck at a page can be ended by
 `logout` from another. A limit of one would lock the administrator out until
@@ -414,8 +414,7 @@ replacement for the operating-system switches above.
 `$voc.parser`.** Neither is in a stock VOC and nothing SD ships writes them.
 Both are VOC records of type `X`, so writing, changing or deleting one needs
 `voc-on` (an account without it is refused with status 3035 and the `voc.edit`
-message). What they do, and where `voc-on` stops, was run on a private SD
-(Dev tip, 18 October 2026) in ordinary accounts:
+message). What they do, and where `voc-on` stops, in an ordinary account:
 
 * **`$private.voc`** (field 2 a file name) is a second vocabulary. A command
   word that is in no VOC record is looked for in that file, as typed, then in
@@ -825,23 +824,6 @@ in the archive), and `restore.account` puts an account it has to create back in
 line and restores the account out of the group. A manifest that says `1`, restored on
 a machine with no `sdfiles` group, fails for that account with the group message
 and creates nothing.
-
-**What has and has not been shown.** Checked from the source and by the free
-checks that read it as text: the order of the checks in the login, that the gate
-sits in the request loop before the dispatch, the table of numbers, the helper's
-rules for the group and its refusals (`sd-elevate`, by test as an ordinary user, with
-mutants), and the wording of the messages. **Seen on a real installation (18 October 2026,
-one machine as server and client over the loopback address):** a real user in `sdfiles`
-logging in; the group membership read at login (the same programs refused before
-`files-write-on` and working after it); the refusal of requests on a live session with the
-audit lines; `create.account ... files-on` and `modify.account ... files-write-on` against
-the real `/etc/group`; and the installer making the groups. **Run only against a scratch
-group file and a stand-in for the helper (19 October 2026):** `files-off` and `files-on`
-with a person in `sdfileswrite`, including a removal that fails. **Not run on a real
-installation:** that case, the archive round trip for a person in `sdfileswrite`, and the
-refusal of requests 20 to 23, 29, 54 and 61 on a live files-only session. The client that
-uses the route is the SDNet client (see [SDNet](12-sdnet.html)), which has also not been
-run between two machines.
 
 ### VOC pointers: where a file pointer may lead, and which Q-pointers are followed
 

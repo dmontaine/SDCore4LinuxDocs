@@ -58,8 +58,8 @@ modify.account once it is an SD user.*
   from another machine gives *No backup of jack made on this computer was found in …*. Name the
   file. A renamed file is also never picked by `latest`.
 * **A different accounts folder.** Values in the account's VOC that begin with the old account's
-  path are rewritten to the new one. In the test a pointer to `/home/sd/user_accounts/jack/inv`
-  became the account's path on the test machine. Only the VOC is rewritten: a path written in a
+  path are rewritten to the new one: a pointer to `/home/sd/user_accounts/jack/inv`
+  becomes the account's path on the new machine. Only the VOC is rewritten: a path written in a
   record or a program is left as it is.
 * **The Linux user name is already taken.** SD reuses the user only if SD itself made it (its
   comment is exactly `SD account`) and keeps its password: *jack is a Linux user that SD itself
@@ -94,23 +94,6 @@ None of these changed an account, and the restore leaves no `.sdrestore.`*n* fol
 in the last row, where it is the folder that is the cause). The source also refuses a zip with
 an entry outside `manifest.txt` and `accounts/`, a `..` or absolute path, a backslash, or a symbolic
 link; that was not run.
-
-## What was seen to work
-
-The steps on this and the previous page were run on a private test copy of SD built from the
-source. In it the privileged helper is a stand-in that checks every argument exactly as the real
-one does and then acts without root. In it were run: backup of one account, two accounts and `all`,
-the manifest, the counts, the refusals above, restore over an existing account (the files,
-permissions, VOC rewrite, switches kept, description and suspension from the zip), the restore of
-a missing group account with the switches from its manifest, the password dialogue, the
-Linux-user clash, and `latest` with another host's zip.
-
-**Not run, because each needs root or a second machine:** the real `backup-pack` and the counting
-as root; ownership and setgid after a restore; the making of Linux users and groups, the
-password being set, and the removal of a user whose password was refused; the members of a group account being added; the reuse of an SD-made user; the
-lines a created user account prints for its routes and switches; indices outside the account; the
-audit line, `restore.account account=jack archive=`*file name*, written once for each account
-restored; the login hold seen from another session; and a restore from a real second machine.
 
 ## See also
 

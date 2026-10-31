@@ -12,11 +12,6 @@ SD folds case, so a conversion code may be typed in either case. In the
 tables, *italics* mark something you supply and **bold** marks a word
 typed as it stands; braces mark an optional part.
 
-> **Every conversion code on this page was read from the SD source on SD
-> Core for Linux.** The C engine in `op_oconv.c` and
-> `op_iconv.c` is the authority; the descriptions here follow what it
-> does, not what an upstream manual says it ought to do.
-
 ## Conversion codes — field 3
 
 A conversion code transforms a value. In a dictionary record, field 3

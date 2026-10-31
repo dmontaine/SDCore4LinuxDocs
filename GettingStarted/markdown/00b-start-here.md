@@ -21,12 +21,10 @@ familiar: the same data model, the same query processor, the same BASIC. If you
 are bringing programs over from another MultiValue database, start with
 [Migrating to SD](15-migrating-to-sd.html).
 
-**SD Core for Windows is a separate port, built independently** — see
-[SD Core for Windows](https://github.com/dmontaine/sd4windows). The two are
-kept in behavioural parity by deliberate policy (this port's `CLAUDE.md`,
-"Project stance": *"conformity with SD Core for Windows is the goal"*) —
-what a verb does, what it refuses and why, its messages — while the
-mechanism underneath is free to differ where the operating system does.
+**SD Core for Windows is a separate product, built independently** — see
+[SD Core for Windows](https://github.com/dmontaine/sd4windows). The two
+behave alike — what a verb does, what it refuses and why, its messages —
+while the mechanism underneath differs where the operating system does.
 Where this set says something differs from SD Core for Windows, that is
 usually why.
 

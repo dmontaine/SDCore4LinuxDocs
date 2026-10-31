@@ -9,15 +9,9 @@ seventeen documents in this set are where that lives.
 braces an optional part. SD folds case, so any of this may be written in
 either case.
 
-> **This page is generated, and it is checked for completeness rather than
-> proof-read for it.** The roster comes from `BCOMP`'s own tables — the same
-> extraction the rest of this set uses — and `tools/mksyntax.py` refuses to
-> write the page if a single name that belongs on it has no line. Argument
-> counts for functions are read out of `BCOMP`'s dispatch table, which is
-> positional against the name list and carries each name in a comment; the
-> script asserts the two agree before it uses either. The shapes that a count
-> cannot express — every statement, and about twenty functions — come from
-> documents 01 to 17, where each one is described in full.
+> This page lists every statement and function an application may use. The shapes
+> that an argument count cannot express — every statement, and about twenty
+> functions — are described in full in documents 01 to 17.
 
 **What is not here, and where it went.** Everything on this card is something
 an application may use. Names that an ordinary program **cannot** compile are

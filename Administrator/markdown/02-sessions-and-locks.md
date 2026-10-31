@@ -128,10 +128,9 @@ message 10167, *User n was not running, so there was nothing to log out*):
 LOGOUT reaped user 43 (pid 1799435, don) - process was gone.
 ```
 
-*Run on 24 October 2026 in a sandbox, against a session killed from outside
-with `kill -9` while it held a record lock: `logout 43` printed the line above,
-and afterwards `listu` did not list the user and `list.readu` did not show the
-lock.* The entry matters because **it holds a slot and an exclusive-access
+For a session killed from outside with `kill -9` while it held a record lock,
+`logout 43` prints the line above, and afterwards `listu` does not list the user
+and `list.readu` does not show the lock. The entry matters because **it holds a slot and an exclusive-access
 claim**: `NUMUSERS` counts it, and any verb that wants a file to itself —
 `build.index` is the usual one — is refused while it is there. So **the way to
 clear a dead session is `logout` *n*.**

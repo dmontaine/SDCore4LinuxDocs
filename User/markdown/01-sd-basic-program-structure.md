@@ -238,9 +238,8 @@ With `m` holding `7`, `7`, `7`:
 > keyword as a **variable name** and the program aborts at run time with
 > *"Unassigned variable USING"*, with both `using` and `USING`.
 >
-> **This is inherited, not introduced by this port** — the `st.matbuild` block
-> in `BCOMP` is byte-identical to the one in the upstream `sdb64` tree. **The
-> delimiter is always a field mark.** If you need another one, use `matbuild`
+> **This is inherited from the upstream `sdb64` code, not introduced by this port.**
+> **The delimiter is always a field mark.** If you need another one, use `matbuild`
 > and then `change()`, or build the string with a `for` loop.
 
 `matparse` splits on the delimiter you give and stops when the matrix is full;

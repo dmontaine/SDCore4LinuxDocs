@@ -40,10 +40,9 @@ If you have used OpenQM, or upstream `sdb64`, much of SD Core will still be
 familiar: the same data model, the same query processor, the same
 BASIC.
 
-**SD Core for Linux is Linux only.** There are no `#ifdef` branches
-keeping Windows alive in this source — SD Core for Windows is a separate
-project, kept in behavioural parity by deliberate policy, and this is not
-a build of it.
+**SD Core for Linux is Linux only.** SD Core for Windows is a separate
+product, built to behave the same way for the people who use it, and this
+is not a build of it.
 
 SD Core is free software under the GNU General Public Licence v3. `config gpl`
 displays the licence and `config contrib` the list of contributors. Installing

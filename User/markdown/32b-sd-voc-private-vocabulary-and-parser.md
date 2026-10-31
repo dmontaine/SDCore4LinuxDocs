@@ -10,10 +10,8 @@ command, and `$voc.parser` once, when the session signs on.
 SD folds case, so a command may be typed in either case. Commands are shown
 here in lower case. In the tables, *italics* mark something you supply.
 
-> **Every example on this page was run** on a private SD built from the
-> Dev tip of 18 October 2026, in ordinary sessions (an account is not the
-> administrator's). The names `zzpv`, `zzhello` and the like are the ones the
-> runs used.
+> The examples on this page are for an ordinary account, not the
+> administrator's. The names `zzpv`, `zzhello` and the like are only examples.
 
 ## Where a command is looked for
 

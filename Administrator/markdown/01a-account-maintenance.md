@@ -298,7 +298,7 @@ and anything it does not is refused:
 | *Date required* | `set.date` with nothing after it |
 | *Invalid date format* | the argument is not a date SD can read |
 
-**What it actually changes** (read from the source, `op_misc.c` `set_date()`):
+**What it actually changes:**
 SD keeps an offset from the real date inside the one `sd` process that ran
 the command, and adds it wherever that process reports the date — `DATE()`
 and `TIMEDATE()` in BASIC, and so the `date` verb. Nothing else sees it:

@@ -12,11 +12,8 @@ writes to.
 SD folds case, so a command may be typed in either case. Commands are shown
 here in lower case.
 
-> The parameter list and categories on this page are read from `config.c`
-> itself (`tools/confmap.py`, 22 Sep 2026), not from a live `:config`
-> capture on this port — the sample output below is illustrative, ported
-> from a real SD Core for Windows capture with Linux's own values swapped
-> in where they differ.
+> The sample output below is illustrative; the values on your system will
+> differ where your configuration does.
 
 ## The file
 
@@ -145,8 +142,7 @@ exact command and been answered Run. The other 36 parameters are not changed fro
 file as root and restarting SD stays the way to change them.
 
 The page has three views. **P, the parameters**: one row for every parameter SD knows, from the table
-`config.table` in the system directory (`test-toolconfig-units.py` holds that table to the parser in
-`config.c`: a parameter the parser takes and the table lacks, or the reverse, fails it). The columns are
+`config.table` in the system directory, which names every parameter SD reads. The columns are
 the value this SD is running with (what `config()` reports), the value `sd.conf` says now (the file is
 read again, a parameter written twice counted the way SD counts it, the flag parameters added up),
 the default (what SD uses when the file does not say), when a change takes effect and whether anything
@@ -202,7 +198,7 @@ that sessions started from now on use it. A refusal prints the helper's own sent
 `sd.conf was not changed:` and writes nothing.
 
 **What the helper does.** It accepts only the 14 parameters in the first table below, and only a value
-inside the range `config.c` itself enforces for that parameter when SD starts (so it cannot accept
+inside the range SD itself enforces for that parameter when SD starts (so it cannot accept
 what SD would refuse). It adds or replaces the line **inside the `[sd]` section**, the only place SD
 reads (a line appended after another section's header would be ignored without a word); a second
 line for the same parameter in an `[sd]` section is dropped, because SD keeps the last one; every
@@ -230,7 +226,7 @@ parameter is not changed from SD, and the exact line to add by hand, as root, in
 of the file SD reads.
 
 **The 14 parameters** are the tuning ones: capacity, performance, timeouts and the printer's defaults.
-Each is range-checked by `config.c` and each only sizes or times something SD does (how many locks a
+Each is range-checked by SD and each only sizes or times something SD does (how many locks a
 process may hold, how deep a program may call, how long a sign-on waits for a user number, the cache
 sizes, the printer's defaults); none is a door, a path, a command, a log or a security setting:
 
@@ -255,40 +251,40 @@ sizes, the printer's defaults); none is a door, a path, a command, a log or a se
 know at all it refuses with a different sentence, because an unknown name in `sd.conf` stops SD from
 starting). They are the doors and what they allow (`NETFILES`, `SDCLIENT`), every
 path and command, the log, dump and diagnostic settings, the security throttle `PWDELAY`, the sizes
-and combinations that `config.c` does not check or checks against each other, and the ones that change
+and combinations that SD does not check or checks against each other, and the ones that change
 what existing programs compute. Change them by hand, as before. The page
 shows the same sentence in its box:
 
 | Parameter | Why it is not changed from SD |
 |---|---|
 | `BACKUPDIR` | A directory: set.backup.directory saves it, with its own checks of the path. |
-| `CMDSTACK` | Sizes a table in shared memory and config.c checks no range: a mistake shows only at the next start. |
+| `CMDSTACK` | Sizes a table in shared memory and SD checks no range: a mistake shows only at the next start. |
 | `DEADLOCK` | A diagnostic: 2 makes SD write a file of the locks involved; set it by hand while you hunt one. |
 | `DEBUG` | Debugging flags of the kernel: they change what SD writes and exposes. |
 | `DUMPDIR` | A directory: process dumps are written there and can hold what a session had in memory. |
-| `ERRLOG` | Sizes the error log; config.c checks no range, and a small size discards its oldest entries sooner. |
-| `FDS` | Limits the file descriptors SD uses; config.c checks no range: a mistake shows at the next start. |
+| `ERRLOG` | Sizes the error log; SD checks no range, and a small size discards its oldest entries sooner. |
+| `FDS` | Limits the file descriptors SD uses; SD checks no range: a mistake shows at the next start. |
 | `FLTDIFF` | Changes how every program compares floating point numbers. |
-| `FSYNC` | Trades the safety of data against speed; flag bits that config.c does not check. |
+| `FSYNC` | Trades the safety of data against speed; flag bits that SD does not check. |
 | `GRPDIR` | A directory: group accounts are made there. |
 | `INTPREC` | Changes the results of arithmetic in programs that already exist. |
 | `MAXIDLEN` | Structural: the longest record id of the whole system, which reaches every file and program. |
 | `MUSTLOCK` | Makes a write fail unless the record is locked first, which can stop programs that exist. |
 | `NETFILES` | A door: bit 2 gates API request 29, a remote open of an account. |
-| `NUMFILES` | Sizes the open file table in shared memory; config.c checks no range. |
-| `NUMUSERS` | Sizes the user table, which bounds who can sign on; config.c checks no range. |
-| `OBJECTS` | Limits the programs a session keeps in memory; config.c checks no range. |
-| `OBJMEM` | Limits the memory those programs may take; config.c checks no range. |
+| `NUMFILES` | Sizes the open file table in shared memory; SD checks no range. |
+| `NUMUSERS` | Sizes the user table, which bounds who can sign on; SD checks no range. |
+| `OBJECTS` | Limits the programs a session keeps in memory; SD checks no range. |
+| `OBJMEM` | Limits the memory those programs may take; SD checks no range. |
 | `PDUMP` | Flag bits that say when a process dump is written; a dump can hold what a session had in memory. |
 | `PHANTOMS` | Must agree with USERPOOL: a wrong combination stops SD from starting. |
 | `PWDELAY` | A security throttle: the pause after a failed network sign-on; 0 removes it. |
 | `SAFEDIR` | Changes how SD replaces the files of a directory file, by writing a new one and renaming it. |
-| `SCREENTHEME` | Text that SD acts on; config.c checks no value. |
+| `SCREENTHEME` | Text that SD acts on; SD checks no value. |
 | `SDCLIENT` | A door: restricts what an API session may do, and a lower value loosens it. |
 | `SDSYS` | The system directory: SD cannot start, or finds another system, if it is wrong. |
 | `SH` | A command SD runs as an interactive shell. |
 | `SH1` | A command SD runs for a shell command line. |
-| `SORTMEM` | A size in kilobytes that config.c does not check, so a mistake shows only when a sort runs. |
+| `SORTMEM` | A size in kilobytes that SD does not check, so a mistake shows only when a sort runs. |
 | `SORTWORK` | A directory: the work files of a large sort are written there. |
 | `SPOOLER` | Text that names the spooler print jobs are handed to. |
 | `STARTUP` | A command SD runs when it starts. |
@@ -296,11 +292,11 @@ shows the same sentence in its box:
 | `TERMINFO` | A directory: terminal definitions are read from there. |
 | `USERPOOL` | The highest user number: PHANTOMS is checked against it; a mistake stops SD. |
 | `USRDIR` | A directory: user accounts are made there. |
-| `YEARBASE` | Changes how every program reads a two-digit year; config.c checks no range. |
+| `YEARBASE` | Changes how every program reads a two-digit year; SD checks no range. |
 
 **What this does not do.** It does not restart SD: a `restart` parameter changes the file and the
 running SD keeps its old value until it is stopped and started. It does not reach a file other than
-`/etc/sd.conf`. It cannot change a parameter that `config.c` does not range-check, however useful that
+`/etc/sd.conf`. It cannot change a parameter that SD does not range-check, however useful that
 would be; such a parameter joins the list when SD itself checks it. And SD itself does not write the
 file as root: the verb asks the helper, and the helper is the one program that does.
 
@@ -449,32 +445,22 @@ own page in this set.
 SDNet is the way a program opens a file that lives on another SD server: a VOC
 entry of type `N`, a server you define with `set.server`, and a per-account
 `net-on` switch, all off until SDSYS turns them on. It is built and is
-described on the SDNet page of this set, with what has and has not been tested
-(it has been run on one real installation talking to itself; no two real machines
-have been connected yet). None of it reads `NETFILES`,
+described on the SDNet page of this set. None of it reads `NETFILES`,
 and the older SDNet that was removed on 9 September 2026 (a `server;file` VOC
 entry, with each server's password in `sd.conf`) is still gone: that form of
 name is refused. `NETFILES` is parsed, stored, shown by `config` and readable
-with `config('NETFILES')`, and setting it to 2 made `config` show 2. **One
-thing in the source reads it:** the API server's request 29, "open an SDNet
+with `config('NETFILES')`. **One
+thing reads it:** the API server's request 29, "open an SDNet
 file", answers "Remote server disallowed access" (7009) unless bit 2 of
 `NETFILES` is set, and the files-only API route refuses request 29 whatever the
-value is. **Setting the bit is no longer enough** (changed 18 October 2026).
-Until then the bit was the whole gate: with it set, any API login could open
-the VOC-named file of *any* account through request 29, including an account it
-could not `logto`, a suspended one, one named by a path and one whose `net-on`
-switch was off, and `SDCLIENT` did not stop it; that was run on a private SD and
-the planted record came back from the disk. The request now also refuses unless
+value is. **Setting the bit is not enough.** The request also refuses unless
 `SDCLIENT` is 0, the account has a register record (a path names none), the
 caller may enter the account by the same rule as `logto` (a member of its
 group, the account not suspended, the reason never told to the caller), and
-the account's `net-on` switch is on (SDSYS's own account excepted). Since 20
-October 2026 it also asks the operating-system question of the file the VOC names:
-a file pointer that leads out of the account's directory is followed only if the
-account holds `os-on` (see *Accounts and Security*, the VOC pointers section), where
-before it was opened for any caller the other rules admitted (found by reading the
-source and then run on a private SD, which read a planted record from a directory
-outside every account). Each
+the account's `net-on` switch is on (SDSYS's own account excepted). It also asks the
+operating-system question of the file the VOC names: a file pointer that leads out of
+the account's directory is followed only if the account holds `os-on` (see *Accounts and
+Security*, the VOC pointers section). Each
 refusal is on the audit trail as `api refused request=29 reason=...`. The value
 is 0 unless `sd.conf` sets it, and the installer does not, so the request is
 refused as delivered. Leave it at 0: no client function in this set sends

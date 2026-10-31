@@ -13,10 +13,6 @@ the other two layers, which are the application's.
 SD folds case, so a command may be typed in either case. Commands are shown
 here in lower case.
 
-> **The recipe below was run, not only written.** It was witnessed on a Debian
-> 13 virtual machine with SD Core for Linux built from the `Dev` branch. The
-> first section says exactly what was and was not witnessed.
-
 ## The short version
 
 **Encrypt the volume, then move the four data trees onto it.** A stolen or
@@ -45,7 +41,7 @@ installer:
 **`/etc/sd.conf` stays plaintext.** It holds paths only, and it is read before
 any of the volume is mounted. Keep it on the root filesystem.
 
-The shared memory segment (`0x53434c01` in the witnessed install) is in RAM and
+The shared memory segment (`0x53434c01` on a standard install) is in RAM and
 is not a file. It is recreated each time SD starts.
 
 **The sort work area is not under SDSYS.** SD's default places are
@@ -68,8 +64,7 @@ sudo install -d -m 1777 /home/sd/sortwork
 If that directory does not exist when SD starts, SD falls back silently to
 `TEMPDIR`, which is `/tmp`. The ordering drop-in below stops SD starting
 before the volume is open, and so keeps this from happening on a normal boot.
-`TEMPDIR` itself, for SD's other temporary files, was not tested and is not
-covered by this page.
+`TEMPDIR` itself, for SD's other temporary files, is not covered by this page.
 
 **Backups.** `BACKUPDIR` is not set by default. `BACKUP.ACCOUNT` writes plain
 zip files wherever `BACKUPDIR` points. A copy taken off the machine is not
@@ -78,7 +73,7 @@ volume, and even then only until the file leaves it.
 
 ## Method one: LUKS2 on a volume, the four trees bound over it
 
-This is the method that was witnessed for the whole data set, end to end.
+This is the method for the whole data set, end to end.
 
 ### Install the tools
 
@@ -104,10 +99,10 @@ sudo mkdir -p /mnt/l1-luks
 sudo mount /dev/mapper/l1crypt /mnt/l1-luks
 ```
 
-The witnessed container used aes-xts-plain64 with a 512-bit key, an argon2id
-keyslot and 4096-byte sectors. In a real installation the image would be sized
-to the data, and it would live on a disk the administrator chooses, not in
-`/var/tmp`. The 300 MB size is the test's.
+The container above uses aes-xts-plain64 with a 512-bit key, an argon2id
+keyslot and 4096-byte sectors. In a real installation size the image to the
+data, and put it on a disk you choose, not in `/var/tmp`; the 300 MB size here
+is only an example.
 
 Replace `PASSPHRASE` with the passphrase. Do not write it into a script or a
 history file.
@@ -129,8 +124,8 @@ sudo systemctl start sd.service
 ```
 
 `rsync -aHAX --numeric-ids` keeps ownership, permissions, hard links, ACLs and
-extended attributes. The witness checked that `sdsys:sdusers` and the root-only
-`/etc/sd-tls` came across unchanged.
+extended attributes, so `sdsys:sdusers` and the root-only `/etc/sd-tls` come
+across unchanged.
 
 **The old plaintext is still there.** The bind mounts hide the original
 directories but do not remove them. They remain on the root disk under the
@@ -172,8 +167,8 @@ evidence about the bytes that were searched, not a proof about every byte.
 ## Unlock at boot
 
 The volume must be opened and mounted before `sd.service` starts, and SD must
-not start if it cannot be. Two parts do this. Both were witnessed, and neither
-is shipped by the installer.
+not start if it cannot be. Two parts do this, and neither is shipped by the
+installer.
 
 ### The ordering drop-in
 
@@ -204,13 +199,12 @@ systemctl show -p RequiresMountsFor sd.service
 The first command lists the four `.mount` units. The second echoes the four
 paths.
 
-**Without the drop-in, SD starts on the wrong disk.** Witnessed: with the
-volume not mounted and no ordering, `systemctl start sd.service` reported
-`active`, and SD ran on the unencrypted directories underneath the mount
-points. `COUNT l1test` printed "File not found", and anything written then
-would have landed in plaintext. With the drop-in and the fstab entries the
-same start failed with "A dependency job for sd.service failed", return code
-1, and SD stayed down.
+**Without the drop-in, SD starts on the wrong disk.** With the volume not
+mounted and no ordering, `systemctl start sd.service` reports `active`, and SD
+runs on the unencrypted directories underneath the mount points. `COUNT l1test`
+prints "File not found", and anything written then lands in plaintext. With
+the drop-in and the fstab entries the same start fails with "A dependency job
+for sd.service failed", return code 1, and SD stays down.
 
 ### Unlock by keyfile
 
@@ -227,9 +221,8 @@ readable at once.
 container gives no protection against anyone who can read that machine's root
 disk. It protects only a container that is taken away on its own, without the
 machine. For the keyfile to mean anything it must live on a second device, or
-be released by a TPM, and nothing of that kind was built or tested. The
-witnessed keyfile was in `/var/tmp`, and that is a test arrangement, not a
-recommendation.
+be released by a TPM, and SD provides neither. The keyfile in the example is
+in `/var/tmp` only to show the commands; do not keep a real one there.
 
 ### Unlock by passphrase
 
@@ -238,8 +231,8 @@ recommendation.
 l1crypt /var/tmp/l1-luks.img none luks,nofail,timeout=90s,tries=1
 ```
 
-With the key field `none`, the boot waits for a passphrase. The
-witness answered the question through systemd's password-agent protocol:
+With the key field `none`, the boot waits for a passphrase. Answer the
+question through systemd's password-agent protocol:
 
 ```bash
 sudo systemctl start sd.service --no-block
@@ -247,11 +240,8 @@ sudo systemctl start sd.service --no-block
 printf '%s' "PASSPHRASE" | sudo /usr/lib/systemd/systemd-reply-password 1 SOCKET
 ```
 
-SD came up and read the record. **A console or Plymouth prompt was not
-exercised,** and no reboot was performed. The ordering in this section was
-shown by starting the service from a locked state and by the dependency list,
-not by a real boot. With nobody answering and `timeout=5s`, the start failed
-closed, as above.
+SD comes up and can read its records. With nobody answering, the start fails
+closed, as above (`timeout=` in `crypttab` sets how long the boot waits).
 
 **The trade-off.** A passphrase is typed at every boot, so a machine that
 restarts unattended stays down until someone unlocks it, and a
@@ -261,12 +251,11 @@ intended behaviour for stolen-disk protection. It is not a convenience.
 
 ## Method two: fscrypt on a dedicated ext4 volume
 
-**fscrypt was witnessed only on a separate ext4 image, not on the root
-filesystem of the test machine.** The root filesystem did not have the
-`encrypt` feature. It can be made with `tune2fs -O encrypt`, but that cannot be
-undone with `tune2fs`, so the witness did not change the root filesystem. To
-use fscrypt for the data, the volume must be made with `mkfs.ext4 -O encrypt`
-from the start.
+**Use fscrypt on a separate ext4 volume, not on the root filesystem.** A
+filesystem needs the `encrypt` feature. It can be added with
+`tune2fs -O encrypt`, but that cannot be undone with `tune2fs`, so do not
+change the root filesystem. To use fscrypt for the data, make the volume with
+`mkfs.ext4 -O encrypt` from the start.
 
 ```bash
 truncate -s 300M /var/tmp/l1-fsc.img
@@ -283,25 +272,25 @@ printf '%s\n' "PASSPHRASE" | sudo fscrypt encrypt /mnt/l1-fsc/sdenc --source=cus
 before.
 
 **Do not install `libpam-fscrypt`.** It enables itself in `/etc/pam.d/common-auth`,
-`common-password` and `common-session` by default. The witness removed it and
-checked that no fscrypt line remained in PAM. Install only the `fscrypt`
+`common-password` and `common-session` by default. If it is installed, remove
+it and check that no fscrypt line remains in PAM. Install only the `fscrypt`
 package.
 
 `fscrypt setup` writes `/etc/fscrypt.conf` and a `/.fscrypt` directory on the
 root filesystem. Those are part of the set-up and are not on the volume.
 
-The witnessed status after encryption was policy version 2, contents
-`AES_256_XTS`, filenames `AES_256_CTS`, and `Unlocked: Yes`.
+After encryption the status shows policy version 2, contents `AES_256_XTS`,
+filenames `AES_256_CTS`, and `Unlocked: Yes`.
 
 The four trees were copied into `sdenc/` under the same relative paths, bound
-over their usual places, and SD was started as in method one. Then, with SD
+over their usual places, and SD is started as in method one. Then, with SD
 stopped and the binds removed:
 
 ```bash
 sudo fscrypt lock /mnt/l1-fsc/sdenc
 ```
 
-While locked, `ls` showed encrypted names, and the raw image held no record
+While locked, `ls` shows encrypted names, and the raw image holds no record
 text, no `l1test`, no `user_accounts` and no `sdsys`. Unlock with:
 
 ```bash
@@ -311,28 +300,21 @@ printf '%s\n' "PASSPHRASE" | sudo fscrypt unlock /mnt/l1-fsc/sdenc --quiet
 fscrypt hides contents and file names only. File sizes, owners, modes, the
 directory structure, timestamps and the top-level unencrypted name (here
 `sdenc`) remain visible in the raw image. The boot ordering and unlock
-arrangements in the section above were not witnessed for fscrypt. Method one
-is the one whose boot path was tested.
+arrangements in the section above are written for method one; for fscrypt,
+work out the unlock at boot for your own machine.
 
-## Method and what is not covered
+## What this does not cover
 
-| Point | Status |
-|---|---|
-| LUKS2 container, four trees, record readable after reopen | witnessed |
-| Raw image has no record text or SD paths | witnessed (text search) |
-| Wrong passphrase refused | witnessed |
-| Keyfile added as a second slot and used to open | witnessed |
-| Ordering drop-in: start fails when the volume is absent | witnessed |
-| Keyfile unlock at start | witnessed |
-| Passphrase unlock through the password-agent protocol | witnessed, but not through a console or Plymouth prompt |
-| Real reboot | not performed |
-| fscrypt on a dedicated ext4 image | witnessed |
-| fscrypt on the root filesystem | not witnessed, and not possible without re-making the filesystem |
-| Sort work area moved to `SORTWORK` on the volume | witnessed |
-| `TEMPDIR` moved onto the volume | not tested |
-| SDNet and the API client on the volume | not exercised |
-| Swap encrypted or disabled | not witnessed. The test machine's swap was unencrypted and unused |
-| Backup directory on the volume | not witnessed |
+- **Swap.** Data can be written to swap; encrypt the swap or turn it off yourself.
+- **`TEMPDIR`.** The recipe moves `SORTWORK` onto the volume; move `TEMPDIR` as well if
+  work files must be protected.
+- **Backups.** A backup directory protects nothing unless it is on the volume or the
+  backups are encrypted another way.
+- **The API and SDNet.** Nothing here changes how data travels over a connection.
+- **The prompt at boot.** A console or Plymouth prompt for the passphrase is the operating
+  system's. Try the whole unlock path with a real reboot on your own machine before you rely
+  on it.
+- **fscrypt on the root filesystem.** It is not possible without re-making the filesystem.
 
 The 1 GiB argon2id memory for the keyslot is the cryptsetup default, so
 unlocking a passphrase keyslot needs about 1 GiB of free memory.

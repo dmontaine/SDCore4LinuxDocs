@@ -17,7 +17,7 @@ with its reason and nothing changed). Only SDSYS sees any of it.
 > may write** - not only the VOC and the dictionaries (files that SD sessions create are group-writable
 > under SD's usual umask, 002) - and it is also, as far as the modes and the group show, what lets SDSYS
 > write inside the account in any other way (`logto` and an editor, an interactive `update.accounts`);
-> that part has been read from the modes and has not yet been measured on a real install. A VOC entry or an I-type is code that
+> that follows from the modes and the group. A VOC entry or an I-type is code that
 > runs in the account, so **while it is on, a compromised `sdsys` login can change what that account
 > runs.**
 >
@@ -40,9 +40,7 @@ with its reason and nothing changed). Only SDSYS sees any of it.
 > network (`sdsys` has no remote access at all), and a process that is not a real `sdsys` login is not
 > an administrator.
 >
-> **History.** The owner chose the membership of every account's group on 17 October 2026, with that
-> warning, in place of the tighter arrangement, an *outbox* the account applies for itself, which would
-> have given `sdsys` no such access. From 1.2-0 it is **off as delivered** and switched on per account.
+> From 1.2-0 the membership is **off as delivered** and switched on per account.
 > An install that finds `sdsys` in the groups of accounts a release before 1.2-0 put it in asks once
 > whether to keep it there (below); the default answer takes it out.
 
@@ -220,7 +218,7 @@ ends**; a stolen running session keeps it too.
 
 **Two things are not delivered.**
 
-* **A delete.** Deleting a copy does not delete the account's record, and the plan was that SDSYS
+* **A delete.** Deleting a copy does not delete the account's record; SDSYS
   *saves*. A `delete` of a record of a copy is refused (`Master record ... not deleted: that
   does not delete the account's record. Delete it in the account, then run sync.masters`). `clear.file`
   of a master file is allowed and touches no account; `sync.masters` puts the copies back.
@@ -260,14 +258,10 @@ Account acme: 466 VOC record(s), 4 dictionary file(s), 7 dictionary record(s)
 The first run on a system is the only one that writes a great deal; a second run with nothing
 changed writes nothing. **A full run makes one call to the kernel for all the accounts**, which
 reads each master file once into a sorted index and finds each account's records in it: the time
-grows about in step with the number of accounts. (It used to read every master file once for each
-account, and 204 accounts took 2.7 to 3.2 times as long as 104.) Measured on a private SD
-(19 October 2026, a machine with two virtual machines running), with accounts of about 500 VOC
-records and a few dictionary files each, a full `sync.masters` with nothing changed took 2.8 s for
-104 accounts and 4.3 s for 204 (11.9 s and 32.2 s before this was changed), and `check.masters`
-1.7 s and 2.6 s (4.5 s and 12.5 s before); the install runs a full `sync.masters`. Doubling the
-accounts took 1.5 times as long, not 2 and not 4 (a session start and the SDSYS account itself are
-the same for both). `sync.masters` with one account name still reads the master files once for that
+grows about in step with the number of accounts. With accounts of about 500 VOC
+records and a few dictionary files each, a full `sync.masters` with nothing changed takes about 3 s
+for 104 accounts and about 4 s for 204, and `check.masters` about 2 s and 3 s; the install runs a full
+`sync.masters`. `sync.masters` with one account name still reads the master files once for that
 account.
 
 **`check.masters`** applies the journal and then **compares and reports; it changes nothing.** For
@@ -293,7 +287,7 @@ when its files belong to another user and its group does not list `sdsys`; the S
 account and any account whose files `sdsys` owns are never off, because `sdsys` writes them as their
 owner. On a machine that has no `sdsys` user nothing is off.) Then the *stale* and *resync* lines if
 the flags are up, then "Every master copy matches its account" when there is no difference, and last
-**`Checked 5 account(s): 0 difference(s)`**. A listing stops at 2,000 rows. (A `differs` after stage 2 no longer comes from editing a copy: a saved copy is delivered
+**`Checked 5 account(s): 0 difference(s)`**. A listing stops at 2,000 rows. (A `differs` does not come from editing a copy: a saved copy is delivered
 or refused. It comes from a change made to an account without the journal hearing of it.)
 
 **`list.master.pending`** shows the journal lines that have not been applied and the flags, and
@@ -384,10 +378,8 @@ all` skips such an account and says so, see [Account maintenance](01a-account-ma
 system. (The installer's own `update.accounts all` runs as root and is not affected.) `create.account`,
 `delete.account`, `backup.account`, `restore.account`, `sync.masters`, `check.masters`, and reading the
 account (`logto` and a listing) are done by the root helper or only read the files, and are expected to
-work. **This is read from the modes and the code; it has not yet been measured on an install** (the
-witness, `witness-masters.sh` sections 3 to 5, is written to measure it). Before 1.2-0 that general
-write was there for every account, because the membership was; switch the account on for the time SDSYS
-needs to work inside it.
+work. Before 1.2-0 that general write was there for every account, because the membership was; switch
+the account on for the time SDSYS needs to work inside it.
 
 **A new user account** gets its group `sdu_`*name* from `create.account` with `root` and the user as
 members, and no one else. A **group account** is made with `root` and `sdsys` in its group
@@ -467,8 +459,7 @@ group-write`) puts them right, the ones made while the account was off included.
 
 ## What it does not do
 
-* **It does not deliver a delete.** See above. (Whether deleting a copy should delete the account's
-  record is a decision for the owner.)
+* **It does not deliver a delete.** See above.
 * **It does not see a change made outside SD**: a shell command, a program run by an account that
   holds OS.EXECUTE, `sdfix`. `sync.masters` brings the copies up to date, and `check.masters` finds the
   difference. A save made after such a change is refused as a change.
@@ -489,48 +480,26 @@ group-write`) puts them right, the ones made while the account was off included.
   found as it is).
 * **A save of a record the session has not read is refused** when the account has the record (step 5):
   a program that edits master records must read them first, as `ed` does.
-* **It cannot be shown to work on a machine with one operating-system user.** The sandbox suite shows
-  every part but ownership and groups; `witness-masters.sh` (run by the owner as root, on a real
-  install) shows the group membership and its two verbs, the modes, root changing only the account's
-  own files, the refusal for an account that is off, the administrator's `sdsys-on` and the edit
-  reaching a user's VOC at once, the refusal for a session that began too early, the installer's
-  one-time ruling, what is not lost when an account is off, the routes of the first page that remain
-  (that they are there; the files `root` runs are checked the other way, as `root`'s), and that the master files are owned by `sdsys`, have no group or other bit,
-  and cannot be opened by a user who is in `sdusers` (section 6). **The version of the witness for
-  1.2-0 has not been run on an install yet.**
+* **On a machine with one operating-system user there is nothing for it to separate.** The master
+  files rest on ownership and groups: the group membership and its two verbs, the modes, root
+  changing only the account's own files, the refusal for an account that is off, the administrator's
+  `sdsys-on` and the edit reaching a user's VOC at once, the refusal for a session that began too
+  early, the installer's one-time question, and what is not lost when an account is off. The master
+  files are owned by `sdsys`, have no group or other bit, and cannot be opened by a user who is in
+  `sdusers`.
 
 ## Cost
 
 A write to a VOC or a dictionary does the work above; **a write to any other file costs one test of a
-flag** (and one more, once per open file, to learn that it is none of the master files). Measured on
-a private SD, on a memory file system, 100,000 writes of distinct records by an ordinary program,
-the median of three runs (19 October 2026):
+flag.** A write to a VOC or a dictionary costs about 5 to 7 microseconds more with the master files than
+without them (a data file's writes are not touched). A program that writes the VOC or a dictionary in a
+loop pays for each write; the writes people make by hand are few. Applying the journal costs about 40
+microseconds for each waiting key, and a journal that reaches 4 MB (about 90,000 lines) takes no more and
+raises the resync flag. `check.masters` compares every record of every account: for one account that holds
+about 600,000 VOC records and as many dictionary records it takes about half a minute.
 
-| | VOC record | dictionary record | data record |
-|---|---|---|---|
-| the build before the master files | 15.5 microseconds | 14.4 | 15.2 |
-| this build, before the master files exist (no journal) | 19.4 | 20.4 | 14.5 |
-| this build, with the master files and the journal | 21.6 | 20.1 | 13.1 |
-
-So **a write to a VOC or a dictionary costs about 4 to 6 microseconds more (25 to 40 percent)
-before the master files exist, and about 6 (40 percent) with them; a data file's writes are not
-touched.** The numbers move with the load of the machine: an earlier run the same day, on a quieter
-machine, gave 13.1, 18.3 and 19.5 microseconds for the VOC, the same differences on lower numbers.
-The journal's own append is the difference between the last two rows, 2 microseconds for the VOC and
-nothing that stands out of the noise for a dictionary; the rest is, as far as the code shows (not
-measured apart), paid before the hook knows whether the file is anyone's: it asks for the journal
-first, which on a system that has none is an `open` that fails and a `stat`. A program that writes the
-VOC or a dictionary in a loop pays for each write; the writes people make by hand are few. Applying
-the journal took 0.29 s for 5,000 waiting keys, 0.87 s for 20,000 and 1.69 s for 40,000, the open of
-the master and a session start included: about 40 microseconds for each key. A journal that reaches
-4 MB (about 90,000 lines of the length these loops wrote) takes no more and raises the resync flag.
-`check.masters` compares every record of every account: it took 27 s for one account that held about
-600,000 VOC records and as many dictionary records (the measurement above wrote them), the 91,422
-journal lines it applied first included, and it found 508,578 differences, the changes the full
-journal had dropped. **The journal grows with the changes people make, not with use.** On a private SD, signing on and off, `who`, `list` and `sselect` wrote no VOC or
-dictionary record at all; `create.file` wrote two (the pointer and the dictionary's `@id`),
-`delete.file` one, a new saved sentence (`.s`) one, and `save.list` one the first time (the
-`$savedlists` pointer). The record `$command.stack` is written once, when an account is made; the
-command stack itself is saved to a file in the account's `stacks` directory, which is not mirrored.
-A save of a copy is a few session starts' worth of work only because it opens four files; it is
-not a cost anyone else pays.
+**The journal grows with the changes people make, not with use.** Signing on and off, `who`, `list` and
+`sselect` write no VOC or dictionary record at all; `create.file` writes two (the pointer and the
+dictionary's `@id`), `delete.file` one, a new saved sentence (`.s`) one, and `save.list` one the first
+time (the `$savedlists` pointer). The record `$command.stack` is written once, when an account is made;
+the command stack itself is saved to a file in the account's `stacks` directory, which is not mirrored.

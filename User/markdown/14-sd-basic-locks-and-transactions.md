@@ -312,7 +312,7 @@ transaction starts and decremented only on the paths that end in a rollback, so
 session.** In a run of four unnested transactions the first reports level 1
 and the fourth reports level 2. **Do not test `system(1008)` to
 find out whether you are in a transaction — test `system(1007)`.** This is
-upstream's, not this port's: `sdb64` carries the identical code.
+inherited from the upstream `sdb64` code.
 
 ### Do not nest transactions
 

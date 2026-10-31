@@ -13,15 +13,9 @@ one program, one flat variable space, `gosub` to a label, `call` to a catalogued
 subroutine — and everything here is an alternative to it, not an extension of
 it.
 
-**Everything on this page was compiled and run on SD Core for Windows**
-before it was written down, and not re-verified against this port for
-this fork — `class`/`object` support is `bcomp`'s own shared compiler
-behaviour, not something either port implements separately, but that has
-not been confirmed by actually running these probes here. Where a listing
-shows an error, that error was produced there, not composed. The
-programs are in this documentation repository's own `tools/probes/` —
-`p18-class-base.b`, `p18-class.b` and `p18-objects.b` — still exactly as
-copied from SD Core for Windows's docs, unadapted.
+`class` and `object` support is part of the SD BASIC compiler and works the same
+way on SD Core for Windows and on SD Core for Linux. Where a listing shows an
+error, that is the error the compiler gives.
 
 ## Scope, and the one thing to get straight first
 

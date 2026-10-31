@@ -73,14 +73,12 @@ does not have; with it, there is no elevation involved — the command runs as
 that account's own Linux user. See [Security and the operating
 system](12a-security-and-the-operating-system.html).
 
-**Unverified for this port, so stated as a question rather than copied as
-a fact**: SD Core for Windows specifically detects and refuses starting a
-second `sd` session from inside an `sh` spawned by a first one. No
-equivalent check (an environment marker, a session-nesting guard) was
-found in this tree's `op_sh.c` or `sd.c` — typing `sd` inside `sh` may
-simply start another, genuinely nested interactive session rather than
-being refused. Worth confirming on a live install before relying on
-either behaviour.
+**Starting `sd` from inside `sh`**: SD Core for Windows detects and refuses
+starting a second `sd` session from inside an `sh` spawned by a first one.
+SD Core for Linux has no such check (no environment marker, no
+session-nesting guard), so typing `sd` inside `sh` may simply start another,
+genuinely nested interactive session rather than being refused. Do not rely
+on either behaviour.
 
 ## The command line
 

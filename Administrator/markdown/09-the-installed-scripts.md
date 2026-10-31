@@ -24,13 +24,9 @@ braces an optional part.
 
 ## What is here and what is not
 
-**Three scripts ship.** Everything else in the project's `gplbld`
-directory — the verifiers, the probes, the build and test cycle — is
-development tooling and is deliberately not installed. If you have read
-about `check-stale-leads.py`, `assert-current.py` or a `witness-` or
-`verify-` script and cannot find it on an installed machine, that is why:
-they compare an install against the source tree it was built from, and
-some are destructive.
+**Three scripts ship.** Nothing else from the source tree's `gplbld`
+directory is installed. If you find a script named in the source and cannot
+find it on an installed machine, that is why.
 
 ## Exit codes
 

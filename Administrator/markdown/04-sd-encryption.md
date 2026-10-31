@@ -176,7 +176,7 @@ caller deciding whether to admit a login must still treat the error as a
 refusal.
 
 **`SD_EUID_SET` and `SD_EUID_RESTORE` are load-bearing on this port, not
-dormant.** They call the real POSIX identity functions (`sdext_eguid.c`), and
+dormant.** They call the real POSIX identity functions, and
 `logto` uses them directly: `SD_EUID_SET` also reloads the caller's
 supplementary Linux group membership on the way in. `!EUID_SET('sdsys', ...)` is
 also how `cproc` drops back to `sdsys`'s own identity after a privileged step.

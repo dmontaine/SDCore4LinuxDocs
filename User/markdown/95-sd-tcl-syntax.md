@@ -9,16 +9,11 @@ have forgotten its arguments, it is here. If you want to know what it
 braces an optional part, and a vertical bar separates alternatives. SD
 folds case, so any of this may be typed in either case.
 
-> **This page is generated, and it is checked for completeness rather
-> than proof-read for it.** The roster is computed from SD's own VOC:
-> every verb record in `newvoc`, plus the ones only `voc_template`
-> has, which is **209** verbs, and `tools/mktclsyntax.py` refuses to
-> write the page if any of them has no line. The shapes come from the
+> This page lists every verb SD ships (**209** of them). The shapes come from the
 > subject documents, where each verb is described in full.
 
-**The "who" column is the VOC, not an opinion.** It is computed by
-reading `newvoc` and `voc_template` directly, so it cannot drift from
-what an account actually gets. **A verb your account does not have is
+**The "who" column is the VOC, not an opinion.** It is taken from the
+vocabulary SD installs, so it says what an account actually gets. **A verb your account does not have is
 not refused — the name is simply not recognised.**
 
 | | | |

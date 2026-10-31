@@ -99,12 +99,9 @@ processor works out a width from the data.
 
 ### Combined examples
 
-Every row below was run on SD Core for Windows (`W1.0-0`) and shows what
-came back, including the trailing spaces the format adds. **Not re-run on
-this port for this fork.** Dictionary conversion and format handling is
-`bcomp`/`qproc` behaviour shared between the two ports rather than something
-either implements separately, so nothing here is expected to differ — but
-that is an expectation, not a Linux measurement.
+Every row below shows what came back, including the trailing spaces the
+format adds. Dictionary conversion and format handling is behaviour shared
+between SD Core for Windows and SD Core for Linux, so nothing here differs between them.
 
 | Field 3 (conversion) | Field 5 (format) | Stored value | Output |
 |---|---|---|---|

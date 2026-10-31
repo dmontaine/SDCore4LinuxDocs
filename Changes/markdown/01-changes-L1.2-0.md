@@ -2,10 +2,9 @@ Title: Changes in L1.2-0
 Subtitle: What was added, changed and removed since L1.1-3 (9 October 2026), by section and in alphabetical order.
 Columns: 23 11 66
 
-**This is the list of what changed between L1.1-3 (9 October 2026) and L1.2-0.** It is kept up to date as the
-release is built. It was started on 24 October 2026 from the feature spreadsheet (its Fixes, QM4 Gaps and Subsystems
-tabs) and the release changelog (`sdsys/changelog`, section "Next release"), which has the full story of each
-change: what it does, why, and what it does not do. This document is the short form.
+**This is the list of what changed between L1.1-3 (9 October 2026) and L1.2-0.** The release changelog
+(`sdsys/changelog`) has the full story of each change: what it does, why, and what it does not do. This document
+is the short form.
 
 ## How to read it
 
@@ -15,8 +14,6 @@ change: what it does, why, and what it does not do. This document is the short f
 - Names are in lower case as SD writes them. `$mode` words, options and BASIC keywords are written the same way.
 - Everything that lets something reach beyond a program's own account, or leave the machine, is **off as delivered**.
   The administrator turns it on, account by account, and can turn it off again.
-- A comment at the end of a row, `<!--s` then item numbers then `-->`, names the spreadsheet items the row covers. It is
-  for whoever maintains this document and does not show on the page.
 
 ## Read this first: changes that alter what an existing system does
 
@@ -43,18 +40,18 @@ change: what it does, why, and what it does not do. This document is the short f
 
 ## Sections
 
-**Built from the openQM list** (each row is an item on the feature spreadsheet): [ADMIN](#admin) · [API](#api) ·
+**Features of openQM that SD now has:** [ADMIN](#admin) · [API](#api) ·
 [BASIC](#basic) · [DATA](#data) · [FILES](#files) · [QUERY](#query) · [SYSTEM](#system) · [TCL](#tcl) · [TOOLS](#tools).
 
 **[REMOVED](#removed)**: what SD no longer has, and what to write instead.
 
-**[New Features Unique to SD Core](#new-features-unique-to-sd-core)**, not part of openQM and not on the spreadsheet:
+**[New Features Unique to SD Core](#new-features-unique-to-sd-core)**, not part of openQM:
 [Administration](#administration) · [AI](#ai) · [API and client library](#api-and-client-library) ·
 [Commands](#commands) · [Data formats](#data-formats) · [Encryption](#encryption) · [Files](#files-1) ·
 [Installer](#installer) · [Screen library](#screen-library) · [SDNet](#sdnet) · [Security](#security) · [System](#system-1) ·
 [Tools and the home screen](#tools-and-the-home-screen).
 
-**[NO CHANGE](#no-change)**: openQM items that needed nothing.
+**[NO CHANGE](#no-change)**: openQM features that needed nothing.
 
 ## ADMIN
 
@@ -63,10 +60,10 @@ Administrator commands from the openQM list.
 | Name | Change | What |
 |---|---|---|
 | `config()` name limit | Changed | a parameter name may be up to sixteen characters (was eight), so `config('SCREENTHEME')` finds the setting; a longer name is not found |
-| `inhibit.login` | Added | administrator only: stops new sessions while maintenance is done; a killed backup no longer locks everybody out <!--s 387 g46--> |
-| `lock.tracer` | Added | administrator only: logs every lock taken and released, with program and line, to the file `locktrace` <!--s g57--> |
-| `logout` | Changed | `logout n group` also ends the phantoms n started; `logout` of a session whose process has gone clears the entry and its locks <!--s 386--> |
-| `newvoc.mods` | Changed | applied to SDSYS's own VOC and kept across an upgrade that keeps the accounts <!--s 501--> |
+| `inhibit.login` | Added | administrator only: stops new sessions while maintenance is done; a killed backup no longer locks everybody out |
+| `lock.tracer` | Added | administrator only: logs every lock taken and released, with program and line, to the file `locktrace` |
+| `logout` | Changed | `logout n group` also ends the phantoms n started; `logout` of a session whose process has gone clears the entry and its locks |
+| `newvoc.mods` | Changed | applied to SDSYS's own VOC and kept across an upgrade that keeps the accounts |
 | `SCREENTHEME` | Changed | readable with `config()`; the shipped `sd.conf` says `SCREENTHEME=blue` and the installer adds that line to a restored `sd.conf` that has none (an existing line, `mono` included, is kept); a terminal with no colour stays `mono` |
 
 ## API
@@ -75,19 +72,19 @@ The server side of the API, the client library and the language headers.
 
 | Name | Change | What |
 |---|---|---|
-| `autologout` | Changed | reaches an API session; a client hang found while testing it is fixed <!--s 474--> |
-| client library headers | Added | C# (`sdclient.cs`) and PHP (`sdclient.php`) beside the six already there; neither has been run against a runtime <!--s g200--> |
-| client library: connections | Changed | the number of simultaneous connections is no longer limited <!--s 134--> |
-| client library: detailed error | Changed | the BASIC class `sdclient` returns the detailed status when it cannot connect <!--s 571--> |
-| client library: dictionary | Added | `sdevaluate`, `sdevalconv`, `sdiconv`, `sdoconv`, `sdiconvs`, `sdoconvs` <!--s 247 409--> |
-| client library: files | Added | `sdopenseq`, `sdreadseq`, `sdreadblk`, `sdwriteseq`, `sdwriteblk`, `sdseek`, `sdweofseq` <!--s 441--> |
-| client library: fixes | Changed | `sdlogto`, `sdchange`, `sddcount` and a second `sdconnect` were checked and found correct, with tests <!--s 260 261 262 272 281--> |
-| client library: more functions | Added | `sdrevision`, `sdgetvar`, `sdsystem`, `sdindices`, `sdtrans`, `sdrtrans`, `sdtxn` <!--s 89 195 410 499 442--> |
-| client library: python | Added | a Python wrapper for the library <!--s 457--> |
-| client library: `sdcallx` | Added | `sdcallx` and `sdgetarg`: calls with arguments of any size from the C client library <!--s 194--> |
-| client library: threads | Added | each thread has its own session, transfer buffer and arguments; several threads may use the library <!--s 456--> |
-| client library: tls | Changed | the network session is always encrypted (TLS), so SD meets the QMClient encryption items <!--s 88 133--> |
-| `master.login` | Changed | the paragraph runs for API connections as for interactive and phantom sessions <!--s 170--> |
+| `autologout` | Changed | reaches an API session; a client hang found while testing it is fixed |
+| client library headers | Added | C# (`sdclient.cs`) and PHP (`sdclient.php`) beside the six already there; neither has been run against a runtime |
+| client library: connections | Changed | the number of simultaneous connections is no longer limited |
+| client library: detailed error | Changed | the BASIC class `sdclient` returns the detailed status when it cannot connect |
+| client library: dictionary | Added | `sdevaluate`, `sdevalconv`, `sdiconv`, `sdoconv`, `sdiconvs`, `sdoconvs` |
+| client library: files | Added | `sdopenseq`, `sdreadseq`, `sdreadblk`, `sdwriteseq`, `sdwriteblk`, `sdseek`, `sdweofseq` |
+| client library: fixes | Changed | `sdlogto`, `sdchange`, `sddcount` and a second `sdconnect` were checked and found correct, with tests |
+| client library: more functions | Added | `sdrevision`, `sdgetvar`, `sdsystem`, `sdindices`, `sdtrans`, `sdrtrans`, `sdtxn` |
+| client library: python | Added | a Python wrapper for the library |
+| client library: `sdcallx` | Added | `sdcallx` and `sdgetarg`: calls with arguments of any size from the C client library |
+| client library: threads | Added | each thread has its own session, transfer buffer and arguments; several threads may use the library |
+| client library: tls | Changed | the network session is always encrypted (TLS), so SD meets the QMClient encryption items |
+| `master.login` | Changed | the paragraph runs for API connections as for interactive and phantom sessions |
 
 ## BASIC
 
@@ -95,91 +92,91 @@ Statements, functions, `$mode` words and compiler directives.
 
 | Name | Change | What |
 |---|---|---|
-| `~=` | Added | comparison that ignores case <!--s 430--> |
-| `account.path()`, `vocpath()` | Added | the pathname of an account and of a file named in the VOC, told only where the account may open it <!--s g107 g193 86--> |
-| `arg.present()`, `reusing()` | Added | whether the caller passed an argument, and whether with `reuse()` <!--s g108 g169--> |
-| `$basic.options` | Changed | a `mode` line takes a list and a minus turns a mode off; an `include` line names records or files that every program includes <!--s 406 407 290--> |
-| `bool()` and friends | Added | `bool()`, `is.null()`, `numeric()`: Boolean, SQL-null and numeric conversions <!--s g109 g144 g161 451--> |
-| `@build.time`, `@line` | Added | the time the program was compiled and the source line it stands on <!--s 506 211--> |
-| `casing on` and `off` | Added | case sensitivity of string comparisons for the rest of the program <!--s g111 g274--> |
-| `ceil()` and `floor()` | Added | `ceil()`, `floor()`, `roundup()`, `rounddown()`: whole numbers above and below, and rounding in steps <!--s g112 g129 g174 g175--> |
-| `child()`, `signal()` | Added | whether a user number is a running phantom of this process; raises a signal in another process <!--s g113 g182 301--> |
-| `class ... inherits as` | Added | the inherited class's object variable can be named; an empty `()` is accepted after a method name <!--s 374 237--> |
-| `class` initial values | Added | a `public` or `private` variable may start with a value; `inherits` passes constants to the inherited class <!--s 356 565--> |
-| `class` lookup | Changed | a class with 32 names or more is searched through an index, many times faster <!--s 13--> |
-| `class`: `restricted` | Added | a name for the class and the classes that inherit it, and no one else <!--s g168--> |
-| `class`: `run` | Added | `run` of a class module or its catalogue name makes the object, runs its `main` and lets it go <!--s 484--> |
-| `clearcommon name` | Added | sets the variables of the named common block to zero <!--s 52--> |
-| `compare()` | Changed | an `i` after `l` or `r` in the justification compares ignoring case; `compares()` does it over two arrays <!--s 307 g114--> |
-| `convert()` | Changed | `mcn-`, `mc/n-`, `mcs`, `mcp` with a quoted replacement character, `mt` with `m`, `md` options in any order <!--s 23 183 198 298 488--> |
-| `dir()` | Changed | includes the size of each file; lists a plain file as `F` and a directory as `D` only, so a socket is no longer a file and a block device no longer a directory <!--s 366--> |
-| `fix()` | Added | a number with a fixed number of decimals, rounded or cut off <!--s 472--> |
-| exceptions | Added | `try`, `catch`, `throw`, `caught()` and `@exception`; many run time errors are caught under openQM's `sys.` names; `dumping` and `saving.stack` <!--s 353 354 355 295 309--> |
-| `execute ... stacklist` | Added | keeps the default select list and puts it back when the command returns <!--s 61--> |
-| `execute.list` | Added | runs commands for each id of list 0 in turn <!--s g38--> |
-| `fcontrol()` | Added | the openQM function: next sequential key, valid id, minimum modulus, line terminator modes, forced writes <!--s 452 102--> |
-| `field()` and `vslice()` | Changed | take an asterisk for the number of elements and a subvalue slice <!--s 212 132--> |
-| `flush.dh.cache` | Added | makes every process close the dynamic files it keeps cached <!--s 83 123--> |
-| `for` with a list | Added | a loop over a list of values, and over the elements of a delimited string, with a delimiter <!--s 84 300--> |
-| `get var from device` | Added | reads from a FIFO, port, character device or `openseq` file a character at a time, with a timeout <!--s 583--> |
-| `getlocks()`, `testlock()` | Added | information about file and record locks; the owner of a task lock <!--s 508 42--> |
-| `getpu()` | Added | the `pu$pathname` key (`pu$form.queue` was added and removed again, see REMOVED) <!--s 214--> |
-| `groupstore` and `revremove` | Added | `groupstore`, `revremove`, `setrem`, `rmvd()`: statements and functions over delimited strings <!--s g136 g170 g172--> |
-| `$ifdef`, `$ifndef` | Changed | accept `and` and `or` between token names <!--s 219--> |
-| `inmat()` | Changed | after `matches` or `matchfield()` it is the number of the pattern that matched; after `matbuild` and `matwrite` it is the element count; a collection array is accepted <!--s 315 454 591--> |
-| `input ... fill` | Added | shows a fill character in every empty cell of the field <!--s 389--> |
-| `input ... no.echo` | Added | shows nothing as the user types <!--s 168 363--> |
-| `input ... raw` | Added | reads exactly the number of characters given, as they arrive <!--s 548--> |
-| `inputif` | Added | reads a line only if one is already there, else takes `else` <!--s 584--> |
-| `inputnull`, `inputtrap` | Added | a single character typed alone makes the answer null, or sends the program to a label <!--s 408--> |
-| `last()` and more | Added | `last()`, `lasts()`, `nv()`, `ns()`: the final element of a delimited string; value and subvalue position numbers (`left()` and `right()` were added and removed again, see REMOVED) <!--s g171 g162--> |
-| `locate ... by` | Added | `c` forces a case-sensitive search and `n` a case-insensitive one <!--s 419--> |
-| `matchess` and `trimws` | Added | `matchess`, `matchfields`, `trimws`, `trimw()`: `matches`, `matchfield` and `trimw` over a dynamic array; `trimw` trims white space <!--s 302 g152 g153 g189--> |
-| matrix arguments | Changed | a matrix passed as an argument needs no `dim` in the receiving subroutine; `if mat a = mat b` compares two matrices; the compiler no longer reports an undimensioned argument <!--s 44 111 519--> |
-| `matstr()` | Added | converts a two dimensional matrix to a dynamic array <!--s 509--> |
-| `matwritecsv` | Added | one CSV line of every element of a matrix <!--s g154--> |
-| `digest()` | Added | the md5, sha1, sha256, sha384 or sha512 digest of a string or a file (`md5()` was added and removed again, see REMOVED) <!--s 63 g118--> |
-| `mergelist()` | Added | merges two lists by a mode; a mode for lists not in order; fixed for an empty list <!--s 420 539 566 g155--> |
-| `$mode debug.equates` | Added | keeps `equate` and `$define` tokens in the object so the debugger can show, set and watch them <!--s g218 246 239--> |
-| `$mode explicit` | Added | a variable must be named in a `dim` statement before it is used <!--s g220 234--> |
-| `$mode` lists | Changed | `$mode` takes several names separated by commas, each with an optional minus <!--s 105--> |
-| `$mode non.durable.txn` | Added | a committed nested transaction writes nothing until the outer one commits <!--s g221 442--> |
-| `$mode partial.expressions` | Added | `a and b` and `a or b` stop evaluating as soon as the value is known <!--s 417--> |
-| `$mode strict.equate` | Added | warns when a name given to `equate` or `$define` is also a statement or function name <!--s 582--> |
-| `$mode trap.unused.main` | Added | `trap.unused` for the program's own variables <!--s g227--> |
-| `no.query` on cataloguing | Added | the `basic` command, the `$catalogue` directive and the `catalogue` line of `$basic.options` take `no.query`, which stops the compiler asking before it removes an older entry <!--s 27 191--> |
-| `open ... non.transactional` | Added | a write through that file variable is not undone by a rollback <!--s 64--> |
-| `open.socket()` | Changed | takes a connect timeout <!--s 174--> |
-| `openseq` | Added | `creating` makes the file at once; `shared` lets several processes append; a block device can be opened <!--s 485 397 112--> |
+| `~=` | Added | comparison that ignores case |
+| `account.path()`, `vocpath()` | Added | the pathname of an account and of a file named in the VOC, told only where the account may open it |
+| `arg.present()`, `reusing()` | Added | whether the caller passed an argument, and whether with `reuse()` |
+| `$basic.options` | Changed | a `mode` line takes a list and a minus turns a mode off; an `include` line names records or files that every program includes |
+| `bool()` and friends | Added | `bool()`, `is.null()`, `numeric()`: Boolean, SQL-null and numeric conversions |
+| `@build.time`, `@line` | Added | the time the program was compiled and the source line it stands on |
+| `casing on` and `off` | Added | case sensitivity of string comparisons for the rest of the program |
+| `ceil()` and `floor()` | Added | `ceil()`, `floor()`, `roundup()`, `rounddown()`: whole numbers above and below, and rounding in steps |
+| `child()`, `signal()` | Added | whether a user number is a running phantom of this process; raises a signal in another process |
+| `class ... inherits as` | Added | the inherited class's object variable can be named; an empty `()` is accepted after a method name |
+| `class` initial values | Added | a `public` or `private` variable may start with a value; `inherits` passes constants to the inherited class |
+| `class` lookup | Changed | a class with 32 names or more is searched through an index, many times faster |
+| `class`: `restricted` | Added | a name for the class and the classes that inherit it, and no one else |
+| `class`: `run` | Added | `run` of a class module or its catalogue name makes the object, runs its `main` and lets it go |
+| `clearcommon name` | Added | sets the variables of the named common block to zero |
+| `compare()` | Changed | an `i` after `l` or `r` in the justification compares ignoring case; `compares()` does it over two arrays |
+| `convert()` | Changed | `mcn-`, `mc/n-`, `mcs`, `mcp` with a quoted replacement character, `mt` with `m`, `md` options in any order |
+| `dir()` | Changed | includes the size of each file; lists a plain file as `F` and a directory as `D` only, so a socket is no longer a file and a block device no longer a directory |
+| `fix()` | Added | a number with a fixed number of decimals, rounded or cut off |
+| exceptions | Added | `try`, `catch`, `throw`, `caught()` and `@exception`; many run time errors are caught under openQM's `sys.` names; `dumping` and `saving.stack` |
+| `execute ... stacklist` | Added | keeps the default select list and puts it back when the command returns |
+| `execute.list` | Added | runs commands for each id of list 0 in turn |
+| `fcontrol()` | Added | the openQM function: next sequential key, valid id, minimum modulus, line terminator modes, forced writes |
+| `field()` and `vslice()` | Changed | take an asterisk for the number of elements and a subvalue slice |
+| `flush.dh.cache` | Added | makes every process close the dynamic files it keeps cached |
+| `for` with a list | Added | a loop over a list of values, and over the elements of a delimited string, with a delimiter |
+| `get var from device` | Added | reads from a FIFO, port, character device or `openseq` file a character at a time, with a timeout |
+| `getlocks()`, `testlock()` | Added | information about file and record locks; the owner of a task lock |
+| `getpu()` | Added | the `pu$pathname` key (`pu$form.queue` was added and removed again, see REMOVED) |
+| `groupstore` and `revremove` | Added | `groupstore`, `revremove`, `setrem`, `rmvd()`: statements and functions over delimited strings |
+| `$ifdef`, `$ifndef` | Changed | accept `and` and `or` between token names |
+| `inmat()` | Changed | after `matches` or `matchfield()` it is the number of the pattern that matched; after `matbuild` and `matwrite` it is the element count; a collection array is accepted |
+| `input ... fill` | Added | shows a fill character in every empty cell of the field |
+| `input ... no.echo` | Added | shows nothing as the user types |
+| `input ... raw` | Added | reads exactly the number of characters given, as they arrive |
+| `inputif` | Added | reads a line only if one is already there, else takes `else` |
+| `inputnull`, `inputtrap` | Added | a single character typed alone makes the answer null, or sends the program to a label |
+| `last()` and more | Added | `last()`, `lasts()`, `nv()`, `ns()`: the final element of a delimited string; value and subvalue position numbers (`left()` and `right()` were added and removed again, see REMOVED) |
+| `locate ... by` | Added | `c` forces a case-sensitive search and `n` a case-insensitive one |
+| `matchess` and `trimws` | Added | `matchess`, `matchfields`, `trimws`, `trimw()`: `matches`, `matchfield` and `trimw` over a dynamic array; `trimw` trims white space |
+| matrix arguments | Changed | a matrix passed as an argument needs no `dim` in the receiving subroutine; `if mat a = mat b` compares two matrices; the compiler no longer reports an undimensioned argument |
+| `matstr()` | Added | converts a two dimensional matrix to a dynamic array |
+| `matwritecsv` | Added | one CSV line of every element of a matrix |
+| `digest()` | Added | the md5, sha1, sha256, sha384 or sha512 digest of a string or a file (`md5()` was added and removed again, see REMOVED) |
+| `mergelist()` | Added | merges two lists by a mode; a mode for lists not in order; fixed for an empty list |
+| `$mode debug.equates` | Added | keeps `equate` and `$define` tokens in the object so the debugger can show, set and watch them |
+| `$mode explicit` | Added | a variable must be named in a `dim` statement before it is used |
+| `$mode` lists | Changed | `$mode` takes several names separated by commas, each with an optional minus |
+| `$mode non.durable.txn` | Added | a committed nested transaction writes nothing until the outer one commits |
+| `$mode partial.expressions` | Added | `a and b` and `a or b` stop evaluating as soon as the value is known |
+| `$mode strict.equate` | Added | warns when a name given to `equate` or `$define` is also a statement or function name |
+| `$mode trap.unused.main` | Added | `trap.unused` for the program's own variables |
+| `no.query` on cataloguing | Added | the `basic` command, the `$catalogue` directive and the `catalogue` line of `$basic.options` take `no.query`, which stops the compiler asking before it removes an older entry |
+| `open ... non.transactional` | Added | a write through that file variable is not undone by a rollback |
+| `open.socket()` | Changed | takes a connect timeout |
+| `openseq` | Added | `creating` makes the file at once; `shared` lets several processes append; a block device can be opened |
 | `openseq creating` | Changed | makes a name that is free exclusively: a name taken in the meantime, or a link that leads nowhere, is refused with `status()` 6032 and nothing is made (`shared` refuses a link that leads nowhere the same way, and otherwise still opens or creates); the `openseq file, record` form does the same, and an `openseq` of such a link without `creating` gives a file that cannot be written |
-| `opentemp` | Added | makes a temporary dynamic file that is deleted when its variable is closed; in the temporary directory when no path is given <!--s 431 440--> |
-| operating system files | Added | `oscopy`, `osread`, `oswrite`, `osdelete`, `!oscopy`, `!ioscopy`: copy, read, write and delete operating system files by name, held to the account's OS gate <!--s 369 517 g163 g164 g165--> |
-| `option()` | Added | reads and sets the state of an option <!--s 224 473--> |
-| `ospath()` | Added | keys `os$fullpathx`, `os$info`, `os$parent`, `os$uid`, `os$gid`, `os$modes`, `os$is.file` and `os$is.dir` <!--s 293 432 233--> |
-| `parse()` and `ttyget()` | Added | `parse()`, `sort.compare()`, `ttyget()`, `ttyset`: split by a pattern; compare by a sort rule; the terminal modes as an array <!--s g166 g183 g187 g190 g191--> |
-| `phantom` statement | Added | starts a phantom from a program; the log name may be a variable <!--s 390 351--> |
-| `precision inherit` | Added | takes the precision of the calling program <!--s 201--> |
-| `@pstat` | Added | text a program leaves for `pstat` to show <!--s 492--> |
-| `quotes()` family | Added | `quotes()`, `squotes()`: enclose every element of a dynamic array in quotes <!--s 11--> |
-| `read` etc. as a condition | Added | `read`, `readnext`, `open` and the like may be the condition of `while` or `until` <!--s 206--> |
-| `recordlocku` | Changed | fixed: it did not always trap an illegal record id <!--s 528--> |
-| `redim` | Added | resizes a matrix passed to a subroutine as an argument <!--s 215--> |
-| `regex()` | Added | regular expression matching <!--s 510--> |
-| `seek` | Changed | fixed: a negative offset from the end of a sequential file was refused <!--s 259--> |
-| select list variables | Added | `formlistv`, `getlistv`, `writelist`, `movelist`, `movelistv`: select list variables and numbered lists <!--s 291 g134 g135 g195 g156--> |
-| `select.socket()` | Added | waits on the sockets held in a matrix <!--s 161 g176--> |
-| `selectindexv` family | Added | `selectindexv`, `selectleftv`, `selectrightv`: index scans into a select list variable <!--s g177--> |
-| `send` | Added | `writeseq`, or with a colon `writeblk`, to a file opened with `openseq` <!--s g178--> |
-| `set.socket.mode` trace | Added | `skt$info.trace` logs the data sent and received on a socket to an owner-only file <!--s 162--> |
-| `socket.info()` | Changed | fixed: `skt$info.open` on a number, a string or an unassigned variable stopped with a fatal error <!--s 249--> |
-| `!sort` | Changed | sorts a select list variable; the internal sort is open to programs <!--s 274 371--> |
-| `sselectv`, `sselectn` | Added | sorted selects into a select list variable; `right.aligned` and `descending` <!--s 209 243 367--> |
-| `status()` after a transaction | Added | 0 if it committed, 1021 if it rolled back <!--s 19--> |
-| string arithmetic | Added | `sadd`, `ssub`, `smul`, `sdiv`, `scmp`: exact string arithmetic on numbers of any length and any decimals <!--s 391 468--> |
-| substring assignment | Added | `s[3] = "xy"` overwrites the last three characters <!--s 41 325--> |
-| `trans()` family | Changed | `trans()`, `rtrans()`: accept `a`, `s` and `c` items and an `l` link; a file that will not open takes the error action of the call <!--s 43 182 7--> |
-| variable names | Changed | a name with two or more underscores together (`a__b`) is valid <!--s 336--> |
-| `watch` | Changed | the debugger's `watch variable operator value` stops only when the condition is met <!--s 45--> |
+| `opentemp` | Added | makes a temporary dynamic file that is deleted when its variable is closed; in the temporary directory when no path is given |
+| operating system files | Added | `oscopy`, `osread`, `oswrite`, `osdelete`, `!oscopy`, `!ioscopy`: copy, read, write and delete operating system files by name, held to the account's OS gate |
+| `option()` | Added | reads and sets the state of an option |
+| `ospath()` | Added | keys `os$fullpathx`, `os$info`, `os$parent`, `os$uid`, `os$gid`, `os$modes`, `os$is.file` and `os$is.dir` |
+| `parse()` and `ttyget()` | Added | `parse()`, `sort.compare()`, `ttyget()`, `ttyset`: split by a pattern; compare by a sort rule; the terminal modes as an array |
+| `phantom` statement | Added | starts a phantom from a program; the log name may be a variable |
+| `precision inherit` | Added | takes the precision of the calling program |
+| `@pstat` | Added | text a program leaves for `pstat` to show |
+| `quotes()` family | Added | `quotes()`, `squotes()`: enclose every element of a dynamic array in quotes |
+| `read` etc. as a condition | Added | `read`, `readnext`, `open` and the like may be the condition of `while` or `until` |
+| `recordlocku` | Changed | fixed: it did not always trap an illegal record id |
+| `redim` | Added | resizes a matrix passed to a subroutine as an argument |
+| `regex()` | Added | regular expression matching |
+| `seek` | Changed | fixed: a negative offset from the end of a sequential file was refused |
+| select list variables | Added | `formlistv`, `getlistv`, `writelist`, `movelist`, `movelistv`: select list variables and numbered lists |
+| `select.socket()` | Added | waits on the sockets held in a matrix |
+| `selectindexv` family | Added | `selectindexv`, `selectleftv`, `selectrightv`: index scans into a select list variable |
+| `send` | Added | `writeseq`, or with a colon `writeblk`, to a file opened with `openseq` |
+| `set.socket.mode` trace | Added | `skt$info.trace` logs the data sent and received on a socket to an owner-only file |
+| `socket.info()` | Changed | fixed: `skt$info.open` on a number, a string or an unassigned variable stopped with a fatal error |
+| `!sort` | Changed | sorts a select list variable; the internal sort is open to programs |
+| `sselectv`, `sselectn` | Added | sorted selects into a select list variable; `right.aligned` and `descending` |
+| `status()` after a transaction | Added | 0 if it committed, 1021 if it rolled back |
+| string arithmetic | Added | `sadd`, `ssub`, `smul`, `sdiv`, `scmp`: exact string arithmetic on numbers of any length and any decimals |
+| substring assignment | Added | `s[3] = "xy"` overwrites the last three characters |
+| `trans()` family | Changed | `trans()`, `rtrans()`: accept `a`, `s` and `c` items and an `l` link; a file that will not open takes the error action of the call |
+| variable names | Changed | a name with two or more underscores together (`a__b`) is valid |
+| `watch` | Changed | the debugger's `watch variable operator value` stops only when the condition is met |
 
 ## DATA
 
@@ -190,21 +187,21 @@ Data collections, JSON, XML, CSV and the verbs that import them.
 | `!ced()` | Added | full-screen editor for a collection held in a variable (the editor is also reached from `ide` F12; there is no `ced` command) |
 | collection arrays | Added | `mat()`, `c{list, n}`, `ins ... as`, `del`, `inmat()` on an array |
 | collection file verbs | Added | `ed`, `copy`, `compare.files`: work on a collection file; the post-write trigger no longer crashes the process |
-| collection files | Added | `create.file name collection`; records are collections stored as JSON; `read` and `write` them whole; `ct` shows JSON <!--s 304--> |
-| `collection()` and `c{name}` | Added | a collection is a set of named values read and written by name; `enumerate()`, `element.exists()` <!--s 311 518 529 339--> |
-| `csv.mode` | Added | how `printcsv`, `writecsv` and `formcsv()` quote, with a delimiter, quote and escape character <!--s 173 200--> |
-| `csvdq()`, `dparse.csv` | Changed | `csvdq()` takes a quote and an escape character as a third and a fourth argument; fixed: a return code was corrupted when used with `execute ... returning` <!--s 526--> |
+| collection files | Added | `create.file name collection`; records are collections stored as JSON; `read` and `write` them whole; `ct` shows JSON |
+| `collection()` and `c{name}` | Added | a collection is a set of named values read and written by name; `enumerate()`, `element.exists()` |
+| `csv.mode` | Added | how `printcsv`, `writecsv` and `formcsv()` quote, with a delimiter, quote and escape character |
+| `csvdq()`, `dparse.csv` | Changed | `csvdq()` takes a quote and an escape character as a third and a fourth argument; fixed: a return code was corrupted when used with `execute ... returning` |
 | `element` keyword in queries | Added | names an element of a collection file by its path, in a display list, `with`, `by`, `sum` and the like |
 | `expand()` and links | Added | a link `"file:id"` is followed; `trans()` of an `e` item |
 | file variable in a collection | Changed | a collection holding a file variable is written to a collection file as a null |
 | `hu` conversion | Added | `oconv` and `iconv` escape and unescape |
 | `indices` on `e` items | Added | a data collection element can be indexed; a query with `with` on it uses the index |
-| `jboolean()` and `jtype()` | Added | `jboolean()`, `jnull()`, `jtype()`: true, false and null in collections, and the type of a value; a Boolean type <!--s 312--> |
-| `jbuild()` | Changed | the pretty-print mode names an indent of up to 16 spaces or tabs; marks in a string are written as hex Unicode <!--s 453--> |
+| `jboolean()` and `jtype()` | Added | `jboolean()`, `jnull()`, `jtype()`: true, false and null in collections, and the type of a value; a Boolean type |
+| `jbuild()` | Changed | the pretty-print mode names an indent of up to 16 spaces or tabs; marks in a string are written as hex Unicode |
 | `jparse()`, `jbuild()` | Added | JSON text into a collection and back |
 | operators on an element | Added | `+=`, `-=`, `*=`, `/=`, `:=` change an element in place |
-| the debugger and collections | Added | `/c`, `/c{path}` and `dump c{sub} pathname` show and write a collection; diving in with `/*` no longer crashes <!--s 530--> |
-| `xml` keyword for queries | Added | `list ... xml` writes the report as XML, with an optional DTD or schema <!--s g211 g202--> |
+| the debugger and collections | Added | `/c`, `/c{path}` and `dump c{sub} pathname` show and write a collection; diving in with `/*` no longer crashes |
+| `xml` keyword for queries | Added | `list ... xml` writes the report as XML, with an optional DTD or schema |
 
 ## FILES
 
@@ -212,37 +209,37 @@ File handling: opening, indexes, triggers, print files, sorting, sequential file
 
 | Name | Change | What |
 |---|---|---|
-| `analyse.file` | Changed | `statistics` shows a histogram of group utilisation <!--s 360--> |
-| `analyse.index` | Added | every index with its number of values and spread <!--s g9--> |
-| `catalog -name` | Added | a hyphen is a global catalogue prefix; `delete.catalog -name` removes it <!--s 217--> |
-| `clear.file` | Changed | fixed: a `no.resize` file keeps its modulus <!--s 590--> |
-| `configure.file ... reporting` | Added | shows how many records have been converted <!--s 172--> |
-| `create.file` | Added | `comment`, `multifile` and a relative `pathname` kept relative in the VOC <!--s 383 522 278--> |
-| `create.index` | Added | `no.case`: keys that differ only in case are one key; `deleting` replaces an index; a default location in `$index.path` <!--s 54 424 184--> |
-| `dir_dict` | Added | three items for a directory file's dictionary: `days`, `dtm` and `owner` <!--s 181--> |
-| directory file line ends | Added | line terminator modes (`l`, `c`, `b`, `x`) and triggers <!--s 177--> |
-| `directory files` ids | Changed | the record ids may hold bytes 128 to 247 <!--s 34--> |
-| `disable.index` | Added | stops an index being kept up to date for a large load; `build.index` switches it on <!--s g28--> |
-| exclusive access | Changed | a command that needs a file to itself names the user holding it when it cannot get it <!--s 107--> |
-| `file.stat` | Added | one line per file: type, modulus, records, bytes and flags; limited to named files; with dictionaries <!--s 109 152 g40--> |
-| `find.file`, `find.program` | Added | what a file is; the catalogue entries of a program <!--s g42 g43--> |
-| `fixdir` | Added | takes the carriage returns out of directory file items that came from a Windows system <!--s 458--> |
-| hashed files | Changed | a split that finds the disk nearly full stops before the file's size is changed; `sdfix -z` clears dead space <!--s 329 33--> |
-| `hold.file.logger` | Added | a catalogued subroutine called when a hold file print unit opens and closes <!--s 56--> |
-| `l-type` dictionary links | Added | usable in an `i`-type; links may follow links, up to ten, and reach `a`, `s` and `e` items <!--s 7 204 544--> |
-| `list.common detail` | Added | shows where each common block was created <!--s 362--> |
-| `list.index` | Changed | the report may go to a printer <!--s 73--> |
-| `list.triggers` | Added | every trigger subroutine used by the files of an account, multifiles, dictionaries and directory files included <!--s 74 187 321--> |
-| `listf`, `listfl`, `listfr` | Changed | list a multifile line by line, and take `with` and `without trigger`, `encryption` and `replication` <!--s 3 185--> |
-| print unit mode 3 | Changed | takes an update lock on the `$hold` item while it is written <!--s 53--> |
-| `rebuild.all.indices` | Added | rebuilds the indices of every file in the account <!--s 58--> |
-| `select` of a directory file | Changed | fixed: at the open-file limit it closes the oldest cached file and goes on <!--s 279--> |
-| `set.file` | Changed | the target may be a `q`-pointer; a `q`-pointer with no file name points at the VOC <!--s 32 435--> |
-| `set.mode` | Added | the permission bits of records of a directory file <!--s g81--> |
-| `set.trigger` | Changed | fixed: refused every function name; takes `all`; no longer needs exclusive access <!--s 388 157--> |
-| sort of long records | Changed | the disk sort handles records and keys over 32 KB <!--s 455--> |
-| trigger on a read | Changed | fixed: a locally catalogued read trigger could end the process <!--s 317--> |
-| `vocname` letters | Added | `r` opens a file read-only, `n` non-transactionally, `s` with forced writes, from field 6 of its VOC entry <!--s 197 380 102--> |
+| `analyse.file` | Changed | `statistics` shows a histogram of group utilisation |
+| `analyse.index` | Added | every index with its number of values and spread |
+| `catalog -name` | Added | a hyphen is a global catalogue prefix; `delete.catalog -name` removes it |
+| `clear.file` | Changed | fixed: a `no.resize` file keeps its modulus |
+| `configure.file ... reporting` | Added | shows how many records have been converted |
+| `create.file` | Added | `comment`, `multifile` and a relative `pathname` kept relative in the VOC |
+| `create.index` | Added | `no.case`: keys that differ only in case are one key; `deleting` replaces an index; a default location in `$index.path` |
+| `dir_dict` | Added | three items for a directory file's dictionary: `days`, `dtm` and `owner` |
+| directory file line ends | Added | line terminator modes (`l`, `c`, `b`, `x`) and triggers |
+| `directory files` ids | Changed | the record ids may hold bytes 128 to 247 |
+| `disable.index` | Added | stops an index being kept up to date for a large load; `build.index` switches it on |
+| exclusive access | Changed | a command that needs a file to itself names the user holding it when it cannot get it |
+| `file.stat` | Added | one line per file: type, modulus, records, bytes and flags; limited to named files; with dictionaries |
+| `find.file`, `find.program` | Added | what a file is; the catalogue entries of a program |
+| `fixdir` | Added | takes the carriage returns out of directory file items that came from a Windows system |
+| hashed files | Changed | a split that finds the disk nearly full stops before the file's size is changed; `sdfix -z` clears dead space |
+| `hold.file.logger` | Added | a catalogued subroutine called when a hold file print unit opens and closes |
+| `l-type` dictionary links | Added | usable in an `i`-type; links may follow links, up to ten, and reach `a`, `s` and `e` items |
+| `list.common detail` | Added | shows where each common block was created |
+| `list.index` | Changed | the report may go to a printer |
+| `list.triggers` | Added | every trigger subroutine used by the files of an account, multifiles, dictionaries and directory files included |
+| `listf`, `listfl`, `listfr` | Changed | list a multifile line by line, and take `with` and `without trigger`, `encryption` and `replication` |
+| print unit mode 3 | Changed | takes an update lock on the `$hold` item while it is written |
+| `rebuild.all.indices` | Added | rebuilds the indices of every file in the account |
+| `select` of a directory file | Changed | fixed: at the open-file limit it closes the oldest cached file and goes on |
+| `set.file` | Changed | the target may be a `q`-pointer; a `q`-pointer with no file name points at the VOC |
+| `set.mode` | Added | the permission bits of records of a directory file |
+| `set.trigger` | Changed | fixed: refused every function name; takes `all`; no longer needs exclusive access |
+| sort of long records | Changed | the disk sort handles records and keys over 32 KB |
+| trigger on a read | Changed | fixed: a locally catalogued read trigger could end the process |
+| `vocname` letters | Added | `r` opens a file read-only, `n` non-transactionally, `s` with forced writes, from field 6 of its VOC entry |
 
 ## QUERY
 
@@ -250,31 +247,31 @@ The query processor and the dictionary.
 
 | Name | Change | What |
 |---|---|---|
-| `a;nocase` correlative | Added | makes the string operations of one correlative case insensitive <!--s 103--> |
-| `absent.ignore` | Added | do not print the `not found` list for ids that are not in the file <!--s 25--> |
-| `break.on "'n'"` | Added | starts a new page and numbers it 1 again <!--s 16--> |
-| `by.exp` | Changed | more than one `by.exp` in the same association is sorted <!--s 572--> |
-| `csv ... as file id` | Added | writes the report as a record of a directory file; a multivalued field is split over lines <!--s 159--> |
-| `csv 3` | Added | every item quoted, numbers too <!--s 26--> |
-| dictionary expressions | Changed | divide by zero is zero (an `if` with a part missing, a format after a value and hyphens in names were added and removed again, see REMOVED) <!--s 36 48 270 271 423 547 564--> |
-| `for`, `from none` | Added | `search file for "text"`; `from none` ignores an active list 0 <!--s 190 378--> |
-| `if` in a dictionary item | Added | field 8 of an `a` or `s` item may hold an `if` expression <!--s 104--> |
-| `in`, `not.in` | Added | test a value against a saved list or a file record <!--s 94--> |
-| `median`, `mode`, `range` | Added | figures at the end of a report and each breakpoint <!--s 231 g209--> |
-| `$mode` in an `i`-type | Added | an `i`-type may begin with `$mode` for a few of the compiler modes <!--s 489--> |
-| `no.page` | Changed | accepted on any query command <!--s 379--> |
-| options | Added | (`query.sort.no.case`, `clear.select`, `query.string.comp`, `query.str.comp.all` and `default.mv` were added and removed again, see REMOVED) <!--s 140 299 412 205 403--> |
-| `$query.defaults` | Changed | field 3 holds default words for `select`, `sselect` and `search`; field 4 the format of the id column <!--s 122 405--> |
-| `reformat ... @record` | Added | appends the whole source record <!--s 546--> |
-| `reporting` | Added | `n record(s) examined` for every thousand records <!--s 416--> |
-| `rpt` | Added | repeats a single valued field on each line of a report on a multivalued one <!--s g210--> |
-| `scan`, `search ... display` | Added | show the lines of a record that hold the strings; `search all` searches the id too; strings may come from a file <!--s 437 447 221 141--> |
-| `select file field` | Changed | a field no clause uses is `saving multivalued field` <!--s 39--> |
-| `show` | Changed | `b` goes to the bottom; `sort.sup`; a missing record is listed and the command ends <!--s 477 495 524--> |
-| `sorted.sample n` | Added | counts the records after the sort <!--s 438--> |
-| `vertically` | Changed | `fmt` for the name and data format; `$vlist` sets them for the file; multivalued data and a wrapped line are told apart <!--s 160 579 580--> |
-| `when field` | Changed | with no operator keeps the values that are not null <!--s 543 343--> |
-| `x` breakpoint control | Added | captures the previous value of a break field in `@bpv` <!--s 232--> |
+| `a;nocase` correlative | Added | makes the string operations of one correlative case insensitive |
+| `absent.ignore` | Added | do not print the `not found` list for ids that are not in the file |
+| `break.on "'n'"` | Added | starts a new page and numbers it 1 again |
+| `by.exp` | Changed | more than one `by.exp` in the same association is sorted |
+| `csv ... as file id` | Added | writes the report as a record of a directory file; a multivalued field is split over lines |
+| `csv 3` | Added | every item quoted, numbers too |
+| dictionary expressions | Changed | divide by zero is zero (an `if` with a part missing, a format after a value and hyphens in names were added and removed again, see REMOVED) |
+| `for`, `from none` | Added | `search file for "text"`; `from none` ignores an active list 0 |
+| `if` in a dictionary item | Added | field 8 of an `a` or `s` item may hold an `if` expression |
+| `in`, `not.in` | Added | test a value against a saved list or a file record |
+| `median`, `mode`, `range` | Added | figures at the end of a report and each breakpoint |
+| `$mode` in an `i`-type | Added | an `i`-type may begin with `$mode` for a few of the compiler modes |
+| `no.page` | Changed | accepted on any query command |
+| options | Added | (`query.sort.no.case`, `clear.select`, `query.string.comp`, `query.str.comp.all` and `default.mv` were added and removed again, see REMOVED) |
+| `$query.defaults` | Changed | field 3 holds default words for `select`, `sselect` and `search`; field 4 the format of the id column |
+| `reformat ... @record` | Added | appends the whole source record |
+| `reporting` | Added | `n record(s) examined` for every thousand records |
+| `rpt` | Added | repeats a single valued field on each line of a report on a multivalued one |
+| `scan`, `search ... display` | Added | show the lines of a record that hold the strings; `search all` searches the id too; strings may come from a file |
+| `select file field` | Changed | a field no clause uses is `saving multivalued field` |
+| `show` | Changed | `b` goes to the bottom; `sort.sup`; a missing record is listed and the command ends |
+| `sorted.sample n` | Added | counts the records after the sort |
+| `vertically` | Changed | `fmt` for the name and data format; `$vlist` sets them for the file; multivalued data and a wrapped line are told apart |
+| `when field` | Changed | with no operator keeps the values that are not null |
+| `x` breakpoint control | Added | captures the previous value of a break field in `@bpv` |
 
 ## SYSTEM
 
@@ -282,27 +279,27 @@ The kernel, `sd.conf`, and the numbered keys.
 
 | Name | Change | What |
 |---|---|---|
-| `cleanup=n` | Added | seconds between the checks that clear sessions that ended without logging out <!--s 98 g283--> |
+| `cleanup=n` | Added | seconds between the checks that clear sessions that ended without logging out |
 | `config` | Changed | lists the new settings; `config()` reads them |
-| `deadlock=2` | Added | saves the lock tables when a deadlock is found <!--s 500--> |
-| `fileinfo()` | Added | the keys 1022 to 1040 as the openQM manual numbers them; `fl$seqtype`, `fl$locks`; 1021 now answers the user numbers <!--s 62 113 498 337--> |
-| `intprec` | Changed | default 11 <!--s 6--> |
-| lock table | Changed | the time each lock was taken and each wait began is noted; more than 65,535 locks in a file work; a program that filled the table can be logged out <!--s 487 344 532--> |
+| `deadlock=2` | Added | saves the lock tables when a deadlock is found |
+| `fileinfo()` | Added | the keys 1022 to 1040 as the openQM manual numbers them; `fl$seqtype`, `fl$locks`; 1021 now answers the user numbers |
+| `intprec` | Changed | default 11 |
+| lock table | Changed | the time each lock was taken and each wait began is noted; more than 65,535 locks in a file work; a program that filled the table can be logged out |
 | `numlocks` | Changed | range checked, 1 to 32767 |
-| `phantoms=u,n` | Added | keeps user numbers for phantoms started with `user` <!--s 31 g296--> |
-| process dump | Changed | shows the length of each string, the variables of objects and the environment <!--s 22 125 569 439--> |
-| `pterm` keys | Added | `pterm erase`, `ctrl.filter`, `mark`: which key erases; control characters filtered; control keys that type the marks <!--s 155 253 254--> |
-| `-quiet` | Changed | `sd -quiet` suppresses the VOC update question <!--s 533--> |
-| `sd.conf` parameters | Added | `dhcache`, `lgnwait`, `maxrlock`, `pwdelay`, `userpool`: `sd.conf` parameters, each optional with the old fixed number as the default <!--s 90 46 313 106 551--> |
-| `sortmem` | Changed | default 4096 <!--s 535-->|
-| `status` | Changed | file times are in the user's time zone; field 27 is the file pathname <!--s 96 585--> |
-| `-status` | Added | `sd -status` shows the version, start time and process counts <!--s 511--> |
-| `system()` keys | Added | 14, 19, 20, 21, 33, 35, 45, 1016, 1036, 1037, 1040, 1045, 1047, 1048, 1049, 1051, 1062, 1065, 1067, 1071, 1073, 1083, 1086, 1088 <!--s 65 66 114 192 225 244 206 294 307 308 326 421 433 586 587 g252 g253 g254 g255 g256 g260 g261 g265 g266 g267 g270 g271 g274 g276--> |
-| terminfo | Changed | `eblink`, `eprot`, `edim`, `erev`, `ebold` capabilities; `xmc#1` in the two ADDS 4000 entries <!--s 47 545--> |
-| the call name | Changed | can be as long as 128 characters (the lower of 128 and `maxidlen`) <!--s 241-->|
-| the startup process | Changed | its `@tty` is `startup` <!--s 91--> |
-| time zone and `epoch()` | Added | `epoch()`, `mvdate()`, `mvtime()`, `mvdate.time()`, `mvepoch()`; `set.timezone` and `config timezone` <!--s 69 124 g126 g157 g158 g159 g160 g181 g310--> |
-| `usplit=1` | Added | interactive users take the lowest user number, phantoms and API sessions the highest <!--s g312--> |
+| `phantoms=u,n` | Added | keeps user numbers for phantoms started with `user` |
+| process dump | Changed | shows the length of each string, the variables of objects and the environment |
+| `pterm` keys | Added | `pterm erase`, `ctrl.filter`, `mark`: which key erases; control characters filtered; control keys that type the marks |
+| `-quiet` | Changed | `sd -quiet` suppresses the VOC update question |
+| `sd.conf` parameters | Added | `dhcache`, `lgnwait`, `maxrlock`, `pwdelay`, `userpool`: `sd.conf` parameters, each optional with the old fixed number as the default |
+| `sortmem` | Changed | default 4096|
+| `status` | Changed | file times are in the user's time zone; field 27 is the file pathname |
+| `-status` | Added | `sd -status` shows the version, start time and process counts |
+| `system()` keys | Added | 14, 19, 20, 21, 33, 35, 45, 1016, 1036, 1037, 1040, 1045, 1047, 1048, 1049, 1051, 1062, 1065, 1067, 1071, 1073, 1083, 1086, 1088 |
+| terminfo | Changed | `eblink`, `eprot`, `edim`, `erev`, `ebold` capabilities; `xmc#1` in the two ADDS 4000 entries |
+| the call name | Changed | can be as long as 128 characters (the lower of 128 and `maxidlen`)|
+| the startup process | Changed | its `@tty` is `startup` |
+| time zone and `epoch()` | Added | `epoch()`, `mvdate()`, `mvtime()`, `mvdate.time()`, `mvepoch()`; `set.timezone` and `config timezone` |
+| `usplit=1` | Added | interactive users take the lowest user number, phantoms and API sessions the highest |
 
 ## TCL
 
@@ -311,50 +308,50 @@ Commands and VOC verbs that every account has, and the command language.
 | Name | Change | What |
 |---|---|---|
 | `autologout` | Changed | works in the full-screen programs (the screen library, `ide`, the home screen, the tool pages): idle time is counted across their short timed waits, and only a typed key (or the break key) starts the period again; a program that polls with very short timed `keyin`s and works between them counts as waiting |
-| `block.print`, `block.term` | Added | print text, or show it on the terminal, in letters seven rows high <!--s g11 g12--> |
-| `catalog ... local relative` | Added | stores the object file's path relative to the account <!--s 131--> |
-| `catalog` overwrite | Changed | pointing a local catalogue entry at a different object file asks first <!--s 490--> |
-| `catalog` prefix | Added | a prefix separate from the call name; `$private.catalog` or `$private.catalogue` <!--s 210 93--> |
-| catalogue name as a command | Changed | a program run by its catalogue name takes `lptr`, `no.page` and the like <!--s 146--> |
-| command stack | Changed | `.c-` undoes a `.0`; the stack is kept in the account the user entered <!--s 296 396--> |
-| `command.logging` | Added | a log of every command this session runs, in the account directory, mode 0600 <!--s 444 g16--> |
-| `como` | Added | `append`, `in file`; `$como` ids pass the same name transform <!--s 8 361 9--> |
-| `compare.files` | Added | counts the records only in one, only in the other, in both but different <!--s 534--> |
-| `ct` | Changed | `id.sup`, `num.sup`; lower case file names; the object code of a compiled dictionary item is not shown <!--s 242 347 373--> |
-| `decatalog` | Added | deletes a local catalogue entry and its object code <!--s 576--> |
-| `delete` | Changed | a record another user holds locked is reported and skipped <!--s 50--> |
-| `delete.account` | Changed | not stopped by a file it cannot open when it looks for references <!--s 348--> |
-| `delete.common all except` | Added | deletes every named common block but those listed <!--s 425--> |
-| `ed` | Changed | `l` with no text as the first command works; marks typed in input; `ev` on a compound `i`-type; line numbers show positions in edit values mode; `spool` closes the printer; external commands; automatic ids <!--s 264 268 320 331 375 446 523 305--> |
-| `fstat` | Changed | wider columns <!--s 55--> |
-| `fstat.user` | Added | file activity of each session <!--s g44--> |
-| `git` option | Added | a directory file keeps `.gitignore` and `.gitattributes` under their own names <!--s g238--> |
-| `hot spot monitor` | Changed | counts opens, reads, writes and deletes of each program <!--s 491--> |
-| `if` in a paragraph | Added | `exists`, `not.exists`, `in` and `not.in`, with `no.case` <!--s 28 230 426 476--> |
-| inline prompts | Changed | largely case insensitive; may use quoted prompt strings <!--s 171 377--> |
-| `k` entry in the VOC | Changed | fixed: a `k` entry over a locally catalogued program stopped with "Unable to load" <!--s 263--> |
-| list merges | Changed | `merge.list` finds a key without scanning, so large lists merge in seconds <!--s 414--> |
-| `list.item` | Changed | numbers lines beyond 999 with as many digits as needed <!--s 349--> |
+| `block.print`, `block.term` | Added | print text, or show it on the terminal, in letters seven rows high |
+| `catalog ... local relative` | Added | stores the object file's path relative to the account |
+| `catalog` overwrite | Changed | pointing a local catalogue entry at a different object file asks first |
+| `catalog` prefix | Added | a prefix separate from the call name; `$private.catalog` or `$private.catalogue` |
+| catalogue name as a command | Changed | a program run by its catalogue name takes `lptr`, `no.page` and the like |
+| command stack | Changed | `.c-` undoes a `.0`; the stack is kept in the account the user entered |
+| `command.logging` | Added | a log of every command this session runs, in the account directory, mode 0600 |
+| `como` | Added | `append`, `in file`; `$como` ids pass the same name transform |
+| `compare.files` | Added | counts the records only in one, only in the other, in both but different |
+| `ct` | Changed | `id.sup`, `num.sup`; lower case file names; the object code of a compiled dictionary item is not shown |
+| `decatalog` | Added | deletes a local catalogue entry and its object code |
+| `delete` | Changed | a record another user holds locked is reported and skipped |
+| `delete.account` | Changed | not stopped by a file it cannot open when it looks for references |
+| `delete.common all except` | Added | deletes every named common block but those listed |
+| `ed` | Changed | `l` with no text as the first command works; marks typed in input; `ev` on a compound `i`-type; line numbers show positions in edit values mode; `spool` closes the printer; external commands; automatic ids |
+| `fstat` | Changed | wider columns |
+| `fstat.user` | Added | file activity of each session |
+| `git` option | Added | a directory file keeps `.gitignore` and `.gitattributes` under their own names |
+| `hot spot monitor` | Changed | counts opens, reads, writes and deletes of each program |
+| `if` in a paragraph | Added | `exists`, `not.exists`, `in` and `not.in`, with `no.case` |
+| inline prompts | Changed | largely case insensitive; may use quoted prompt strings |
+| `k` entry in the VOC | Changed | fixed: a `k` entry over a locally catalogued program stopped with "Unable to load" |
+| list merges | Changed | `merge.list` finds a key without scanning, so large lists merge in seconds |
+| `list.item` | Changed | numbers lines beyond 999 with as many digits as needed |
 | `list.readu`, `pstat`, `getlocks()`, `system(1083)` | Changed | another session's text (a lock's record id, file path or user name, a command, a program name, `@pstat`) shows a control character, `del`, bytes 128-159 and a mark character as `?` and cannot send a code to your terminal; the locks and `fileinfo(f, 1039)` are unchanged |
-| `listu`, `who`, `pstat` | Changed | `!listu` too: show the account and the login name; `listu detail`; the blocking user and when a wait began <!--s 12 24 29 38 77 121 289 427 577--> |
-| `logto reset all` | Added | discards all programs, menus and paragraphs at every command level <!--s 30--> |
-| `map local`, `map no.page` | Added | list the locally catalogued programs; heading once <!--s 153 287--> |
-| `move.list` | Added | the command form of `movelist` <!--s g62--> |
-| `multisort` | Added | `!multisort` sorts several related lists by one of them <!--s 568--> |
-| `option` words | Added | `dir.dtm`, `git`, `inherit.ownership` and `spool.command` (twenty more were added and removed again, see REMOVED) <!--s 288 79 314 428 461 445 37 57 154 165 404 429 49 g230 g231 g232 g233 g237 g239 g240 g241 g242 g245 g247 g248--> |
-| `oscopy` | Added | copy an operating system file; `overwrite`, `append` <!--s 369 517--> |
-| `phantom` | Added | `no.msg`, `data`, `log`, `group` and `user` options; `!phlog` gives a phantom's log record; a phantom started while SD is suspended gives back its place <!--s 87 137 364 483 31 385 280--> |
-| phantom and terminal lists | Added | `list.phantoms`, `list.term.types`: the phantoms and no one else; the terminal types <!--s 381 g49--> |
-| `private vocabulary` | Added | `$private.voc`: a file of commands searched after all other command sources <!--s 1--> |
-| `profiler` | Added | records what the programs of a session do and where <!--s g66 g203-->|
-| `redo` | Added | runs a command again and again, `times` and `every` <!--s 188--> |
-| saved list verbs | Changed | `save.list`, `get.list`, `delete.list`: `keep`, `deleting`, `count.sup`, a default name, a name left out, `in file` <!--s 2 384 387 401 494--> |
-| `selectindex` | Added | the command form of the statement <!--s 119--> |
-| `setptr` | Changed | `form.feed`, `inform`, `eject`, `as ... in file`; the digits of `next` <!--s 51 59 70 139 448--> |
-| `show.list` | Added | a page at a time, starring and clearing items <!--s 449-->|
-| `sort.list`, `select.dir` | Added | sort a saved list; select the files of a directory <!--s 158 465--> |
-| `sp.view` | Changed | `by field`; `x` deletes the item shown; shows where output goes for every print unit mode <!--s 450 560--> |
-| `term` | Changed | takes two numbers for the default printer; `term default` goes to 140 by 42 <!--s 466--> |
+| `listu`, `who`, `pstat` | Changed | `!listu` too: show the account and the login name; `listu detail`; the blocking user and when a wait began |
+| `logto reset all` | Added | discards all programs, menus and paragraphs at every command level |
+| `map local`, `map no.page` | Added | list the locally catalogued programs; heading once |
+| `move.list` | Added | the command form of `movelist` |
+| `multisort` | Added | `!multisort` sorts several related lists by one of them |
+| `option` words | Added | `dir.dtm`, `git`, `inherit.ownership` and `spool.command` (twenty more were added and removed again, see REMOVED) |
+| `oscopy` | Added | copy an operating system file; `overwrite`, `append` |
+| `phantom` | Added | `no.msg`, `data`, `log`, `group` and `user` options; `!phlog` gives a phantom's log record; a phantom started while SD is suspended gives back its place |
+| phantom and terminal lists | Added | `list.phantoms`, `list.term.types`: the phantoms and no one else; the terminal types |
+| `private vocabulary` | Added | `$private.voc`: a file of commands searched after all other command sources |
+| `profiler` | Added | records what the programs of a session do and where|
+| `redo` | Added | runs a command again and again, `times` and `every` |
+| saved list verbs | Changed | `save.list`, `get.list`, `delete.list`: `keep`, `deleting`, `count.sup`, a default name, a name left out, `in file` |
+| `selectindex` | Added | the command form of the statement |
+| `setptr` | Changed | `form.feed`, `inform`, `eject`, `as ... in file`; the digits of `next` |
+| `show.list` | Added | a page at a time, starring and clearing items|
+| `sort.list`, `select.dir` | Added | sort a saved list; select the files of a directory |
+| `sp.view` | Changed | `by field`; `x` deletes the item shown; shows where output goes for every print unit mode |
+| `term` | Changed | takes two numbers for the default printer; `term default` goes to 140 by 42 |
 
 ## TOOLS
 
@@ -362,64 +359,63 @@ The debugger and the editors, from the openQM list. The full-screen tools that a
 
 | Name | Change | What |
 |---|---|---|
-| `debugger` | Changed | full-screen display on a terminal with an alternate screen; `/*` for every variable; `^`; `window n`; `set v = token`; a stop before each `case`; a blank line repeats the last command; `brk` lists the breakpoints <!--s 21 67 97 142 193 203 327 335 513 550--> |
-| `debugger` phantom | Changed | an `@variable` is read from the process being debugged <!--s 251-->|
-| `sed` | Changed | the full-screen editor takes `creating.seqkey` in place of a record id, like `ed` <!--s 446-->|
-| `sed` option `no.case.explore` | Added | in `&sed.options&`: the list of records is in order whatever the case of the ids, not capitals first <!--s 376-->|
-| `sed` option `scroll1` | Added | in `&sed.options&`: page up and page down move one line less than a page, so one line of the old page stays <!--s 463-->|
-| `sed` split point | Added | Window > Move split up / Move split down, and the commands `split.up` and `split.down` with a number of rows, move the line between the two windows <!--s 578-->|
-| `sed` view | Added | Search > View lines, or `view` and a text: a new read-only buffer holding only the lines of this one that contain the text <!--s 138-->|
+| `debugger` | Changed | full-screen display on a terminal with an alternate screen; `/*` for every variable; `^`; `window n`; `set v = token`; a stop before each `case`; a blank line repeats the last command; `brk` lists the breakpoints |
+| `debugger` phantom | Changed | an `@variable` is read from the process being debugged|
+| `sed` | Changed | the full-screen editor takes `creating.seqkey` in place of a record id, like `ed`|
+| `sed` option `no.case.explore` | Added | in `&sed.options&`: the list of records is in order whatever the case of the ids, not capitals first|
+| `sed` option `scroll1` | Added | in `&sed.options&`: page up and page down move one line less than a page, so one line of the old page stays|
+| `sed` split point | Added | Window > Move split up / Move split down, and the commands `split.up` and `split.down` with a number of rows, move the line between the two windows|
+| `sed` view | Added | Search > View lines, or `view` and a text: a new read-only buffer holding only the lines of this one that contain the text|
 
 
 ## REMOVED
 
-These were in L1.1-3 - or were added and taken out again during L1.2-0 - and **SD no longer has them**. Since 27 October 2026
-this is the one place where a removal is listed (the owner's instruction), whatever the area it belonged to. Most were removed
-on his instruction of that day because they existed only to make SD behave like another MultiValue product, or gave a second
-way to do something SD already does one way. **A program, a login paragraph or a `$basic.options` record that uses one has to
+These were in L1.1-3 - or were added and taken out again during L1.2-0 - and **SD no longer has them**. This is the one place where a removal is listed,
+whatever the area it belonged to. Most were removed because they existed only to make SD behave like another MultiValue
+product, or gave a second way to do something SD already does one way. **A program, a login paragraph or a `$basic.options` record that uses one has to
 be edited**; the last column says what to write instead. A program that was compiled with a removed mode keeps what it was
 compiled with until it is compiled again. More rows are added as the removal goes on.
 
 | Name | Change | What |
 |---|---|---|
 | AccuTerm terminal types | Removed | the eleven `-at` terminal types and AccuTerm's escape sequences |
-| `$mode` words that imitated other products | Removed | `prclose.default.0` (write `printer close on` *unit*), `unassigned.common` (a common variable starts as zero), `no.case.invert` (give `input` the `nocaseinvert` clause) and `optional.then.else` (a `read` takes a `then` or an `else`) are refused now with *Unrecognised mode name*; `conditional.statements`, `implied.stop` (end a program with `stop`) and `exception.save.stack` (write `saving.stack` on the `catch`) were added and removed within 1.2-0, so they never shipped <!--s 206 434 81 355--> |
-| `option` words that imitated other products | Removed | `option pick` and 22 words, refused now with *Option name not recognised*: `assoc.unassoc.mv`, `pick.breakpoint`, `pick.breakpoint.u`, `pick.explode`, `pick.grand.total`, `pick.implied.eq`, `pick.null`, `pick.wildcard`, `qualified.display`, `with.implies.or`, `query.no.case`, `query.priority.and`, `ampm.upcase`, `crdb.upcase`, `no.date.wrapping`, `space.mct`, `lock.beep`, `ed.no.query.fd`, `create.file.upcase`, `select.keep.case`, `debug.rebind.keys`, `proc.a`. SD does what it did with them off: write `with city = "Reno"`, use `like` for wildcards, brackets and `or` for the order of tests, `no.case` after an operator or `option query.sort.no.case` for case; times and amounts are `am`, `pm`, `cr`, `db`; a date such as 31 February rolls into the next month; a lock wait is silent; `fd` in `ed` asks first; `create.file` names a file in lower case <!--s 60 322--> |
+| `$mode` words that imitated other products | Removed | `prclose.default.0` (write `printer close on` *unit*), `unassigned.common` (a common variable starts as zero), `no.case.invert` (give `input` the `nocaseinvert` clause) and `optional.then.else` (a `read` takes a `then` or an `else`) are refused now with *Unrecognised mode name*; `conditional.statements`, `implied.stop` (end a program with `stop`) and `exception.save.stack` (write `saving.stack` on the `catch`) were added and removed within 1.2-0, so they never shipped |
+| `option` words that imitated other products | Removed | `option pick` and 22 words, refused now with *Option name not recognised*: `assoc.unassoc.mv`, `pick.breakpoint`, `pick.breakpoint.u`, `pick.explode`, `pick.grand.total`, `pick.implied.eq`, `pick.null`, `pick.wildcard`, `qualified.display`, `with.implies.or`, `query.no.case`, `query.priority.and`, `ampm.upcase`, `crdb.upcase`, `no.date.wrapping`, `space.mct`, `lock.beep`, `ed.no.query.fd`, `create.file.upcase`, `select.keep.case`, `debug.rebind.keys`, `proc.a`. SD does what it did with them off: write `with city = "Reno"`, use `like` for wildcards, brackets and `or` for the order of tests, `no.case` after an operator or `option query.sort.no.case` for case; times and amounts are `am`, `pm`, `cr`, `db`; a date such as 31 February rolls into the next month; a lock wait is silent; `fd` in `ed` asks first; `create.file` names a file in lower case |
 | screen save and restore | Removed | `save.screen()` and `restore.screen`: still exist and do nothing the terminal could see |
 | `sdterm` terminal type | Removed | with SDTerm and SDConsole, and the `term display` line about them |
 | `term 120,36` at login | Removed | `login` no longer sends it |
-| second names for statements | Removed | `$insert` (write `$include`), `include` without the `$` (write `$include`), `com` (write `common`), `dimension` and `redimension` (write `dim` and `redim`), `enter` with `$mode pick.enter` (write `call`, or `chain` to hand control on for good), `perform` (write `execute`), `printerr` (write `inputerr`), `remark` (write `rem`), `rqm` (write `sleep`), `sub` (write `subroutine`, also after `local`, `private` and `public`) and `tclread` (read `@sentence`): the compiler refuses each <!--s 215--> |
+| second names for statements | Removed | `$insert` (write `$include`), `include` without the `$` (write `$include`), `com` (write `common`), `dimension` and `redimension` (write `dim` and `redim`), `enter` with `$mode pick.enter` (write `call`, or `chain` to hand control on for good), `perform` (write `execute`), `printerr` (write `inputerr`), `remark` (write `rem`), `rqm` (write `sleep`), `sub` (write `subroutine`, also after `local`, `private` and `public`) and `tclread` (read `@sentence`): the compiler refuses each |
 | second forms of statement clauses | Removed | `execute ... setting` (write `returning`), `execute ... passlist` with no variable (it did nothing: name the variable, or leave the clause out), `input ... for` and `input ... timeout` (write `waiting`), `opentemp ... ecs` (a word that was read and ignored: it is an ordinary name now, so the compiler warns that it is never assigned a value) and the bracketed Pick form `locate(expr, array, f, v; position; order)` (write `locate expr in array<f, v> setting position`) |
-| second names for functions and variables | Removed | `ereplace()` (write `change()`, which takes -1 for every occurrence), `sentence()` (read `@sentence`), `swapmarks()` (it returned its argument), `terminfo.ex()` (write `terminfo()`) and `@system.set` (write `@system.return.code`) <!--s 238 472 g186--> |
+| second names for functions and variables | Removed | `ereplace()` (write `change()`, which takes -1 for every occurrence), `sentence()` (read `@sentence`), `swapmarks()` (it returned its argument), `terminfo.ex()` (write `terminfo()`) and `@system.set` (write `@system.return.code`) |
 | `mcd`, `mcdx`, `mcx` and `mcxd` conversions | Removed | second spellings of `mx`: an invalid conversion code now, STATUS 2 |
 | second spellings of query keywords | Removed | `col.spcs` (write `col.spaces`), `display.name` (`col.hdg`), `evaluate` (`eval`), `calculate` (`calc`), `intersection` and `difference` (`intersect` and `diff`, also in `merge.list`), `margin` (`left.margin`), `stats` (`statistics`), `supp` (`hdr.sup`) and `only` (`id.only`): **a new account does not have their VOC records**, and the next `update.accounts` removes them from existing accounts, through the deletion list (saved copy first; a record of your own with the same name is kept; `restore.voc` puts one back) |
 | `only` and `id.only` before the file name | Removed | `list only customers` is refused: write `list customers id.only` |
 | `=>`, `=<` and `><` | Removed | the mirrored spellings of `>=`, `<=` and `<>`; as for the keyword synonyms, a new account has no record for them and an old account keeps its own |
 | eleven `option` words | Removed | `run.no.page` and `paginate.on.heading` (a run is paginated unless `run ... no.page` says not), `pick.ml.conv.mask` (a left bracket in `ml` / `mr` is the round-bracket negative style), `chained.select` (a select does not run the data queue), `default.mv` (a blank S/M flag is single valued), `query.string.comp` and `query.str.comp.all` (`=` and `ne` compare as BASIC does), `assoc.all` (the dictionary's associations are used), `query.footer.pause` (no pause after a page footer), `query.merge.print` (a report closes printer 0) and `keep.old.object` (a failed compile leaves no object code). Each behaves as it did with the option off; their numbers stay reserved |
 | `dquote()`, `dquotes()`, `swap()`, `xlate()` | Removed | second names of `quote()`, `quotes()`, `change()` and `trans()`: write those |
-| `caption`, `nopage`, `col.hdr.space` | Removed | `caption` and `nopage` were second names of `grand.total` and `no.page`; `col.hdr.space` (a blank line under the column headings) was added and taken out again: end a heading with a blank line <!--s 467--> |
-| `listdict`, `edit.list` | Removed | write `list dict` *file*, and `ed $savedlists` *name* <!--s 10 75--> |
-| loose forms of a dictionary expression | Removed | an `if` with no `then` or no `else` is refused again (messages 2950 and 2951), a hyphenated item name such as `cust-no` is read as a subtraction, and a format string straight after a value needs its operator <!--s 36 423 564--> |
-| `$mode execute.clearlist`, `open.fail.zero.fvar`, `pick.readnext` | Removed | added and taken out again in this release: the default select list is not cleared before an `execute` (use `clearselect 0`), the file variable of a failed `open` stays unassigned, and a `readnext` that takes its `else` sets the id variable to the null string. Their mode bits stay reserved <!--s 521 514 418--> |
+| `caption`, `nopage`, `col.hdr.space` | Removed | `caption` and `nopage` were second names of `grand.total` and `no.page`; `col.hdr.space` (a blank line under the column headings) was added and taken out again: end a heading with a blank line |
+| `listdict`, `edit.list` | Removed | write `list dict` *file*, and `ed $savedlists` *name* |
+| loose forms of a dictionary expression | Removed | an `if` with no `then` or no `else` is refused again (messages 2950 and 2951), a hyphenated item name such as `cust-no` is read as a subtraction, and a format string straight after a value needs its operator |
+| `$mode execute.clearlist`, `open.fail.zero.fvar`, `pick.readnext` | Removed | added and taken out again in this release: the default select list is not cleared before an `execute` (use `clearselect 0`), the file variable of a failed `open` stays unassigned, and a `readnext` that takes its `else` sets the id variable to the null string. Their mode bits stay reserved |
 | three more `option` words | Removed | `chain.keep.common` (`chain` always discards the unnamed common), `backslash.not.quote` (a backslash always opens a quoted string in a command line) and `correlative.reuse` (a shorter array's missing values count as zero unless an operand says `reuse()`) |
 | `inputclear` | Removed | write `clearinput`; the file type constant `FL$TYPE.SH` (a static hashed file SD never had) is gone too |
 | `@am`, `@svm`, `@user`, `@user.no`, `@filename` | Removed | second names of variables that stay: write `@fm`, `@sm`, `@logname`, `@userno` and `@file.name` (a dictionary item of your own that says `@filename` stops compiling until changed) |
 | `go`, `go to`, and `#` before a compiler directive | Removed | write `goto` (also in `on ... goto`) and `$ifdef`, `$define`, `$include` |
-| second spellings of query words | Removed | `avg`, `enum`, `vert`, `percent`, `pct`, `%`, `header`, `footer`, `first`, `#` and `&`: write `average`, `enumerate`, `vertically`, `percentage`, `heading`, `footing`, `sample`, `ne` and `and`; a `break.on` control `l` is no longer ignored when `u` is given too; and a name that is `f` and a number is a field only if the dictionary has an item of that name <!--s 40 547--> |
-| terminal case inversion | Removed | `pterm case invert` / `noinvert` (and the line in `pterm display`), `input ... nocaseinvert`, the `invcase` setting of `sd.conf` (a kept `sd.conf` is cleaned by the installer), `system(1001)`, `pterm(PT$INVERT)` and the `no.invert` option of `sed`; `keyinc()` is now the same as `keyin()`, and field 2 of `ttyget()` is always 0. Type in the case you want <!--s 399--> |
+| second spellings of query words | Removed | `avg`, `enum`, `vert`, `percent`, `pct`, `%`, `header`, `footer`, `first`, `#` and `&`: write `average`, `enumerate`, `vertically`, `percentage`, `heading`, `footing`, `sample`, `ne` and `and`; a `break.on` control `l` is no longer ignored when `u` is given too; and a name that is `f` and a number is a field only if the dictionary has an item of that name |
+| terminal case inversion | Removed | `pterm case invert` / `noinvert` (and the line in `pterm display`), `input ... nocaseinvert`, the `invcase` setting of `sd.conf` (a kept `sd.conf` is cleaned by the installer), `system(1001)`, `pterm(PT$INVERT)` and the `no.invert` option of `sed`; `keyinc()` is now the same as `keyin()`, and field 2 of `ttyget()` is always 0. Type in the case you want |
 | `nano` | Removed | the second external editor, with its syntax file and the page about it (the shared parts moved to the `micro` page): write `micro`, `sed` or `ed` |
-| `set.queue`, `sp.assign`, `getpu(pu$form.queue)`, `system(1066)` | Removed | Pick style form queues were added and taken out again in this release: use `setptr` with the settings you want <!--s g83 g88 18 189 502--> |
-| `copyp`, `copy.listp` | Removed | the Pick-style copy and its saved-list form (`copy.listp` was added and removed again in this release): write `copy` and `copy.list` <!--s 72--> |
+| `set.queue`, `sp.assign`, `getpu(pu$form.queue)`, `system(1066)` | Removed | Pick style form queues were added and taken out again in this release: use `setptr` with the settings you want |
+| `copyp`, `copy.listp` | Removed | the Pick-style copy and its saved-list form (`copy.listp` was added and removed again in this release): write `copy` and `copy.list` |
 | `make.index` | Removed | write `create.index` and then `build.index` (the `tool.dict` page runs both after one box) |
 | `list.union`, `list.inter`, `list.diff` | Removed | the saved-list twins of `merge.list`: `get.list` the two lists and `merge.list 1 union 2 to 3` (or `intersect`, `diff`) |
 | `cd` | Removed | the short name of `compile.dict`: write `compile.dict` |
 | `md` | Removed | the Pick name for the VOC (a Q-pointer to `voc`): write `voc` |
 | `create.file ... no.case` and `... case` | Removed | every file is case insensitive, so neither word means anything; `configure.file ... no.case` stays for converting an old file |
 | `catalogue`, `$catalogue`, `no.catalogue` | Removed | the British spellings: write `catalog` (the verb, and the `$basic.options` word), `$catalog` and `no.catalog` |
-| `bscan`, `root`, `key()` | Removed | added and taken out again in this release: scan an index with `selectindex`, `selectleft` / `selectright` and `setleft` / `setright` <!--s g110 g173--> |
-| `call "file name"` | Removed | the Pick style call was added and taken out again in this release: catalogue the program and call it by name <!--s 208--> |
-| `is.alnum()`, `is.alpha()`, `is.digit()`, `is.graph()`, `is.mark()`, `is.space()`, `left()`, `right()`, `md5()` | Removed | added and taken out again in this release: use `alpha()`, `num()` and `matches` for the character tests, `s[1, n]` and `s[n]` for the ends of a string, and `digest(s, 0, 'md5')` <!--s 223 g138 g139 g140 g142 g143 g145 g150 g151 63--> |
-| `adds()`, `subs()`, `muls()`, `divs()` | Removed | added and taken out again in this release: the operators `+ - * /` work element by element on dynamic arrays <!--s 207--> |
+| `bscan`, `root`, `key()` | Removed | added and taken out again in this release: scan an index with `selectindex`, `selectleft` / `selectright` and `setleft` / `setright` |
+| `call "file name"` | Removed | the Pick style call was added and taken out again in this release: catalogue the program and call it by name |
+| `is.alnum()`, `is.alpha()`, `is.digit()`, `is.graph()`, `is.mark()`, `is.space()`, `left()`, `right()`, `md5()` | Removed | added and taken out again in this release: use `alpha()`, `num()` and `matches` for the character tests, `s[1, n]` and `s[n]` for the ends of a string, and `digest(s, 0, 'md5')` |
+| `adds()`, `subs()`, `muls()`, `divs()` | Removed | added and taken out again in this release: the operators `+ - * /` work element by element on dynamic arrays |
 | four more `option` words | Removed | `no.sel.list.query` (`no.query` alone skips the question *Use active select list?*), `catalogue.local` (`catalog` and `delete.catalog` with no word work on the private catalogue; say `local`), `inherit.mfile.path` (a new multifile subfile goes in the directory named for the file unless `pathname` says otherwise) and `correlative.nocase` (a correlative is case blind through its own `A;NOCASE;` flag or an I-type's `$mode nocase.strings`) |
 | `analyse.file` | Removed | the British spelling: write `analyze.file` (the American one stays) |
 | `cleardata`, `clearinput`, `clearprompts`, `clearselect` | Removed | the run-together second names of `clear.data`, `clear.input`, `clear.prompts` and `clear.select` (the BASIC statements of the same names are not affected) |
@@ -432,8 +428,8 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | terminal types of old hardware | Removed | the Data General, MDC Prism, Prime and Televideo 910 definitions: `dg210 dg-ansi dg-generic dg6053-old dg100 prism2 prism4 prism5 prism7 prism8 prism9 prism12 prism14 p4 p5 p7 p8 p9 p12 p14 pt100 pt200 wren fenix pt100w pt200w wrenw fenixw pt250 pt250w tvi910` (31 of the 82 names `list.term.types` showed). Use `ansi`, `vt100` or `xterm` |
 | `system:account:file` file names | Removed | bit 2 of `FILERULE` and a Q-pointer's fourth field named a file on another system and opened nothing; the name form is gone and a Q-pointer with a fourth field is refused (3003) |
 | eleven `sd.conf` settings, `sd -<n>`, and the `gdi` and `raw` words of `setptr` | Removed | `apilogin`, `codepage`, `creatusr`, `exclrem`, `fixusers`, `gdi`, `jnldir`, `jnlmode`, `portmap`, `ringwait` and `txchar` (the first two groups did nothing; `fixusers` and `portmap` gave a connection a fixed user number): a line naming one stops SD from starting, so the installer takes it out of a kept `sd.conf`; `config('...')` no longer answers them and `config` no longer lists them; `tool.config` has no `inert` or `retired` status left; `sd -<n>` (start with a given user number) is gone; `setptr` always uses its raw mode, and its `gdi` and `raw` words are no longer keywords |
-| six `option` words and `keep.select` | Removed | `unass.warning`, `div.zero.warning` and `non.numeric.warning` (with the shortcut `sdbasic.warnings`): an unassigned variable, a divide by zero and a non-numeric value are always errors, so test the value first; `inherit`: a phantom starts with every option off; `query.sort.no.case`: a sort is by case (`sp.view ... by field no.case` still ignores it, by sorting the list itself); `clear.select` and the `keep.select` statement: a select list left active is left for the next command, and `clear.select` clears it <!--s 14 140 412 403 g148--> |
-| twenty-two `$mode` words | Removed | `string.locate`, `composite.readnext`, `pick.read`, `selectv`, `pick.select`, `stdfil`, `stdfil.shared`, `write.delete.then.else`, `autolock`, `pick.substr`, `pick.substr.assign`, `compatible.append`, `pick.convert`, `count.overlap`, `index.overlap`, `change.no.overlap`, `case.sensitive`, `for.store.before.test`, `pick.jump.range`, `optional.final.end`, `pick.matrix` and `heading.no.eject`: each is refused with *Unrecognised mode name*, and the program does what it did with the mode off (the `keep.select` statement went in the same way with `option clear.select`); write `heading no.eject` for the last, and name the file variable for `stdfil`. `selectv` *file* `to` *var* stays a statement. The programs that used `$mode stdfil` and `$mode selectv` had no replacement; an I-type may no longer say `$mode count.overlap`, `index.overlap`, `change.no.overlap` or `compatible.append` <!--s 17 85 368 496 507 g213 g214 g215 g216 g222 g223 g225-->
+| six `option` words and `keep.select` | Removed | `unass.warning`, `div.zero.warning` and `non.numeric.warning` (with the shortcut `sdbasic.warnings`): an unassigned variable, a divide by zero and a non-numeric value are always errors, so test the value first; `inherit`: a phantom starts with every option off; `query.sort.no.case`: a sort is by case (`sp.view ... by field no.case` still ignores it, by sorting the list itself); `clear.select` and the `keep.select` statement: a select list left active is left for the next command, and `clear.select` clears it |
+| twenty-two `$mode` words | Removed | `string.locate`, `composite.readnext`, `pick.read`, `selectv`, `pick.select`, `stdfil`, `stdfil.shared`, `write.delete.then.else`, `autolock`, `pick.substr`, `pick.substr.assign`, `compatible.append`, `pick.convert`, `count.overlap`, `index.overlap`, `change.no.overlap`, `case.sensitive`, `for.store.before.test`, `pick.jump.range`, `optional.final.end`, `pick.matrix` and `heading.no.eject`: each is refused with *Unrecognised mode name*, and the program does what it did with the mode off (the `keep.select` statement went in the same way with `option clear.select`); write `heading no.eject` for the last, and name the file variable for `stdfil`. `selectv` *file* `to` *var* stays a statement. The programs that used `$mode stdfil` and `$mode selectv` had no replacement; an I-type may no longer say `$mode count.overlap`, `index.overlap`, `change.no.overlap` or `compatible.append`
 | seven more `option` words | Removed | `numeric.exponent` (`123.45E-2` is not numeric), `suppress.abort.msg` (`abort` always says where it ran), `dir.sel.omit.hidden` (a select of a directory file includes dot files), `no.phantom.notify` (a phantom always tells its parent), `force.reload`, `stacked.account` (an `execute` of `logto` stays in the account it went to) and `command.level.locks` (a file variable that goes closes its file and its locks) |
 | `$mode time.ms` and `$mode default.unass.args` | Removed | write `system(1020) / 1000` for milliseconds; a default argument value needs `var.args` |
 | `closeseq` and `equ` | Removed | write `close` and `equate` |
@@ -463,10 +459,10 @@ compiled with until it is compiled again. More rows are added as the removal goe
 
 ## New Features Unique to SD Core
 
-Everything in this section is SD Core's own. None of it is on the openQM list, so none of it has a row in the
-feature spreadsheet: the administrator's pages and gates, the AI features, the master files and the shared
-account, SDNet, the screen library and the full-screen tools, the installer's additions, and the fixes to
-SD's own code. The sections above are the openQM items that were built, with the changes they made.
+Everything in this section is SD Core's own and is not part of openQM: the administrator's pages and gates, the
+AI features, the master files and the shared account, SDNet, the screen library and the full-screen tools, the
+installer's additions, and the fixes to SD's own code. The sections above are the openQM features that SD now
+has, with the changes they made.
 
 ### Administration
 
@@ -592,7 +588,7 @@ SD's own code. The sections above are the openQM items that were built, with the
 | `json` keyword | Added | queries can write JSON |
 | JSON merge, patch, path | Added | `jmerge()`, `jpatch()`, `jpath()`: RFC 7396 merge, RFC 6902 patch and JSONPath (RFC 9535) |
 | `readjson`, `writejson` | Added | read and write JSON Lines through `openseq` |
-| XML functions | Added | `xparse()`, `xbuild()`, `xpath()`: XML into a collection and back, and a path query <!--s 515--> |
+| XML functions | Added | `xparse()`, `xbuild()`, `xpath()`: XML into a collection and back, and a path query |
 
 ### Encryption
 
@@ -602,7 +598,7 @@ Three simple layers, with no vault and nothing on by default.
 |---|---|---|
 | `encrypt.key` | Added | asks for a key on a hidden prompt and puts it in the key ring; `set` refuses a passphrase of fewer than 12 characters (`sdkey()` takes any that is not empty) |
 | key ring subroutines | Added | `!keyset`, `!keyclear`, `!keylist`: fill, empty and list the session's key ring, kept in the memory of its own process |
-| `sdkey()` and friends | Added | `sdsalt()`, `sdkey()`, `sdrandkey()`: a salt, a key from a passphrase, and a random key for `sdencrypt()` and `sddecrypt()`, open to every program; every `sdencrypt()` uses a fresh random nonce <!--s 504 g116 g123--> |
+| `sdkey()` and friends | Added | `sdsalt()`, `sdkey()`, `sdrandkey()`: a salt, a key from a passphrase, and a random key for `sdencrypt()` and `sddecrypt()`, open to every program; every `sdencrypt()` uses a fresh random nonce |
 | `xe` conversion | Added | a dictionary item with `xe` (or `xe;name`) shows a field decrypted for a session that holds the key and the cipher text for one that does not; `iconv` encrypts |
 
 ### Files
@@ -662,21 +658,21 @@ Three simple layers, with no vault and nothing on by default.
 
 | Name | Change | What |
 |---|---|---|
-| `list.servers`, `delete.server` | Added | the administrator's list of defined servers, and removal of one <!--s g52 g26--> |
+| `list.servers`, `delete.server` | Added | the administrator's list of defined servers, and removal of one |
 | `net` gate | Added | per-account switch, off as delivered: `net-on` and `net-off` |
-| `netwait`, `netreply` | Added | `sd.conf` settings, 1 to 3600 seconds, for a connection and a reply; a silent server is given up on <!--s 235 g291--> |
+| `netwait`, `netreply` | Added | `sd.conf` settings, 1 to 3600 seconds, for a connection and a reply; a silent server is given up on |
 | remote file administration | Added | for a login in `sdfilesadmin`; `create.file ... server` and `delete.file` of a pointer |
 | remote files, a pointer | Added | a VOC entry whose first field is `n` points to a file on another server |
 | remote files, cache | Added | a short record cache; `logto` closes the connections |
 | remote files, index | Added | `indices`, `selectindex`, `setleft`, `setright`, `selectleft` and `selectright`; a query uses the other machine's index |
 | remote files, query | Added | `list`, `count`, `sort`, `select`, `list.item`, `list dict` on a remote file; `fileinfo` type 7 |
-| remote files, refusal | Changed | the server's own words are shown, not `status 0`; a lost connection is an error <!--s 256--> |
+| remote files, refusal | Changed | the server's own words are shown, not `status 0`; a lost connection is an error |
 | remote files, reply checked | Changed | a reply that cannot be true is a lost connection at once |
 | remote files, write | Added | for a server defined `write`: `write`, `delete`, `clearfile`, the locking reads and release |
 | remote lock functions | Added | `recordlocked()`, `getlocks()`, `filelock`, `fileunlock`: work on a remote file |
 | remote `select` | Changed | fixed: a server error stopped the program with an abort |
 | SDNet logins | Added | `set.netlogin`, `delete.netlogin`: a person's login on a server, kept as derived values and never the password |
-| `set.server` | Added | defines a server; `connect` shows its key hash for you to confirm <!--s g84 147--> |
+| `set.server` | Added | defines a server; `connect` shows its key hash for you to confirm |
 | tls reads | Changed | fixed: a half record or a late ticket made a read wait without limit |
 
 ### Security
@@ -758,7 +754,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `ide` untitled buffer | Added | a bare `ide` opens an editable "Untitled 1" with the cursor in it; New record writes nothing until it is saved; the arrows stay in the editor at its first and last line |
 | `ide` window lock and foot | Changed | needs 140 by 43 (was 140 by 42) and has the toolkit's foot: the status line, a border and a row of function keys on the last three rows; a window made smaller while it runs holds the keyboard behind a warning that gives both sizes and says unsaved text is lost unless the recovery copy is on, whatever the cursor is doing (the warning is worded shorter in a very small window); `sed` and `ced` keep the cursor-based lock |
 | immediate messages | Changed | `message ... immediate` is shown in a box on any terminal |
-| `sed` | Changed | the full-screen editor is back with a menu bar, the keys most editors have (`emacs` in `&sed.options&` keeps the old ones), undo and redo, syntax colour and the mouse; its keys are decoded from the terminal's terminfo entry <!--s 365--> |
+| `sed` | Changed | the full-screen editor is back with a menu bar, the keys most editors have (`emacs` in `&sed.options&` keeps the old ones), undo and redo, syntax colour and the mouse; its keys are decoded from the terminal's terminfo entry |
 | `sed` `path:` form | Changed | opens no file now: the `path:` form of a file name went with `FILERULE`, so `sed` asks the account's OS gate and cannot open the file; it no longer retries the name in upper case after that check (`ide path:/full/name` opens an operating system file) |
 | `sed`, `ide`, `ed` input ended | Changed | fixed: they used all of a processor for ever when their input had ended |
 | `tool.dict`, `tool.voc` edit | Changed | E hands the item or the entry to the `ide` (`ide dict file item`, `ide voc name`), with the page's own gates and boxes, where it used `sed` |
@@ -770,37 +766,37 @@ Fixes that close a way round a gate, and what the gates now ask.
 
 ## NO CHANGE
 
-Items on the openQM list that were looked at for this release and needed no change to SD: the defect is not in SD, the
+openQM features that were looked at for this release and needed no change to SD: the defect is not in SD, the
 feature was already there, or it does not apply. They are here so that nobody looks for them above.
 
 | Name | Change | What |
 |---|---|---|
-| 64-bit versions | None | no change in this release <!--s 196--> |
-| `between` in a `when` clause | None | no change recorded <!--s 248--> |
-| `*` comment line in a paragraph | None | already works <!--s g2--> |
-| configuration file location | None | `sd.conf` is already in the SDSYS directory <!--s 14--> |
-| `$echo` | None | already there in L1.1-3 <!--s g1--> |
-| `errlog` permissions | None | the daemon asks for 0777 and the installer sets 775 (group `sdusers`): every SD user can write it, world write is deliberately not given <!--s 276--> |
-| `formlist` bad data | None | no change recorded <!--s 265--> |
-| hangup at the break key prompt | None | already ends the process by itself <!--s 266--> |
-| inherited public variable | None | beside a function of the same name: already found <!--s 342--> |
-| `insert` appending a field | None | `insert`, `ins` and `<-1>`: no change recorded <!--s 475--> |
-| `itype()` | None | no change recorded <!--s 328--> |
-| `list.users` | None | removed in an earlier release with the other user verbs; the administrator uses `listu` and `tool.sessions` <!--s g53--> |
-| `locate` insertion position | None | also a very long numeric item: no change recorded <!--s 527 556--> |
-| `loop` ... `repeat` | None | already there in L1.1-3 <!--s g59--> |
-| `matbuild` trailing elements | None | unassigned elements at the end: no change recorded <!--s 557--> |
-| `matchfield()` `n-mx` pattern | None | at the start of the template: no change recorded <!--s 562--> |
-| memory alignment in `redim` | None | no change recorded <!--s 382--> |
-| negative default argument | None | for an optional argument: the defect cannot occur, because the feature it belongs to was not in SD <!--s 324--> |
-| Pick wildcards in `ne` | None | nothing to fix: the Pick wildcards (`option pick.wildcard`) were removed on 27 October 2026 <!--s 322--> |
-| `qmbasic.warnings` | None | `sdbasic.warnings` was removed on 27 October 2026 with the three warning options <!--s g251--> |
-| `$qmcall` | None | already there as the `$sdcall` flag, which lets a restricted client session call a subroutine <!--s g212--> |
-| `readv` fatal error | None | no change recorded <!--s 559--> |
-| record cache and case | None | no change recorded <!--s 330--> |
-| `set.date` | None | SD still has the command; nothing was withdrawn <!--s 78--> |
-| the inetd network server | None | SD opens no listening port of its own; sshd does <!--s 100--> |
-| the `u` format in a report | None | already wraps a long value as `t` and `l` do <!--s 531--> |
-| the user limit reached | None | login prints message 1000 and exits cleanly <!--s 275--> |
-| `umask` | None | the verb and the `sd.conf` parameter were already there in L1.1-3 <!--s 5 143 g311--> |
-| `update.account` | None | already there in L1.1-3 <!--s g102--> |
+| 64-bit versions | None | no change in this release |
+| `between` in a `when` clause | None | no change recorded |
+| `*` comment line in a paragraph | None | already works |
+| configuration file location | None | `sd.conf` is already in the SDSYS directory |
+| `$echo` | None | already there in L1.1-3 |
+| `errlog` permissions | None | the daemon asks for 0777 and the installer sets 775 (group `sdusers`): every SD user can write it, world write is deliberately not given |
+| `formlist` bad data | None | no change recorded |
+| hangup at the break key prompt | None | already ends the process by itself |
+| inherited public variable | None | beside a function of the same name: already found |
+| `insert` appending a field | None | `insert`, `ins` and `<-1>`: no change recorded |
+| `itype()` | None | no change recorded |
+| `list.users` | None | removed in an earlier release with the other user verbs; the administrator uses `listu` and `tool.sessions` |
+| `locate` insertion position | None | also a very long numeric item: no change recorded |
+| `loop` ... `repeat` | None | already there in L1.1-3 |
+| `matbuild` trailing elements | None | unassigned elements at the end: no change recorded |
+| `matchfield()` `n-mx` pattern | None | at the start of the template: no change recorded |
+| memory alignment in `redim` | None | no change recorded |
+| negative default argument | None | for an optional argument: the defect cannot occur, because the feature it belongs to was not in SD |
+| Pick wildcards in `ne` | None | nothing to fix: the Pick wildcards (`option pick.wildcard`) were removed on 27 October 2026 |
+| `qmbasic.warnings` | None | `sdbasic.warnings` was removed on 27 October 2026 with the three warning options |
+| `$qmcall` | None | already there as the `$sdcall` flag, which lets a restricted client session call a subroutine |
+| `readv` fatal error | None | no change recorded |
+| record cache and case | None | no change recorded |
+| `set.date` | None | SD still has the command; nothing was withdrawn |
+| the inetd network server | None | SD opens no listening port of its own; sshd does |
+| the `u` format in a report | None | already wraps a long value as `t` and `l` do |
+| the user limit reached | None | login prints message 1000 and exits cleanly |
+| `umask` | None | the verb and the `sd.conf` parameter were already there in L1.1-3 |
+| `update.account` | None | already there in L1.1-3 |

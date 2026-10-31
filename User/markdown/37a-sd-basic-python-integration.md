@@ -165,8 +165,8 @@ documented here - it is simply where the two error blocks were written, ten
 codes apart, on both ports.
 
 **-12035 and up are this port's own, not shared.** SD Core for Windows
-defines no equivalent of -12035/-12036 at all, checked against its
-`sdpy.c`: its list-append and list-clear paths reuse codes from the shared
+defines no equivalent of -12035/-12036 at all: its list-append and list-clear
+paths reuse codes from the shared
 range instead of minting their own - a wrong type reports -12034
 (`NotList`) on both, but Windows reports a missing append target as -12014
 (`ObjNOF`) and the append or clear call itself failing as -12033

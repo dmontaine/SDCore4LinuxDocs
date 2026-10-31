@@ -14,10 +14,9 @@ its API socket at all.
 distribution's own service — installed, started and kept current the way
 every other Linux service is, outside SD's remit entirely. These two verbs
 only move the firewall rule and the API socket that sit in front of it;
-they were built after the SD Core for Windows model of the same name,
-under the owner's ruling that a behaviour prevented on one port must be
-prevented on both, with the mechanism free to differ where the operating
-system does.
+they follow the SD Core for Windows verbs of the same name: a behaviour
+prevented on one port is prevented on both, with the mechanism free to differ
+where the operating system does.
 
 > **Neither gives SDSYS remote access, and no setting does.** Opening ssh
 > or the API to other computers opens it for ordinary accounts only — and

@@ -3,8 +3,7 @@ Subtitle: Ordinary accounts, SDSYS, Suspended and Group — what each one may do
 
 **Every ordinary account gets the same VOC.** SD Core used to divide accounts
 into three capability tiers — Standard, Programmer, Administrator — each with
-a different, smaller VOC. **The tiers are gone** (owner's ruling, 18 September
-2026: *"the only privileged account is SDSYS"*). An account you create today
+a different, smaller VOC. **The tiers are gone**: the only privileged account is SDSYS. An account you create today
 gets every verb there is, the same set SDSYS has for running applications and
 building them. What it does **not** get is administration — that is not a
 verb an account can be given, it is a separate account.

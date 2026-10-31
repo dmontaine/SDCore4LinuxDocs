@@ -503,7 +503,7 @@ A test is a program whose record id starts with `test.` (`test.sort`, `test.invo
 3 passed, 0 failed
 ```
 
-A name and a colon may come first (`sandbox-x: 12 passed, 0 failed` - the line the project's own test suites end with). The page runs the test with `run FILE ID` and judges that line:
+A name and a colon may come first (`mytest: 12 passed, 0 failed`). The page runs the test with `run FILE ID` and judges that line:
 
 | the last non-empty line | the page says |
 |---|---|

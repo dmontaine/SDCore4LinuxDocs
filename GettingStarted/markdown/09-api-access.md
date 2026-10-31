@@ -154,9 +154,8 @@ is where the answer is — a suspended account shows it in that listing.
 
 **There is no config-file mechanism here that widens an API session's
 reach — a real difference from SD Core for Windows's `NETDIRS` setting,
-which this port does not have** (checked against `config.c` directly:
-`APIPORT` and `NETDIRS` are not parameters this port's configuration file
-accepts at all). An API session's file access is exactly its own account's,
+which this port does not have** (`APIPORT` and `NETDIRS` are not parameters
+this port's configuration file accepts at all). An API session's file access is exactly its own account's,
 full stop: what the account's own file permissions and the confinement
 described above allow. The `os-on` switch is read for an API session like any
 other, but it does not lift this confinement (see

@@ -179,5 +179,5 @@ or key into; the strings your program held are freed, not wiped, so keep them sh
 | a forgotten passphrase or a lost salt | is lost data |
 | the disk | is protected by the operating system, not by SD |
 
-**Cost:** twenty thousand `oconv(value, 'XE')` calls take under a second on the test machine,
+**Cost:** twenty thousand `oconv(value, 'XE')` calls take under a second on an ordinary machine,
 so a listing of a large file is not slowed noticeably. `sdkey()` is the one slow call.

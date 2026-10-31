@@ -6,36 +6,28 @@ Subtitle: A tool for turning compiled program files between big-endian and littl
 > it is named in words.
 
 `sdconv` was written to move SD files between computers that store numbers in
-opposite byte orders. SD Core for Linux is built and tested here on a
-little-endian machine (x86-64). Nothing on this page can say whether a result
-would run on a big-endian machine, because there is none to run it on.
+opposite byte orders. SD Core for Linux runs on little-endian machines (x86-64),
+and so does SD Core for Windows, so a conversion between the two is never needed.
+Whether a converted file would run on a big-endian machine is not something this
+page can say.
 
 > **Read this first: `sdconv` does not convert hashed files.** Given one it says
 > so, changes nothing and exits 1. It converts **compiled program files** only,
-> and only the header of each. *Run*, below. (Before 18 Oct 2026 it printed
-> nothing and exited 0, which read as a successful conversion; an older copy
-> still does.) The routine that converts a hashed file's subfiles is in the
-> source, but the program does not call it, and this SD cannot open a
-> big-endian hashed file, so a converted file would be of no use here. Linux and
-> Windows are both little-endian.
-
-> **How this page was made.** Everything here was read from `sdconv.c` and run on
-> scratch copies in a private sandbox built from SD Core for Linux `Dev` at
-> commit `1adf913` (banner `SDCONV L1.1-3`). Results are marked *run* where the
-> output is real. It was not run as another user or as root.
+> and only the header of each. This SD cannot open a big-endian hashed file, so a
+> converted file would be of no use here.
 
 ## The short version
 
 * **You almost certainly do not need it.** SD loads a program whose header is in
   the other byte order and swaps the header in memory; the file is left as it is.
-  *Run*: a program converted with `-B` ran correctly, and the file was still
-  big-endian afterwards. Only the header was converted there, so this shows that
+  A program converted with `-B` runs correctly, and the file is still
+  big-endian afterwards. Only the header is converted, so this shows that
   SD tolerates a flipped header, not that a program compiled on a big-endian
   machine would run.
 * **Every conversion rewrites the file in place with no copy.** Take your own
   copy first.
-* **It rewrites even a file that needs no conversion.** *Run*: a program already
-  in the right order had its modified time changed by `sdconv -L`.
+* **It rewrites even a file that needs no conversion.** A program already
+  in the right order has its modified time changed by `sdconv -L`.
 * **A hashed file is refused: a message, the file untouched, exit status 1.**
 * **A path that is neither a hashed file nor a program object is skipped with no
   message and the exit status is 0**, including a path that does not exist.
@@ -58,7 +50,7 @@ sdconv {options} pathname ...
 |---|---|
 | `-B` | Convert to big-endian. |
 | `-L` | Convert to little-endian. |
-| `-D` | Debug. It is accepted, is not listed in the usage text, and **does nothing** for a program file: the progress it would print belongs to the hashed-file routine that is not called. *Run*: no extra output. |
+| `-D` | Debug. It is accepted, is not listed in the usage text, and **does nothing** for a program file: the progress it would print belongs to the hashed-file routine that is not called. It prints no extra output. |
 | (neither `-B` nor `-L`) | Convert to the byte order of the machine it is run on, which here is little-endian, so the same as `-L`. |
 
 Options may be joined in one word (`-BD`) and are not case sensitive. If both
@@ -94,7 +86,7 @@ The only failures it reports are *Cannot read name*, *Error converting name*, a
 seek or write error naming the file, and *Cannot allocate memory for name*, and
 only for a file it had already recognised as a program object.
 
-## What it converts: compiled program files *(run)*
+## What it converts: compiled program files
 
 A compiled program is a plain operating system file that begins with a one-byte
 marker, `0x64` for little-endian and `0x65` for big-endian. SD keeps them in:
@@ -102,8 +94,7 @@ marker, `0x64` for little-endian and `0x65` for big-endian. SD keeps them in:
 * the `.out` directory beside each program file (`bp.out` holds the compiled
   form of the programs in `bp`; `gpl.bp.out` and `pcode.out` are others), and
 * the global catalogue, `gcat` in the SDSYS directory. An account's own `cat`
-  directory is the local catalogue; it was empty in the sandbox, so it was not
-  looked at.
+  directory is the local catalogue; `sdconv` does not look at it.
 
 A file whose first byte is neither value, or that is shorter than the 165-byte
 header, is not touched.
@@ -124,7 +115,7 @@ tables and the constants are not touched. SD's own source says that floating
 point constants are the one thing in the code that needs swapping, and that SD
 does it when it loads them.
 
-## What it does not convert: hashed files *(run)*
+## What it does not convert: hashed files
 
 ```
 $ ls zzcust; sdconv -B zzcust; echo rc=$?

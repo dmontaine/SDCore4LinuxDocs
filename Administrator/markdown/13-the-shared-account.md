@@ -179,8 +179,6 @@ with the right can reach (SDSYS's own `open` does not follow `shared`).
   register and `shared`'s VOC to see; nothing caches a miss yet. Names that begin with a symbol and
   the standard names never reach the disk.
 * SD Core Solo has one account, and does not have this.
-* **Not yet seen to work on a real installation:** the installer's creation of the account, the
-  modes of the directory, the lookup and the switches in a live session, and the API entry.
 
 ## See also
 

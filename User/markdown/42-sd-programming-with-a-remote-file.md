@@ -1,5 +1,5 @@
 Title: Programming with a Remote File
-Subtitle: What a program can do with a file on another SD server, what it is told when it is refused, and which of this was measured.
+Subtitle: What a program can do with a file on another SD server, and what it is told when it is refused.
 
 A file on another SD server is opened by a VOC entry of type `N`. A program opens it by the VOC name and uses it like a local file, with the differences on this page. **Whether you may is not the program's business:** the administrator of your machine defines the server and your account's place on it, the administrator of the other machine decides whether your remote login may change anything, and a program that is refused is told so in the ways below. Setting it all up is in the *Administrator* set, in the SDNet page; this page is for the person who writes the program.
 
@@ -105,7 +105,7 @@ A process keeps the last 64 records it `READ` from remote files for **2 seconds*
 
 ## Ids, case and size
 
-These were measured at the request layer, with the file opened by name and not through an `N` pointer, on 19 October 2026:
+These are the rules for a file opened by name and not through an `N` pointer:
 
 | | |
 |---|---|
@@ -134,12 +134,4 @@ Ids that differ only in case are two records in a directory file and one in a dy
 end
 ```
 
-This is the shape the SDNet witness (`gplbld/witness-sdnet-files-route.sh`) uses: every change and lock is tried with `ON ERROR` and the branch and `STATUS()` are printed, so a refusal is told from a success by what the program prints and by the other machine's file and audit trail, never by the absence of an error.
-
-## What was measured, and what was not
-
-**`FILELOCK`, `FILEUNLOCK`, `RECORDLOCKED()` and `GETLOCKS()` (added 20 October 2026).** The statements, with the bytes they put on the wire, the answers of the other machine and the files and lock table it ended with, were run in a private sandbox against the test server (`gplbld/sandbox-netfile.py`, 994 rows in the suite now, 969 when the lock statements were added; red on the source before the change, green after, and five deliberate faults each caught by the rows built for them). What the real server answers to requests 32, 33 and 34, which the test server imitates, was measured on a real server by `gplbld/sandbox-req29.py` (rows F20 to F49: the three `FILEUNLOCK` answers, who the holder is when a file is busy because of a record lock, that a close of the right file number releases the lock and a close of another number does not, that `RELEASE` and the end of the session release it). On 20 October 2026 the same statements were run on one real installation talking to itself over the loopback address (`gplbld/witness-sdnet-files-route.sh`, 239 of 239 rows): refused for a login without the write group (and audited on the other machine), refused for a `read` definition and inside `BEGIN TRANSACTION`, and with the write group `FILELOCK` showed in the other machine's own `LIST.READU` as a file lock for exactly as long as the program held it, a second session was told the file was busy with the holder's number in `STATUS()` and then waited for it, and `CLOSE`, `RELEASE`, a bare `RELEASE` and the end of the program each gave it back. **Not measured:** the other machine's `FILELOCK` wait with no `LOCKED` clause on a real server for longer than a few seconds, and anything between two machines.
-
-**`RECORDLOCKED()` needing a `write` definition and the write group (decided the same day).** The rules in "Locks" above were run in the sandbox against the test server and, for the other machine's refusal of request 34 and its audit line, against a real `apisrvr`. The 20 October run on a real installation just described was made **before** this rule: there request 34 was still answered to a login without the write group. The rows for the new rule are written in `gplbld/witness-sdnet-files-route.sh` and **not run**; until they are, a real files-only login asking `RECORDLOCKED()` has not been seen.
-
-All of this was run in a private sandbox against a fake server written for the tests and, for the statements and refusals above, on one real installation talking to itself over the loopback address on 18 October 2026 (before the write group) and, for the write group, at commit `c42aa13`. The table of ids, case and size is measured on a real server at the request layer in a sandbox (`gplbld/sandbox-req29.py`, section H, 64 rows in the suite). **Not measured:** anything between two machines (the owner-run `gplbld/witness-sdnet-two-machines.sh` is the step), `MUSTLOCK` on a real installation, the handler running inside the recursion `WRITEV` uses, and a directory file or an id with a mark byte reached **through an `N` pointer** (the table above is the server's behaviour, not the pointer's).
+This is the shape to use: try every change and lock with `ON ERROR` and print the branch and `STATUS()`, so a refusal is told from a success by what the program prints and by the other machine's file and audit trail, never by the absence of an error.

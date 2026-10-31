@@ -34,9 +34,7 @@ the `login` paragraph lookup, and `set.file`'s default `qfile` pointer.
 | Files in a new account | created with lower-case names on disk |
 
 **This is a completed migration, not an additive fallback that leaves old
-spellings behind it** — every name in every ruled category is lower case,
-checked directly against the source tree (`tools/verify-nocase.py`, part
-of this project's own build checks), not merely claimed.
+spellings behind it** — every name in every ruled category is lower case.
 
 ## Record ids in your own data files are untouched, deliberately
 

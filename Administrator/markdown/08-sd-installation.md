@@ -187,12 +187,11 @@ What this changes for you:
   Writing into a file that is already there with `cp` needs root and no change of the attribute; replacing it with `install` or `mv`, which make a new entry in the
   directory, needs the attribute lifted. So do SD's own writes of `bin/pcode` when `SAFEDIR` is set in `sd.conf` (it is off as delivered), because they write a new file and
   rename it.
-- **The two things that write `bin/pcode`** - `catalog ... pcode` and compiling a `recursive` program under `sd -internal` - are SD's own developers' tools. As the code
-  reads, they are root's from now on, and the second makes `bin/pcode.old` when it is not there yet, which needs the attribute lifted; the `sdsys` login does neither.
-  The installer's own passes ran as root and finished before this step. (The statement about these two tools is read from the source; the rest of this section was
-  measured on a Debian 13 install on 26 October 2026: `bin` and its files `root:root`, the `i` in `lsattr -d`, the `sdsys` login unable to write, make or rename an entry in
-  `bin` or to rename `bin` itself, SD and the audit daemon started from it and the daemon started again by `systemd` after a `kill -9`, and the `SDSYS` account still able to
-  compile, catalogue locally and globally, run a program and run `update.accounts all`.)
+- **The two things that write `bin/pcode`** - `catalog ... pcode` and compiling a `recursive` program under `sd -internal` - are tools for building SD itself. They are root's
+  from now on, and the second makes `bin/pcode.old` when it is not there yet, which needs the attribute lifted; the `sdsys` login does neither. The installer's own passes
+  run as root and finish before this step. With the attribute set, `bin` and its files are `root:root` (the `i` shows in `lsattr -d`), the `sdsys` login cannot write, make or
+  rename an entry in `bin` or rename `bin` itself, SD and the audit daemon start from it (and `systemd` starts the daemon again after a `kill -9`), and the `SDSYS` account can
+  still compile, catalogue locally and globally, run a program and run `update.accounts all`.
 - **`deletesdcore.sh`** lifts the attribute before it removes the directory, so a delete (with or without keeping the accounts) works as before.
 
 **What this does not close.** The global catalogue and the sudo helper `sd-elevate` are still routes from a stolen `sdsys` login to root-run or every-account code (see

@@ -19,7 +19,7 @@ does inline, or does not do the way Windows does:**
 
 | Windows script | Here |
 |---|---|
-| `deny-logon.ps1` | nothing — an ordinary account's console login is not denied here at all (S.41: being at the console is being on the machine as that Linux user, which SD's `sh-on`/`os-on` switches do not govern). See *Security and the operating system* in the Getting Started set |
+| `deny-logon.ps1` | nothing — an ordinary account's console login is not denied here at all (being at the console is being on the machine as that Linux user, which SD's `sh-on`/`os-on` switches do not govern). See *Security and the operating system* in the Getting Started set |
 | `install-service.ps1` | a `systemd` unit file (`sd.service`, `sdclient.socket`), installed with `install`, not a script that creates a service |
 | `install-editors.ps1` | `apt-get install micro`, inline in `installsdcore.sh` |
 | `upgrade-voc.ps1` | `update.accounts all`, run inline by `installsdcore.sh` as the administrator when the accounts were kept |

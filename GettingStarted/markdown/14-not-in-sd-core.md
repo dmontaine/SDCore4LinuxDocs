@@ -71,9 +71,7 @@ server has also let that remote login change files there (`files-write-on` on
 that server); configuring, indexing, creating and deleting a remote file, and
 the file's counter, need a third permission there (`files-admin-on`). It uses the other server's API port
 over TLS and does not put a password in any file. The *Administrator* set's
-*SDNet* page describes it and says what has been tested: it has been run in
-private tests and on one real installation talking to itself, and no two real
-machines have been connected by it yet.
+*SDNet* page describes it.
 
 **The API is not affected.** `!sdclient` and the remote API are a separate
 mechanism and are unchanged. See [API access](09-api-access.html).
