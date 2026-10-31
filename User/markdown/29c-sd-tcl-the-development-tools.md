@@ -176,14 +176,14 @@ One row for each item of the dictionary, in id order:
 | column | what it says |
 |---|---|
 | Id | the item's id |
-| Type | `D` data, `A` and `S` the Pick layout, `I` computed, `E` an element of a data collection, `L` a link, `PH` a phrase, `X` text; any other type is shown as its first character |
-| Field | the number of the field a `D`, `A` or `S` item shows (0 is the record id), or `computed` |
+| Type | `D` data, `I` computed, `E` an element of a data collection, `L` a link, `PH` a phrase, `X` text; any other type (an old `A` or `S` item, which SD no longer reads, among them) is shown as its first character |
+| Field | the number of the field a `D` item shows (0 is the record id), or `computed` |
 | Heading | the column heading |
 | Format | width and justification, such as `10R` |
 | Conversion | the conversion code for display |
 | S/M | `S` single valued, `M` multivalued |
 | Association | the name that makes multivalued items line up |
-| Expression, correlative or text | an I item's expression, an A item's correlative, the text of an X item |
+| Expression or text | an I item's expression, the text of an X item |
 
 The box under the list says **in words** what the item under the cursor shows (which field, what heading,
 how wide and how justified, what its conversion is, single or multivalued), the expression of a computed item
@@ -192,10 +192,10 @@ and whether it has been compiled, and the record as it is stored.
 | key | does |
 |---|---|
 | Up, Down, PgUp, PgDn, Home, End | move the cursor |
-| **N** | make an item: asks the id, then the type (data, A-type or indirect) and the fields that type needs, one at a time, checking each answer |
+| **N** | make an item: asks the id, then the type (data or indirect) and the fields that type needs, one at a time, checking each answer |
 | **E** | edit the item in the [IDE](24-sd-tcl-programs-and-the-catalogue.html) (`ide dict file item`; since 28 October 2026 it was SED): the terminal is handed to the IDE, and leaving it brings the page back at the same item |
 | **D** | delete the item (`delete dict file item`) after a box, with the item's id typed |
-| **C** | compile an A, S or I item (`compile.dict file item`) after a box |
+| **C** | compile an I item (`compile.dict file item`) after a box |
 | **T** | try the item on a record of the file: asks the record's id and shows the value the query processor would compute for it, and the same value as a query prints it |
 | **I** or Tab | the indices pane |
 | **F** | back to the list of files |
@@ -209,16 +209,15 @@ and whether it has been compiled, and the record as it is stored.
 digit; capitals are put in lower case; an id that already exists in any case is refused), then the kind of item. For a data item it asks the
 number of the field (0 to 9999), the heading, the justification (L, R or T), the width (1 to 200), the
 conversion (checked against the conversions SD knows), single or multivalued and, for multivalued, the
-association. An A-type item is asked in the Pick layout (field, heading, association, conversion, correlative,
-justification, width) and an indirect item starts with its expression. A wrong answer is refused with the
+association. An indirect item starts with its expression. A wrong answer is refused with the
 reason and the question is asked again; Esc leaves the question and nothing is written. Then **one box shows
 the whole record, field by field**, with *Run* and *Cancel* (Cancel is what Enter chooses). After Run **the page
 writes the record itself**, as an ordinary record write to the dictionary - it is the only thing the page
 writes. Before it writes, the page asks the system whether this session may change that dictionary, as SED and
 the IDE do, and when it may not it shows the system's own words and writes nothing.
 
-**Trying an item.** T asks the id of a record of the data file. A D item gives its field; an I item, and an
-A or S item that has a correlative, must have been compiled first (C does it), and T says so, before it asks for
+**Trying an item.** T asks the id of a record of the data file. A D item gives its field; an I item
+must have been compiled first (C does it), and T says so, before it asks for
 a record, if it has not. The page shows the value (several values are shown between bars) and, for a D or I
 item with a conversion or a format, the value as a query prints it: the conversion first, then the format. An
 item that holds no value (text, a link, a phrase) is refused with its type. The page writes nothing and runs no
@@ -255,8 +254,8 @@ system, and the box for N and D says when the change is expected to be refused. 
 on for an account with `modify.account` (see *Accounts and Security*). The dictionaries of the **shared account**
 follow the shared account's own rules and are not changed from here.
 
-**Limits.** The page makes data, A-type and indirect items; other kinds (links, phrases, text, collection
-elements, S types) are listed, described, tried where they hold a value, and edited in the IDE. It does not copy
+**Limits.** The page makes data and indirect items; other kinds (links, phrases, text, collection
+elements) are listed, described, tried where they hold a value, and edited in the IDE. It does not copy
 items between files, and it does not edit the master dictionary (that is the administrator's). Indices are made
 with the verb's defaults (`no.nulls`, `no.case` and `pathname` are typed at the prompt), and the list of files
 counts indices only for dynamic files. A dictionary of more than 3,000 items shows the first 3,000 and says so.

@@ -43,18 +43,14 @@ type `D` and the rest is a comment.
 | `D` | direct | references a field number in the data record |
 | `E` | element | like `D`, but field 2 is the **path** of an element of a **data collection** record instead of a field number — see [SD TCL - Data Collection Files](20a-sd-tcl-collection-files.html) |
 | `I` | indirect | an expression that returns a value — a virtual field |
-| `A` | A-type | Pick-style data definition, with a different field layout |
-| `S` | S-type | identical to `A` in SD — kept for compatibility |
 | `L` | link | names another file and how to find the record in it, so that a query or an I-type can use its fields as `link%item` |
 | `PH` | phrase | a stored fragment substituted into a query command line |
 | `X` | text | miscellaneous data — not a field definition |
 
-**`A` and `S` are the Pick layout, not the SD layout.** They carry the
-same information as `D` but in different fields — field 3 holds the
-display name, field 7 the conversion, field 8 the correlative, field 9
-the justification, field 10 the width. SD supports them because
-applications imported from Pick use them. New dictionaries should use
-`D` and `I`.
+**SD has no `A` or `S` item.** Another system's A and S items were a data
+definition with a different field layout and a correlative code. SD does not
+read them: see [The A and S types](#the-a-and-s-types-are-not-read) below. A
+data field is a `D` item and a computed one an `I` item.
 
 ## The D record — a direct field reference
 
@@ -201,29 +197,17 @@ object code, and a query that uses it gets no value. Write the calculation
 as an I-type; when it needs more than an expression can say, the I-type can
 call a catalogued subroutine with `SUBR()` (see above).
 
-## The A record — a Pick-style field
+## The A and S types are not read
 
-An A-type (or S-type) uses a different field layout:
-
-| Field | Name | What it holds |
-|---|---|---|
-| `1` | type | `A` or `S`, optionally followed by a comment |
-| `2` | location | the field number in the data record |
-| `3` | display name | the column heading |
-| `4` | association | a name grouping multivalued fields |
-| `5`-`6` | | not used |
-| `7` | conversion | a conversion code |
-| `8` | correlative | a correlative code — like a mini I-type |
-| `9` | justify | `L` or `R` |
-| `10` | width | column width |
-
-The correlative in field 8 is a Pick-style expression — a short code
-that transforms the field value before display. SD compiles
-correlatives the same way it compiles I-types, storing the object in
-field 16 onward. **Field 8 may also begin with an `if` expression**
-(`if 3 > "5" then "big" else "small"`), which is taken as an A-correlative
-without the `a;` in front; anything else that does not begin `a` or `f` is
-a conversion code, as before.
+SD has no A-type or S-type item. Another system's A item was a data field
+described in a different layout (the display name in field 3, the conversion
+in field 7, a correlative code in field 8, the justification in field 9 and the
+width in field 10); its S item was the same. SD does not read one. `compile.dict` refuses it with the message
+*A or S type dictionary item NAME is not compiled: write it as a D-type or an
+I-type* and makes no object code, `cd` refuses it, and a query that names one
+is stopped with *Unexpected A type item (NAME) in query sentence*. Write the
+item again as a `D` item (a field of the record) or as an `I` item (a value
+worked out from the record, where the correlative's calculation goes).
 
 ## The PH record — a phrase
 
@@ -275,7 +259,7 @@ as the same expression written with `TRANS()`:
 TRANS("TITLES", FIELD(@ID, "-", 1), TITLE, "X")
 ```
 
-The item may be a D, I, A, S or E item of the other file. It takes the column
+The item may be a D, I or E item of the other file. It takes the column
 heading, format, conversion and association that item has, unless the I-type or the
 query says otherwise. A query treats the result as multivalued, because the id
 expression may give several ids.

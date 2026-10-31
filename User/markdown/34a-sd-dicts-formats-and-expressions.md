@@ -222,17 +222,13 @@ conversion is then applied to that value. An I-type that returns an
 internal date with `D` in field 3 will display it formatted — the
 expression computes the date, the conversion formats it.
 
-## Correlatives — field 8 for type A
+## Correlatives
 
-A-type records carry a correlative in field 8. A correlative is a
-Pick-style expression — a short code that transforms the field value
-before display. SD compiles correlatives the same way it compiles
-I-types, storing the object in field 16 onward.
-
-Correlative codes are a Pick inheritance and are rarely used in new SD
-dictionaries. An I-type expression is easier to read and can express
-calculations a correlative string cannot. The correlative mechanism exists so
-that dictionaries imported from Pick systems continue to work.
+SD has no correlative. Another system kept one in field 8 of an A-type item, a
+short code that changed the field's value before it was shown. SD does not read
+A-type or S-type items (see [the A and S types](33-sd-dicts-structure.html#the-a-and-s-types-are-not-read)),
+so the calculation is written as an I-type expression, which can say anything
+a correlative could and is easier to read.
 
 ## Chaining conversions
 

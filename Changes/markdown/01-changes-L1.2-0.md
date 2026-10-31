@@ -247,7 +247,6 @@ The query processor and the dictionary.
 
 | Name | Change | What |
 |---|---|---|
-| `a;nocase` correlative | Added | makes the string operations of one correlative case insensitive |
 | `absent.ignore` | Added | do not print the `not found` list for ids that are not in the file |
 | `break.on "'n'"` | Added | starts a new page and numbers it 1 again |
 | `by.exp` | Changed | more than one `by.exp` in the same association is sorted |
@@ -255,7 +254,6 @@ The query processor and the dictionary.
 | `csv 3` | Added | every item quoted, numbers too |
 | dictionary expressions | Changed | divide by zero is zero (an `if` with a part missing, a format after a value and hyphens in names were added and removed again, see REMOVED) |
 | `for`, `from none` | Added | `search file for "text"`; `from none` ignores an active list 0 |
-| `if` in a dictionary item | Added | field 8 of an `a` or `s` item may hold an `if` expression |
 | `in`, `not.in` | Added | test a value against a saved list or a file record |
 | `median`, `mode`, `range` | Added | figures at the end of a report and each breakpoint |
 | `$mode` in an `i`-type | Added | an `i`-type may begin with `$mode` for a few of the compiler modes |
@@ -447,6 +445,7 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | `listf`, `listfl`, `listfr`, `listk`, `listpa`, `listph`, `listq`, `listr`, `lists`, `listv` | Removed | `list voc with type = "F"` (and `and is.remote = ""` / `and is.remote` for local / remote files), `"K"`, `"PA"`, `"PH"`, `"Q"`, `"R"`, `"S"`, `"V"` for the other types; add `ftype desc data.name dict.name` after `voc` for the file columns |
 | `sd.voclib` | Removed | nothing: the file held only the ten sentences above, and its VOC pointer is removed from every account |
 | C dictionary item type (and the compiler's C-type mode, @ANS return) | Removed | write the calculation as an I-type; it may call a catalogued subroutine with SUBR(); compile.dict says message 11993 for a C item |
+| A and S dictionary item types (the correlative, `a;nocase;`, an `if` in field 8) | Removed | write the item as a `d` item (a field of the record) or an `i` item (a value worked out from the record; the correlative's calculation goes here). `compile.dict` says message 11938 for an A or S item and makes no object code; `cd` refuses it; a query that names one stops with *Unexpected A type item (NAME) in query sentence*. An index made from one is no longer used, so a query on its field scans: delete it with `delete.index` |
 | create.file name,part | Removed | create each part as an ordinary file (create.file part) and share the dictionary with create.file part using dict name |
 | create.file ... multifile | Removed | create an ordinary file; the word is now an unexpected token |
 | delete.file name,part | Removed | delete.file part (each part is an ordinary file); the multifile cancel question (6133) is gone |

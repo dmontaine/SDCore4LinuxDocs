@@ -26,8 +26,8 @@ more dictionary field names. This is how saved selection clauses work:
 For each field name in the command, the query processor reads the
 dictionary record and extracts:
 
-1. **The field number** (field 2 for D, A and S; the expression for I
-   and C) — where to get the data.
+1. **The field number** (field 2 for D; the expression for I) — where
+   to get the data.
 2. **The conversion code** (field 3) — how to transform it for display.
 3. **The display name** (field 4) — what to head the column.
 4. **The format** (field 5) — how wide and how justified.
