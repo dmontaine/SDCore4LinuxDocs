@@ -279,6 +279,7 @@ ide {file {record}}
 ide file record record ...
 ide file *
 ide dict file {record}
+ide dict file record /form
 ide voc {record}
 ide path:/full/name
 ```
@@ -540,6 +541,38 @@ pane and the text is shown, untouched. With no record open, F12 says so.
 value or subvalue mark in it) goes to CED as the *tree of the JSON*, as a collection file's record
 does, and comes back as the JSON text in the same layout; anything else (marks in the record, text
 that does not parse, text that does not begin with `{` or `[`) is shown as fields, as above.
+
+**A dictionary item can be edited as a form** (since 31 October 2026): **Go, Dictionary item as form**, or
+`ide dict file record /form`, which opens the item as a form straight away. The form fills the screen
+(140 by 43) over the IDE: a numbered **label and entry for each field the item's type has**, and nothing
+else. The first row is the **Type** (D, E, I, L, PH or X); choose another with Left and Right and the
+rows change to those of that type, keeping what was typed for the rows the two types share.
+
+| type | rows |
+|---|---|
+| D | Field #, Conversion, Heading, Width, Justification, Decimals, Single/Multi, Association, User |
+| E | as D, but a Path (the element of a [collection](20a-sd-tcl-collection-files.html) record) in place of the Field # |
+| I | as D, but an Expression in place of the Field # |
+| L | Id expression, File, File expression |
+| PH | Phrase |
+| X | Text (a text area) |
+
+Tab and Down go to the next row, Return presses **Save**, and **Esc** leaves. **Each value is checked as
+you leave its row**, the reason is on the line near the foot and a hint for the row you are on above it:
+a field number is a whole number from 0 to 9999 (0 is the record id), a width 1 to 200, decimals 0 to 9,
+a justification L, R, T or C, a heading and a conversion at most 40 characters, a conversion one SD
+knows, an association at most 30 letters, digits, dots, dashes and underscores (and used only when
+Single/Multi is M), an expression one line, and an L item's expressions one expression with no semicolon.
+**Save is refused while a row fails**: the row is named and takes the focus. A width needs a justification
+and the other way round. When every row passes, the item becomes the tab's text and **the IDE's own save
+writes it**, with the account's dictionary-edit gate and the overwrite question as for any other save; the
+form itself writes nothing. **Edit as text** takes the same record to the text view without saving it.
+**Esc after a change asks** *Leave without saving the changes?* (Discard or Keep editing). An item the form
+cannot show - a type it does not know, a format that is not a width, one of L, R, T or C and decimals, or
+text with characters it cannot hold - **stays text, and the status line says why**. The fields the form
+does not show (the compile stamp and object code of an I item, and any field after the eighth) are kept as
+they were while the type stays; a changed type starts from the new type's rows. The form is modal: the tabs and
+the menu wait until it is left.
 
 **A record that holds marks is shown with the marks written as tokens** (since 26 October 2026), so
 that nobody types one. Since 28 October 2026 this follows the tab's kind: **a dictionary item, a VOC record
