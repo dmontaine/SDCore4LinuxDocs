@@ -104,7 +104,8 @@ The keys are the ones above, with these differences:
   nothing. The IDE passes no file, so CED writes nothing and holds no lock; the IDE does the saving.
   **In the IDE** the editor is a pane of the tab (since 30 October 2026): there Ctrl-S is the IDE's own
   save, **Ctrl-T** is the change of type, **Ctrl-C / Ctrl-X / Ctrl-V** are copy, cut and paste, **F12**
-  shows the text again, and the engine's change is in the tab's text as soon as it is made.
+  shows the text again, and the engine's change is in the tab's text as soon as it is made. The AI
+  works there through the IDE's AI entry and Tools menu and not through F2 (see [the IDE](24-sd-tcl-programs-and-the-catalogue.html)).
 - Rename (F3) does nothing: an array has no names.
 
 Text is shown exactly as stored: a text mark or an item mark inside a text is part of the text

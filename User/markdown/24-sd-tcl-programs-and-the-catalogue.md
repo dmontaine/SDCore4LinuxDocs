@@ -276,6 +276,8 @@ The names are sorted on their own; the program is the one that executed the
 
 ```
 ide {file {record}}
+ide file record record ...
+ide file *
 ide dict file {record}
 ide voc {record}
 ide path:/full/name
@@ -287,7 +289,10 @@ record. **`ide dict file record` starts on an item of the file's dictionary and 
 record of the account's VOC** (since 28 October 2026). A record that does not exist yet opens as a new,
 unsaved one, after the account's gate allows it; **`creating.seqkey` in place of the record name takes the
 file's next sequential id** (in quotes it is a record of that name). With a select list active,
-`ide file` opens the first ten records of the list in tabs and lists them all. It needs a terminal and
+`ide file` opens the first ten records of the list in tabs and lists them all. **`ide file record record ...`
+opens a tab for each record named** (one that is not there is a new record) **and `ide file *` lists the
+records of the file as a select list does, the first ten in tabs** (since 31 October 2026; both work after
+`dict`; the ids are the words of the command, so an id with a blank in it is opened with Ctrl-O). It needs a terminal and
 **stops in a phantom**.
 
 | part | what it is |
@@ -520,8 +525,14 @@ for any other change. **F12 again shows the text**; going back and forth without
 nothing, and after a change **one Ctrl-Z in the text area takes the whole visit back** (*Back from the
 fields: bp prog is changed, save it to keep it*; *... is as it was* when nothing changed). The pane
 writes nothing and takes no lock. **Commands that work on the text of the record** - Replace, the case
-changes, Import and Export, Format, Go to line, Open the include and the AI line - **wait while the pane
-is up** (*This works on the text of the record: show the text first (F12), then do it*). If something
+changes, Import and Export, Format, Go to line and Open the include - **wait while the pane
+is up** (*This works on the text of the record: show the text first (F12), then do it*). **The AI line
+works in the pane** (since 31 October 2026): a request typed in the AI entry, and the Tools menu's
+*explain the selection*, which explains the element the table has selected, send the record as
+indented JSON, one element to a line; the preview and the diff come first, and what you accept
+changes the fields and so the tab's text. Explaining a compile message does not apply to the pane.
+**On the empty top level of a record, Ctrl-T asks whether it is a collection or an array** (C, A or
+Esc); a new record of a collection file starts as an empty collection. If something
 else changes the text under the pane (the overwrite question's *Reload*, SED), the pane follows it,
 staying in the same container when it can; text that is no longer a record the fields can show ends the
 pane and the text is shown, untouched. With no record open, F12 says so.
