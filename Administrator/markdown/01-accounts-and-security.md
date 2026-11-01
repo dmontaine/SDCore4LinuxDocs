@@ -1025,6 +1025,8 @@ under the cursor.
 | R | run the queued changes of the account on the cursor's row |
 | U | drop them |
 | T | queue OFF for every gate of that account that is off as delivered and on now |
+| A | all gates on: queue ON for every gate of that account that can change (also in the Gates menu) |
+| N | all gates off: queue OFF for every gate of that account that can change (also in the Gates menu) |
 | F | change which accounts are shown: all, accounts of persons, accounts with a gate on that reaches beyond SD |
 | F5 | read the machine again (a queued change is kept) |
 | F1, `?`, a click on the `[?]` | explain the matrix |
@@ -1038,9 +1040,13 @@ machine again and shows the verb's own words, so a cell changes because the syst
 changed, never because the page said so. Every change is audited by the verb as if you
 had typed it.
 
-* **There is no key that queues everything ON.** **T** is the only
-  "all": it queues OFF for what is on and off as delivered (`shared-read`, which is on
-  as delivered, is left alone).
+* **A and N only queue.** A quick way to set an account up is **A**, then **Enter** on
+  each gate it should not have, then **R**: nothing changes until the box is answered
+  Run, and the box still asks for the account's name when a gate that reaches beyond SD
+  is turned on. A and N skip a gate that is planned, one that does not apply to the
+  kind of account, and `sh` and `os` for an account that is not a person. **T** is the
+  narrower "all off": it queues OFF only for what is on and off as delivered
+  (`shared-read`, which is on as delivered, is left alone).
 * **Turning ON a gate that is off as delivered says so**, and says that leaving it off is
   the tighter choice. **Turning ON a gate that reaches beyond SD** (ssh, api, sh, os,
   sd, net, files, files-write, files-admin, ai) **asks for the account's name to be
