@@ -30,8 +30,8 @@ here:
 - **A new account has no ssh, no API, no `sh` and no `OS.EXECUTE`, and it
   cannot save a change to a VOC, a program file or a dictionary.**
   `ssh`, `api`, `both`, `sh-on`, `os-on`, `voc-on`, `bp-on` and `dict-on` give
-  them, at `create.account` or later with `modify.account`; SDSYS has no remote access at all, and that
-  is not a setting.
+  them, at `create.account` or later with `modify.account`; SDSYS has no API access from another computer at all, and its ssh door
+  opens only when an authenticator code is enrolled, which is not one of these settings.
 - **`modify.account add`/`delete`** is the grant — Linux group membership,
   with SD's own audit line on top. There is no separate `grant`/`revoke`
   pair of verbs.

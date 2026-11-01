@@ -18,15 +18,16 @@ they follow the SD Core for Windows verbs of the same name: a behaviour
 prevented on one port is prevented on both, with the mechanism free to differ
 where the operating system does.
 
-> **Neither gives SDSYS remote access, and no setting does.** Opening ssh
+> **Neither gives SDSYS remote access, and no setting of these two verbs does.** Opening ssh
 > or the API to other computers opens it for ordinary accounts only — and
 > of those, only the accounts SDSYS has given the route (`ssh`, `api` or
 > `both`, in `create.account` and `modify.account`, or `files-on`, the
 > narrower files-only API route), since a new account has none of them.
-> **SDSYS has no remote route at all, under any setting these two verbs
-> control** — refused at the door, not merely ungranted. Administration
-> needs a real login as `sdsys` at the machine's own keyboard, or a
-> desktop-sharing view of it. See [Accounts and
+> **SDSYS has no API route from another computer at all**, and **its ssh door stays shut
+> until an authenticator code is enrolled for it** — a separate act, with its own switch, and
+> a sign-in that asks for the code before the password. See [Remote Administration over
+> ssh](22-remote-administration-over-ssh.html). Without that, administration needs a real login as
+> `sdsys` at the machine's own keyboard, or a desktop-sharing view of it. See [Accounts and
 > Security](01-accounts-and-security.html#read-this-before-anything-else-being-sdsys-is-the-whole-of-it).
 
 > This document is separate so that it can be withheld. It links to nothing

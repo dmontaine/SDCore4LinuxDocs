@@ -31,8 +31,9 @@ Match User sdsys
 Every `sdusers` member is `ForceCommand`'d into `sd` the instant they
 connect over ssh — they never reach a shell that way, whatever the
 connection is asked to run. `sdsys` is refused a network login outright,
-before authentication even matters: there is no session for `ForceCommand`
-to apply to.
+before authentication even matters, until an authenticator code is enrolled
+for it (then it gets its own arm, with the code and the password): there is
+no session for `ForceCommand` to apply to.
 
 **This is applied once, to the ssh server, regardless of the two questions
 the installer asked.** Whether remote ssh access is turned on only decides
@@ -44,7 +45,7 @@ is confined the same as a connection from anywhere else.
 ## An ssh session lands inside SD
 
 **That applies to everyone who can reach ssh at all**, except `sdsys` — see
-[SDSYS has no remote door](#sdsys-has-no-remote-door) below.
+[SDSYS's remote door](#sdsyss-remote-door) below.
 
 ### The cost: scp and sftp stop working inbound, over ssh
 
@@ -92,14 +93,18 @@ Linux identity, so everyone who uses SD needs file access to the tree and
 can, in principle, read another account's directory from outside SD if the
 file permissions allow it. See [Security](12-security.html).
 
-## SDSYS has no remote door
+## SDSYS's remote door
 
-**SDSYS cannot ssh in, from this machine or any other.** `Match User sdsys`
-denies it outright, at the ssh server, before authentication starts — there
-is no session for `ForceCommand` to ever apply to. The API is the same for
-every other computer, and for this machine's network port too; on this
-machine it accepts SDSYS only on the local Unix socket, from a process
-running as `sdsys` — see [API access](09-api-access.html).
+**SDSYS cannot ssh in until an authenticator code has been enrolled for it.**
+Until then `Match User sdsys` denies it outright, at the ssh server, before
+authentication starts — there is no session for `ForceCommand` to ever apply to.
+Once the administrator has enrolled a code (the Administrator documents, "Remote
+Administration over ssh", say how), an ssh sign-in as `sdsys` asks for the code first
+and the password second, and lands in an SD session with no shell behind it.
+The API is different: it is closed to SDSYS from every other computer, and from this
+machine's network port too, whatever is enrolled; on this machine it accepts SDSYS
+only on the local Unix socket, from a process running as `sdsys` — see
+[API access](09-api-access.html).
 
 **Nothing changes for ordinary accounts.** Every account `create.account`
 makes reaches ssh from wherever `sdusers` membership allows, whether or
@@ -108,26 +113,29 @@ group membership outside `sdusers` has never been what SD asks about.
 
 ### Where administration happens
 
-**At this machine's own console only** — a real login as `sdsys`, its own
+**At this machine's own console** — a real login as `sdsys`, its own
 password, either physically at the keyboard or through a desktop-sharing
 view of it (VNC, TeamViewer), which counts as local because it *is* a
-local session from the machine's own point of view.
+local session from the machine's own point of view — **or, once a code is
+enrolled, over ssh with that code.** Setting up that code does not need
+`sdsys` at all: the machine's own `sudo` user does it from an ordinary ssh login.
 
 ### Why
 
 This is a deliberate policy choice, not a technical limitation the way it
-is on some ports: SDSYS's refusal over ssh is checked against the kernel's
-own audit loginuid, set once by a real login and unforgeable by `sudo`,
-`su`, or a service account — there is no route to SDSYS that this check
-does not catch, ssh included, because ssh authentication does not produce
-the kind of login record it looks for. See
+is on some ports: SDSYS is checked against the kernel's own audit
+loginuid, set once by a real login and unforgeable by `sudo`, `su`, or a
+service account, so `su sdsys` and `sudo -u sdsys` from somebody else's
+session are refused whatever the ssh settings are. A real ssh sign-in as
+`sdsys` is a real login (sshd sets the record), so it passes that check; what
+guards it is the code and the password. See
 [Accounts](05-account-types.html#sdsys-is-the-only-administrator).
 
-### If you rely on remote administration today
+### If you rely on remote administration
 
-**It does not work, and that is deliberate.** Use the console, or a
-service- or session-based remote desktop, logged in as `sdsys`. An account
-that needs ordinary, non-administrative work from another machine was
+**It works once a code is enrolled, and not before.** Until then use the
+console, or a service- or session-based remote desktop, logged in as `sdsys`.
+An account that needs ordinary, non-administrative work from another machine was
 never an administration question — give that account the `ssh` route
 (`modify.account` *name* `ssh`) and it can connect.
 

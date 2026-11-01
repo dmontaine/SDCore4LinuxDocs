@@ -89,9 +89,10 @@ cannot save a change to a VOC, a program file or a dictionary, until SDSYS
 gives them.** SD is delivered with the tighter setting, and the
 administrator loosens it one account and one switch at a time: `ssh`,
 `api`, `both`, `sh-on`, `os-on`, `voc-on`, `bp-on` and `dict-on`, at
-`create.account` or later with `modify.account`. **SDSYS has no remote route at all**, ssh or API, from
-anywhere, whatever it is given — administration is a real login at this
-machine's own keyboard, or a desktop-sharing view of it. See
+`create.account` or later with `modify.account`. **SDSYS has no API route from another computer at all**, whatever it is given, and
+**its ssh door stays shut until an authenticator code is enrolled for it** — administration is a real
+login at this machine's own keyboard, a desktop-sharing view of it, or, once a code is enrolled, ssh
+with that code. See
 [ssh access](08-ssh-access.html) and [API access](09-api-access.html).
 
 **3. An ordinary account is not denied the console, and that is not a

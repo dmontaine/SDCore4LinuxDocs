@@ -117,9 +117,11 @@ as `sdsys` already *is* the privilege. **There is no `logto` route into
 SDSYS from any other account, however `sudo`'d.** See
 [Accounts](05-account-types.html#sdsys-is-the-only-administrator).
 
-**IF YOU ARE OVER ssh, THIS WILL NOT WORK AT ALL.** SDSYS has no ssh
-access, local or remote, under any setting. Log in at the machine itself,
-or through a desktop-sharing view of it (VNC, TeamViewer).
+**IF YOU ARE OVER ssh, THIS WILL NOT WORK THE FIRST TIME.** SDSYS has no ssh
+access until an authenticator code is enrolled for it, and nothing is enrolled on a new
+installation. Log in at the machine itself, or through a desktop-sharing view of it (VNC,
+TeamViewer), or enrol the code from your own ssh login with `sudo` (the Administrator documents,
+"Remote Administration over ssh", say how) and then sign in as `sdsys` over ssh.
 
 ## 6. Create an account for somebody else
 

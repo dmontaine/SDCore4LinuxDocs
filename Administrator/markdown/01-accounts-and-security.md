@@ -62,7 +62,9 @@ desktop-sharing view of it (VNC, TeamViewer). Nothing else grants it:
 | a real login as `sdsys`, local | granted |
 | `sudo sd` as root | refused — root is treated as *another* administrator, not SD's |
 | `sudo -u sdsys sd` / `su - sdsys` | refused — the session runs as the `sdsys` Linux user, but the login that started it was somebody else's, and the kernel's own audit trail (unforgeable without root) says so |
-| `sdsys` over ssh, or over the API from another computer or the network port | refused at the door — SDSYS has no remote access at all |
+| `sdsys` over ssh, before an authenticator code is enrolled | refused at the door |
+| `sdsys` over ssh, after one is | asked for the code, then the password; granted only with both — see [Remote Administration over ssh](22-remote-administration-over-ssh.html) |
+| `sdsys` over the API from another computer or the network port | refused at the door — the API is never a remote route for SDSYS |
 | `sdsys` over the API, on the local Unix socket, from a process running as `sdsys` | granted, with SDSYS's own SD password |
 
 **This is not the elevation model SD Core for Windows uses**, and the
@@ -109,7 +111,7 @@ VOC or a dictionary by saving its master record (see
 user has write access to everything the account's group may write**, and a VOC
 entry or an I-type is code that runs in the account: someone who took over the
 `sdsys` login could change what that account runs. It is not reachable from the
-network (`sdsys` has no remote access), and a process that is not a real login
+network (`sdsys` has no API access from it, and ssh only with an authenticator code), and a process that is not a real login
 as `sdsys` is not an administrator. **Off is a default and a record of your
 decision, not a wall against a stolen `sdsys` login**, which has other ways into
 an account's code: the global catalogue is the `sdsys` user's to write, and

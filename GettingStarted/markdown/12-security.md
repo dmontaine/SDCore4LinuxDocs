@@ -20,7 +20,7 @@ to apply — it is what `create.account` and the installer already do:
 | Saving a change to a VOC, a program file or a dictionary (and compiling) | **off for a new account**, in three independent switches (`voc-on`, `bp-on`, `dict-on`) that SDSYS turns on account by account; reading is never stopped — see [Managing accounts](05a-managing-accounts.html) |
 | The `shared` account | the one door that is **open** in a new installation, on purpose: every account can read the data files of the `shared` account by file name, and none can write them — see [The shared account](#the-shared-account-is-open-to-read-by-design) |
 | The API | local-only (`127.0.0.1:4247`) until an administrator opens it to the network — see [API access](09-api-access.html) |
-| SDSYS | no remote route at all, ssh or API, ever, from any other computer; on the machine itself the API accepts it only on the local Unix socket, from a process running as `sdsys` — the one thing this page treats as non-negotiable rather than a default |
+| SDSYS | no API route from any other computer, ever; ssh only after an administrator has enrolled an authenticator code (then the code first, the password second); on the machine itself the API accepts it only on the local Unix socket, from a process running as `sdsys` — the one thing this page treats as non-negotiable rather than a default |
 
 **An ordinary account is not denied a console login here**, unlike SD Core
 for Windows. SD's switches govern what a session *inside SD* can reach;
@@ -94,13 +94,14 @@ which records who actually logged in and cannot be forged by `sudo` or
 happens to be running as.
 
 **This is deliberate and total, not a special case for remote sessions.**
-SDSYS itself is refused ssh outright. The API refuses it from every other
+SDSYS itself is refused ssh outright until an authenticator code is enrolled for it, and then
+only with that code and its password. The API refuses it from every other
 computer and over the network port on this machine as well; it accepts SDSYS
 only on the local Unix socket, from a process running as `sdsys`, and only
 with SDSYS's own SD password — see [ssh access](08-ssh-access.html) and
 [API access](09-api-access.html). There is no "administrator, but only over
-the network" middle case; SDSYS's routes are a genuine local login and, for
-programs, that local socket.
+the network" middle case for the API; SDSYS's other routes are a genuine
+login — local, or ssh with the code — and, for programs, that local socket.
 
 ## Taking an account out of use without deleting it
 
