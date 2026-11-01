@@ -204,7 +204,7 @@ What this changes for you:
 
 **What this does not close.** The global catalogue and the sudo helper `sd-elevate` are still routes from a stolen `sdsys` login to root-run or every-account code (see
 [The master files](19-the-master-files.html)); data that root reads but does not run (`terminfo`, `messages`) is still `sdsys`'s; and during the minutes of an install,
-before this step, `bin` is still `sdsys`'s - install while nobody holds that login (a first install has no such login yet).
+before this step, `bin` is still `sdsys`'s - install while nobody holds that login (a first install has no such login yet). The helper does refuse a session that is `sdsys` only through `su sdsys`, `sudo -u sdsys` or a service: it asks that the login behind the call is `sdsys`'s own, and says so when it is not. A real login as `sdsys` (the machine's console, or any other login that really is `sdsys`) is the case it cannot tell from the administrator.
 
 ## The daemon
 

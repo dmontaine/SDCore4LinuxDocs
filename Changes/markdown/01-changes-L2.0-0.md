@@ -497,6 +497,7 @@ has, with the changes they made.
 | `restore.voc` | Added | administrator only: puts back the newest saved copy of a VOC record the update removed, or all of an account's; never overwrites a record the account holds, and audits what it puts back |
 | `sd-elevate` | Changed | new verb `sdsys-leave`, and `conf-set` (see `set.config`); `sdsys-join`, `sdsys-leave` and `group-write` write a line to the system log |
 | `sd-elevate akpath-set` | Changed | takes only a hashed file's directory (a plain `%0` with no second link) and an existing directory, both in one account |
+| `sd-elevate caller` | Changed | when sudo says the caller is `sdsys`, every verb refuses unless the login behind it is `sdsys`'s own (so `su sdsys` and `sudo -u sdsys` from another user's session no longer reach the helper); root and an ordinary user's own verbs are not asked |
 | `sd-elevate chown-account` | Changed | the `sdsys` shape takes only a group account's files, in that account's own group (`sdg_`*name*; `sdusers` for `shared`); the `root` shape takes only a directory or plain file the `sdsys` user owns, and a real run chowns through the open file; a user account's directory, `voc` and record files, `/etc/shadow` and the like are refused |
 | `sd-elevate environment` | Changed | fixes its `PATH`, runs its python isolated, and reads its test settings only on `--dry-run` or from a process that is not root |
 | `sd-elevate groupadd` | Changed | an `sdu_`*user* group is made only for an SD user that exists, with only `root` and that user in it |
