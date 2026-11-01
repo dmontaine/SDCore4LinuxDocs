@@ -50,6 +50,12 @@ Only your text and the fixed sentence. `ai` does not add your account, your file
 
 SD does not take questions about its own code or build (`gpl.bp`, `gplsrc`, the kernel) to the AI: it says so and sends nothing; the source is open, so ask an AI outside SD for that. In the editors, a record of SD's own files, such as a header in `syscom`, is never sent either.
 
+### Passages of the documentation (the AI line, not the `ai` verb)
+
+When you ask in the AI line (the home screen, a page of the toolkit, the IDE, SED, the collection editor or the debugger), SD looks through its own User documentation for the sections that match your words and adds up to four of them to the request, so that the model answers from SD's pages and not from what it remembers of other multivalue systems. The preview shows how many passages there are and how many bytes, each one's page and section in brackets (for example `[user/01-sd-basic-program-structure.md#the-program-header]`) and its first four lines, and says how many lines more it sends. Nothing leaves until you choose Send, and Cancel is the default. A passage is at most 2,400 bytes and all of them 6,000. A request of common words, or of words no page holds, gets none. The model is asked to name the page it used, so you can find it in the documents. If you are the administrator, the pages written for the administrator are searched too; they are never searched for anyone else.
+
+If the documentation could not be fetched when SD was installed, there are no passages and the line works as it did. The `ai` verb adds no passages.
+
 ## The AI line on a page of the toolkit
 
 The full-screen pages of the toolkit have the same line as [the home screen](29a-sd-tcl-the-home-screen.html), when the AI is on for your account. **`tool.voc` and `tool.files` have it; the other pages do not yet.** The line is the row just above the status line, and the list above it is one row shorter to make room. **Without the AI there is no line, no F6 on the key row and no AI title in the menu bar, and the page is exactly what it was.**
