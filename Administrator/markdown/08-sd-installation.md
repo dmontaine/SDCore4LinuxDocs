@@ -15,7 +15,9 @@ GettingStarted set, under *Installing SD Core*, and is not repeated here.
 ## Two things to know before the first install
 
 **SD cannot be installed unattended.** `installsdcore.sh` asks for
-confirmation, two yes/no questions about remote access, and ends by setting
+confirmation, two yes/no questions about remote access, one (default No, only
+for a new account) about opening every access gate on the installing user's
+own account, and ends by setting
 three passwords at the terminal —
 there is no flag to skip any of it.
 

@@ -62,14 +62,15 @@ type `list voc` or `LIST VOC` and reach the same file.
 **Account names are the deliberate exception.** They are still folded upward,
 and that is what makes signing in case-insensitive.
 
-### A hyphen is not a dot
+### A hyphen may stand for a dot
 
-The command processor tries the three case attempts and no more. **A verb
-typed with a hyphen where the name has a dot is not found**: `clear-select`
-answers `CLEAR-SELECT is not in your VOC`, and `clear.select` is the verb. (The
-hyphen form was the Pick spelling of a dotted verb. It was removed in release
-2.0-0; an account with a paragraph or script that types it must say the dotted
-name.)
+When the three case attempts find nothing, the command processor tries once
+more with **every hyphen changed to a dot**, in lower case and then in upper
+case. So `clear-select` runs `clear.select` and `create-account` runs
+`create.account`. (The hyphen form is the Pick spelling of a dotted verb.) A
+hyphenated name with no dotted verb behind it is still not found:
+`no-such-verb` answers `NO-SUCH-VERB is not in your VOC`. The dotted name is
+the one SD itself writes.
 
 ### If the VOC has nothing, the catalogue is tried
 

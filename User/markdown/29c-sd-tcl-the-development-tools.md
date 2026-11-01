@@ -30,6 +30,11 @@ the page.
 
 The home screen has a tile for each of them, in the group *Develop*.
 
+**On a page with more than one box the keyboard can be in** (the query page, the bulk change page and the
+test page here; on the administrator's side the sessions, menus, AI and viewer pages), the box that has it
+is marked **`[*]`** in its top right corner and the others **`[-]`**, as the IDE marks its panes (since 1
+November 2026). Tab moves the keyboard and the marks with it; a box the keyboard never goes to has no mark.
+
 **Every page has a menu bar on its top row** (since 29 October 2026), made from the page's own key table, so
 the bar, the key row at the foot and the keys cannot disagree. **F10**, **Alt and the letter** marked in a
 title, or a **click** on a title opens a menu; **Esc** opens the first menu that does not begin with Quit

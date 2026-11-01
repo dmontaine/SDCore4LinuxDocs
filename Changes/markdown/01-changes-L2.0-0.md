@@ -421,7 +421,6 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | `cleardata`, `clearinput`, `clearprompts`, `clearselect` | Removed | the run-together second names of `clear.data`, `clear.input`, `clear.prompts` and `clear.select` (the BASIC statements of the same names are not affected) |
 | `cs` | Removed | second name of `clr`: write `clr` |
 | `delete.catalogue` | Removed | the British spelling: write `delete.catalog` |
-| a hyphen for a dot in a verb name | Removed | `clear-select` is not found: write `clear.select` |
 | `rename` | Removed | second name of `cname`: write `cname`. (`cname` still takes the comma form, `cname old, new`.) |
 | `sp.open` and `sp.close` | Removed | write `printer keep.open` and `printer close` |
 | `sd -l` | Removed | "apply new licence": SD has no licence, and it set a flag nothing read; `sd -l` is an unrecognised option now |
@@ -543,7 +542,7 @@ has, with the changes they made.
 | `ai` proposal box | Changed | shows every line of a proposed change, command or request in full, not cut at the box edge; a proposed change that would take more than 30 rows to show is not offered |
 | `ai` row in the home screen | Added | type what you want, see what will be sent, accept one proposed tile or command |
 | `ai` row in the ide | Added | explain an error or a selection, ask about the record, accept or reject proposed edits as a diff |
-| `ai` row on a toolkit page | Added | `tool.voc` and `tool.files` (the other pages follow): F6 or AI > Ask the AI puts the cursor in a line above the status line, which takes one row from the list; the model is offered only the page's keys that change what is shown and a proposal is carried out by the page's own key; with the AI off the page is as before |
+| `ai` row on a toolkit page | Added | the development pages (`tool.voc`, `tool.files`, `tool.catalog`, `tool.dict`, `tool.query`, `tool.bulk`, `tool.test`, the holder's `tool.gates`; the administrator's pages follow): F6 or AI > Ask the AI puts the cursor in a line above the status line, which takes one row from the list; the model is offered only the page's keys that change what is shown and a proposal is carried out by the page's own key; with the AI off the page is as before |
 | `ai` verb | Added | asks an AI one question; shows exactly what will be sent and sends only on `y` or `yes` |
 | `sdai` operating system user | Added | system user made by the installer for the AI feature: own group, no shell, no home, no SD group |
 | `set.ai` | Added | SDSYS chooses the provider, model and key from the prompt |
@@ -570,6 +569,7 @@ has, with the changes they made.
 |---|---|---|
 | `menu` | Added | opens the full-screen menu (the home screen) from any account; `home` and `exit` stay |
 | `pdf` | Added | shows a document in the PDF reader the administrator has allowed, even for an account that may not run programs |
+| `tool.*` pages with several boxes | Changed | the box the keyboard is in is marked `[*]` in its top right corner and the others `[-]`, as in the IDE (`tool.bulk`, `tool.query`, `tool.test`, `tool.sessions`, `tool.menus`, `tool.ai`, `tool.viewers`) |
 | `tool.bulk` | Added | full-screen bulk update of one data file: records chosen by conditions, a saved list or all, up to ten operations, a dry run first, apply under record locks after a box that asks the file's name typed, and undo of the last run; for every account |
 | `tool.catalog` | Added | full-screen list of the account's program records (kind, compile time, size, current or stale, private / local / global catalogue) with compile (basic), catalogue privately or locally (catalog) and take an entry out (delete.catalog, decatalog), each the ordinary verb after a box; for every account, behind the bp-edit gate |
 | `tool.dict` | Added | full-screen dictionary of a file (items by type and what they show; make, edit, delete, compile and try an item; the file's indices: make, build, delete, list); for every account |
@@ -624,6 +624,7 @@ Three simple layers, with no vault and nothing on by default.
 | agent pack | Added | the guide and the knowledge pack are copied to `/usr/local/sdsys/agent-pack`, only when they match the installed version |
 | changes document | Added | a release package carries it beside the installer as `sd-core-for-linux-<version>-changes.pdf`, `.html` and `.md`, and the installer copies the three into the shared account's `pdf` directory, where `pdf` lists the PDF |
 | group account files | Changed | an upgrade puts the four record files of every kept group account back in the account's group |
+| gates of the installing user's account | Added | when it makes your own account the installer asks once whether to open every access gate on it (no unless `y`); a `y` opens all of them, the AI and the `sdsys` user in its group included, and the install says which really opened |
 | immutable `bin` | Changed | `deletesdcore.sh` lifts the attribute before it removes the system directory |
 | installer: the `sdsys` user's groups | Changed | an install that keeps the accounts leaves the `sdsys` user in the group of each group account (`sdg_shared` among them); it used to take it out of all of them |
 | installer source message | Changed | says which source it is downloading, the release tag or `main` |

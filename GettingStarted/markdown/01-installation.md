@@ -168,14 +168,25 @@ which the installer also stages where it can.
 
 An SD account starts with every access gate closed: ssh, the API, the shell,
 `os.execute`, `sd.accounts`, saving changes to a VOC, a program file or a
-dictionary, SDNet, and writing the shared account's files — yours too, the
-account the installer makes for you. **The installer does not ask about it and
-does not open any of them**: that is the delivered state, and the installer
-prints the commands that open them. Signed in as SDSYS, `modify.account <account>
-<word>` opens any of them, one word at a time (`both`, `sh-on`, `os-on`, `sd-on`,
-`voc-on`, `bp-on`, `dict-on`, `net-on`, `shared-write-on`, `files-on`,
-`files-write-on`), and `modify.account <account> <word>-off` closes it again
-(`none` closes ssh and the API).
+dictionary, the recovery copy, SDNet, the shared account's files, the
+files-only login (with its write and admin rights), the AI, pins, and the
+`sdsys` user in the account's group — yours too, the account the installer
+makes for you.
+
+**When the installer is about to make that account, it asks once:** *Open every
+access gate for <you>'s SD account? (y/N)*. **The answer is No unless you type
+y**, and nothing is asked when your account already exists (an upgrade keeps
+what it has). It is meant for a machine you are testing on. A **y** opens every
+one of the gates above, and the install then says which ones the register and
+the Linux groups really hold, naming any that did not open. The AI gate only
+lets the account use the AI once SDSYS has chosen a provider and given its key.
+
+With **No**, the installer prints the commands that open them. Signed in as SDSYS,
+`modify.account <account> <word>` opens any of them (`both`, `sh-on`, `os-on`,
+`sd-on`, `voc-on`, `bp-on`, `dict-on`, `recovery-on`, `net-on`, `shared-write-on`,
+`files-on`, `files-write-on`, `files-admin-on`, `ai-on`, `pins-on`, `sdsys-on`;
+several may be given in one command), and `modify.account <account> <word>-off`
+closes it again (`none` closes ssh and the API).
 
 This is not about who can reach the computer from the network — that is the two
 questions above.
