@@ -31,7 +31,7 @@ is the short form.
 | `intprec` and `sortmem` | Changed | were 13 and 1024; now **11** and **4096** (set the old values in `sd.conf` if you need them) |
 | Removed features | Removed | words and modes that existed to imitate other products (so far 55 `option` words, 35 `$mode` words, and the second spellings and forms of statements, clauses, functions, conversions, TCL verbs and query keywords, each listed in [REMOVED](#removed)), and other things: see [REMOVED](#removed) |
 | `sed` keys | Changed | were Emacs keys with Ctrl-X sequences; now the keys most editors have (Ctrl-PageDown / Ctrl-PageUp, and Alt-PageDown / Alt-PageUp for a terminal that keeps the Ctrl keys for its own tabs, switch buffers), and `emacs` in `&sed.options&` keeps the old layout |
-| `sed`, `ide`, `!ced()` | Changed | were 120 by 36 or less; now need a window of at least **140 by 42** (the `ide` **140 by 43**), and `ed` is the editor for a smaller one |
+| `sed`, `ide`, `!ced()` | Changed | were 120 by 36 or less; now need a window of at least **140 by 43** (`!ced()` **140 by 42**), and `ed` is the editor for a smaller one |
 | `select file field` | Changed | a field not otherwise used was ignored; now it is `saving multivalued field`, so the list holds the values |
 | The default terminal | Changed | was 120 columns by 36 lines; now **140 by 42** (a LIST fills 41 lines before it pauses) |
 | The group size of a new file | Changed | was 2 KB (1 KB when `sd.conf` did not say); now **4 KB** on a new installation. An installed system keeps its `sd.conf`, and so its 2, and a file keeps the size it has |
@@ -362,6 +362,7 @@ The debugger and the editors, from the openQM list. The full-screen tools that a
 | `sed` | Changed | the full-screen editor takes `creating.seqkey` in place of a record id, like `ed`|
 | `sed` option `no.case.explore` | Added | in `&sed.options&`: the list of records is in order whatever the case of the ids, not capitals first|
 | `sed` option `scroll1` | Added | in `&sed.options&`: page up and page down move one line less than a page, so one line of the old page stays|
+| `sed` screen | Changed | looks like the toolkit pages: a key row at the bottom (the keys of the layout in use), the editor's name and the person at the right of the menu bar, and the site's screen theme's colours; no key or command changed |
 | `sed` split point | Added | Window > Move split up / Move split down, and the commands `split.up` and `split.down` with a number of rows, move the line between the two windows|
 | `sed` syntax colour | Changed | is on when SED starts, on a terminal that can show colour (it was off until asked for); `no.syntax` in `&sed.options&` or `syntax off` turns it off, and the bare `syntax` switches it |
 | `sed` view | Added | Search > View lines, or `view` and a text: a new read-only buffer holding only the lines of this one that contain the text|

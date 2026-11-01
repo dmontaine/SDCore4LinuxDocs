@@ -37,15 +37,24 @@ marks a word typed as it stands; braces mark an optional part.
 With a select list, SED shows the first id and asks whether to use the list
 (`Y` or `N`). Leaving one record goes on to the next.
 
-**SED is 140 columns by 42 lines, always** — SD's default terminal size, which
-SED has followed since 18 October 2026 (it was 120 by 36 before) — whatever the
-window is. A bigger window shows SED in its top left corner with the rest blank.
-The top row is the menu bar, the bottom two rows say which record is open and how
-it is being edited: the number of lines, the line and column, and any of *Macro*,
-*Overlay*, *Indent* and the search mode that are in force.
+**SED is 140 columns by 43 lines, always** — the size of the IDE and the toolkit
+pages, since 1 November 2026 (it was 140 by 42 from 18 October, and 120 by 36
+before) — whatever the window is. A bigger window shows SED in its top left
+corner with the rest blank. The top row is the menu bar, with the editor's name
+and who you are (*sed  pat@sales*) at its right end. Below the text, two rows say
+which record is open and how it is being edited: the number of lines, the line
+and column, and any of *Macro*, *Overlay*, *Indent* and the search mode that are
+in force. The last row is the **key row**, as on the toolkit pages: *F10 menu,
+^S save, ^Q quit, ^O open, ^F find, ^R replace, ^L go to, ^Z undo, ^Y redo, F5
+run*. It shows the keys of the layout in use, so with `emacs` in
+`&sed.options&` it says *^X ^S save* and *^X M run*, and an action that has no
+key in that layout is left off. Where the site's screen theme (`SCREENTHEME` in
+`sd.conf`) is `blue`, as delivered, or `classic`, SED has the toolkit pages'
+colours with its syntax colours on them; any other theme leaves SED in its own
+dark or light theme. Only the look changed: no key, command or menu item did.
 
 **A window smaller than that when SED starts is refused**, in words
-(*SED needs a window of at least 140 columns by 42 lines; this one is 100 by 30*),
+(*SED needs a window of at least 140 columns by 43 lines; this one is 100 by 30*),
 and SED draws nothing; `ed` is the editor for a small window. The window it
 measures is the one on the screen, or the display `term w,h` gave if that is
 smaller, so `term 100,30` typed in a large window is refused too.
@@ -55,7 +64,7 @@ smaller, so `term 100,30` typed in a large window is refused too.
 Dragging the corner of the window, or a tiling window manager, can make the
 window smaller after SED has started. SED looks at the window about once a second
 while it waits for a key, and again every time it draws. When the window has
-changed it clears the screen and draws the **upper left corner of its 140 by 42
+changed it clears the screen and draws the **upper left corner of its 140 by 43
 layout** — the menu bar, the first lines of the record and as much as fits — and
 nothing past the edge: nothing wraps and nothing lands on the wrong row. Nothing
 pans; the upper left is always the anchor. Make the window bigger and the whole
@@ -69,7 +78,7 @@ a row the window does not show (the search prompt and the line-number prompt are
 on the two bottom rows). SED clears the screen and shows a warning in reverse video
 in the upper left corner instead:
 
-> The window is 100 by 30 and SED is laid out for 140 by 42: the cursor is off the
+> The window is 100 by 30 and SED is laid out for 140 by 43: the cursor is off the
 > screen and keys are ignored. Make the window larger to carry on, or press Ctrl-Q
 > to leave.
 
