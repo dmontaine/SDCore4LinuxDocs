@@ -85,6 +85,36 @@ why (see "What can stop it").
 * **To change the phone**, run `totp-begin` and `totp-confirm` again. The old secret keeps working
   until the new one has been confirmed, and then it stops.
 
+### From inside SD: `remote.sdsys`
+
+SDSYS signed in at the machine can do all of this without leaving SD:
+
+```
+remote.sdsys {on | recovery | off}
+```
+
+| | |
+|---|---|
+| *(no keyword)* | prints what `totp-status` reports, and changes nothing |
+| `on` | shows a new secret and its link **once**, then asks `Code from the app (Enter to stop):` up to three times. A right code switches the code on, shows the eight recovery codes and opens the ssh door, exactly as `totp-confirm` does |
+| `recovery` | shows eight new recovery codes; the old ones stop working |
+| `off` | shuts the ssh door first, then removes the code, as `totp-off` does |
+
+**The secret and the recovery codes appear on your terminal and nowhere else.** They are not
+written to any file, the audit trail or the error log; after them the verb waits for Enter and
+clears the screen. `on` and `recovery` refuse while a `como` file is recording the session, since
+it would keep them (close it with `como off` first). The code you type is passed to the root
+helper through a private file that is removed at once, never on a command line. Your terminal's
+own scroll-back is outside SD's reach: clear it if anyone else may see it.
+
+The same is the sixth view of `tool.remote`, **`6` sdsys login**: it shows the report, and `O`,
+`R` and `F` run `remote.sdsys on`, `recovery` and `off` after a box (the box for `on` wants the word
+`OPEN` typed). For `on` and `recovery` the page gives the terminal to the verb, so the secret and
+the codes never pass through the page.
+
+Each use writes one audit line, `remote.sdsys on status=0` and the like: the keyword and the
+helper's exit status, never what it printed.
+
 ## Turning it off
 
 ```

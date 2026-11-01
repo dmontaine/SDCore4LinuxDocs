@@ -9,7 +9,7 @@ have forgotten its arguments, it is here. If you want to know what it
 braces an optional part, and a vertical bar separates alternatives. SD
 folds case, so any of this may be typed in either case.
 
-> This page lists every verb SD ships (**209** of them). The shapes come from the
+> This page lists every verb SD ships (**210** of them). The shapes come from the
 > subject documents, where each verb is described in full.
 
 **The "who" column is the VOC, not an opinion.** It is taken from the
@@ -19,7 +19,7 @@ not refused — the name is simply not recognised.**
 | | | |
 |---|---|---|
 | **every account** | 162 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 47 more | in `voc_template` but not `newvoc` |
+| **SDSYS only** | 48 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -162,6 +162,7 @@ not refused — the name is simply not recognised.**
 | **`reformat`** | **`reformat`** {**`dict`**} *file* {*selection*} {*fields*} |  |
 | **`release`** | **`release`** *file* *id* …  ·  **`release filelock`** *file* |  |
 | **`remote.api`** | **`remote.api`** {**`on`** \| **`local`** \| **`off`**} | S |
+| **`remote.sdsys`** | **`remote.sdsys`** {**`on`** \| **`recovery`** \| **`off`**} | S |
 | **`remote.ssh`** | **`remote.ssh`** {**`on`** \| **`off`**} | S |
 | **`report.src`** | **`report.src on`** \| **`off`** \| **`report.src`** to toggle |  |
 | **`report.style`** | **`report.style`** {*name* \| **`off`**} |  |
@@ -224,7 +225,7 @@ not refused — the name is simply not recognised.**
 | **`tool.masters`** | **`tool.masters`**  —  the master files on one screen (administrator): set up or not, the journal, every account against its master copy, and **`sync.masters`** behind two keys after a box answered Run | S |
 | **`tool.menus`** | **`tool.menus`**  —  menu management (administrator): the home screen's tiles for each account, where each account starts, who may add their own programs | S |
 | **`tool.query`** | **`tool.query`** {*file*}  —  the query and report builder: choose a file, mark its columns (break and total), set conditions, sorts and options, read the list / sort / count / sum sentence they make, run it into a results box, and save the query in your file &queries& and load it again; every sentence is checked before it runs |  |
-| **`tool.remote`** | **`tool.remote`**  —  everything that reaches SD from outside, on one screen (administrator): the two doors as the machine reports them (**`remote.api`** and **`remote.ssh`**, changed after a box and the word OPEN), the routes of each user account, the SDNet servers (**`delete.server`**; **`set.server`** with the terminal given to the verb), who is connected and this machine's TLS identity | S |
+| **`tool.remote`** | **`tool.remote`**  —  everything that reaches SD from outside, on one screen (administrator): the two doors as the machine reports them (**`remote.api`** and **`remote.ssh`**, changed after a box and the word OPEN), the routes of each user account, the SDNet servers (**`delete.server`**; **`set.server`** with the terminal given to the verb), who is connected, this machine's TLS identity, and the authenticator code of SDSYS's sign-in over ssh (**`remote.sdsys`**, with the terminal given to the verb) | S |
 | **`tool.sessions`** | **`tool.sessions`**  —  sessions, locks and logout on one screen (administrator): every session and every lock, read again every three seconds; each key runs one **`logout`**, **`unlock`** or **`inhibit.login`** command after a box answered Run | S |
 | **`tool.test`** | **`tool.test`**  —  the tests of the account on one screen: the test.* programs of its program files, run with run and judged by the last line N passed, M failed (pass, fail, no verdict; an abort is a fail); run one, all of those shown or the failed ones (after a box), read what a test printed, compile a test that has no object code through basic after a box that shows the command |  |
 | **`tool.viewers`** | **`tool.viewers`**  —  the Bypass programs page (administrator): the readers **`pdf`** may start, those found on this machine | S |
