@@ -542,7 +542,7 @@ has, with the changes they made.
 | `ai` proposal box | Changed | shows every line of a proposed change, command or request in full, not cut at the box edge; a proposed change that would take more than 30 rows to show is not offered |
 | `ai` row in the home screen | Added | type what you want, see what will be sent, accept one proposed tile or command |
 | `ai` row in the ide | Added | explain an error or a selection, ask about the record, accept or reject proposed edits as a diff |
-| `ai` row on a toolkit page | Added | the development pages (`tool.voc`, `tool.files`, `tool.catalog`, `tool.dict`, `tool.query`, `tool.bulk`, `tool.test`, the holder's `tool.gates`; the administrator's pages follow): F6 or AI > Ask the AI puts the cursor in a line above the status line, which takes one row from the list; the model is offered only the page's keys that change what is shown and a proposal is carried out by the page's own key; with the AI off the page is as before |
+| `ai` row on a toolkit page | Added | every page of the toolkit but `tool.keys` (the development pages, `my.menu` and the administrator's pages): F6 or AI > Ask the AI puts the cursor in a line above the status line, which takes one row from the list; the model is offered only the page's keys that change what is shown and a proposal is carried out by the page's own key; with the AI off the page is as before |
 | `ai` verb | Added | asks an AI one question; shows exactly what will be sent and sends only on `y` or `yes` |
 | `sdai` operating system user | Added | system user made by the installer for the AI feature: own group, no shell, no home, no SD group |
 | `set.ai` | Added | SDSYS chooses the provider, model and key from the prompt |
