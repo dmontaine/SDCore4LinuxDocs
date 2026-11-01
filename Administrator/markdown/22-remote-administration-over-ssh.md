@@ -10,8 +10,8 @@ code first and the password second, and lands in an SD session with every right 
 network port, under any setting; on the machine itself it uses the local Unix socket only. This
 page is about ssh and nothing else.
 
-**This is a Linux feature.** SD Core for Windows has no equivalent, because Windows has Remote
-Desktop for this.
+**This is a feature of SD Core for Linux only.** SD Core for Windows has no equivalent, because
+Windows has Remote Desktop for this, and SD Core Solo does not have it either.
 
 > This document is separate so that it can be withheld. It links to nothing outside the
 > administrator set. Where a page in another set is worth naming, it is named in words.
