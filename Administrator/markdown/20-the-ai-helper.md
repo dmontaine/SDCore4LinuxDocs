@@ -11,6 +11,15 @@ When a person types `ai some text`, SD shows them the text, the provider and the
 
 SD adds nothing of the account, the session or the data. A person can of course type or paste whatever they like into the question, which is why the preview is not optional and why the gate is yours to give.
 
+## What the AI is never given, and what is not taken to it
+
+**The AI in SD helps a person use SD and write their own programs, dictionaries and files. It is never given SD's own code or any other system information, whichever provider you chose, and not even the administrator can take a question about changing SD to it from inside SD.** The source is open, so someone who wants help changing SD can ask an AI outside SD; inside SD that help is not offered. Two things enforce this, and they are not equally strong.
+
+1. **Where the text comes from (enforced).** Every program that puts the text of a record or file into a request (the IDE, SED, the collection editor and the debugger) tells the AI routine where the text comes from. Before anything is shown or sent, the routine refuses text that is part of SD itself, and text whose origin it cannot tell. SD's own files are everything in the system directory (the programs, headers, messages, help text, dictionaries and files of the system account, the account register, the audit trail and the error log), the AI helper's directories, `/run/sd`, `/etc/sd.conf`, and any directory called `gplsrc`, `gplbld` or `gplobj`. It is decided by where a file is, with links and `..` followed, never by what the text says. The headers in `syscom` live in the system directory, so they are not sent either; a person's own programs are, `$include` lines and all. If you want the AI to see one of those headers for a person's program, copy it into that person's account: a copy there is the account's own file, and nothing is opened up.
+2. **What is typed (a screen).** A request that names the system's code or build is refused in words before it is shown, and nothing is sent: `gpl.bp`, `gplsrc`, `gplbld`, `$internal`, a kernel file such as `op_sort.c`, a kernel key such as `k$audit`, the compiler's own programs, the makefile, SD's source or kernel code. **This is a screen, not a wall.** A question that names none of those is not caught, and a question that does reach an AI may be answered from whatever that AI learned of the open source. SD's gate is here, in SD.
+
+Nothing the AI returns is run, and the output of a command is never given back to it. A refusal writes one line to the audit trail (`ai refused why=request ...` or `ai refused why=origin ...`) and never the text. What a person types or pastes themselves is theirs, and is in the preview.
+
 ## The pieces
 
 | Piece | What it is |

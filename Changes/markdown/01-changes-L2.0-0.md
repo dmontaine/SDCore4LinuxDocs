@@ -535,6 +535,7 @@ has, with the changes they made.
 | Name | Change | What |
 |---|---|---|
 | `agent-pack` | Added | a guide (examples compiled and run), a generated reference of 3,932 entries and a Claude Code skill, in the source and installed under `/usr/local/sdsys/agent-pack` |
+| `ai` boundary | Added | the AI is never given SD's own files (decided by where a file is: the system directory, the helper's, `/etc/sd.conf`, a `gplsrc` directory) and a question that names SD's own code or build (`gpl.bp`, `gplsrc`, `$internal`, kernel files) is refused before anything is sent, for every provider and for the administrator too; the second is a screen, said to be one |
 | `ai` gate | Added | per-account switch, `ai-on` and `ai-off` (also on `create.account`); off as delivered |
 | `ai` in the editors | Added | the debugger, `sed` and the collection editor: ask about what you are looking at; a preview of everything sent; proposed changes shown as diffs and never saved by the AI |
 | `ai` proposal box | Changed | shows every line of a proposed change, command or request in full, not cut at the box edge; a proposed change that would take more than 30 rows to show is not offered |

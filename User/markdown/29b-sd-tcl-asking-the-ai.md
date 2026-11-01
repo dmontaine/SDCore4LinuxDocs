@@ -48,6 +48,8 @@ Only your text and the fixed sentence. `ai` does not add your account, your file
 
 `ai` only prints the answer. It never runs anything the answer says.
 
+SD does not take questions about its own code or build (`gpl.bp`, `gplsrc`, the kernel) to the AI: it says so and sends nothing; the source is open, so ask an AI outside SD for that. In the editors, a record of SD's own files, such as a header in `syscom`, is never sent either.
+
 ## If it says no
 
 | It says | Why |
