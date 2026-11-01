@@ -646,7 +646,10 @@ it is. `screen close` puts the plain borders back.
 `screen open` asks an xterm-compatible terminal to report the mouse: buttons,
 dragging and the wheel, in the form of xterm's modes 1000, 1002 and 1006. `screen close`
 turns the reporting off. A terminal that does not know the modes, such as the Linux
-console, ignores the request and sends nothing.
+console, ignores the request and sends nothing; **on a Linux text console SD also asks the
+gpm daemon for the mouse** (since 31 October 2026, only for the terminal type `linux` and
+only when the input is a text console, and not with `nomouse`), and the program is given the
+same reports (see the terminfo page, *The Linux text console*). Without a daemon there is no mouse.
 
 With reporting on, **forms and dialogues take clicks without any help from the
 program**:

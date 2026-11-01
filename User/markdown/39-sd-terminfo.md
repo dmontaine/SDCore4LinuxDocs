@@ -88,6 +88,75 @@ The default is only a default. `term w,h` takes any width from 20 to
 and nothing else clamps it. A real terminal still decides its own size,
 and `term default` puts the page back to 140 × 42 whatever the window.
 
+## The Linux text console, with no desktop
+
+The full-screen tools - the home screen, the IDE, the administrator and
+development pages, the debugger - work on the text console of a server that
+has no desktop (the screen at tty1 to tty6), over ssh from any terminal, and in
+a terminal emulator alike. On the console SD signs on with the type `linux`.
+What the console needs, and what it cannot do, is below. It was tried on a
+real Debian 13 console.
+
+**It needs a window of 140 columns by 43 rows.** A text console is as big as
+the screen's resolution divided by the size of one character of its font, so a
+small screen is a small console:
+
+| the console | its size | |
+|---|---|---|
+| 1280 × 800, an 8 × 16 font | 160 × 50 | works |
+| 1920 × 1080, an 8 × 16 font | 240 × 67 | works |
+| 1024 × 768, an 8 × 16 font | 128 × 48 | too narrow |
+| a text screen without a framebuffer | 80 × 25 | too small |
+
+On a console that is too small SD says so and does not start the page: *home
+needs a window of at least 140 columns by 43 lines; this one is 80 by 25*.
+`stty size` shows the size. A narrower font gives the room back: `sudo setfont
+Lat15-Terminus12x6` (a font 6 pixels wide and 12 high) makes a 1280 × 800
+console 213 × 66 and a 1024 × 768 one 170 × 64, and SD's pages use the
+whole of it. `setfont` changes the console it is run on, until the next boot.
+To keep it, on Debian and Ubuntu run `sudo dpkg-reconfigure console-setup` and
+choose the Terminus font in 6x12, and on Fedora set `FONT=` in
+`/etc/vconsole.conf`. A higher video mode (the kernel's `video=` parameter, or
+the boot loader's graphics mode) does the same from the other side.
+
+**The keys.** Everything a console can send works, and SD names it as it does
+anywhere else: the letters, Ctrl with a letter, Alt with a letter (the console
+sends Esc and the letter), the arrow keys, Home, End, Insert, Delete, Page Up,
+Page Down and F1 to F12, **Shift-F1 to Shift-F8** (which the console sends as
+F13 to F20) and **Shift-Tab** (which it sends as Esc and Tab). What the Linux
+console does not send at all:
+
+- Ctrl, Shift or Alt together with an arrow, Home, End, Insert, Delete, Page Up
+  or Page Down arrive as the plain key; there is no Ctrl-Left, Ctrl-Home or
+  Ctrl-Page Down on a console. Shift-F9 to Shift-F12 and Ctrl-F1 to Ctrl-F12
+  send nothing.
+- Alt-F1 to Alt-F12 and Alt-Left and Alt-Right switch to another console, and
+  Shift-Page Up and Shift-Page Down scroll the console's own history; the
+  kernel keeps them.
+
+So on a console the IDE's *Next tab*, *Previous tab* and *Previous pane* are
+chosen from the *Go* menu (F10), and F6 goes through the panes, and the
+editor's word and start-of-text moves have no key: use the arrows, Home and End,
+and *Go to line* (Ctrl-L). Every other key of the pages and the IDE is a key the
+console sends. `tool.keys` shows what SD was given for each key you press.
+
+**The mouse.** A console does not report the mouse the way a terminal emulator
+does, but the *gpm* daemon reads it there. If gpm is running (install the
+package `gpm`; on Debian that is all, it starts at once and takes the mouse
+from `/dev/input/mice`), a full-screen program that asks for the mouse is
+connected to it and is given the same press, release, drag and wheel reports
+as an emulator would give, so every page that takes the mouse takes it on the
+console, and gpm draws the pointer. Nothing is needed in SD, and without a
+daemon there is simply no mouse. SD asks gpm only when the terminal type is
+`linux` and its input is a text console, so a session over ssh, in `tmux` or
+`screen`, or in an emulator is not affected, and a program that opens its
+screen with `nomouse` is not connected. SED reads its own mouse reports
+and has no mouse on the console.
+
+**Colour and borders.** The console has eight colours and bold, and the
+themes (`blue`, `classic`, `mono`) work on it. On a console set to UTF-8, which
+is what Debian gives, the pages draw their borders with line-drawing characters.
+
 ## The terminfo source
 
 `terminfo.src` ships with SD. It is a text file containing all the

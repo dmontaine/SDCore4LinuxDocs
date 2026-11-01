@@ -546,33 +546,35 @@ that does not parse, text that does not begin with `{` or `[`) is shown as field
 **A dictionary item opens as a form** (since 31 October 2026): `ide dict file record` (a record that is not
 there yet opens as a new D item) and **Return on an item in the tree** show the item as a form first, and so
 does the **E** of TOOL.DICT, which hands the item to the IDE. `ide dict file record /text` opens it as text;
-**Edit as text** and **Esc** in the form leave the item as text in its tab, and **Go, Dictionary item as
+**Cancel** (or **Esc**) in the form leaves the item as text in its tab, and **Go, Dictionary item as
 form** (or `/form` on the command line) shows the form for the tab you are in. A record found by a search,
 items opened together from a list, Ctrl-O, an item already in a tab, an item another session holds (it is
 read-only) and an item the form cannot show open as text, as before. The form fills the screen
-(140 by 43) over the IDE: a numbered **label and entry for each field the item's type has**, and nothing
-else. The first row is the **Type** (D, E, I, L, PH or X); choose another with Left and Right and the
-rows change to those of that type, keeping what was typed for the rows the two types share.
+(140 by 43) over the IDE and is **one form**. Its first row is the **Type**, an entry: type `D`, `E`, `I`,
+`L`, `PH` or `X` and press Tab, and **the rows of that type appear**, each a label and an entry; a new item
+shows nothing but the Type until then, and an item that exists shows its rows with their values filled in, to
+be edited. Typing another Type makes the rows of that type and keeps what was typed for the rows the two
+types share. The buttons at the foot are **Accept** and **Cancel**.
 
 | type | rows |
 |---|---|
-| D | Field #, Conversion, Heading, Width, Justification, Decimals, Single/Multi, Association, User |
-| E | as D, but a Path (the element of a [collection](20a-sd-tcl-collection-files.html) record) in place of the Field # |
+| D | Field #, Conversion Cd, Column Heading, Len & Just, Single/Multi, Association (used only when Single/Multi is M), User |
+| E | as D, but an Element Path (the element of a [collection](20a-sd-tcl-collection-files.html) record) in place of the Field # |
 | I | as D, but an Expression in place of the Field # |
-| L | Id expression, File, File expression |
+| L | Id Expression, File, File Expression |
 | PH | Phrase |
 | X | Text (a text area) |
 
-Tab and Down go to the next row, Return presses **Save**, and **Esc** leaves. **Each value is checked as
-you leave its row**, the reason is on the line near the foot and a hint for the row you are on above it:
-a field number is a whole number from 0 to 9999 (0 is the record id), a width 1 to 200, decimals 0 to 9,
-a justification L, R, T or C, a heading and a conversion at most 40 characters, a conversion one SD
-knows, an association at most 30 letters, digits, dots, dashes and underscores (and used only when
-Single/Multi is M), an expression one line, and an L item's expressions one expression with no semicolon.
-**Save is refused while a row fails**: the row is named and takes the focus. A width needs a justification
-and the other way round. When every row passes, the item becomes the tab's text and **the IDE's own save
-writes it**, with the account's dictionary-edit gate and the overwrite question as for any other save; the
-form itself writes nothing. **Edit as text** takes the same record to the text view without saving it.
+**Len & Just** is one entry for the width of the column, the justification and decimals if any: `30 L`,
+`12 R 2` (`30L` is the same). Tab and Down go to the next row, Return presses **Accept**, and **Esc** leaves.
+**Each value is checked as you leave its row**, the reason is on the line near the foot and a hint for the
+row you are on above it: a field number is a whole number from 0 to 9999 (0 is the record id), Len & Just a
+width 1 to 200, then L, R, T or C, then decimals 0 to 9, a column heading and a conversion at most 40
+characters, a conversion one SD knows, an association at most 30 letters, digits, dots, dashes and
+underscores, an expression one line, and an L item's expressions one expression with no semicolon.
+**Accept is refused while a row fails**: the row is named and takes the focus. When every row passes, the
+item becomes the tab's text and **the IDE's own save writes it**, with the account's dictionary-edit gate
+and the overwrite question as for any other save; the form itself writes nothing.
 **Esc after a change asks** *Leave without saving the changes?* (Discard or Keep editing). An item the form
 cannot show - a type it does not know, a format that is not a width, one of L, R, T or C and decimals, or
 text with characters it cannot hold - **stays text, and the status line says why**. The fields the form
