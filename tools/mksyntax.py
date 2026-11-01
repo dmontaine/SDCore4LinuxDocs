@@ -41,6 +41,13 @@
 # The data file wins wherever both have an opinion, so a measured shape always
 # beats a derived one.
 #
+#   * THE BUILT-IN FUNCTIONS (bf.rows, 15 Oct 2026) are a third place a name can
+#     live, and need a line each.  A line "@card NAME = ..." or "@admin NAME =
+#     ..." puts one extra line on that page for what the roster cannot name
+#     ($include, the public ospath(), the no-sort-variable forms of sortadd and
+#     its three companions); the script refuses an extra that the roster
+#     already puts on the same page.
+#
 import io
 import os
 import re
@@ -105,7 +112,24 @@ STATEMENTS = table('statements') | table('non.debug.statements')
 RESTRICTED = table('restricted.statements')
 RESERVED = table('reserved.names')
 INTRINSICS = table('intrinsics')
-EVERYTHING = STATEMENTS | RESTRICTED | RESERVED | INTRINSICS
+
+# A third place a function can live: the ones SD writes in BASIC and the compiler
+# knows by name (builtin.functions.load, bf.rows, 15 Oct 2026).  A program calls
+# them without a DEFFUN, exactly as it calls an intrinsic, so they belong on the
+# card; the three tables above do not show them.  No argument count is derived
+# for them, so each needs a line in the data file.
+BUILTIN = set()
+for _line in lines:
+    _s = _line.strip()
+    if _s.startswith('*'):
+        continue
+    _m = re.match(r'bf\.rows\s*(?::=\s*@fm:|=\s*)"([A-Z][A-Z0-9.$]*),', _s)
+    if _m:
+        BUILTIN.add(_m.group(1))
+if not BUILTIN:
+    sys.exit('EMPTY bf.rows - refusing to build a card from nothing')
+
+EVERYTHING = STATEMENTS | RESTRICTED | RESERVED | INTRINSICS | BUILTIN
 
 pub = ordered('intrinsics')
 starts = [n for n, ln in enumerate(lines) if 'on i goto' in ln and 'in.' in ln]
@@ -161,6 +185,14 @@ for name, (hnd, _c) in list(zip(pub, hp)) + list(zip(internal, hi)):
 # ------------------------------------------------------------- the data file
 
 shapes = {}
+# EXTRA LINES: "@card NAME = ..." and "@admin NAME = ..." put a line on ONE page
+# for something the roster has no name for, or has on the other page.  $include
+# is a directive and not a statement; the public ospath() shares its name with
+# the internal one; the administrator page keeps the no-sort-variable forms of
+# sortadd, sortclear, sortdata and sortnext while the card has the other form.
+# Never checked against the roster, so each is checked here instead: a name the
+# roster already puts on that page is refused, because the extra would hide it.
+extras = {'card': {}, 'admin': {}}
 with io.open(SHAPES, encoding='utf-8', newline='') as f:
     for n, line in enumerate(f, 1):
         line = line.rstrip('\r\n')
@@ -169,8 +201,16 @@ with io.open(SHAPES, encoding='utf-8', newline='') as f:
         if '=' not in line:
             sys.exit('%s:%d has no "=": %r' % (SHAPES, n, line))
         key, val = line.split('=', 1)
-        key = key.strip().upper()
+        key = key.strip()
         val = val.strip()
+        m = re.match(r'@(card|admin)\s+(\S+)$', key)
+        if m:
+            page, key = m.group(1), m.group(2).upper()
+            if key in extras[page]:
+                sys.exit('%s:%d duplicates the %s extra %s' % (SHAPES, n, page, key))
+            extras[page][key] = val
+            continue
+        key = key.upper()
         if key in shapes:
             sys.exit('%s:%d duplicates %s' % (SHAPES, n, key))
         shapes[key] = val
@@ -214,17 +254,20 @@ for name in ALL_NAMES:
 
 missing = sorted(ALL_NAMES - set(entries))
 bogus = sorted(set(shapes) - ALL_NAMES)
+clash = sorted(['card ' + n for n in extras['card'] if n in CARD] +
+               ['admin ' + n for n in extras['admin'] if n in TECHNICAL])
 
 print('BCOMP accepts        : %d name(s)' % len(EVERYTHING))
 print('  statements         : %d' % len(STATEMENTS))
 print('  restricted         : %d' % len(RESTRICTED))
 print('  reserved words     : %d' % len(RESERVED))
 print('  intrinsics         : %d' % len(INTRINSICS))
+print('  built-in functions : %d (bf.rows)' % len(BUILTIN))
 print('internal-only        : %d (a separate BCOMP table)' % len(INTERNAL))
 print()
-print('the User card        : %d' % len(CARD))
-print('the restricted page  : %d  = %d restricted + %d internal + %d no-such-thing'
-      % (len(TECHNICAL), len(RESTRICTED), len(INTERNAL), len(NO_SUCH_THING)))
+print('the User card        : %d + %d extra' % (len(CARD), len(extras['card'])))
+print('the restricted page  : %d  = %d restricted + %d internal + %d no-such-thing + %d extra'
+      % (len(TECHNICAL), len(RESTRICTED), len(INTERNAL), len(NO_SUCH_THING), len(extras['admin'])))
 print('shapes given by hand : %d' % len(shapes))
 print('shapes derived       : %d' % len(derived))
 print('lines available      : %d of %d' % (len(entries), len(ALL_NAMES)))
@@ -248,6 +291,13 @@ if bogus:
     print('REFUSED: a name in the data file that BCOMP does not accept is either')
     print('         a typo or a statement that has been removed.')
     sys.exit(1)
+if clash:
+    print('=== AN EXTRA LINE FOR A NAME THE ROSTER ALREADY PUTS ON THAT PAGE (%d) ===' % len(clash))
+    print('  ' + ', '.join(clash))
+    print()
+    print('REFUSED: the extra would hide the roster\'s own line.  Give the name an')
+    print('         ordinary line, or take the extra out.')
+    sys.exit(1)
 
 # ----------------------------------------------------------------- the pages
 
@@ -258,7 +308,7 @@ def kind(name):
         return 'internal'
     if name in RESTRICTED:
         return 'restricted'
-    if name in INTRINSICS:
+    if name in INTRINSICS or name in BUILTIN:
         return 'function'
     if name in STATEMENTS:
         return 'statement'
@@ -276,15 +326,9 @@ seventeen documents in this set are where that lives.
 braces an optional part. SD folds case, so any of this may be written in
 either case.
 
-> **This page is generated, and it is checked for completeness rather than
-> proof-read for it.** The roster comes from `BCOMP`'s own tables — the same
-> extraction the rest of this set uses — and `tools/mksyntax.py` refuses to
-> write the page if a single name that belongs on it has no line. Argument
-> counts for functions are read out of `BCOMP`'s dispatch table, which is
-> positional against the name list and carries each name in a comment; the
-> script asserts the two agree before it uses either. The shapes that a count
-> cannot express — every statement, and about twenty functions — come from
-> documents 01 to 17, where each one is described in full.
+> This page lists every statement and function an application may use. The shapes
+> that an argument count cannot express — every statement, and about twenty
+> functions — are described in full in documents 01 to 17.
 
 **What is not here, and where it went.** Everything on this card is something
 an application may use. Names that an ordinary program **cannot** compile are
@@ -327,11 +371,8 @@ the real cause.
 *Italics* mark something you supply, **bold** a word typed as it stands, and
 braces an optional part.
 
-> **This page is generated from `BCOMP`'s own tables** by
-> `tools/mksyntax.py`, the same script that builds the User set's syntax card,
-> and the two **partition** the roster: every name the compiler accepts is on
-> exactly one of them, and the script refuses to write either page if that
-> stops being true.
+> This page and the User set's syntax card **partition** the roster: every name
+> the compiler accepts is on exactly one of them.
 
 ## The three kinds, and how each one fails
 
@@ -357,8 +398,8 @@ itself administrator rights. That was demonstrated, not theorised.
 TECH_TAIL = u"""
 ## See also
 
-[Operating System Access](03-operating-system-access.html) covers the `sh` and
-`!` verbs, which are the other thing an ordinary account cannot reach.
+[Operating System Access](03-operating-system-access.html) covers the `sh`
+verb, which is the other thing an ordinary account cannot reach.
 [Encryption and the SDEXT interface](04-sd-encryption.html) explains why
 `sdext` is on this page and what it costs an application.
 
@@ -367,16 +408,20 @@ use, and the two partition the roster between them.
 """
 
 
-def render(names, head, tail, mark_kinds):
+def render(names, head, tail, mark_kinds, extra):
     out = [head]
     letter = None
-    for name in sorted(names):
+    for name in sorted(set(names) | set(extra)):
         if name[0] != letter:
             letter = name[0]
             out.append(u'\n## %s\n\n' % letter)
             out.append(u'| | |\n|---|---|\n')
-        line = entries[name]
-        k = kind(name)
+        if name in extra:
+            line = extra[name]
+            k = 'extra'
+        else:
+            line = entries[name]
+            k = kind(name)
         if k in mark_kinds and ('(%s)' % k) not in line:
             line += u' ***(%s)***' % k
         out.append(u'| **`%s`** | %s |\n' % (name.lower(), line))
@@ -384,9 +429,9 @@ def render(names, head, tail, mark_kinds):
     return u''.join(out)
 
 
-card = render(CARD, CARD_HEAD, CARD_TAIL, {'clause word'})
+card = render(CARD, CARD_HEAD, CARD_TAIL, {'clause word'}, extras['card'])
 tech = render(TECHNICAL, TECH_HEAD, TECH_TAIL,
-              {'restricted', 'internal', 'no such thing'})
+              {'restricted', 'internal', 'no such thing'}, extras['admin'])
 
 for path, text, label in ((OUT, card, 'User 94 syntax card'),
                           (OUT_RESTRICTED, tech, 'Administrator 10 restricted')):

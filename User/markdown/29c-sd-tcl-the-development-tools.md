@@ -192,7 +192,7 @@ and whether it has been compiled, and the record as it is stored.
 | key | does |
 |---|---|
 | Up, Down, PgUp, PgDn, Home, End | move the cursor |
-| **N** | make an item: asks the id, then the type (data or indirect) and the fields that type needs, one at a time, checking each answer |
+| **N** | make an item: asks the id, then hands the terminal to the [IDE](24-sd-tcl-programs-and-the-catalogue.html) on a new item, shown as the dictionary form |
 | **E** | edit the item in the [IDE](24-sd-tcl-programs-and-the-catalogue.html) (`ide dict file item`; since 28 October 2026 it was SED): the terminal is handed to the IDE, and leaving it brings the page back at the same item |
 | **D** | delete the item (`delete dict file item`) after a box, with the item's id typed |
 | **C** | compile an I item (`compile.dict file item`) after a box |
@@ -206,15 +206,15 @@ and whether it has been compiled, and the record as it is stored.
 | Ctrl-Q | leave |
 
 **Making an item.** N asks for the id (letters a-z, digits, dot, dash and underscore, starting with a letter or a
-digit; capitals are put in lower case; an id that already exists in any case is refused), then the kind of item. For a data item it asks the
-number of the field (0 to 9999), the heading, the justification (L, R or T), the width (1 to 200), the
-conversion (checked against the conversions SD knows), single or multivalued and, for multivalued, the
-association. An indirect item starts with its expression. A wrong answer is refused with the
-reason and the question is asked again; Esc leaves the question and nothing is written. Then **one box shows
-the whole record, field by field**, with *Run* and *Cancel* (Cancel is what Enter chooses). After Run **the page
-writes the record itself**, as an ordinary record write to the dictionary - it is the only thing the page
-writes. Before it writes, the page asks the system whether this session may change that dictionary, as SED and
-the IDE do, and when it may not it shows the system's own words and writes nothing.
+digit; capitals are put in lower case; an id that already exists in any case is refused). A wrong id is refused with
+the reason and the question is asked again; Esc leaves the question and nothing is written. Then the terminal is
+handed to the [IDE](24-sd-tcl-programs-and-the-catalogue.html) on a **new** item, which it shows as the
+dictionary form (described with the IDE): the Type first, then the rows that type needs (a data item has its
+field number, conversion, column heading, length and justification, single or multivalued and association; an
+indirect item starts with its expression), each checked as you leave it. **Accept** writes the record and
+**Cancel** (or Esc) leaves nothing behind. **The page writes nothing itself**: the IDE asks whether your account
+may change the dictionary (`dict-edit`) and, when it may not, says so in the system's own words and writes nothing.
+Ctrl-Q leaves the IDE and brings the page back with the cursor on the new item.
 
 **Trying an item.** T asks the id of a record of the data file. A D item gives its field; an I item
 must have been compiled first (C does it), and T says so, before it asks for

@@ -262,8 +262,9 @@ never what you asked or what came back.
 
 An AI line in the IDE, with proposals as edits, is built (see [Programs and the
 catalogue](24-sd-tcl-programs-and-the-catalogue.html)), and so are the AI in [SED](27a-sd-tcl-sed.html),
-[CED](27b-sd-tcl-ced.html) and [the debugger](17-sd-basic-debugging.html). The AI line on the
-administrator's pages other than this one is planned and not built.
+[CED](27b-sd-tcl-ced.html) and [the debugger](17-sd-basic-debugging.html). The AI line is also on
+the pages `tool.voc` and `tool.files` (see [Asking the AI](29b-sd-tcl-asking-the-ai.html)); on the
+other pages of the toolkit it is planned and not built.
 
 Programs the administrator assigns to an account, a menu builder for the holder
 (grouping one's own programs into sub-menus) and a live line on the account holder's tiles

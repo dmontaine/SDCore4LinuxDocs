@@ -50,6 +50,16 @@ Only your text and the fixed sentence. `ai` does not add your account, your file
 
 SD does not take questions about its own code or build (`gpl.bp`, `gplsrc`, the kernel) to the AI: it says so and sends nothing; the source is open, so ask an AI outside SD for that. In the editors, a record of SD's own files, such as a header in `syscom`, is never sent either.
 
+## The AI line on a page of the toolkit
+
+The full-screen pages of the toolkit have the same line as [the home screen](29a-sd-tcl-the-home-screen.html), when the AI is on for your account. **`tool.voc` and `tool.files` have it; the other pages do not yet.** The line is the row just above the status line, and the list above it is one row shorter to make room. **Without the AI there is no line, no F6 on the key row and no AI title in the menu bar, and the page is exactly what it was.**
+
+Press **F6**, or choose **AI > Ask the AI** in the menu bar, or click the line. Type what you want in your own words and press Enter. As on the home screen, Enter sends nothing: it shows **everything that will leave the machine** (the provider and model, one fixed instruction, what the page is and the list of what it offers, your request), **Cancel is the default**, and you choose **Send** (press `s`) to send. While the line has the focus it takes your keys; Esc gives the focus back to the page and keeps what you typed.
+
+What it can do is only what **keys of the page that change what is shown** can do, and the page decides which. On `tool.voc` these are T (the type shown), S (the state shown), `/` (the name filter) and F5 (read again); on `tool.files`, `/` and F5. **Delete, edit, new, clear, quit and the rest are never offered.** If the AI names one of them anyway, or anything else the page does not offer, the proposal is ignored, with a note, and nothing happens.
+
+An action you accept is carried out by **the page's own key**, exactly as if you had pressed it, so what the page does for that key, and anything it asks first, is unchanged. Because these keys only change what is shown, **Enter alone accepts** such a proposal. No command is run from a page. The page sends no record and no value of any file, only what it is and what it offers; the audit trail records that you asked, never what.
+
 ## If it says no
 
 | It says | Why |
