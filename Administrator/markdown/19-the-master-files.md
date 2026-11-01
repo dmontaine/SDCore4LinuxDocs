@@ -26,11 +26,11 @@ with its reason and nothing changed). Only SDSYS sees any of it.
 > routes that this does not change: **the global catalogue is the `sdsys` user's to write**, and every
 > session loads programs from it; and **`sdsys` may run `sudo /usr/local/sbin/sd-elevate` with any
 > arguments**, which can put `sdsys` back in a group, give it a group account's files, set the first
-> password of a user SD made, or add a person to an account's group (from 1.2-0 the helper no longer
+> password of a user SD made, or add a person to an account's group (from 2.0-0 the helper no longer
 > takes a user account's directory, `voc` or `%0`, nor the password of a login SD did not make or that
 > already has one; see [The installed scripts](09-the-installed-scripts.html)). (A third route, that the
 > files `root` runs - `bin/sd`, `bin/sdlnxd`, `bin/sdidx` and `bin/pcode` - belonged to `sdsys`, is
-> closed from 1.2-0: the installer makes them `root`'s, see
+> closed from 2.0-0: the installer makes them `root`'s, see
 > [Installation and the daemon](08-sd-installation.html#the-files-root-runs). The other two are not
 > touched by that.) So
 > **do not read the switch as protection against a stolen `sdsys` login: it is not tighter against
@@ -40,8 +40,8 @@ with its reason and nothing changed). Only SDSYS sees any of it.
 > network (`sdsys` has no remote access at all), and a process that is not a real `sdsys` login is not
 > an administrator.
 >
-> From 1.2-0 the membership is **off as delivered** and switched on per account.
-> An install that finds `sdsys` in the groups of accounts a release before 1.2-0 put it in asks once
+> From 2.0-0 the membership is **off as delivered** and switched on per account.
+> An install that finds `sdsys` in the groups of accounts a release before 2.0-0 put it in asks once
 > whether to keep it there (below); the default answer takes it out.
 
 | file | key | holds |
@@ -378,7 +378,7 @@ all` skips such an account and says so, see [Account maintenance](01a-account-ma
 system. (The installer's own `update.accounts all` runs as root and is not affected.) `create.account`,
 `delete.account`, `backup.account`, `restore.account`, `sync.masters`, `check.masters`, and reading the
 account (`logto` and a listing) are done by the root helper or only read the files, and are expected to
-work. Before 1.2-0 that general write was there for every account, because the membership was; switch
+work. Before 2.0-0 that general write was there for every account, because the membership was; switch
 the account on for the time SDSYS needs to work inside it.
 
 **A new user account** gets its group `sdu_`*name* from `create.account` with `root` and the user as
@@ -387,7 +387,7 @@ members, and no one else. A **group account** is made with `root` and `sdsys` in
 goes with the account.
 
 **The install and every upgrade** make one decision, **once**, about the accounts that a release before
-1.2-0 put the `sdsys` user in the group of. The question is asked up front, with the installer's other
+2.0-0 put the `sdsys` user in the group of. The question is asked up front, with the installer's other
 questions, only while the marker `/home/sd/$groups.ruled` is absent and some `sdu_` group lists `sdsys`:
 
 ```
@@ -434,7 +434,7 @@ verb) would make them closed, so **SD gives a VOC or a dictionary that it has ju
 write bit, whatever the umask**: the directory g+rwx and setgid, `%0` and `%1` g+rw. It does so
 **only where the account's own directory lets that group write** (if the directory is 755, nothing
 is added: a group that cannot write the account directory is not given the VOC), **and only where
-the `sdsys` user is in that group** (from 1.2-0: where master edits to the account are off, group
+the `sdsys` user is in that group** (from 2.0-0: where master edits to the account are off, group
 write on a new VOC or dictionary would serve nobody, and nothing is forced), only to what the
 session itself has just made, and it adds group bits and takes nothing away. The data file next to
 a dictionary is not touched. A VOC or dictionary that arrives some other way (`restore.account`, a

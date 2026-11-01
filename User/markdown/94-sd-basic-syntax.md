@@ -571,7 +571,7 @@ exist.**
 
 ## Added from openQM 4, 15 Oct 2026
 
-The statements and functions of the 1.2-0 additions that come from openQM 4,
+The statements and functions of the 2.0-0 additions that come from openQM 4,
 in one list. Each is described where its subject is.
 
 | | |

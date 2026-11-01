@@ -22,7 +22,7 @@ The gates (ssh, API, `sh`, `os.execute`, saving to a VOC, a program file or a di
 
 ## What it does not do
 
-It does not make an agent right; it makes the commonest mistakes cheap to avoid. It describes SD Core for Linux at its stamp plus the release in progress; items marked 1.2-0 may be missing from a released install and from SD Core Solo for Linux, which has its own pack made from its own sources.
+It does not make an agent right; it makes the commonest mistakes cheap to avoid. It describes SD Core for Linux at its stamp plus the release in progress; items marked 2.0-0 may be missing from a released install and from SD Core Solo for Linux, which has its own pack made from its own sources.
 
 ## See also
 

@@ -106,7 +106,7 @@ Without it you get *"Command requires administrator privileges"*. **The
 same gate applies to an implicit global
 catalogue** — one chosen by a `!`, `_` or `$` prefix on the call name
 rather than by the `global` keyword — so the prefix is not a way round it.
-The prefix characters `*` and `-` were removed in 1.2-0: `catalog bp *name` and
+The prefix characters `*` and `-` were removed in 2.0-0: `catalog bp *name` and
 `catalog bp -name` are refused.
 
 Private and local cataloguing need none of this and work in a programmer's own
@@ -549,8 +549,9 @@ does the **E** of TOOL.DICT, which hands the item to the IDE. `ide dict file rec
 **Cancel** (or **Esc**) in the form leaves the item as text in its tab, and **Go, Dictionary item as
 form** (or `/form` on the command line) shows the form for the tab you are in. A record found by a search,
 items opened together from a list, Ctrl-O, an item already in a tab, an item another session holds (it is
-read-only) and an item the form cannot show open as text, as before. The form fills the screen
-(140 by 43) over the IDE and is **one form**. Its first row is the **Type**, an entry: type `D`, `E`, `I`,
+read-only) and an item the form cannot show open as text, as before. The form takes the body of the
+screen (140 by 43) in the same frame as the IDE and the pages, with its own bar, status line and row
+of keys, and is **one form**. Its first row is the **Type**, an entry: type `D`, `E`, `I`,
 `L`, `PH` or `X` and press Tab, and **the rows of that type appear**, each a label and an entry; a new item
 shows nothing but the Type until then, and an item that exists shows its rows with their values filled in, to
 be edited. Typing another Type makes the rows of that type and keeps what was typed for the rows the two

@@ -7,7 +7,7 @@ micro {dict} file record
 
 `micro` opens a record in **micro**, a full-screen editor, and is the one
 external editor SD hands records to. (`edit` is a second name for the line editor
-[ed](25-sd-tcl-ed.html); the NANO verb was added and removed again in 1.2-0.)
+[ed](25-sd-tcl-ed.html); the NANO verb was added and removed again in 2.0-0.)
 Two things make it the one to use for programming:
 
 | | |

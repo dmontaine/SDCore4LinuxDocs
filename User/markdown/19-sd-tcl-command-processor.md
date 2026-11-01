@@ -68,7 +68,7 @@ The command processor tries the three case attempts and no more. **A verb
 typed with a hyphen where the name has a dot is not found**: `clear-select`
 answers `CLEAR-SELECT is not in your VOC`, and `clear.select` is the verb. (The
 hyphen form was the Pick spelling of a dotted verb. It was removed in release
-1.2-0; an account with a paragraph or script that types it must say the dotted
+2.0-0; an account with a paragraph or script that types it must say the dotted
 name.)
 
 ### If the VOC has nothing, the catalogue is tried
@@ -115,7 +115,7 @@ command processor's dispatch list. Several names share one: `off` and `quit` are
 both internal verb 1, and `clr` is internal verb 2. (`cs` for `clr`, and the
 run-together `cleardata`, `clearinput`, `clearprompts` and `clearselect` for
 `clear.data` and the rest, were second names for the same numbers and were
-removed in 1.2-0.)
+removed in 2.0-0.)
 
 ## Sentences and paragraphs
 

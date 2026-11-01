@@ -112,7 +112,7 @@ follows from what you saved** rather than from anything you say.
 
 ### Listing the VOC by type
 
-SD has no ready-made `list` sentences. (Until 1.2-0 it shipped ten, `listf`,
+SD has no ready-made `list` sentences. (Until 2.0-0 it shipped ten, `listf`,
 `listfl`, `listfr`, `listk`, `listpa`, `listph`, `listq`, `listr`, `lists` and
 `listv`, as R-records into a file called `SD.VOCLIB`; both are gone.) The query
 processor does the same job with the `type` item of the VOC's dictionary:

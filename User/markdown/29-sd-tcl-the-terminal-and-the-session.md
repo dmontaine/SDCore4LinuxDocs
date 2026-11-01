@@ -119,7 +119,7 @@ wy50            wy60            wyse50          wyse60          xterm
 
 (The list is cut short here: it is 51 names in rows of six, and the count depends
 on the release. The Data General, MDC Prism, Prime and Televideo 910 definitions that
-were once on it were removed in 1.2-0.) **A type that is not on it has no definition of its own**, and SD
+were once on it were removed in 2.0-0.) **A type that is not on it has no definition of its own**, and SD
 substitutes one for it.
 
 ### What a key does: `tool.keys`
@@ -280,7 +280,7 @@ clear.prompts
 command left behind. Neither prints anything.
 
 (The run-together spellings `clearinput` and `clearprompts` were second names
-for the same verbs and were removed in 1.2-0.)
+for the same verbs and were removed in 2.0-0.)
 
 > **Neither can be demonstrated down a pipe, and `clear.input` should not be
 > sent down one at all.** In a piped session the input stream *is* the script,

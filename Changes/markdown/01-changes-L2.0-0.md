@@ -1,8 +1,8 @@
-Title: Changes in L1.2-0
+Title: Changes in L2.0-0
 Subtitle: What was added, changed and removed since L1.1-3 (9 October 2026), by section and in alphabetical order.
 Columns: 23 11 66
 
-**This is the list of what changed between L1.1-3 (9 October 2026) and L1.2-0.** The release changelog
+**This is the list of what changed between L1.1-3 (9 October 2026) and L2.0-0.** The release changelog
 (`sdsys/changelog`) has the full story of each change: what it does, why, and what it does not do. This document
 is the short form.
 
@@ -363,12 +363,13 @@ The debugger and the editors, from the openQM list. The full-screen tools that a
 | `sed` option `no.case.explore` | Added | in `&sed.options&`: the list of records is in order whatever the case of the ids, not capitals first|
 | `sed` option `scroll1` | Added | in `&sed.options&`: page up and page down move one line less than a page, so one line of the old page stays|
 | `sed` split point | Added | Window > Move split up / Move split down, and the commands `split.up` and `split.down` with a number of rows, move the line between the two windows|
+| `sed` syntax colour | Changed | is on when SED starts, on a terminal that can show colour (it was off until asked for); `no.syntax` in `&sed.options&` or `syntax off` turns it off, and the bare `syntax` switches it |
 | `sed` view | Added | Search > View lines, or `view` and a text: a new read-only buffer holding only the lines of this one that contain the text|
 
 
 ## REMOVED
 
-These were in L1.1-3 - or were added and taken out again during L1.2-0 - and **SD no longer has them**. This is the one place where a removal is listed,
+These were in L1.1-3 - or were added and taken out again during L2.0-0 - and **SD no longer has them**. This is the one place where a removal is listed,
 whatever the area it belonged to. Most were removed because they existed only to make SD behave like another MultiValue
 product, or gave a second way to do something SD already does one way. **A program, a login paragraph or a `$basic.options` record that uses one has to
 be edited**; the last column says what to write instead. A program that was compiled with a removed mode keeps what it was
@@ -377,7 +378,7 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | Name | Change | What |
 |---|---|---|
 | AccuTerm terminal types | Removed | the eleven `-at` terminal types and AccuTerm's escape sequences |
-| `$mode` words that imitated other products | Removed | `prclose.default.0` (write `printer close on` *unit*), `unassigned.common` (a common variable starts as zero), `no.case.invert` (give `input` the `nocaseinvert` clause) and `optional.then.else` (a `read` takes a `then` or an `else`) are refused now with *Unrecognised mode name*; `conditional.statements`, `implied.stop` (end a program with `stop`) and `exception.save.stack` (write `saving.stack` on the `catch`) were added and removed within 1.2-0, so they never shipped |
+| `$mode` words that imitated other products | Removed | `prclose.default.0` (write `printer close on` *unit*), `unassigned.common` (a common variable starts as zero), `no.case.invert` (give `input` the `nocaseinvert` clause) and `optional.then.else` (a `read` takes a `then` or an `else`) are refused now with *Unrecognised mode name*; `conditional.statements`, `implied.stop` (end a program with `stop`) and `exception.save.stack` (write `saving.stack` on the `catch`) were added and removed within 2.0-0, so they never shipped |
 | `option` words that imitated other products | Removed | `option pick` and 22 words, refused now with *Option name not recognised*: `assoc.unassoc.mv`, `pick.breakpoint`, `pick.breakpoint.u`, `pick.explode`, `pick.grand.total`, `pick.implied.eq`, `pick.null`, `pick.wildcard`, `qualified.display`, `with.implies.or`, `query.no.case`, `query.priority.and`, `ampm.upcase`, `crdb.upcase`, `no.date.wrapping`, `space.mct`, `lock.beep`, `ed.no.query.fd`, `create.file.upcase`, `select.keep.case`, `debug.rebind.keys`, `proc.a`. SD does what it did with them off: write `with city = "Reno"`, use `like` for wildcards, brackets and `or` for the order of tests, `no.case` after an operator or `option query.sort.no.case` for case; times and amounts are `am`, `pm`, `cr`, `db`; a date such as 31 February rolls into the next month; a lock wait is silent; `fd` in `ed` asks first; `create.file` names a file in lower case |
 | screen save and restore | Removed | `save.screen()` and `restore.screen`: still exist and do nothing the terminal could see |
 | `sdterm` terminal type | Removed | with SDTerm and SDConsole, and the `term display` line about them |
@@ -502,7 +503,7 @@ has, with the changes they made.
 | `sd-elevate restore-place` | Changed | a group account is put back only in its own group, `sdg_`*name* |
 | `sd-elevate setpw`, `passwd` and `userdel` | Changed | act only on a user carrying the `SD account` comment, as `userdel-home` always did; `setpw` sets a first password only |
 | `sd-on` and `sd-off` | Added | per-account switch: programs may reach files under the directory of any SD account the user could `logto` |
-| `sdsys` operating system user | Changed | a member of no user account's group as delivered (a release before 1.2-0 put it in every one); `sdsys-on` puts it in one |
+| `sdsys` operating system user | Changed | a member of no user account's group as delivered (a release before 2.0-0 put it in every one); `sdsys-on` puts it in one |
 | `sdsys-on` and `sdsys-off` | Added | per-account switch for the `sdsys` user's membership of the account's group (master edits, and SDSYS writing inside the account); off as delivered |
 | `set.config` | Added | changes one of 14 tuning parameters of `sd.conf` (administrator, through the root helper): a name on the helper's list and a whole number inside the range SD enforces; the old file is kept as `sd.conf.bak` |
 | `set.start.default` | Added | chooses where accounts start: the home screen or the command prompt |
@@ -542,7 +543,7 @@ has, with the changes they made.
 | `ai` verb | Added | asks an AI one question; shows exactly what will be sent and sends only on `y` or `yes` |
 | `sdai` operating system user | Added | system user made by the installer for the AI feature: own group, no shell, no home, no SD group |
 | `set.ai` | Added | SDSYS chooses the provider, model and key from the prompt |
-| `tool.ai` | Added | SDSYS page: Anthropic, OpenAI, DeepSeek or custom, one provider for every account, each account's gate |
+| `tool.ai` | Added | SDSYS page: Anthropic, OpenAI, Google, DeepSeek or custom, one provider for every account, each named provider with its address and a default model (a key is all it needs), each account's gate |
 
 ### API and client library
 

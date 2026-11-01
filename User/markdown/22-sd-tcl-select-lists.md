@@ -70,7 +70,7 @@ clear.select all
 Cleared all numbered select lists
 ```
 
-(`clearselect`, the same verb spelled without the dot, was removed in 1.2-0.)
+(`clearselect`, the same verb spelled without the dot, was removed in 2.0-0.)
 
 ## Building a list
 
@@ -299,7 +299,7 @@ merge.list 3 intersect 4 to 6
 ```
 
 The operator words are **`union`**, **`intersect`** and **`diff`**
-(`intersection` and `difference`, which meant the same, were removed in 1.2-0).
+(`intersection` and `difference`, which meant the same, were removed in 2.0-0).
 `to` *n* names the target, defaulting to list 0,
 and `count.sup` suppresses the count line.
 

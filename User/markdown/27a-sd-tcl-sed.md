@@ -251,11 +251,13 @@ The command line (`Esc X`, or *Command* on the Tools menu) takes these:
 
 SED can colour the text it shows: comments, strings, keywords, numbers and
 the lines that begin with `$`, in SD BASIC and in five other languages. **It is
-off until you ask**, and with it off the screen is drawn exactly as it was.
+on unless you turn it off**, on a terminal that can show colour; with it off, or
+on a terminal that cannot show colour, the screen is drawn without it. The word
+`no.syntax` in `&sed.options&` starts SED with it off.
 
 | | |
 |---|---|
-| **`syntax`** | Turn colour on, or off if it is on. The same item is on the Tools menu, checked while colour is on |
+| **`syntax`** | Turn colour off if it is on, or on if it is off. The same item is on the Tools menu, checked while colour is on |
 | **`syntax on`** · **`syntax off`** | Turn it on or off |
 | **`syntax light`** · **`syntax dark`** | Choose the palette for a light or a dark background (dark is the default); either turns colour on |
 
@@ -325,7 +327,7 @@ blanks:
 | **`tabs`** *n* | the tab interval, 1 to 99 (field 5 does the same) |
 | **`case_on`** · **`case_off`** | searches match case, or do not |
 | **`word`** · **`bword`** | search for whole words, or whole SD BASIC words |
-| **`syntax`** · **`no.syntax`** · **`syntax.light`** | colour on or off at the start; light palette |
+| **`syntax`** · **`no.syntax`** · **`syntax.light`** | colour on (the default) or off at the start; light palette |
 | **`mouse`** · **`no.mouse`** | the mouse on (the default) or off at the start |
 | **`scroll1`** | page up and page down move one line less than a page, so one line of the old page stays on the screen |
 | **`no.case.explore`** | the list of records (the explore list, `?` at the record prompt) is in order whatever the case of the ids, not capitals first; the list of files is not changed |

@@ -3,7 +3,7 @@ Subtitle: One provider and one model for every account, a key that SD never sees
 
 SD can ask an AI model a question for an account holder (the `ai` verb, see [SD TCL - Asking the AI](29b-sd-tcl-asking-the-ai.html)). This page is for the administrator: it says what is set up, what leaves the machine, how to choose the provider and give it a model and a key, and how to allow or stop an account.
 
-> **Nothing is on as delivered.** There is no provider, no model, no key, and no account has the gate. Until you have done all four, the `ai` verb says so in words and nothing is sent anywhere. Turning one of them on is your act, and each is one command (or one key on the AI choice page) that can be undone.
+> **Nothing is on as delivered.** There is no provider, no key, and no account has the gate (each named provider comes with a default model, so the model is the one thing you need not supply). Until you have done the other three, the `ai` verb says so in words and nothing is sent anywhere. Turning one of them on is your act, and each is one command (or one key on the AI choice page) that can be undone.
 
 ## What leaves the machine
 
@@ -18,20 +18,20 @@ SD adds nothing of the account, the session or the data. A person can of course 
 | `sd-ai` (in `/usr/local/lib/sd-ai/`) | The helper. A small Python program, started by systemd for each request, as the operating system user `sdai`. It is the only part of SD that connects outward and the only part that can read a key. Root owns it; no SD account can replace it. |
 | `/run/sd-ai/sock` | The socket the helper listens on (`sd-ai.socket`; group `sdusers`, mode 0660). Whoever connects is identified by the operating system, not by anything they write. |
 | `/var/lib/sd-ai/` | The helper's own directory: the settings (`ai.conf`), one key file per provider (mode 0600, readable by `sdai` only) and the counters of the limits. |
-| `/usr/local/lib/sd-ai/ai-providers` | The connection details that come with SD for Anthropic, OpenAI and DeepSeek. Root owns it. |
+| `/usr/local/lib/sd-ai/ai-providers` | The connection details that come with SD for Anthropic, OpenAI, Google and DeepSeek, and each one's default model. Root owns it. |
 | `sd-ai-ctl` | The administrator's client for the helper. It is what asks for a key at the terminal, without echo. |
 | `sdaiusers` | The Linux group that is the **gate**. Membership of it is what lets an account use the AI. |
 
 The helper asks the operating system who is calling (the user id of the connection), so the gate does not depend on SD's own programs being honest: a program that talks to the socket directly gets the same answer.
 
-## The four things that turn it on
+## The things that turn it on
 
-1. **A provider.** One for the whole machine: Anthropic, OpenAI, DeepSeek or Custom.
-2. **A model** for that provider. The provider names its models; SD does not know them.
+1. **A provider.** One for the whole machine: Anthropic, OpenAI, Google, DeepSeek or Custom.
+2. **A model** for that provider. Each of the four named providers comes with a default model, shown on the page and used until you name another (`set.ai model PROVIDER NAME`; a dash goes back to the default). The defaults are the balanced model of each provider as its own documentation named it on 1 November 2026, and none has been tried against a real key: **model names change, so check the one you will pay for.** Custom has no default; its model is yours.
 3. **A key** for that provider, from the provider's own account. It is typed at a prompt that shows nothing, and kept for the helper only.
 4. **The gate for each account that may use it**: `modify.account NAME ai-on`.
 
-The same provider and the same model serve every account; there is no choice per account and no key per account.
+The same provider and the same model serve every account; there is no choice per account and no key per account. Of the four, only the provider, the key and the gates have to be supplied: the AI stays off until all three are.
 
 ## The AI choice page: `tool.ai`
 
@@ -41,14 +41,14 @@ tool.ai
 
 An administrator-only full-screen page (140 columns by 43 lines at least; it is in SDSYS's VOC only). It has two boxes.
 
-**Provider** lists Anthropic, OpenAI, DeepSeek and Custom, one to a row. A check box marks the provider in use; none marked means the AI is off. The three named providers come with their address filled in; you supply the model and the key. **Custom** is the fourth choice, where you fill in everything yourself: a name, an `https://` address, the request layout (`anthropic` or `openai`), the authentication (`bearer` or `x-api-key`), a version header (or none) and the name of the field that limits the length of an answer. Below the list, the row under the cursor is shown in full, with the file of certificate authorities and the limits.
+**Provider** lists Anthropic, OpenAI, Google and DeepSeek, then Custom, one to a row. A check box marks the provider in use; none marked means the AI is off. The four named providers come with their address and a default model filled in (the Model column says `(default)` beside one you have not changed); you supply the key, and M names another model if you want one. **Custom** is the fifth choice, where you fill in everything yourself, the model included: a name, an `https://` address, the request layout (`anthropic` or `openai`), the authentication (`bearer` or `x-api-key`), a version header (or none) and the name of the field that limits the length of an answer. Below the list, the row under the cursor is shown in full, with the file of certificate authorities and the limits.
 
 **Accounts** lists the accounts that belong to a person, with the state of each one's `ai` gate.
 
 | Key | In the Provider box | In the Accounts box |
 |---|---|---|
 | Enter or space | check the provider under the cursor (you type its name to confirm), or uncheck the one in use | turn the account's gate on (you type the account's name) or off |
-| M | set the model (a dash clears it) | |
+| M | name the model (a dash goes back to the provider's default; Custom has none, so there it clears it) | |
 | K | set the key: the terminal is handed to the helper's own prompt | |
 | X | remove the key | |
 | C | fill in Custom | |
@@ -68,7 +68,7 @@ Opening the page changes nothing and writes one audit line, `tool start app=tool
 
 ```
 set.ai
-set.ai provider anthropic | openai | deepseek | custom | none
+set.ai provider anthropic | openai | google | deepseek | custom | none
 set.ai model PROVIDER NAME | -
 set.ai key PROVIDER
 set.ai key PROVIDER clear
@@ -139,7 +139,7 @@ The `ai request` line is written by the SD kernel **before** the connection is m
 |---|---|
 | `The AI helper could not be reached: it is not running, or it is not installed` | the socket is not there: `systemctl status sd-ai.socket`; an install from before this release has not set it up |
 | `The AI is off: the administrator has not chosen a provider` | nothing is checked on the page (`set.ai provider ...`) |
-| `The AI is not set up for anthropic: the administrator has not set its model` (or `key`) | the provider is chosen but a model or a key is missing |
+| `The AI is not set up for anthropic: the administrator has not set its model` (or `key`) | the provider is chosen but its key is missing; a model is missing only for Custom, which has no default (the named providers have one) |
 | `This account may not use the AI: ... modify.account NAME ai-on` | the account is not in `sdaiusers` |
 | `The AI did not answer: limit (...)` | one of the limits above is used up; wait, or raise it |
 | `The AI did not answer: net (...)` or `timeout` | the provider could not be reached; check the address, the certificate and the clock |

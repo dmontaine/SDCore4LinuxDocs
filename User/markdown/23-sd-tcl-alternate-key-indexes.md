@@ -17,7 +17,7 @@ marks a word typed as it stands; braces mark an optional part.
 **That is the whole of this page's advice.** `create.index` defines an index and
 `build.index` fills it, and **the half that is easy to miss is the second one**.
 Run both, in that order; what each prints is shown in the next two sections.
-(`make.index`, which did both in one command, was added and removed again in 1.2-0.)
+(`make.index`, which did both in one command, was added and removed again in 2.0-0.)
 
 ## The four verbs
 

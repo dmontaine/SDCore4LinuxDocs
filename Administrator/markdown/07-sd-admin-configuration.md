@@ -118,7 +118,7 @@ Everything else takes effect only when SD is next started. That includes every
 limit which sizes the shared memory segment and every setting the API listener
 reads.
 
-**Since 1.2-0 a session reads `sd.conf` itself when it starts.** It used to copy
+**Since 2.0-0 a session reads `sd.conf` itself when it starts.** It used to copy
 the settings the starter had left in the shared memory, which an SD user with a
 shell could change. So an edit to a setting a session keeps for itself (the 23
 above, and others such as `USRDIR`, `GRPDIR` and `TIMEZONE`)

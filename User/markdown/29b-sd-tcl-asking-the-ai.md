@@ -6,7 +6,7 @@ ai text
 ai "text that ends with a question mark?"
 ```
 
-**`ai`** sends your text to an AI model and prints the answer. It is off until your administrator has chosen a provider, given it a model and a key, **and allowed your account**; until then it says which of those is missing and sends nothing.
+**`ai`** sends your text to an AI model and prints the answer. It is off until your administrator has chosen a provider, given it a key (and a model, for a Custom provider), **and allowed your account**; until then it says which of those is missing and sends nothing.
 
 ## What you see
 

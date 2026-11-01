@@ -222,7 +222,7 @@ sub-menu are kept by the Recent group like any other.
 ## The AI line
 
 When the AI is on for your account (the administrator has chosen a provider, given it a
-model and a key, **and allowed your account**; see [Asking the AI](29b-sd-tcl-asking-the-ai.html))
+key, **and allowed your account**; see [Asking the AI](29b-sd-tcl-asking-the-ai.html))
 the home screen has one more row, just above the status line, that starts **`AI>`**. Without
 the AI there is no such row and nothing on this page changes.
 

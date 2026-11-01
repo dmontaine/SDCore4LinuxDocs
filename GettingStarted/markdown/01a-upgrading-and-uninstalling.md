@@ -47,8 +47,8 @@ registering an account from an older system, say. To refresh one account
 instead, `update.accounts` (no `all`) run **in that account** updates just
 it and offers to do the rest.
 
-**The `sdsys` user is in no user account's group as delivered** (from 1.2-0), and
-an install does not put it there. A release before 1.2-0 did, for every account, so
+**The `sdsys` user is in no user account's group as delivered** (from 2.0-0), and
+an install does not put it there. A release before 2.0-0 did, for every account, so
 an install that keeps accounts and finds the `sdsys` user in their groups **asks once**
 whether to keep it there: the answer is no unless you type `y`, and it is also no
 when nothing can be read (no terminal). With no, it takes the user out of those

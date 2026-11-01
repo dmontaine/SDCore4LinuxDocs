@@ -176,7 +176,7 @@ so they become one; **`printer close`** clears it again and closes the unit. The
 flag shows up in `setptr display`'s Options column as `KEEP.OPEN`, which is the
 way to check it took. A keep-open flag left set is why a report occasionally
 arrives stapled to the one before it. (The verbs `sp.open` and `sp.close`, which
-did this for unit 0 only, were removed in 1.2-0.)
+did this for unit 0 only, were removed in 2.0-0.)
 
 ## Printing records
 

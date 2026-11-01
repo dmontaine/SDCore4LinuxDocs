@@ -290,7 +290,7 @@ SCAN = `scan(`*a* {, *matrix*}`)` — *matrix* is a `dim`med one-dimensional nam
 SORT = `sort(`*key.count*, {`mat`} *flags*`)` — makes a sort and gives back the variable that stands for it
 SORTDATA = `sortdata(`*sortvar* {, *max.items*}`)`
 SORTNEXT = `sortnext(`*sortvar* {, {`mat`} *keys*}`)`
-# 13 Oct 26: the 1.2-0 names that had no line, so that the card can be written again.  The data collection names
+# 13 Oct 26: the 2.0-0 names that had no line, so that the card can be written again.  The data collection names
 # are on pages 05b and 05c (docmap.py); the others were named in the changelog and are checked there, not run here.
 AS = `ins` *value* `as` *c*`{`*path*`}` — a reserved word, ends the value of that form of `ins`
 CATCH = `try` {*statement*} … `catch` *exception* {*qualifiers*} {, *exception* …} … {`catch` …} `end` — see page 02

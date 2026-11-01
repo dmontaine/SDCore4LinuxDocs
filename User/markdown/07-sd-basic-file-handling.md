@@ -398,7 +398,7 @@ rtrans({dict} file.name, record.id, field, action)
 
 Both fetch one field of one record from a file, opening it if needed. `trans`
 takes a file name; `rtrans` takes an already-open file variable instead.
-(`xlate` was a second name for `trans` and was removed in 1.2-0.)
+(`xlate` was a second name for `trans` and was removed in 2.0-0.)
 
 The *action* says what to do when the record is missing — **or when the file
 cannot be opened at all**, which takes the same action:

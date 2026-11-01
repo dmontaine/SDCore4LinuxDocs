@@ -82,7 +82,7 @@ needs the group's write here (SD makes an account directory in the `sdsys` sessi
 the modes every time it runs, so installing again fixes an installation made before this change; to do it by hand,
 `sudo chmod 755 /home/sd /home/sd/user_accounts /home/sd/group_accounts`. The account directories themselves keep their own owner, group and setgid bit.
 
-**The audit trail** (`/usr/local/sdsys/audit`) is mode 0600, owner `sdsys`, group `sdusers`, **and append-only** (`chattr +a`): the group cannot read it, write it or open it. (It was 0620 until 1.2-0, because
+**The audit trail** (`/usr/local/sdsys/audit`) is mode 0600, owner `sdsys`, group `sdusers`, **and append-only** (`chattr +a`): the group cannot read it, write it or open it. (It was 0620 until 2.0-0, because
 every session runs as its user and so had to append to the file itself; that also let a member of `sdusers` add a line of their own that claimed any user.) **Now a session sends each record to the root daemon
 `sdlnxd`** over the Unix socket `/run/sd/audit.sock` (mode 0660, group `sdusers`, in a directory only root can write), and **the daemon writes the line**. The `user=` and the `pid=` on the line are the ones the
 kernel reports for the sending process, not anything in the record's text, so no one can make a line that names someone else; the text of a record comes after them, and the `uid=` is the SD user number the
@@ -169,7 +169,7 @@ operating system's rule; it has been tested here with one user only.
 
 `sd.service` runs `bin/sd` as root (`sd -start` and `sd -stop`), `sd-lnxd.service` runs `bin/sdlnxd` as root, `sdclient@.service` (the first stage of every API connection)
 runs `bin/sd -n -q` as root, `sd-elevate akpath-set` runs `bin/sdidx` as root, and every session - that first stage included - reads `bin/pcode`. **A file that root runs
-must not be one that the `sdsys` login can replace.** Until 1.2-0 the installer's `chown -R sdsys:sdusers` left all of them `sdsys`'s, so whoever held that login could
+must not be one that the `sdsys` login can replace.** Until 2.0-0 the installer's `chown -R sdsys:sdusers` left all of them `sdsys`'s, so whoever held that login could
 change one and have root run it at the next start. **Near its end the installer now makes `/usr/local/sdsys/bin` and every file in it `root:root`, with no group or other
 write, and makes the directory itself immutable** (`chattr +i`).
 

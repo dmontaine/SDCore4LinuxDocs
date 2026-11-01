@@ -170,7 +170,7 @@ returns as soon as that many characters arrive, without waiting for Enter.
 | **raw** | read exactly *length* characters just as they arrive: a newline or an erase key is data, nothing is echoed; `input` only, and the length is required |
 | **panning** | scroll a field wider than the space it is shown in |
 | **upcase** | fold what is typed to upper case |
-| **waiting** *n* | give up after *n* seconds and take the `else` branch (`for` and `timeout`, which meant the same, were removed in 1.2-0) |
+| **waiting** *n* | give up after *n* seconds and take the `else` branch (`for` and `timeout`, which meant the same, were removed in 2.0-0) |
 
 ### A fill for the field
 
@@ -232,7 +232,7 @@ data expression
 | | |
 |---|---|
 | `inputerr` | show a message on the status line without disturbing the screen |
-| `clearinput` | discard anything typed ahead (`inputclear` was a second name and was removed in 1.2-0) |
+| `clearinput` | discard anything typed ahead (`inputclear` was a second name and was removed in 2.0-0) |
 | `data` | **stack** a value for the next `input` to consume |
 | `cleardata` | discard what `data` stacked |
 

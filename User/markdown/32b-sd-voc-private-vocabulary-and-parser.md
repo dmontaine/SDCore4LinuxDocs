@@ -19,7 +19,7 @@ The first word of a line is the command. The command processor looks for it
 in this order, and stops at the first place that has it:
 
 1. **The account's VOC.** The word as typed, then in lower case, then in
-   upper case. **There is no hyphen form** (it was removed in 1.2-0):
+   upper case. **There is no hyphen form** (it was removed in 2.0-0):
    `zz-vdot` does not find a VOC record called `zz.vdot`.
 2. **The private vocabulary**, if the VOC has `$private.voc`. The word as
    typed, then in lower case, then in upper case; `zz-dot` does not find a

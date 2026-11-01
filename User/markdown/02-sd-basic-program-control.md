@@ -342,7 +342,7 @@ meets an active list selects *from that list* (an intersection): a command that
 means to replace the list must `clear.select` first.
 
 > **`chain` discards unnamed common.** (The option `chain.keep.common`, which
-> kept it, was removed in 1.2-0: pass what the next program needs in named common
+> kept it, was removed in 2.0-0: pass what the next program needs in named common
 > or in the data queue.)
 
 ## Waiting
@@ -431,7 +431,7 @@ from the comment.
 
 `procread` and `procwrite` are gone as well, with the PROC language they
 served, and so are the variables `@pib`, `@sib`, `@pob` and `@sob`. A program
-using one will not compile. (The 1.2-0 programme removed them; earlier versions
+using one will not compile. (The 2.0-0 programme removed them; earlier versions
 of this page said they compiled.)
 
 ## See also

@@ -13,7 +13,7 @@ convert(from.characters, to.characters, string)
 convert from.characters to to.characters in variable
 ```
 
-(`swap()` was a second name for `change()` and was removed in 1.2-0.)
+(`swap()` was a second name for `change()` and was removed in 2.0-0.)
 
 The fourth and fifth arguments are frequently misread:
 
@@ -225,7 +225,7 @@ squote(expr)
 | `quote()` | wrap in double quotes — `"a"` |
 | `squote()` | wrap in single quotes — `'a'` |
 
-(`dquote()` and `dquotes()` were second names for `quote()` and `quotes()` and were removed in 1.2-0.)
+(`dquote()` and `dquotes()` were second names for `quote()` and `quotes()` and were removed in 2.0-0.)
 
 For CSV output do not build quoting by hand: `csvdq()` and the CSV statements
 handle embedded quotes and separators to RFC 4180, and are covered in

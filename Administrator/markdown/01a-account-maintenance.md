@@ -121,8 +121,8 @@ restore.voc account id | restore.voc account all
 :list.voc.removed sales
 13 VOC record(s) that SD no longer ships:
 Name                          Went in   Use instead   sales
-margin                        1.2-0     left.margin   [would be removed]
-only                          1.2-0     id.only (written after the file name)   [kept: not the shipped record]
+margin                        2.0-0     left.margin   [would be removed]
+only                          2.0-0     id.only (written after the file name)   [kept: not the shipped record]
 ```
 
 `list.voc.removed` prints the list with the release each record went in and

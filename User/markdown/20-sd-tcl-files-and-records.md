@@ -294,7 +294,7 @@ cname {dict} file.name old.record.name to new.record.name
 ```
 
 A comma may be used instead of `to`. (`rename`, a second name for this verb, was
-removed in 1.2-0.) `@system.return.code` is `0` on success and `-1` if the arguments were
+removed in 2.0-0.) `@system.return.code` is `0` on success and `-1` if the arguments were
 wrong.
 
 **`cname` on a file renames the VOC record too**, which is the point — the
