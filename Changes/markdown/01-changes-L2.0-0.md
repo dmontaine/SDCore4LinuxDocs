@@ -625,6 +625,7 @@ Three simple layers, with no vault and nothing on by default.
 | Name | Change | What |
 |---|---|---|
 | agent pack | Added | the guide and the knowledge pack are copied to `/usr/local/sdsys/agent-pack`, only when they match the installed version |
+| authenticator code for `sdsys` | Added | the installer asks once (no unless `y`) whether to set up the `sdsys` ssh sign-in code at its end: it builds and installs SD's PAM module, shows the secret and link once, takes the code, prints the recovery codes and opens the ssh door; the deleter removes the module and the stored secret |
 | changes document | Added | a release package carries it beside the installer as `sd-core-for-linux-<version>-changes.pdf`, `.html` and `.md`, and the installer copies the three into the shared account's `pdf` directory, where `pdf` lists the PDF |
 | group account files | Changed | an upgrade puts the four record files of every kept group account back in the account's group |
 | gates of the installing user's account | Added | when it makes your own account the installer asks once whether to open every access gate on it (no unless `y`); a `y` opens all of them, the AI and the `sdsys` user in its group included, and the install says which really opened |

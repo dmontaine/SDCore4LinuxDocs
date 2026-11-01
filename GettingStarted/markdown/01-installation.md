@@ -99,6 +99,24 @@ itself is running). What the two questions actually decide:
 | ssh | `sshd` is left however the box already had it; the SD boundary (below) is written to `sshd_config` regardless, ready for whenever ssh is turned on | `sshd` is enabled at boot and `ufw allow 22/tcp` is added |
 | API | `sdclient.socket` listens on `127.0.0.1:4247` only — a remote client reaches it by tunnelling over ssh (`ssh -L 4247:127.0.0.1:4247 <host>`) | the socket is rebound to `0.0.0.0:4247` and `ufw allow 4247/tcp` is added |
 
+**A further question, also defaulting to no, is about SDSYS itself:**
+
+```
+Set up the authenticator code for SDSYS at the end of this install? (y/N)
+```
+
+SDSYS can sign in over ssh from another computer only with an authenticator
+code from a phone app (asked before its password), and only once a code has
+been enrolled. Answering `y` makes the installer, at its very end, show the
+secret and the link once, ask for the six digits the app then shows (three
+tries; Enter stops), and print the eight recovery codes — write them down
+then, they are not shown again. Answering `n` leaves SDSYS refused over ssh,
+as before, and you can enrol at any time from a terminal on the machine with
+`sudo sd-elevate totp-begin` and `sudo sd-elevate totp-confirm`. The step is
+non-fatal: if SD's PAM module could not be built or the ssh boundary was
+not applied, the installer says so in its closing text and enrols nothing.
+See the Administrator set's *Remote administration over ssh*.
+
 **The ssh boundary is applied either way, and it is what actually confines
 SD accounts.** Every account except SDSYS is `ForceCommand`'d into `sd` the
 moment it connects over ssh — it never reaches a plain shell that way — and
