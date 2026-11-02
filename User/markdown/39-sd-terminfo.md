@@ -115,8 +115,7 @@ Lat15-Terminus12x6` (a font 6 pixels wide and 12 high) makes a 1280 × 800
 console 213 × 66 and a 1024 × 768 one 170 × 64, and SD's pages use the
 whole of it. `setfont` changes the console it is run on, until the next boot.
 To keep it, on Debian and Ubuntu run `sudo dpkg-reconfigure console-setup` and
-choose the Terminus font in 6x12, and on Fedora set `FONT=` in
-`/etc/vconsole.conf`. A higher video mode (the kernel's `video=` parameter, or
+choose the Terminus font in 6x12. A higher video mode (the kernel's `video=` parameter, or
 the boot loader's graphics mode) does the same from the other side.
 
 **The keys.** Everything a console can send works, and SD names it as it does

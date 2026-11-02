@@ -80,8 +80,8 @@ reaching this machine through it right now — there is nothing here
 resembling SD Core for Windows's `ssh.server install`/`remove`, because
 installing or removing packages is the distribution's job, not SD's. The
 rule this verb moves is the one the installer itself wrote (`ufw allow
-22/tcp`, or firewalld's port 22/tcp on Fedora). On Fedora the
-distribution's own `ssh` service also lets ssh in; `remote.ssh off`
+22/tcp`, or firewalld's port 22/tcp where firewalld is the firewall). Where
+firewalld's own `ssh` service also lets ssh in, `remote.ssh off`
 removes only SD's rule and says that the `ssh` service still allows it,
 rather than remove a rule SD did not make.
 
@@ -112,7 +112,7 @@ remote.api {on | local | off}
 Core for Windows's verb of the same name — the mechanism is entirely
 different underneath.** Whether SD listens at all is `systemd`'s
 `sdclient.socket` unit; who may reach it is the firewall — `ufw`, or
-firewalld on Fedora. The verb drives both and
+firewalld. The verb drives both and
 reads them back, so what it reports after a change is the machine's own
 answer, not the verb's intention. The firewall rule is the installer's own
 (`ufw allow 4247/tcp`, or firewalld's port 4247/tcp, kept in its saved

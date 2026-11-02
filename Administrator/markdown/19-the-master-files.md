@@ -616,6 +616,22 @@ it where it is (`nothing was run`). The page deletes that one record itself, thr
 judged, and runs no command. A delete writes one line to the audit trail, for example
 `master delete account=ze1 kind=voc file=voc id=zzdel1`. The programs are not deleted from here yet.
 
+**In the programs view, `E` and `N` open the program in the editor and `C` compiles it, in the
+account it belongs to.** `E` and `N` go the same way as for a VOC entry: the program file must lie
+inside the account (a program file reached through a pointer to another account, marked `>`, is
+refused), and so must the program's own file: a program that is a link to a file elsewhere is
+refused, and so is a name that is a link leading nowhere, because writing it would create the file
+at the other end. The temporary pointer reaches the program file's data only. The editor is told
+which account the program belongs to, so its **Compile** (F8) and **Compile and catalogue** (F9)
+do not run BASIC in SDSYS through the pointer: they run `run.in` (above) in that account, so the
+object goes into the account's own `bp.out`, a `$catalog` line in the source is not acted on, and
+the catalogue is the account's. **Run** and **Debug** of that program are refused in the editor (run
+it in its account; debugging comes in a later stage). **`C`** on the page compiles the program under
+the cursor the same way and shows what the compiler said in a box; the Built column follows. The
+page writes `master edit account=ze1 kind=bp file=bp id=prog new=0` for an edit and `master compile
+account=ze1 file=bp id=prog result=ok` (or `failed`) for `C`; `run.in` writes its own `run.in begin`
+and `run.in end` lines for each compile.
+
 ## Cost
 
 A write to a VOC or a dictionary does the work above; **a write to any other file costs one test of a

@@ -85,7 +85,7 @@ current directory is not imported), and reads the test settings `SD_ACCT_ROOT`,
 `SD_ACCARCHIVE` and `SD_SOCKET_UNIT` from the environment only on a `--dry-run`
 or in a process that is not root, so a root run through `sudo` takes none of
 those settings from the caller (sudo's own `secure_path` and `env_reset` already
-did most of that on Debian, Ubuntu and Fedora). Two limits of what was built:
+did most of that on Debian and Ubuntu). Two limits of what was built:
 `chown-account root sdusers` still lets the `sdsys` user turn any file or
 directory it owns into one owned by `root` and the group `sdusers` (the mode is
 unchanged and the kernel clears the setuid bit; a handle it opened for writing
