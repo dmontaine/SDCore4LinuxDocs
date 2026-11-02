@@ -403,10 +403,11 @@ program can ask the same question without the debugger:
 
 ## Full screen on a terminal, line by line everywhere else
 
-**On a terminal that has an alternate screen — xterm and the terminals that
-behave like it — the debugger takes the whole screen.** Its test is that the
-session is a real terminal (SD can read its window size) and that the terminal
-definition has `smcup` and `rmcup`. Then:
+**On a terminal that can address a cell and clear itself, the debugger takes the
+whole screen.** Its test is that the session is a real terminal (SD can read its
+window size) and that the terminal definition has `cup` and `clear`: xterm, the
+Linux text console, vt100, vt102, vt220, ansi, and the terminals that behave like
+them. `dumb` and `unknown` have no `cup` and stay line by line. Then:
 
 - the top row is the **title bar**: the program and the line about to run at
   the left, and at the right end `debugger` and who is signed on, as on the
@@ -468,8 +469,29 @@ when the site names none; and whatever the program asked for otherwise. When the
 debugger lets the program go, the program's theme is given back, whether or not the
 window was resized or `window` *n* was typed on the way.
 
-**On a terminal with no alternate screen, and in a session that is not a
-terminal, the debugger is line by line.** Every command works, as the
+**What the program's own screen becomes depends on the terminal.** A terminal
+with an alternate screen (`smcup` and `rmcup`: xterm and its kin) keeps the
+program's screen aside, and gives it back untouched when the debugger lets go.
+A terminal without one (the Linux console, vt100, vt220, ansi) has only the one
+screen, so the debugger clears it when it comes up and clears it again when it
+lets go. A program that owns the screen library's screen (it ran `SCREEN OPEN`)
+gets everything the library knows drawn again: its forms, its cursor, its theme.
+**What the program printed with `PRINT` or `CRT`, and what was on the screen
+before, is not given back** — a terminal cannot be asked what it shows, and
+the line-by-line debugger, which does not clear anything, keeps that text. For
+the same reason `F4` (or `v`) on such a terminal shows an owned screen again
+until a key is pressed, and says *"There is no second screen to show on this
+terminal"* for any other program.
+
+To keep the line-by-line debugger on a terminal that would otherwise get the
+full screen, put the word `LINE.MODE` on a line of the VOC record
+`$debug.options` of the account (the same record that holds `WINDOW` *n*).
+Nothing about this gives the debugger more reach than before: the AI line,
+for instance, which the full-screen debugger offers when the AI is on for the
+account, is the same gated line it already was.
+
+**In a session that is not a terminal, on `dumb`, `unknown` or `null`, and in a
+window smaller than 140 by 43, the debugger is line by line.** Every command works, as the
 transcripts on this page show, and there is a real gain: because it is
 line-oriented it can be **driven from a script**. A whole debugging session can
 be fed down a pipe.

@@ -157,6 +157,13 @@ and has no mouse on the console.
 themes (`blue`, `classic`, `mono`) work on it. On a console set to UTF-8, which
 is what Debian gives, the pages draw their borders with line-drawing characters.
 
+**The debugger.** The console has no alternate screen, so the full-screen debugger
+takes the one screen: it clears it when it comes up and clears it again when it lets
+the program go. A program that owns the screen library's screen has it drawn again from
+what the library knows; text the program printed with `PRINT` or `CRT`, and what was on the
+screen before the debugger started, is gone. `LINE.MODE` in the VOC record `$debug.options`
+keeps the line-by-line debugger, which clears nothing. See *SD BASIC debugging*.
+
 ## The terminfo source
 
 `terminfo.src` ships with SD. It is a text file containing all the
