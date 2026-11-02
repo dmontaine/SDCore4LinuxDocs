@@ -524,8 +524,9 @@ group-write`) puts them right, the ones made while the account was off included.
 
 The copies above keep a second record of every account's VOC and dictionaries. **`tool.entries`**
 is the page that looks at the accounts' own files and copies nothing: it is in the SDSYS VOC only and
-refuses anyone else before it reads anything. **This stage reads the VOC entries, the dictionary
-items and the programs, and it only reads**; changing an entry from the page comes in a later stage.
+refuses anyone else before it reads anything. **It lists the VOC entries, the dictionary items and
+the programs, and it edits the VOC entries and the dictionary items in the account they belong to**
+(`E` and `N`, below); the programs are listed and not yet edited from the page.
 
 ```
 tool.entries
@@ -566,10 +567,41 @@ make a path look inside. For a VOC entry the pointer is the account's own record
 any other (change `@SDSYS/voc.dic` to another directory, and it is changed); what it points at is
 never edited from this page. A dictionary item marked `>` lives in another account's dictionary,
 SDSYS's included, and is only read through this account's pointer: it is edited in the account it
-lives in. This stage edits nothing; the stages that edit follow this rule.
+lives in.
 
-The page writes no record and runs no command; its only line in the audit trail is
-`tool start app=tool.entries`.
+**`E` edits the record under the cursor and `N` makes a new one, in the account it belongs to.** In the
+VOC view they edit **VOC entries only**: the record of the VOC, as text, never the file a pointer
+leads to. In the dictionary view they edit **dictionary items only**, as the item form. (The
+programs are listed here; editing them comes with the compiler and the debugger.) The terminal is
+given to the editor on that one record and comes back to the page when the editor ends; `N` asks the
+id first (for an item, the dictionary is that of the file the row under the cursor belongs to). An
+account with `voc-off`, `dict-off` or `bp-off` is edited all the same, because an administrator is
+not held to those gates; that is what they are for. A suspended account is edited too: SD lets
+the administrator follow the pointer into it. For the length of the edit SDSYS's VOC holds
+one temporary file pointer, `zm`*user number*`.`*account*`.`*file*, which holds the path the page
+has just checked and lets the editor reach that file; the page takes it away when the editor ends.
+It is not a Q-pointer into the account's VOC: that would be followed again each time the editor
+opens the file, after the check, and an account allowed to write its VOC could repoint the file in
+between. If the session is killed inside the editor the pointer stays, and the page takes it away
+the next time it starts in a session with the same user number.
+
+**The rule is asked before anything is made.** At the keypress the page reads the register and the
+account's own VOC again (the list may be old) and asks the kernel whether the file to be edited
+lies inside the account, and then asks it again of what the pointer opens, the file's two
+subfiles included (a directory of the account's own whose subfiles are links to another
+account's is refused), and that file must be a hashed file. A dictionary that lies
+outside the account is refused with its reason (`the dictionary of zeesc lies outside ze1: it is
+edited in the account it lives in, not from here`), so a VOC pointer written `../other/dict.dic`, a
+link to another account's directory, and the shipped system dictionaries cannot be edited from
+another account's row; nothing is written, no pointer is made and the audit trail has no line. The
+pointer record itself is the account's own record and is edited like any other: a Q-pointer that
+leads to another account can have its text changed, and the other account is not touched. The
+editor is a general editor; the page decides what it is given first, not what the person opens
+next inside it.
+
+Each edit that reaches the editor writes one line to the audit trail, for example
+`master edit account=ze1 kind=voc file=voc id=zzonly1 new=0` (`kind=dict` and the file's name for an
+item, `new=1` for `N`); the page's other line is `tool start app=tool.entries`.
 
 ## Cost
 
