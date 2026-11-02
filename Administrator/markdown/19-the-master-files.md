@@ -614,7 +614,25 @@ record?` names the record, the account and the file's path; `Cancel` is the defa
 for the record's id to be typed. Only the exact id deletes it; Cancel, Esc or a different id leave
 it where it is (`nothing was run`). The page deletes that one record itself, through the file it
 judged, and runs no command. A delete writes one line to the audit trail, for example
-`master delete account=ze1 kind=voc file=voc id=zzdel1`. The programs are not deleted from here yet.
+`master delete account=ze1 kind=voc file=voc id=zzdel1`.
+
+**`D` in the programs view deletes the program and its compiled program.** It goes the same way: the
+program file and the program's own file must lie inside the account, the program is read with its
+update lock, and its id is typed in the box. The compiled program is found by its name, as the
+Built column finds it: the record of the same name, in lower case, in the `.out` file the account's
+VOC names for the program file (`bp.out` for `bp`), or else in the `.out` file beside the program
+file. The same rule holds for it: when that `.out` file, or the compiled program's own file, lies
+outside the account (a link to another account's `bp.out`, say) the whole delete is refused with
+its reason (`the compiled programs of zeob.bp lie outside ze1: zwob is deleted in the account they
+live in, not from here`), before the box and before anything is deleted. The box names the
+compiled program, or says there is none; the page deletes the program, then its compiled program,
+through the files it judged, and runs no command. **A catalogue entry of the program is left**: it
+is the account's (a private catalogue holds its own copy, so the program can still be run by its
+catalogue name), and the box says so; remove it in that account, for example
+`run.in ze1 delete.catalog prog` for a private catalogue entry or `run.in ze1 decatalog prog` for a
+local one. The audit line is `master delete account=ze1 kind=bp file=bp id=prog object=deleted`
+(`object=none` when there was no compiled program, `object=failed` when the `.out` file refused the
+delete).
 
 **In the programs view, `E` and `N` open the program in the editor and `C` compiles it, in the
 account it belongs to.** `E` and `N` go the same way as for a VOC entry: the program file must lie
@@ -627,7 +645,9 @@ do not run BASIC in SDSYS through the pointer: they run `run.in` (above) in that
 object goes into the account's own `bp.out`, a `$catalog` line in the source is not acted on, and
 the catalogue is the account's. Its **Debug** (F7, and Debug from the first line) compiles the
 program for the debugger and runs the debugger in that account, the same way (`run.in … basic …
-debugging`, then `run.in … debug …`); **Run** is refused in the editor (run it in its account).
+debugging`, then `run.in … debug …`), and the breakpoints marked in the editor's gutter are handed to
+that debugger as they are for any program (F7 runs on to the first of them, and the lines that
+still have a breakpoint come back to the editor); **Run** is refused in the editor (run it in its account).
 **`B`** on the page debugs the program under the cursor the same way: a compile that fails is shown
 as `C` shows it and nothing is debugged; otherwise the terminal goes to the debugger, and when it
 ends the page asks you to press Enter and comes back on the same program. The page writes `master
