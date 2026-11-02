@@ -291,8 +291,8 @@ always was, or as `^9` (a caret and the decimal number) after the first `^`; a
 second `^` puts the `?` back. The length shown does not change.
 
 **`window` *n*** sets the number of rows of the data area (messages and
-replies) of the **full-screen** debugger, 5 to 15; the source above it takes
-what is left. `window 3` is refused (*The data area must be 5 to 15 lines*) and
+replies) of the **full-screen** debugger, 5 to 15; the source and the Autos pane
+above it take what is left. `window 3` is refused (*The data area must be 5 to 15 lines*) and
 in line-by-line mode the command is a format error. A `window` *n* line in the
 VOC record **`$debug.options`** (the record that already holds
 `no.source.warning`) sets it at the first stop of a session.
@@ -379,39 +379,65 @@ behave like it — the debugger takes the whole screen.** Its test is that the
 session is a real terminal (SD can read its window size) and that the terminal
 definition has `smcup` and `rmcup`. Then:
 
-- the top row is the **title**: the program and the line about to run;
-- below it is the **source**, with line numbers; the line about to run is
-  highlighted and a line with a breakpoint has its number marked;
-- then five lines of **messages** (what a command printed), and the **command
-  line** at the bottom, where you type the commands on this page;
+- the top row is the **title bar**: the program and the line about to run at
+  the left, and at the right end `debugger` and who is signed on, as on the
+  other full-screen pages;
+- below it is the **source**. Each row has a two-cell **gutter** — `>` marks the
+  line about to run and `*` a line with a breakpoint (a breakpoint wins when the
+  line about to run has one) — then the line number and the text. The line about
+  to run is highlighted from end to end. When the site's theme is the blue one (or
+  `dark` or `light`), the text is coloured as SD BASIC: comments, strings,
+  constants and the statements. In the plain `classic` theme, which the debugger
+  uses when the site names none, the source has no syntax colour;
+- to the right of the source, from column 93, is the **Autos** pane: the
+  variables the line about to run uses come first, in the order the line names
+  them; then those of the line the debugger last stopped at, when it is a line of
+  the same program; then the variable you are watching; then the other variables
+  of the program in the order it declares them, until the pane is full. It is empty
+  only for a program that has no variable. Each row is `name = value`, short: a
+  string is cut, and a matrix or a collection says what it is (`/name` shows more).
+  The pane is drawn again at every stop and after every command, so `set n=7` shows
+  at once. The names are the program's own spelling in the symbol table (upper case
+  unless the program is case sensitive);
+- under a rule come the **messages** (what a command printed; five rows, `window` *n*
+  changes that), and the **command line**, where you type the commands on this page;
+- below the command line the **foot** has three rows, as the other full-screen pages
+  have: a **status line** in reverse video (`[Command]`, how many breakpoints there are
+  and the variable being watched), a line across the screen, and the **function-key row**:
+  `F1 help  F2 abort  F3 stop  F4 screen  F5 run  F7 step  F8 line  ^F7 parent  ^F8 program`;
 - **F1** shows the help in a box, **F4** shows the program's own screen until
-  you press a key, and Page Up and Page Down move the source.
+  you press a key, and Page Up and Page Down move the source. The keys and the
+  commands are as they were.
 
-**The full-screen display is laid out for 140 columns by 42 lines or more**
-(since 18 October 2026; a bigger window is used whole). **On a window smaller
-than that the debugger does not refuse: it says why, once, and is line by line
-for the session** — *The debugger needs a window of at least 140 columns by 42
-lines for its full-screen display; this one is 100 by 30, so it is using line
-mode* — because a small window is no reason to take away the way to debug a
-program. The window measured is the one on the screen, or the display `term w,h`
-gave if that is smaller. The choice is made at the first stop of a session.
+**The full-screen display is laid out for 140 columns by 43 lines or more**
+(it was 42 until 1 November 2026, when the foot was added; a bigger window is used
+whole, and the extra width goes to the source). **On a window smaller than that the
+debugger does not refuse: it says why, once, and is line by line for the session** —
+*The debugger needs a window of at least 140 columns by 43 lines for its full-screen
+display; this one is 100 by 30, so it is using line mode* — because a small window
+is no reason to take away the way to debug a program. The window measured is the one
+on the screen, or the display `term w,h` gave if that is smaller. The choice is made
+at the first stop of a session.
 
 If the window is made smaller **while the full-screen display is up**, the debugger
 lays itself out again within a second and shows the **upper left corner** of its
-140 by 42 layout and nothing past the edge, and draws everything again when the
-window is made bigger. The command line is on the last row, so a window under 42
-lines does not show where you type: the debugger then does not take keys. A
-warning in reverse video fills the upper left, every key is thrown away, it goes
-by itself when the window is big enough, and **Ctrl-Q, then y** leaves the
-debugger the way F3 (Stop) does. A window narrower than 140 but 42 lines or more
+140 by 43 layout and nothing past the edge, and draws everything again when the
+window is made bigger. The command line is on row 40 of 43 (the foot is below it), so
+a window of 39 lines or fewer does not show where you type: the debugger then does not
+take keys. A warning in reverse video fills the upper left, every key is thrown away,
+it goes by itself when the window is big enough, and **Ctrl-Q, then y** leaves the
+debugger the way F3 (Stop) does. A window narrower than 140 but 40 lines or more
 high shows the left part of the lines and works as usual.
 
 The program's own screen is kept by the terminal (that is what the alternate
 screen is): when you let the program run, the debugger gives the terminal back
 and the program's output is on its own screen, and it is on the alternate
-screen again at the next stop. The colours are the screen library's: the
-`classic` theme while the debugger is up if the program asked for none, and
-whatever the program or the site chose otherwise.
+screen again at the next stop. The colours are the screen library's: if the
+program asked for no theme, the debugger uses the site's theme (`SCREENTHEME` in
+`sd.conf`, which the installer sets to `blue`) while it is up and the `classic` one
+when the site names none; and whatever the program asked for otherwise. When the
+debugger lets the program go, the program's theme is given back, whether or not the
+window was resized or `window` *n* was typed on the way.
 
 **On a terminal with no alternate screen, and in a session that is not a
 terminal, the debugger is line by line.** Every command works, as the

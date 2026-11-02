@@ -735,9 +735,9 @@ Fixes that close a way round a gate, and what the gates now ask.
 
 | Name | Change | What |
 |---|---|---|
-| 140 by 42 layout | Changed | `sed`, the collection editor and the debugger: 140 by 42, refused below it, survive a window made smaller, take no keys while the cursor is off the screen (the `ide` is 140 by 43, see its window lock) |
+| 140 by 42 layout | Changed | `sed` and the collection editor: 140 by 42, refused below it, survive a window made smaller, take no keys while the cursor is off the screen (the `ide` and the debugger are 140 by 43, see their rows) |
 | `!ced()` data mode | Added | edits a multivalue record as a tree of fields, values and subvalues (a text or a list; a list never below the second level), so that nobody types a mark; started by `ide` F12 |
-| `debugger` full-screen display | Added | on a terminal with an alternate screen the debugger takes the whole screen: source, breakpoints, messages and the command line; F1 help, F4 the program's screen |
+| `debugger` full-screen display | Added | on a terminal with an alternate screen the debugger takes the whole screen, 140 by 43, in the frame of the other full-screen pages: the bar with the app and the audience, the source with a gutter (`>` the line about to run, `*` a breakpoint) and SD BASIC colour under the blue, dark and light themes, an Autos pane (the variables the line uses, the last stop's, the watched one, the rest), the messages, the command line, a status line, a border and a function-key row; F1 help, F4 the program's screen; a smaller window gets line mode |
 | home screen | Added | every account starts in a screen of tiles; arrows, Tab, letters, mouse, F5, F10 |
 | home screen `ai` line | Changed | Enter alone accepts a proposal that only opens one of the delivered tools but rejects a proposal of one of your own programs or of the Terminal tile (decided for the proposal, not for the page); it cannot run a command when the account's Terminal tile is off |
 | home screen Recent group | Added | `View > Recent group`: the tiles started last, newest first, six at most; off as delivered, the person's own record in `&menus&`; `set.tile account recent off` is the administrator's wall |
