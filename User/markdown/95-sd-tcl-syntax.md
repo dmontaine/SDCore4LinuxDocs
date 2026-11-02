@@ -169,6 +169,7 @@ not refused — the name is simply not recognised.**
 | **`restore.account`** | **`restore.account`** *archive* *name* … {**`no.query`**}  ·  **`restore.account`** *archive* **`all`** {**`no.query`**}  ·  **`restore.account latest`** *name* … \| **`all`** {**`no.query`**} | S |
 | **`restore.voc`** | **`restore.voc`** *account* *id*  ·  **`restore.voc`** *account* **`all`**  —  put back the newest saved copy of a record the VOC update removed; never overwrites | S |
 | **`run`** | **`run`** {*file*} *record* {*arguments*} |  |
+| **`run.in`** | **`run.in`** *account* {**`basic`** *file* *program* {**`debugging`**} {**`no.query`**} \| **`catalog`** *file* *program* {**`local`**} {**`no.query`**} \| **`decatalog`** *program* \| **`delete.catalog`** *program* {**`local`**} \| **`debug`** *file* *program* \| **`compile.dict`** *file* *item*}  —  the administrator runs one of these commands inside another account and is back in SDSYS afterwards, whatever happens to it; the account's LOGIN does not run and its **`basic`** never catalogues (it is given **`no.catalog`**) | S |
 | **`save.list`** | **`save.list`** *list* {**`from`** *list.no*} |  |
 | **`save.stack`** | **`save.stack`** {*name*} |  |
 | **`scan`** | **`scan`** {**`dict`**} *file* {*selection*} {*id* …} {**`all`**} {**`no.case`**} {**`all.match`** \| **`no.match`**} {**`strings`** *file* *record*} **`for`** *"text"* … |  |

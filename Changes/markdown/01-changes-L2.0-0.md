@@ -497,6 +497,7 @@ has, with the changes they made.
 | `remote.sdsys` | Added | the authenticator code of the remote `sdsys` ssh login from inside SD: `on` shows a new secret once and switches it on after a right code (and opens the ssh door), `recovery` makes new recovery codes, `off` shuts the door and removes the code; no keyword reports. Refused while `como` records the session; the secret and codes go to the terminal only |
 | `restore.account` | Changed | fixed: no longer overwrites a different global program of the same name; restoring the `shared` account puts it back in the group `sdusers` (it had been given `sdg_shared`, which no ordinary user is in) |
 | `restore.voc` | Added | administrator only: puts back the newest saved copy of a VOC record the update removed, or all of an account's; never overwrites a record the account holds, and audits what it puts back |
+| `run.in` | Added | administrator only (SDSYS's VOC only): runs one command from a fixed list (`basic`, `catalog`, `decatalog`, `delete.catalog`, `debug`, `compile.dict`) inside another registered account and is always back in SDSYS afterwards, even when the command aborts; the command is rebuilt from checked words, `basic` is always given `no.catalog`, the account's LOGIN does not run, and the entry and the return are audited |
 | `sd-elevate` | Changed | new verb `sdsys-leave`, and `conf-set` (see `set.config`); `sdsys-join`, `sdsys-leave` and `group-write` write a line to the system log |
 | `sd-elevate akpath-set` | Changed | takes only a hashed file's directory (a plain `%0` with no second link) and an existing directory, both in one account |
 | `sd-elevate caller` | Changed | when sudo says the caller is `sdsys`, every verb refuses unless the login behind it is `sdsys`'s own (so `su sdsys` and `sudo -u sdsys` from another user's session no longer reach the helper); root and an ordinary user's own verbs are not asked |
@@ -573,6 +574,7 @@ has, with the changes they made.
 
 | Name | Change | What |
 |---|---|---|
+| `basic ... no.catalog` | Added | compiles and runs no catalog directive: a `$catalog` line in the source or in a file it includes, or a `CATALOG` line in `$BASIC.OPTIONS`, is not acted on and the compile says so; `run.in` gives it to every `basic` it runs |
 | `menu` | Added | opens the full-screen menu (the home screen) from any account; `home` and `exit` stay |
 | `pdf` | Added | shows a document in the PDF reader the administrator has allowed, even for an account that may not run programs |
 | `tool.*` pages with several boxes | Changed | the box the keyboard is in is marked `[*]` in its top right corner and the others `[-]`, as in the IDE (`tool.bulk`, `tool.query`, `tool.test`, `tool.sessions`, `tool.menus`, `tool.ai`, `tool.viewers`) |
