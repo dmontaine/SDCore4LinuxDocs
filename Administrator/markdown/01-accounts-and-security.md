@@ -103,26 +103,34 @@ at the machine. Seeing the second session is not the same as stopping it; the
 audit line and the page are how you notice one you did not expect.
 
 **What the `sdsys` Linux user can write.** **As delivered, the `sdsys` user is a
-member of the Linux group of no user account** (`sdu_`*name*). The administrator
-switches it on for one account at a time, `modify.account` *name* `sdsys-on`,
-and off again, `sdsys-off` (below): with it on, SDSYS can change the account's
-VOC or a dictionary by saving its master record (see
-[The master files](19-the-master-files.html)). **While it is on, the `sdsys`
-user has write access to everything the account's group may write**, and a VOC
-entry or an I-type is code that runs in the account: someone who took over the
-`sdsys` login could change what that account runs. It is not reachable from the
-network (`sdsys` has no API access from it, and ssh only with an authenticator code), and a process that is not a real login
-as `sdsys` is not an administrator. **Off is a default and a record of your
-decision, not a wall against a stolen `sdsys` login**, which has other ways into
-an account's code: the global catalogue is the `sdsys` user's to write, and
-`sdsys` may run `sudo /usr/local/sbin/sd-elevate` with any arguments. (The
-files `root` runs at the next start used to belong to `sdsys` as well; from
-2.0-0 they are `root`'s, see [Installation and the daemon](08-sd-installation.html#the-files-root-runs).)
-What the default takes
-away is the silent route; the switch is an audited act of the administrator and
-it can be taken back. Before 2.0-0 the membership was there for every account;
-an install that finds it asks once whether to keep it (see
-[The master files](19-the-master-files.html)).
+member of the Linux group of every user account** (`sdu_`*name*), so SDSYS has
+read and write access to everything in the `/home/sd` tree that an account's
+group may write: the VOC, the dictionaries, the programs in `bp` and `bp.out`,
+the catalogue `cat` and the data files. That is how SDSYS compiles, catalogues
+and debugs the programs of an account whose own `bp-edit` gate is off, and how
+a master record is saved into an account (see
+[The master files](19-the-master-files.html)). It is a deliberate default for a
+system that has to stay simple to run: **how much further protection the
+machine needs, from a locked room to operating-system permissions, is the
+administrator's to decide.** `modify.account` *name* `sdsys-off` takes the
+user out of one account's group, and `sdsys-on` puts it back (below).
+**While it is on, the `sdsys` user has write access to everything the
+account's group may write**, and a VOC entry or an I-type is code that runs in
+the account: someone who took over the `sdsys` login could change what that
+account runs. It is not reachable from the network (`sdsys` has no API access
+from it, and ssh only with an authenticator code), and a process that is not a
+real login as `sdsys` is not an administrator. **The membership is a default
+and a record of your decision, not a wall against a stolen `sdsys` login**,
+which has other ways into an account's code: the global catalogue is the
+`sdsys` user's to write, and `sdsys` may run `sudo /usr/local/sbin/sd-elevate`
+with any arguments. (The files `root` runs at the next start used to belong to
+`sdsys` as well; from 2.0-0 they are `root`'s, see
+[Installation and the daemon](08-sd-installation.html#the-files-root-runs).)
+**History:** before 2.0-0 the membership was there for every account; the
+development of 2.0-0 made it off as delivered (26 October 2026) and then, on
+1 November 2026, on again. An install puts the `sdsys` user in the group of the
+accounts that are already there **once** and records that in
+`/home/sd/$sdsys.access`; after that a `sdsys-off` you gave stands.
 
 ### The sdsys user in an account's group: `sdsys-on` and `sdsys-off`
 
@@ -139,7 +147,7 @@ repairs the modes and changes nothing else; `sdsys-off` for an account that is
 off changes nothing. The two words conflict only with each other. **A session of
 SDSYS that is already running keeps the groups it started with**: sign on again
 after `sdsys-on`, and after `sdsys-off` that session still has the write until
-it ends. `create.account` does not switch it on and neither does the installer.
+it ends. `create.account` and the installer switch it on for a new account (1 November 2026).
 
 ## Making an account: `create.account`
 

@@ -488,7 +488,7 @@ has, with the changes they made.
 | `master files` | Added | SDSYS keeps a copy of every account's VOC and dictionary records (`voc_master`, `dict_master`) current by a journal |
 | `master files` access | Changed | fixed: they were readable and writable by every SD user; they are owner sdsys, mode 0600 and 0700 |
 | `master files` saving | Added | saving an account's master copy writes it into the account at once, or refuses with the reason and changes nothing |
-| `master files` saving | Changed | an account whose group does not list `sdsys` (the delivered state) is refused with a message that names `modify.account <name> sdsys-on`; nothing is changed |
+| `master files` saving | Changed | an account whose group does not list `sdsys` (one given `sdsys-off`) is refused with a message that names `modify.account <name> sdsys-on`; nothing is changed |
 | `modify.account` | Changed | takes more than one action in a command (`modify.account fred sh-on os-on voc-on`), all carried out or none |
 | `modify.account files-off` | Changed | fixed: deals with a leftover `sdfileswrite` membership instead of making it live at the next `files-on` |
 | `modify.account recovery-on` and `recovery-off` | Added | per-account switch for the `ide`'s recovery copy of unsaved text; off as delivered; refused for a group or other account (message 11771) |
@@ -507,8 +507,8 @@ has, with the changes they made.
 | `sd-elevate setpw`, `passwd` and `userdel` | Changed | act only on a user carrying the `SD account` comment, as `userdel-home` always did; `setpw` sets a first password only |
 | `sd-elevate totp-status`, `totp-begin`, `totp-confirm`, `totp-recovery` and `totp-off` | Added | enrol, check, renew and switch off the authenticator code of the remote `sdsys` ssh login (see Security); `totp-confirm` opens the ssh door, `totp-off` shuts it first; the code is read from standard input and no verb prints a secret that is already stored |
 | `sd-on` and `sd-off` | Added | per-account switch: programs may reach files under the directory of any SD account the user could `logto` |
-| `sdsys` operating system user | Changed | a member of no user account's group as delivered (a release before 2.0-0 put it in every one); `sdsys-on` puts it in one |
-| `sdsys-on` and `sdsys-off` | Added | per-account switch for the `sdsys` user's membership of the account's group (master edits, and SDSYS writing inside the account); off as delivered |
+| `sdsys` operating system user | Changed | a member of every user account's group as delivered, so SDSYS has read and write access to the `/home/sd` tree (the owner's ruling of 1 November 2026, "up to the administrator the level of external security"); `create.account` does it for a new account and the install, once, for the accounts already there (marker `/home/sd/$sdsys.access`); `sdsys-off` takes it out of one |
+| `sdsys-on` and `sdsys-off` | Added | per-account switch for the `sdsys` user's membership of the account's group (master edits, and SDSYS writing inside the account); on as delivered, `sdsys-off` tightens one account, `sdsys-on` puts it back and repairs the modes |
 | `set.config` | Added | changes one of 14 tuning parameters of `sd.conf` (administrator, through the root helper): a name on the helper's list and a whole number inside the range SD enforces; the old file is kept as `sd.conf.bak` |
 | `set.start.default` | Added | chooses where accounts start: the home screen or the command prompt |
 | `set.tile` | Added | switches a home screen tile on or off for an account; `set.tile` alone lists what is off |
