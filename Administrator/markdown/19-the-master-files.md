@@ -603,6 +603,19 @@ Each edit that reaches the editor writes one line to the audit trail, for exampl
 `master edit account=ze1 kind=voc file=voc id=zzonly1 new=0` (`kind=dict` and the file's name for an
 item, `new=1` for `N`); the page's other line is `tool start app=tool.entries`.
 
+**`D` deletes the record under the cursor**, a VOC entry in the VOC view or a dictionary item in the
+dictionary view, in the account it belongs to. It goes the same way as `E`: the register and the
+account's VOC are read again, the rule above is asked, and the file is reached through the same
+temporary pointer and judged again with its subfiles, so an item of a dictionary that lies outside
+the account is refused with its reason before anything is shown. The record is then read with its
+update lock: a record another session holds (someone editing it) is refused, `zz1 in the VOC of acme
+is locked by user 12 (an editor holds it): it is not deleted`. Otherwise a box titled `Delete this
+record?` names the record, the account and the file's path; `Cancel` is the default, and `Run` asks
+for the record's id to be typed. Only the exact id deletes it; Cancel, Esc or a different id leave
+it where it is (`nothing was run`). The page deletes that one record itself, through the file it
+judged, and runs no command. A delete writes one line to the audit trail, for example
+`master delete account=ze1 kind=voc file=voc id=zzdel1`. The programs are not deleted from here yet.
+
 ## Cost
 
 A write to a VOC or a dictionary does the work above; **a write to any other file costs one test of a
