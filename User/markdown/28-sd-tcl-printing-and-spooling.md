@@ -207,6 +207,32 @@ printer number, then whether to print, then a confirmation — three prompts, so
 script that runs it stops and waits. Like the screen editors, it wants a person
 at a terminal. Everything on this page except `sp.view` can be scripted.
 
+**On a window of at least 140 by 43 the record view looks like the other
+full-screen pages** (a bigger window is used whole): the top row names the file
+and the record at the left and `sp.view  name@account` at the right, the record
+starts on the row below it, and the bottom four rows are the prompt, a status
+line (the record, its number of lines and where the view is), a border and a
+row of the keys:
+
+```
+PgDn next  PgUp previous  Home top  End bottom  Left scroll left  Right scroll right  S spool  X delete  Q quit
+```
+
+The colours are the site's theme (`SCREENTHEME` in `sd.conf`; the classic theme
+when it names none or names `mono`, as in the debugger; plain on a terminal with
+no colour) and are given back when you leave the record. A page of the record is
+five lines shorter than the window, so N, P and B move by that many lines. A
+control character in the record (a printer escape, a form feed, a tab) is shown
+as a letter in reverse video, not obeyed, so a held report written for a printer
+looks different here from the older layout. The keys are
+the ones `sp.view` always had: the letters on the prompt line (N, P, T, B, L, R,
+S, X, Q), the arrow keys, Return for the next page, and the Ctrl and Esc forms.
+Q asks first: Return quits, any other key goes on. When the window is resized
+the view is laid out again within a second. **A smaller window keeps the older
+layout**, with the record from the top row and the status and prompt lines at
+the foot of the screen, and so does a session with no terminal. The spool form
+(S) and the list of records you choose from are the same in both.
+
 `$hold` is an ordinary directory file in the account, so a script that needs to
 work with held reports can read it with `select`, `list` and `spool` instead.
 

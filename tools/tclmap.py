@@ -190,9 +190,10 @@ DOCS = [
  ('Administrator', '13-the-shared-account.md', """
    list.shared
  """),
- # 19 Oct 26 - S.67 stage 1 (the master files): three verbs, in voc_template (SDSYS's set), not in newvoc.
+ # 19 Oct 26 - S.67 stage 1 (the master files); 2 Nov 26 - S.96 M6: the copies' four verbs are retired and the chapter documents tool.entries
+ # (in voc_template, SDSYS's set, not in newvoc).
  ('Administrator', '19-the-master-files.md', """
-   check.masters list.master.pending sync.masters tool.masters
+   tool.entries
  """),
  # 25 Oct 26 - S.75 A5 (the audit trail page): tool.audit, in voc_template (SDSYS's set), not in newvoc.
  ('Administrator', '21-the-audit-trail.md', """

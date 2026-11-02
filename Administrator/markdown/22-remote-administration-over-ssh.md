@@ -236,9 +236,9 @@ with it on, the "address" is a name that the other side chooses.
 * **cron and at for the `sdsys` user.** A cron job starts a login of `sdsys` with nobody there to give a
   code, so the installer puts `sdsys` in `/etc/cron.deny` and, where `at` is installed, `/etc/at.deny`.
   A crontab `sdsys` already had is moved to `/var/backups/sdcore-sdsys-crontab.<date>` (root only),
-  because cron would go on running it. SD's own scheduled work is set up with
-  `sudo /usr/local/sbin/sd-elevate job-set` instead: timers only root can set, each running one fixed
-  SD command. To let `sdsys` use cron again, take it out of `/etc/cron.deny`; an `/etc/cron.allow` you
+  because cron would go on running it. SD's own scheduled work is set up with the Jobs view of
+  `tool.jobs`, or `set.job`, instead (both ask `sudo /usr/local/sbin/sd-elevate job-set`): timers only
+  root can set, each running one fixed SD command. To let `sdsys` use cron again, take it out of `/etc/cron.deny`; an `/etc/cron.allow` you
   wrote decides by itself, and the installer only warns when it names `sdsys`.
 * **A store that is not what it should be.** If the directory or a file is open to others, is a link,
   has a second link, or is damaged, the sign-in is refused and nothing is changed.

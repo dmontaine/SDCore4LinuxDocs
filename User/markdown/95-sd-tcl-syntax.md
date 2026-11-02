@@ -9,7 +9,7 @@ have forgotten its arguments, it is here. If you want to know what it
 braces an optional part, and a vertical bar separates alternatives. SD
 folds case, so any of this may be typed in either case.
 
-> This page lists every verb SD ships (**212** of them). The shapes come from the
+> This page lists every verb SD ships (**211** of them). The shapes come from the
 > subject documents, where each verb is described in full.
 
 **The "who" column is the VOC, not an opinion.** It is taken from the
@@ -19,7 +19,7 @@ not refused — the name is simply not recognised.**
 | | | |
 |---|---|---|
 | **every account** | 162 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 48 more | in `voc_template` but not `newvoc` |
+| **SDSYS only** | 49 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -39,7 +39,6 @@ not refused — the name is simply not recognised.**
 | **`break`** | **`break on`** \| **`off`** \| **`on user`** *n* |  |
 | **`build.index`** | **`build.index`** *file* *field* … \| **`all`** |  |
 | **`catalog`** | **`catalog`** {*file* {*call.name*}} {*program*} {**`local`** \| **`global`** \| **`pcode`**} {**`no.xref`**} |  |
-| **`check.masters`** | **`check.masters`** {*account*} | S |
 | **`clean.account`** | **`clean.account`** | S |
 | **`clear.abort`** | **`clear.abort`** |  |
 | **`clear.data`** | **`clear.data`** |  |
@@ -116,7 +115,6 @@ not refused — the name is simply not recognised.**
 | **`list.item`** | **`list.item`** {**`dict`**} *file* {*selection*} |  |
 | **`list.label`** | **`list.label`** {**`dict`**} *file* {*selection*} {*fields*} |  |
 | **`list.locks`** | **`list.locks`** | S |
-| **`list.master.pending`** | **`list.master.pending`** | S |
 | **`list.phantoms`** | **`list.phantoms`** {**`user`** *name*} |  |
 | **`list.readu`** | **`list.readu`** {*user.no*} {**`detail`**} {**`wait`**} {**`no.page`**} {**`lptr`** {*n*}} | S |
 | **`list.servers`** | **`list.servers`** {*name*} | S |
@@ -186,6 +184,7 @@ not refused — the name is simply not recognised.**
 | **`set.date`** | **`set.date`** *date* | S |
 | **`set.exit.status`** | **`set.exit.status`** *n* |  |
 | **`set.file`** | **`set.file`** *account* *file* *pointer* |  |
+| **`set.job`** | **`set.job`** {{**`add`** \| **`change`**} *name* *job* *schedule* \| {**`delete`** \| **`run`**} *name*}  —  the administrator's scheduled jobs (through the root helper): *job* is **`backup-all`**, **`check-masters`**, **`sync-masters`** or **`update-accounts`**; *schedule* is **`every`** *n* **`minutes`**, **`hourly`**, **`daily`** *hh:mm*, **`weekly`** *day* *hh:mm* or **`monthly`** *d* *hh:mm*; without arguments, lists them with their next and last runs | S |
 | **`set.mode`** | **`set.mode`** {**`dict`**} *file* {**`all`** \| **`from`** *listno* \| *id* …} {**`no.query`**} *mode* |  |
 | **`set.netlogin`** | **`set.netlogin`** *server* |  |
 | **`set.server`** | **`set.server`** *name* *host* *port* *account* {*pin* \| **`connect`**} {**`read`** \| **`write`**} {**`accounts`** *a*`,`*b*`,`…} {**`no.query`**} | S |
@@ -210,7 +209,6 @@ not refused — the name is simply not recognised.**
 | **`status`** | **`status`** |  |
 | **`stop`** | **`stop`** |  |
 | **`sum`** | **`sum`** {**`dict`**} *file* {*selection*} *field* |  |
-| **`sync.masters`** | **`sync.masters`** {*account*} | S |
 | **`term`** | **`term`** \| *width*{`,`*lines*} {*type*} \| **`color`** *bg*{`,`*fg*} \| **`default`** \| **`display`** |  |
 | **`time`** | **`time`** \| **`internal`** |  |
 | **`tool.accounts`** | **`tool.accounts`**  —  the accounts on one screen (administrator): every account with its kind, suspension, gates that are on and sessions; **`modify.account`** (suspend, add or take away a person) and **`create.account`** behind a box answered Run, and **`delete.account`** after the name is typed, with the terminal given to the verb where it asks for a password or confirms | S |
@@ -224,9 +222,8 @@ not refused — the name is simply not recognised.**
 | **`tool.entries`** | **`tool.entries`**  —  the master files page (administrator): the VOC entries, the dictionary items and the programs (K) of every registered account read from the account's own files, with the edit gates it holds and whether the sdsys user is in its group; filter by a part of an id (or a heading) or find it in every account; a pointer whose target lies outside the account is marked **`>`**; **`E`** and **`N`** edit or make a VOC entry or a dictionary item in its own account | S |
 | **`tool.files`** | **`tool.files`**  —  the files of the account on one screen: kind, records, modulus, size, indices, trigger; make, clear and delete a file, each through its own verb after a box that shows the command; analyse a file and list its indices and triggers by handing the terminal to the verb |  |
 | **`tool.gates`** | **`tool.gates`**  —  for the administrator the gate matrix (every account against every per-account gate; queued changes run as one **`modify.account`** command); in any other account, what this account may do and why (read only) |  |
-| **`tool.jobs`** | **`tool.jobs`**  —  the Scheduled jobs page (administrator): every account and the paragraphs and sentences it may run from the command line, changed through **`set.batch`** after a box answered Run | S |
+| **`tool.jobs`** | **`tool.jobs`**  —  the Scheduled jobs page (administrator): every account and the paragraphs and sentences it may run from the command line, changed through **`set.batch`** after a box answered Run; **`J`** shows the administrator's own scheduled jobs, made, changed, deleted and run now through **`set.job`** | S |
 | **`tool.keys`** | **`tool.keys`** |  |
-| **`tool.masters`** | **`tool.masters`**  —  the master files on one screen (administrator): set up or not, the journal, every account against its master copy, and **`sync.masters`** behind two keys after a box answered Run | S |
 | **`tool.menus`** | **`tool.menus`**  —  menu management (administrator): the home screen's tiles for each account, where each account starts, who may add their own programs | S |
 | **`tool.query`** | **`tool.query`** {*file*}  —  the query and report builder: choose a file, mark its columns (break and total), set conditions, sorts and options, read the list / sort / count / sum sentence they make, run it into a results box, and save the query in your file &queries& and load it again; every sentence is checked before it runs |  |
 | **`tool.remote`** | **`tool.remote`**  —  everything that reaches SD from outside, on one screen (administrator): the two doors as the machine reports them (**`remote.api`** and **`remote.ssh`**, changed after a box and the word OPEN), the routes of each user account, the SDNet servers (**`delete.server`**; **`set.server`** with the terminal given to the verb), who is connected, this machine's TLS identity, and the authenticator code of SDSYS's sign-in over ssh (**`remote.sdsys`**, with the terminal given to the verb) | S |

@@ -108,7 +108,7 @@ read and write access to everything in the `/home/sd` tree that an account's
 group may write: the VOC, the dictionaries, the programs in `bp` and `bp.out`,
 the catalogue `cat` and the data files. That is how SDSYS compiles, catalogues
 and debugs the programs of an account whose own `bp-edit` gate is off, and how
-a master record is saved into an account (see
+`tool.entries` edits an account's VOC entries and dictionary items in place (see
 [The master files](19-the-master-files.html)). It is a deliberate default for a
 system that has to stay simple to run: **how much further protection the
 machine needs, from a locked room to operating-system permissions, is the

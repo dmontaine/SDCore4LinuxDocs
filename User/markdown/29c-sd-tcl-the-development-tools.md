@@ -261,7 +261,7 @@ follow the shared account's own rules and are not changed from here.
 
 **Limits.** The page makes data and indirect items; other kinds (links, phrases, text, collection
 elements) are listed, described, tried where they hold a value, and edited in the IDE. It does not copy
-items between files, and it does not edit the master dictionary (that is the administrator's). Indices are made
+items between files, and it does not edit another account's dictionaries (that is the administrator's, on `tool.entries`). Indices are made
 with the verb's defaults (`no.nulls`, `no.case` and `pathname` are typed at the prompt), and the list of files
 counts indices only for dynamic files. A dictionary of more than 3,000 items shows the first 3,000 and says so.
 

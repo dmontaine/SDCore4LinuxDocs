@@ -113,6 +113,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `dir()` | Changed | includes the size of each file; lists a plain file as `F` and a directory as `D` only, so a socket is no longer a file and a block device no longer a directory |
 | `fix()` | Added | a number with a fixed number of decimals, rounded or cut off |
 | exceptions | Added | `try`, `catch`, `throw`, `caught()` and `@exception`; many run time errors are caught under openQM's `sys.` names; `dumping` and `saving.stack` |
+| `execute ... capturing` and `os.execute ... capturing` | Changed | output whose final newline stands alone (one empty line, or a newline just past a full 16 KB block) gives the right value; it used to end the session ("double free or corruption") or read freed memory |
 | `execute ... stacklist` | Added | keeps the default select list and puts it back when the command returns |
 | `execute.list` | Added | runs commands for each id of list 0 in turn |
 | `fcontrol()` | Added | the openQM function: next sequential key, valid id, minimum modulus, line terminator modes, forced writes |
@@ -458,6 +459,8 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | the Pick style matrix in the run-time system | Removed | nothing could make one since `$mode pick.matrix` went; the matrix descriptor type, its opcode (reserved), its flag and their branches in the kernel, the debugger and the process dump are gone, with messages 1136 and 1139, `readnext` mode 0, the wait path of a remote `write`/`delete` under `autolock`, and the option-flags field of a phantom's start-up record and its seal. No program changes |
 | dictionary field numbers 9998 and 9999 | Removed | a `d`, `a` or `s` item whose location was 9998 gave the item count and one whose location was 9999 the record length in bytes; they are ordinary field numbers now. Write an I-type with `@ni` or `len(@record)` |
 | Fedora support | Removed | the installer now refuses Fedora, as it already refused RHEL and its clones, before it changes anything; Debian and Ubuntu are supported. An L1.1-3 Fedora system cannot be upgraded: install on Debian or Ubuntu |
+| `check.masters`, `list.master.pending`, `sync.masters`, `tool.masters` | Removed | added and taken out again in this release with the master copies (`voc_master`, `dict_master`, `master_state`, `$master.journal`, which the installer removes): use `tool.entries`, which edits each account's own records in that account |
+| `sd-elevate job-set` ids `check-masters`, `sync-masters` | Removed | added and taken out again with those verbs: the job ids left are `backup-all` and `update-accounts` |
 
 ## New Features Unique to SD Core
 
@@ -471,8 +474,6 @@ has, with the changes they made.
 | Name | Change | What |
 |---|---|---|
 | `bp-on` and `bp-off` | Added | per-account switch for saving a change to a program file (source or object code) |
-| `check.masters` | Added | compares every account's VOC and dictionary records with the master copy SDSYS keeps and reports each difference |
-| `check.masters` accounts off | Changed | says once how many accounts have master edits switched off; `nonwritable` and `norights` are said only of accounts that are on; `tool.masters` shows the count |
 | `create.account` | Changed | a user account's group is made with `root` and the user; the `sdsys` user is no longer put in it |
 | `create.account` audit line | Changed | the audit line ends `gates=` with every access the command granted, or `gates=none` |
 | `create.account group` | Changed | fixed: the four record files of a new group account now get the account's own group (they were left in `sdusers`) |
@@ -483,13 +484,8 @@ has, with the changes they made.
 | `files-admin-on` | Added | third remote permission: the login may configure, index, create and delete files on this server (group `sdfilesadmin`) |
 | `files-on` and `files-off` | Added | per-account switch for the files route SDNet uses (group `sdfiles`) |
 | `files-write-on`, `-off` | Added | per-account switch for changing files over the files route (group `sdfileswrite`); `files-off` removes it first |
-| `list.master.pending` | Added | shows the journal lines of master-file changes not yet applied |
 | `list.voc.removed` | Added | administrator only: the VOC records SD no longer ships, with the release each went in and what to write instead; given an account, what the next `update.accounts` would do in it (changes nothing) |
 | `load.help` | Added | SDSYS loads the text of the `[?]` help buttons into the shared account; keeps records the administrator added |
-| `master files` | Added | SDSYS keeps a copy of every account's VOC and dictionary records (`voc_master`, `dict_master`) current by a journal |
-| `master files` access | Changed | fixed: they were readable and writable by every SD user; they are owner sdsys, mode 0600 and 0700 |
-| `master files` saving | Added | saving an account's master copy writes it into the account at once, or refuses with the reason and changes nothing |
-| `master files` saving | Changed | an account whose group does not list `sdsys` (one given `sdsys-off`) is refused with a message that names `modify.account <name> sdsys-on`; nothing is changed |
 | `modify.account` | Changed | takes more than one action in a command (`modify.account fred sh-on os-on voc-on`), all carried out or none |
 | `modify.account files-off` | Changed | fixed: deals with a leftover `sdfileswrite` membership instead of making it live at the next `files-on` |
 | `modify.account recovery-on` and `recovery-off` | Added | per-account switch for the `ide`'s recovery copy of unsaved text; off as delivered; refused for a group or other account (message 11771) |
@@ -513,6 +509,7 @@ has, with the changes they made.
 | `sdsys-on` and `sdsys-off` | Added | per-account switch for the `sdsys` user's membership of the account's group (master edits, and SDSYS writing inside the account); on as delivered, `sdsys-off` tightens one account, `sdsys-on` puts it back and repairs the modes |
 | `set.batch` | Added | allows or stops allowing a paragraph or sentence that an account may run from the command line (`sd -a<account> <command>`, as a scheduled job does), after checking it in that account's VOC; none is allowed as delivered; until now `batch.jobs` was edited by hand |
 | `set.config` | Added | changes one of 14 tuning parameters of `sd.conf` (administrator, through the root helper): a name on the helper's list and a whole number inside the range SD enforces; the old file is kept as `sd.conf.bak` |
+| `set.job` | Added | the administrator's scheduled jobs: makes, changes, deletes or starts now one of two fixed jobs (`backup-all`, `update-accounts`) on one of five schedules, through the root helper (`sd-elevate job-set`, `job-delete`, the new `job-run`, `job-list`); alone, lists them with their next and last runs; each change audited; nothing is scheduled as delivered |
 | `set.start.default` | Added | chooses where accounts start: the home screen or the command prompt |
 | `set.tile` | Added | switches a home screen tile on or off for an account; `set.tile` alone lists what is off |
 | `set.tile` standard ids | Changed | the seven development tiles and `recent` are standard ids (15 in all); the Back tile of a sub-menu cannot be turned off |
@@ -522,14 +519,12 @@ has, with the changes they made.
 | `shared-read-off` | Added | withdraws the shared account's files from one account (on for every account as delivered) |
 | `shared-write-on` | Added | lets one account change the shared account's files (off as delivered) |
 | `ssh` and `api` | Changed | a new account gets neither; `create.account user name ssh`, `api` or `both` and `modify.account` change it |
-| `sync.masters` | Added | makes the first copy of every account's VOC and dictionary records and repairs a difference |
 | `tool.accounts` | Added | full-screen page of every account: its kind, suspension, the gates that are on and who is signed on; suspends or lifts, adds or takes away a person of a group account, creates (the verb asks for a password on the terminal) and deletes (after the name is typed) |
 | `tool.audit` | Added | full-screen page that reads the audit trail from its end, a screen at a time: filters by time, event, account, user and text, go to a time, follow, the rotated files, and the lines shown saved to a record; it changes nothing else |
 | `tool.backups` | Added | full-screen page for backups and restores: the saved directory, the archives in it with each manifest, who else is signed on (a backup and a restore need everyone else out), and `backup.account`, `restore.account` and `set.backup.directory` behind a box |
 | `tool.config` | Added | full-screen page that shows every `sd.conf` parameter with what SD is running with, what the file says, the default and when a change takes effect, and names a line SD does not know; `E` changes one of 14 tuning parameters through `set.config` behind a box answered Run, and shows why and the line to add by hand for the rest |
 | `tool.gates` | Added | full-screen matrix of every account against every gate; changes go through `modify.account`, never by themselves; A (all gates on) and N (all gates off) queue every gate of the cursor's account at once, to be trimmed before R runs them; in any other account the same verb is a read-only page of what that session may do |
-| `tool.jobs` | Added | full-screen Scheduled jobs page, first stage: every account with the paragraphs and sentences it may run from the command line, changed through `set.batch` behind a box answered Run; the schedules themselves are still written in the account user's crontab or timer |
-| `tool.masters` | Added | full-screen page for the master files: set-up state, journal, each account against its copy; runs `sync.masters` |
+| `tool.jobs` | Added | full-screen Scheduled jobs page: every account with the paragraphs and sentences it may run from the command line, changed through `set.batch` behind a box answered Run (an account's schedule is still written in its user's crontab or timer); its Jobs view (`J`) lists the administrator's scheduled jobs and makes, changes, deletes (the name typed) and starts them through `set.job` |
 | `tool.menus` | Added | full-screen page for the home screen: where each account starts, which tiles are on, who may add programs |
 | `tool.menus` | Changed | a row for each development tile and the Recent group (17 rows in the Menu box) |
 | `tool.remote` | Added | full-screen page for everything that reaches SD from outside: the API and ssh doors as the machine reports them (changed after a box, and the word OPEN to turn one on), the routes of each user account, the SDNet servers (delete, define with the terminal given to `set.server`), who is connected, this machine's TLS identity, and the `sdsys` ssh login's authenticator code (`remote.sdsys`, with the terminal given to the verb; `L` asks it at the console too or not) |
@@ -785,6 +780,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `sed` | Changed | the full-screen editor is back with a menu bar, the keys most editors have (`emacs` in `&sed.options&` keeps the old ones), undo and redo, syntax colour and the mouse; its keys are decoded from the terminal's terminfo entry |
 | `sed` `path:` form | Changed | opens no file now: the `path:` form of a file name went with `FILERULE`, so `sed` asks the account's OS gate and cannot open the file; it no longer retries the name in upper case after that check (`ide path:/full/name` opens an operating system file) |
 | `sed`, `ide`, `ed` input ended | Changed | fixed: they used all of a processor for ever when their input had ended |
+| `sp.view` screen | Changed | on a window of 140 by 43 or more (used whole) the record view has the frame of the other full-screen pages: the bar with the file and record and `sp.view  name@account`, a status line, a border and a row of function keys, in the site's theme; the keys, the spool form and the list of records are unchanged, and a smaller window or no terminal keeps the old layout |
 | `tool.dict` new item | Changed | N asks the id and hands a new item to the `ide`, which shows the dictionary form and writes the record with the account's `dict-edit` gate; before, the page asked seven questions one at a time and wrote the record itself, and it now writes nothing |
 | `tool.dict`, `tool.voc` edit | Changed | E hands the item or the entry to the `ide` (`ide dict file item`, `ide voc name`), with the page's own gates and boxes, where it used `sed` |
 | toolkit pages: menu bar | Added | every `tool.*` page (the administrator pages, the development pages and `my.menu`) has a menu bar on its top row: Esc (when the page has nothing of its own to close first), F10, Alt and a letter, or a click on a title opens it; an entry does what its key does, through the page's own checks and boxes, so the bar adds no access; Esc opens the first menu that does not begin with Quit, so Esc then Enter cannot leave the page; on the home screen's top page Esc opens the bar too |
