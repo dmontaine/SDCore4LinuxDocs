@@ -252,6 +252,35 @@ recompile rather than trying to work around it.
 **There is no conditional breakpoint.** Put a `debug` statement inside the `if`
 instead, and recompile.
 
+### Breakpoints from the IDE
+
+In the IDE's editor, **Shift-F7** sets or clears a breakpoint mark on the
+cursor's line, and a click in the gutter does the same on the line clicked. A
+marked line shows `*` in front of its line number. Build / **Clear
+breakpoints** removes every mark of the tab. Marks belong to the open program
+tab: they move with their lines as you edit, and they are not saved anywhere.
+
+**F7** compiles the program for the debugger as before. With marks, the
+debugger sets a breakpoint on each marked line and runs on to the first one
+without stopping at line 1. Build / **Debug from the first line** stops at the
+first line as F7 always did, with the breakpoints already set and the message
+*"Breakpoints set from the editor's marks: n"*.
+
+When the debugger ends, the lines that still have a breakpoint come back as the
+tab's marks, so a `brk` or `clr` you typed in the debugger is kept.
+
+What is refused, and said:
+
+- A mark on a line where no statement begins (a comment, a blank line, a label)
+  sets nothing. When no mark could be set, the debugger stops at the first line
+  and names the lines: *"No breakpoint was set on these marked lines ..."*.
+  Those marks do not come back.
+- A program can have 20 breakpoints; a twenty-first mark is refused.
+- Marks are for program tabs only. In a VOC, dictionary or data record
+  Shift-F7 says *"Breakpoints can be set in a program only"*.
+- The marks are handed over only when the record on the disk is the text in
+  the tab. F7 saves before it compiles, so this normally holds.
+
 ## Equate tokens
 
 A program compiled with `$mode debug.equates` (and for the debugger, `basic ...
