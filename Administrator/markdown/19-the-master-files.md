@@ -625,8 +625,13 @@ at the other end. The temporary pointer reaches the program file's data only. Th
 which account the program belongs to, so its **Compile** (F8) and **Compile and catalogue** (F9)
 do not run BASIC in SDSYS through the pointer: they run `run.in` (above) in that account, so the
 object goes into the account's own `bp.out`, a `$catalog` line in the source is not acted on, and
-the catalogue is the account's. **Run** and **Debug** of that program are refused in the editor (run
-it in its account; debugging comes in a later stage). **`C`** on the page compiles the program under
+the catalogue is the account's. Its **Debug** (F7, and Debug from the first line) compiles the
+program for the debugger and runs the debugger in that account, the same way (`run.in … basic …
+debugging`, then `run.in … debug …`); **Run** is refused in the editor (run it in its account).
+**`B`** on the page debugs the program under the cursor the same way: a compile that fails is shown
+as `C` shows it and nothing is debugged; otherwise the terminal goes to the debugger, and when it
+ends the page asks you to press Enter and comes back on the same program. The page writes `master
+debug account=ze1 file=bp id=prog`. **`C`** on the page compiles the program under
 the cursor the same way and shows what the compiler said in a box; the Built column follows. The
 page writes `master edit account=ze1 kind=bp file=bp id=prog new=0` for an edit and `master compile
 account=ze1 file=bp id=prog result=ok` (or `failed`) for `C`; `run.in` writes its own `run.in begin`
