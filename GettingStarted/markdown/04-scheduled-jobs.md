@@ -93,14 +93,36 @@ at an upgrade have it already.
 **2. Check it runs when you type it**, in that account, before putting it on a
 timer.
 
-**3. Add the name to the account's record in `batch.jobs`**, logged in to
-the machine as SDSYS:
+**3. Allow the name in that account**, logged in to the machine as SDSYS:
 
 ```
-:ed batch.jobs fred
+:set.batch add fred my.report
+my.report may now be run from the command line in account fred
 ```
 
-One command name per line. Create the record if the account has none.
+`set.batch` checks that the name is a paragraph or a sentence in that
+account before it adds it, writes the account's record in `batch.jobs`,
+and records the change in the audit trail. `set.batch remove fred my.report`
+takes it off, and `set.batch` alone lists every account's commands. The
+administrator's own account has no list.
+
+**Or use the Scheduled jobs page**, `tool.jobs`. It lists every account
+with the number of commands it may run this way. Tab or Enter moves to
+the account's paragraphs and sentences, each marked as allowed or not.
+Enter on one shows the `set.batch` command and what it does, and runs it
+only when you answer Run. A name still on the list whose VOC record has
+gone, or is no longer a paragraph or a sentence, is shown as such, and
+Enter takes it off. A name holding a character other than a lower-case
+letter, a digit, a dot, a dash or an underscore cannot be sent from the
+page: it shows the `set.batch` command to type at the prompt.
+
+The page does not write the schedule itself yet: step 4 is still done in
+the crontab or the timer of the account's Linux user.
+
+`batch.jobs` can still be edited directly (`ed batch.jobs fred`, one
+command name per line), but `set.batch` makes the same checks the login
+makes, so a mistake shows up when you make it, not at the job's first
+run.
 
 **4. Create the scheduled job.** Either cron or a `systemd` timer runs it —
 what matters is which Linux account the job runs as:

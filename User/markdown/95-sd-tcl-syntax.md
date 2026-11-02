@@ -9,7 +9,7 @@ have forgotten its arguments, it is here. If you want to know what it
 braces an optional part, and a vertical bar separates alternatives. SD
 folds case, so any of this may be typed in either case.
 
-> This page lists every verb SD ships (**210** of them). The shapes come from the
+> This page lists every verb SD ships (**212** of them). The shapes come from the
 > subject documents, where each verb is described in full.
 
 **The "who" column is the VOC, not an opinion.** It is taken from the
@@ -180,6 +180,7 @@ not refused — the name is simply not recognised.**
 | **`set`** | **`set`** *name* *value* |  |
 | **`set.ai`** | **`set.ai`**  ·  **`set.ai provider`** *name* \| **`none`**  ·  **`set.ai model`** *provider* *name* \| **`-`**  ·  **`set.ai key`** *provider* {**`clear`**}  ·  **`set.ai custom`** *name* *url* *format* *auth* *version* *maxparam* \| **`clear`**  ·  **`set.ai ca`** *path* \| **`-`**  ·  **`set.ai limit`** *name* *number*  —  the AI provider, model, key and limits for every account (administrator); the key is typed at the helper's own prompt | S |
 | **`set.backup.directory`** | **`set.backup.directory`** {*directory*} | S |
+| **`set.batch`** | **`set.batch`** {{**`add`** \| **`remove`**} *account* *command*}  —  the commands an account may run from the command line, as a scheduled job runs one (none is allowed as delivered); without arguments, lists them | S |
 | **`set.config`** | **`set.config`** *parameter* *value*  —  changes one of 14 tuning parameters of **`sd.conf`** (administrator, through the root helper); *value* is a whole number inside the range SD enforces | S |
 | **`set.date`** | **`set.date`** *date* | S |
 | **`set.exit.status`** | **`set.exit.status`** *n* |  |
@@ -221,6 +222,7 @@ not refused — the name is simply not recognised.**
 | **`tool.dict`** | **`tool.dict`** {*file*}  —  the dictionary of a file on one screen: its items by type with their heading, format, conversion and expression, described in words; make an item (the page writes the record itself, after a box, only if dict-edit is on), edit one in SED, delete or compile one through its verb, try one on a record; and the file's indices (make, build, delete, list) |  |
 | **`tool.files`** | **`tool.files`**  —  the files of the account on one screen: kind, records, modulus, size, indices, trigger; make, clear and delete a file, each through its own verb after a box that shows the command; analyse a file and list its indices and triggers by handing the terminal to the verb |  |
 | **`tool.gates`** | **`tool.gates`**  —  for the administrator the gate matrix (every account against every per-account gate; queued changes run as one **`modify.account`** command); in any other account, what this account may do and why (read only) |  |
+| **`tool.jobs`** | **`tool.jobs`**  —  the Scheduled jobs page (administrator): every account and the paragraphs and sentences it may run from the command line, changed through **`set.batch`** after a box answered Run | S |
 | **`tool.keys`** | **`tool.keys`** |  |
 | **`tool.masters`** | **`tool.masters`**  —  the master files on one screen (administrator): set up or not, the journal, every account against its master copy, and **`sync.masters`** behind two keys after a box answered Run | S |
 | **`tool.menus`** | **`tool.menus`**  —  menu management (administrator): the home screen's tiles for each account, where each account starts, who may add their own programs | S |
