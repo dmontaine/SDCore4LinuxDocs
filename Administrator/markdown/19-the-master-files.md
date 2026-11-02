@@ -524,8 +524,8 @@ group-write`) puts them right, the ones made while the account was off included.
 
 The copies above keep a second record of every account's VOC and dictionaries. **`tool.entries`**
 is the page that looks at the accounts' own files and copies nothing: it is in the SDSYS VOC only and
-refuses anyone else before it reads anything. **This stage reads the VOC entries and the dictionary
-items, and it only reads**; programs, and changing an entry from the page, come in later stages.
+refuses anyone else before it reads anything. **This stage reads the VOC entries, the dictionary
+items and the programs, and it only reads**; changing an entry from the page comes in a later stage.
 
 ```
 tool.entries
@@ -539,7 +539,12 @@ account's group** (`modify.account` *name* `sdsys-on` puts it there), and the la
 account is suspended. *Entries* (right) lists the VOC of the account under the cursor, in name
 order, with each entry's type and what it points at; **`K` switches to the dictionary items** of
 the files its VOC points at (the dictionary path of each file pointer), each with its file, id,
-type and column heading. Under the two lists the entry under the cursor is shown field by field.
+type and column heading, **and again to the programs**: the program files of the VOC (a directory
+file named `bp`, or ending `.bp`, or with a `.out` file beside it, as `tool.catalog` finds them) and
+the record of each, with **Built**, which says `yes` when the compiled program is in the `.out` file
+under the same name and `-` when it is not. The `.out` file is the one the VOC names, or else the
+one beside the program file. A third `K` is back at the VOC. Under the two lists the entry under the
+cursor is shown field by field.
 
 **The VOC of an account is read when the cursor comes to the account**, from the account's own
 file by the pathname the register gives, so a system with many accounts is not read as a whole.
@@ -555,7 +560,8 @@ more.
 **A pointer is not followed to change what it points at.** A `>` in the second column marks a
 pointer whose target lies **outside the account being listed**: a file pointer whose data or
 dictionary is in another directory (the shipped ones lead to `@SDSYS/voc.dic` and the like), a
-Q-pointer to another account, a remote item. The test is the kernel's own, so `..` and links do not
+Q-pointer to another account, a remote item, a program file that lies outside the account. The
+test is the kernel's own, so `..` and links do not
 make a path look inside. For a VOC entry the pointer is the account's own record and is edited like
 any other (change `@SDSYS/voc.dic` to another directory, and it is changed); what it points at is
 never edited from this page. A dictionary item marked `>` lives in another account's dictionary,
