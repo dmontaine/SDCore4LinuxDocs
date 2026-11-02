@@ -95,7 +95,9 @@ happens to be running as.
 
 **This is deliberate and total, not a special case for remote sessions.**
 SDSYS itself is refused ssh outright until an authenticator code is enrolled for it, and then
-only with that code and its password. The API refuses it from every other
+only with that code and its password. At the machine's own console the code is not asked as
+delivered; an administrator can have it asked there too (`remote.sdsys local on`), which is worth
+doing on a machine with a remote-desktop or remote-console tool. The API refuses it from every other
 computer and over the network port on this machine as well; it accepts SDSYS
 only on the local Unix socket, from a process running as `sdsys`, and only
 with SDSYS's own SD password — see [ssh access](08-ssh-access.html) and

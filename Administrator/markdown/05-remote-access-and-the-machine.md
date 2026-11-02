@@ -166,11 +166,11 @@ chosen with the keys `1` to `6`:
 | `3` servers | the SDNet servers of the `netservers` file (read with `!netdefs`): name, address, remote account and mode, the pin shortened, the local accounts that may use it. `X` deletes the one under the cursor (`delete.server`, which does not ask itself, so the box is the question). `N` asks every field, checks them the way `set.server` does and gives **the terminal to the verb**, whose `connect` step shows the key the server presents and its hash and asks whether to trust it |
 | `4` connected | every session now by the door it came through: the user number, the kind (user, api, sdnet, phantom), the login user, the account and where it came from |
 | `5` TLS | this machine's TLS identity as `settings.report` gives it: the certificate fields and the public-key hash another SD server pins. Never the private key |
-| `6` sdsys login | what `remote.sdsys` says with no keyword: whether the authenticator code for SDSYS's sign-in over ssh is on, a new one waiting, the recovery codes left, and whether the ssh door lets `sdsys` in. `O` sets the code up (its box wants the word `OPEN` typed), `R` makes new recovery codes, `F` switches the code off. `O` and `R` give **the terminal to the verb**, which shows the secret or the codes there once and clears the screen after Enter. See Remote Administration over ssh |
+| `6` sdsys login | what `remote.sdsys` says with no keyword: whether the authenticator code for SDSYS's sign-in over ssh is on, a new one waiting, the recovery codes left, and whether the ssh door lets `sdsys` in. `O` sets the code up (its box wants the word `OPEN` typed), `R` makes new recovery codes, `F` switches the code off, `L` has it asked at the machine's own console too or not (`on` or `off`; off as delivered). `O` and `R` give **the terminal to the verb**, which shows the secret or the codes there once and clears the screen after Enter. See Remote Administration over ssh |
 
 The page runs four commands through the routine all the toolkit pages use, each only after a box that
 shows the command and what it does was answered Run (**Cancel is what Enter chooses**): `remote.api`,
-`remote.ssh`, `delete.server` and `remote.sdsys off`, besides the three reports. `set.server`,
+`remote.ssh`, `delete.server`, `remote.sdsys off` and `remote.sdsys local on` or `local off`, besides the three reports. `set.server`,
 `remote.sdsys on` and `remote.sdsys recovery` are run by the verb itself on the terminal. The verbs ask for the administrator again and write their own audit lines; the page writes
 nothing. A door that the firewall cannot gate is refused by `remote.ssh`, and the page shows the
 verb's words. `F5` reads everything again, `F1` explains the page and `Ctrl-Q` leaves. Opening the page
