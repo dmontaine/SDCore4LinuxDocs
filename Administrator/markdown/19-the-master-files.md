@@ -520,6 +520,38 @@ group-write`) puts them right, the ones made while the account was off included.
   files are owned by `sdsys`, have no group or other bit, and cannot be opened by a user who is in
   `sdusers`.
 
+## The entries of every account by pointer: `tool.entries` (first stage)
+
+The copies above keep a second record of every account's VOC and dictionaries. **`tool.entries`**
+is the page that looks at the accounts' own files and copies nothing: it is in the SDSYS VOC only and
+refuses anyone else before it reads anything. **This stage reads the VOC and nothing else, and it
+only reads**; dictionaries and programs, and changing an entry from the page, come in later stages.
+
+```
+tool.entries
+```
+
+*Accounts* (left) lists every registered account but SDSYS with **the gates it holds**, shown as
+`v d b` or a dash: `voc-edit`, `dict-edit` and `bp-edit`, the rights to save a change to its VOC,
+its dictionaries and its programs. A dash is what locks an account out of its own files; an
+administrator is not held to them. The next column says whether **the `sdsys` user is in the
+account's group** (`modify.account` *name* `sdsys-on` puts it there), and the last whether the
+account is suspended. *Entries* (right) lists the VOC of the account under the cursor, in name
+order, with each entry's type and what it points at; under the two lists the entry under the cursor
+is shown field by field.
+
+**The VOC of an account is read when the cursor comes to the account**, from the account's own
+file by the pathname the register gives, so a system with many accounts is not read as a whole.
+`/` keeps the entries whose id holds a part you type. **`F` finds an id, or a part of one, in the
+VOC of every account**: it reads them all, so it runs only when you ask, and the box then lists the
+hits with their accounts; Enter on a hit goes to that entry in its account. Esc takes the find and
+the filter off, F5 reads again, Tab changes box, F1 or `?` explains the box. An account whose VOC
+cannot be opened is listed and says so. At most 3,000 entries or hits are listed, and the page says
+when there were more.
+
+The page writes no record and runs no command; its only line in the audit trail is
+`tool start app=tool.entries`.
+
 ## Cost
 
 A write to a VOC or a dictionary does the work above; **a write to any other file costs one test of a
