@@ -199,6 +199,10 @@ DOCS = [
  ('Administrator', '21-the-audit-trail.md', """
    tool.audit
  """),
+ # 2 Nov 26 - S.102 stage 5 (the scheduled jobs): set.batch, set.job and tool.jobs, in voc_template (SDSYS's set), not in newvoc.
+ ('Administrator', '23-scheduled-jobs.md', """
+   set.batch set.job tool.jobs
+ """),
  # 25 Oct 26 - S.75 A6 (the configuration page): tool.config, in voc_template (SDSYS's set), not in newvoc.
  ('Administrator', '07-sd-admin-configuration.md', """
    tool.config

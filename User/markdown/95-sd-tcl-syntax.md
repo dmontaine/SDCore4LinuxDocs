@@ -184,7 +184,7 @@ not refused — the name is simply not recognised.**
 | **`set.date`** | **`set.date`** *date* | S |
 | **`set.exit.status`** | **`set.exit.status`** *n* |  |
 | **`set.file`** | **`set.file`** *account* *file* *pointer* |  |
-| **`set.job`** | **`set.job`** {{**`add`** \| **`change`**} *name* *job* *schedule* \| {**`delete`** \| **`run`**} *name*}  —  the administrator's scheduled jobs (through the root helper): *job* is **`backup-all`**, **`check-masters`**, **`sync-masters`** or **`update-accounts`**; *schedule* is **`every`** *n* **`minutes`**, **`hourly`**, **`daily`** *hh:mm*, **`weekly`** *day* *hh:mm* or **`monthly`** *d* *hh:mm*; without arguments, lists them with their next and last runs | S |
+| **`set.job`** | **`set.job`** {{**`add`** \| **`change`**} *name* *job* *schedule* \| {**`delete`** \| **`run`**} *name*}  —  the administrator's scheduled jobs (through the root helper): *job* is **`backup-all`** or **`update-accounts`**; *schedule* is **`every`** *n* **`minutes`**, **`hourly`**, **`daily`** *hh:mm*, **`weekly`** *day* *hh:mm* or **`monthly`** *d* *hh:mm*; without arguments, lists them with their next and last runs | S |
 | **`set.mode`** | **`set.mode`** {**`dict`**} *file* {**`all`** \| **`from`** *listno* \| *id* …} {**`no.query`**} *mode* |  |
 | **`set.netlogin`** | **`set.netlogin`** *server* |  |
 | **`set.server`** | **`set.server`** *name* *host* *port* *account* {*pin* \| **`connect`**} {**`read`** \| **`write`**} {**`accounts`** *a*`,`*b*`,`…} {**`no.query`**} | S |

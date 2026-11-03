@@ -23,6 +23,9 @@ pairs. The event words come first and are all lower case (`login`, `modify.accou
 (an account name, a reason) and keeps its case. A value may hold spaces: a word that holds no `=` after
 a pair belongs to that pair's value.
 
+**Every line written by a run of a scheduled administrator job ends `job=`*name***, starting with
+`elevation granted reason=scheduled job`; see [Scheduled Jobs](23-scheduled-jobs.html).
+
 ## Who writes it
 
 **The user, uid and pid on a line are not the session's word.** Every session sends its record to the

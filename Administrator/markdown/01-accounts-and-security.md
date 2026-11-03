@@ -129,7 +129,7 @@ with any arguments. (The files `root` runs at the next start used to belong to
 **History:** before 2.0-0 the membership was there for every account; the
 development of 2.0-0 made it off as delivered (26 October 2026) and then, on
 1 November 2026, on again. An install puts the `sdsys` user in the group of the
-accounts that are already there **once** and records that in
+registered accounts that are already there **once** and records that in
 `/home/sd/$sdsys.access`; after that a `sdsys-off` you gave stands.
 
 ### The sdsys user in an account's group: `sdsys-on` and `sdsys-off`
@@ -138,8 +138,8 @@ accounts that are already there **once** and records that in
 Linux group and makes the account's VOC and dictionaries writable by that group;
 `sdsys-off` takes the user out. The state is the group membership, as it is for
 `ssh` and the API, so nothing is written to the register. The lines printed are
-`Account fred: master edits are on. ...` and `Account fred: master edits are
-off. ...`; the audit trail has `modify.account sdsys-on account=fred`, and
+`Account fred: sdsys-on done. ...` and `Account fred: sdsys-off
+done. ...`; the audit trail has `modify.account sdsys-on account=fred`, and
 `sd-elevate` writes a line to the system log. **User accounts only**: a group
 account is refused ("is not a user account"), because `sdsys` owns the files of a
 group account. `sdsys-on` can be given again to an account that is on, which

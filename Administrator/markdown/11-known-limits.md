@@ -86,13 +86,23 @@ datagram to a listener and back first.
 
 ### A cron job or systemd timer running as an account that `create.account` made
 
-**What to expect.** The `batch.permitted` gate at login (see *Scheduled jobs*
-in the **Getting Started** set) decides whether an unattended run is allowed,
-and its messages and audit reasons say why a run was refused.
+**What to expect.** The `batch.permitted` gate at login (see
+[Scheduled Jobs](23-scheduled-jobs.html)) decides whether an unattended run is
+allowed, and its messages and audit reasons say why a run was refused.
 
 **Check before relying on it.** Point a crontab entry at an SD account and
 watch that it runs, and is permitted or refused as you intend, when nobody is
 at the terminal.
+
+### An administrator's scheduled job
+
+**What to expect.** The units are written and the run is recognised as
+[Scheduled Jobs](23-scheduled-jobs.html) describes; the next and last run that
+`set.job` and `tool.jobs` show are read from `systemctl show`.
+
+**Check before relying on it.** Make a job that runs every five minutes, let it
+run once, and read its lines in the audit trail (each ends `job=`*name*) and
+`journalctl -u sdcore-job-`*name*`.service`; then delete it.
 
 ## SDNet: remote files between SD servers
 

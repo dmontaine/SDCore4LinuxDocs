@@ -41,8 +41,9 @@ reach somebody else's list: that form is refused unless the account is
 your own.
 
 **Any account can be given a list.** Every account has the same VOC now, so
-there is nothing about the account type to consider here; SDSYS's own
-`batch.jobs` record is what decides who may run one.
+there is nothing about the account type to consider here; the account's
+record in `batch.jobs` is what decides what it may run. SDSYS itself has
+no list: its sessions run anything.
 
 Both shapes of record are read — one name per line, and a multivalued field 1 —
 so a record written with **`ed`** and a record written by a program agree. A name
@@ -70,7 +71,7 @@ arguments that stops a listed name being turned into something else.
 `S`. Anything else — a verb, a file pointer — is refused by name:
 
 ```
-MY.REPORT has to be a paragraph or a sentence in this account to be run
+my.report has to be a paragraph or a sentence in this account to be run
 from the command line, and it is neither.
 ```
 
@@ -138,13 +139,13 @@ account — that is the whole of the sign-in. There is no password to
 configure anywhere in SD for it.
 
 **Do not run it as `sdsys` or via `sudo`.** It is not needed, and the whole
-point of `batch.jobs` is a job that runs without administrator rights. A
-job that runs as `sdsys` passes the gate on identity alone and never
-consults the list, so it would also be a job nobody had approved a command
-for — and per [Security](12-security.html), `sdsys` cannot be reached that
-way regardless: SD checks the kernel's own audit loginuid (`K$LOGIN.UID`),
-set once by a real login and unforgeable by a cron job or a `sudo`'d
-shell, and refuses anything that isn't a genuine local login as `sdsys`.
+point of `batch.jobs` is a job that runs without administrator rights. It
+would not work either: the installer puts `sdsys` in `/etc/cron.deny` (and
+`/etc/at.deny` where `at` is installed), and per [Security](12-security.html)
+SD refuses an `sdsys` session that is not a genuine login of `sdsys`'s own —
+it asks the kernel's audit loginuid, which a `sudo`'d shell cannot forge.
+Work that must run as the administrator is one of the administrator's own
+jobs, below.
 
 **Use a Linux account you already had** — that is the case the design was
 built around.
@@ -167,7 +168,7 @@ The message on the screen for the third of those names both the command and
 the account, and says where an administrator grants it:
 
 ```
-MY.REPORT is not a command that account FRED may run from the command line.
+my.report is not a command that account fred may run from the command line.
 
 An administrator grants it by adding the name to the account's record in
 the SD system file batch.jobs, which only an administrator can change.
@@ -190,75 +191,29 @@ may do:
 
 **Nothing is scheduled as delivered.** Each job is a `systemd` timer that
 only root can set, kept by the root helper in `/etc/sdcore/jobs.d`; the
-`sdsys` user's own crontab is refused (see *Remote administration over
-ssh* in the administrator's documentation). At each
-run `systemd` starts `sd` with the job's command as the `sdsys` user, and SD
-makes it the administrator only when the run is that unit's and the
-root-owned definition names exactly that command. Every line the run
-writes to the audit trail ends `job=`*name*. A run missed while the machine
-was off is not made up; times are the machine's.
+`sdsys` user may not use cron or `at`. At each run `systemd` starts `sd`
+with the job's command as the `sdsys` user, and SD makes it the
+administrator only when the run is that unit's and the root-owned
+definition names exactly that command. Every line the run writes to the
+audit trail ends `job=`*name*. A run missed while the machine was off is
+not made up; times are the machine's.
 
 **A schedule is one of five shapes:** `every 5`, `10`, `15`, `20` or
 `30 minutes`; `hourly`; `daily` *hh:mm*; `weekly` `mon`..`sun` *hh:mm*;
 `monthly` *1..28* *hh:mm*.
 
-### From the Scheduled jobs page
-
-In `tool.jobs`, **J** shows the **Jobs** view (**A** goes back to the
-account commands). It lists every job with its schedule, its command,
-when it runs next and how its last run ended. A definition that does not
-agree with the root helper is shown as damaged.
-
-| Key | Does |
-|---|---|
-| **N** | makes a job: a form asks for the name, the job and the schedule |
-| **C** or Enter | changes the selected job's job or schedule (its name stays) |
-| **D** | deletes the selected job: you type its name in the box |
-| **R** | starts the selected job now, exactly as its timer would; the page does not wait for it |
-| **F5** | reads the list again (the last run shows there when it has finished) |
-
-The form refuses a name, a job or a schedule the helper would refuse,
-before anything is sent. Every change is then shown as its `set.job`
-command, with the job's command and the schedule in words, and runs only
-when you answer Run. **The page writes nothing itself:** `set.job` asks
-the root helper. A damaged job can be changed or deleted, not run; one
-whose file name is not a job name can only be deleted, at the prompt
-(`set.job delete` *name*), and the page says so.
-
-### From the prompt
-
-`set.job` does the same at the `:` prompt, logged in as SDSYS:
+SDSYS sets them up with `set.job` at the prompt, or in the **Jobs** view
+of `tool.jobs` (**J**):
 
 ```
 :set.job add nightly backup-all daily 02:30
 sd-elevate: job nightly created
 sd-elevate: job nightly is scheduled: daily 02:30
-:set.job
-job nightly: daily 02:30: backup.account all (backup-all)
-   next run: Tue 2026-11-03 02:30:00 UTC; last run: never
 ```
 
-What you see is what the root helper did; the lines it prints about what
-it is about to do are left out. `systemd` may add a line of its own when
-a timer is first switched on (`Created symlink ...`).
-
-`set.job change` *name job schedule* changes a job (`add` refuses a name
-that exists and `change` one that does not), `set.job delete` *name*
-removes it, its timer first, and `set.job run` *name* starts it now; a
-damaged job is not started (`Job nightly is damaged; nothing was
-started`), by `set.job` or by the root helper. A time may also be
-written *hh.mm*.
-
-**That a job exists, or does not, is checked against the list just
-before the change.** The root helper itself makes or replaces the
-definition, so two administrator sessions acting on the same name at the
-same moment are not kept apart: the last one to reach the helper wins. The name is 1 to 32 characters: a
-lower-case letter first, then lower-case letters, digits and dashes, not
-ending in a dash. Each change is written to the audit trail with its
-result (`set.job add name=nightly job=backup-all result=done
-schedule=daily 02:30`).
-
-`set.job` is the same as running
-`sudo /usr/local/sbin/sd-elevate job-set`, `job-delete`, `job-run` or
-`job-list` at a shell as `sdsys`; it judges each change on the helper's
-own result line, and shows what the helper said when it refuses.
+`set.job` alone lists the jobs with their next and last runs;
+`set.job change`, `delete` and `run` do the rest. Everything else — the
+page's keys, what a damaged job is, how a run is recognised, where the
+definitions and units are kept, and the account lists from the
+administrator's side — is *Scheduled jobs* in the administrator's
+documentation.

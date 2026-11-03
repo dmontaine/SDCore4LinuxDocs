@@ -246,16 +246,24 @@ modify.account acme sdsys-off
 
 * **`sdsys-on`** puts the `sdsys` user in the account's group (`sd-elevate sdsys-join`) and then makes
   the account's VOC and dictionaries group-writable (`sd-elevate group-write`). It says `Account acme:
-  master edits are on. The sdsys user is in the group of the account and can write everything that
+  sdsys-on done. The sdsys user is in the group of the account, so SDSYS can write everything that
   group may write. Sign on again as SDSYS; a session already running does not have it`. **It can be
   said again**: for an account that is already on it runs `group-write` again, which repairs a mode (a
   VOC or dictionary that arrived by `restore.account` or a copy at the operating system level) and
   changes nothing else. The state it prints is read back from `/etc/group`: a read back that does not show the
   wanted state is reported as a failure, never as a success (`Account acme: ... failed, status 2`).
-* **`sdsys-off`** takes the user out (`sd-elevate sdsys-leave`) and says `Account acme: master edits are
-  off`. For an account that is already off it says `acme already had that access; nothing changed`.
+* **`sdsys-off`** takes the user out (`sd-elevate sdsys-leave`) and says `Account acme: sdsys-off
+  done`. For an account that is already off it says `acme already had that access; nothing changed`.
   **It does not end a session of SDSYS that is already running** (a process keeps the groups it started
   with), so that session keeps its write access until it ends.
+* **A session of SDSYS that began before a join does not have the group either.** `tool.entries` shows
+  such an account as **`relog`** in its SDSYS column (not `yes`), and refuses **E**, **N**, **D**, **C** and
+  **B** on it at once: `SDSYS cannot write inside acme from this session: the sdsys user joined its group
+  sdu_acme after the session began. Sign on again as SDSYS`.
+* If the group the register names cannot be used, `sdsys-on` and `sdsys-off` say so and change nothing:
+  `Account acme: the members of the group sdu_acme could not be read (status 2); nothing was changed`, or,
+  for a group name that is not valid, `Account acme: the account register does not name a valid group for
+  it; nothing was changed`.
 * The two words conflict only with each other (`modify.account acme sdsys-on sdsys-off` is refused,
   nothing changed) and may be given in a command with other words. Both are audited, in lower case:
   `modify.account sdsys-on account=acme`, and `sd-elevate` writes a line of its own to the system log
@@ -275,18 +283,25 @@ the account on for the time SDSYS needs to work inside it.
 
 **A new user account** gets its group `sdu_`*name* from `create.account` with `root` and the user as
 members, and `create.account` then puts the `sdsys` user in it (`sd-elevate sdsys-join`; if that fails the
-account is still made, and the message says so and names the command that repairs it). A **group
+account is still made, and the message says so and names the repair, `modify.account `*name*` sdsys-on`). A **group
 account** is made with `root` and `sdsys` in its group `sdg_`*name* and is owned by `sdsys`, so it needs
 nothing. **`delete.account` needs nothing**: the group goes with the account.
 
 **The install and every upgrade** make one decision, **once**: they put the `sdsys` user in the group of
-every user account that is already there and does not list it, and make that account's VOC and
-dictionaries group-writable (`sd-elevate sdsys-join`, then `group-write`). **There is no question.** Each
-account is printed (`the sdsys user is now in the group sdu_acme`), and then the installer writes the
-marker `/home/sd/$sdsys.access`, so that the administrator's later `sdsys-off` or `sdsys-on` stands: with
-the marker present the installer does not touch a group. **If an account could not be put right, the
-install warns (with the command that repairs it, `modify.account <account> sdsys-on`), goes on, and does
-not write the marker**: running the installer again tries again. The marker is in `/home/sd`, not in the
+every **registered** user account that does not list it - an `sdu_`*name* group whose account the
+register holds, with that same group on its record - and make that account's VOC and dictionaries
+group-writable at the account's **registered** place (`sd-elevate sdsys-join`, then `group-write`).
+**There is no question.** An `sdu_` group that no registered account owns is left alone and named in one
+line (`Left alone, no registered SD account owns them: ...`). Each account joined is printed (`the sdsys
+user is now in the group sdu_acme`), and then the installer writes the marker `/home/sd/$sdsys.access`,
+so that the administrator's later `sdsys-off` or `sdsys-on` stands: with the marker present the installer
+does not touch a group. **If a join or a repair the helper was asked to make failed, the install warns
+(with the command that repairs it, `modify.account <account> sdsys-on`), goes on, and does not write the
+marker**: running the installer again tries again. An account registered **outside**
+`/home/sd/user_accounts` and `/home/sd/group_accounts`, with **no path**, or at a path that **does not
+exist** is joined but its modes are not repaired (the helper repairs only those two places); it is named,
+with the reason, in a warning of its own, and does **not** hold back the marker - set its modes by hand
+(`chmod g+rw`, setgid on the directories). The marker is in `/home/sd`, not in the
 sdsys directory, because `deletesdcore.sh` removes the sdsys directory in every cycle and would lose it;
 `/home/sd` is kept with the accounts and removed with them. (It is a different file from the one the
 26 October development used, `$groups.ruled`, so an install made then gets this once too. Only groups
