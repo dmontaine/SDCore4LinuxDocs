@@ -16,8 +16,10 @@ $include tkpub.h
 ```
 
 The library draws the frame of the page and its pop-ups. The **body** of the page -
-your boxes, lists and text - your program draws itself with the `screen` statement
-(the page "The Screen Statement" in the User set describes it). The person using
+your boxes, lists, text and forms - your program draws itself with the `screen`
+statement. [The Screen Statement on a Page](01a-the-screen-statement-on-a-page.html)
+says which part of the statement a page uses and how it works with the routines;
+the page "The Screen Statement" in the User set describes every verb. The person using
 your page sees what the page "Using the Full-Screen Pages" in the User set
 describes; this guide is the programming half of that page and uses its words.
 
@@ -74,7 +76,8 @@ Every example in this guide has the same shape:
 3. Declare the panes of the body with `!tklayout('declare', ...)` and draw the body.
 4. Loop: `!tkmenubar('draw', ...)`, then `!tkframe(...)`, then
    `screen key returning nm`; give the key to `!tkmenubar('key', ...)`; act on it
-   in a `begin case`.
+   in a `begin case`. A page whose body is a form waits with `screen wait` instead
+   ([A Form in the Body](05b-a-form-in-the-body.html)).
 5. Leave the loop on **Ctrl-Q**, on the key `guardquit` and at the end of input,
    and call `!tkclose(ctx)` after it.
 
@@ -194,3 +197,4 @@ account, compiled with `basic bp name` and run with `run bp name` on a terminal 
 | [Menus and the Finder](03-menus-and-the-finder.html) | `menus` | the key table and its menus, F1, F2, Esc, the context menu, the mouse, an action that is not available |
 | [A Form and a Confirm Box](04-a-form-and-a-confirm-box.html) | `notes` | a form with the program's own checks, a confirm box, a record the program writes, the output pane and the Esc rule |
 | [Panes and Pickers](05-panes-and-pickers.html) | `browse` | two panes and the focus, wrapped text, a pick list, the record picker |
+| [A Form in the Body](05b-a-form-in-the-body.html) | `stock` | a `screen form` with a table as a pane, `screen wait` with the menu bar and the finder, `screen ask`, `screen msgbox` and `screen theme` over the page |
