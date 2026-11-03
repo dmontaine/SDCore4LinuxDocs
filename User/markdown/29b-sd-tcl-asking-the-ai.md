@@ -68,6 +68,22 @@ What it can do is only what **keys of the page that change what is shown** can d
 
 An action you accept is carried out by **the page's own key**, exactly as if you had pressed it, so what the page does for that key, and anything it asks first, is unchanged. **A name the AI gives with the action** (the new file's name, the new item's id, the text of a filter) is only put in the page's own question as its answer to start from: you can change it, the page checks it as if you had typed it, and the page's own box (Run or Cancel) still comes after. Enter alone accepts a proposal that only changes what is shown. No command is run from a page. The page sends no record and no value of any file, only what it is and what it offers; the audit trail records that you asked, never what.
 
+## The AI line in the dictionary form
+
+The [dictionary form](24-sd-tcl-programs-and-the-catalogue.html) of the IDE (an item of a file's dictionary shown as rows: Type, Field #, Conversion Cd, Column Heading, Len & Just and the rest) has an **AI>** line at its foot when the AI is on for your account. Press **F6**, Tab to it or click it, say what the item should be in your own words - *a date in field 3 headed Joined*, *a total of the amounts, two decimals* - and press Enter. Enter in this line asks the AI; it does not accept the form.
+
+The preview shows everything that will be sent, and **Cancel is the default**: the instruction, which says the page is a form and how values for it are given, **the list of the form's fields** (the key and what each holds), what the form is, **the item's values as they are on the screen**, and your request. Because the item's values are sent, **an item of the dictionary of one of SD's own files is never sent**: SD asks where the item is first and refuses, before any preview, as it does in the editors.
+
+The answer shows **every value the AI proposes, in full**, with **Accept** and **Reject**, and **Reject is the default**: Enter alone fills nothing. **Accept** puts each value into its row **only if it passes the form's own check** (the same check as a value you type: a field number from 0 to 9999, a format such as `30 L`, a conversion SD knows, one line where the row is one line); a Type the AI gives is checked first and makes the rows of that type, as typing it would. The line near the foot says how many rows were filled and **names each value that was not, and why**; a name the AI gave that is not a field of the form is left out and said in the answer. **Nothing is written**: you look at the rows, change what you like, and **Accept** the form, and the IDE's own save writes the item, with your dictionary-edit gate and its overwrite question, as for any other item. The form offers no command and runs none.
+
+## Follow up: a question about the answer
+
+Every answer's box has a **Follow up** button, after the others, and it is never the default. It applies nothing - a proposed change, action, command or set of values is not taken - and **your next request from the same place carries that question and the AI's answer** with it, so you can ask *and the next line?* or *make it two decimals instead* without saying everything again. On the home screen and the pages the line says **AI follow-up>** while one is waiting; in the IDE, SED, the collection editor, the debugger and the dictionary form the status line says so.
+
+The next request's preview **shows the earlier question and answer in full**, before your request, and counts their size; Cancel is still the default. They go to the provider as the earlier turns of a conversation. Choosing Follow up again on that answer carries both exchanges, and so on up to **the last three**.
+
+A follow-up is **used once**: the next request takes it whether you send it or cancel the preview. It is also dropped **after ten minutes**, when you leave the page (or the home screen is made again), in another account, and by any other program's AI line - each place carries only its own. The earlier questions are screened again as if you had just typed them. The audit trail says that a request was a follow-up and how many exchanges it carried, never what they said.
+
 ## If it says no
 
 | It says | Why |

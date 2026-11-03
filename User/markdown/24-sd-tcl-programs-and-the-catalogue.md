@@ -594,6 +594,14 @@ does not show (the compile stamp and object code of an I item, and any field aft
 they were while the type stays; a changed type starts from the new type's rows. The form is modal: the tabs and
 the menu wait until it is left.
 
+**The form has an AI line** (since 3 November 2026) when the AI is on for your account: **AI>** on its last
+row, reached with **F6**, Tab or a click. Say what the item should be and press Enter there (Enter in that
+line asks the AI; it does not accept the form). Everything that will be sent is shown first, Cancel the
+default; the values the AI proposes are shown in full, Reject the default; **Accept puts into the rows only
+the values that pass the form's own checks** and the line near the foot names any that did not. Nothing is
+written until you Accept the form and the IDE saves it. An item of SD's own files is never sent. See
+[SD TCL - Asking the AI](29b-sd-tcl-asking-the-ai.html).
+
 **A record that holds marks is shown with the marks written as tokens** (since 26 October 2026), so
 that nobody types one. Since 28 October 2026 this follows the tab's kind: **a dictionary item, a VOC record
 and a record of a data file are always shown so, even one that had no marks when it was read**, so that a mark
