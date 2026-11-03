@@ -1038,7 +1038,7 @@ under the cursor.
 | F | change which accounts are shown: all, accounts of persons, accounts with a gate on that reaches beyond SD |
 | F5 | read the machine again (a queued change is kept) |
 | F1, `?`, a click on the `[?]` | explain the matrix |
-| Ctrl-Q | leave |
+| Ctrl-Q | leave; when anything is queued, a box asks first: Run the changes, Leave without them, or Cancel (the default) |
 
 **The page writes nothing itself.** The queued changes of one account become ONE
 command, `modify.account name word word ...`, shown with its effect in a box that is
@@ -1048,6 +1048,13 @@ machine again and shows the verb's own words, so a cell changes because the syst
 changed, never because the page said so. Every change is audited by the verb as if you
 had typed it.
 
+* **Leaving does not drop a queue silently.** Ctrl-Q, or File > Quit, with changes
+  queued and not run shows the commands they would be and asks: Run the changes, Leave
+  without them, or Cancel. Run the changes shows R's own box for each account in turn,
+  with the account's name to type where a gate reaches beyond SD. The page closes only
+  when every command ran without a refusal or an error and nothing is left queued;
+  otherwise it stays open and shows the message of the account whose command did not
+  succeed. Enter and Esc are Cancel. With nothing queued the page leaves at once.
 * **A and N only queue.** A quick way to set an account up is **A**, then **Enter** on
   each gate it should not have, then **R**: nothing changes until the box is answered
   Run, and the box still asks for the account's name when a gate that reaches beyond SD

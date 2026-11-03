@@ -120,6 +120,12 @@ Left and right move between the buttons, Return presses the one that has the
 focus, a button's letter presses it at once, and a click of the mouse on a
 button presses it.
 
+The box is never taller than the screen. A text with more lines than fit
+scrolls: PgUp and PgDn move a box at a time, Home and End go to the first and
+the last lines, and the bottom border says which lines are shown
+(`lines 1-30 of 75, PgUp PgDn`). The buttons stay on the screen. A text that
+fits is shown as before.
+
 ### menu
 
 ```

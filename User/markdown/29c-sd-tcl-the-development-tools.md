@@ -305,11 +305,13 @@ The operators are `=` `#` `<` `>` `<=` `>=` `like` and `unlike`. A value is plai
 | Tab, Shift-Tab | next and previous box |
 | **R** | run the sentence; the output is shown in the Results box and nowhere else |
 | **E** | edit the sentence as text; a change in any box writes it again from the boxes |
-| **S** | save the query; asks a name (a-z, 0-9, dot, dash, underscore; at most 40) |
+| **S** | save the query; a form asks the name (a-z, 0-9, dot, dash, underscore; at most 40; capitals are made lower case) |
 | **L** | the saved queries (up to 100): Enter loads one, **X** deletes one |
 | F5 | read the files and the dictionary again; what no longer fits is dropped |
 | F1, **?**, a click on **[?]** | help |
 | Ctrl-Q | leave |
+
+**Every question is a small form** (since 2 November 2026): the file filter, a condition's value, the heading, the footing, the first-*n* sample, the sentence edited by hand and the name a query is saved under. The form explains what it wants. An answer the page refuses (a quote or a semicolon in a value, a sample that is not a whole number from 1 to 99999, a sentence with a word that sends the output elsewhere, a name with a character other than those above) is explained inside the form, with the form's explanation kept under the reason, and the form stays open with what you typed so you can correct it; Esc or Cancel leaves it and changes nothing.
 
 In the Results box Up, Down, PgUp, PgDn, Home and End scroll, Left and Right move 20 columns sideways, and Esc goes back to the boxes. The box keeps 2000 lines and says how many there were. A query on a big file is run in full and cannot be stopped from here: use the first-*n* option for a trial. A select list that is waiting narrows the query, and the box says so.
 

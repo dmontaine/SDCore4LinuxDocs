@@ -656,7 +656,11 @@ Ctrl-E (SED) on to the IDE.
 
 On a UTF-8 terminal (`LC_ALL`, `LC_CTYPE` or `LANG` says UTF-8) the frame, menus
 and scroll bars use line-drawing characters; elsewhere `+ - |`. The colours are
-the blue theme.
+the site's theme (`SCREENTHEME` in `sd.conf`, blue as delivered), as on the toolkit
+pages, in SED and in the debugger: blue when the site names none or a name that is not
+a theme, mono on a terminal with no colour. View, Theme goes through blue, classic,
+dark, light and mono, skipping those the terminal cannot show; the choice lasts until
+the IDE ends.
 
 **A recovery copy of text you have not saved** (since 28 October 2026), **if the administrator has turned it
 on for your account** (`modify.account` *account* `recovery-on`, for a user account; it is off as delivered). Then
@@ -701,6 +705,13 @@ enough again the warning goes by itself and the whole layout, foot included, is
 drawn again with everything as it was. [SED](27a-sd-tcl-sed.html) and
 [CED](27b-sd-tcl-ced.html) have a different lock, which looks at the cursor, not
 at the window.
+
+A window made bigger, or smaller and then big enough again, keeps everything you
+were doing (since 2 November 2026): the editor's undo and redo steps, the selection,
+the text to find (F3), the cursor and the view, the messages table's row, the open
+nodes of the tree and a half-typed AI request. The parts of the screen are moved and
+sized where they are; if one of them cannot be moved, the IDE builds the screen again,
+keeping the text. Coming back from Run, Debug or SED also builds the screen again.
 
 ## The two that are not like the others
 

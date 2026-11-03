@@ -80,12 +80,18 @@ date and time, Switch account and Sign out) stays where it is.
 | Home, End | the first and the last tile |
 | Page Down, Page Up | the first tile of the next and of the previous group |
 | a letter | the next tile whose label begins with it |
+| / | find a tile: a window of the page's tiles; type any part of a tile's name (or of its group) to narrow the list; Enter moves the focus to the tile chosen (Enter on the page then starts it), Esc leaves the focus where it was |
 | Enter, the space bar | start the tile |
 | Esc, Backspace | back one page, when you are in a sub-menu (below); on the top page Esc opens the menu bar, as F10 does, and Backspace does nothing |
 | F1 | help on the home screen |
 | F5 | build the page again |
-| F10 | open the menu bar (File, Go, View, AI, Help): **Go** has Terminal, Switch account and Back (Back can be chosen only in a sub-menu); **View** has Refresh and the Recent group; **AI** has *Ask the AI*, which moves the focus to the AI line, when the AI is on, and a dimmed *AI is off* when it is not |
+| F6 | move to the AI line, when the AI is on for the account (when it is not, the status line says so) |
+| F10, Alt and a title's letter, a click on the top row | open the menu bar (File, Go, View, AI, Help). Every entry shows its key and does what the key does: **File** Sign out (Ctrl-Q); **Go** Back (Esc or Backspace, only in a sub-menu), Terminal (Ctrl-T), Switch account (Ctrl-W), Find a tile (/); **View** Refresh (F5), Recent group on or off (Ctrl-R); **AI** Ask the AI (F6), dimmed when the AI is not on for the account; **Help** Help on this page (F1), Keys (Ctrl-K, the keyboard and terminal page `tool.keys`). An entry whose tile the administrator turned off for your account is dimmed, and its key only says so |
 | Ctrl-Q | sign out (asks first; **Cancel** is the button Enter chooses, so a stray Enter signs nobody out) |
+
+Backspace, Ctrl-T, Ctrl-W, Ctrl-R and Ctrl-K are not on the row of keys at the foot of
+the screen (F1 lists every key). The row shows Enter, F1, F5, Ctrl-Q and /, Esc in a
+sub-menu, and F6 when the AI is on for the account.
 
 A **click** starts a tile; the **wheel** scrolls the page three rows; a click on the
 menu bar opens the menu under it. The foot of the screen is the same as the
@@ -167,8 +173,12 @@ for Enter** when the command has finished printing.
 | Enter | change the selected one |
 | Del | remove it (asks first; Cancel is the default) |
 | U, D | move it up or down the list |
-| Esc, F10 | open the menu bar (File, Program): the same actions by name; with no program in the list, Change, Remove and the moves are shown dimmed |
+| Esc, F10 | open the menu bar (its menus Program, File and Help): the same actions by name; with no program in the list, Change, Remove and the moves are shown dimmed |
+| F1, `?`, a click on the `[?]` | help on this page; the Help menu has the same |
 | Ctrl-Q | leave; the home screen is built again and shows the list |
+
+In a window bigger than 140 by 43 the list takes the extra rows and the command column
+the extra width (since 2 November 2026).
 
 **It manages only your own list.** The standard tiles are the administrator's and
 are not touched. A program of yours runs the command exactly as you would type it,
@@ -184,8 +194,8 @@ View > Recent group
 ```
 
 A group of **the tiles you started last**, newest first, at the top of the page: six at
-most. **It is off as delivered.** Turn it on in the **View** menu (*Recent group (off)*; the
-same entry turns it off, and says what it is now). The first time it is on, SD makes the
+most. **It is off as delivered.** Turn it on in the **View** menu (*Recent group on or off*,
+or Ctrl-R; the same entry turns it off, and the status line says which it is now). The first time it is on, SD makes the
 file `&menus&` in your own account if it is not there, as `my.menu` does, and keeps the
 list in its record `recent`; the list is one word `on`, then one id for each tile.
 
@@ -209,7 +219,7 @@ list in its record `recent`; the list is one word `on`, then one id for each til
 
 A tile can open a **second page of tiles**. The new page has a **Back** tile at the left of
 the header (your name moves right to make room), and the status line shows where you are:
-`[Home > Develop]`. **Esc**, **Backspace**, the Back tile and the *Back* entry of the Go menu
+`[Home > Develop]`. **Esc**, **Backspace**, the Back tile and the *Back* entry of the Go menu (Esc or Backspace)
 each go back one page, with the tile you left selected.
 Pages can be nested **eight deep**; a page that is already open above cannot be opened again
 (*... is already open above this page*), and a menu none of whose tiles is on your page has no
