@@ -53,11 +53,12 @@ narrow the list, Up and Down move, Enter chooses, Esc leaves. An entry the page 
 now)*; choosing it shows why in a box and does nothing. Choosing any other entry does what its key does,
 exactly as the menu bar's entry would.
 
-**A right click opens the menu of the box you are working in** (since 3 November 2026), at the pointer;
-**Shift-F10** opens the same menu from the keyboard, in the middle of the screen. It lists the actions of the
-box that has the keyboard (the one marked `[*]`), with their keys, dimmed when they cannot be used now, and
-ends with *Find an action...*, which opens the F2 list. Click a box first to give it the keyboard: the menu is
-always the menu of the marked box. A letter, or Up, Down and Enter, chooses; Esc or a click outside closes it.
+**A right click on a box opens that box's menu** (since 3 November 2026), at the pointer. If the box did not
+have the keyboard, the right click first gives it the keyboard, as a click does (its mark becomes `[*]`), and
+then opens its menu. A right click outside the boxes, and **Shift-F10** from the keyboard (in the middle of the
+screen), open the menu of the box marked `[*]`. The menu lists that box's actions with their keys, dimmed when
+they cannot be used now, and ends with *Find an action...*, which opens the F2 list. A letter, or Up, Down and
+Enter, chooses (the action runs in that box, as its key does); Esc or a click outside closes it.
 F1's list of keys names F2 and Shift-F10 on every page that has a menu bar.
 
 ## tool.files - the files of the account
