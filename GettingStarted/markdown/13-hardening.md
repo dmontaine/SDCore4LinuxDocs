@@ -142,10 +142,10 @@ a definition that is not there.
 
 **Backspace works**, at the prompt and when you are asked for a password.
 
-### The page is 140 × 42, not 80 × 24
+### The page is 140 × 43, not 80 × 24
 
-**SD's default terminal size is 140 columns by 42 lines** (it was 120 by 36
-until 18 October 2026). **A terminal narrower than that makes wide reports
+**SD's default terminal size is 140 columns by 43 lines** (it was 120 by 36
+until 18 October 2026, and 140 by 42 until 2 November 2026). **A terminal narrower than that makes wide reports
 look wrapped or truncated**, which reads as a formatting bug and is not one.
 
 `term` reports the size in force, above the `Device` line:
@@ -153,19 +153,19 @@ look wrapped or truncated**, which reads as a formatting bug and is not one.
 ```
 :term
 Page width: 140
-Page depth: 42
+Page depth: 43
 Device    : linux
 ```
 
 **The size is worked out at login**, in this order: the `LINES` and `COLUMNS`
 environment variables if they are numeric, otherwise the terminfo entry's
-`lines` and `cols`, **otherwise 42 and 140** — then raised to a minimum of
+`lines` and `cols`, **otherwise 43 and 140** — then raised to a minimum of
 10 × 20 if smaller. So a console or ssh session normally gets its real window
-size and 140 × 42 is the fallback when nothing answers, which is the case for a
+size and 140 × 43 is the fallback when nothing answers, which is the case for a
 phantom or a piped script.
 
 > **`term default` restores it, and it prints nothing when it does.** It sets
-> the same 140 × 42 the login path falls back to and returns silently, so run a
+> the same 140 × 43 the login path falls back to and returns silently, so run a
 > bare `term` after it to see the result. `term 120,36` does the same by hand
 > for the old size.
 

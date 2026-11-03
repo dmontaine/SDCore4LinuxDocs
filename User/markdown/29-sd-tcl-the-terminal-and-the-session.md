@@ -43,22 +43,22 @@ Page depth: 9999
 
 The depth stayed at 9999 because only the width was given.
 
-### The page is the terminal's own size, and SD's default is 140 × 42
+### The page is the terminal's own size, and SD's default is 140 × 43
 
 **SD asks the terminal how big it is.** When a session starts on a terminal, and
 again each time the window is resized, SD reads the size of the window and makes
 it the page: `@crtwide` and `@crthigh` follow it, and so does `term`. A program
 that draws a screen — the SCREEN statement — sees an 80 × 24 window as 80 × 24.
-(**SD's own full-screen programs are the exception: SED, the IDE and CED are
-laid out for 140 × 42 or more**, SD's default size, and refuse a window smaller
-than that; the debugger's full-screen display says so and is line by line
-instead. If the window is made smaller while one of them runs, it shows the
+(**SD's own full-screen programs are the exception: SED, the IDE and the
+full-screen pages are laid out for 140 × 43 or more**, SD's default size, and CED
+for 140 × 42; they refuse a window smaller than that, and the debugger's
+full-screen display says so and is line by line instead. If the window is made smaller while one of them runs, it shows the
 upper left corner and stops taking keys while the cursor is off the screen — see
 the SED page. A `screen open` program of your own asks for the size it needs
 with `minsize`, and SD asks nothing more of it.)
 
-**SD's default is 140 columns by 42 lines, not 80 × 24** (it was 120 by 36
-until 18 October 2026). It is what a session gets when there is no terminal to
+**SD's default is 140 columns by 43 lines, not 80 × 24** (it was 120 by 36
+until 18 October 2026, and 140 by 42 until 2 November 2026). It is what a session gets when there is no terminal to
 ask — a phantom, a piped script, a service — and a report that looks wrapped or
 truncated on a narrow window is usually the window, not the report.
 
@@ -69,7 +69,7 @@ truncated on a narrow window is usually the window, not the report.
 | 1 | **the terminal's own window size**, as the terminal reports it |
 | 2 | when there is no terminal to ask: the `LINES` and `COLUMNS` environment variables, if they are numeric |
 | 3 | otherwise the terminfo entry's `lines` and `cols` |
-| 4 | **otherwise 42 and 140** |
+| 4 | **otherwise 43 and 140** |
 
 and whatever comes out is then raised to the minimum of 10 lines by 20 columns
 if it is smaller. **`term` with a size typed by hand sets the page from then on,
@@ -77,8 +77,8 @@ until the next time the window is resized**, and it is taken as typed: any width
 from 20 to 32767 and any depth from 10 to 32767, larger or smaller than the
 default, with no other ceiling.
 
-> **`term default` puts the 140 × 42 pair back, and it prints nothing when it
-> does.** The verb sets the same 140 × 42 that is the fallback, whatever size
+> **`term default` puts the 140 × 43 pair back, and it prints nothing when it
+> does.** The verb sets the same 140 × 43 that is the fallback, whatever size
 > the window is, then returns without a message — so the way to see that it
 > worked is a bare `term` after it, not the command itself:
 >
@@ -86,15 +86,17 @@ default, with no other ceiling.
 > :term default
 > :term
 > Page width: 140
-> Page depth: 42
+> Page depth: 43
 > ```
 >
 > `term 120,36` does the same thing by hand and is worth knowing for the cases
 > where you want some other size back, the old default included.
 
-**`Device`** is the terminfo entry in use, `windows` on this port. If a terminal
-type has no terminfo entry SD falls back to `windows` rather than failing, so
-this line is worth reading when screen handling misbehaves.
+**`Device`** is the terminfo entry in use. If a terminal type has no terminfo
+entry SD falls back rather than failing: to `xterm` for a terminal of the xterm
+family (`xterm-256color`, `gnome`, `konsole`, `tmux`, `screen` and the like) and
+to `linux` otherwise, so this line is worth reading when screen handling
+misbehaves.
 
 ### Which terminal types SD knows: `list.term.types`
 

@@ -35,7 +35,7 @@ is the short form.
 | `sed` keys | Changed | were Emacs keys with Ctrl-X sequences; now the keys most editors have (Ctrl-PageDown / Ctrl-PageUp, and Alt-PageDown / Alt-PageUp for a terminal that keeps the Ctrl keys for its own tabs, switch buffers), and `emacs` in `&sed.options&` keeps the old layout |
 | `sed`, `ide`, `!ced()` | Changed | were 120 by 36 or less; now need a window of at least **140 by 43** (`!ced()` **140 by 42**), and `ed` is the editor for a smaller one |
 | `select file field` | Changed | a field not otherwise used was ignored; now it is `saving multivalued field`, so the list holds the values |
-| The default terminal | Changed | was 120 columns by 36 lines; now **140 by 42** (a LIST fills 41 lines before it pauses) |
+| The default terminal | Changed | was 120 columns by 36 lines; now **140 by 43** (a LIST fills 42 lines before it pauses) |
 | The group size of a new file | Changed | was 2 KB (1 KB when `sd.conf` did not say); now **4 KB** on a new installation. An installed system keeps its `sd.conf`, and so its 2, and a file keeps the size it has |
 | `when field` with no operator | Changed | kept the null values; now keeps the values that are **not** null |
 | Where a session starts | Changed | was the command prompt; now the **home screen** of tiles, and `set.start.default` chooses the prompt for an account |
@@ -193,7 +193,7 @@ Data collections, JSON, XML, CSV and the verbs that import them.
 | collection file verbs | Added | `ed`, `copy`, `compare.files`: work on a collection file; the post-write trigger no longer crashes the process |
 | collection files | Added | `create.file name collection`; records are collections stored as JSON; `read` and `write` them whole; `ct` shows JSON |
 | `collection()` and `c{name}` | Added | a collection is a set of named values read and written by name; `enumerate()`, `element.exists()` |
-| `csv.mode` | Added | how `printcsv`, `writecsv` and `formcsv()` quote, with a delimiter, quote and escape character |
+| `csv.mode` | Added | how `printcsv`, `writecsv` and `matwritecsv` quote, with a delimiter, quote and escape character |
 | `csvdq()`, `dparse.csv` | Changed | `csvdq()` takes a quote and an escape character as a third and a fourth argument; fixed: a return code was corrupted when used with `execute ... returning` |
 | `element` keyword in queries | Added | names an element of a collection file by its path, in a display list, `with`, `by`, `sum` and the like |
 | `expand()` and links | Added | a link `"file:id"` is followed; `trans()` of an `e` item |
@@ -354,7 +354,7 @@ Commands and VOC verbs that every account has, and the command language.
 | `show.list` | Added | a page at a time, starring and clearing items|
 | `sort.list`, `select.dir` | Added | sort a saved list; select the files of a directory |
 | `sp.view` | Changed | `by field`; `x` deletes the item shown; shows where output goes for every print unit mode |
-| `term` | Changed | takes two numbers for the default printer; `term default` goes to 140 by 42 |
+| `term` | Changed | takes two numbers for the default printer; `term default` goes to 140 by 43 |
 
 ## TOOLS
 
@@ -745,14 +745,14 @@ Fixes that close a way round a gate, and what the gates now ask.
 
 | Name | Change | What |
 |---|---|---|
-| default terminal | Changed | 140 by 42 |
+| default terminal | Changed | 140 by 43 |
 | `sd -status` | Changed | fixed an overrun on a server that recorded no start time |
 
 ### Tools and the home screen
 
 | Name | Change | What |
 |---|---|---|
-| 140 by 42 layout | Changed | `sed` and the collection editor: 140 by 42, refused below it, survive a window made smaller, take no keys while the cursor is off the screen (the `ide` and the debugger are 140 by 43, see their rows) |
+| 140 by 42 layout | Changed | the collection editor: 140 by 42, refused below it, survives a window made smaller, takes no keys while the cursor is off the screen (`sed`, the `ide` and the debugger do the same at 140 by 43, see their rows) |
 | `!ced()` data mode | Added | edits a multivalue record as a tree of fields, values and subvalues (a text or a list; a list never below the second level), so that nobody types a mark; started by `ide` F12 |
 | `debugger` full-screen display | Added | on a terminal that can address a cell and clear itself (xterm, the Linux console, vt100, vt220, ansi) the debugger takes the whole screen, 140 by 43, in the frame of the other full-screen pages: the bar with the app and the audience, the source with a gutter (`>` the line about to run, `*` a breakpoint) and SD BASIC colour under the blue, dark and light themes, an Autos pane (the variables the line uses, the last stop's, the watched one, the rest), the messages, the command line, a status line, a border and a function-key row; F1 help, F4 the program's screen; a smaller window gets line mode, and so does `dumb` and `unknown`; where there is no alternate screen the screen is cleared for the debugger and again when it lets go: a program's SCREEN forms are drawn again, its `PRINT` text and what was there before are not; `LINE.MODE` in `$debug.options` keeps line mode |
 | home screen | Added | every account starts in a screen of tiles; arrows, Tab, letters, mouse, F5, F10 |

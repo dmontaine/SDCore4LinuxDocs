@@ -52,12 +52,12 @@ term
 | `list voc with type = "F"` | the files in it |
 | **`term`** | your terminal type and page size |
 
-**`term` also reports the page size, and SD's default is 140 × 42 — not
+**`term` also reports the page size, and SD's default is 140 × 43 — not
 80 × 24.** **A terminal narrower than that makes wide reports look wrapped
 or truncated** and the report is not at fault. Widen the window, or set it
-for the session with `term default` — which puts the 140 × 42 back and
+for the session with `term default` — which puts the 140 × 43 back and
 prints nothing while doing it, so check with a bare `term` afterwards.
-`term 140,42` is the same thing typed out.
+`term 140,43` is the same thing typed out.
 See [Other hardening](13-hardening.html#the-terminal).
 
 ## 4. Make a file and put something in it

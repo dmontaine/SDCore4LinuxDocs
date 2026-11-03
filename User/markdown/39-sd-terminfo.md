@@ -60,33 +60,34 @@ There is no `vt320` definition; `vt220` or `xterm` does the same job.
 ```
 term                    * report current type and page size
 term linux              * set for this session
-term 140,42             * set page size
-term default            * restore 140 x 42 (prints nothing; check with bare term)
+term 140,43             * set page size
+term default            * restore 140 x 43 (prints nothing; check with bare term)
 ```
 
 The page size is worked out at login in this order:
 
 1. the `LINES` and `COLUMNS` environment variables if they are numeric
 2. the terminfo entry's `lines` and `cols`
-3. otherwise 42 and 140
+3. otherwise 43 and 140
 
-A console or ssh session normally gets its real window size. 140 × 42
+A console or ssh session normally gets its real window size. 140 × 43
 is the fallback when nothing answers — a phantom or a piped script.
-The terminfo entries that name a width and a depth say 140 and 42; the
+The terminfo entries that name a width and a depth say 140 and 43; the
 132-column entries keep their own depth.
 
-## The page is 140 × 42
+## The page is 140 × 43
 
-SD's default is **140 columns by 42 lines**, not 80 × 24 — and no longer
-the 120 × 36 of the releases before 18 October 2026. A console window
+SD's default is **140 columns by 43 lines**, not 80 × 24 — and no longer
+the 120 × 36 of the releases before 18 October 2026 (it was 140 × 42 until
+2 November 2026). A console window
 narrower than that makes wide reports look wrapped or truncated — which
 reads as a formatting bug and is not one. `term 120,36` gives the old
 size back for a session that wants it.
 
 The default is only a default. `term w,h` takes any width from 20 to
-32767 and any depth from 10 to 32767, larger or smaller than 140 × 42,
+32767 and any depth from 10 to 32767, larger or smaller than 140 × 43,
 and nothing else clamps it. A real terminal still decides its own size,
-and `term default` puts the page back to 140 × 42 whatever the window.
+and `term default` puts the page back to 140 × 43 whatever the window.
 
 ## The Linux text console, with no desktop
 
