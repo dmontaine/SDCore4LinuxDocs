@@ -140,13 +140,17 @@ and *Go to line* (Ctrl-L). Every other key of the pages and the IDE is a key the
 console sends. `tool.keys` shows what SD was given for each key you press.
 
 **The mouse.** A console does not report the mouse the way a terminal emulator
-does, but the *gpm* daemon reads it there. If gpm is running (install the
-package `gpm`; on Debian that is all, it starts at once and takes the mouse
-from `/dev/input/mice`), a full-screen program that asks for the mouse is
+does, but the *gpm* daemon reads it there. The installer installs the package
+`gpm` with SD's other packages (since 3 November 2026), and the Debian and
+Ubuntu package enables and starts the daemon itself, which takes the mouse from
+`/dev/input/mice`; the installer does not start or enable it, so an
+administrator who turned the service off finds it off after an upgrade. While
+gpm is running, a full-screen program that asks for the mouse is
 connected to it and is given the same press, release, drag and wheel reports
 as an emulator would give, so every page that takes the mouse takes it on the
-console, and gpm draws the pointer. Nothing is needed in SD, and without a
-daemon there is simply no mouse. SD asks gpm only when the terminal type is
+console, and gpm draws the pointer. Nothing is needed in SD, and with the
+daemon stopped there is simply no mouse. Removing SD leaves the `gpm` package
+installed. SD asks gpm only when the terminal type is
 `linux` and its input is a text console, so a session over ssh, in `tmux` or
 `screen`, or in an emulator is not affected, and a program that opens its
 screen with `nomouse` is not connected. SED reads its own mouse reports

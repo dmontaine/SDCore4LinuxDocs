@@ -21,6 +21,7 @@ is the short form.
 |---|---|---|
 | A keep-the-accounts upgrade | Changed | could switch the shell and `os.execute` back on; now **never** loosens a gate that is off |
 | A new account | Changed | had ssh and the API on, and the shell and `os.execute` available; now has **no shell, no `os.execute`, no ssh and no API**, and every gate is closed until SDSYS opens it (`modify.account`) |
+| A `select` or `list` with `by` | Changed | records with equal sort keys came out in an order that depended on where they sat in the file; now in record-id order, as `sort` and `sselect` always gave them (not with `saving unique`) |
 | A silent remote server | Changed | could be waited for without limit; now it is given up on after `netreply` seconds |
 | A sort that uses work files | Changed | gave equal keys in an order that depended on `sortmem` and `sortmrg`; it now gives the order the sort gives in memory (equal keys newest first, the first duplicate kept) |
 | AccuTerm and SDTerm | Removed | were supported; use terminal type `xterm` or `vt100` |
@@ -639,7 +640,7 @@ Three simple layers, with no vault and nothing on by default.
 | group account files | Changed | an upgrade puts the four record files of every kept group account back in the account's group |
 | gates of the installing user's account | Added | when it makes your own account the installer asks once whether to open every access gate on it (no unless `y`); a `y` opens all of them, the AI and the `sdsys` user in its group included, and the install says which really opened |
 | immutable `bin` | Changed | `deletesdcore.sh` lifts the attribute before it removes the system directory |
-| installer packages | Changed | also installs the PAM development package (`libpam0g-dev`), which SD's own PAM module for the `sdsys` ssh sign-in is built from |
+| installer packages | Changed | also installs `gpm`, the console mouse daemon, so the full-screen tools have a mouse on a bare Linux console; the package starts it, the installer does not, and removing SD leaves it |
 | installer: the `sdsys` user's groups | Changed | an install that keeps the accounts leaves the `sdsys` user in the group of each group account (`sdg_shared` among them); it used to take it out of all of them |
 | installer source message | Changed | says which source it is downloading, the release tag or `main` |
 | scheduled jobs on uninstall | Added | `deletesdcore.sh` switches every `sdcore-job-*` timer off, removes the timers and services, then `/etc/sdcore/jobs.d` |
@@ -647,6 +648,7 @@ Three simple layers, with no vault and nothing on by default.
 | `sdai` user | Added | made by the installer; removed with the accounts |
 | shared account | Added | made by the installer; its help text and `pdf` directory are loaded |
 | stored SDNet logins | Changed | the uninstaller removes `/var/lib/sd-net` when the accounts or the configuration are deleted |
+| systemd units on an upgrade | Changed | `sd.service`, `sd-lnxd.service` and `sdclient@.service` are replaced by this release's when they differ (they were copied only on a first install); `sdclient.socket` and drop-ins under `/etc/systemd/system` are kept |
 | `upgrade_gates` | Changed | fills only a blank setting, so a kept `no` stays |
 
 ### Screen library
@@ -660,7 +662,7 @@ Three simple layers, with no vault and nothing on by default.
 | `color fg,bg` | Added | on the controls of a screen: label, entry, combo, check, slider, radio, list, button, progress |
 | key decoding | Changed | a graphical terminal's F1 to F12, arrows, Home, End and the modified keys (`ctrl-left`, `shift-up`, `ctrl-pgup` ...) are read in both cursor-key modes; an unknown control sequence is ignored, not typed; a byte of 128 or more is never a command; a cut-short mouse report is ignored, not taken as the end of the input |
 | Linux console keys | Changed | on the Linux text console Shift-F1 to Shift-F8 (which the kernel sends as F13 to F20) and Shift-Tab (which it sends as Esc Tab) are read as those keys, for the terminal type `linux` only; the IDE's previous pane and the editor's find previous work there |
-| Linux console mouse | Added | on a text console SD takes the mouse from the gpm daemon (terminal type `linux`, input a text console, not with `nomouse`) and gives programs the same reports an emulator gives; no mouse without a daemon, and not in SED |
+| Linux console mouse | Added | on a text console SD takes the mouse from the gpm daemon (terminal type `linux`, input a text console, not with `nomouse`) and gives programs the same reports an emulator gives; the installer installs `gpm`; no mouse while the daemon is stopped, and not in SED |
 | containers and viewports | Added | `screen container`, `screen viewport`: a form bigger than its window: nesting, clipping, scrolling by keys, wheel and bars |
 | redraw | Changed | the library writes only the text that changed, so a screen no longer flashes |
 | resize inside a dialog | Changed | a resize that arrives while a question, a menu or the AI box is open is kept and given to the page afterwards; it used to be lost |
