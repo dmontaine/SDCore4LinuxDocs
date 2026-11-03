@@ -90,9 +90,9 @@ gives them.** SD is delivered with the tighter setting, and the
 administrator loosens it one account and one switch at a time: `ssh`,
 `api`, `both`, `sh-on`, `os-on`, `voc-on`, `bp-on` and `dict-on`, at
 `create.account` or later with `modify.account`. **SDSYS has no API route from another computer at all**, whatever it is given, and
-**its ssh door stays shut until an authenticator code is enrolled for it** — administration is a real
-login at this machine's own keyboard, a desktop-sharing view of it, or, once a code is enrolled, ssh
-with that code. See
+**its ssh door stays shut until the administrator opens it** (`remote.sdsys on`) — administration is a real
+login at this machine's own keyboard, a desktop-sharing view of it, or, once that door is open, ssh
+with the `sdsys` password. See
 [ssh access](08-ssh-access.html) and [API access](09-api-access.html).
 
 **3. An ordinary account is not denied the console, and that is not a

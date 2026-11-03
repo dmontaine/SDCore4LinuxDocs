@@ -118,10 +118,11 @@ SDSYS from any other account, however `sudo`'d.** See
 [Accounts](05-account-types.html#sdsys-is-the-only-administrator).
 
 **IF YOU ARE OVER ssh, THIS WILL NOT WORK THE FIRST TIME.** SDSYS has no ssh
-access until an authenticator code is enrolled for it, and nothing is enrolled on a new
+access until the administrator opens that door, and it is shut on a new
 installation. Log in at the machine itself, or through a desktop-sharing view of it (VNC,
-TeamViewer), or enrol the code from your own ssh login with `sudo` (the Administrator documents,
-"Remote Administration over ssh", say how) and then sign in as `sdsys` over ssh.
+TeamViewer), or open the door from your own ssh login with `sudo sd-elevate sdsys-ssh on` (the
+Administrator documents, "Remote Administration over ssh", say how, and what it risks) and then sign
+in as `sdsys` over ssh.
 
 ## 6. Create an account for somebody else
 

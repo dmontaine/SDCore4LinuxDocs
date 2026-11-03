@@ -132,8 +132,8 @@ has the verb and is refused by it.
 user, on a session that is already a real local login** — see [Accounts and
 Security](01-accounts-and-security.html#read-this-before-anything-else-being-sdsys-is-the-whole-of-it).
 Reaching SDSYS at all means being at the console, a desktop-sharing view
-of it, or — only once an authenticator code is enrolled — an ssh sign-in with that
-code (see [Remote Administration over ssh](22-remote-administration-over-ssh.html)):
+of it, or — only once the administrator has opened that door — an ssh sign-in with the
+`sdsys` password (see [Remote Administration over ssh](22-remote-administration-over-ssh.html)):
 until then `sdsys` is denied ssh and network sign-in outright.
 
 ## The one bypass: showing a document with `pdf`

@@ -31,8 +31,8 @@ Match User sdsys
 Every `sdusers` member is `ForceCommand`'d into `sd` the instant they
 connect over ssh — they never reach a shell that way, whatever the
 connection is asked to run. `sdsys` is refused a network login outright,
-before authentication even matters, until an authenticator code is enrolled
-for it (then it gets its own arm, with the code and the password): there is
+before authentication even matters, until the administrator opens that door
+(then it gets its own arm, with the password alone): there is
 no session for `ForceCommand` to apply to.
 
 **This is applied once, to the ssh server, regardless of the two questions
@@ -95,12 +95,12 @@ file permissions allow it. See [Security](12-security.html).
 
 ## SDSYS's remote door
 
-**SDSYS cannot ssh in until an authenticator code has been enrolled for it.**
+**SDSYS cannot ssh in until the administrator has opened that door.**
 Until then `Match User sdsys` denies it outright, at the ssh server, before
 authentication starts — there is no session for `ForceCommand` to ever apply to.
-Once the administrator has enrolled a code (the Administrator documents, "Remote
-Administration over ssh", say how), an ssh sign-in as `sdsys` asks for the code first
-and the password second, and lands in an SD session with no shell behind it.
+Once the administrator has opened it (`remote.sdsys on`; the Administrator documents, "Remote
+Administration over ssh", say how, and what it risks), an ssh sign-in as `sdsys` asks for the
+password, which is then all that guards it, and lands in an SD session with no shell behind it.
 The API is different: it is closed to SDSYS from every other computer, and from this
 machine's network port too, whatever is enrolled; on this machine it accepts SDSYS
 only on the local Unix socket, from a process running as `sdsys` — see

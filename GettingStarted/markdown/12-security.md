@@ -20,7 +20,7 @@ to apply — it is what `create.account` and the installer already do:
 | Saving a change to a VOC, a program file or a dictionary (and compiling) | **off for a new account**, in three independent switches (`voc-on`, `bp-on`, `dict-on`) that SDSYS turns on account by account; reading is never stopped — see [Managing accounts](05a-managing-accounts.html) |
 | The `shared` account | the one door that is **open** in a new installation, on purpose: every account can read the data files of the `shared` account by file name, and none can write them — see [The shared account](#the-shared-account-is-open-to-read-by-design) |
 | The API | local-only (`127.0.0.1:4247`) until an administrator opens it to the network — see [API access](09-api-access.html) |
-| SDSYS | no API route from any other computer, ever; ssh only after an administrator has enrolled an authenticator code (then the code first, the password second); on the machine itself the API accepts it only on the local Unix socket, from a process running as `sdsys` — the one thing this page treats as non-negotiable rather than a default |
+| SDSYS | no API route from any other computer, ever; ssh only after an administrator has opened that door (then the password alone); on the machine itself the API accepts it only on the local Unix socket, from a process running as `sdsys` — the one thing this page treats as non-negotiable rather than a default |
 
 **An ordinary account is not denied a console login here**, unlike SD Core
 for Windows. SD's switches govern what a session *inside SD* can reach;
@@ -94,10 +94,10 @@ which records who actually logged in and cannot be forged by `sudo` or
 happens to be running as.
 
 **This is deliberate and total, not a special case for remote sessions.**
-SDSYS itself is refused ssh outright until an authenticator code is enrolled for it, and then
-only with that code and its password. At the machine's own console the code is not asked as
-delivered; an administrator can have it asked there too (`remote.sdsys local on`), which is worth
-doing on a machine with a remote-desktop or remote-console tool. The API refuses it from every other
+SDSYS itself is refused ssh outright until the administrator opens that door (`remote.sdsys on`), and then
+only with its password: nothing else stands between the network and the administrator while it is
+open, so open it only on a machine whose `sdsys` password is long and used nowhere else, and shut
+it again (`remote.sdsys off`) when it is not needed. The API refuses it from every other
 computer and over the network port on this machine as well; it accepts SDSYS
 only on the local Unix socket, from a process running as `sdsys`, and only
 with SDSYS's own SD password — see [ssh access](08-ssh-access.html) and
