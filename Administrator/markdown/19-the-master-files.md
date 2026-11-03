@@ -199,6 +199,13 @@ the page's limit is refused (narrow it until every row is shown). `G` asks what 
   item, the word `heading` (field 4 of a D, I, E or L item; an item of another type is refused for
   having no heading), then `S` to set the field to a value or `R` to replace a text in it with
   another (an empty replacement takes the text out).
+- **Field 1 is the type of the record** (a VOC entry's V, F, Q, PA ...; a dictionary item's D, I,
+  PH ...), and changing it turns a verb or a pointer into something else. `G` therefore changes it
+  on **one record only**: when more than one record is shown it is refused before the box
+  (`field 1 is the type of the record: G changes it on one record only, and 3 are shown ...`), and
+  on a single record the box carries a **WARNING** line with the old and the new type (`"X" ->
+  "PA"`). Cancel is still the default, and `U` puts field 1 back like any other field (the owner,
+  3 Nov 2026: exclude field 1 from batch actions, allow it on a single item with a confirm warning).
 - **Programs**: a text to replace in the source and what replaces it. Each program changed is then
   compiled again **in its own account** through `run.in` (as `C` does), and is counted as failed
   when the compiler does not say it compiled.
