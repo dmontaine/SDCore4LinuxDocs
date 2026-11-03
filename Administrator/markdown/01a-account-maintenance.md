@@ -243,7 +243,7 @@ config contrib             display the contributors
 
 ```
 :config
-Virtual Machine Version Number L1.1-3
+Virtual Machine Version Number L2.0-0
 CLEANUP   300 seconds
 CMDSTACK  99
 DEADLOCK  0

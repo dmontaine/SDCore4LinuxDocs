@@ -66,7 +66,7 @@ The `config` verb reports what is in force:
 
 ```
 :config
-Virtual Machine Version Number W1.0-0
+Virtual Machine Version Number L2.0-0
 CLEANUP   300 seconds
 CMDSTACK  99
 DEADLOCK  0

@@ -99,7 +99,7 @@ a header, then one section per account.
 ```
 format: 1
 product: linux-full
-sd.version: L1.1-3
+sd.version: L2.0-0
 created: 2026-10-18T11:49:48
 host: oldbox
 source.root: /home/sd
