@@ -204,8 +204,15 @@ carry no slash. F1, `?` or a click on a `[?]` explains each box.
 
 ### Where the documents come from: `docs.install`
 
-The PDFs are generated from the documentation and are not part of the source tree, so
-they reach the shared account by the administrator:
+The PDFs are generated from the documentation and are not part of the source tree.
+**A release package carries them**, in a folder `pdf` beside `installsdcore.sh` (one PDF
+for each chapter of the User, Administrator and Getting Started documents, the documents
+the help pages' Documentation buttons open), and **the installer puts them in the shared
+account by running `docs.install` on that folder**, then gives the copies to `sdsys`,
+group `sdusers`. It checks each document on the shared folder afterwards and, when one
+did not arrive, says how many did and prints the command to run. An installer run
+without a package (a clone, or the script downloaded alone) finds no folder and says
+so. At any other time, or for documents of your own, the administrator runs:
 
 ```
 docs.install /path/to/the/pdf/files
@@ -224,8 +231,10 @@ the copies are mode 0644. `pdf` alone lists what is installed.
 of those three into the same `pdf` directory (owner `sdsys`, group `sdusers`, mode 644),
 so `pdf` lists the PDF and every account can read it, and the HTML and Markdown copies
 are there beside it. A file is copied only if it is a regular file (not a link) with a
-plain lower case name of the same shape. An installer that was not run from a package,
-such as one downloaded alone, finds nothing and says so; the install goes on.
+plain lower case name of the same shape; a file of that kind whose name has a capital
+or another character is left, with a note that says so. An installer that was not run
+from a package, such as one downloaded alone, finds nothing and says so; the install
+goes on.
 
 ### The context help: `load.help`
 

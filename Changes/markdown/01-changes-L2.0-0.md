@@ -639,6 +639,7 @@ Three simple layers, with no vault and nothing on by default.
 |---|---|---|
 | agent pack | Added | the guide and the knowledge pack are copied to `/usr/local/sdsys/agent-pack`, only when they match the installed version |
 | changes document | Added | a release package carries it beside the installer as `sd-core-for-linux-<version>-changes.pdf`, `.html` and `.md`, and the installer copies the three into the shared account's `pdf` directory, where `pdf` lists the PDF |
+| documentation PDFs | Added | a release package carries one PDF for each chapter of the User, Administrator and Getting Started documents in a folder `pdf` beside the installer, and the installer puts them in the shared account with `docs.install`, so `pdf` lists them and the help pages' Documentation buttons open them |
 | group account files | Changed | an upgrade puts the four record files of every kept group account back in the account's group |
 | gates of the installing user's account | Added | when it makes your own account the installer asks once whether to open every access gate on it (no unless `y`); a `y` opens all of them, the AI and the `sdsys` user in its group included, and the install says which really opened |
 | immutable `bin` | Changed | `deletesdcore.sh` lifts the attribute before it removes the system directory |
