@@ -39,6 +39,7 @@ reverse video.
 | **Tab**, **Back-tab** (Shift-Tab) | Move the keyboard to the next and the previous box, on every page that has more than one. |
 | **Shift-F10** | The **action menu** of the box that has the keyboard, in the middle of the screen (see below). |
 | **F5** | Read everything again and draw the page again. |
+| **Ctrl-L** | Draw the whole page again, as it is, without reading anything. |
 | **F6** | Move to the AI line, when the AI is on for your account (when it is not, the status line says so). |
 | **Ctrl-O** | Show or hide the output pane: the results, refusals and command output of this visit to the page. |
 | **Ctrl-Q** | Leave the page. |
@@ -120,5 +121,7 @@ left it.
 
 - **A key does nothing**: look at the status line - a key that is out of use says why. F1 lists every key of the page.
 - **The page looks cut off**: make the window at least 140 by 43, or press F5 to draw it again.
+- **Something is left on the screen that does not belong to the page** (a message another program wrote, say): press Ctrl-L.
+  A page sends the terminal only what changed, so text written over it from outside stays until the page is drawn whole.
 - **The colours are hard to read**: the site's colours are the administrator's choice (`SCREENTHEME`); `tool.keys` shows
   what your terminal can display, and which keys it sends.
