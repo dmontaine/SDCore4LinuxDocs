@@ -15,6 +15,10 @@ Your administrator decides, account by account,
 whether a session **starts** here or at the command prompt (see *Where a session
 starts*, below); you can always type `home` or `menu` at the prompt to open it.
 
+The keys, menus, boxes and pick lists that every full-screen page shares are described once in
+[Using the Full-Screen Pages](29d-sd-tcl-using-the-full-screen-pages.html); this page adds what is
+particular to the home screen.
+
 It needs a window of at least **140 columns by 43 lines** (the same as the other
 full-screen tools) and a real terminal. In a smaller window it says so, with the
 size it found, and leaves you at the prompt; in a session with no terminal (a

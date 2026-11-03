@@ -21,6 +21,11 @@ page looks exactly as it did. 140 by 43 is still the smallest window: if the win
 page is up, the page holds the keyboard behind a warning that gives both sizes, until the window is big enough
 again (Ctrl-Q, then y, leaves). The administrator's pages and the home screen do the same.
 
+The keys, menus, boxes and pick lists that all these pages share - F1, F2, Esc, Tab, the right-click
+menu, the confirm box, the AI line - are described once in
+[Using the Full-Screen Pages](29d-sd-tcl-using-the-full-screen-pages.html); each section below adds only
+what is particular to its page.
+
 The box that asks before a command is titled *Run this command?*. The few changes that are not commands -
 a record the page writes or deletes itself - say what they are about to do instead: *Write this record?*
 (an item of a dictionary in `tool.dict`, a saved query in `tool.query`), *Delete this record?* (a saved
