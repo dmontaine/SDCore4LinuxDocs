@@ -310,7 +310,7 @@ handler.
 ## Running something else
 
 ```
-execute expression {capturing variable} {returning variable} {passlist variable} {rtnlist variable} {stacklist}
+execute expression {capturing variable | silent} {returning variable} {passlist variable} {rtnlist variable} {stacklist}
 chain expression
 ```
 
@@ -331,6 +331,7 @@ reads **-1**. The program carries on. **Test `@system.return.code` after any
 | clause | |
 |---|---|
 | **capturing** *var* | the command's output goes to *var* instead of the terminal |
+| **silent** | the command's output is thrown away: nothing of it reaches the terminal. It is `capturing` into a variable nobody keeps, so the two cannot be written together. Kept for programs moved from openQM |
 | **returning** *var* | error messages go to *var* |
 | **passlist** *var* | the select list held in *var* (made by `formlistv`, `getlistv`, `selectv` and the like) becomes the command's default select list. The variable is always named: `passlist` alone is refused |
 | **rtnlist** *var* | the command's select list comes back |

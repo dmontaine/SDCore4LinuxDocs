@@ -110,8 +110,11 @@ ends.
 ## OS.EXECUTE
 
 ```
-os.execute command {capturing variable}
+os.execute command {capturing variable | silent}
 ```
+
+`capturing` puts the command's output in the variable; `silent` throws it
+away, so nothing of it reaches the terminal.
 
 **It needs the account's `os-on` switch**, which SDSYS turns on and a new
 account does not have. Without it the statement stops the program with

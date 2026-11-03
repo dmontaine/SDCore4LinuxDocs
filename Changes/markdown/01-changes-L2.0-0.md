@@ -115,6 +115,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `fix()` | Added | a number with a fixed number of decimals, rounded or cut off |
 | exceptions | Added | `try`, `catch`, `throw`, `caught()` and `@exception`; many run time errors are caught under openQM's `sys.` names; `dumping` and `saving.stack` |
 | `execute ... capturing` and `os.execute ... capturing` | Changed | output whose final newline stands alone (one empty line, or a newline just past a full 16 KB block) gives the right value; it used to end the session ("double free or corruption") or read freed memory |
+| `execute ... silent` and `os.execute ... silent` | Added | the command's output is thrown away; `silent` used to compile as a variable and stop the program at run time |
 | `execute ... stacklist` | Added | keeps the default select list and puts it back when the command returns |
 | `execute.list` | Added | runs commands for each id of list 0 in turn |
 | `fcontrol()` | Added | the openQM function: next sequential key, valid id, minimum modulus, line terminator modes, forced writes |
