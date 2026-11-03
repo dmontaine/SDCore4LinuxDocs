@@ -277,18 +277,21 @@ pdump n
 
 Writes a snapshot of session *n* to a file and carries on; nothing is stopped
 and nothing is lost. The file is `sddump.`*n* in the directory named by the
-`DUMPDIR` configuration parameter, or in SD's own system directory when
-`DUMPDIR` is empty, which is how it ships:
+`DUMPDIR` configuration parameter. The shipped `sd.conf` sets it to
+`/usr/local/sdsys/dumps`; if it is empty, the dump goes to SD's own system
+directory instead:
 
 ```
-Dumping process state as /usr/local/sdsys/sddump.27
+Dumping process state as /usr/local/sdsys/dumps/sddump.27
 ```
 
 It holds the `@`-variables, the current sentence and command, the call stack,
 open files and their locks, and named and unnamed common — which is to say **it
-holds application data**, and it is written where any SD user can read it.
-Treat a dump as you would the data of the program that produced it, and delete
-it when the question it was written to answer has been answered.
+holds application data**. The installer makes the `dumps` directory so that an
+SD user can add a dump but cannot list the directory, and each dump file is
+created readable by its owner alone. Treat a dump as you would the data of the
+program that produced it, and delete it when the question it was written to
+answer has been answered.
 
 | refusal | when |
 |---|---|
