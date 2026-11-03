@@ -87,6 +87,8 @@ date and time, Switch account and Sign out) stays where it is.
 | F5 | build the page again |
 | F6 | move to the AI line, when the AI is on for the account (when it is not, the status line says so) |
 | F10, Alt and a title's letter, a click on the top row | open the menu bar (File, Go, View, AI, Help). Every entry shows its key and does what the key does: **File** Sign out (Ctrl-Q); **Go** Back (Esc or Backspace, only in a sub-menu), Terminal (Ctrl-T), Switch account (Ctrl-W), Find a tile (/); **View** Refresh (F5), Recent group on or off (Ctrl-R); **AI** Ask the AI (F6), dimmed when the AI is not on for the account; **Help** Help on this page (F1), Keys (Ctrl-K, the keyboard and terminal page `tool.keys`). An entry whose tile the administrator turned off for your account is dimmed, and its key only says so |
+| F2 | find an action: every entry of the menus in one list (*Go > Terminal*, with its key); type part of a name to narrow it, Enter chooses (since 3 November 2026). An entry that cannot be used now says *(not now)* and only explains why |
+| a right click, Shift-F10 | the menu of the page's actions at the pointer (Shift-F10: in the middle), ending with *Find an action...* (F2) (since 3 November 2026) |
 | Ctrl-Q | sign out (asks first; **Cancel** is the button Enter chooses, so a stray Enter signs nobody out) |
 
 Backspace, Ctrl-T, Ctrl-W, Ctrl-R and Ctrl-K are not on the row of keys at the foot of
