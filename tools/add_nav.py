@@ -58,6 +58,10 @@ SETS = {
     "Administrator": {
         "desc": "For administrators. Accounts, security, remote access, encryption, configuration, installation, and what an ordinary program may not compile.",
     },
+    # A document of its own, listed with the administrator's documents, directly under the Administrator set (owner, 3 Nov 2026).
+    "TUIGuide": {
+        "desc": "SD Text User Interface - Programmer's Guide. Building a full-screen page of your own in SD BASIC with the !tk routines: the frame, the menu bar, the finder, forms, confirm boxes and pick lists, with worked examples.",
+    },
 }
 
 
@@ -496,7 +500,7 @@ def create_master_index():
 <div class="page">
 <main class="master-index">
 <h1>Documentation</h1>
-<p class="mi-subtitle">The {PRODUCT} documentation is organised into three sets, each aimed at a different audience. Each page is a self-contained HTML file.</p>
+<p class="mi-subtitle">The {PRODUCT} documentation is organised into {len(SETS)} sets, each aimed at a different audience. Each page is a self-contained HTML file.</p>
 <div class="mi-sets">
 {sets_html}
 </div>

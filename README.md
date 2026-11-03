@@ -6,7 +6,7 @@ build SD, and nothing there is needed to build these pages.
 
 ## What is here
 
-Four sets of documents, each in a `markdown/` folder (the source); the `html/`
+Five sets of documents, each in a `markdown/` folder (the source); the `html/`
 and `pdf/` folders beside it are generated.
 
 | Set | For | Contents |
@@ -14,6 +14,7 @@ and `pdf/` folders beside it are generated.
 | `GettingStarted/` | everyone | installing SD Core on Linux, running it, accounts and security, what differs from OpenQM, and moving programs over from other MultiValue databases |
 | `User/` | programmers and users | SD BASIC by subject, SD TCL by subject, the VOC and dictionaries, files, standard subroutines, the client API, the terminal screen library, a tutorial with worked programs, the glossary and the generated syntax cards (`94` SD BASIC, `95` SD TCL) |
 | `Administrator/` | the administrator | accounts and access gates, sessions and locks, operating system access, encryption, remote access, system limits, configuration, installation and the service, the installed scripts, restricted commands, known limits, SDNet, the shared account, the master files, the `sdfix`, `sdidx` and `sdconv` tools, moving an account to another machine, giving an AI agent an account of its own, the AI helper, the audit trail, remote administration over ssh, and scheduled jobs. Everything in it is administrator-only or unavailable to an application, so an administrator can withhold the whole set |
+| `TUIGuide/` | programmers, from the administrator's documents | *SD Text User Interface - Programmer's Guide*: building a full-screen page of your own in SD BASIC with the public `!tk` routines and `tkpub.h` - the shape of a program, the window and its floor, the key table and menus, the finder, the confirm box, the form, the pick lists, the output pane - with four worked example programs and a reference of every routine. A document of its own, with its own page numbers and its own book |
 | `Changes/` | everyone upgrading | what was added, changed and removed in this version, by area |
 
 The sets do not link to each other, because each is handed out on its own. Where

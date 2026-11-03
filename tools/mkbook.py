@@ -64,6 +64,8 @@ SET_BLURB = {
                       'dictionaries and the file system.',
     'Administrator':  'Running an SD Core for Linux installation: accounts, '
                       'security, remote access and the machine.',
+    'TUIGuide':       "Programmer's Guide: a full-screen page of your own in "
+                      'SD BASIC, with the !tk routines and worked examples.',
 }
 
 BOOK_CSS = """
@@ -141,6 +143,7 @@ PRETTY = {
     'GettingStarted': 'Getting Started',
     'User': 'User Guide',
     'Administrator': 'Administrator Guide',
+    'TUIGuide': 'SD Text User Interface',
 }
 
 
