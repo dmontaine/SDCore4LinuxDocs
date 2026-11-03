@@ -120,7 +120,7 @@ cursor goes past it; a mode that is on is checked.
 | **Search** | Forward search · Backward search · Replace · Query replace · Goto line · View lines · Top · Bottom · Page up · Page down · Case on · Case off · Word search · Basic word search |
 | **Buffer** | Next buffer · Previous buffer · Goto buffer · List buffers · Delete buffer · Up to list · Dive |
 | **Window** | Split window · Unsplit window · Toggle window · Move split up · Move split down · Refresh screen |
-| **Tools** | Compile · Compile and run · Format · Indent mode · Expand tabs · Stamp · Syntax colour · Mouse · Release lock · Keys in use · Run extension · Command · Start macro · End macro · Execute macro |
+| **Tools** | Compile · Compile and run · Format · Indent mode · Expand tabs · Stamp · Syntax colour · Mouse · Line numbers · Release lock · Keys in use · Run extension · Command · Start macro · End macro · Execute macro |
 
 **Several records can be open at once** — they are *buffers*, and a record
 named in a list or opened with *Open record* becomes the next one. *List
@@ -247,7 +247,7 @@ The command line (`Esc X`, or *Command* on the Tools menu) takes these:
 | **`format`** · **`fancy.format`** | run the formatter on the record |
 | **`indent`** · **`overlay`** | toggle indent mode or overlay mode |
 | **`tabs`** *n* · **`expand.tabs`** | set the tab interval · replace tab characters by spaces |
-| **`lnum`** | show or hide line numbers |
+| **`lnum`** | show or hide line numbers for this buffer (`lnum on`, `lnum off`; `lnum all` and `lnum off all` for every buffer). They are **on** when a record is opened, and Tools > *Line numbers* does the same (checked while they are on). The numbers are only drawn: they are not part of the record |
 | **`case_on`** · **`case_off`** · **`word`** · **`bword`** | the search mode |
 | **`stamp`** | add a history line |
 | **`release`** | release the update lock on the record |
@@ -332,7 +332,7 @@ blanks:
 |---|---|
 | **`indent`** | start in indent mode |
 | **`overlay`** | start in overlay mode |
-| **`lnum`** | show line numbers |
+| **`lnum`** · **`no.lnum`** | show line numbers (the default) or not, for every record opened |
 | **`tabs`** *n* | the tab interval, 1 to 99 (field 5 does the same) |
 | **`case_on`** · **`case_off`** | searches match case, or do not |
 | **`word`** · **`bword`** | search for whole words, or whole SD BASIC words |
