@@ -677,6 +677,7 @@ Three simple layers, with no vault and nothing on by default.
 | text from data | Changed | the library never sends a control character to the terminal: one in a record, a record id, a file name or an AI answer is drawn as a reverse letter (ESC as `[`), one cell each; UTF-8 text and line drawing are unchanged |
 | theme roles | Added | five new styles, `warning`, `success`, `readonly`, `busy` and `focus`, with a look in every theme (bold, underline and reverse only in `mono`), and `error` gets a `mono` look; programs that include `sl.h` need compiling again |
 | themes | Added | `mono`, `classic` and `blue`; colour works on the Linux console terminal type |
+| `!tk` routines | Added | `!tkopen`, `!tkclose`, `!tkkeys`, `!tkframe`, `!tkmenubar`, `!tklayout`, `!tkconfirm`, `!tkform`, `!tkpickrec`, `!tkout`, `!tkwrap` and the header `tkpub.h`: a program of your own builds a full-screen page with the frame, menu bar, F2 finder, key table, confirm box, form and pick list the tools use; it runs with your own rights and gates and runs nothing itself |
 | window size | Changed | SD reads the terminal's window size at the start and when it is resized; `@crtwide` and `@crthigh` follow it |
 
 ### SDNet
