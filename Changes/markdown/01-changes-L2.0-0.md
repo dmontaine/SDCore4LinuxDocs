@@ -647,6 +647,7 @@ Three simple layers, with no vault and nothing on by default.
 | installer packages | Changed | also installs `gpm`, the console mouse daemon, so the full-screen tools have a mouse on a bare Linux console; the package starts it, the installer does not, and removing SD leaves it |
 | installer: the `sdsys` user's groups | Changed | an install that keeps the accounts leaves the `sdsys` user in the group of each group account (`sdg_shared` among them); it used to take it out of all of them |
 | installer source message | Changed | says which source it is downloading, the release tag or `main` |
+| PDF reader question | Added | with no PDF reader installed and a desktop session, the installer asks whether to install evince (no unless `y`); allowing a reader for the `pdf` verb is a second question, also no unless `y` |
 | scheduled jobs on uninstall | Added | `deletesdcore.sh` switches every `sdcore-job-*` timer off, removes the timers and services, then `/etc/sdcore/jobs.d` |
 | `sdsys` user in kept groups | Changed | an install that keeps accounts and finds the `sdsys` user in their groups asks once whether to keep it there (no unless `y`, and no with no terminal), takes it out on no, and records the decision in `/home/sd/$groups.ruled` so a later install leaves what the administrator did |
 | `sdai` user | Added | made by the installer; removed with the accounts |
