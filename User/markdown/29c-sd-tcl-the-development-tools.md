@@ -33,7 +33,9 @@ The home screen has a tile for each of them, in the group *Develop*.
 **On a page with more than one box the keyboard can be in** (the query page, the bulk change page and the
 test page here; on the administrator's side the sessions, menus, AI and viewer pages), the box that has it
 is marked **`[*]`** in its top right corner and the others **`[-]`**, as the IDE marks its panes (since 1
-November 2026). Tab moves the keyboard and the marks with it; a box the keyboard never goes to has no mark.
+November 2026). **Tab** moves the keyboard and the marks to the next box and **Shift-Tab** back, on every
+page that has two such boxes (since 3 November 2026 the test page too: Tab goes from the list to what the test
+under the cursor printed, and back); a box the keyboard never goes to has no mark.
 
 **Every page has a menu bar on its top row** (since 29 October 2026), made from the page's own key table, so
 the bar, the key row at the foot and the keys cannot disagree. **F10**, **Alt and the letter** marked in a
@@ -44,6 +46,20 @@ closes that, and the next Esc opens the bar). Up, Down, Left and Right move, Ent
 entry is shown dimmed when the page cannot do it now, and **Quit is the last entry of any menu that has
 other entries**. Choosing an entry does exactly what its key does, through
 the page's own checks and boxes: the bar adds no access and runs no command by itself.
+
+**F2 finds an action by its name** (since 3 November 2026). It opens a list of every entry of the page's
+menus, written *Menu > Entry* with its key beside it (*Query > Run the query   R*). Type part of a name to
+narrow the list, Up and Down move, Enter chooses, Esc leaves. An entry the page cannot do now says *(not
+now)*; choosing it shows why in a box and does nothing. Choosing any other entry does what its key does,
+exactly as the menu bar's entry would.
+
+**A right click on a box opens that box's menu** (since 3 November 2026), at the pointer. If the box did not
+have the keyboard, the right click first gives it the keyboard, as a click does (its mark becomes `[*]`), and
+then opens its menu. A right click outside the boxes, and **Shift-F10** from the keyboard (in the middle of the
+screen), open the menu of the box marked `[*]`. The menu lists that box's actions with their keys, dimmed when
+they cannot be used now, and ends with *Find an action...*, which opens the F2 list. A letter, or Up, Down and
+Enter, chooses (the action runs in that box, as its key does); Esc or a click outside closes it.
+F1's list of keys names F2 and Shift-F10 on every page that has a menu bar.
 
 ## tool.files - the files of the account
 
@@ -306,7 +322,7 @@ The operators are `=` `#` `<` `>` `<=` `>=` `like` and `unlike`. A value is plai
 | **R** | run the sentence; the output is shown in the Results box and nowhere else |
 | **E** | edit the sentence as text; a change in any box writes it again from the boxes |
 | **S** | save the query; a form asks the name (a-z, 0-9, dot, dash, underscore; at most 40; capitals are made lower case) |
-| **L** | the saved queries (up to 100): Enter loads one, **X** deletes one |
+| **L** | the saved queries (up to 100) in a pick window: type to narrow it, **Enter** loads one, **Del** deletes one, Esc closes it |
 | F5 | read the files and the dictionary again; what no longer fits is dropped |
 | F1, **?**, a click on **[?]** | help |
 | Ctrl-Q | leave |
@@ -317,7 +333,7 @@ In the Results box Up, Down, PgUp, PgDn, Home and End scroll, Left and Right mov
 
 **Everything that is run is checked first.** A sentence the page runs starts with `list`, `sort`, `count` or `sum`, names the chosen file, and then holds only words from a fixed list, numbers, the items of that file's dictionary and values in double quotes. A word that sends the output somewhere else or writes (`to`, `saving`, `lptr`, `csv`, `as`, `file` and others) is refused, even when it is the name of a dictionary item. So is a semicolon, a single quote and a word the page does not know. The sentence the boxes make, a sentence you edit and a sentence a saved query holds are checked again by the same routine just before they run. An item whose name has a character the page does not use, or is also a word of the query language or a VOC keyword, is listed but cannot be marked. A phrase (`PH`) is not listed.
 
-**Saved queries** are records of the file `&queries&` in your account. The page makes the file when you save the first query, after a box that shows `create.file &queries& dynamic`. Every save is a box too, and replacing a saved query asks its name typed. A saved query is data: when it is loaded every part is checked against the file's dictionary, the operator table and the quoting rule, and what does not pass is dropped and counted in the status line. Deleting one with X also asks its name typed. **Before every save and every delete the page checks the file** (since 28 October 2026): `&queries&` must be an ordinary data file standing in your own account directory under that name, of no protected kind, and one your gates allow you to change. An entry `&queries&` in your VOC that leads somewhere else, to the program file `bp` for example, is refused (*nothing was saved* / *nothing was deleted*, with the reason). A record that is not a saved query (its first field is not `query1`) is never written over or deleted from here: *... is not a query this page saved ...: it was not changed*. `tool.bulk` makes the same check of its undo file.
+**Saved queries** are records of the file `&queries&` in your account. The page makes the file when you save the first query, after a box that shows `create.file &queries& dynamic`. Every save is a box too, and replacing a saved query asks its name typed. A saved query is data: when it is loaded every part is checked against the file's dictionary, the operator table and the quoting rule, and what does not pass is dropped and counted in the status line. **L** shows them in a pick window (since 3 November 2026): a row a query with its name, its file, its kind (list, count or sum) and the sentence it was saved with, under a heading row; typing narrows the list to the queries that hold the text in any column. **Enter** loads the query under the cursor, **Del** deletes it after a box that asks its name typed, Esc closes the window and loads nothing. After a load, a refusal or a delete the page is shown again with what happened on the status line; L opens the list again. **Before every save and every delete the page checks the file** (since 28 October 2026): `&queries&` must be an ordinary data file standing in your own account directory under that name, of no protected kind, and one your gates allow you to change. An entry `&queries&` in your VOC that leads somewhere else, to the program file `bp` for example, is refused (*nothing was saved* / *nothing was deleted*, with the reason). A record that is not a saved query (its first field is not `query1`) is never written over or deleted from here: *... is not a query this page saved ...: it was not changed*. `tool.bulk` makes the same check of its undo file.
 
 **Limits.** One file at a time. No run-time prompts, no VOC paragraph, no printing (`lptr`) and no output to a file or a list. The phrases and the `$query.defaults` record of a dictionary belong to the account and are expanded by the query processor; the page does not list a phrase and cannot see the defaults.
 
@@ -542,7 +558,7 @@ The line between the boxes counts the results of the session and shows the **bp-
 | **A** | run every test shown, one after another, in the order shown, after a box that gives the number and the first commands (Cancel is what Enter chooses); **Esc** stops after the test that is running |
 | **F** | run again the tests that failed (an abort counts as a fail), after the same box |
 | **B** | compile a test that has no object code: `basic FILE ID`, after a box that shows the command (Cancel is what Enter chooses) |
-| **Enter** | show what the test printed in the lower box, scrolling with Up, Down, PgUp, PgDn, Home and End; **Esc** comes back |
+| **Enter**, Tab or Shift-Tab | show what the test printed in the lower box, which then has the keyboard (`[*]`), scrolling with Up, Down, PgUp, PgDn, Home and End; **Esc**, Tab or Shift-Tab comes back to the list |
 | **/** or F11 | show only the tests whose name or program file holds some text; **Esc** clears it |
 | F5 | read the program files again (the results are kept) |
 | F1, **?**, a click on **[?]** | help |
