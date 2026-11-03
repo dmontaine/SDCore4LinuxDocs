@@ -201,6 +201,26 @@ closes it again (`none` closes ssh and the API).
 This is not about who can reach the computer from the network — that is the two
 questions above.
 
+## Where sessions start
+
+The installer asks *Start new sessions at the home screen or at the command
+prompt?* The home screen is a page of tiles for the account's tools; the command
+prompt is SD's `:` prompt, as in earlier releases.
+
+* **A new installation** offers the home screen (**H**): press Enter to keep it, or
+  type **p** for the prompt.
+* **An upgrade that keeps the accounts** offers what the system had before.
+  `deletesdcore.sh` saves the setting when it removes the old install, and an
+  install **from before the home screen (L1.1-3 or earlier) is saved as the
+  prompt**, so pressing Enter keeps every session starting where it always did.
+  Use the `deletesdcore.sh` of the new release package for the upgrade; an older
+  one does not save the setting.
+* The answer is the system's default. An account that has a start setting of its
+  own keeps it. Signed in as SDSYS, `set.start.default terminal` or
+  `set.start.default menu` changes the default later, and `modify.account
+  <account> start-terminal`, `start-menu` or `start-default` sets one account
+  (*Accounts and Security* in the Administrator documentation).
+
 ## Changing any of it afterwards
 
 Both remote-access settings have a verb that changes them later, which is

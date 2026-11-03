@@ -875,11 +875,13 @@ file pointer to a directory outside the account in an account that does not
 hold `os-on`. The accounts that existed at an upgrade hold `os-on`, so their
 own pointers keep working; the Q-pointer rule applies to them too.
 
-There are no `path:name` or `account:name` forms of a file name any more (the
-`sd.conf` setting `FILERULE` that turned them on was removed on 28 October 2026): a
-name that is in no VOC record is not found. A file outside the account is reached
-only through a VOC pointer, which is held to the `os-on` rule and the Q-pointer rule
-above.
+The `account:file` form of a file name is always available, with no `sd.conf`
+setting: a name in no VOC record with one colon is read as a Q-pointer to that
+account and file, and the **Q-pointer rule above applies to it unchanged**, so it
+opens only what a Q-pointer the account wrote could open. The `path:name` form went
+with the `FILERULE` setting on 28 October 2026. Any other file outside the account
+is reached only through a VOC pointer, which is held to the `os-on` rule and the
+Q-pointer rule above.
 
 ### What `os-on` actually costs
 

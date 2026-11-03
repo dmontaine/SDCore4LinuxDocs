@@ -38,7 +38,7 @@ is the short form.
 | The default terminal | Changed | was 120 columns by 36 lines; now **140 by 43** (a LIST fills 42 lines before it pauses) |
 | The group size of a new file | Changed | was 2 KB (1 KB when `sd.conf` did not say); now **4 KB** on a new installation. An installed system keeps its `sd.conf`, and so its 2, and a file keeps the size it has |
 | `when field` with no operator | Changed | kept the null values; now keeps the values that are **not** null |
-| Where a session starts | Changed | was the command prompt; now the **home screen** of tiles, and `set.start.default` chooses the prompt for an account |
+| Where a session starts | Changed | was the command prompt; a new installation starts at the **home screen** of tiles unless the installer's question is answered with the prompt; **an upgrade from L1.1-3 keeps the prompt**; `set.start.default` and `modify.account` change it later |
 
 ## Sections
 
@@ -214,6 +214,7 @@ File handling: opening, indexes, triggers, print files, sorting, sequential file
 
 | Name | Change | What |
 |---|---|---|
+| `account:file` file names | Changed | always available, with no `filerule` setting: a name in no VOC entry with one colon opens that account's file, with exactly the checks of a Q-pointer (an account you may `logto`, not suspended) |
 | `analyse.file` | Changed | `statistics` shows a histogram of group utilisation |
 | `analyse.index` | Added | every index with its number of values and spread |
 | `catalog -name` | Added | a hyphen is a global catalogue prefix; `delete.catalog -name` removes it |
@@ -447,7 +448,7 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | `setptr` print mode 5 and the `version` keyword | Removed | the terminal's auxiliary printer port; a file is made in the current format |
 | old terminal definitions | Removed | `addsviewpoint`, `viewpoint`, `adds4000`, `viewpoint60`, `vp60`, `vp`, `vpa2`, `vt52`, `hpgeneric`, `hp`, `ibm-pc`, `ibm5051`, `5051`, `glasstty` and `kermit`: use `ansi`, `vt100` or `xterm` (`wyse50` and `wyse60` stay) |
 | VOC record type M (menu) | Removed | the home screen is the menu system |
-| `FILERULE` | Removed | the sd.conf parameter and the `account:file` and `path:pathname` forms of file name; write a Q-pointer, an F-pointer or `logto` |
+| `FILERULE` | Removed | the sd.conf parameter and the `path:pathname` form of file name (write an F-pointer); the `account:file` form is always on now (see FILES) |
 | `listf`, `listfl`, `listfr`, `listk`, `listpa`, `listph`, `listq`, `listr`, `lists`, `listv` | Removed | `list voc with type = "F"` (and `and is.remote = ""` / `and is.remote` for local / remote files), `"K"`, `"PA"`, `"PH"`, `"Q"`, `"R"`, `"S"`, `"V"` for the other types; add `ftype desc data.name dict.name` after `voc` for the file columns |
 | `sd.voclib` | Removed | nothing: the file held only the ten sentences above, and its VOC pointer is removed from every account |
 | C dictionary item type (and the compiler's C-type mode, @ANS return) | Removed | write the calculation as an I-type; it may call a catalogued subroutine with SUBR(); compile.dict says message 11993 for a C item |
@@ -650,6 +651,7 @@ Three simple layers, with no vault and nothing on by default.
 | `sdsys` user in kept groups | Changed | an install that keeps accounts and finds the `sdsys` user in their groups asks once whether to keep it there (no unless `y`, and no with no terminal), takes it out on no, and records the decision in `/home/sd/$groups.ruled` so a later install leaves what the administrator did |
 | `sdai` user | Added | made by the installer; removed with the accounts |
 | shared account | Added | made by the installer; its help text and `pdf` directory are loaded |
+| start question | Added | the installer asks whether new sessions start at the home screen or at the command prompt; an upgrade offers what the site had, and keeps the prompt for an install from before the home screen (the uninstaller saves the setting) |
 | stored SDNet logins | Changed | the uninstaller removes `/var/lib/sd-net` when the accounts or the configuration are deleted |
 | systemd units on an upgrade | Changed | `sd.service`, `sd-lnxd.service` and `sdclient@.service` are replaced by this release's when they differ (they were copied only on a first install); `sdclient.socket` and drop-ins under `/etc/systemd/system` are kept |
 | `upgrade_gates` | Changed | fills only a blank setting, so a kept `no` stays |

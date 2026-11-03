@@ -466,11 +466,15 @@ is 0 unless `sd.conf` sets it, and the installer does not, so the request is
 refused as delivered. Leave it at 0: no client function in this set sends
 request 29.
 
-There is no `FILERULE` parameter any more (removed 28 October 2026). A name that
-is in no VOC record is not found: the `account:file` and `path:` forms of a file
-name are gone, and so is the old `system:account:file` form. To reach a file in
-another account or directory, put a Q-pointer or an F-pointer in the VOC, where
-the operating-system access switches apply to it. A Q-pointer whose fourth field
+There is no `FILERULE` parameter any more (removed 28 October 2026). **The
+`account:file` form of a file name is always available** (back on 3 November 2026,
+for programs moved from openQM): a name that is in no VOC record and has one colon,
+such as `open 'sales:orders'`, opens that account's file exactly as a Q-pointer to it
+would, with the same checks: the account must be registered, the person must be able
+to `logto` it, and it must not be suspended. It reaches nothing a Q-pointer could not.
+The `path:` form is gone, and so is the old `system:account:file` form. To reach a
+directory outside the accounts, put an F-pointer in the VOC, where the
+operating-system access switches apply to it. A Q-pointer whose fourth field
 names another system is refused with status 3003 and is not opened as a local file.
 
 There is no licence parameter and no licence verb. SD Core for Windows is
