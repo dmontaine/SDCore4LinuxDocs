@@ -250,6 +250,27 @@ abss(-1 : @vm : 2 : @vm : -3)     ;* gives 1, 2, 3 as three values
 The whole family — including the string and comparison members — is described
 in [SD Basic - Dynamic Arrays](05-sd-basic-dynamic-arrays.html).
 
+## A number as text with a fixed number of decimals: `fix`
+
+```
+fix(number {, places {, mode}})
+```
+
+Gives the number as a string with exactly *places* decimal places. Left out, *places* is
+the program's own `precision` (4 unless the program set it; at most 14). With *mode* 0 or
+left out the last place is **rounded** to the nearest; with any other *mode* the extra
+places are **cut off**.
+
+| | |
+|---|---|
+| `fix(2.675, 2)` | `2.68` |
+| `fix(2.679, 2, 1)` | `2.67` |
+| `fix(7, 2)` | `7.00` |
+| `fix(-1.5)` at the default precision | `-1.5000` |
+
+Unlike `precision`, which changes how every number of the program prints, `fix()` formats
+the one value it is given.
+
 ## What is not here
 
 These existed in OpenQM and in earlier SD releases and **are not in SD

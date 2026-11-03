@@ -390,6 +390,27 @@ additions; each is described by what it does and does **not** do.
 | **`dir.dtm`** | writing a record to a directory file moves the directory's date and time modified. The system moves it only when a name is added or removed, so a replaced record leaves it as it was. **Closing a written sequential file does not do this** |
 | **`spool.command`** | shows the operating system command that prints a job, just before it runs; a diagnostic aid |
 
+## Changing the size of a matrix passed in: `redim`
+
+```
+redim name(rows {, cols})
+```
+
+Inside a subroutine, `redim` gives a matrix argument (`mat a`) a new size, and **the
+caller's matrix takes that size**: what the subroutine stores in it, in the old elements
+and in the new ones, is there when the call returns.
+
+```
+subroutine grow(mat a)
+   redim a(10)
+   a(8) = 'eight'
+   return
+end
+```
+
+A matrix argument needs no `dim` of its own in the subroutine, in a `local subroutine`
+either: it is the caller's matrix, with the caller's size, until a `redim` changes it.
+
 ## What is not here
 
 Nothing in the program-structure group has been removed from this port. The

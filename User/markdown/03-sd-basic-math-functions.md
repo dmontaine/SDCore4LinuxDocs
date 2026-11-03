@@ -273,6 +273,32 @@ multiple is unchanged. With a step of 3, `roundup(10, 3)` is 12,
 `rounddown(10, 3)` is 9, `roundup(-4, 3)` is -6 and `rounddown(-4, 3)` is -3.
 **A step under 1 gives 0.**
 
+## Numbers of any length: `sadd`, `ssub`, `smul`, `sdiv`, `scmp`
+
+```
+sadd(a, b)        a + b
+ssub(a, b)        a - b
+smul(a, b)        a * b
+sdiv(a, b)        a / b
+scmp(a, b)        -1, 0 or 1
+```
+
+These do arithmetic on numbers held as **strings of digits**, of any length, exactly: no
+digit is lost to the size of a machine number. Each argument may have a sign and a
+decimal point. The answer is a string with no leading zeros and no trailing zeros after
+the point.
+
+```
+x = sadd('99999999999999999999', '1')       ;* '100000000000000000000'
+y = smul('123456789012345678', '1000')      ;* '123456789012345678000'
+z = sdiv('1', '3')                          ;* '0.333333333333333'
+```
+
+`sdiv()` gives at most **15 decimal places**; further places are cut off, not rounded.
+Dividing by zero stops the program with a run-time error. `scmp()` answers -1 when *a* is
+less than *b*, 0 when they are equal and 1 when *a* is greater; `'1.50'` and `'1.5'` are
+equal.
+
 All four take a dynamic array and answer with one of the same shape.
 
 ## Continued in

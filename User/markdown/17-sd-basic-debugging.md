@@ -525,6 +525,22 @@ Read out of an account's own VOC:
 would withhold them. `debugging` is a keyword rather than a verb, and always
 was available regardless.
 
+## A process dump from inside the program: `pdump`
+
+```
+pdump
+```
+
+The statement writes a process dump of the session it runs in and **the program carries
+on** at the next line; nothing is stopped. The dump is the same file the `pdump` command
+writes for a session number (see [SD TCL - Processes and
+Phantoms](30-sd-tcl-processes-and-phantoms.html), which says where it goes): the program's
+variables, each string with its length, the call stack, open files, and the environment,
+with the value of any name that looks like a secret (a key, a token, a password) left out.
+
+Use it to take a picture of a program's state at one point without stopping it. **The dump
+holds the program's data**, so remove it when you have read it.
+
 ## What is not here
 
 **`trace` is gone.** It was removed from the compiler in July 2024. In an

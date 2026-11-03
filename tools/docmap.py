@@ -5,10 +5,8 @@
 # what is unassigned or assigned twice.  The point is that a document set which
 # quietly misses a function must fail this rather than look finished.
 #
-# 3 Nov 26 (S.74): the table brought up to date. 70 names BCOMP accepts and a topic page documents are
-# assigned to that page; the 25 names BCOMP's five tables do not hold are removed. The 10 still reported
-# unassigned (FIX MATSTR PDUMP REDIM REGEX SADD SCMP SDIV SMUL SSUB) have a line on the syntax card only
-# and no prose page: they are a real gap (task-table row S.129), left unassigned on purpose.
+# 3 Nov 26 (S.74, S.129): the table brought up to date - every name BCOMP accepts is assigned to the topic
+# page that documents it, and the names BCOMP's five tables do not hold are removed.
 #
 import re
 import sys
@@ -44,6 +42,7 @@ DOCS = {
    SET.ARG ASSIGNED UNASSIGNED SET.UNASSIGNED VARTYPE RETURN VARSET ARG.PRESENT
    CASING REUSING
    SHARED
+   REDIM
 """,
  # 18 is the modern half of program structure: everything that gives a name a
  # scope, and everything to do with objects.  These were all assigned to 01
@@ -75,6 +74,7 @@ DOCS = {
    MODS TRIMS TRIMBS TRIMFS SOUNDEXS SPACES STRS FMTS ICONVS OCONVS FOLDS INDEXS
    FIELDS SUBSTITUTE MARK.MAPPING SORTINIT SORTADD SORTCLEAR MAXIMUM MINIMUM SUM
    SUMMATION NS NV REVREMOVE RMVD SORT SORTDATA SORTNEXT
+   MATSTR
 """,
  '05b Data Collections': """
    AS COLLECTION ELEMENT.EXISTS ENUMERATE JBOOLEAN JNULL JTYPE
@@ -155,6 +155,7 @@ DOCS = {
 """,
  '17 Debugging': """
    DEBUG DEBUG.ON DEBUG.OFF DEBUG.SET BREAKPOINT WATCH PHANTOM
+   PDUMP
 """,
  '04 String Functions': """
    LEN INDEX COUNT FIELD TRIM TRIMB TRIMF CROP SPACE STR UPCASE DOWNCASE
@@ -163,14 +164,17 @@ DOCS = {
  '04a String Matching and Replacing': """
    CHANGE COMPARE ALPHA MATCHFIELD QUOTE SQUOTE SOUNDEX MATCHESS MATCHFIELDS
    QUOTES TRIMW TRIMWS
+   REGEX
 """,
  '03 Math Functions': """
    ABS ACOS ASIN ATAN COS SIN TAN EXP LN SQRT INT MOD DIV IDIV RDIV REM NEG RND
    RANDOMIZE CEIL FLOOR ROUNDDOWN ROUNDUP
+   SADD SSUB SMUL SDIV SCMP
 """,
  '03a Numeric Tests and Formatting': """
    MAX MIN NUM BITAND BITNOT BITOR BITRESET BITSET BITTEST BITXOR SHIFT BOOL
    IS.NULL NUMERIC
+   FIX
 """,
 }
 

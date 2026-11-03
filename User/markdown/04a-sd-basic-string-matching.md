@@ -307,6 +307,26 @@ operation to every element of a dynamic array:
 The full family, and the rules for how they pair elements when given two
 arrays, is in [SD Basic - Dynamic Arrays](05-sd-basic-dynamic-arrays.html).
 
+## Regular expressions: `regex`
+
+```
+regex(string, pattern)
+```
+
+Answers 1 when *pattern* matches anywhere in *string*, and 0 when it does not. The pattern
+is a POSIX **extended** regular expression: `.` `*` `+` `?` `|`, groups `( )`, counts
+`{n,m}`, classes such as `[0-9]` and `[[:alpha:]]`, and `^` and `$` to tie the match to the
+start and the end. It is not Perl's dialect: write `[0-9]` where Perl would write `\d`.
+A pattern that begins `(?i)` ignores case.
+
+```
+if regex(code, '^[A-Z]{2}[0-9]{4}$') then crt 'a valid code'
+if regex(name, '(?i)^mac') then crt 'starts with mac, Mac or MAC'
+```
+
+**A pattern that is not a valid regular expression stops the program** with a run-time
+error that says what is wrong with it; it is not taken as "no match".
+
 ## What is not here
 
 | | |

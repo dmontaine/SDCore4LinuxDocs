@@ -338,6 +338,21 @@ way in; with it off, the bytes pass through unchanged.
 **It has no effect on a dynamic file**, where records are stored in SD's own
 format.
 
+## A matrix as a dynamic array: `matstr`
+
+```
+matstr(matrix)
+```
+
+Gives a two-dimensional matrix as one dynamic array: **each row becomes a field and each
+column a value** within it. It works the same on a matrix passed into a subroutine.
+
+```
+dim m(2, 2)
+m(1, 1) = 'p' ; m(1, 2) = 'q' ; m(2, 1) = 'r' ; m(2, 2) = 's'
+s = matstr(m)        ;* 'p' : @vm : 'q' : @fm : 'r' : @vm : 's'
+```
+
 ## What is not here
 
 Nothing in the dynamic-array group has been removed from this port.
