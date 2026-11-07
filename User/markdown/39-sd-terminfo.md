@@ -150,7 +150,9 @@ gpm is running, a full-screen program that asks for the mouse is
 connected to it and is given the same press, release, drag and wheel reports
 as an emulator would give, so every page that takes the mouse takes it on the
 console, and gpm draws the pointer. Nothing is needed in SD, and with the
-daemon stopped there is simply no mouse. Removing SD leaves the `gpm` package
+daemon stopped there is simply no mouse. If `gpm` cannot be installed (in a
+container, for example), the installer prints a warning and goes on; install it
+later with `sudo apt-get install gpm`. Removing SD leaves the `gpm` package
 installed. SD asks gpm only when the terminal type is
 `linux` and its input is a text console, so a session over ssh, in `tmux` or
 `screen`, or in an emulator is not affected, and a program that opens its
