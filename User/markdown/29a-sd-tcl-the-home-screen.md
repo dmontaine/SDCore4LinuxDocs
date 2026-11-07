@@ -24,7 +24,8 @@ full-screen tools) and a real terminal. In a smaller window it says so, with the
 size it found. If you typed `home` at the prompt, you stay at the prompt; if your
 account starts in the home screen, you are **signed out** (*This account starts at
 the home screen, which could not open, so the session is signed out*), whether or not
-the Terminal tile is on: a small window is never a way to the prompt. In a session with no terminal (a
+the Terminal tile is on: a small window is never a way to the prompt. SDSYS, the
+administrator, is the one exception: it is left at the prompt. In a session with no terminal (a
 pipe, a phantom, a script) it says `home needs a terminal` and reads nothing, so
 a script is never taken for someone typing. **In a bigger window the tiles spread over
 the whole window** (since 28 October 2026): as many columns of tiles as fit, each tile a little
