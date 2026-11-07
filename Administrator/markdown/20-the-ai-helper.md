@@ -7,9 +7,11 @@ SD can ask an AI model a question for an account holder (the `ai` verb, see [SD 
 
 ## What leaves the machine
 
-When a person types `ai some text`, SD shows them the text, the provider and the model, and asks whether to send it. Only if they answer `y` or `yes` does anything go out. What goes out is that text, one fixed sentence that asks for a short plain answer, and a limit on the length of the answer. It is sent over **https**, with the certificate checked, to the address of the provider you chose, and to nowhere else. The key goes only to that address.
+When a person types `ai some text`, SD shows them the text, the provider and the model, and asks whether to send it. Only if they answer `y` or `yes` does anything go out. What goes out is your standing text (below), that text, one fixed sentence that asks for a short plain answer, and a limit on the length of the answer. It is sent over **https**, with the certificate checked, to the address of the provider you chose, and to nowhere else. The key goes only to that address.
 
 SD adds nothing of the account, the session or the data. A person can of course type or paste whatever they like into the question, which is why the preview is not optional and why the gate is yours to give.
+
+**The standing text.** Every request, from the `ai` verb and from every AI line, begins with a few lines of yours: what SD is, how its commands are written, which gates there are, and where SD's help is. SD ships a default; you can replace it (see [The standing text](#the-standing-text) below). It is yours and is invisible to the person asking: it is not in their preview and it does not change their question. The preview's size counts it.
 
 **Passages of the documentation.** The AI line (the home screen, the pages of the toolkit, the IDE, SED, the collection editor and the debugger; not the `ai` verb) also adds up to four sections of SD's own documentation that match the request, at most 2,400 bytes each and 6,000 in all, and the preview lists them (page, section, size, first lines) before anything is sent. The installer puts the markdown of the User and Administrator documents in `docs/user` and `docs/admin` under the system directory, from the documentation repository at the branch it installs. `docs/user` is readable by every session (755, files 644). **`docs/admin` is yours alone: mode 700 and files 600, owner `sdsys`, which is the only operating-system user an administrator session runs as, and the routine asks SD for the administrator before it looks there.** An account holder's request is never answered from those pages. The directory is replaced whole at each install and is not a place to put your own text. If the installer could not reach the documentation it prints a note, installs nothing and the AI line works without passages. This is documentation, not source: the rule below that the AI is never given SD's own code is unchanged.
 
@@ -30,6 +32,7 @@ Nothing the AI returns is run, and the output of a command is never given back t
 | `/run/sd-ai/sock` | The socket the helper listens on (`sd-ai.socket`; group `sdusers`, mode 0660). Whoever connects is identified by the operating system, not by anything they write. |
 | `/var/lib/sd-ai/` | The helper's own directory: the settings (`ai.conf`), one key file per provider (mode 0600, readable by `sdai` only) and the counters of the limits. |
 | `/usr/local/lib/sd-ai/ai-providers` | The connection details that come with SD for Anthropic, OpenAI, Google and DeepSeek, and each one's default model. Root owns it. |
+| `/usr/local/lib/sd-ai/ai-context` | The standing text that comes with SD. Root owns it; an install replaces it. Your own text, when you have saved one, is `/var/lib/sd-ai/context` and is kept by an upgrade. |
 | `sd-ai-ctl` | The administrator's client for the helper. It is what asks for a key at the terminal, without echo. |
 | `sdaiusers` | The Linux group that is the **gate**. Membership of it is what lets an account use the AI. |
 
@@ -66,6 +69,7 @@ An administrator-only full-screen page (140 columns by 43 lines at least; it is 
 | D | remove the Custom connection (the helper refuses while it is in use) | |
 | A | the file of certificate authorities (you type `ca` to confirm) | |
 | L | change a limit | |
+| T | the standing text, in a box with an editor | the same |
 | Tab | change box | change box |
 | F1, `?` or a click on `[?]` | explain the box | explain the box |
 | F5 | read the machine again | read the machine again |
@@ -87,6 +91,7 @@ set.ai custom NAME URL FORMAT AUTH VERSION MAXPARAM
 set.ai custom clear
 set.ai ca PATH | -
 set.ai limit NAME NUMBER
+set.ai context HEX | -
 ```
 
 For the administrator only (SDSYS's VOC). Alone it says what is set: the provider in use, each provider's address, model and whether its key is set, the certificate file and the limits. It never shows a key. `provider none` turns the AI off for everyone. `key` hands the terminal to the helper's prompt; nothing typed there reaches SD. A word may hold letters, digits and `. _ : / @ + , -` and nothing else. The helper checks every result whole before it writes it: one provider selected means its details are complete, a Custom address is `https://` with no query string, a limit is a whole number in range.
@@ -101,6 +106,21 @@ The limits, and what they are as delivered:
 | `bytes-request` | 65536 | the most that may be sent in one request |
 | `bytes-reply` | 65536 | the most that may come back |
 | `max-tokens` | 1024 | the longest answer asked for |
+
+## The standing text
+
+Press **T** on `tool.ai` (or choose Provider, Standing text). A box shows the text that is sent first with every AI request from every account, and says whether it is SD's default or yours. Edit it there: Enter starts a new line and Tab moves to the buttons. **Save** shows the command and its effect in a Run / Cancel box (Enter chooses Cancel), and Run keeps your text. **Shipped default** removes yours, so SD's default is sent again. **Cancel** or Esc changes nothing.
+
+The default tells the AI that this is SD Core for Linux, that it should answer for SD and not for another multivalue product, that command words are lower case, which dictionary types there are, that access to the operating system, the shell and the API is a gate you turn on for each account, and where SD's help is: F1 and the `[?]` buttons, the `pdf` command, the SD BASIC guide and the knowledge pack under `/usr/local/sdsys/agent-pack` (for an AI agent that can read files on this machine), and the documentation on the web. Put your own site's facts in it, such as which accounts and files matter and how your programs are named.
+
+What is kept:
+
+- plain English: printable ASCII characters and new lines, at most 4,000 characters;
+- nothing that names SD's own code or build (`gpl.bp`, `gplsrc` and the other names of the screen above). Such a text is refused when you save it, with the line `set.ai context refused name=...` in the audit trail. A text that names them all the same (written into the helper's file by hand) stops every request, with `ai refused why=context`, until it is put right.
+
+The text is sent to the provider with every request, before SD's own instruction, and counts towards `bytes-request`. It is invisible to the person asking: it is not in their preview (the size shown there counts it) and their question is sent as they typed it. It is kept by the helper in `/var/lib/sd-ai/context` (owner `sdai`, mode 0640), and only you can change it. An upgrade keeps it; removing SD with its configuration removes it.
+
+At the prompt the verb takes the text as one word of hexadecimal (`set.ai context 48656c6c6f`), which is how the page passes a text of several lines; `set.ai context -` goes back to the default. `sd-ai-ctl show` says whose text is in use and how long it is.
 
 ## The gate for each account
 
@@ -138,6 +158,10 @@ set.ai key set provider=anthropic
 set.ai key cleared provider=anthropic
 set.ai custom name=MyLLM host=api.example.com
 set.ai limit name=tokens-day value=50000
+set.ai context bytes=1640
+set.ai context=default
+set.ai context refused name=gpl.bp
+ai refused why=context app=home name=gpl.bp
 modify.account ai-on account=fred
 tool start app=tool.ai
 ```
