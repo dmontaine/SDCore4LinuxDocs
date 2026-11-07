@@ -110,7 +110,8 @@ small screen is a small console:
 | a text screen without a framebuffer | 80 × 25 | too small |
 
 On a console that is too small SD says so and does not start the page: *home
-needs a window of at least 140 columns by 43 lines; this one is 80 by 25*.
+needs a window of at least 140 columns by 43 lines; this one is 80 by 25*. An
+account that starts in the home screen is then signed out.
 `stty size` shows the size. A narrower font gives the room back: `sudo setfont
 Lat15-Terminus12x6` (a font 6 pixels wide and 12 high) makes a 1280 × 800
 console 213 × 66 and a 1024 × 768 one 170 × 64, and SD's pages use the

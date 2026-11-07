@@ -132,6 +132,8 @@ create.account user NAME ai-on
 
 The gate is membership of the Linux group `sdaiusers`, as `sdapi` and `sdfiles` are for the API and the files route. It is **off for every account** as delivered and for every new account; the installer's question about opening the gates leaves it out on purpose, because every request is paid for by whoever holds the provider's key. It is for accounts that belong to a person (not a group account), and `ai-on` needs the person to be a member of `sdusers`, as the other gates do. The line printed is `Account fred has ai yes`, read back from the group file. It takes effect at the person's next request: the helper looks at the group each time. `modify.account NAME ai-on ai-off` in one command is refused.
 
+SDSYS has no gate: the administrator, who chooses the provider and holds the key, may always use the AI, from the prompt (`ai`) and from the AI line of every page, once a provider, a model and a key are set. `modify.account sdsys ai-on` is not needed and is refused, as every `modify.account` of SDSYS is.
+
 The backup of an account records the gate (`route.ai`) and a restore puts it back.
 
 ## The key

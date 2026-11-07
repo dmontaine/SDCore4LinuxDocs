@@ -21,7 +21,10 @@ particular to the home screen.
 
 It needs a window of at least **140 columns by 43 lines** (the same as the other
 full-screen tools) and a real terminal. In a smaller window it says so, with the
-size it found, and leaves you at the prompt; in a session with no terminal (a
+size it found. If you typed `home` at the prompt, you stay at the prompt; if your
+account starts in the home screen, you are **signed out** (*This account starts at
+the home screen, which could not open, so the session is signed out*), whether or not
+the Terminal tile is on: a small window is never a way to the prompt. In a session with no terminal (a
 pipe, a phantom, a script) it says `home needs a terminal` and reads nothing, so
 a script is never taken for someone typing. **In a bigger window the tiles spread over
 the whole window** (since 28 October 2026): as many columns of tiles as fit, each tile a little
@@ -165,7 +168,8 @@ Every tile is on as delivered, and the administrator can turn a tile off **for y
 account** (`set.tile`, or the *Menu management* page): it is then not on your page,
 and its menu entry cannot be chosen. If the **Terminal** tile is off and your account
 starts in the home screen, you are never given the command prompt: when the screen
-ends (a window too small, an error, the cursor lock) you are signed out. An account
+ends (an error, the cursor lock) you are signed out. A window too small for the
+screen signs you out whatever the tiles say. An account
 that starts at the prompt keeps it. Sign out cannot be turned off.
 
 ## Your own programs: `my.menu`
