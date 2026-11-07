@@ -1018,7 +1018,12 @@ is the account holder's read-only "what my account may do" page, described in th
 set under *What this account may do*). One row for each registered
 account but SDSYS, one column for each gate the system has, in the order
 `modify.account` carries them out: `ssh api sh os sd voc bp dict net sh-rd sh-wr files
-f-wr f-adm ai sock`. A cell says **ON**, **off**, a **dash** (the gate does not apply
+f-wr f-adm ai home sock`. **`home`** is where a session of the account starts: ON is
+the home screen, off the command prompt (the words `start-menu` and `start-terminal`).
+An account that has never been given either follows the system's default, which is the
+installer's answer to *Start new sessions at the home screen or at the command prompt?*
+(and `set.start.default` changes it); `modify.account NAME start-default` puts an account
+back on the default. It applies to every kind of account, and A and N leave it alone. A cell says **ON**, **off**, a **dash** (the gate does not apply
 to this kind of account: ssh, api, files and ai are routes for a person, and a group or
 other account has no Linux user of its own) or **plan** (not built yet; sockets). A star
 after a cell is a change you have queued; the cell shows the state it would have.
