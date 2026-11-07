@@ -22,7 +22,7 @@ on for it.**
 **One rule, on the ssh server, not per account:**
 
 ```
-Match Group sdusers,!sdsys
+Match Group sdusers,!sdsys User *,!root
     ForceCommand /usr/local/bin/sd
 Match User sdsys
     DenyUsers sdsys
@@ -30,7 +30,10 @@ Match User sdsys
 
 Every `sdusers` member is `ForceCommand`'d into `sd` the instant they
 connect over ssh — they never reach a shell that way, whatever the
-connection is asked to run. `sdsys` is refused a network login outright,
+connection is asked to run. **root is the exception**: it is a member of
+`sdusers` (the installer adds it), but SD's rules leave it alone, so whether
+root may sign in over ssh is decided by the ssh server's own settings
+(`PermitRootLogin`), exactly as before SD was installed. `sdsys` is refused a network login outright,
 before authentication even matters, until the administrator opens that door
 (then it gets its own arm, with the password alone): there is
 no session for `ForceCommand` to apply to.
