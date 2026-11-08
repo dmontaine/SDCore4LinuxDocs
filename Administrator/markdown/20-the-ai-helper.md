@@ -41,8 +41,8 @@ The helper asks the operating system who is calling (the user id of the connecti
 ## The things that turn it on
 
 1. **A provider.** One for the whole machine: Anthropic, OpenAI, Google, DeepSeek or Custom.
-2. **A model** for that provider. Each of the four named providers comes with a default model, shown on the page and used until you name another (`set.ai model PROVIDER NAME`; a dash goes back to the default). The defaults are the balanced model of each provider as its own documentation named it on 1 November 2026, and none has been tried against a real key: **model names change, so check the one you will pay for.** Custom has no default; its model is yours.
-3. **A key** for that provider, from the provider's own account. It is typed at a prompt that shows nothing, and kept for the helper only.
+2. **A model** for that provider. Each of the four named providers comes with a default model, shown on the page and used until you name another (`set.ai model PROVIDER NAME`; a dash goes back to the default). The defaults are the balanced model of each provider as its own documentation named it (DeepSeek's was changed to `deepseek-flash` on 8 November 2026, when DeepSeek had retired `deepseek-chat`): **model names change, so check the one you will pay for.** Once a key is set, M on the page shows the provider's own list of models to pick from, and `set.ai models PROVIDER` prints it. Model names are case-sensitive: `deepseek-v4-pro` works, `Deepseek-V4-Pro` does not. Custom has no default; its model is yours.
+3. **A key** for that provider, from the provider's own account. It is typed or pasted on the page (shown as `*`) or at the helper's own prompt, and kept for the helper only.
 4. **The gate for each account that may use it**: `modify.account NAME ai-on`.
 
 The same provider and the same model serve every account; there is no choice per account and no key per account. Of the four, only the provider, the key and the gates have to be supplied: the AI stays off until all three are.
@@ -62,8 +62,8 @@ An administrator-only full-screen page (140 columns by 43 lines at least; it is 
 | Key | In the Provider box | In the Accounts box |
 |---|---|---|
 | Enter or space | check the provider under the cursor (you type its name to confirm), or uncheck the one in use | turn the account's gate on (you type the account's name) or off |
-| M | name the model (a dash goes back to the provider's default; Custom has none, so there it clears it) | |
-| K | set the key: the terminal is handed to the helper's own prompt | |
+| M | name the model: with a key set, pick it from the provider's own list (typing narrows the list; its last entry lets you type a name); without one, type it. A dash goes back to the provider's default (Custom has none, so there it clears it) | |
+| K | one form for the key and the model: the key is shown as `*`, and left empty it keeps the key already set; Save checks the model against the provider's list | |
 | X | remove the key | |
 | C | fill in Custom | |
 | D | remove the Custom connection (the helper refuses while it is in use) | |
@@ -75,7 +75,11 @@ An administrator-only full-screen page (140 columns by 43 lines at least; it is 
 | F5 | read the machine again | read the machine again |
 | Ctrl-Q | leave | leave |
 
-**The page writes nothing itself and knows no key.** Every change is a `set.ai` or `modify.account` sentence, shown with its effect in a box that you answer Run or Cancel (Enter chooses Cancel). The page then runs exactly that sentence. The key is not typed on the page: the page gives the terminal to `set.ai key`, whose prompt belongs to the helper, and takes the screen back when you press Enter.
+**The page keeps nothing itself and never shows a key.** Every change is a `set.ai` or `modify.account` sentence, shown with its effect in a box that you answer Run or Cancel (Enter chooses Cancel). The page then runs exactly that sentence. The exception is K's form, whose Save is the confirmation: it sets the key, then the model if you changed it.
+
+**What K's form does with the key.** The key you type or paste is shown as `*`. On Save the page writes it to a file in a directory only `sdsys` can enter (`$aikey` in the SD system directory, mode 0700), runs `set.ai key PROVIDER handover`, which gives that file to the helper's client as its input, and removes the file whether or not that worked. The key is never on a command line and never in the audit trail. It does pass through SD's memory while the form is open, and through that file for a moment. If you would rather it never touched SD, use `set.ai key PROVIDER` at the prompt, which hands the terminal to the helper's own prompt.
+
+Save then asks the provider for its list of models with that key. A model name the list does not hold is refused in the form, which names the listed one that differs only in capitals (for example `deepseek-v4-pro` for `Deepseek-V4-Pro`); the key is already set at that point, and the form says so. A provider that gives no list (a Custom server, or one that cannot be reached) leaves the name to you, and the page says that it could not check it.
 
 Opening the page changes nothing and writes one audit line, `tool start app=tool.ai`.
 
@@ -85,7 +89,9 @@ Opening the page changes nothing and writes one audit line, `tool start app=tool
 set.ai
 set.ai provider anthropic | openai | google | deepseek | custom | none
 set.ai model PROVIDER NAME | -
+set.ai models PROVIDER
 set.ai key PROVIDER
+set.ai key PROVIDER handover
 set.ai key PROVIDER clear
 set.ai custom NAME URL FORMAT AUTH VERSION MAXPARAM
 set.ai custom clear
@@ -94,7 +100,7 @@ set.ai limit NAME NUMBER
 set.ai context HEX | -
 ```
 
-For the administrator only (SDSYS's VOC). Alone it says what is set: the provider in use, each provider's address, model and whether its key is set, the certificate file and the limits. It never shows a key. `provider none` turns the AI off for everyone. `key` hands the terminal to the helper's prompt; nothing typed there reaches SD. A word may hold letters, digits and `. _ : / @ + , -` and nothing else. The helper checks every result whole before it writes it: one provider selected means its details are complete, a Custom address is `https://` with no query string, a limit is a whole number in range.
+For the administrator only (SDSYS's VOC). Alone it says what is set: the provider in use, each provider's address, model and whether its key is set, the certificate file and the limits. It never shows a key. `provider none` turns the AI off for everyone. `models` asks the provider, with its key, for the names of its models and prints them, one to a line. `model` keeps the name you give, and says so when the provider does not list it (`deepseek does not list a model named Deepseek-V4-Pro, so requests may be refused`, then `It lists deepseek-v4-pro`). `key` hands the terminal to the helper's prompt; nothing typed there reaches SD. `key PROVIDER handover` is what the page runs: it reads the page's hand-over file and removes it. When a provider refuses a request, its own explanation is shown after the HTTP status (`the provider refused the request (HTTP 400): Model Not Exist`), cut to one line, with any copy of the key taken out; a refused key (401 or 403) shows only that the key was not accepted. A word may hold letters, digits and `. _ : / @ + , -` and nothing else. The helper checks every result whole before it writes it: one provider selected means its details are complete, a Custom address is `https://` with no query string, a limit is a whole number in range.
 
 The limits, and what they are as delivered:
 
@@ -138,7 +144,7 @@ The backup of an account records the gate (`route.ai`) and a restore puts it bac
 
 ## The key
 
-The key is typed at the helper's own prompt (`set.ai key anthropic`, or K on the page). It goes from your terminal to the helper over the socket and is written to `/var/lib/sd-ai/keys/anthropic`, mode 0600, owned by `sdai`. SD does not read it, keep it, print it or put it in the audit trail; the page and the verb read back only whether it is **set**. `set.ai key anthropic clear` removes it. A key is never an argument of a command, so it is in no process list and no history.
+The key is typed at the helper's own prompt (`set.ai key anthropic`) or in K's form on the page. At the prompt it goes from your terminal straight to the helper and SD never sees it. From the form it passes through SD's memory and a hand-over file only `sdsys` can reach, which is removed at once (see above). Either way it is written to `/var/lib/sd-ai/keys/anthropic`, mode 0600, owned by `sdai`; SD does not keep it, print it or put it in the audit trail, and the page and the verb read back only whether it is **set**. `set.ai key anthropic clear` removes it. A key is never an argument of a command, so it is in no process list and no history.
 
 If a key is lost or shown to someone, clear it and ask the provider for a new one: SD cannot tell you who has seen it.
 
@@ -157,6 +163,7 @@ ai request account=fred program=ai bytes.out=154
 set.ai provider=anthropic
 set.ai model provider=anthropic model=claude-...
 set.ai key set provider=anthropic
+set.ai key set provider=anthropic from=page
 set.ai key cleared provider=anthropic
 set.ai custom name=MyLLM host=api.example.com
 set.ai limit name=tokens-day value=50000

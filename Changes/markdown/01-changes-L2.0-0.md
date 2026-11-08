@@ -560,8 +560,8 @@ has, with the changes they made.
 | `ai` standing text | Added | a few lines of the administrator's sent first with every AI request (what SD is, its conventions and gates, where its help is, the site's own facts); SD ships a default; `tool.ai` T edits it (Save, Shipped default), `set.ai context` at the prompt; invisible to the person asking and their question is unchanged; plain ASCII, 4,000 characters, and a text naming SD's own code is refused |
 | `ai` verb | Added | asks an AI one question; shows exactly what will be sent and sends only on `y` or `yes` |
 | `sdai` operating system user | Added | system user made by the installer for the AI feature: own group, no shell, no home, no SD group |
-| `set.ai` | Added | SDSYS chooses the provider, model and key from the prompt |
-| `tool.ai` | Added | SDSYS page: Anthropic, OpenAI, Google, DeepSeek or custom, one provider for every account, each named provider with its address and a default model (a key is all it needs), each account's gate |
+| `set.ai` | Added | SDSYS chooses the provider, model and key from the prompt; `set.ai models` lists the provider's own model names, and a model it does not list is warned about |
+| `tool.ai` | Added | SDSYS page: Anthropic, OpenAI, Google, DeepSeek or custom, one provider for every account, each named provider with its address and a default model (a key is all it needs), each account's gate; the key and the model in one form (the key shown as `*`, the model checked against the provider's list), and the model picked from that list |
 
 ### API and client library
 
