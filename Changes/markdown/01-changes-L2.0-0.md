@@ -561,7 +561,7 @@ has, with the changes they made.
 | `ai` verb | Added | asks an AI one question; shows exactly what will be sent and sends only on `y` or `yes` |
 | `sdai` operating system user | Added | system user made by the installer for the AI feature: own group, no shell, no home, no SD group |
 | `set.ai` | Added | SDSYS chooses the provider, model and key from the prompt; `set.ai models` lists the provider's own model names, and a model it does not list is warned about |
-| `tool.ai` | Added | SDSYS page: Anthropic, OpenAI, Google, DeepSeek or custom, one provider for every account, each named provider with its address and a default model (a key is all it needs), each account's gate; the key and the model in one form (the key shown as `*`, the model checked against the provider's list), and the model picked from that list |
+| `tool.ai` | Added | SDSYS page: Anthropic, OpenAI, Google, DeepSeek or custom, one provider for every account, each named provider with its address and a default model (a key is all it needs), each account's gate; S, one setup dialog that looks the same every time: the key in a password field and the model chosen from the provider's own list |
 
 ### API and client library
 
