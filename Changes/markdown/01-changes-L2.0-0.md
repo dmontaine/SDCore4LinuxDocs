@@ -38,7 +38,7 @@ is the short form.
 | The default terminal | Changed | was 120 columns by 36 lines; now **140 by 43** (a LIST fills 42 lines before it pauses) |
 | The group size of a new file | Changed | was 2 KB (1 KB when `sd.conf` did not say); now **4 KB** on a new installation. An installed system keeps its `sd.conf`, and so its 2, and a file keeps the size it has |
 | `when field` with no operator | Changed | kept the null values; now keeps the values that are **not** null |
-| Where a session starts | Changed | was the command prompt; a new installation starts at the **home screen** of tiles unless the installer's question is answered with the prompt; **an upgrade from L1.1-3 keeps the prompt**; `set.start.default` and `modify.account` change it later |
+| Where a session starts | Changed | was the command prompt; a new installation starts at the **home screen** of tiles unless the installer's question is answered with the prompt; **an upgrade from L1.1-3 keeps the prompt**; `set.start.default` and `modify.account` change it later; SDSYS always starts at the prompt |
 
 ## Sections
 
@@ -770,7 +770,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | home screen at the same time | Changed | fixed: a session at the home screen kept the next session waiting at sign-on (the absent `start.default` file was read with a lock the program never let go); `osread` of a missing file left a lock too |
 | home screen menu bar | Changed | made from the page's key table like every other page's: each entry shows its key (new: Ctrl-T Terminal, Ctrl-W Switch account, Ctrl-R Recent group, Ctrl-K Keys, F6 the AI line), F10 left the foot row, and / finds a tile by any part of its name |
 | home screen refused tile | Changed | a tile whose command is refused shows its message until a key is pressed, and the home screen no longer ends |
-| home screen small window | Changed | an account that starts in the home screen is signed out when the window is too small for it, even with the Terminal tile on (it used to be left at the prompt); SDSYS is left at the prompt |
+| home screen small window | Changed | an account that starts in the home screen is signed out when the window is too small for it, even with the Terminal tile on (it used to be left at the prompt); SDSYS always starts at the prompt |
 | home screen sub-menus | Added | a tile can open a second page of tiles with a Back tile, Esc and the path on the status line; eight deep; the delivered page declares none yet |
 | `ide` | Added | tree, tabs, compile errors table, find, run, catalogue and debug; Ctrl-E hands a record to `sed` |
 | `ide` breakpoints | Added | Shift-F7 or a click in the gutter marks a line of a program tab (`*`); F7 runs to the first mark, Build / Debug from the first line stops at line 1 with them set; what the debugger still has comes back as marks; up to 20, only lines where a statement begins |
