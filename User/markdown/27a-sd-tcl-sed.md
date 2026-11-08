@@ -308,8 +308,8 @@ AI they are not there. They are also the commands **`AI`** (with the question af
 * **Explain the selection** uses the text between the mark (Esc `.`) and the cursor. With no mark
   the message row says to set one, and nothing is sent.
 
-Whichever you use, **Enter shows everything that will be sent** — the provider and model, the
-fixed instruction, the record's lines (the whole record up to 24,000 bytes, else the lines round
+Whichever you use, **Enter shows what you are sending** — the provider and model, the size of all
+of it (SD's own instruction is sent and counted, not shown), the record's lines (the whole record up to 24,000 bytes, else the lines round
 the cursor, and it says so), the selected text and your question — with Send and **Cancel, the
 default**. While the AI answers, Esc gives the request up.
 

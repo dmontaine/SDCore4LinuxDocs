@@ -636,8 +636,8 @@ use the menu:
 | AI, Explain the selection | the same for the text from the mark (Ctrl-G where it starts) to the cursor; with no mark the status line says to set one and nothing is sent |
 | AI, Ask about this record | puts you in the `AI>` row to type what you want |
 
-Whatever you ask, Enter shows **everything that will be sent** first: the provider and model, the
-fixed instruction, the record's lines (the whole record when it is under 24,000 bytes, else the
+Whatever you ask, Enter shows **what you are sending** first: the provider and model, the size of
+all of it (SD's own instruction is sent and counted, not shown), the record's lines (the whole record when it is under 24,000 bytes, else the
 lines round the cursor, and it says which), the line they start at, and your request, with Send and
 **Cancel, which is the default**. While the AI answers, Esc gives the request up.
 

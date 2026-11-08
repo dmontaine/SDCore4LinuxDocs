@@ -264,9 +264,9 @@ AI> open the ide
 AI> show me who I am
 ```
 
-Enter does not send anything. It shows **everything that will leave the machine**: the
-provider and the model, one fixed instruction, the list of what this page can do (the names of
-its tiles), what the page says about itself, and your request. **Cancel is the default button**,
+Enter does not send anything. It shows the provider, the model, the size of all that will be
+sent, and **your request**. SD's own text that goes with it (one fixed instruction, the list of
+what this page can do, what the page says about itself) is sent and counted, but not shown. **Cancel is the default button**,
 so Enter alone sends nothing; choose **Send** (press `s`) to send. While the AI answers the row
 says so and **Esc gives the request up**.
 

@@ -94,7 +94,9 @@ you type its name to confirm.
 
 When the administrator has allowed the AI for your account, every page has an **`AI>`** row above the status line. Press
 **F6** (or click the row), type what you want in your own words and press Enter. Nothing is sent yet: a box shows
-**everything that will leave the machine**, with **Cancel** as the default; press **s** for Send.
+the provider, the size of all that will be sent, **your request** and anything of yours the page sends with it (a record's
+lines, a selection, earlier questions), with **Cancel** as the default; press **s** for Send. SD's own instructions to the
+AI are sent too and counted in the size, but not shown.
 
 The answer comes in a box. It can *propose* an action of the page - you choose Accept or Reject, and anything that runs a
 command or changes something defaults to Reject. It never runs anything by itself, and it works with your account's
