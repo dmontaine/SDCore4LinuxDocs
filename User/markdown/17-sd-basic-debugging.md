@@ -415,8 +415,8 @@ them. `dumb` and `unknown` have no `cup` and stay line by line. Then:
 - below it is the **source**. Each row has a two-cell **gutter** — `>` marks the
   line about to run and `*` a line with a breakpoint (a breakpoint wins when the
   line about to run has one) — then the line number and the text. The line about
-  to run is highlighted from end to end. When the site's theme is the blue one (or
-  `dark` or `light`), the text is coloured as SD BASIC: comments, strings,
+  to run is highlighted from end to end. When the site's theme is `paper`, as
+  delivered (or `night`, `blue`, `dark` or `light`), the text is coloured as SD BASIC: comments, strings,
   constants and the statements. In the plain `classic` theme, which the debugger
   uses when the site names none, the source has no syntax colour;
 - to the right of the source, from column 93, is the **Autos** pane: the
@@ -464,7 +464,7 @@ screen is): when you let the program run, the debugger gives the terminal back
 and the program's output is on its own screen, and it is on the alternate
 screen again at the next stop. The colours are the screen library's: if the
 program asked for no theme, the debugger uses the site's theme (`SCREENTHEME` in
-`sd.conf`, which the installer sets to `blue`) while it is up and the `classic` one
+`sd.conf`, which the installer sets to `paper`) while it is up and the `classic` one
 when the site names none; and whatever the program asked for otherwise. When the
 debugger lets the program go, the program's theme is given back, whether or not the
 window was resized or `window` *n* was typed on the way.

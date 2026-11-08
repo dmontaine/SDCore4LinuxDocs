@@ -303,7 +303,7 @@ keeping its row on the screen.
 **Colour for a language.** `syntax` *name* colours the text as the language *name*:
 `sd.basic`, `c`, `json`, `markdown`, `sh`, `python`, or one a site added in the file
 `&sed.syntax&` (the same languages and rules as [SED](27a-sd-tcl-sed.html)'s colour). The colours
-are the **theme's**, so the program chooses one that has them (`dark`, `light`, `classic` or `blue`;
+are the **theme's**, so the program chooses one that has them (`paper`, `night`, `dark`, `light`, `classic` or `blue`;
 `mono` has none, and the text is plain in it). A name that is not a language is not an error: the
 text is drawn plain. The text is coloured as it is edited — typing `*` at the start of an SD BASIC
 line makes it a comment as it goes in. A text of some thousand lines is slower to draw for it, because
@@ -610,14 +610,16 @@ screen theme name {returning current} {then ... else ...}
 screen style name, foreground, background, flags
 ```
 
-Five themes ship: **`mono`**, which uses only reverse video and underline and so reads
-on any terminal; **`classic`**, dark text on light dialogues over a blue desktop;
+Seven themes ship: **`mono`**, which uses only reverse video and underline and so reads
+on any terminal; **`paper`**, black and dark blue text on light grey, with the menu bar
+and menus the other way round (light grey on black, their letters yellow and underlined);
+**`night`**, white and yellow text on black, its menus black on light grey; **`classic`**, dark text on light dialogues over a blue desktop;
 **`blue`**, white on blue dialogues; and **`dark`** and **`light`**, which are `mono` with
 the **syntax colours** added, for a dark and a light terminal background (the colours that
-`screen memo ... syntax` and SED's colour for the language use; `classic` and `blue`
-have them too, `mono` has none). **A program that never asks gets `mono`**, unless
+`screen memo ... syntax` and SED's colour for the language use; `paper`, `night`,
+`classic` and `blue` have them too, `mono` has none). **A program that never asks gets `mono`**, unless
 the administrator has set `SCREENTHEME=` in `sd.conf` to the theme the site wants (the
-shipped `sd.conf` says `SCREENTHEME=blue`; a program with no `SCREENTHEME` line at all stays
+shipped `sd.conf` says `SCREENTHEME=paper`; a program with no `SCREENTHEME` line at all stays
 `mono`, and a terminal with no colour is `mono` whatever the line says); a
 program that asks for a theme gets the one it asked for.
 `screen theme` gives `else` for a name that is not a theme, on a terminal that cannot

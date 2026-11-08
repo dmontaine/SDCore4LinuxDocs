@@ -49,8 +49,8 @@ in force. The last row is the **key row**, as on the toolkit pages: *F10 menu,
 run*. It shows the keys of the layout in use, so with `emacs` in
 `&sed.options&` it says *^X ^S save* and *^X M run*, and an action that has no
 key in that layout is left off. Where the site's screen theme (`SCREENTHEME` in
-`sd.conf`) is `blue`, as delivered, or `classic`, SED has the toolkit pages'
-colours with its syntax colours on them; any other theme leaves SED in its own
+`sd.conf`) is `paper`, as delivered, or `night`, `blue` or `classic`, SED has the
+toolkit pages' colours with its syntax colours on them; any other theme leaves SED in its own
 dark or light theme. Only the look changed: no key, command or menu item did.
 
 **A window smaller than that when SED starts is refused**, in words

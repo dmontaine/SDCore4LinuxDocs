@@ -123,5 +123,6 @@ left it.
 - **The page looks cut off**: make the window at least 140 by 43, or press F5 to draw it again.
 - **Something is left on the screen that does not belong to the page** (a message another program wrote, say): press Ctrl-L.
   A page sends the terminal only what changed, so text written over it from outside stays until the page is drawn whole.
-- **The colours are hard to read**: the site's colours are the administrator's choice (`SCREENTHEME`); `tool.keys` shows
-  what your terminal can display, and which keys it sends.
+- **The colours are hard to read**: the site's colours are the administrator's choice (`SCREENTHEME`; the delivered `paper`
+  is dark text on light grey, and `night` is light text on black); `tool.keys` shows what your terminal can display, and which
+  keys it sends.

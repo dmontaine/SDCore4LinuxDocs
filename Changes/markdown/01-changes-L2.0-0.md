@@ -66,7 +66,7 @@ Administrator commands from the openQM list.
 | `lock.tracer` | Added | administrator only: logs every lock taken and released, with program and line, to the file `locktrace` |
 | `logout` | Changed | `logout n group` also ends the phantoms n started; `logout` of a session whose process has gone clears the entry and its locks |
 | `newvoc.mods` | Changed | applied to SDSYS's own VOC and kept across an upgrade that keeps the accounts |
-| `SCREENTHEME` | Changed | readable with `config()`; the shipped `sd.conf` says `SCREENTHEME=blue` and the installer adds that line to a restored `sd.conf` that has none (an existing line, `mono` included, is kept); a terminal with no colour stays `mono` |
+| `SCREENTHEME` | Changed | readable with `config()`; the shipped `sd.conf` says `SCREENTHEME=paper`, the installer adds that line to a restored `sd.conf` that has none and changes a restored `SCREENTHEME=blue` to `paper` once (any other line, `mono` included, is kept); a terminal with no colour stays `mono` |
 
 ## API
 
@@ -685,7 +685,7 @@ Three simple layers, with no vault and nothing on by default.
 | text area undo | Changed | `screen memo`: Ctrl-Z gives back exactly what was there; a record holding value, subvalue or text marks came back changed |
 | text from data | Changed | the library never sends a control character to the terminal: one in a record, a record id, a file name or an AI answer is drawn as a reverse letter (ESC as `[`), one cell each; UTF-8 text and line drawing are unchanged |
 | theme roles | Added | five new styles, `warning`, `success`, `readonly`, `busy` and `focus`, with a look in every theme (bold, underline and reverse only in `mono`), and `error` gets a `mono` look; programs that include `sl.h` need compiling again |
-| themes | Added | `mono`, `classic` and `blue`; colour works on the Linux console terminal type |
+| themes | Added | `paper` (black and dark blue on light grey, menus the other way round; the delivered theme), `night` (white and yellow on black), `mono`, `classic`, `blue`, `dark` and `light`; colour works on the Linux console terminal type |
 | `!tk` routines | Added | `!tkopen`, `!tkclose`, `!tkkeys`, `!tkframe`, `!tkmenubar`, `!tklayout`, `!tkconfirm`, `!tkform`, `!tkpickrec`, `!tkout`, `!tkwrap` and the header `tkpub.h`: a program of your own builds a full-screen page with the frame, menu bar, F2 finder, key table, confirm box, form and pick list the tools use; it runs with your own rights and gates and runs nothing itself |
 | window size | Changed | SD reads the terminal's window size at the start and when it is resized; `@crtwide` and `@crthigh` follow it |
 
@@ -800,7 +800,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `ide` resize | Changed | moves and sizes the IDE's parts instead of building the screen again: the editor keeps its undo steps, selection, find text and view, the messages table its row, the tree its open nodes, the AI entry its text (a part that cannot be moved, and coming back from Run, Debug or SED, still build the screen again, keeping the text) |
 | `ide` save | Changed | takes the record's lock and writes on error: a refusing trigger or a full disk is reported and the text kept, where it ended the IDE and lost every tab; Save as moves the editor to the new record; an edit-gate refusal is shown whole in a box; Catalogue says so only when `catalog` did |
 | `ide` tab indent | Added | Tab and Shift-Tab indent and outdent the line or the selected lines by 3, one undo step each, never a tab character (the `ide` editor only; `screen memo` keeps its Tab) |
-| `ide` theme | Changed | starts in the site's `SCREENTHEME` (blue when none or a name that is not a theme, mono without colour); View, Theme goes through the themes in the pages' order and skips those the terminal cannot show |
+| `ide` theme | Changed | starts in the site's `SCREENTHEME` (paper when none or a name that is not a theme, mono without colour); View, Theme goes through the themes in the pages' order and skips those the terminal cannot show |
 | `ide` tools menu | Added | Tools, between View and Help, opens `tool.files`, `tool.dict`, `tool.voc`, `tool.query`, `tool.bulk`, `tool.catalog` and `tool.test`; the page gets the terminal as a program run from the IDE does, and the IDE comes back with its tabs and unsaved text |
 | `ide` untitled buffer | Added | a bare `ide` opens an editable "Untitled 1" with the cursor in it; New record writes nothing until it is saved; the arrows stay in the editor at its first and last line |
 | `ide` window lock and foot | Changed | needs 140 by 43 (was 140 by 42) and has the toolkit's foot: the status line, a border and a row of function keys on the last three rows; a window made smaller while it runs holds the keyboard behind a warning that gives both sizes and says unsaved text is lost unless the recovery copy is on, whatever the cursor is doing (the warning is worded shorter in a very small window); `sed` and `ced` keep the cursor-based lock |
