@@ -85,7 +85,7 @@ column heading, so `/ first name` finds the items headed "First Name" whatever t
 **`F` finds a part of an id, or of a heading, in the VOC or the dictionaries of every account**: it
 reads them all, so it runs only when you ask, and the box then lists the hits with their accounts;
 Enter on a hit goes to that entry in its account. Esc takes the find and the filter off, F5 reads
-again, Tab changes box, F1 or `?` explains the box. An account whose VOC cannot be opened is
+again, F6 or Shift-F6 changes box, F1 or `?` explains the box. An account whose VOC cannot be opened is
 listed and says so. At most 3,000 entries or hits are listed, and the page says when there were
 more.
 

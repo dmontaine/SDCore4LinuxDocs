@@ -21,7 +21,7 @@ page looks exactly as it did. 140 by 43 is still the smallest window: if the win
 page is up, the page holds the keyboard behind a warning that gives both sizes, until the window is big enough
 again (Ctrl-Q, then y, leaves). The administrator's pages and the home screen do the same.
 
-The keys, menus, boxes and pick lists that all these pages share - F1, F2, Esc, Tab, the right-click
+The keys, menus, boxes and pick lists that all these pages share - F1, F2, Esc, F6, the right-click
 menu, the confirm box, the AI line - are described once in
 [Using the Full-Screen Pages](29d-sd-tcl-using-the-full-screen-pages.html); each section below adds only
 what is particular to its page.
@@ -38,9 +38,10 @@ The home screen has a tile for each of them, in the group *Develop*.
 **On a page with more than one box the keyboard can be in** (the query page, the bulk change page and the
 test page here; on the administrator's side the sessions, menus, AI and viewer pages), the box that has it
 is marked **`[*]`** in its top right corner and the others **`[-]`**, as the IDE marks its panes (since 1
-November 2026). **Tab** moves the keyboard and the marks to the next box and **Shift-Tab** back, on every
-page that has two such boxes (since 3 November 2026 the test page too: Tab goes from the list to what the test
-under the cursor printed, and back); a box the keyboard never goes to has no mark.
+November 2026). **F6** moves the keyboard and the marks to the next box and **Shift-F6** back, round and
+round, with the AI line as the stop after the last box when the AI is on for your account (since 8 November
+2026, the same keys on every page and in the IDE; Tab no longer moves between boxes). On the test page F6 goes
+from the list to what the test under the cursor printed, and back. A box the keyboard never goes to has no mark.
 
 **Every page has a menu bar on its top row** (since 29 October 2026), made from the page's own key table, so
 the bar, the key row at the foot and the keys cannot disagree. **F10**, **Alt and the letter** marked in a
@@ -223,7 +224,7 @@ and whether it has been compiled, and the record as it is stored.
 | **D** | delete the item (`delete dict file item`) after a box, with the item's id typed |
 | **C** | compile an I item (`compile.dict file item`) after a box |
 | **T** | try the item on a record of the file: asks the record's id and shows the value the query processor would compute for it, and the same value as a query prints it |
-| **I** or Tab | the indices pane |
+| **I** or F6 | the indices pane |
 | **F** | back to the list of files |
 | **/** or F11 | show only the ids that hold some text |
 | Esc | clear the filter |
@@ -262,7 +263,7 @@ finds nothing, and the box under the list says so.
 | **B** | build the index under the cursor again from the records (`build.index file index`) |
 | **D** | delete it (`delete.index file index`) after a box, with its name typed |
 | **L** | list it in full (`list.index file index detail`): the terminal is handed to the verb, which prints its report; Enter brings the page back |
-| **I**, Tab or Esc | back to the items pane |
+| **I**, F6 or Esc | back to the items pane (F6 goes to the AI line first when the AI is on for your account) |
 
 N runs both verbs after one box, because an index that is defined and not built is a trap;
 B builds one that is left over. Building and deleting need the file to themselves: if another session has the
@@ -323,7 +324,7 @@ The operators are `=` `#` `<` `>` `<=` `>=` `like` and `unlike`. A value is plai
 
 | key | does |
 |---|---|
-| Tab, Shift-Tab | next and previous box |
+| F6, Shift-F6 | next and previous box |
 | **R** | run the sentence; the output is shown in the Results box and nowhere else |
 | **E** | edit the sentence as text; a change in any box writes it again from the boxes |
 | **S** | save the query; a form asks the name (a-z, 0-9, dot, dash, underscore; at most 40; capitals are made lower case) |
@@ -455,7 +456,7 @@ be put back by another **U** once it is free). Undo writes one audit line, like 
 
 | key | does |
 |---|---|
-| Tab | changes the list (Selection, Operations, Result) |
+| F6, Shift-F6 | changes the list (Selection, Operations, Result) |
 | **F** | choose the file |
 | **M**, **L**, **J** | how the records are chosen, a saved list, all or any (Selection) |
 | **N**, **E**, **X** | add, change, remove a condition or an operation |
@@ -563,7 +564,7 @@ The line between the boxes counts the results of the session and shows the **bp-
 | **A** | run every test shown, one after another, in the order shown, after a box that gives the number and the first commands (Cancel is what Enter chooses); **Esc** stops after the test that is running |
 | **F** | run again the tests that failed (an abort counts as a fail), after the same box |
 | **B** | compile a test that has no object code: `basic FILE ID`, after a box that shows the command (Cancel is what Enter chooses) |
-| **Enter**, Tab or Shift-Tab | show what the test printed in the lower box, which then has the keyboard (`[*]`), scrolling with Up, Down, PgUp, PgDn, Home and End; **Esc**, Tab or Shift-Tab comes back to the list |
+| **Enter**, F6 or Shift-F6 | show what the test printed in the lower box, which then has the keyboard (`[*]`), scrolling with Up, Down, PgUp, PgDn, Home and End; **Esc**, F6 or Shift-F6 comes back to the list (F6 by way of the AI line when the AI is on for your account) |
 | **/** or F11 | show only the tests whose name or program file holds some text; **Esc** clears it |
 | F5 | read the program files again (the results are kept) |
 | F1, **?**, a click on **[?]** | help |

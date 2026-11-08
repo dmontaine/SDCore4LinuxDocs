@@ -36,11 +36,11 @@ reverse video.
 | **F2** | **Find an action**: a list of every entry of every menu, written `Menu > Entry` with its key. Type any part of a name to narrow the list, then Enter to do it, or Esc to close the list and do nothing. An entry that cannot be used now is marked *(not now)*; choosing it only tells you why. |
 | **F10**, Alt and a menu's letter, a click on the top row | Open the menu bar. |
 | **Esc** | Close what the page has open - a filter, a sub-view, the output pane, a sub-menu. When nothing is open, Esc opens the menu bar on its first menu, so Esc and then Enter never leaves a page by accident. |
-| **Tab**, **Back-tab** (Shift-Tab) | Move the keyboard to the next and the previous box, on every page that has more than one. |
+| **F6**, **Shift-F6** | Move the keyboard to the next and the previous box, round and round. Where the AI is on for your account, the AI line at the foot of the page is one of the stops, after the last box. The same keys do this on every page and in the IDE. |
 | **Shift-F10** | The **action menu** of the box that has the keyboard, in the middle of the screen (see below). |
 | **F5** | Read everything again and draw the page again. |
 | **Ctrl-L** | Draw the whole page again, as it is, without reading anything. |
-| **F6** | Move to the AI line, when the AI is on for your account (when it is not, the status line says so). |
+| **Tab**, **Back-tab** (Shift-Tab) | Never move between boxes. In a form or a dialog they go from field to field; in the IDE's editor they indent and outdent; on `tool.gates` they move between the matrix's columns. |
 | **Ctrl-O** | Show or hide the output pane: the results, refusals and command output of this visit to the page. |
 | **Ctrl-Q** | Leave the page. |
 
@@ -93,7 +93,7 @@ you type its name to confirm.
 ## The AI line
 
 When the administrator has allowed the AI for your account, every page has an **`AI>`** row above the status line. Press
-**F6** (or click the row), type what you want in your own words and press Enter. Nothing is sent yet: a box shows
+**F6** until the cursor is there (it is the stop after the last box), choose **AI > Ask the AI**, or click the row; type what you want in your own words and press Enter. Nothing is sent yet: a box shows
 the provider, the size of all that will be sent, **your request** and anything of yours the page sends with it (a record's
 lines, a selection, earlier questions), with **Cancel** as the default; press **s** for Send. SD's own instructions to the
 AI are sent too and counted in the size, but not shown.

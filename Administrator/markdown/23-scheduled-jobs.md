@@ -252,7 +252,7 @@ decide what runs unattended.
 ### The account view of `tool.jobs`
 
 The page opens on it. **Accounts** lists every registered account but SDSYS with how many commands it
-may run that way; Enter or Tab goes to **Commands**, the paragraphs and sentences of that account's VOC,
+may run that way; Enter or F6 goes to **Commands**, the paragraphs and sentences of that account's VOC,
 each allowed or not. Enter or the space bar on one shows the `set.batch` command and what it does, and
 runs it only when you answer Run. A name still on the list whose VOC record is gone, or is no longer a
 paragraph or a sentence, is shown as such, and Enter takes it off. A name holding a character other

@@ -311,8 +311,8 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | tree | the account's files on the left (**the entries whose names start with a dollar sign - `$acc`, `$hold`, `$map`, `$release` - are not listed**, since 28 October 2026: they belong to SD itself). Return on a file lists its records (the first 2000, and a message says when there are more; a big file is no longer read whole first), and Return again closes the list. **A file that has a dictionary shows the dictionary as a node of its own under it** (since 28 October 2026), read only when you open it, and its items are listed the same way. Return on a record opens it. A letter jumps to the next entry that starts with it. **An account that has operating system access (the administrator, or `os-on`) also sees an *Operating system files* node after its files** (since 30 October 2026): Return on it lists `/`, Return on a directory lists its entries (directories first, then files, each in the order of the names; 1000 at most) and again closes it, and Return on a file opens it in a tab, as `path:/full/name` does. Names that hold a control character or a byte from 248 to 255 cannot be shown or put in a path; a message says how many entries were left out. A directory the operating system does not let the session read says so, with the operating system's error number (message 11599, since 2 November 2026; it said *has no OS access* before). An account without the access has no node |
 | editor | on the right, a tab for each open record. **While it has the focus the character at the cursor is shown in the highlight style** (as well as the terminal's own cursor being put there), so the place shows on a terminal that draws its cursor poorly. **If a block flashes beside the text as you type** (seen in lxterminal and Xfce Terminal, not in GNOME Terminal or Terminator), set the terminal's cursor style to underline or I-beam in its preferences: the highlighted character and a block cursor on top of it are what some terminals draw badly. It is the text area `screen memo` uses, so its keys are `memo`'s: selection, cut, copy and paste, undo and redo, find, line numbers. Text is coloured as SD BASIC, C, Python, JSON, shell or Markdown **chosen as [SED](27a-sd-tcl-sed.html) chooses** (since 26 October 2026): by the name of the file, then the record id, then the first line - so a script with no suffix that begins `#!/bin/sh` is shell - and then the languages a site added in `&sed.syntax&`. **A horizontal scroll bar runs along its bottom row** (`<` and `>` at the ends, a thumb as long as the visible part is of the longest line; none to speak of when every line fits); clicking an arrow scrolls 8 columns and clicking the track a page |
 | table | under the editor: the compiler's errors, or search results |
-| pane marks | **`[*]` or `[-]` in the top right corner of each pane that can have the keyboard** (since 19 October 2026): the files (on the frame above the tree), the editor (on the frame above it), the tab strip (at its right end) and the messages (at the right end of their bar). `[*]` is on the pane that has the keyboard, `[-]` on the others; Tab moves it round in that order |
-| status line | **the pane that has the focus** first, in brackets (`[Files]`, `[Tabs]`, `[Editor]`, `[Messages]`: Tab goes round them in that order), then the record, the cursor's line and column, and a star when there are unsaved changes |
+| pane marks | **`[*]` or `[-]` in the top right corner of each pane that can have the keyboard** (since 19 October 2026): the files (on the frame above the tree), the editor (on the frame above it), the tab strip (at its right end) and the messages (at the right end of their bar). `[*]` is on the pane that has the keyboard, `[-]` on the others; F6 moves it round in that order |
+| status line | **the pane that has the focus** first, in brackets (`[Files]`, `[Tabs]`, `[Editor]`, `[Messages]`: F6 goes round them in that order), then the record, the cursor's line and column, and a star when there are unsaved changes |
 
 | key | |
 |---|---|
@@ -327,7 +327,7 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | File, Write a copy | the name form; the text is written to another record and the editor stays on the record it had. **With `path:/full/name` the text is written to a new file of the operating system** and no tab or lock is kept. It has no key |
 | Ctrl-W · File, Close record | closes the record's tab; with unsaved changes it asks whether to save them, discard them or cancel |
 | Ctrl-PageDown · Go, Next tab | the next record tab; Ctrl-PageUp (Go, Previous tab) the one before. **Alt-PageDown and Alt-PageUp do the same** (the second tab keys): GNOME Terminal keeps Ctrl-PageUp and Ctrl-PageDown for its own tabs, so use the Alt keys there |
-| F6 · Go, Next pane | the keyboard goes to the next pane, as Tab does. **Shift-F6** (Go, Previous pane) goes to the one before, as Shift-Tab does |
+| F6 · Go, Next pane | the keyboard goes to the next pane (the AI line is one, after the messages, when the AI is on for your account). **Shift-F6** (Go, Previous pane) goes to the one before. These are the only keys that move between the panes, here and on every full-screen page (since 8 November 2026) |
 | Go, Files and records | the keyboard goes to the tree. It has no key, because F3 is the text area's find next (below). From the editor, Shift-F6 twice reaches the tree (editor, tabs, tree); so does F6 twice (editor, messages, tree) when the AI pane is not open |
 | F3 · Shift-F3 | with the editor focused, **find next** and **find previous** of the text last searched for |
 | Ctrl-R · Search, Replace in the record | replace a text through the record, **as one undo step** (since 29 October 2026: one Ctrl-Z gives the whole text back; it used to forget the undo steps). The find options below apply. **In a record shown with `:@vm:` marks it changes the record's own text** (the colon in `10:30` is a colon; a mark's token is never found or changed, and a result that cannot be shown in the token form is refused and leaves the text alone). A text to find is at most **256 characters** |
@@ -344,7 +344,7 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | Search, Find in the records | find a text in every record of the file the tree is on (the first 2000 records, 500 lines), listed in the table; Return opens the record at the line. The text is at most 256 characters. It has no key (F11 was it) |
 | Ctrl-E · Go, Edit in SED | edit the record in [SED](27a-sd-tcl-sed.html) and come back (below) |
 | F12 · Go, Edit as fields | edit the record as a tree of fields, values and subvalues in the IDE's own fields view - the editor of [CED](27b-sd-tcl-ced.html), shown inside the editor's rectangle - and come back (below) |
-| Tab · Shift-Tab | in the editor, **indent and outdent** the line or the selected lines (below); in the tree, the tabs, the messages and every form Tab moves to the next control as before |
+| Tab · Shift-Tab | in the editor, **indent and outdent** the line or the selected lines (below); in the tree, the tabs, the messages and the fields they do nothing (since 8 November 2026 they never move between the panes: F6 and Shift-F6 do). In a dialog, such as the name form, Tab still goes from field to field |
 | Go, Open the include | the record that the `$include` line at the cursor names, in a tab: one name is looked for in the file the tab is in and then in `syscom`, two words name the file; a collection-file record is passed over, and one that is not found says where it looked. It has no key |
 
 **A bare `ide` opens "Untitled 1"** (since 28 October 2026): an editable buffer, coloured as a
@@ -478,7 +478,7 @@ are SD's own and go through the token form below.
 **Tab and Shift-Tab indent and outdent in the editor** (since 28 October 2026): Tab puts blanks in up to
 the next stop (every 3 columns) or, with lines selected, indents them; Shift-Tab takes the indent out;
 each is one undo step and neither ever puts a tab character in. This is the IDE's editor only: a
-program's own `screen memo` keeps its Tab. F6 and Shift-F6 move between the panes.
+program's own `screen memo` keeps its Tab. F6 and Shift-F6 move between the panes, and Tab never leaves a pane.
 
 **Ctrl-Home and Ctrl-End, Ctrl-Left and Ctrl-Right, Ctrl-Del** (since 29 October 2026): the start and the
 end of the text, a word back and a word on, and delete the word at the cursor (the blanks before it and
@@ -596,7 +596,7 @@ they were while the type stays; a changed type starts from the new type's rows. 
 the menu wait until it is left.
 
 **The form has an AI line** (since 3 November 2026) when the AI is on for your account: **AI>** on its last
-row, reached with **F6**, Tab or a click. Say what the item should be and press Enter there (Enter in that
+row, reached with **F6** or a click (Shift-F6, or F6 again, goes back to the row you were on; Tab goes from row to row, the AI line among them). Say what the item should be and press Enter there (Enter in that
 line asks the AI; it does not accept the form). Everything that will be sent is shown first, Cancel the
 default; the values the AI proposes are shown in full, Reject the default; **Accept puts into the rows only
 the values that pass the form's own checks** and the line near the foot names any that did not. Nothing is
@@ -627,8 +627,8 @@ the item mark is not converted.
 **The AI in the IDE** (since 24 October 2026). When the AI is on for your account (see
 [Asking the AI](29b-sd-tcl-asking-the-ai.html)) the IDE has an **AI** menu before Help and an
 **`AI>`** row under the editor and the messages table (the table is one row shorter); without the AI
-neither is there and nothing else changes. Tab goes round the panes to the AI row, or click it, or
-use the menu:
+neither is there and nothing else changes. F6 goes round the panes to the AI row (Shift-F6 the other
+way), or click it, or use the menu:
 
 | | |
 |---|---|

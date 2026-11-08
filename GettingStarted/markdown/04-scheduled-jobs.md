@@ -108,7 +108,7 @@ takes it off, and `set.batch` alone lists every account's commands. The
 administrator's own account has no list.
 
 **Or use the Scheduled jobs page**, `tool.jobs`. It lists every account
-with the number of commands it may run this way. Tab or Enter moves to
+with the number of commands it may run this way. F6 or Enter moves to
 the account's paragraphs and sentences, each marked as allowed or not.
 Enter on one shows the `set.batch` command and what it does, and runs it
 only when you answer Run. A name still on the list whose VOC record has

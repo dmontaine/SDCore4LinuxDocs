@@ -69,7 +69,7 @@ An administrator-only full-screen page (140 columns by 43 lines at least; it is 
 | A | the file of certificate authorities (you type `ca` to confirm) | |
 | L | change a limit | |
 | T | the standing text, in a box with an editor | the same |
-| Tab | change box | change box |
+| F6, Shift-F6, Left, Right | change box (F6 goes on to the AI line when the AI is on for this account) | change box |
 | F1, `?` or a click on `[?]` | explain the box | explain the box |
 | F5 | read the machine again | read the machine again |
 | Ctrl-Q | leave | leave |

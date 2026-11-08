@@ -85,7 +85,7 @@ date and time, Switch account and Sign out) stays where it is.
 | key | does |
 |---|---|
 | the arrow keys | move to the nearest tile in that direction (a tile in the same row or column comes first) |
-| Tab, Back-tab | the next and previous tile, in reading order |
+| Tab, Back-tab | the next and previous tile, in reading order, round the tiles (they never go to the AI line) |
 | Home, End | the first and the last tile |
 | Page Down, Page Up | the first tile of the next and of the previous group |
 | a letter | the next tile whose label begins with it |
@@ -94,7 +94,7 @@ date and time, Switch account and Sign out) stays where it is.
 | Esc, Backspace | back one page, when you are in a sub-menu (below); on the top page Esc opens the menu bar, as F10 does, and Backspace does nothing |
 | F1 | help on the home screen |
 | F5 | build the page again |
-| F6 | move to the AI line, when the AI is on for the account (when it is not, the status line says so) |
+| F6, Shift-F6 | move to the AI line, and from it back to the tile you were on, when the AI is on for the account (when it is not, the status line says so); the same keys move between the boxes of every page |
 | F10, Alt and a title's letter, a click on the top row | open the menu bar (File, Go, View, AI, Help). Every entry shows its key and does what the key does: **File** Sign out (Ctrl-Q, or Ctrl-X when you typed `home` at the prompt) and, in that case, Back to the prompt (Ctrl-Q); **Go** Back (Esc or Backspace, only in a sub-menu), Terminal (Ctrl-T), Switch account (Ctrl-W), Find a tile (/); **View** Refresh (F5), Recent group on or off (Ctrl-R); **AI** Ask the AI (F6), dimmed when the AI is not on for the account; **Help** Help on this page (F1), Keys (Ctrl-K, the keyboard and terminal page `tool.keys`). An entry whose tile the administrator turned off for your account is dimmed, and its key only says so |
 | F2 | find an action: every entry of the menus in one list (*Go > Terminal*, with its key); type part of a name to narrow it, Enter chooses (since 3 November 2026). An entry that cannot be used now says *(not now)* and only explains why |
 | a right click, Shift-F10 | the menu of the page's actions at the pointer (Shift-F10: in the middle), ending with *Find an action...* (F2) (since 3 November 2026). The home screen has one box, so the right click does not move anything first |
@@ -256,7 +256,7 @@ key, **and allowed your account**; see [Asking the AI](29b-sd-tcl-asking-the-ai.
 the home screen has one more row, just above the status line, that starts **`AI>`**. Without
 the AI there is no such row and nothing on this page changes.
 
-**Press Tab from the last tile (Sign out), or Back-tab from the first, or click the row**, type
+**Press F6, choose AI > Ask the AI, or click the row**, type
 what you want in your own words, and press Enter:
 
 ```

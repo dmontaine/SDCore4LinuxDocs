@@ -457,7 +457,7 @@ plain sentences and shows the exact command its key would run.
 | Key | What it does |
 |---|---|
 | arrows, Page Up, Page Down, Home, End, a click | move in the list that has the focus |
-| Tab | change to the other list |
+| F6, Shift-F6 | change to the other list (and to the AI line, when the AI is on for the account) |
 | L (sessions) | `logout` the selected session; the user number is typed again to confirm. For a session whose process is gone the entry is cleared and its locks are released |
 | U (locks) | `unlock` the selected lock; the holder is not told |
 | I | `inhibit.login on` when logins are allowed, `off` when they are inhibited |
