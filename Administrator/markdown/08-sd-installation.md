@@ -220,7 +220,15 @@ before this step, `bin` is still `sdsys`'s - install while nobody holds that log
 **Stopping the daemon ends every session on the machine**, without asking. It
 signals every entry in the user table and has no "are users logged in" check,
 so treat it as a machine-wide action rather than an administrative
-convenience.
+convenience. A session waiting at its prompt does not leave on that signal, so
+ten seconds later `sd -stop` (and `sd -restart`) ends every process still
+attached to SD with SIGKILL and says how many it ended, for example
+`1 process(es) still attached after ten seconds were ended with SIGKILL`; each
+is also written to syslog. Nothing that is not attached to SD's shared memory is
+touched. A session ended this way does not run its own logout. If a session
+does find SD gone under it, it ends at once with
+`SD process N ended: its semaphores were removed ...` in syslog and on its
+terminal.
 
 **Start it the way you stopped it.** `sd.service` is a one-shot unit that stays
 "active" after it has started SD, and `sd -stop` does not tell it that SD has

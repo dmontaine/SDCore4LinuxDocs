@@ -755,6 +755,8 @@ Fixes that close a way round a gate, and what the gates now ask.
 |---|---|---|
 | default terminal | Changed | 140 by 43 |
 | `sd -status` | Changed | fixed an overrun on a server that recorded no start time |
+| `sd -stop` and `sd -restart` | Changed | a session still attached ten seconds after the termination signal (an idle one does not leave by itself) is ended with SIGKILL, and the stop says how many; before, it was left running with SD gone under it |
+| session whose SD was stopped | Changed | ends at once with a message in syslog and on its terminal, instead of spinning at full processor use for ever |
 
 ### Tools and the home screen
 
