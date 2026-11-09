@@ -346,7 +346,8 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | Tools, Files · Dictionary · Vocabulary · Queries · Bulk update · Programs · Tests | **opens that development page** (`tool.files`, `tool.dict`, `tool.voc`, `tool.query`, `tool.bulk`, `tool.catalog`, `tool.test`; see [The Development Tools](29c-sd-tcl-the-development-tools.html)) on the whole screen, since 3 November 2026. The IDE gives the terminal to the page as Run gives it to a program: what you typed in the editor stays in its tab, unsaved; leave the page (Ctrl-Q), press Return at *Press Return to go back to the IDE*, and the IDE is back with its tabs, saying *Back from ...*. The page asks your account's gates exactly as when you type its name at the prompt. A record the page changed while it is open in a tab is not read again: close the tab and open it to see the change. The menu has no keys; F10 then T opens it |
 | Alt-G · Go, Go to line | (Ctrl-L until 8 November 2026) **a line; line,column; or, in a record shown with `:@vm:` marks, field,value,subvalue** (the field is the line, the value follows the (v-1)th `:@vm:`, the subvalue the (s-1)th `:@sm:` inside it; the tokens are found in any case, and a value or subvalue past the last goes to the last; **two marks side by side - an empty value - count as one, so use the line and column there**). A number is made whole (`1.5` is 1) and one above 99,999,999 is taken as 99,999,999; a number under 1 or a word is not taken |
 | Search, Find in the records | find a text in every record of the file the tree is on (the first 2000 records, 500 lines), listed in the table; Return opens the record at the line. The text is at most 256 characters. It has no key (F11 was it) |
-| Ctrl-E · Go, Edit in SED | edit the record in [SED](27a-sd-tcl-sed.html) and come back (below) |
+| Ctrl-E · Go, Zoom the editor | the editor fills the screen; Ctrl-E again brings the files and the messages back (below) |
+| Go, Edit in SED | edit the record in [SED](27a-sd-tcl-sed.html) and come back (below) |
 | F12 · Go, Edit as fields | edit the record as a tree of fields, values and subvalues in the IDE's own fields view - the editor of [CED](27b-sd-tcl-ced.html), shown inside the editor's rectangle - and come back (below) |
 | Tab · Shift-Tab | in the editor, **indent and outdent** the line or the selected lines (below); in the tree, the tabs, the messages and the fields they do nothing (since 8 November 2026 they never move between the panes: F6 and Shift-F6 do). In a dialog, such as the name form, Tab still goes from field to field |
 | Go, Open the include | the record that the `$include` line at the cursor names, in a tab: one name is looked for in the file the tab is in and then in `syscom`, two words name the file; a collection-file record is passed over, and one that is not found says where it looked. It has no key |
@@ -511,8 +512,17 @@ closing a record, or leaving, with unsaved changes asks whether to save. **If th
 IDE's input ends** (a pipe that has been used up; a terminal does not end like this)
 it leaves at once and asks nothing, so unsaved text is not saved.
 
-**Ctrl-E hands the record to SED, and SED's save brings you back** (since
-18 October 2026). SED edits the record on disk, so a record with unsaved changes
+**Ctrl-E zooms the editor.** The list of files and records and the messages
+below the editor are hidden and the editor takes the whole screen, with the
+tabs above it, the menu bar, the status line (which says *zoomed*) and the
+key row as before; Ctrl-E again, or Go > Files and records, brings them back.
+Every key, menu and the AI line work the same while zoomed, and F6 goes
+between the tabs and the editor only. Anything that fills the messages - a
+compile with errors or warnings, a search, Run a command - ends the zoom so
+that you can read it; a compile with no errors leaves it as it is.
+
+**Go > Edit in SED hands the record to SED, and SED's save brings you back**
+(since 18 October 2026; it was Ctrl-E until 9 November 2026). SED edits the record on disk, so a record with unsaved changes
 is saved first: the IDE asks *Save them, then edit in SED?* and **Cancel**
 leaves everything as it was. In SED you work as you always do; **the first
 successful save ends the edit** and the IDE comes back with the new text in the
@@ -665,7 +675,7 @@ In the text area (the keys are those of `screen memo`; the [screen
 library](12a-sd-basic-the-screen-statement.html) page has the list) Ctrl-A selects
 everything, Ctrl-D duplicates the line, **Alt-K** cuts the whole line into the
 clipboard (Ctrl-K in a text area elsewhere; in the IDE Ctrl-K is the keys, as on every page), and a word back and on are Ctrl-P and Ctrl-U. The editor passes
-Ctrl-E (SED), Ctrl-T (the theme) and Ctrl-K (the keys) on to the IDE.
+Ctrl-E (the zoom), Ctrl-T (the theme) and Ctrl-K (the keys) on to the IDE.
 
 On a UTF-8 terminal (`LC_ALL`, `LC_CTYPE` or `LANG` says UTF-8) the frame, menus
 and scroll bars use line-drawing characters; elsewhere `+ - |`. The colours are

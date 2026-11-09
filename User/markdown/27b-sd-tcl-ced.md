@@ -54,16 +54,19 @@ full.
 | **Return** | open a collection or an array; on anything else, change the value (Return keeps the change, Esc gives it up) |
 | **Esc** | back to the level above |
 | **F3** | rename the element |
-| **F4** | change its type — only the types the value can become are offered |
-| **F5** or **`Ctrl-C`** | copy the element |
-| **F6** or **`Ctrl-X`** | cut it |
-| **F7** or **`Ctrl-V`** | paste (it asks for the name, or the position in an array) |
+| **`Alt-T`** or **F4** | change its type — only the types the value can become are offered |
+| **`Ctrl-C`** | copy the element |
+| **`Ctrl-X`** | cut it |
+| **`Ctrl-V`** | paste (it asks for the name, or the position in an array) |
 | **Ins** or **`Ctrl-I`** | insert an element: its name, type and value |
 | **Del** | delete the element |
 | **`Ctrl-S`** | save, and carry on |
 | **`Q`** | leave, at the top level only |
 | **`Ctrl-Q`** | leave from any level |
 | **F1** or **`?`** | list the keys |
+| **`Ctrl-K`** | the keys of this screen, in a box (as on every full-screen page) |
+| **`Ctrl-T`** | the next theme, kept for you (as on every full-screen page) |
+| **F5** or **`Ctrl-L`** | draw the screen again |
 
 **Leaving with changes asks whether to save**, with *Yes*, *No* and *Cancel*.
 `Q` leaves, at the top level only, and `Ctrl-Q` from any level.
@@ -103,7 +106,7 @@ The keys are the ones above, with these differences:
   instance after an AI edit that put a number in a field) it says so, in the same words, and keeps
   nothing. The IDE passes no file, so CED writes nothing and holds no lock; the IDE does the saving.
   **In the IDE** the editor is a pane of the tab (since 30 October 2026): there Ctrl-S is the IDE's own
-  save, **Ctrl-T** is the change of type, **Ctrl-C / Ctrl-X / Ctrl-V** are copy, cut and paste, **F12**
+  save, **Alt-T** is the change of type, **Ctrl-C / Ctrl-X / Ctrl-V** are copy, cut and paste, **F12**
   shows the text again, and the engine's change is in the tab's text as soon as it is made. The AI
   works there through the IDE's AI entry and Tools menu and not through F2 (see [the IDE](24-sd-tcl-programs-and-the-catalogue.html)).
 - Rename (F3) does nothing: an array has no names.

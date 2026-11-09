@@ -189,7 +189,7 @@ Data collections, JSON, XML, CSV and the verbs that import them.
 
 | Name | Change | What |
 |---|---|---|
-| `!ced()` | Added | full-screen editor for a collection held in a variable (the editor is also reached from `ide` F12; there is no `ced` command) |
+| `!ced()` | Added | full-screen editor for a collection held in a variable, with the keys every page shares (Ctrl-T, Ctrl-K, F5); the editor is also reached from `ide` F12; there is no `ced` command |
 | collection arrays | Added | `mat()`, `c{list, n}`, `ins ... as`, `del`, `inmat()` on an array |
 | collection file verbs | Added | `ed`, `copy`, `compare.files`: work on a collection file; the post-write trigger no longer crashes the process |
 | collection files | Added | `create.file name collection`; records are collections stored as JSON; `read` and `write` them whole; `ct` shows JSON |
@@ -777,7 +777,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | home screen refused tile | Changed | a tile whose command is refused shows its message until a key is pressed, and the home screen no longer ends |
 | home screen small window | Changed | an account that starts in the home screen is signed out when the window is too small for it, even with the Terminal tile on (it used to be left at the prompt); SDSYS always starts at the prompt |
 | home screen sub-menus | Added | a tile can open a second page of tiles with a Back tile, Esc and the path on the status line; eight deep; the delivered page declares none yet |
-| `ide` | Added | tree, tabs, compile errors table, find, run, catalogue and debug; Ctrl-E hands a record to `sed` |
+| `ide` | Added | tree, tabs, compile errors table, find, run, catalogue and debug; Ctrl-E zooms the editor to the whole screen, and Go > Edit in SED hands a record to `sed` |
 | `ide` breakpoints | Added | Shift-F7 or a click in the gutter marks a line of a program tab (`*`); F7 runs to the first mark, Build / Debug from the first line stops at line 1 with them set; what the debugger still has comes back as marks; up to 20, only lines where a statement begins |
 | `ide` autologout countdown | Added | with `autologout` set, the status line counts down the last 60 seconds before the session is signed out and says whether unsaved changes will be lost; any key stops it; it reads the inactivity clock `autologout` itself uses |
 | `ide` collection-file records | Added | a record of a data collection file opens as the text of its JSON (one element to a line) and Ctrl-S parses it and writes the collection; text that is not a JSON object or array is refused with the record untouched; F12 hands the collection to `ced`; a missing record opens as a new `{}`; compile, SED, Save as and the include do not apply; a text is not saved into a collection file under a new name |
