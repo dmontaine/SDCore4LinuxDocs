@@ -145,11 +145,12 @@ looks wrong or the mouse does not answer.
 | **Mouse** | the last mouse event (press, release, drag, wheel), where it was, and the counts |
 | **Box drawing** and **Styles** | the borders the library draws with, and the library's sixteen styles each drawn in itself, so the theme in force can be seen on this terminal |
 
-Every key is shown **before** the program acts on it. The program uses four:
-**Ctrl-L** clears what has been seen, **Ctrl-R** switches between names and raw
-bytes, **Ctrl-T** changes the theme (mono, classic, blue; a terminal that cannot
-show colour keeps mono and says so) and **Ctrl-Q** leaves, so a key that ends the
-program can only be tested by leaving.
+Every key is shown **before** the program acts on it. The program uses five:
+**Ctrl-L** clears what has been seen (it uses no function key, so every function key can be tested), **Ctrl-R** switches between names and raw
+bytes, **Ctrl-T** takes the next theme and keeps it for you, as on every page (a terminal that cannot
+show colour keeps mono and says so), **Ctrl-K** lists these keys and **Ctrl-Q** leaves, so a key that ends the
+program can only be tested by leaving. `tool.keys` has no menu bar, so that Esc and F10 can be
+tested here like any other key.
 
 **A key that makes the terminal beep and shows nothing in names mode is one SD
 has no name for.** SD understands the usual keys of every terminal in both

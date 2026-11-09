@@ -340,7 +340,8 @@ selection by typing over it.
 
 **Lines.** **Ctrl-D duplicates the line** the cursor is on, below it, and **Ctrl-K cuts the
 whole line** into the clipboard (since 28 October 2026; they joined lines and cut to the end
-of the row before). Ctrl-V at the start of a line puts a cut line back above it. Delete
+of the row before). **Alt-K** does the same (since 8 November 2026), for a program that keeps
+Ctrl-K for itself through `passkeys`, as the IDE does. Ctrl-V at the start of a line puts a cut line back above it. Delete
 joins lines.
 
 **Find.** Ctrl-F or Ctrl-T asks for text on the bottom row of the area and selects the first

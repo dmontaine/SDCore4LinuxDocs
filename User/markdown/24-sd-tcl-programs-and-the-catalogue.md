@@ -317,8 +317,8 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | key | |
 |---|---|
 | F8 · Build, Compile | save and compile; the compiler's lines go in the table. Return on one goes to its line, F4 to the next |
-| F9 · Build, Compile and catalogue | the build: compile and catalogue. *Catalogued* is said only if `catalog` added the program |
-| F5 · Build, Run | compile and run |
+| Shift-F9 · Build, Compile and catalogue | the build: compile and catalogue. *Catalogued* is said only if `catalog` added the program (F9 until 8 November 2026) |
+| F9 · Build, Run | compile and run (F5 until 8 November 2026: F5 now draws the screen again, as on every page) |
 | F7 · Build, Debug | compile with debugging and run the debugger |
 | Ctrl-S · File, Save | save the record (an untitled buffer asks for its file and name first; an unchanged record says *No changes to save*). **Ctrl-S is the only save key**; F2 no longer saves |
 | Ctrl-N · File, New record | a new record: the name form, then a buffer that is not on the disk until it is saved. **`path:/full/name` there makes an empty file of the operating system and opens it in a tab** (below) |
@@ -338,9 +338,13 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | Search, Import a record here | the name form (the record must exist); its lines go in at the cursor, one undo step. A record that holds value, subvalue or text marks or characters outside ASCII and a collection file's record are refused, with the reason. **`path:/full/name` imports a file of the operating system** (since 30 October 2026): from the text of the tab that holds the file, if there is one, else from the file itself, read through the account's gates and closed again; a file the IDE would not open (a NUL or a byte from 248 to 255, over 2 MB, a directory, a device) is refused as Open refuses it |
 | Search, Export the selection | the name form (a record that is not there, as Write a copy asks); the selected text is written to it, under the account's edit gate and the record's lock, as the record when the selection is whole lines of a record shown with `:@vm:` marks (the tokens are written as the marks; a part of a line is written as the text shown). It works on a read-only tab, but not on a record that holds characters outside ASCII. **`path:/full/name` writes the selection to a new file of the operating system** (below) |
 | Build, Run a command | **a command of the account's TCL, typed in a question**, is run as the prompt would run it - through the same command processor, so with the same gates - and what it printed is in the table at the bottom (500 lines at most). The changed texts' recovery copies are kept first and the tabs' locks taken again after. **A command that aborts (a program with a run-time error, `abort`) is stopped and the IDE stays up**; it prints nothing in the table. A command that asks the keyboard for an answer is not for this, and neither is one that changes the account (`logto`): the IDE goes on in the account the command left |
-| View, Refresh | draws the screen again from what the IDE holds |
+| F5, Ctrl-L · View, Refresh | draws the screen again from what the IDE holds |
+| Ctrl-T · View, Theme | the next colour theme, kept for you (below) |
+| Ctrl-K · Help, Keys | the IDE's keys, in a box |
+| Edit, Undo · Redo · Cut · Copy · Paste · Select all | the editor's Ctrl-Z, Ctrl-Y, Ctrl-X, Ctrl-C, Ctrl-V and Ctrl-A, from the menu (since 8 November 2026); in the fields pane, the pane's own copy, cut and paste |
+| Edit, Insert a field · Delete a field · Rename the field · Change the type | the fields pane's Ins, Del, F3 and Alt-T; outside the fields pane they say to show the fields first (F12) |
 | Tools, Files · Dictionary · Vocabulary · Queries · Bulk update · Programs · Tests | **opens that development page** (`tool.files`, `tool.dict`, `tool.voc`, `tool.query`, `tool.bulk`, `tool.catalog`, `tool.test`; see [The Development Tools](29c-sd-tcl-the-development-tools.html)) on the whole screen, since 3 November 2026. The IDE gives the terminal to the page as Run gives it to a program: what you typed in the editor stays in its tab, unsaved; leave the page (Ctrl-Q), press Return at *Press Return to go back to the IDE*, and the IDE is back with its tabs, saying *Back from ...*. The page asks your account's gates exactly as when you type its name at the prompt. A record the page changed while it is open in a tab is not read again: close the tab and open it to see the change. The menu has no keys; F10 then T opens it |
-| Ctrl-L · Go, Go to line | **a line; line,column; or, in a record shown with `:@vm:` marks, field,value,subvalue** (the field is the line, the value follows the (v-1)th `:@vm:`, the subvalue the (s-1)th `:@sm:` inside it; the tokens are found in any case, and a value or subvalue past the last goes to the last; **two marks side by side - an empty value - count as one, so use the line and column there**). A number is made whole (`1.5` is 1) and one above 99,999,999 is taken as 99,999,999; a number under 1 or a word is not taken |
+| Alt-G · Go, Go to line | (Ctrl-L until 8 November 2026) **a line; line,column; or, in a record shown with `:@vm:` marks, field,value,subvalue** (the field is the line, the value follows the (v-1)th `:@vm:`, the subvalue the (s-1)th `:@sm:` inside it; the tokens are found in any case, and a value or subvalue past the last goes to the last; **two marks side by side - an empty value - count as one, so use the line and column there**). A number is made whole (`1.5` is 1) and one above 99,999,999 is taken as 99,999,999; a number under 1 or a word is not taken |
 | Search, Find in the records | find a text in every record of the file the tree is on (the first 2000 records, 500 lines), listed in the table; Return opens the record at the line. The text is at most 256 characters. It has no key (F11 was it) |
 | Ctrl-E · Go, Edit in SED | edit the record in [SED](27a-sd-tcl-sed.html) and come back (below) |
 | F12 · Go, Edit as fields | edit the record as a tree of fields, values and subvalues in the IDE's own fields view - the editor of [CED](27b-sd-tcl-ced.html), shown inside the editor's rectangle - and come back (below) |
@@ -528,7 +532,7 @@ same day). The record in the open tab is shown in the *fields pane* - the editor
 strip and the messages still on the screen: a list of the fields, each field a text or a list of its
 values, each value a text or a list of its subvalues. Dive into a field with Return, go up with
 **Esc**, **Left** or **Backspace** (Esc at the top is the IDE's own Esc and opens the menu bar), change
-a text with Return, add or delete with **Ins** and **Del**, change the type with **Ctrl-T**, rename with
+a text with Return, add or delete with **Ins** and **Del**, change the type with **Alt-T** (Ctrl-T until 8 November 2026), rename with
 **F3**, and copy, cut and paste with **Ctrl-C**, **Ctrl-X** and **Ctrl-V**; the value and subvalue
 marks are put in from the shape of the tree. **The pane is a part of the tab, not a mode of the IDE**:
 the tabs, the menu bar, F6 and every IDE key keep working, each tab remembers whether it shows its
@@ -545,7 +549,7 @@ works in the pane** (since 31 October 2026): a request typed in the AI entry, an
 *explain the selection*, which explains the element the table has selected, send the record as
 indented JSON, one element to a line; the preview and the diff come first, and what you accept
 changes the fields and so the tab's text. Explaining a compile message does not apply to the pane.
-**On the empty top level of a record, Ctrl-T asks whether it is a collection or an array** (C, A or
+**On the empty top level of a record, Alt-T asks whether it is a collection or an array** (C, A or
 Esc); a new record of a collection file starts as an empty collection. If something
 else changes the text under the pane (the overwrite question's *Reload*, SED), the pane follows it,
 staying in the same container when it can; text that is no longer a record the fields can show ends the
@@ -652,24 +656,25 @@ nothing is applied. The IDE has nowhere to run a command, so a command in the an
 Saving, compiling and running stay your own acts.
 
 The other keys follow [SED](27a-sd-tcl-sed.html) where the two do the same:
-Ctrl-Q quits, Ctrl-L goes to a line, Ctrl-X, Ctrl-C and Ctrl-V cut, copy and
+Ctrl-Q quits, Alt-G goes to a line (in SED too), Ctrl-X, Ctrl-C and Ctrl-V cut, copy and
 paste, Ctrl-Z and Ctrl-Y undo and redo, Ctrl-F finds forward and Ctrl-B
 backward (Return on the question repeats the last text; **F3 finds the next one and
 Shift-F3 the one before**, as in other text areas) and Ctrl-R replaces a text through the record. **Ctrl-W is not SED's write-a-copy
 key here: it closes the record**; Save as and Write a copy are in the File menu.
 In the text area (the keys are those of `screen memo`; the [screen
 library](12a-sd-basic-the-screen-statement.html) page has the list) Ctrl-A selects
-everything, Ctrl-D duplicates the line, Ctrl-K cuts the whole line into the
-clipboard, and a word back and on are Ctrl-P and Ctrl-U. The editor passes only
-Ctrl-E (SED) on to the IDE.
+everything, Ctrl-D duplicates the line, **Alt-K** cuts the whole line into the
+clipboard (Ctrl-K in a text area elsewhere; in the IDE Ctrl-K is the keys, as on every page), and a word back and on are Ctrl-P and Ctrl-U. The editor passes
+Ctrl-E (SED), Ctrl-T (the theme) and Ctrl-K (the keys) on to the IDE.
 
 On a UTF-8 terminal (`LC_ALL`, `LC_CTYPE` or `LANG` says UTF-8) the frame, menus
 and scroll bars use line-drawing characters; elsewhere `+ - |`. The colours are
-the site's theme (`SCREENTHEME` in `sd.conf`, paper as delivered), as on the toolkit
-pages, in SED and in the debugger: paper when the site names none or a name that is not
-a theme, mono on a terminal with no colour. View, Theme goes through blue, classic,
-dark, light, mono, night and paper, skipping those the terminal cannot show; the choice lasts until
-the IDE ends.
+your own theme if you chose one, else the site's (`SCREENTHEME` in `sd.conf`, paper as delivered), as on the toolkit
+pages, in SED and in the debugger: paper when neither names one or the name is not
+a theme, mono on a terminal with no colour. Ctrl-T or View, Theme goes through blue, classic,
+dark, light, mono, night and paper, skipping those the terminal cannot show, and **SD keeps the
+choice for you** (since 8 November 2026): the IDE, every page, SED and the debugger start in it
+from then on, in this account and in later sessions.
 
 **A recovery copy of text you have not saved** (since 28 October 2026), **if the administrator has turned it
 on for your account** (`modify.account` *account* `recovery-on`, for a user account; it is off as delivered). Then

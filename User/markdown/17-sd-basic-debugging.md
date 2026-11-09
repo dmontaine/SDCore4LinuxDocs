@@ -434,10 +434,19 @@ them. `dumb` and `unknown` have no `cup` and stay line by line. Then:
 - below the command line the **foot** has three rows, as the other full-screen pages
   have: a **status line** in reverse video (`[Command]`, how many breakpoints there are
   and the variable being watched), a line across the screen, and the **function-key row**:
-  `F1 help  F2 abort  F3 stop  F4 screen  F5 run  F7 step  F8 line  ^F7 parent  ^F8 program`;
+  `F1 help  F2 abort  F3 stop  F4 screen  F5 refresh  F7 step  F8 line  F9 run  F10 menu  ^F7 parent  ^F8 program`;
 - **F1** shows the help in a box, **F4** shows the program's own screen until
-  you press a key, and Page Up and Page Down move the source. The keys and the
-  commands are as they were.
+  you press a key, and Page Up and Page Down move the source. The commands are as
+  they were.
+- **The top row is a menu bar** (since 8 November 2026): **Esc** on its own or **F10** opens
+  it. **Run** has Run to a breakpoint (F9), Step (F7), Step a line (F8), Run to the parent
+  (Ctrl-F7), Run to the parent program (Ctrl-F8), Stop the program (F3) and Abort (F2);
+  **View** the program's screen (F4), Theme (Ctrl-T) and Refresh (F5); **Help** Help (F1) and
+  Keys (Ctrl-K). The program and its line follow the titles.
+- **The keys every page has** (since 8 November 2026): **F9 runs** (it was F5), **F5** and
+  **Ctrl-L** draw the screen again, **Ctrl-T** takes the next colour theme and keeps it for
+  you, **Ctrl-K** lists the keys. On the command line, delete to the end of the line and swap
+  two characters, which were Ctrl-K and Ctrl-T, are **Alt-K** and **Alt-T** (or Esc, then K or T).
 
 **The full-screen display is laid out for 140 columns by 43 lines or more**
 (it was 42 until 1 November 2026, when the foot was added; a bigger window is used

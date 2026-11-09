@@ -208,8 +208,10 @@ script that runs it stops and waits. Like the screen editors, it wants a person
 at a terminal. Everything on this page except `sp.view` can be scripted.
 
 **On a window of at least 140 by 43 the record view looks like the other
-full-screen pages** (a bigger window is used whole): the top row names the file
-and the record at the left and `sp.view  name@account` at the right, the record
+full-screen pages** (a bigger window is used whole): the top row is a **menu bar** (since
+8 November 2026; Esc on its own or F10 opens it) - **File** Spool to a printer (S), Delete the
+item (X), Quit (Ctrl-Q); **View** the page and scroll moves, Theme (Ctrl-T) and Refresh (F5);
+**Help** Keys (Ctrl-K, F1 too) - followed by the file and the record, with `sp.view  name@account` at the right; the record
 starts on the row below it, and the bottom four rows are the prompt, a status
 line (the record, its number of lines and where the view is), a border and a
 row of the keys:
@@ -218,7 +220,7 @@ row of the keys:
 PgDn next  PgUp previous  Home top  End bottom  Left scroll left  Right scroll right  S spool  X delete  Q quit
 ```
 
-The colours are the site's theme (`SCREENTHEME` in `sd.conf`; the classic theme
+The colours are your own theme if you chose one (Ctrl-T on any page), else the site's (`SCREENTHEME` in `sd.conf`; the classic theme
 when it names none or names `mono`, as in the debugger; plain on a terminal with
 no colour) and are given back when you leave the record. A page of the record is
 five lines shorter than the window, so N, P and B move by that many lines. A
@@ -226,7 +228,8 @@ control character in the record (a printer escape, a form feed, a tab) is shown
 as a letter in reverse video, not obeyed, so a held report written for a printer
 looks different here from the older layout. The keys are
 the ones `sp.view` always had: the letters on the prompt line (N, P, T, B, L, R,
-S, X, Q), the arrow keys, Return for the next page, and the Ctrl and Esc forms.
+S, X, Q), the arrow keys, Return for the next page, and the Ctrl and Esc forms; and, as on
+every page, F5 and Ctrl-L redraw, Ctrl-T the theme, Ctrl-K or F1 the keys, Ctrl-Q quits.
 Q asks first: Return quits, any other key goes on. When the window is resized
 the view is laid out again within a second. **A smaller window keeps the older
 layout**, with the record from the top row and the status and prompt lines at

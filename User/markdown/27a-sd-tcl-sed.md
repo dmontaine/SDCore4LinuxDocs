@@ -45,13 +45,23 @@ and who you are (*sed  pat@sales*) at its right end. Below the text, two rows sa
 which record is open and how it is being edited: the number of lines, the line
 and column, and any of *Macro*, *Overlay*, *Indent* and the search mode that are
 in force. The last row is the **key row**, as on the toolkit pages: *F10 menu,
-^S save, ^Q quit, ^O open, ^F find, ^R replace, ^L go to, ^Z undo, ^Y redo, F5
+^S save, ^Q quit, ^O open, ^F find, ^R replace, Alt-G go to, ^Z undo, ^Y redo, F9
 run*. It shows the keys of the layout in use, so with `emacs` in
 `&sed.options&` it says *^X ^S save* and *^X M run*, and an action that has no
-key in that layout is left off. Where the site's screen theme (`SCREENTHEME` in
-`sd.conf`) is `paper`, as delivered, or `night`, `blue` or `classic`, SED has the
+key in that layout is left off. Where your own theme (Ctrl-T, below) or the site's screen theme
+(`SCREENTHEME` in `sd.conf`) is `paper`, as delivered, or `night`, `blue` or `classic`, SED has the
 toolkit pages' colours with its syntax colours on them; any other theme leaves SED in its own
-dark or light theme. Only the look changed: no key, command or menu item did.
+dark or light theme.
+
+**The keys every page has are SED's too** (since 8 November 2026): **Ctrl-T** takes the next colour
+theme and SD keeps it for you (every page, the IDE and the debugger start in it), **Ctrl-K** shows
+the keys in use, **F5** and **Ctrl-L** draw the screen again, and **F9** compiles and runs. The
+View menu has *Theme* and *Refresh screen*, the Help menu *Keys in use*. So that these keys mean
+the same thing everywhere, in the standard layout Kill line moved to **Alt-K**, Toggle chars to
+**Alt-T**, and Go to line is **Alt-G** alone; Compile and run moved from F5 to F9. SED writes a key
+made of Esc and one character the way every page does, as Alt and the character (Esc, then the
+character, does the same: it is what a terminal sends for Alt and the character). The `emacs` layout
+keeps its own keys, and a key you bound yourself keeps your binding.
 
 **A window smaller than that when SED starts is refused**, in words
 (*SED needs a window of at least 140 columns by 43 lines; this one is 100 by 30*),
@@ -160,7 +170,9 @@ have rebound.
 | **`Ctrl-C`** · **`Ctrl-X`** · **`Ctrl-V`** | copy, cut and paste the text between the mark and the cursor (`Esc W` and `Esc Y` also copy and paste) |
 | **`Ctrl-F`** · **`Ctrl-B`** | search forward · search backward (`Esc S` and `Esc R` also) |
 | **`Ctrl-R`** · **`Esc %`** | replace · query replace |
-| **`Ctrl-L`** | go to a line (`Esc G` also) |
+| **`Alt-G`** | go to a line (it was also `Ctrl-L` until 8 November 2026) |
+| **`Ctrl-L`** · **`F5`** | draw the screen again (*View > Refresh screen*) |
+| **`Ctrl-T`** | the next colour theme, kept for you (*View > Theme*) |
 | **`Ctrl-G`** | give up the question being asked |
 | **`Ctrl-A`** · **`Ctrl-E`** | start of the line · end of the line |
 | **`Ctrl-N`** · **`Ctrl-P`** | next line · previous line (the arrow keys as well) |
@@ -168,11 +180,13 @@ have rebound.
 | **`Esc V`** or **Page Up** · **Page Down** | page up · page down |
 | **`Esc <`** · **`Esc >`** | top of the record · bottom |
 | **`Ctrl-D`** · **`Esc D`** | delete a character · delete a word |
-| **`Ctrl-K`** | kill the rest of the line |
+| **`Alt-K`** | kill the rest of the line (`Ctrl-K` until 8 November 2026) |
+| **`Ctrl-K`** | the keys in use (*Help > Keys in use*) |
+| **`Alt-T`** | swap the two characters before the cursor (*Toggle chars*; `Ctrl-T` until 8 November 2026) |
 | **`Esc U`** · **`Esc L`** · **`Esc C`** | upcase, lower-case or capitalise the word |
 | **`Ctrl-Page Down`** · **`Ctrl-Page Up`** | next buffer · previous buffer (they were `Esc N` and `Esc P`, which no longer do anything) |
 | **`Alt-Page Down`** · **`Alt-Page Up`** | the same two, for a terminal that keeps the Ctrl forms for its own tabs |
-| **`F5`** | compile the record and run it (*Compile and run* on the Tools menu): a changed record is saved first, and a program that does not compile stops with *Press RETURN to resume editing* |
+| **`F9`** | compile the record and run it (*Compile and run* on the Tools menu; it was F5 until 8 November 2026): a changed record is saved first, and a program that does not compile stops with *Press RETURN to resume editing* |
 | **`Esc X`** | the command line (see *Colour for the language* and the commands below) |
 
 `Esc` followed at once by a letter is a command of the editor's own; `Esc` on
@@ -193,7 +207,7 @@ does not know (Shift-F5, say) can put characters such as `;5~` in the text.
 **What changed on 28 October 2026.** `Ctrl-W` used to write the record under
 another name; it now closes the buffer, as it does in the IDE and in most editors,
 and *Save as* is on the File menu only. `Ctrl-Page Down` and `Ctrl-Page Up` replace
-`Esc N` and `Esc P`, and `F5` is new. The old Emacs layout (see *Options*) and a
+`Esc N` and `Esc P`, and `F5` is new (compile and run is F9 since 8 November 2026). The old Emacs layout (see *Options*) and a
 key set of your own in `&sed.bindings&` keep the keys they have: in the Emacs layout
 `Ctrl-X Ctrl-W` is still *Save as*, `Esc N` and `Esc P` still switch buffers and
 `Ctrl-X K` closes one.

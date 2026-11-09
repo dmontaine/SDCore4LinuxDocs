@@ -42,7 +42,16 @@ reverse video.
 | **Ctrl-L** | Draw the whole page again, as it is, without reading anything. |
 | **Tab**, **Back-tab** (Shift-Tab) | Never move between boxes. In a form or a dialog they go from field to field; in the IDE's editor they indent and outdent; on `tool.gates` they move between the matrix's columns. |
 | **Ctrl-O** | Show or hide the output pane: the results, refusals and command output of this visit to the page. |
+| **Ctrl-T** | The next colour theme (*View > Theme*): blue, classic, dark, light, mono, night, paper, in that order, skipping any your terminal cannot show. **SD keeps your choice**: every page, the IDE, SED, the debugger and SP.VIEW start in it from then on, in this account and in later sessions, until you choose another. Where you have not chosen one, the site's theme is used (`SCREENTHEME`, set by the administrator). |
+| **Ctrl-K** | The keys of this page, with what each does (*Help > Keys*). |
 | **Ctrl-Q** | Leave the page. |
+
+**These keys mean the same thing everywhere** (since 8 November 2026): on every page, on the home
+screen, and in the IDE, SED, the debugger and SP.VIEW. F5 draws the screen again there too; the
+IDE, SED and the debugger run a program with **F9**. **Everything a page can do is also on its
+menus**: a key is a short way to a menu entry, never the only way. The two exceptions are the key
+tester `tool.keys`, which has no menu bar so that it can show you Esc and F10, and the dialogues,
+where Enter, Esc and Tab keep their usual meaning.
 
 Inside a list, the arrow keys, Page Up, Page Down, Home and End move as you would expect; a letter usually jumps to the
 next row that begins with it, or narrows the list where the page says so.

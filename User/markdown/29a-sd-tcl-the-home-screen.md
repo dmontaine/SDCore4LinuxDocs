@@ -95,13 +95,16 @@ date and time, Switch account and Sign out) stays where it is.
 | F1 | help on the home screen |
 | F5 | build the page again |
 | F6, Shift-F6 | move to the AI line, and from it back to the tile you were on, when the AI is on for the account (when it is not, the status line says so); the same keys move between the boxes of every page |
-| F10, Alt and a title's letter, a click on the top row | open the menu bar (File, Go, View, AI, Help). Every entry shows its key and does what the key does: **File** Sign out (Ctrl-Q, or Ctrl-X when you typed `home` at the prompt) and, in that case, Back to the prompt (Ctrl-Q); **Go** Back (Esc or Backspace, only in a sub-menu), Terminal (Ctrl-T), Switch account (Ctrl-W), Find a tile (/); **View** Refresh (F5), Recent group on or off (Ctrl-R); **AI** Ask the AI (F6), dimmed when the AI is not on for the account; **Help** Help on this page (F1), Keys (Ctrl-K, the keyboard and terminal page `tool.keys`). An entry whose tile the administrator turned off for your account is dimmed, and its key only says so |
+| F10, Alt and a title's letter, a click on the top row | open the menu bar (File, Go, View, AI, Help). Every entry shows its key and does what the key does: **File** Sign out (Ctrl-Q, or Alt-X when you typed `home` at the prompt) and, in that case, Back to the prompt (Ctrl-Q); **Go** Back (Esc or Backspace, only in a sub-menu), Terminal (Alt-T), Switch account (Ctrl-W), Find a tile (/), Start the tile (Enter); **View** Refresh (F5), Recent group on or off (Ctrl-R), Theme (Ctrl-T); **AI** Ask the AI (F6), dimmed when the AI is not on for the account; **Help** Help on this page (F1), Keys (Ctrl-K: the keys of the home screen). An entry whose tile the administrator turned off for your account is dimmed, and its key only says so. The Keys tile still opens the keyboard and terminal page `tool.keys` |
+| Ctrl-T | the next colour theme, kept for you: every page, the IDE, SED and the debugger start in it from then on (see *Using the full-screen pages*) |
+| Ctrl-K | the keys of the home screen, in a box |
 | F2 | find an action: every entry of the menus in one list (*Go > Terminal*, with its key); type part of a name to narrow it, Enter chooses (since 3 November 2026). An entry that cannot be used now says *(not now)* and only explains why |
 | a right click, Shift-F10 | the menu of the page's actions at the pointer (Shift-F10: in the middle), ending with *Find an action...* (F2) (since 3 November 2026). The home screen has one box, so the right click does not move anything first |
 | Ctrl-Q | sign out (asks first; **Cancel** is the button Enter chooses, so a stray Enter signs nobody out). **When you typed `home` at the prompt, Ctrl-Q goes back to that prompt instead** and does not ask; the row then reads *^Q prompt* |
-| Ctrl-X | sign out, in the case just described (the key row does not show it; the File menu and the Sign out tile do the same) |
+| Alt-X | sign out, in the case just described (the key row does not show it; the File menu and the Sign out tile do the same). It was Ctrl-X until 8 November 2026: Ctrl-X now means cut wherever there is text |
+| Alt-T | the Terminal tile (Ctrl-T until 8 November 2026: Ctrl-T is now the theme on every page) |
 
-Backspace, Ctrl-T, Ctrl-W, Ctrl-R, Ctrl-K and Ctrl-X are not on the row of keys at the foot of
+Backspace, Alt-T, Ctrl-W, Ctrl-R, Ctrl-T, Ctrl-K and Alt-X are not on the row of keys at the foot of
 the screen (F1 lists every key). The row shows Enter, F1, F5, Ctrl-Q and /, Esc in a
 sub-menu, and F6 when the AI is on for the account.
 
@@ -148,7 +151,7 @@ SD runs as one operating-system user, so this moves you between the accounts tha
 user belongs to; it cannot make you someone else. To be another person, sign out
 and connect again.
 
-**Sign out** (the tile, the File menu, or Ctrl-Q; Ctrl-X when you typed `home` at the
+**Sign out** (the tile, the File menu, or Ctrl-Q; Alt-X when you typed `home` at the
 prompt) asks first and then ends the session as `quit` does.
 
 ## Where a session starts
