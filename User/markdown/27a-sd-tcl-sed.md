@@ -1,5 +1,5 @@
 Title: SD TCL - The SED Screen Editor
-Subtitle: The full-screen editor that runs inside SD — drop-down menus that show the keys, colour for the language, split windows and macros.
+Subtitle: The full-screen editor that runs inside SD — drop-down menus that show the keys, color for the language, split windows and macros.
 
 ```
 sed {dict} file record
@@ -50,10 +50,10 @@ run*. It shows the keys of the layout in use, so with `emacs` in
 `&sed.options&` it says *^X ^S save* and *^X M run*, and an action that has no
 key in that layout is left off. Where your own theme (Ctrl-T, below) or the site's screen theme
 (`SCREENTHEME` in `sd.conf`) is `paper`, as delivered, or `night`, `blue` or `classic`, SED has the
-toolkit pages' colours with its syntax colours on them; any other theme leaves SED in its own
+toolkit pages' colors with its syntax colors on them; any other theme leaves SED in its own
 dark or light theme.
 
-**The keys every page has are SED's too** (since 8 November 2026): **Ctrl-T** takes the next colour
+**The keys every page has are SED's too** (since 8 November 2026): **Ctrl-T** takes the next color
 theme and SD keeps it for you (every page, the IDE and the debugger start in it), **Ctrl-K** shows
 the keys in use, **F5** and **Ctrl-L** draw the screen again, and **F9** compiles and runs. The
 View menu has *Theme* and *Refresh screen*, the Help menu *Keys in use*. So that these keys mean
@@ -130,7 +130,7 @@ cursor goes past it; a mode that is on is checked.
 | **Search** | Forward search · Backward search · Replace · Query replace · Goto line · View lines · Top · Bottom · Page up · Page down · Case on · Case off · Word search · Basic word search |
 | **Buffer** | Next buffer · Previous buffer · Goto buffer · List buffers · Delete buffer · Up to list · Dive |
 | **Window** | Split window · Unsplit window · Toggle window · Move split up · Move split down · Refresh screen |
-| **Tools** | Compile · Compile and run · Format · Indent mode · Expand tabs · Stamp · Syntax colour · Mouse · Line numbers · Release lock · Keys in use · Run extension · Command · Start macro · End macro · Execute macro |
+| **Tools** | Compile · Compile and run · Format · Indent mode · Expand tabs · Stamp · Syntax color · Mouse · Line numbers · Release lock · Keys in use · Run extension · Command · Start macro · End macro · Execute macro |
 
 **Several records can be open at once** — they are *buffers*, and a record
 named in a list or opened with *Open record* becomes the next one. *List
@@ -172,7 +172,7 @@ have rebound.
 | **`Ctrl-R`** · **`Esc %`** | replace · query replace |
 | **`Alt-G`** | go to a line (it was also `Ctrl-L` until 8 November 2026) |
 | **`Ctrl-L`** · **`F5`** | draw the screen again (*View > Refresh screen*) |
-| **`Ctrl-T`** | the next colour theme, kept for you (*View > Theme*) |
+| **`Ctrl-T`** | the next color theme, kept for you (*View > Theme*) |
 | **`Ctrl-G`** | give up the question being asked |
 | **`Ctrl-A`** · **`Ctrl-E`** | start of the line · end of the line |
 | **`Ctrl-N`** · **`Ctrl-P`** | next line · previous line (the arrow keys as well) |
@@ -187,7 +187,7 @@ have rebound.
 | **`Ctrl-Page Down`** · **`Ctrl-Page Up`** | next buffer · previous buffer (they were `Esc N` and `Esc P`, which no longer do anything) |
 | **`Alt-Page Down`** · **`Alt-Page Up`** | the same two, for a terminal that keeps the Ctrl forms for its own tabs |
 | **`F9`** | compile the record and run it (*Compile and run* on the Tools menu; it was F5 until 8 November 2026): a changed record is saved first, and a program that does not compile stops with *Press RETURN to resume editing* |
-| **`Esc X`** | the command line (see *Colour for the language* and the commands below) |
+| **`Esc X`** | the command line (see *Color for the language* and the commands below) |
 
 `Esc` followed at once by a letter is a command of the editor's own; `Esc` on
 its own opens the menu bar. `Ctrl-X` is no longer a prefix, so the old
@@ -199,7 +199,7 @@ show the key of each item that has one.
 terminal can keep them for its own tabs (GNOME Terminal does) and the Linux
 console does not send them. **Alt-Page Down and Alt-Page Up** do the same two
 things; GNOME Terminal leaves them to the program. Where neither reaches SED, use *Next buffer* and
-*Previous buffer* on the Buffer menu, or *Goto buffer*. **SED does not recognise a
+*Previous buffer* on the Buffer menu, or *Goto buffer*. **SED does not recognize a
 key sequence it has no binding for as a whole**: the characters after the first
 few can be typed into the record, so a key that your terminal sends in a form SED
 does not know (Shift-F5, say) can put characters such as `;5~` in the text.
@@ -266,25 +266,25 @@ The command line (`Esc X`, or *Command* on the Tools menu) takes these:
 | **`stamp`** | add a history line |
 | **`release`** | release the update lock on the record |
 | **`keys`** · **`save.keys`** · **`load.keys`** | show the key bindings in use, save them as a record of `&sed.bindings&`, load a saved set |
-| **`syntax`** | colour, see below |
+| **`syntax`** | color, see below |
 | **`mouse`** · **`mouse on`** · **`mouse off`** | the mouse (above); `mouse` alone switches it |
 | **`quit`** | give up a select-list edit |
 
-## Colour for the language
+## Color for the language
 
-SED can colour the text it shows: comments, strings, keywords, numbers and
+SED can color the text it shows: comments, strings, keywords, numbers and
 the lines that begin with `$`, in SD BASIC and in five other languages. **It is
-on unless you turn it off**, on a terminal that can show colour; with it off, or
-on a terminal that cannot show colour, the screen is drawn without it. The word
+on unless you turn it off**, on a terminal that can show color; with it off, or
+on a terminal that cannot show color, the screen is drawn without it. The word
 `no.syntax` in `&sed.options&` starts SED with it off.
 
 | | |
 |---|---|
-| **`syntax`** | Turn colour off if it is on, or on if it is off. The same item is on the Tools menu, checked while colour is on |
+| **`syntax`** | Turn color off if it is on, or on if it is off. The same item is on the Tools menu, checked while color is on |
 | **`syntax on`** · **`syntax off`** | Turn it on or off |
-| **`syntax light`** · **`syntax dark`** | Choose the palette for a light or a dark background (dark is the default); either turns colour on |
+| **`syntax light`** · **`syntax dark`** | Choose the palette for a light or a dark background (dark is the default); either turns color on |
 
-Type these on the command line (`Esc X`). A terminal that cannot show colour
+Type these on the command line (`Esc X`). A terminal that cannot show color
 says so and goes on without it.
 
 **The language is chosen from the record**, by the name of the file, then the
@@ -300,7 +300,7 @@ is any whose id ends in `.bp`, `.bas` or `.b`.
 | shell | the id ends `.sh`, `.bash`, `.bashrc` or `.profile`, or the first line is `#!` followed by a path with `sh` or `bash` in it |
 | Python | the id ends `.py` or `.pyw`, or the first line is `#!` followed by a path with `python` in it |
 
-A comment or a string that goes on to the next line colours the lines below
+A comment or a string that goes on to the next line colors the lines below
 it, and deleting the line that opened it recolours them.
 
 **A site can add a language, or replace one of these**, with a record in the
@@ -350,7 +350,7 @@ blanks:
 | **`tabs`** *n* | the tab interval, 1 to 99 (field 5 does the same) |
 | **`case_on`** · **`case_off`** | searches match case, or do not |
 | **`word`** · **`bword`** | search for whole words, or whole SD BASIC words |
-| **`syntax`** · **`no.syntax`** · **`syntax.light`** | colour on (the default) or off at the start; light palette |
+| **`syntax`** · **`no.syntax`** · **`syntax.light`** | color on (the default) or off at the start; light palette |
 | **`mouse`** · **`no.mouse`** | the mouse on (the default) or off at the start |
 | **`scroll1`** | page up and page down move one line less than a page, so one line of the old page stays on the screen |
 | **`no.case.explore`** | the list of records (the explore list, `?` at the record prompt) is in order whatever the case of the ids, not capitals first; the list of files is not changed |
@@ -362,7 +362,7 @@ field 4; and `default`. **If none exists, SED uses its own keys, and `emacs` in
 field 3 of `&sed.options&` makes those the old Emacs layout** (`Ctrl-X` is the
 prefix of most of the less common actions again). The command line's
 `save.keys` writes the keys in use as a record of the file. A word in
-`&sed.options&` that SED does not recognise is reported and ignored.
+`&sed.options&` that SED does not recognize is reported and ignored.
 
 ## What SED edits
 

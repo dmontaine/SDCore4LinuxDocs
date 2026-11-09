@@ -51,7 +51,7 @@ so on. Nothing was renumbered when they were split.
 | | | |
 |---|---|---|
 | **00** | Start here | this page — what the set is and what it leaves out |
-| **00a** | [Copyright and licence](00a-copyright-and-licence.html) | The copyright and the licence for this set, in full and in one place |
+| **00a** | [Copyright and license](00a-copyright-and-licence.html) | The copyright and the license for this set, in full and in one place |
 | **01** | [Installing SD Core](01-installation.html) | What the installer does, and the choices it offers |
 | **01a** | [Upgrading and uninstalling](01a-upgrading-and-uninstalling.html) | Installing a new release over an existing one, and taking SD off the machine |
 | **02** | **[Your first thirty minutes](02-first-run.html)** | **Start here if you just want it working** — install to a second user signing in, in eight steps |
@@ -134,7 +134,7 @@ administrator's.
 ## Where the source is
 
 **Both repositories are public, and everything in them is open source.** SD is
-GPL software — `config gpl` at an `sd` prompt displays the licence, and the
+GPL software — `config gpl` at an `sd` prompt displays the license, and the
 installed tree carries it as a file.
 
 | | |

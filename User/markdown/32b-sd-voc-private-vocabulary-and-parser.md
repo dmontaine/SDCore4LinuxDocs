@@ -24,11 +24,11 @@ in this order, and stops at the first place that has it:
 2. **The private vocabulary**, if the VOC has `$private.voc`. The word as
    typed, then in lower case, then in upper case; `zz-dot` does not find a
    private record called `zz.dot` either.
-3. **The private catalogue and then the global one**, as page 32a describes.
+3. **The private catalog and then the global one**, as page 32a describes.
 4. Otherwise `xx is not in your VOC`.
 
 So the private vocabulary is searched only for a word that is in **no** VOC
-record, and it is searched **before** the catalogue.
+record, and it is searched **before** the catalog.
 
 ## `$private.voc`: a second vocabulary in a file of your own
 
@@ -82,8 +82,8 @@ the VOC copy of zzdup
 
 `zzdup` is in both, and the VOC's record is the one that ran. **A private
 vocabulary can add a command. It can never replace one that the VOC holds.**
-It can replace one that exists only in a catalogue: with a program `zzcatprog`
-catalogued in the private catalogue and a private record of the same name,
+It can replace one that exists only in a catalog: with a program `zzcatprog`
+cataloged in the private catalog and a private record of the same name,
 
 ```
 :zzcatprog
@@ -108,7 +108,7 @@ ran the private record, not the program.
   in the account's VOC (here `zzpv`, which `create.file` put there), and
   failing that a file of the shared account (see below).
 * **A record found there is run as a VOC record is.** A `V` record in mode
-  `ca` that names a catalogued program runs it. A `V` record in mode `os` is
+  `ca` that names a cataloged program runs it. A `V` record in mode `os` is
   refused for an account without the shell switch (`xx is not permitted to use
   the operating system shell`), exactly as the same record in the VOC would
   be. A `K` record with no command in it is answered `'zzkey' is not valid for
@@ -123,11 +123,11 @@ ran the private record, not the program.
 ```
 
 Field 2 is a list of record type codes and field 3 a list of the names of
-catalogued subroutines, paired by position. Field 1 must be a capital `X`: a
+cataloged subroutines, paired by position. Field 1 must be a capital `X`: a
 small `x` in this record is ignored.
 
 When a command word has a record (in the VOC, in the private vocabulary, or
-made from a catalogued program, which SD treats as a `V` record), SD first
+made from a cataloged program, which SD treats as a `V` record), SD first
 runs down this list, and only then applies its own rules for `V`, `PA`, `S`,
 `K` and the rest. For each entry in order:
 
@@ -135,16 +135,16 @@ runs down this list, and only then applies its own rules for `V`, `PA`, `S`,
   record matches if its field 1 **begins** with the type code. The match is a
   prefix: `zz` matches `zz lower case type`, and `p` would match every record
   of type `PA`, `PQ` or `PH`.
-* If the handler is catalogued, SD calls it as
+* If the handler is cataloged, SD calls it as
   `call @handler(verb, record)` and the command is finished. `verb` is the
   command word and `record` is the whole VOC record. The whole command line is
   in `@sentence`.
-* If the handler is **not** catalogued, SD says nothing and goes on to the
+* If the handler is **not** cataloged, SD says nothing and goes on to the
   next entry, and finally to its own rules.
 
-The first matching entry whose handler is catalogued wins.
+The first matching entry whose handler is cataloged wins.
 
-A handler is a catalogued subroutine that takes two arguments:
+A handler is a cataloged subroutine that takes two arguments:
 
 ```
 subroutine zzhandler(verb, rec)
@@ -153,7 +153,7 @@ return
 end
 ```
 
-It was compiled and catalogued (`basic bp zzhandler`, then `catalog bp
+It was compiled and cataloged (`basic bp zzhandler`, then `catalog bp
 zzhandler`). The VOC then held `$voc.parser` with field 1 `X`, field 2 `ZZ`
 and field 3 `zzhandler`, and a record `zzcust` whose field 1 is `ZZ custom
 record type` and whose fields 2 and 3 are `alpha` and `beta`. A new session
@@ -227,10 +227,10 @@ What the switch covers is the **VOC**, and only that:
   off unless SDSYS turns it on. So a private vocabulary kept there can be changed only by SDSYS and by
   accounts SDSYS has given `shared.write`. The shared account's own VOC is not searched for
   commands; only this pointer reaches its files.
-* **A handler is a catalogued program,** and cataloguing needs `bp.edit`
-  (`Programs can only be compiled or catalogued by an account that has
+* **A handler is a cataloged program,** and cataloging needs `bp.edit`
+  (`Programs can only be compiled or cataloged by an account that has
   bp.edit`). `voc.edit` alone is enough to switch on a handler that is
-  already catalogued: an account with `voc-on` and no `bp-on` wrote the record
+  already cataloged: an account with `voc-on` and no `bp-on` wrote the record
   and the handler ran.
 * **Neither record is in a stock VOC.** Nothing SD ships writes them.
 
@@ -238,4 +238,4 @@ What the switch covers is the **VOC**, and only that:
 
 [SD VOC - Structure and Usage](32-sd-voc-structure-and-usage.html) ·
 [SD VOC - Using and Managing the VOC](32a-sd-voc-in-use.html) ·
-[SD TCL - Programs and the Catalogue](24-sd-tcl-programs-and-the-catalogue.html).
+[SD TCL - Programs and the Catalog](24-sd-tcl-programs-and-the-catalogue.html).

@@ -1,5 +1,5 @@
 Title: SD Text User Interface - A Form in the Body
-Subtitle: The fifth example: a screen form with a table as one pane, a box of text beside it, and the dialogues of the screen statement over the page.
+Subtitle: The fifth example: a screen form with a table as one pane, a box of text beside it, and the dialogs of the screen statement over the page.
 
 `stock` keeps a short list of items in memory. Its body is two panes: a **form**
 holding a table, made with `screen form` and `screen table` and run with
@@ -266,8 +266,8 @@ the form is put back when they close:
 24   |                                             +--------------------------------------------+                                             |
 ```
 
-**The dialogues of the screen statement.** **Ctrl-N** asks with `screen ask`, a
-dialogue of the statement, not of the library:
+**The dialogs of the screen statement.** **Ctrl-N** asks with `screen ask`, a
+dialog of the statement, not of the library:
 
 ```
 19   |                                                   +- Add an item ------------------+  || |                                             |
@@ -301,13 +301,13 @@ drew `info` again:
 ```
 
 **Enter** closed it, and the page under it was as it had been, with
-`The total was shown` on the status line. Every dialogue saves what is under it
+`The total was shown` on the status line. Every dialog saves what is under it
 from the library's picture of the screen and puts it back, so a page uses them as
 they are.
 
 **The theme.** `screen theme '' returning th` only asks which theme is in force.
 **Ctrl-T** chose `blue`; the page was drawn again in it and the status line said
-`The theme is blue`. On a terminal that cannot show colour `screen theme` takes its
+`The theme is blue`. On a terminal that cannot show color `screen theme` takes its
 `else` and the theme stays as it was. `!tkclose` gives the screen back with
 `screen close`, which puts the theme back to `mono`.
 

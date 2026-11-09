@@ -82,7 +82,7 @@ starts and cannot be changed in a running system.
 | | | |
 |---|---|---|
 | Subroutine call depth | **10,000** | `MAXCALL`, range 10 to 1,000,000 |
-| Catalogued name length | **63** characters | compiled |
+| Cataloged name length | **63** characters | compiled |
 | Matrix dimensions | **two** | compiled |
 | Compiled programs held in memory | no limit by default | `OBJECTS` |
 | Memory those programs may occupy | no limit by default | `OBJMEM`, in KB |

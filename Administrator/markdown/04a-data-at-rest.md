@@ -247,7 +247,7 @@ closed, as above (`timeout=` in `crypttab` sets how long the boot waits).
 restarts unattended stays down until someone unlocks it, and a
 `WantedBy=default.target` service with a failed dependency leaves SD down
 after boot until someone runs `systemctl start sd.service`. That is the
-intended behaviour for stolen-disk protection. It is not a convenience.
+intended behavior for stolen-disk protection. It is not a convenience.
 
 ## Method two: fscrypt on a dedicated ext4 volume
 

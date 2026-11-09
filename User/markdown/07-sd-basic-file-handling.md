@@ -165,7 +165,7 @@ taken at the `write`, not at the `commit`, so a transaction that does not commit
 **An id that already names a record is skipped.** Before it uses an id, `write … creating.seqkey`
 looks in the file: if a record is already there (written by a copy, by a load, or by a program that
 chose its own numbers) it takes the next id instead, so that record is never overwritten. **This is
-SD's behaviour, not openQM's** — openQM does not look, and its manual tells the programmer to write
+SD's behavior, not openQM's** — openQM does not look, and its manual tells the programmer to write
 every record of the file this way. The skipped numbers leave gaps. In a transaction only the records
 already committed to the file are looked at; an id this process took earlier is never given out twice.
 **`clear.file` keeps the counter**, so the ids go on from where they were; `configure.file`

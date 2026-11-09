@@ -1,8 +1,8 @@
-Title: SD TCL - Programs and the Catalogue
+Title: SD TCL - Programs and the Catalog
 Subtitle: Compiling SD BASIC, running it, and giving it a name you can type.
 
 Getting from source to something you can type is three steps: **compile it, put
-it in a catalogue, then call it by name.** Only the first is compulsory.
+it in a catalog, then call it by name.** Only the first is compulsory.
 
 SD folds case, so a command may be typed in either case. Commands are shown here
 in lower case. In the tables, *italics* mark something you supply and **bold**
@@ -42,13 +42,13 @@ not the presence of output.**
 `@system.return.code` is the number of programs compiled, and negative on a
 fatal error.
 
-**`basic ... no.catalog` compiles and catalogues nothing.** A `$catalog` line in
+**`basic ... no.catalog` compiles and catalogs nothing.** A `$catalog` line in
 the source or in a file it includes, or a `CATALOG` line in the `$BASIC.OPTIONS`
-record, makes the compile catalogue the program as well; with `no.catalog` none
+record, makes the compile catalog the program as well; with `no.catalog` none
 of them is acted on, and the compile says so
 (`zzprog compiled; its catalog directive was not run (no.catalog)`). The
 administrator's `run.in` always gives it to the `basic` it runs, so compiling an
-account's source for it cannot put that account's code in the global catalogue.
+account's source for it cannot put that account's code in the global catalog.
 
 **The object code goes into `bp.out`**, a separate file beside `bp`, one record
 per program. **Its name is lower case even when the source record is not** —
@@ -56,7 +56,7 @@ a source record `ZZPROG` compiles to an object record `zzprog`. That is this
 port's naming, and it is worth knowing before you go looking for the object by
 the name you typed.
 
-## Running without cataloguing
+## Running without cataloging
 
 ```
 run {file} record
@@ -73,13 +73,13 @@ ZZPROG OK
 `run` needs the file and record name every time. It is what you use while you
 are still writing the thing.
 
-## The catalogue is what gives a program a name
+## The catalog is what gives a program a name
 
 ```
 catalog {file {call.name}} {program | *} {local | global | pcode} {no.xref}
 ```
 
-Catalogue it and the name becomes a command:
+Catalog it and the name becomes a command:
 
 ```
 catalog bp zzprog
@@ -95,12 +95,12 @@ ZZPROG OK
 read `zzprog hello`, so arguments arrive as typed and the program parses them
 itself.
 
-**A program run by its catalogue name takes `lptr` and `no.page` as `run`
+**A program run by its catalog name takes `lptr` and `no.page` as `run`
 does.** The words stay in the sentence for the program to see. A word in
-quotation marks is not a keyword. This applies to a catalogue name only, not to
+quotation marks is not a keyword. This applies to a catalog name only, not to
 the name of a VOC verb.
 
-### Three catalogues, and they are not the same
+### Three catalogs, and they are not the same
 
 | | |
 |---|---|
@@ -108,22 +108,22 @@ the name of a VOC verb.
 | **local** | a VOC entry in the account, so the name works only there |
 | **global** | `gcat` in the system account — **every account sees it** |
 
-**Global cataloguing requires administrator privilege, and on this port that
+**Global cataloging requires administrator privilege, and on this port that
 means an SDSYS session** — logged in to the machine locally, as `sdsys`.
 Without it you get *"Command requires administrator privileges"*. **The
 same gate applies to an implicit global
-catalogue** — one chosen by a `!`, `_` or `$` prefix on the call name
+catalog** — one chosen by a `!`, `_` or `$` prefix on the call name
 rather than by the `global` keyword — so the prefix is not a way round it.
 The prefix characters `*` and `-` were removed in 2.0-0: `catalog bp *name` and
 `catalog bp -name` are refused.
 
-Private and local cataloguing need none of this and work in a programmer's own
+Private and local cataloging need none of this and work in a programmer's own
 account.
 
 **`catalog ... local` asks before it overwrites.** When the VOC already holds a
-local catalogue pointer under that name and it points at a different object
+local catalog pointer under that name and it points at a different object
 file, you are asked first (Return is no). `no.query` goes ahead without asking,
-and cataloguing the same file again does not ask.
+and cataloging the same file again does not ask.
 
 ### Seeing and removing
 
@@ -159,7 +159,7 @@ decatalog {file} name ...
 
 **`delete.catalog ... local` removes only the VOC entry**, and leaves the object
 code it pointed to lying in the account's object directory. **`decatalog` removes
-both** — the local catalogue entry and the compiled program it names:
+both** — the local catalog entry and the compiled program it names:
 
 ```
 catalog bp zzdocprog local
@@ -171,12 +171,12 @@ zzdocprog added to local catalogue
 zzdocprog deleted from the local catalogue
 ```
 
-Several names may be given. A name that is not in the local catalogue is said so
-(*zzdocprog is not in the local catalogue*) and the rest are still done; an object
+Several names may be given. A name that is not in the local catalog is said so
+(*zzdocprog is not in the local catalog*) and the rest are still done; an object
 file that cannot be deleted is reported as *Cannot delete the object code* and
 the entry is gone all the same. A file name in front of the program name is
 accepted and ignored, because the entry already holds the object's pathname.
-`decatalog` works on **local** entries only — a private or global catalogue entry
+`decatalog` works on **local** entries only — a private or global catalog entry
 is removed with `delete.catalog`.
 
 > **`map` also takes a `file` option**, which writes the map to a file instead
@@ -191,9 +191,9 @@ find.program name {detail}
 ```
 
 For the case where the system seems to run the wrong version of a program
-because it is catalogued in more than one place. It looks in the three places a
-program is loaded from, **in the order they are searched** — the local catalogue
-(a VOC entry that points at the object file), the private catalogue (the
+because it is cataloged in more than one place. It looks in the three places a
+program is loaded from, **in the order they are searched** — the local catalog
+(a VOC entry that points at the object file), the private catalog (the
 account's `cat` directory, or the directory `$PRIVATE.CATALOGUE` names) and the
 global one — and reports every one that has it:
 
@@ -211,7 +211,7 @@ arguments* or *Class module*. `detail` adds the object code size in bytes and th
 flags of the object (`internal`, `debug`, `recursive`, `trusted`, `case sensitive`,
 `sdcall`). **SD's object code carries no compiler version and no source
 pathname, so those two lines of openQM's `detail` are not there.** A name found
-nowhere is *xx is not catalogued*. The name is looked for as typed; a global
+nowhere is *xx is not cataloged*. The name is looked for as typed; a global
 program is named with its prefix (`!acc_hold`, `$listphan`).
 
 ## Formatting source
@@ -309,7 +309,7 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 |---|---|
 | menu bar | the top row; F10 or Esc opens it, and a click on a title opens that menu (since 19 October 2026; a click on the bar beside the titles does nothing). Its right end says *ide* and who you are (*ide  pat@sales*), as the toolkit pages and SED do (since 1 November 2026) |
 | tree | the account's files on the left (**the entries whose names start with a dollar sign - `$acc`, `$hold`, `$map`, `$release` - are not listed**, since 28 October 2026: they belong to SD itself). Return on a file lists its records (the first 2000, and a message says when there are more; a big file is no longer read whole first), and Return again closes the list. **A file that has a dictionary shows the dictionary as a node of its own under it** (since 28 October 2026), read only when you open it, and its items are listed the same way. Return on a record opens it. A letter jumps to the next entry that starts with it. **An account that has operating system access (the administrator, or `os-on`) also sees an *Operating system files* node after its files** (since 30 October 2026): Return on it lists `/`, Return on a directory lists its entries (directories first, then files, each in the order of the names; 1000 at most) and again closes it, and Return on a file opens it in a tab, as `path:/full/name` does. Names that hold a control character or a byte from 248 to 255 cannot be shown or put in a path; a message says how many entries were left out. A directory the operating system does not let the session read says so, with the operating system's error number (message 11599, since 2 November 2026; it said *has no OS access* before). An account without the access has no node |
-| editor | on the right, a tab for each open record. **While it has the focus the character at the cursor is shown in the highlight style** (as well as the terminal's own cursor being put there), so the place shows on a terminal that draws its cursor poorly. **If a block flashes beside the text as you type** (seen in lxterminal and Xfce Terminal, not in GNOME Terminal or Terminator), set the terminal's cursor style to underline or I-beam in its preferences: the highlighted character and a block cursor on top of it are what some terminals draw badly. It is the text area `screen memo` uses, so its keys are `memo`'s: selection, cut, copy and paste, undo and redo, find, line numbers. Text is coloured as SD BASIC, C, Python, JSON, shell or Markdown **chosen as [SED](27a-sd-tcl-sed.html) chooses** (since 26 October 2026): by the name of the file, then the record id, then the first line - so a script with no suffix that begins `#!/bin/sh` is shell - and then the languages a site added in `&sed.syntax&`. **A horizontal scroll bar runs along its bottom row** (`<` and `>` at the ends, a thumb as long as the visible part is of the longest line; none to speak of when every line fits); clicking an arrow scrolls 8 columns and clicking the track a page |
+| editor | on the right, a tab for each open record. **While it has the focus the character at the cursor is shown in the highlight style** (as well as the terminal's own cursor being put there), so the place shows on a terminal that draws its cursor poorly. **If a block flashes beside the text as you type** (seen in lxterminal and Xfce Terminal, not in GNOME Terminal or Terminator), set the terminal's cursor style to underline or I-beam in its preferences: the highlighted character and a block cursor on top of it are what some terminals draw badly. It is the text area `screen memo` uses, so its keys are `memo`'s: selection, cut, copy and paste, undo and redo, find, line numbers. Text is colored as SD BASIC, C, Python, JSON, shell or Markdown **chosen as [SED](27a-sd-tcl-sed.html) chooses** (since 26 October 2026): by the name of the file, then the record id, then the first line - so a script with no suffix that begins `#!/bin/sh` is shell - and then the languages a site added in `&sed.syntax&`. **A horizontal scroll bar runs along its bottom row** (`<` and `>` at the ends, a thumb as long as the visible part is of the longest line; none to speak of when every line fits); clicking an arrow scrolls 8 columns and clicking the track a page |
 | table | under the editor: the compiler's errors, or search results |
 | pane marks | **`[*]` or `[-]` in the top right corner of each pane that can have the keyboard** (since 19 October 2026): the files (on the frame above the tree), the editor (on the frame above it), the tab strip (at its right end) and the messages (at the right end of their bar). `[*]` is on the pane that has the keyboard, `[-]` on the others; F6 moves it round in that order |
 | status line | **the pane that has the focus** first, in brackets (`[Files]`, `[Tabs]`, `[Editor]`, `[Messages]`: F6 goes round them in that order), then the record, the cursor's line and column, and a star when there are unsaved changes |
@@ -317,7 +317,7 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | key | |
 |---|---|
 | F8 · Build, Compile | save and compile; the compiler's lines go in the table. Return on one goes to its line, F4 to the next |
-| Shift-F9 · Build, Compile and catalogue | the build: compile and catalogue. *Catalogued* is said only if `catalog` added the program (F9 until 8 November 2026) |
+| Shift-F9 · Build, Compile and catalog | the build: compile and catalog. *Cataloged* is said only if `catalog` added the program (F9 until 8 November 2026) |
 | F9 · Build, Run | compile and run (F5 until 8 November 2026: F5 now draws the screen again, as on every page) |
 | F7 · Build, Debug | compile with debugging and run the debugger |
 | Ctrl-S · File, Save | save the record (an untitled buffer asks for its file and name first; an unchanged record says *No changes to save*). **Ctrl-S is the only save key**; F2 no longer saves |
@@ -342,11 +342,11 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | Search, Expand tabs | every tab character in the text becomes blanks to the next tab stop of the tab width, as SED's EXPAND.TABS did; one undo step |
 | Build, Run with arguments | asks for the words to put after the program's name, then compiles and runs it as Run does (`run bp prog words`); the program reads them with `SENTENCE()` |
 | Alt-= · View, Character code | the code of the character at the cursor, its name when it is a control character, and its field, value and subvalue, on the status line |
-| View, Syntax colour · View, Line numbers | switch the colour and the line numbers off for every tab, and on again (SED's SYNTAX OFF and LNUM OFF) |
+| View, Syntax color · View, Line numbers | switch the color and the line numbers off for every tab, and on again (SED's SYNTAX OFF and LNUM OFF) |
 | View, Mouse | stops the terminal reporting the mouse, and starts it again (SED's MOUSE OFF); while it is off a click does nothing and the terminal's own selection works. Every command has a key or a menu entry, so nothing needs the mouse |
 | Ctrl-Up · Ctrl-Down · View, Scroll the view up a line · Scroll the view down a line | moves the text a line in the editor and leaves the cursor where it is, unless it would leave the window (SED's nudge) |
 | F5, Ctrl-L · View, Refresh | draws the screen again from what the IDE holds |
-| Ctrl-T · View, Theme | the next colour theme, kept for you (below) |
+| Ctrl-T · View, Theme | the next color theme, kept for you (below) |
 | Ctrl-K · Help, Keys | the IDE's keys, in a box |
 | Edit, Undo · Redo · Cut · Copy · Paste · Select all | the editor's Ctrl-Z, Ctrl-Y, Ctrl-X, Ctrl-C, Ctrl-V and Ctrl-A, from the menu (since 8 November 2026); in the fields pane, the pane's own copy, cut and paste |
 | Edit, Delete the word before · Cut to the end of the line · Swap two characters · Word in capitals · Word in small letters · Capital initial of the word · Close a run of blanks · Align with the line above · Swap cursor and mark | SED's editing commands (since 9 November 2026), on the editor's own keys: Alt-Backspace, Alt-E, Alt-T, Alt-U, Alt-L, Alt-C, Alt-Space, Alt-A and Alt-M; Alt-D deletes the word at the cursor and Ctrl-Up / Ctrl-Down move the view a line. They work on the text, not in the fields pane |
@@ -360,18 +360,18 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | Tab · Shift-Tab | in the editor, **indent and outdent** the line or the selected lines (below); in the tree, the tabs, the messages and the fields they do nothing (since 8 November 2026 they never move between the panes: F6 and Shift-F6 do). In a dialog, such as the name form, Tab still goes from field to field |
 | Go, Open the include | the record that the `$include` line at the cursor names, in a tab: one name is looked for in the file the tab is in and then in `syscom`, two words name the file; a collection-file record is passed over, and one that is not found says where it looked. It has no key |
 
-**A bare `ide` opens "Untitled 1"** (since 28 October 2026): an editable buffer, coloured as a
+**A bare `ide` opens "Untitled 1"** (since 28 October 2026): an editable buffer, colored as a
 program, with the cursor in it and the tree two keys away (Shift-F6 twice) or in the Go menu. Type, then save: **the name form** asks
 for the file and the record id together. The file is filled in - the file of the record you are in, else
 the file the tree is on, else `bp` - and the cursor
 starts on the record id. If the account may not change that file (`bp.edit`, `dict.edit`, `voc.edit` or
 `shared.write` is off; the form says which, and what SDSYS can do about it) or a record of that name
 already exists, **the form says so and stays open** for you to correct it; Esc leaves it and nothing is
-written. A new record or an untitled buffer is not written until you save it, and Compile, Catalogue,
+written. A new record or an untitled buffer is not written until you save it, and Compile, Catalog,
 Run and Edit as fields on an untitled buffer name and save it first - so a program can be typed,
-compiled, fixed, saved and catalogued without leaving the IDE. **The write is made under the record's
+compiled, fixed, saved and cataloged without leaving the IDE. **The write is made under the record's
 lock**, and if the file refuses it (a trigger, a full disk) the IDE says so and your text stays in the
-editor. A refusal by the edit gate on a save is shown whole in a box. **Catalogue reports "Catalogued"
+editor. A refusal by the edit gate on a save is shown whole in a box. **Catalog reports "Cataloged"
 only if `catalog` said it added the program**; otherwise its answer is shown in a box. In the editor the
 up and down arrows stop at the first and last line.
 
@@ -379,7 +379,7 @@ up and down arrows stop at the first and last line.
 of the VOC, or a record of a data file. The kind decides the marks (below) and the gate that a save
 asks: a program asks `bp.edit`, a dictionary item `dict.edit` and a VOC record `voc.edit`, as SED and
 `ed` do, and the refusal is shown in a box that says which switch and what the administrator can do.
-Compile and Catalogue on a dictionary item say it is not a program. A dictionary named in the New
+Compile and Catalog on a dictionary item say it is not a program. A dictionary named in the New
 record form is not yet taken (use `ide dict`).
 
 **A record of a collection file opens as the text of its JSON** (since 29 October 2026; it was refused
@@ -403,7 +403,7 @@ Closing the tab, quitting, a lost connection or any other way out gives the lock
 SED and CED keep them while they run. **An IDE left open therefore blocks other sessions and batch
 writes on those records** until it is closed, AUTOLOGOUT ends it or the administrator's
 `tool.sessions` page unlocks them. A new record is locked for its creation, and one that another
-session is making is refused. Compile, Run, Debug and Catalogue work on a read-only tab that has no
+session is making is refused. Compile, Run, Debug and Catalog work on a read-only tab that has no
 changes (they save first only when there is something to save).
 
 **A file of the operating system opens in a tab of its own** (since 28 October 2026): `ide
@@ -521,7 +521,7 @@ that**, so a record kept for SED goes on working.
 | `OVERLAY` | overwrite mode on |
 | `TABS` *n* | a tab width of *n*, 1 to 99 (field 5 can hold the number instead) |
 | `LNUM` · `NO.LNUM` | line numbers on (as delivered) or off |
-| `SYNTAX` · `SYNTAX.LIGHT` · `NO.SYNTAX` | syntax colour on (as delivered) or off; the colours are the theme's |
+| `SYNTAX` · `SYNTAX.LIGHT` · `NO.SYNTAX` | syntax color on (as delivered) or off; the colors are the theme's |
 | `MOUSE` · `NO.MOUSE` | the mouse on (as delivered) or off |
 | `NO.CASE.EXPLORE` | the records in the tree in order as if every letter were a capital (`a1` then `_1`, where the delivered order puts `_1` first) |
 
@@ -713,10 +713,10 @@ clipboard (Ctrl-K in a text area elsewhere; in the IDE Ctrl-K is the keys, as on
 Ctrl-E (the zoom), Ctrl-T (the theme) and Ctrl-K (the keys) on to the IDE.
 
 On a UTF-8 terminal (`LC_ALL`, `LC_CTYPE` or `LANG` says UTF-8) the frame, menus
-and scroll bars use line-drawing characters; elsewhere `+ - |`. The colours are
+and scroll bars use line-drawing characters; elsewhere `+ - |`. The colors are
 your own theme if you chose one, else the site's (`SCREENTHEME` in `sd.conf`, paper as delivered), as on the toolkit
 pages, in SED and in the debugger: paper when neither names one or the name is not
-a theme, mono on a terminal with no colour. Ctrl-T or View, Theme goes through blue, classic,
+a theme, mono on a terminal with no color. Ctrl-T or View, Theme goes through blue, classic,
 dark, light, mono, night and paper, skipping those the terminal cannot show, and **SD keeps the
 choice for you** (since 8 November 2026): the IDE, every page, SED and the debugger start in it
 from then on, in this account and in later sessions.
@@ -790,8 +790,8 @@ program in a phantom process"*. The debugger itself is covered in
 `delete.common`, `find.program`, `generate`, `ide`, `map`,
 `run`.
 
-**Running a catalogued program never needed any of these anyway** — a
-catalogued name runs by being typed, with no VOC record of its own — so an
+**Running a cataloged program never needed any of these anyway** — a
+cataloged name runs by being typed, with no VOC record of its own — so an
 application deployed this way was always reachable regardless of what
 verbs an account had.
 

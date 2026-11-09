@@ -112,7 +112,7 @@ Two lines written with `writeseq` and read back with `readblk`, byte by byte:
 
 **Unlike SD Core for Windows, which deliberately writes CRLF so a file
 opens correctly in Notepad, this port writes the platform's own LF only**
-— the original Linux behaviour, kept because there is no Windows tool
+— the original Linux behavior, kept because there is no Windows tool
 here to accommodate. `readseq` accepts either LF or CRLF, and strips
 whichever it finds, so a file that started life on a Windows machine
 still reads correctly here.

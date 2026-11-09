@@ -159,7 +159,7 @@ block. Read it on the line you care about rather than three lines later: the
 next operation that sets a status overwrites it.
 
 There is no system variable holding the error *text*. To turn a code into a
-sentence, call the catalogued subroutine `!ERRTEXT`:
+sentence, call the cataloged subroutine `!ERRTEXT`:
 
 ```
    call !errtext(message, status())
@@ -334,10 +334,10 @@ same program, not separate programs. They share every variable in the
 program. For subroutines with their own scope, see *SD Basic - Modern
 Program Structure*.
 
-## Cataloguing
+## Cataloging
 
 Running a program with `run bp name` works, but typing `run bp` every
-time is tedious. **Cataloguing** gives a program a name you can type
+time is tedious. **Cataloging** gives a program a name you can type
 directly:
 
 ```
@@ -354,10 +354,10 @@ l)ist  a)dd  v)iew  d)elete  q)uit
 choice?
 ```
 
-A catalogued program can be called from any account that can reach
-it. The catalogue puts an entry in the VOC — the same file that maps
+A cataloged program can be called from any account that can reach
+it. The catalog puts an entry in the VOC — the same file that maps
 `list`, `select` and the built-in verbs. See *SD TCL - Programs and
-the Catalogue*.
+the Catalog*.
 
 ## Where to go next
 
@@ -376,7 +376,7 @@ in the order the tutorial uses them:
 | Select lists | [SD Basic - Select Lists](08-sd-basic-select-lists.html) |
 | Locks and transactions | [SD Basic - Locks and Transactions](14-sd-basic-locks-and-transactions.html) |
 | Modern program structure | [SD Basic - Modern Program Structure](18-sd-basic-modern-program-structure.html) |
-| Compiling and cataloguing | [SD TCL - Programs and the Catalogue](24-sd-tcl-programs-and-the-catalogue.html) |
+| Compiling and cataloging | [SD TCL - Programs and the Catalog](24-sd-tcl-programs-and-the-catalogue.html) |
 | File system concepts | [SD File System Concepts](35-sd-file-system.html) |
 | Standard subroutines | [SD Standard Subroutines](36-sd-standard-subroutines.html) |
 

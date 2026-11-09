@@ -13,12 +13,12 @@ your database in place.**
 
 | Replaced | Kept, and not touched |
 |---|---|
-| the catalogue and compiled programs | your accounts and their passwords |
-| the BASIC source | the private catalogue |
+| the catalog and compiled programs | your accounts and their passwords |
+| the BASIC source | the private catalog |
 | the messages and include records | anything you added to an account's VOC (the installer adds the release's new commands; see below) |
 | the VOC templates and library routines | your print queue and held reports |
 | the SDSYS `BP` programs | everything under your own accounts, and `sd.conf` |
-| terminfo, the licence, the contributor list | |
+| terminfo, the license, the contributor list | |
 
 Anything SD created while it was running is left as it is, except that each
 account's VOC is brought up to the release, as the next paragraphs say.
@@ -69,7 +69,7 @@ Two limits are worth knowing before you rely on it.
 > (`restore.voc` puts it back). Anything else the update leaves alone, and a
 > record you marked `[locked]` is kept — a locked verb excepted.
 
-> **A record you have customised can be held back on purpose.** Put
+> **A record you have customized can be held back on purpose.** Put
 > `[locked]` in field 1 after the type code and the update leaves that
 > record alone, naming it in a message so you know what was withheld —
 > and therefore which corrections this release made that you have not

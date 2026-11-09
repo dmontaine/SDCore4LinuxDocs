@@ -139,7 +139,7 @@ lines.
 | `route.ssh`, `route.api`, `route.files` | the Linux user joins `sdssh`, `sdapi`, `sdfiles` as the zip says | unchanged |
 | `os.sh`, `os.execute`, `edit.*`, `net`, `shared.read`, `shared.write` | set as the zip says | **unchanged** |
 | `type`, `members` | the kind of account made, and a group account's members | unchanged |
-| `gcat:` lines | the program is put in the global catalogue again | same |
+| `gcat:` lines | the program is put in the global catalog again | same |
 
 A key the zip does not have (an older backup) gives the delivered default: every gate off,
 `shared.read` on, `shared.write` off. **An existing account keeps its own switches whatever the zip
@@ -147,9 +147,9 @@ says.** In the test a zip with `os.sh: 1` restored over an account with `sh` off
 change one, use `modify.account`.
 
 **Global programs.** The backup notes each global program whose object file is in the account, and
-the restore catalogues it again from the restored file, printing *… re-catalogued globally*. A
-program recompiled after it was catalogued no longer matches, so it is not carried;
-`settings.report` lists the global catalogue. **Check any name the new machine already uses.** The
+the restore catalogs it again from the restored file, printing *… re-cataloged globally*. A
+program recompiled after it was cataloged no longer matches, so it is not carried;
+`settings.report` lists the global catalog. **Check any name the new machine already uses.** The
 source says a different program under the name is left alone and reported (message 13017); in the
 test the program from the zip **replaced** it, and its name was printed in capitals.
 

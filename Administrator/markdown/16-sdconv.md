@@ -84,7 +84,7 @@ $ echo $?
 
 The only failures it reports are *Cannot read name*, *Error converting name*, a
 seek or write error naming the file, and *Cannot allocate memory for name*, and
-only for a file it had already recognised as a program object.
+only for a file it had already recognized as a program object.
 
 ## What it converts: compiled program files
 
@@ -93,8 +93,8 @@ marker, `0x64` for little-endian and `0x65` for big-endian. SD keeps them in:
 
 * the `.out` directory beside each program file (`bp.out` holds the compiled
   form of the programs in `bp`; `gpl.bp.out` and `pcode.out` are others), and
-* the global catalogue, `gcat` in the SDSYS directory. An account's own `cat`
-  directory is the local catalogue; `sdconv` does not look at it.
+* the global catalog, `gcat` in the SDSYS directory. An account's own `cat`
+  directory is the local catalog; `sdconv` does not look at it.
 
 A file whose first byte is neither value, or that is shorter than the 165-byte
 header, is not touched.
@@ -104,7 +104,7 @@ before   64 00 00 00 00 00 bf 01 00 00 00 00 08 00 68 00
 after -B 65 00 00 00 00 00 00 00 01 bf 00 00 00 08 00 68
 ```
 
-(the first 16 bytes of a global catalogue entry, before and after). Then
+(the first 16 bytes of a global catalog entry, before and after). Then
 `sdconv -L` on the same file restored it **byte for byte**, and a second `-B` on a
 file already big-endian changed nothing.
 

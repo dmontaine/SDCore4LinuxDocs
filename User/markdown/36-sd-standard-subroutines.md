@@ -1,7 +1,7 @@
 Title: SD Standard Subroutines
-Subtitle: The catalogued names beginning with !, which of them an application may use, and how each is called.
+Subtitle: The cataloged names beginning with !, which of them an application may use, and how each is called.
 
-**This port ships 157 catalogued routines whose names begin with `!`** —
+**This port ships 157 cataloged routines whose names begin with `!`** —
 counted from the `$catalog` lines of `gpl.bp` on 18 October 2026, not carried
 over from SD Core for Windows's own count of forty-two. The figure grows as
 features are added, so read it as dated. Twenty-two are the embedded Python
@@ -14,8 +14,8 @@ called directly and are not listed here). This page names the rest that a
 programmer is likely to meet. This port has no need for several Windows-only
 ones this page used to list — `!ELEVATE`, `!PS_SCRIPT`, `!DELETE_USER`,
 `!OS_GROUP` and `!PROFILE_DIR` among them, noted below where each would have
-been. They are in the global catalogue, so any account reaches them without
-cataloguing anything of its own.
+been. They are in the global catalog, so any account reaches them without
+cataloging anything of its own.
 
 **Most exist to support SD itself and are not an interface for applications.**
 They are listed in full because a name in a stack trace, a `map` listing or an
@@ -58,7 +58,7 @@ Nothing here is typed at the TCL prompt. These are called from SD BASIC.
 | | |
 |---|---|
 | `!ABSPATH` | `abspath((dir), rel)` — resolve *rel* against *dir* and return an absolute path. A null *dir* means `@path`; a *rel* that starts with `/` comes back as it is, and one that starts with `@sdsys` has that replaced by the SDSYS directory |
-| `!PATHTKN` | `pathtkn((path))` — replace a leading `@sdsys`, `@tmp` or `@home` in *path* with the SDSYS directory, `config('TEMPDIR')` or the `HOME` environment variable; the token may be in either case. Anything else comes back unchanged. The token is recognised by its first characters alone, so `@homex/y` becomes the home directory followed by `x/y`. It does not split anything |
+| `!PATHTKN` | `pathtkn((path))` — replace a leading `@sdsys`, `@tmp` or `@home` in *path* with the SDSYS directory, `config('TEMPDIR')` or the `HOME` environment variable; the token may be in either case. Anything else comes back unchanged. The token is recognized by its first characters alone, so `@homex/y` becomes the home directory followed by `x/y`. It does not split anything |
 | `!FTYPE` | `ftype(path)` — what kind of file is at *path* |
 | `!VALID_OS_NAME` | `valid_os_name(name)` — is *name* usable as an operating system account name |
 | `!VALID_OS_PATH` | `valid_os_path(path)` — is *path* a well-formed host path |
@@ -101,7 +101,7 @@ scheduled job or an API session.
 
 **The routine is `!PICKLIST`.** An earlier version of this page called it
 `!PICKLST`, which is the name of the program that holds it; there is no
-catalogue entry of that name, and `call !picklst(...)` stops at run time with
+catalog entry of that name, and `call !picklst(...)` stops at run time with
 *"Unable to load '!picklst' object code"*.
 
 `!PICKLIST` takes *list* as a field-mark delimited list of rows; a row of
@@ -146,7 +146,7 @@ internal routines and the one most likely to change.
 
 ## The internal ones
 
-These exist for SD's own use. They are catalogued because SD's programs are
+These exist for SD's own use. They are cataloged because SD's programs are
 ordinary compiled programs and reach them the same way anything else does.
 
 **Calling them from an application is not supported.** Several refuse a session
@@ -180,15 +180,15 @@ Core for Windows does not have. Three a reader may come looking for:
 
 | | |
 |---|---|
-| `!OCONV` `!ICONV` | not catalogued. `oconv()` and `iconv()` are ordinary BASIC functions and do the same work |
-| `!SCREEN` | not catalogued, and there is no equivalent |
+| `!OCONV` `!ICONV` | not cataloged. `oconv()` and `iconv()` are ordinary BASIC functions and do the same work |
+| `!SCREEN` | not cataloged, and there is no equivalent |
 
 **To settle the question for any name, use `map` in the account.** It lists what
-the catalogue holds. A name that is not there is not available, and calling it
+the catalog holds. A name that is not there is not available, and calling it
 fails at run time rather than at compile time.
 
 ## See also
 
 [SD Dictionaries - Conversions and Formatting](34-sd-dicts-conversions.html) ·
-[SD TCL - Programs and the Catalogue](24-sd-tcl-programs-and-the-catalogue.html) ·
+[SD TCL - Programs and the Catalog](24-sd-tcl-programs-and-the-catalogue.html) ·
 [SD Basic - Program Structure](01-sd-basic-program-structure.html).

@@ -106,7 +106,7 @@ syntax:
 | *n*`L` | left-justified, *n* characters wide |
 | *n*`R` | right-justified, *n* characters wide |
 | *n*`T` | text — left-justified, wrapping at word boundaries |
-| *n*`C` | centred, *n* characters wide |
+| *n*`C` | centered, *n* characters wide |
 | *n*`L`*d* | left-justified with *d* decimal places (numeric) |
 | *n*`R`*d* | right-justified with *d* decimal places (numeric) |
 
@@ -164,7 +164,7 @@ use:
 | `@USERNO` | the user number of the session |
 | `@PATH` | the account path |
 
-It can call `SUBR()` to invoke a catalogued subroutine, use `TRANS()` to
+It can call `SUBR()` to invoke a cataloged subroutine, use `TRANS()` to
 read from another file, and use any BASIC function — `LEN()`, `FIELD()`,
 `RAISE()`, `OCONV()`, `ICONV()`, `COUNT()`, `SUM()`, `DATE()`, `TIME()`
 and the rest. It cannot run loops or call statements that take a
@@ -195,7 +195,7 @@ compile or run one. `compile.dict` refuses it with the message *C-type
 dictionary item NAME is not compiled: write it as an I-type* and makes no
 object code, and a query that uses it gets no value. Write the calculation
 as an I-type; when it needs more than an expression can say, the I-type can
-call a catalogued subroutine with `SUBR()` (see above).
+call a cataloged subroutine with `SUBR()` (see above).
 
 ## The A and S types are not read
 

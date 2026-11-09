@@ -131,7 +131,7 @@ SD accounts.** Every account except SDSYS is `ForceCommand`'d into `sd` the
 moment it connects over ssh — it never reaches a plain shell that way — and
 SDSYS is refused a network login outright, at the door, however the two
 questions above were answered, until the administrator opens that door. This step is **non-fatal**: if `sshd_config`
-has already been customised, the installer warns rather than aborting (SD
+has already been customized, the installer warns rather than aborting (SD
 is otherwise installed and working) and prints the exact command to apply
 it by hand once the conflict is resolved:
 

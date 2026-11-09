@@ -96,7 +96,7 @@ date and time, Switch account and Sign out) stays where it is.
 | F5 | build the page again |
 | F6, Shift-F6 | move to the AI line, and from it back to the tile you were on, when the AI is on for the account (when it is not, the status line says so); the same keys move between the boxes of every page |
 | F10, Alt and a title's letter, a click on the top row | open the menu bar (File, Go, View, AI, Help). Every entry shows its key and does what the key does: **File** Sign out (Ctrl-Q, or Alt-X when you typed `home` at the prompt) and, in that case, Back to the prompt (Ctrl-Q); **Go** Back (Esc or Backspace, only in a sub-menu), Terminal (Alt-T), Switch account (Ctrl-W), Find a tile (/), Start the tile (Enter); **View** Refresh (F5), Recent group on or off (Ctrl-R), Theme (Ctrl-T); **AI** Ask the AI (F6), dimmed when the AI is not on for the account; **Help** Help on this page (F1), Keys (Ctrl-K: the keys of the home screen). An entry whose tile the administrator turned off for your account is dimmed, and its key only says so. The Keys tile still opens the keyboard and terminal page `tool.keys` |
-| Ctrl-T | the next colour theme, kept for you: every page, the IDE, SED and the debugger start in it from then on (see *Using the full-screen pages*) |
+| Ctrl-T | the next color theme, kept for you: every page, the IDE, SED and the debugger start in it from then on (see *Using the full-screen pages*) |
 | Ctrl-K | the keys of the home screen, in a box |
 | F2 | find an action: every entry of the menus in one list (*Go > Terminal*, with its key); type part of a name to narrow it, Enter chooses (since 3 November 2026). An entry that cannot be used now says *(not now)* and only explains why |
 | a right click, Shift-F10 | the menu of the page's actions at the pointer (Shift-F10: in the middle), ending with *Find an action...* (F2) (since 3 November 2026). The home screen has one box, so the right click does not move anything first |
@@ -120,9 +120,9 @@ menu bar opens the menu under it. The foot of the screen is the same as the
 other full-screen tools: a hint line, the status line, a border and the row of
 function keys.
 
-On a terminal with colour the tiles are filled in the colour of their group; on one
+On a terminal with color the tiles are filled in the color of their group; on one
 without, each tile is a box and the one with the focus is in reverse video, so
-nothing depends on colour.
+nothing depends on color.
 
 ## The terminal, and `exit`
 
@@ -196,6 +196,7 @@ for Enter** when the command has finished printing.
 | Enter | change the selected one |
 | Del | remove it (asks first; Cancel is the default) |
 | U, D | move it up or down the list |
+| / | go to the next program whose label or command holds a text you type (any case; round to the top) |
 | Esc, F10 | open the menu bar (its menus Program, File and Help): the same actions by name; with no program in the list, Change, Remove and the moves are shown dimmed |
 | F1, `?`, a click on the `[?]` | help on this page; the Help menu has the same |
 | Ctrl-Q | leave; the home screen is built again and shows the list |
@@ -294,7 +295,7 @@ never what you asked or what came back.
 ## Not yet
 
 An AI line in the IDE, with proposals as edits, is built (see [Programs and the
-catalogue](24-sd-tcl-programs-and-the-catalogue.html)), and so are the AI in [SED](27a-sd-tcl-sed.html),
+catalog](24-sd-tcl-programs-and-the-catalogue.html)), and so are the AI in [SED](27a-sd-tcl-sed.html),
 [CED](27b-sd-tcl-ced.html) and [the debugger](17-sd-basic-debugging.html). The AI line is also on
 the pages `tool.voc` and `tool.files` (see [Asking the AI](29b-sd-tcl-asking-the-ai.html)); on the
 other pages of the toolkit it is planned and not built.

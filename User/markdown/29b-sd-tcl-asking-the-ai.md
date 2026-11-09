@@ -30,7 +30,7 @@ The SELECT verb builds a list of record ids ...
 Tokens used: 31 in, 52 out (anthropic)
 ```
 
-If the answer was cut at the length limit, or characters had to be replaced with `?` (only plain text is shown: no colours, no cursor movements, no letters outside the English alphabet), it says so.
+If the answer was cut at the length limit, or characters had to be replaced with `?` (only plain text is shown: no colors, no cursor movements, no letters outside the English alphabet), it says so.
 
 ## Questions that end with a question mark
 

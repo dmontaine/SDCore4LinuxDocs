@@ -374,7 +374,7 @@ stops three times, for 8, 9 and 10.
 
 A plain `w n` stops at every assignment as before, a new `w` replaces the old
 watch **and its condition**, and `uw` clears both. An operator that is not in
-the list, or no value after it, gives *Unrecognised command* and watches
+the list, or no value after it, gives *Unrecognized command* and watches
 nothing. `like` and `unlike` are not supported. The variable is found by its
 number in the program that set the watch, so a condition on a local variable
 works while that program is the one running.
@@ -416,9 +416,9 @@ them. `dumb` and `unknown` have no `cup` and stay line by line. Then:
   line about to run and `*` a line with a breakpoint (a breakpoint wins when the
   line about to run has one) — then the line number and the text. The line about
   to run is highlighted from end to end. When the site's theme is `paper`, as
-  delivered (or `night`, `blue`, `dark` or `light`), the text is coloured as SD BASIC: comments, strings,
+  delivered (or `night`, `blue`, `dark` or `light`), the text is colored as SD BASIC: comments, strings,
   constants and the statements. In the plain `classic` theme, which the debugger
-  uses when the site names none, the source has no syntax colour;
+  uses when the site names none, the source has no syntax color;
 - to the right of the source, from column 93, is the **Autos** pane: the
   variables the line about to run uses come first, in the order the line names
   them; then those of the line the debugger last stopped at, when it is a line of
@@ -434,17 +434,22 @@ them. `dumb` and `unknown` have no `cup` and stay line by line. Then:
 - below the command line the **foot** has three rows, as the other full-screen pages
   have: a **status line** in reverse video (`[Command]`, how many breakpoints there are
   and the variable being watched), a line across the screen, and the **function-key row**:
-  `F1 help  F2 abort  F3 stop  F4 screen  F5 refresh  F7 step  F8 line  F9 run  F10 menu  ^F7 parent  ^F8 program`;
+  `F1 help  F2 find  F3 stop  F4 screen  F5 refresh  F7 step  F8 line  F9 run  F10 menu  ^F7 parent  ^F8 program`;
 - **F1** shows the help in a box, **F4** shows the program's own screen until
   you press a key, and Page Up and Page Down move the source. The commands are as
   they were.
 - **The top row is a menu bar** (since 8 November 2026): **Esc** on its own or **F10** opens
   it. **Run** has Run to a breakpoint (F9), Step (F7), Step a line (F8), Run to the parent
-  (Ctrl-F7), Run to the parent program (Ctrl-F8), Stop the program (F3) and Abort (F2);
-  **View** the program's screen (F4), Theme (Ctrl-T) and Refresh (F5); **Help** Help (F1) and
-  Keys (Ctrl-K). The program and its line follow the titles.
+  (Ctrl-F7), Run to the parent program (Ctrl-F8), Stop the program (F3 or Ctrl-Q) and Abort;
+  **View** the program's screen (F4), Theme (Ctrl-T) and Refresh (F5); **Help** Help (F1),
+  Keys (Ctrl-K) and Find an action (F2). The program and its line follow the titles.
+- **F2 finds an action and Ctrl-Q stops the program and leaves**, as on every page (since
+  9 November 2026; F2 aborted until then). F2 lists every entry of the menus; type part of a
+  name to narrow the list, Enter to do it, Esc to close it. **Abort has no key on this screen**:
+  it is on the Run menu and in the F2 list. In line mode (a terminal too small or with no
+  cursor addressing), which has no menu bar, F2 still aborts.
 - **The keys every page has** (since 8 November 2026): **F9 runs** (it was F5), **F5** and
-  **Ctrl-L** draw the screen again, **Ctrl-T** takes the next colour theme and keeps it for
+  **Ctrl-L** draw the screen again, **Ctrl-T** takes the next color theme and keeps it for
   you, **Ctrl-K** lists the keys. On the command line, delete to the end of the line and swap
   two characters, which were Ctrl-K and Ctrl-T, are **Alt-K** and **Alt-T** (or Esc, then K or T).
 
@@ -471,7 +476,7 @@ high shows the left part of the lines and works as usual.
 The program's own screen is kept by the terminal (that is what the alternate
 screen is): when you let the program run, the debugger gives the terminal back
 and the program's output is on its own screen, and it is on the alternate
-screen again at the next stop. The colours are the screen library's: if the
+screen again at the next stop. The colors are the screen library's: if the
 program asked for no theme, the debugger uses the site's theme (`SCREENTHEME` in
 `sd.conf`, which the installer sets to `paper`) while it is up and the `classic` one
 when the site names none; and whatever the program asked for otherwise. When the
@@ -553,11 +558,11 @@ holds the program's data**, so remove it when you have read it.
 ## What is not here
 
 **`trace` is gone.** It was removed from the compiler in July 2024. In an
-ordinary account it is *"Unrecognised statement"*.
+ordinary account it is *"Unrecognized statement"*.
 
 **The programmatic debug statements are restricted.** `debug.on`,
 `debug.off`, `debug.set`, `breakpoint` and `watch` are internal-only, and all
-five are *"Unrecognised statement"* in an ordinary account. They are
+five are *"Unrecognized statement"* in an ordinary account. They are
 what the debugger itself is built from. **`debug` — the plain statement — is
 not restricted**, and it is the one you want.
 

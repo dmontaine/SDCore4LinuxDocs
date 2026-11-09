@@ -13,7 +13,7 @@ page uses it.
 
 `print`, `crt` and `input` talk to a terminal a line at a time. The `screen`
 statement talks to it a screen at a time: it draws text and boxes where you say,
-asks a question in a dialogue box, runs a form of entry fields, lists, tables and
+asks a question in a dialog box, runs a form of entry fields, lists, tables and
 buttons, and reads keys and clicks of the mouse. It is one statement word followed
 by a verb:
 
@@ -31,17 +31,17 @@ screen verb {value {, value}} {clause value {, value}} ... {returning variable} 
 * **`returning`** names the one variable the statement sets: the key, the button,
   the text typed, the event.
 * **`then` and `else`.** `then` when the person finished (a button, a choice,
-  Return); `else` when they cancelled (Esc), the input ended, or there is no
+  Return); `else` when they canceled (Esc), the input ended, or there is no
   terminal. A phantom or an API session takes `else` on every verb and draws
   nothing, so a program that uses `screen` does not hang when run unattended.
 * **Coordinates** are character cells from 0, as in `@(x, y)`: `at 0,0` is the top
   left corner. On a page the body starts at column 1, row 1.
-* **Styles, not colours.** Everything is drawn in a named style - `window`,
+* **Styles, not colors.** Everything is drawn in a named style - `window`,
   `highlight`, `bar`, `field`, `error`, `desktop` and others - and the **theme** says
-  how each style looks, so one program works on a terminal with colour and one
+  how each style looks, so one program works on a terminal with color and one
   without.
 * **The shadow.** Once the screen is open, the library keeps its own picture of
-  every cell it drew. A dialogue saves what is under it from that picture and puts
+  every cell it drew. A dialog saves what is under it from that picture and puts
   it back when it closes. Text written with `print` or `crt` is not in it.
 
 The verbs, by what they are for:
@@ -51,13 +51,13 @@ The verbs, by what they are for:
 | The screen | `open`, `close`, `clip`, `refresh`, `size` | Take and give back the screen (on a page, `!tkopen` and `!tkclose` do this), keep drawing inside a rectangle, draw everything again, read the window's size. |
 | Drawing | `clear`, `text`, `box`, `cursor` | Blank a rectangle, write one line, draw a border, place or hide the cursor. `text` takes `width` to cut or pad; `box` takes `title` and `fill`. |
 | Keys and the mouse | `key`, `mouse` | Wait for one key (`up`, `f1`, `ctrl-q`, `alt-x`, `resize`, `mouse` or the character), with an optional `timeout`; then, for `mouse`, what the event was: the kind, the button, the column, the row. |
-| Dialogues | `msgbox`, `ask`, `pick`, `menu`, `menubar` | A message with buttons; one line of input (`mask` for a password); a list to choose from (`multi` for several); a pop-up menu; a menu bar (on a page, `!tkmenubar` draws the bar). Each saves what is under it and puts it back. |
+| Dialogs | `msgbox`, `ask`, `pick`, `menu`, `menubar` | A message with buttons; one line of input (`mask` for a password); a list to choose from (`multi` for several); a pop-up menu; a menu bar (on a page, `!tkmenubar` draws the bar). Each saves what is under it and puts it back. |
 | Forms | `form`, then `label`, `entry`, `check`, `slider`, `selector`, `radio`, `list`, `combo`, `button`, `progress`, `tabs`, `page`, `memo`, `table`, `tree`, `scrollbar`, `frame`, `container`, `viewport`, `in` | A form is a data collection that holds widgets. Each widget verb takes the form, the widget's id and its place inside the form. A `memo` is a text area (an editor, or a viewer with `readonly`); a `table` has headings, columns and sorting; a `tree` has nodes that open and close. |
-| Running a form | `run`, `wait`, `hide` | `run` reads keys until a button ends the form, as a dialogue. `wait` returns one event at a time - `button`, `change`, `focus`, `key`, `resize`, `cancel`, `timeout`, `end` - and leaves the form on the screen between calls; `hide` takes it away. |
+| Running a form | `run`, `wait`, `hide` | `run` reads keys until a button ends the form, as a dialog. `wait` returns one event at a time - `button`, `change`, `focus`, `key`, `resize`, `cancel`, `timeout`, `end` - and leaves the form on the screen between calls; `hide` takes it away. |
 | Reading and changing a form | `get`, `set`, `focus`, `values`, `move`, `delete`, `scroll` | Read a widget's value, change its value, text, items or whether it is enabled or visible, move the focus, read every value at once, move or take out a widget, scroll a viewport. |
-| The look | `theme`, `style` | Choose a theme - `mono`, `classic`, `blue`, `dark`, `light` - or change one style of it. `else` on a terminal that cannot show colour. |
+| The look | `theme`, `style` | Choose a theme - `mono`, `classic`, `blue`, `dark`, `light` - or change one style of it. `else` on a terminal that cannot show color. |
 
-The example at the head of the User page, a form run as a dialogue without the
+The example at the head of the User page, a form run as a dialog without the
 library:
 
 ```
@@ -115,7 +115,7 @@ So a page draws in the body only, and only with the `screen` statement.
 | `screen size returning v` | The window's size, if a program needs it outside the layout. |
 
 **Over the page:** `screen msgbox`, `screen ask`, `screen pick` and `screen menu`
-are dialogues. Each saves what is under it, asks, and puts the page back, so a page
+are dialogs. Each saves what is under it, asks, and puts the page back, so a page
 may use them as they are.
 
 **The look:** `screen theme` and `screen style` work on a page; the page is drawn

@@ -73,7 +73,7 @@ ordinary account's copy is identical.
 > **`edit` used to be exactly this kind of trap** — a record present in the
 > VOC whose old type field read `Verb - Full screen editor` rather than `V`,
 > so it looked callable and refused at dispatch with *"Full screen editor is
-> no longer supported."* **That is history, not current behaviour**: `edit`
+> no longer supported."* **That is history, not current behavior**: `edit`
 > is a real `V` record now, reinstated 26 Aug 2026, and works. The lesson
 > stands even though the example does not: **being in the VOC is not
 > evidence a command works** — check the type field, not just the name.
@@ -144,10 +144,10 @@ target, and the remaining fields carry options.
 
 | Field 2 | Field 3 | What it does |
 |---|---|---|
-| `CA` | *catalogue name* | a catalogued program — 95 of the shipped verbs |
+| `CA` | *catalog name* | a cataloged program — 95 of the shipped verbs |
 | `IN` | *number* | internal verb *n*, handled by the command processor itself — 43 verbs |
 | `OS` | *text* | an operating-system command — `sh`, and nothing else |
-| `CS` | *path* | a locally catalogued function |
+| `CS` | *path* | a locally cataloged function |
 
 Those four rows account for all but four of SDSYS's 144 `V` records. The
 remaining four are the keyword records described above — `break`, `count`,
@@ -269,7 +269,7 @@ in the command instead.
 This is `#`, the comment keyword. Field 2 is the keyword number the query
 processor uses. Keywords are not commands in their own right; they are
 the words the query processor — `LIST`, `SELECT`, `SORT` and the rest —
-recognises inside a command line. `all` is `K` with number 5; `and` is `K`.
+recognizes inside a command line. `all` is `K` with number 5; `and` is `K`.
 
 **A K record can also be a command.** When its fields 3 onwards are another
 VOC record (a `V` record, say), typing the K record's name runs that record as
@@ -283,9 +283,9 @@ if it had been typed instead:
 005  /home/app/bp.out/report
 ```
 
-This works for a locally catalogued subroutine too. The object is found by the
-last part of the pathname in field 5, which is the name it was catalogued
-under, so a program catalogued under a call name different from its program
+This works for a locally cataloged subroutine too. The object is found by the
+last part of the pathname in field 5, which is the name it was cataloged
+under, so a program cataloged under a call name different from its program
 name is not reached this way.
 
 The 248 K-records in a stock VOC are the query processor's vocabulary,
@@ -306,7 +306,7 @@ Two X-records that an account may add are read by SD itself and change what
 a command line does: `$private.voc` and `$voc.parser`, described on the next
 pages.
 
-**The licence and the contributor list are not VOC records at all**, despite
+**The license and the contributor list are not VOC records at all**, despite
 looking like the obvious candidates. `config gpl` and `config contrib` shell
 out to `less` against two plain files in the system directory,
 `sdsys/licence` and `sdsys/contrib` — see *Account Maintenance* in the

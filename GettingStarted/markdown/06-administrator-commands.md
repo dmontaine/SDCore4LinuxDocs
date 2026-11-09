@@ -8,7 +8,7 @@ account's; that model is gone. Every ordinary account now gets the same VOC
 an account can be given. It is SDSYS, a single Linux user the installer
 makes, reached by logging in to the machine itself, locally, as `sdsys`,
 its own password, and running `sd`. Typing one of these verbs from any
-other account says it is not recognised, not that you lack permission for
+other account says it is not recognized, not that you lack permission for
 it.
 
 ## Accounts

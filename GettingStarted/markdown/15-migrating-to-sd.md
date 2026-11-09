@@ -1,7 +1,7 @@
 Title: Migrating to SD
-Subtitle: Programs and queries from another MultiValue database: the words that bring a familiar behaviour back, and the words SD does not have.
+Subtitle: Programs and queries from another MultiValue database: the words that bring a familiar behavior back, and the words SD does not have.
 
-Programs written for another MultiValue database often lean on one small behaviour
+Programs written for another MultiValue database often lean on one small behavior
 that SD does differently by default: a `read` that leaves the variable alone when the
 record is missing, a `locate` that works as another product's does. SD keeps some of
 these behind a word you turn on yourself (a divide by zero that warns, a query that
@@ -17,7 +17,7 @@ list every word SD has, one line each.
 ## The rules the words follow
 
 **Everything is off until you turn it on.** A new session has every option off and a
-new program has every mode off. SD's own behaviour is the default, and a word only
+new program has every mode off. SD's own behavior is the default, and a word only
 moves a program or a session away from it, on purpose.
 
 **One word changes one thing.** Each option and mode is a single, small difference:
@@ -30,7 +30,7 @@ sets several words together: `option sdbasic.warnings` went on the same day with
 three words it set.
 
 **A word SD does not have is refused, not skipped.** `option` says *Option name not
-recognised* and `$mode` stops the compile with *Unrecognised mode name*. A `login`
+recognized* and `$mode` stops the compile with *Unrecognized mode name*. A `login`
 paragraph or a program that names a word from another product has to be edited. The
 words of other products that SD does not accept are in the last section of this page.
 
@@ -69,7 +69,7 @@ compiling again. The form is described in *SD Basic - Program Structure*.
 
 **For every program in a file: the `$basic.options` record.** A record of that name
 in the file that holds the source (or, failing that, in the VOC), whose first line is
-`x`, gives each program compiled from that file a set of defaults: modes, a catalogue
+`x`, gives each program compiled from that file a set of defaults: modes, a catalog
 action, tokens, an automatic `$include`. Its lines are listed in
 [15b](15b-migrating-mode-words.html).
 

@@ -72,12 +72,12 @@ hyphenated name with no dotted verb behind it is still not found:
 `no-such-verb` answers `NO-SUCH-VERB is not in your VOC`. The dotted name is
 the one SD itself writes.
 
-### If the VOC has nothing, the catalogue is tried
+### If the VOC has nothing, the catalog is tried
 
-A name that is not in the VOC is looked for in the **private catalogue** of the
-account and then in the **global catalogue**, `gcat`. A hit is treated exactly
+A name that is not in the VOC is looked for in the **private catalog** of the
+account and then in the **global catalog**, `gcat`. A hit is treated exactly
 as though the VOC had held `V` / `CA` / *name*. This is why a program you have
-catalogued can be run by typing its name with no VOC record of its own.
+cataloged can be run by typing its name with no VOC record of its own.
 
 If neither has it, the command is refused by name.
 
@@ -98,10 +98,10 @@ Field 2 of a verb record says how to run it, and field 3 says what to run:
 
 | | | |
 |---|---|---|
-| `CA` | *name* | a catalogued program — 95 of the shipped verbs |
+| `CA` | *name* | a cataloged program — 95 of the shipped verbs |
 | `IN` | *n* | internal verb *n*, handled by the command processor itself — 43 |
 | `OS` | *text* | an operating-system command — `sh` |
-| `CS` | *path* | a locally catalogued function |
+| `CS` | *path* | a locally cataloged function |
 
 Field 4 carries dispatch options and **field 5 names a security subroutine**. If
 field 5 is present, that subroutine is called before the verb runs and can

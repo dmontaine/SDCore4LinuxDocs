@@ -116,7 +116,7 @@ These are the rules for a file opened by name and not through an `N` pointer:
 | a record of 1 MB, and one of 20 MB | written and read back byte for byte; the server accepts a request of that size |
 | an id holding a **mark** byte (251 to 255, the five marks) | refused by a `WRITE`: `ON ERROR`, `STATUS()` 3000, nothing stored; an id holding byte 247 to 250 is an ordinary one and is written and read back |
 
-Ids that differ only in case are two records in a directory file and one in a dynamic file, as on a local file, so a program that is moved from a local file to a remote one keeps the behaviour of the kind of file it is.
+Ids that differ only in case are two records in a directory file and one in a dynamic file, as on a local file, so a program that is moved from a local file to a remote one keeps the behavior of the kind of file it is.
 
 ## A program that tells the refusals apart
 

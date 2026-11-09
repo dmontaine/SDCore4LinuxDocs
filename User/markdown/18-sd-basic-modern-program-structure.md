@@ -9,7 +9,7 @@ documentation talks about.
 
 **This page is that half of the language.** [SD Basic - Program
 Structure](01-sd-basic-program-structure.html) covers the traditional shape —
-one program, one flat variable space, `gosub` to a label, `call` to a catalogued
+one program, one flat variable space, `gosub` to a label, `call` to a cataloged
 subroutine — and everything here is an alternative to it, not an extension of
 it.
 
@@ -69,7 +69,7 @@ have never been set.
 gosub tally(3, 4, answer)
 ```
 
-`call` looks in the catalogue. Against a local subroutine it compiles cleanly
+`call` looks in the catalog. Against a local subroutine it compiles cleanly
 and then fails at run time:
 
 ```
@@ -145,8 +145,8 @@ end
 `private` and `public` declare member *variables*; `public subroutine` and
 `public function` declare methods; `get` and `set` declare a property.
 
-A class is catalogued and instantiated like any other program, and **a private
-catalogue is enough** — nothing here needs an elevated session:
+A class is cataloged and instantiated like any other program, and **a private
+catalog is enough** — nothing here needs an elevated session:
 
 ```
 :basic bp zzcls
@@ -239,7 +239,7 @@ that declares it and to every class that inherits it, and invisible to everythin
 the main program, an unrelated class, and a sibling that shares only the parent. A child
 reaches its parent's restricted members through the inherited object, as it reaches the public
 ones (`parent->secret()`); a program that tries gets the same answer it gets for a private
-name, *Unrecognised property/method name (SECRET)*. **The child object does not pass
+name, *Unrecognized property/method name (SECRET)*. **The child object does not pass
 the parent's restricted names on to the caller** — `c->secret()` from the main program is
 refused although `c` inherits it.
 
@@ -287,7 +287,7 @@ A variable with no value starts as it always did.
 ## Running a class
 
 A class module with a `main` subroutine can be run from TCL, by its module name or by its
-catalogue name, as a program is:
+catalog name, as a program is:
 
 ```
 class zzcm1
@@ -313,7 +313,7 @@ DESTROYED
 
 `run` makes the object, so `create.object` runs first, calls `main`, and lets the object go, so
 `destroy.object` runs last. A class with no `main` still gets its object made and
-`create.object` run; the reference to `main` is then refused with *Unrecognised property/method name
+`create.object` run; the reference to `main` is then refused with *Unrecognized property/method name
 (MAIN)*. **`call` of a class is still refused** — *A CLASS routine may not be used in this way*.
 
 ## Construction and destruction
@@ -425,11 +425,11 @@ does.**
 |---|---|
 | **`gosub` label** | a few lines, used once, sharing the program's variables on purpose |
 | **local subroutine or function** | anything with working variables of its own, or that you want to be sure touches nothing else |
-| **catalogued subroutine** | logic more than one program needs |
+| **cataloged subroutine** | logic more than one program needs |
 | **class module** | state that has a lifetime — something opened, held and closed — or several instances of the same thing at once |
 
 ## See also
 
 [SD Basic - Program Structure](01-sd-basic-program-structure.html) ·
 [SD Basic - Program Control](02-sd-basic-program-control.html) ·
-[SD TCL - Programs and the Catalogue](24-sd-tcl-programs-and-the-catalogue.html).
+[SD TCL - Programs and the Catalog](24-sd-tcl-programs-and-the-catalogue.html).

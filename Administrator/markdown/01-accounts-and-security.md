@@ -106,7 +106,7 @@ audit line and the page are how you notice one you did not expect.
 member of the Linux group of every user account** (`sdu_`*name*), so SDSYS has
 read and write access to everything in the `/home/sd` tree that an account's
 group may write: the VOC, the dictionaries, the programs in `bp` and `bp.out`,
-the catalogue `cat` and the data files. That is how SDSYS compiles, catalogues
+the catalog `cat` and the data files. That is how SDSYS compiles, catalogs
 and debugs the programs of an account whose own `bp-edit` gate is off, and how
 `tool.entries` edits an account's VOC entries and dictionary items in place (see
 [The master files](19-the-master-files.html)). It is a deliberate default for a
@@ -121,7 +121,7 @@ account runs. It is not reachable from the network (`sdsys` has no API access
 from it, and ssh only when the administrator opens that door), and a process that is not a
 real login as `sdsys` is not an administrator. **The membership is a default
 and a record of your decision, not a wall against a stolen `sdsys` login**,
-which has other ways into an account's code: the global catalogue is the
+which has other ways into an account's code: the global catalog is the
 `sdsys` user's to write, and `sdsys` may run `sudo /usr/local/sbin/sd-elevate`
 with any arguments. (The files `root` runs at the next start used to belong to
 `sdsys` as well; from 2.0-0 they are `root`'s, see
@@ -381,7 +381,7 @@ with no trigger name, is not asked), `copy.list` into the file or with
 pathname, `compile.dict data` (which compiles records of an ordinary file as dictionary
 items), `generate` (the `$include` record of a dictionary, and the include
 record it writes to the target file), `como on ... in`, and the `.s` and `.d`
-stack commands on an existing VOC record. Making a new file is not asked. The private catalogue
+stack commands on an existing VOC record. Making a new file is not asked. The private catalog
 directory (`cat`, or whatever `$private.catalog` names) counts as a program
 file. For programs, `create.file` and `opentemp` of a new file inside such a
 place, `ospath` with keys 5, 13 and 14, and the socket trace file
@@ -399,7 +399,7 @@ file clears, and `SDOpenSeq` for writing, are held to the same rule (an
 
 **Compiling is held by `bp-on` too.** Without it `basic`, `catalog`,
 `delete.catalog` and `decatalog` are refused ("Programs can only be compiled
-or catalogued by an account that has bp.edit"), because compiling is how a
+or cataloged by an account that has bp.edit"), because compiling is how a
 source becomes code that runs: otherwise source could be copied into any file
 and compiled there.
 
@@ -428,8 +428,8 @@ message). What they do, and where `voc-on` stops, in an ordinary account:
 
 * **`$private.voc`** (field 2 a file name) is a second vocabulary. A command
   word that is in no VOC record is looked for in that file, as typed, then in
-  lower and upper case, **before** the private and global catalogues. It
-  can add a command, and it can replace one that exists only as a catalogued
+  lower and upper case, **before** the private and global catalogs. It
+  can add a command, and it can replace one that exists only as a cataloged
   program; it cannot replace a command that the VOC holds. Its records run
   under the same switches as VOC records: a verb record in mode `os` was
   refused for an account without `sh-on`. A record that does not work (the
@@ -445,32 +445,32 @@ message). What they do, and where `voc-on` stops, in an ordinary account:
   `shared-read-off`) ran a command from one, and its write to the file was
   refused with status 3035 while `shared.write` was off.
 * **`$voc.parser`** (field 2 record type codes, field 3 the names of
-  catalogued subroutines) hands a VOC record whose type begins with a code to
+  cataloged subroutines) hands a VOC record whose type begins with a code to
   that subroutine **instead of SD's own handling of the type**. A code of `v`
   hands over every verb, including `off`; a blank code matches every record.
   It is read once, at sign-on, and `logto` does not read the new account's
-  copy. A handler must already be catalogued, and cataloguing needs `bp-on`;
+  copy. A handler must already be cataloged, and cataloging needs `bp-on`;
   but `voc-on` alone is enough to switch on a handler that someone else
-  catalogued. So an account with `voc-on` can change what the commands in its
+  cataloged. So an account with `voc-on` can change what the commands in its
   own VOC mean for every session that signs on to it, by way of a handler that
-  you or somebody with `bp-on` put in a catalogue.
+  you or somebody with `bp-on` put in a catalog.
 * **If a handler locks an account out,** every command in the account,
   yours included, is handed to the handler, so the record cannot be removed
   from inside. It was removed by SDSYS signed on to the `sdsys` account, with
   an ordinary program that opened the account's `voc` by its pathname and
   deleted `$voc.parser`.
 
-**Internal programs run only from the global catalogue.** The gates on files
+**Internal programs run only from the global catalog.** The gates on files
 and on operating-system paths (these three and the shell, `OS.EXECUTE` and
 `sd-on` gates before them) do not apply to a program compiled in *internal
 mode*, which SD's own commands are. That mark is a bit in the program's own
 object file, and SD used to believe it wherever the object came from, so a
 user who could put an object file where SD would run it (a directory file with
 a `.out` entry in the VOC, or a run file) could set the bit and skip every
-gate. SD now honours the bit only for an object from the global catalogue,
+gate. SD now honors the bit only for an object from the global catalog,
 which only SDSYS can write, or for the administrator; for any other object the
 bit is cleared when the object is loaded. SD's own commands are all in the
-global catalogue and are unaffected; a program that SDSYS compiled in internal
+global catalog and are unaffected; a program that SDSYS compiled in internal
 mode into a user's account runs there as an ordinary program.
 
 **SDSYS is never refused.** On a terminal or in a batch job the
@@ -624,7 +624,7 @@ accounts removes the Linux group `sdg_shared` too; keeping the accounts keeps it
 
 There are now **two API routes, and the second is narrower.** `api` (the Linux
 group `sdapi`) lets a person do everything the API offers: execute commands, call
-catalogued subroutines, enter other accounts with `logto`, read and write
+cataloged subroutines, enter other accounts with `logto`, read and write
 sequential files, and work with files. **`files-on` (the Linux group `sdfiles`)
 lets a person log in over the API and do files and nothing else.** It exists so
 that a login kept for SDNet (see [SDNet](12-sdnet.html)) never needs `sdapi`: the
@@ -702,7 +702,7 @@ number this release has never heard of.
 
 | refused | request |
 |---|---|
-| 20 | call a catalogued subroutine |
+| 20 | call a cataloged subroutine |
 | 21, 22, 23 | execute a command; respond to its prompt; end it |
 | 24, 25 | the other logins |
 | 27, 28 | enter and exit a licensed package (not supported by any route) |
@@ -997,7 +997,8 @@ this page's**: a new account has every gate off, as the verb makes it.
 
 Each shows its command and what it does in a box answered Run or Cancel, **and Cancel is what Enter
 chooses**. The verbs ask for the administrator again and write their own audit lines; the page runs
-nothing else. **Two of them are not run through the page**: creating a user account and deleting an
+nothing else. **`/`** goes to the next account whose name holds a text you type (any case; it goes
+round to the top): the letters are this page's commands, so `/` is how you find an account by typing. **Two of them are not run through the page**: creating a user account and deleting an
 account hand the terminal to the verb, because `create.account user` asks for the new person's password
 at a prompt of its own that shows nothing, and `delete.account` has no `no.query`, asks once for its own
 confirmation and is never to be sent down a pipe. Nothing typed at either prompt passes through the page;
@@ -1043,6 +1044,7 @@ under the cursor.
 | A | all gates on: queue ON for every gate of that account that can change (also in the Gates menu) |
 | N | all gates off: queue OFF for every gate of that account that can change (also in the Gates menu) |
 | F | change which accounts are shown: all, accounts of persons, accounts with a gate on that reaches beyond SD |
+| / | go to the next account on show whose name holds a text you type (any case; round to the top) |
 | F5 | read the machine again (a queued change is kept) |
 | F1, `?`, a click on the `[?]` | explain the matrix |
 | Ctrl-Q | leave; when anything is queued, a box asks first: Run the changes, Leave without them, or Cancel (the default) |
@@ -1097,7 +1099,7 @@ had typed it.
 | **`os-on`** \| **`os-off`** | `OS.EXECUTE`, the screen editors, the embedded Python, and operating-system paths outside the account's own directory (see above) |
 | **`sd-on`** \| **`sd-off`** | the directories of other SD accounts the user could `logto` (see above) |
 | **`voc-on`** \| **`voc-off`** | saving a change to a VOC (see *The edit switches*) |
-| **`bp-on`** \| **`bp-off`** | saving a change to a program file, and compiling and cataloguing |
+| **`bp-on`** \| **`bp-off`** | saving a change to a program file, and compiling and cataloging |
 | **`dict-on`** \| **`dict-off`** | saving a change to a dictionary |
 | **`recovery-on`** \| **`recovery-off`** | whether the `ide` keeps a recovery copy of text that was not saved (see *The recovery copy*). Not a gate; **off as delivered**; user accounts only |
 | **`net-on`** \| **`net-off`** | the right to use a server defined for SDNet (see *The NET switch*) |
@@ -1372,7 +1374,7 @@ than ignored:**
 A password is never given on the command line; modify.password prompts for it
 ```
 
-**That refusal is the point of the verb's design.** The older behaviour set
+**That refusal is the point of the verb's design.** The older behavior set
 the password from the prompt and threw the extra word away without a word,
 so every visible sign said it had worked — while the password had already
 reached SD's command stack, and a shell's history and process list if the

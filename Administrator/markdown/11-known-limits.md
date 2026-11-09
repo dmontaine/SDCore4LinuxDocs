@@ -1,5 +1,5 @@
 Title: Known Limits
-Subtitle: Parts of SD Core for Linux whose behaviour depends on your environment, and what to check before an application relies on them.
+Subtitle: Parts of SD Core for Linux whose behavior depends on your environment, and what to check before an application relies on them.
 
 Nothing on this page is known to be broken. Each entry is a place where what
 happens depends on conditions SD cannot establish for itself: the load on
@@ -96,7 +96,7 @@ at the terminal.
 
 ### An administrator's scheduled job
 
-**What to expect.** The units are written and the run is recognised as
+**What to expect.** The units are written and the run is recognized as
 [Scheduled Jobs](23-scheduled-jobs.html) describes; the next and last run that
 `set.job` and `tool.jobs` show are read from `systemctl show`.
 
@@ -161,13 +161,13 @@ system.
 
 **`micro`'s key bindings are the program's own, unmodified.** SD only launches
 it and stages its syntax highlighting. If a binding surprises you, that is the
-program's own documented behaviour.
+program's own documented behavior.
 
 ## What is not on this page
 
 The places where SD Core for Linux deliberately differs from OpenQM,
 ScarletDME or SD Core for Windows are documented as differences, in the pages
-that describe the feature. This page is only about behaviour that depends on
+that describe the feature. This page is only about behavior that depends on
 your own environment.
 
 ## See also

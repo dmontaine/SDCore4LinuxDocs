@@ -30,7 +30,7 @@ of editing their own VOC, dictionaries and programs (the edit gates `voc-edit`, 
 >
 > **It is a default and a record of the administrator's decision. It is not a wall.** A person who has
 > taken over the `sdsys` login can reach the code of every account without any membership, by two
-> routes that this does not change: **the global catalogue is the `sdsys` user's to write**, and every
+> routes that this does not change: **the global catalog is the `sdsys` user's to write**, and every
 > session loads programs from it; and **`sdsys` may run `sudo /usr/local/sbin/sd-elevate` with any
 > arguments**, which can put `sdsys` back in a group, give it a group account's files, set the first
 > password of a user SD made, or add a person to an account's group (from 2.0-0 the helper no longer
@@ -157,10 +157,10 @@ outside the account (a link to another account's `bp.out`, say) the whole delete
 its reason (`the compiled programs of zeob.bp lie outside ze1: zwob is deleted in the account they
 live in, not from here`), before the box and before anything is deleted. The box names the
 compiled program, or says there is none; the page deletes the program, then its compiled program,
-through the files it judged, and runs no command. **A catalogue entry of the program is left**: it
-is the account's (a private catalogue holds its own copy, so the program can still be run by its
-catalogue name), and the box says so; remove it in that account, for example
-`run.in ze1 delete.catalog prog` for a private catalogue entry or `run.in ze1 decatalog prog` for a
+through the files it judged, and runs no command. **A catalog entry of the program is left**: it
+is the account's (a private catalog holds its own copy, so the program can still be run by its
+catalog name), and the box says so; remove it in that account, for example
+`run.in ze1 delete.catalog prog` for a private catalog entry or `run.in ze1 decatalog prog` for a
 local one. The audit line is `master delete account=ze1 kind=bp file=bp id=prog object=deleted`
 (`object=none` when there was no compiled program, `object=failed` when the `.out` file refused the
 delete).
@@ -171,10 +171,10 @@ inside the account (a program file reached through a pointer to another account,
 refused), and so must the program's own file: a program that is a link to a file elsewhere is
 refused, and so is a name that is a link leading nowhere, because writing it would create the file
 at the other end. The temporary pointer reaches the program file's data only. The editor is told
-which account the program belongs to, so its **Compile** (F8) and **Compile and catalogue** (F9)
+which account the program belongs to, so its **Compile** (F8) and **Compile and catalog** (F9)
 do not run BASIC in SDSYS through the pointer: they run `run.in` (above) in that account, so the
 object goes into the account's own `bp.out`, a `$catalog` line in the source is not acted on, and
-the catalogue is the account's. Its **Debug** (F7, and Debug from the first line) compiles the
+the catalog is the account's. Its **Debug** (F7, and Debug from the first line) compiles the
 program for the debugger and runs the debugger in that account, the same way (`run.in … basic …
 debugging`, then `run.in … debug …`), and the breakpoints marked in the editor's gutter are handed to
 that debugger as they are for any program (F7 runs on to the first of them, and the lines that
@@ -245,7 +245,7 @@ The AI line of the page is not offered `G` or `U`.
 
 ## Running one command inside an account: `run.in`
 
-A program is compiled, catalogued and debugged in its own account: its VOC, its private catalogue,
+A program is compiled, cataloged and debugged in its own account: its VOC, its private catalog,
 the files its I-types translate through. An account that is locked out of its own programs
 (`bp-off`) cannot do any of that, so the administrator does it for the account.
 
@@ -274,8 +274,8 @@ reads as an option); each option is on that command's own list and is given once
 SD runs is built from those words and is never the text you typed.** **`basic` is always given
 `no.catalog`**, so a `$catalog` directive in the account's source (or in a file it includes, or in
 its `$BASIC.OPTIONS`) is not acted on: without it, compiling the source as the administrator would
-catalogue it as the administrator, in the global catalogue if the directive says `global`. To
-catalogue a program of an account, say so: `run.in acme catalog bp prog`. `run.in` does not start the
+catalog it as the administrator, in the global catalog if the directive says `global`. To
+catalog a program of an account, say so: `run.in acme catalog bp prog`. `run.in` does not start the
 account's `login` paragraph (it would run with the administrator's rights), and it does not nest.
 
 It adds no authority: the administrator can already `logto` into any registered account. What it
@@ -328,7 +328,7 @@ modify.account acme sdsys-off
 
 **What is expected to stop working when an account is off.** An edit, delete or compile from `tool.entries` into it. So
 is **SDSYS writing inside the account in any other way**: `logto` the account and make a file, edit a
-program, catalogue; an interactive `update.accounts` for it (`update.accounts
+program, catalog; an interactive `update.accounts` for it (`update.accounts
 all` skips such an account and says so, see [Account maintenance](01a-account-maintenance.html)); `sd -A`*account* from the operating
 system. (The installer's own `update.accounts all` runs as root and is not affected.) `create.account`,
 `delete.account`, `backup.account`, `restore.account`, and reading the
@@ -409,7 +409,7 @@ group-write`) puts them right, the ones made while the account was off included.
 * **It does not change what a pointer points at from another account.** A pointer record is the
   account's own record and is edited like any other; its target is edited in the account it lives
   in, SDSYS's included.
-* **It does not remove a catalogue entry when it deletes a program.** The entry is the account's;
+* **It does not remove a catalog entry when it deletes a program.** The entry is the account's;
   `run.in` *account* `delete.catalog` or `decatalog` removes it.
 * **It does not see a change made outside SD** any differently from SD itself: the page reads the
   accounts' files when it is asked to, so a shell command's change is simply there at the next read.

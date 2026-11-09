@@ -28,7 +28,7 @@ the argument to the BASIC `FMT()` function, and the syntax is the same.
 | `L` | left-justified |
 | `R` | right-justified |
 | `T` | text — left-justified, wrapping at word boundaries |
-| `C` | centred |
+| `C` | centered |
 | `U` | left-justified, unchanged — no trimming |
 
 ### Numeric options
@@ -100,7 +100,7 @@ processor works out a width from the data.
 ### Combined examples
 
 Every row below shows what came back, including the trailing spaces the
-format adds. Dictionary conversion and format handling is behaviour shared
+format adds. Dictionary conversion and format handling is behavior shared
 between SD Core for Windows and SD Core for Linux, so nothing here differs between them.
 
 | Field 3 (conversion) | Field 5 (format) | Stored value | Output |
@@ -154,7 +154,7 @@ An I-type expression is a single SD BASIC expression. It can use:
   `UPCASE(TTL%AUTHOR)`, `COPY : "/" : TTL%TITLE`. A link to a link is written
   `OUT%TTL%TITLE`. See the L record on [SD Dictionaries - Structure](33-sd-dicts-structure.html);
   a link is worked out when the I-type is compiled.
-- **Subroutine calls**: `SUBR("name", arg, ...)` invokes a catalogued
+- **Subroutine calls**: `SUBR("name", arg, ...)` invokes a cataloged
   subroutine. The `FTYPE` I-type in `voc.dic` calls `SUBR("!FTYPE",
   DATA.NAME)`.
 - **Conditional expressions**: `IF` *condition* `THEN` *value* `ELSE`
@@ -172,7 +172,7 @@ An I-type expression cannot use:
 - **Dimensioned arrays**: no `DIM`, no `MAT`.
 - **Common blocks**: no `COMMON`.
 
-If you need any of these, write a subroutine, catalogue it, and call it
+If you need any of these, write a subroutine, catalog it, and call it
 with `SUBR()` from the I-type.
 
 ### Compiler modes: `$MODE`

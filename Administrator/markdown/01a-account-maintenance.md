@@ -147,7 +147,7 @@ To keep an edit of your own to a record SD still ships, mark it — see below.
 This has no equivalent in OpenQM or in SD on Linux. Nothing you know from
 another MultiValue system will tell you it exists.
 
-A site that has customised one of SD's own VOC records marks it by putting
+A site that has customized one of SD's own VOC records marks it by putting
 `[locked]` in **field 1, after the type code**. `update.accounts` then leaves
 that record alone.
 
@@ -177,7 +177,7 @@ silently.
 
 ### A verb is not protected by it
 
-**`[locked]` is honoured on every kind of VOC record except a verb.** A verb
+**`[locked]` is honored on every kind of VOC record except a verb.** A verb
 marked `[locked]` is updated anyway, and the account is told which ones:
 
 ```
@@ -191,7 +191,7 @@ a *number*, so a reassignment sends the verb to a different function with no
 sign that anything is wrong.
 
 **The way to get a verb that behaves differently is to add your own**, under a
-name SD does not ship, modelled on the system one. `update.accounts` walks the
+name SD does not ship, modeled on the system one. `update.accounts` walks the
 records SD ships, so a verb of your own is never visited and needs no marker.
 
 ### You are told what was withheld
@@ -267,7 +267,7 @@ locks, how many open files is this machine set up for*.
 | | |
 |---|---|
 | *New parameter value required* | `config numlocks` with nothing after it. **The report form is `config` alone**; naming one parameter means *set it* |
-| *Not a recognised private configuration parameter name* | the name is not one that can be set per-session |
+| *Not a recognized private configuration parameter name* | the name is not one that can be set per-session |
 | *Invalid value for this parameter* | it is, and the value is not |
 
 **`config param value` sets a private, session-local value and not the
@@ -359,8 +359,8 @@ and the time. It holds each account's files and a plain-text **manifest** of how
 the account was set up: its type, description, suspension, remote access and
 group members. `restore.account` puts accounts back — over an account that
 exists, or onto a machine that has never had it. A restored account's paths are
-corrected to where it now lives, and programs it had in the global catalogue are
-catalogued again. **Backups made here restore on SD Core for Windows, and the
+corrected to where it now lives, and programs it had in the global catalog are
+cataloged again. **Backups made here restore on SD Core for Windows, and the
 other way round**; a backup of the full product restores only to a full system
 (SD Core Solo's only to Solo).
 
@@ -432,8 +432,8 @@ created. **Moving an account to another machine** is covered by
   had it asks for a new one, and an account that exists keeps its own.
 - It does not follow symbolic links inside an account; any it finds are named
   and left out.
-- A program recompiled after it was catalogued globally is not recognised as the
-  account's and is not catalogued again.
+- A program recompiled after it was cataloged globally is not recognized as the
+  account's and is not cataloged again.
 
 ## Saying where backups go: `set.backup.directory`
 

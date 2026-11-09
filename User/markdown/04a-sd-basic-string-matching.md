@@ -42,7 +42,7 @@ same position of *to.characters*.
 > **A character with no opposite number is removed, not left alone.** If the
 > two lists are not the same length, every character in the excess of
 > *from.characters* is deleted from the string. This is the documented Pick
-> behaviour and it is almost never what someone writing
+> behavior and it is almost never what someone writing
 > `convert(',', '', text)` expects to happen to the rest of their data —
 > though it is exactly what they want when deleting is the intent.
 

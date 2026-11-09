@@ -27,7 +27,7 @@ modify.account <account> delete <user>
 
 **Both are SDSYS's, like every other administration verb** — they are
 not in an ordinary account's VOC at all, so typing them anywhere else says
-the verb is not recognised, not that you lack permission for it.
+the verb is not recognized, not that you lack permission for it.
 
 **This is Linux group membership, and it *is* what a grant is** — the
 account's own Linux group (`sdu_`*name* for a user account, `sdg_`*name*
@@ -102,7 +102,7 @@ own account cannot be reached by pathname". See the *Administrator* set's
 ### Saving changes to a VOC, a program file or a dictionary: three more switches
 
 Three more switches, also off for a new account, say whether the person
-may **save a change** to a VOC, to a program file (and compile or catalogue)
+may **save a change** to a VOC, to a program file (and compile or catalog)
 or to a dictionary. Reading is never stopped:
 
 | | |
@@ -132,7 +132,7 @@ to create; an existing account keeps what it has. See the *Administrator* set's
 covered, and for what is not stopped.
 
 **`modify.password` is now the whole of what `set.password` used to be.**
-Same verb, same behaviour under either name; every account has a password
+Same verb, same behavior under either name; every account has a password
 from the moment it is made, so there is nothing to *set* for the first time.
 Run with no argument it changes your own; SDSYS may change any account's,
 naming it — see [Administrator commands](06-administrator-commands.html).

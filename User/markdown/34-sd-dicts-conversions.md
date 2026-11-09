@@ -1,11 +1,11 @@
 Title: SD Dictionaries - Conversions and Formatting
-Subtitle: Every conversion code SD recognises, and what each one does to a stored value.
+Subtitle: Every conversion code SD recognizes, and what each one does to a stored value.
 
 A dictionary record does two things: it says where to find the data
 (field 2), and it says how to display it (fields 3 and 5). Field 3 is
 the **conversion code** — a compact instruction that transforms a stored
 value into a display value. This page is every conversion code SD
-recognises; field 5, the format specification, is on the page that
+recognizes; field 5, the format specification, is on the page that
 continues it.
 
 SD folds case, so a conversion code may be typed in either case. In the

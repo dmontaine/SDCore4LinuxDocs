@@ -72,7 +72,7 @@ listu detail {no.page} {lptr {n}}
 `detail` adds a line above the report: the interactive users, the API sessions,
 the phantoms that count as licensed, the other phantoms, and the most users
 there have been at once since SD started. `system(1056)` gives the same five
-numbers. **SD has no licence count**, so the third number is whatever the system
+numbers. **SD has no license count**, so the third number is whatever the system
 marks as chargeable.
 
 **`Origin` is blank for a local session and that is not a fault.** It reports
@@ -310,7 +310,7 @@ it on for a short time and off again.
 > that is not logged either, so a `Get RU` with no `Rel RX` after it may be a lock the cleanup gave back.
 > A program that ends normally lets its locks go through the log, on the line of its `end`. The log is
 > lines of value-mark-delimited fields (epoch time, user, pathname, record id, action number, the
-> program's object, offset in it in hexadecimal, line), for a program of your own to analyse. openQM's
+> program's object, offset in it in hexadecimal, line), for a program of your own to analyze. openQM's
 > report needs a terminal 132 wide; this one is 120.
 
 ## Task locks: `list.locks`, `lock`, `clear.locks`
@@ -461,6 +461,7 @@ plain sentences and shows the exact command its key would run.
 | L (sessions) | `logout` the selected session; the user number is typed again to confirm. For a session whose process is gone the entry is cleared and its locks are released |
 | U (locks) | `unlock` the selected lock; the holder is not told |
 | I | `inhibit.login on` when logins are allowed, `off` when they are inhibited |
+| / | go to the next row of the list that has the focus that holds a text you type (a user number, a name, a record id; any case; round to the top) |
 | F5 | read again |
 | F1, ?, a click on the [?] | explain the page |
 | Ctrl-Q | leave |

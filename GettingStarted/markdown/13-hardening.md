@@ -1,21 +1,21 @@
 Title: Other hardening
-Subtitle: The catalogue and pcode locks, the logs, line endings, and the rest of the smaller changes.
+Subtitle: The catalog and pcode locks, the logs, line endings, and the rest of the smaller changes.
 
 Everything on this page is a change you may notice while testing, grouped by
 what it touches. The identity model and the file permissions are on
 [Security](12-security.html); this is the remainder.
 
-## The global catalogue
+## The global catalog
 
-**Adding to or removing from the system-wide catalogue requires SDSYS,
+**Adding to or removing from the system-wide catalog requires SDSYS,
 whichever way you ask for it.**
 
-This matters because the system-wide catalogue holds the programs SD runs for
+This matters because the system-wide catalog holds the programs SD runs for
 everybody, `$login` among them. **Replacing one runs your code in every session
 on the machine, SDSYS included; deleting one stops everybody signing
 in.**
 
-**Nothing changes for local and private cataloguing**, which is what
+**Nothing changes for local and private cataloging**, which is what
 programmers use day to day:
 
 ```
@@ -24,11 +24,11 @@ catalog bp myprog local    this account's VOC
 ```
 
 Both still work, in any account you are allowed to **`logto`** into. The only thing
-an ordinary user cannot do is catalogue a program whose name starts with
+an ordinary user cannot do is catalog a program whose name starts with
 `!`, `_` or `$` — those characters mean *system-wide*. Name it without
 one.
 
-**To catalogue system-wide you need to be SDSYS** — logged in to the
+**To catalog system-wide you need to be SDSYS** — logged in to the
 machine locally, as `sdsys`. There is no other route in to try instead.
 
 ## The pcode library
@@ -133,7 +133,7 @@ names are variants such as `vt100-w` — so `term wyse60` still works. (The
 support those terminal programs.)
 
 **A name that is not installed is refused and your current type is kept** —
-*"Unrecognised terminal name"* — so a typo costs you nothing. **`term` with no
+*"Unrecognized terminal name"* — so a typo costs you nothing. **`term` with no
 argument reports the type actually in force**, which is how to check.
 
 Watch for near-misses all the same. There is no `vt320` definition; `vt220`

@@ -129,7 +129,7 @@ ttyset saved
 | 7 | the erase key: 0 as at the start, 1 to 255 a character, 256 none | `erase` |
 | 8 | are control characters discarded by `input`? | `ctrl.filter` |
 | 9, 10 | Telnet binary mode, in and out | `binary` |
-| 11 | Telnet negotiation recognised? | `telnet` |
+| 11 | Telnet negotiation recognized? | `telnet` |
 
 **Fields 1 to 5 are openQM's; 6 to 11 are SD's own**, so that a program that
 saves everything and puts it back changes nothing. A field that is null is

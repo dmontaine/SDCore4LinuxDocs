@@ -8,17 +8,17 @@ hold them back from a *standard* account and only give them to a
 each of them does, not a list of what you have been given.
 
 **One thing, named as it comes up below, still needs more than the verb**:
-cataloguing globally is gated separately from the VOC — see
+cataloging globally is gated separately from the VOC — see
 [What actually gates these](#what-actually-gates-these) at the foot of this
 page. Unlike SD Core for Windows, the full-screen editors need nothing
 extra at all.
 
-## Compile, catalogue and run
+## Compile, catalog and run
 
 | | |
 |---|---|
 | **`basic`** | compile SD BASIC source |
-| **`catalog`** | add to the catalogue |
+| **`catalog`** | add to the catalog |
 | **`delete.catalog`** | remove from it |
 | **`compile.dict`** | compile dictionary items |
 | **`run`** | run a compiled program |
@@ -26,8 +26,8 @@ extra at all.
 | **`generate`** | generate source |
 | **`phantom`** | start a background process |
 
-> **Cataloguing globally is SDSYS's alone.** Adding to or removing from the
-> system-wide catalogue needs SDSYS; private and local cataloguing work from
+> **Cataloging globally is SDSYS's alone.** Adding to or removing from the
+> system-wide catalog needs SDSYS; private and local cataloging work from
 > any account. That is a separate control from having the verb at all — see
 > [Administrator commands](06-administrator-commands.html).
 
@@ -36,7 +36,7 @@ extra at all.
 | | |
 |---|---|
 | **`ed`** | the line editor. Needs nothing installed. `edit` is an alias for it |
-| **`sed`** | a **full-screen** editor that runs inside SD, with drop-down menus and colour for SD BASIC and five other languages |
+| **`sed`** | a **full-screen** editor that runs inside SD, with drop-down menus and color for SD BASIC and five other languages |
 | **`micro`** | a **full-screen** editor — opens the record in `micro` |
 | **`debug`** | the BASIC debugger |
 | **`pstat`** · **`pdebug`** · **`pdump`** · **`dump`** | process introspection |
@@ -48,7 +48,7 @@ Core for Windows, where it opens Microsoft Edit. There is no Linux
 equivalent to alias it to, so `edit` runs the **line** editor, `ed`,
 instead. There are two full-screen editors. **`sed` is SD's own**: a program
 written in SD BASIC that runs inside SD, so it needs no installing and no
-operating-system permission (its menus, keys and syntax colour are described in
+operating-system permission (its menus, keys and syntax color are described in
 *The SED Screen Editor*, in the User documentation). The other is the program
 `micro`, which the SD installer installs as an ordinary package:
 
@@ -60,14 +60,14 @@ micro dict customers name
 
 **A new account can do none of this until SDSYS gives it two switches.**
 Saving a record of a program file or a dictionary, and compiling or
-cataloguing, need `bp-on` (and `dict-on` for a dictionary); `micro`
+cataloging, need `bp-on` (and `dict-on` for a dictionary); `micro`
 also needs `os-on`, because it runs an operating-system program. See *Saving
 changes to a VOC, a program file or a dictionary* in
 [Managing accounts](05a-managing-accounts.html).
 
 `micro` writes the record to a working copy, opens the editor on it,
 reads it back, and asks whether to save. For a `bp` record it then offers the
-compile and the catalogue. `sed` edits the record itself, locks it while it is
+compile and the catalog. `sed` edits the record itself, locks it while it is
 open, and compiles from its own Tools menu.
 
 **Both are terminal editors**, so they work over ssh as well as at the
@@ -81,14 +81,14 @@ console.
 | **`micro`** | statements, reserved words, intrinsic functions, `@variables`, `$directives`, labels, strings, numbers and comments |
 
 **It applies to a `bp` record and to nothing else.** SD names the working
-copy so the editor can recognise the language — a record edited out of any
+copy so the editor can recognize the language — a record edited out of any
 other file is treated as plain text, which is correct for a VOC entry or a
 data record.
 
 > **The word lists are generated from the compiler.** They come out of
 > `bcomp`'s own tables — **182 statements, 37 reserved words and 176
 > intrinsic functions** — so the highlighting cannot drift from the
-> language. **If a name you expect is not coloured, that is worth
+> language. **If a name you expect is not colored, that is worth
 > reporting**: it means the two have come apart, which is exactly what
 > generating them was meant to prevent.
 
@@ -206,7 +206,7 @@ returned, above.) See [Not in SD Core](14-not-in-sd-core.html).
 
 ## What actually gates these
 
-**Having the verb is not the whole story for one thing above: cataloguing
+**Having the verb is not the whole story for one thing above: cataloging
 globally.** It needs more than being in the VOC — and since every account
 has the VOC now, this is the part worth knowing before you rely on
 anything in this page as a boundary.
@@ -235,7 +235,7 @@ script has nowhere to draw a full screen.
 Compiling into a reused file name previously produced an object SD could
 not subsequently open.
 
-**Object code and the catalogue are replaced on upgrade.** The compiled
+**Object code and the catalog are replaced on upgrade.** The compiled
 programs, the BASIC source SD ships, the messages, include records and VOC
 templates are all overwritten by a new release. **Anything you have written
 into the SDSYS `bp` file, and anything you have compiled from it, survives

@@ -388,7 +388,7 @@ The same applies to `getlocks()`, which would list every lock in the system.
 it answers about one record at a time.
 
 `release.lock` is a restricted statement for the same reason and gives
-*"Unrecognised statement"*.
+*"Unrecognized statement"*.
 
 **Deadlock detection exists** in the C, and takes the `locked` branch when it
 fires. It was not provoked: two sessions each waiting on the other's record is

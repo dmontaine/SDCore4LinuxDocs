@@ -8,7 +8,7 @@ menu bar on the top row, **F2** to find an action, the context menu, the status 
 the border and the row of keys at the foot, the box that asks before something is
 done, the form, the pick lists and the output pane.
 
-The public part is eleven catalogued subroutines whose names begin `!tk`, and one
+The public part is eleven cataloged subroutines whose names begin `!tk`, and one
 header, `tkpub.h`, that names their constants:
 
 ```
@@ -58,7 +58,7 @@ shown**. Pad an argument you do not use with `''`.
 | `call !tkmenubar(op, ctx, keys, pane, a, b, c)` | The menu bar, the finder (**F2**) and the context menu (**Shift-F10**, a right click). |
 | `call !tklayout(op, ctx, arg, ret)` | The body and its panes: declare them, read a pane's place, lay out again after a resize. |
 | `call !tkconfirm(sentence, lines, typed, res, msg, boxtitle, btns)` | The box that shows what is about to be done and asks; **Cancel is the default**. |
-| `call !tkform(op, ctx, a, b, c)` | A form of labelled entries: open, run, say, close. |
+| `call !tkform(op, ctx, a, b, c)` | A form of labeled entries: open, run, say, close. |
 | `call !tkpickrec(ctx, mode, file, id, res, newtext)` | Pick a file and a record, a record of a file, or one entry of a list you give. |
 | `call !tkout(op, ctx, a, b, c)` | The output pane: what your program did and what was refused. |
 | `call !tkwrap(text, width, out)` | Cuts a sentence into pieces that fit a width. |
@@ -182,7 +182,7 @@ frame. At 140 by 43:
 The screens in this guide were captured on a terminal whose locale is not UTF-8, so
 the borders are drawn with `+`, `-` and `|`. On a terminal that says UTF-8 the
 library opens the screen with line-drawing characters, and `ctx<TK.C.UTF8>` is 1.
-Reverse video and colour - the highlighted row, the status line - do not show in a
+Reverse video and color - the highlighted row, the status line - do not show in a
 copy as text.
 
 ## The examples

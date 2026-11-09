@@ -142,7 +142,7 @@ whether `arg` holds several values rather than one.
 internal function table, so an ordinary account does not merely get refused. It
 gets a misleading error: an unknown function is read as a matrix reference, so
 the complaint is about a `dim` statement the program does not contain, reported
-at the last line rather than at the call. That behaviour is covered by
+at the last line rather than at the call. That behavior is covered by
 [SD Basic - Restricted Commands](10-sd-basic-restricted-commands.html) in this
 set. `$internal` needs both halves: the compiler tests for internal mode **and**
 for the administrator flag.
@@ -186,7 +186,7 @@ also how `cproc` drops back to `sdsys`'s own identity after a privileged step.
 The shipped programs that call `sdext()` are `apisrvr`, `cred_set`,
 `cred_verify`, `sd_get_salt`, `sd_key_from_pw`, `sdclient`, `euid_set`,
 `euid_restore` and the three key ring subroutines `keyring_set`, `keyring_clear`
-and `keyring_list`. The last three are catalogued for general use as `!keyset`,
+and `keyring_list`. The last three are cataloged for general use as `!keyset`,
 `!keyclear` and `!keylist`, so an application reaches the ring without reaching
 `sdext()`.
 

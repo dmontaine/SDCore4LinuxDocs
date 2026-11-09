@@ -129,7 +129,7 @@ A packet that declares anything else (below 6, negative, or over the limit) is n
 
 **A session whose server has ended** — its `AUTOLOGOUT` period ran out, the administrator logged it out, the process was killed — does not hang the client: the next request on it comes back empty, `SDError()` says the pipe or connection failed, and `SDDisconnect()` cleans it up. *Before 15 Oct 2026 a local session in that state waited for ever, and writing to it could end the program with `SIGPIPE`.* A session can set its own limit by executing the `AUTOLOGOUT` command (`SDExecute("AUTOLOGOUT 10")`: ten minutes idle; the period is in minutes, 0 turns it off).
 
-**`MASTER.LOGIN`.** If the administrator has put a `MASTER.LOGIN` paragraph in the SDSYS VOC it is run when an API session first enters an account, before that account's own `LOGIN` paragraph, as it is for a terminal session; entering another account with `SDLogto` runs the new account's `LOGIN` only. A session can be recognised inside either paragraph by `@TTY`, which is `apisrvr`.
+**`MASTER.LOGIN`.** If the administrator has put a `MASTER.LOGIN` paragraph in the SDSYS VOC it is run when an API session first enters an account, before that account's own `LOGIN` paragraph, as it is for a terminal session; entering another account with `SDLogto` runs the new account's `LOGIN` only. A session can be recognized inside either paragraph by `@TTY`, which is `apisrvr`.
 
 ### File operations
 
@@ -180,7 +180,7 @@ A packet that declares anything else (below 6, negative, or over the limit) is n
 | `SDExecute(cmnd, err)` | String | execute a TCL command |
 | `SDRespond(response, err)` | String | respond to a prompt from `SDExecute` |
 | `SDEndCommand()` | none | end a multi-line command |
-| `SDCall(name, argcount, ...)` | none | call a catalogued subroutine; the arguments the subroutine changed are put back into yours |
+| `SDCall(name, argcount, ...)` | none | call a cataloged subroutine; the arguments the subroutine changed are put back into yours |
 | `SDCallx(name, argcount, ...)` | none | the same call, but your arguments are **not** changed: read each one the subroutine changed with `SDGetArg(n)` afterwards |
 | `SDGetArg(argNo)` | String | argument *n* (1 to 20) of the last `SDCallx`; free it with `SDFree` |
 

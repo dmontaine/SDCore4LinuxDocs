@@ -97,7 +97,7 @@ The text may contain codes, written inside quotes within the string:
 | `'T'` | the time |
 | `'N'` | suppress the automatic page break |
 | `'L'` | a line break within the heading |
-| `'C'` | centre what follows |
+| `'C'` | center what follows |
 
 Because the codes are quoted inside the heading, the heading itself needs the
 other kind of quote around it:
@@ -145,7 +145,7 @@ Other keys worth knowing:
 
 `setpu` changes a setting; `printer.setting()` takes **three** arguments and
 reports or sets a spooler-level setting. **Not every key is valid for every
-call** — `printer.setting(0, 0, 0)` fails with *"Unrecognised printer setting
+call** — `printer.setting(0, 0, 0)` fails with *"Unrecognized printer setting
 key"*, because key 0 belongs to `getpu`, not to it.
 
 **The width and length are the unit's, not the terminal's.** Unit 0 reports

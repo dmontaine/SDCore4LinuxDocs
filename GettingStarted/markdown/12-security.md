@@ -2,7 +2,7 @@ Title: Security
 Subtitle: Who you are, what that gets you, and what actually protects the database.
 
 The identity model in SD Core is not OpenQM's. It is worth understanding
-before you test anything else, because several behaviours that look like
+before you test anything else, because several behaviors that look like
 bugs are consequences of it.
 
 ## What ships secured, before you change anything
@@ -53,7 +53,7 @@ data files by file name (`shared.read` is on unless SDSYS turns it off with
 structure of its files. So **anything placed in `shared` is readable by every
 account that has not had the right taken away: put nothing in it that is not
 meant for everyone.** An account with `sh-on` or `os-on` can also reach the
-files from the operating system. The verbs, programs and catalogue of `shared`
+files from the operating system. The verbs, programs and catalog of `shared`
 are never reached from another account. See [Accounts](05-account-types.html#the-shared-account).
 
 ## Signing in asks for no password

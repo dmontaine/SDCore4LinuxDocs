@@ -224,7 +224,7 @@ The second list holds `1001`, and `list stock name` after it lists that record.
 the internal form, as in the statement. The index name is looked up as typed, then in
 lower case, then in upper, and the file name the same. The file must be a
 dynamic (hashed) file and the index **built** — an index that has been created but
-not built selects nothing. An index that is not there is *Unrecognised index name*
+not built selects nothing. An index that is not there is *Unrecognized index name*
 and the name; a missing index name is *Index name required*; a file that is not
 dynamic is *Dynamic file required*.
 
@@ -293,7 +293,7 @@ that way, and `delete.index zzak f1`, `delete.index zzak F1` and
 *Deleted index f1*, in lower case, whichever case you typed).
 
 > **An older SD held index names in upper case and `delete.index` matched them
-> exactly:** `delete.index zzak f1` then answered *"Unrecognised index name
+> exactly:** `delete.index zzak f1` then answered *"Unrecognized index name
 > (f1)"* on a file where `list.index zzak f1` had just found the index. If you
 > meet that, the SD you are talking to is older than this page; use **`all`**,
 > or type the name exactly as `list.index` prints it.

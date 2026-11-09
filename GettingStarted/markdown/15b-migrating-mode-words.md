@@ -4,7 +4,7 @@ Subtitle: Every name that $mode accepts, and the lines of a $basic.options recor
 This page continues [Migrating to SD](15-migrating-to-sd.html). A mode changes how **one
 program** is compiled: `$mode` *name* `{, name ...}` in the source, or a `mode` line in
 a `$basic.options` record. **All are off unless asked for.** A name SD does not have stops the
-compile with *Unrecognised mode name*; `$mode default` turns every mode off, `$mode -name` one.
+compile with *Unrecognized mode name*; `$mode default` turns every mode off, `$mode -name` one.
 Seven names that existed to imitate other products were removed on 27 October 2026 (and an eighth, below) and are
 refused now: `conditional.statements` (it did nothing: the file statements may always be the
 condition of `while` and `until`), `exception.save.stack` (write `saving.stack` on the `catch`),
@@ -15,7 +15,7 @@ Three more went later that day, each doing without the mode what it did with the
 (the default select list is no longer cleared before an `execute`; `clearselect 0` does it), `open.fail.zero.fvar`
 (the file variable of a failed `open` stays unassigned) and `pick.readnext` (a `readnext` that takes its `else`
 sets the id variable to the null string).
-Twenty-two more went on 27 October 2026, each doing without the mode what it did with the mode off, and are refused now: `string.locate`, `composite.readnext`, `pick.read`, `selectv`, `pick.select`, `stdfil`, `stdfil.shared`, `write.delete.then.else`, `autolock`, `pick.substr`, `pick.substr.assign`, `compatible.append`, `pick.convert`, `count.overlap`, `index.overlap`, `change.no.overlap`, `case.sensitive`, `for.store.before.test`, `pick.jump.range`, `optional.final.end`, `pick.matrix` and `heading.no.eject` (for the last, write `heading no.eject`; the others have no replacement, because the behaviour they switched on is not offered at all). `selectv` is still a statement: `selectv` *file* `to` *var*.
+Twenty-two more went on 27 October 2026, each doing without the mode what it did with the mode off, and are refused now: `string.locate`, `composite.readnext`, `pick.read`, `selectv`, `pick.select`, `stdfil`, `stdfil.shared`, `write.delete.then.else`, `autolock`, `pick.substr`, `pick.substr.assign`, `compatible.append`, `pick.convert`, `count.overlap`, `index.overlap`, `change.no.overlap`, `case.sensitive`, `for.store.before.test`, `pick.jump.range`, `optional.final.end`, `pick.matrix` and `heading.no.eject` (for the last, write `heading no.eject`; the others have no replacement, because the behavior they switched on is not offered at all). `selectv` is still a statement: `selectv` *file* `to` *var*.
 The last column names the page of the User set that also describes the word; **here** means this
 page is where it is described. Some modes also work at the start of an I-type, which is
 described in *SD Dictionaries - Formats and Expressions*.
@@ -59,7 +59,7 @@ the VOC; the first one found is used. One entry to a line.
 
 | line | what it does | also described in |
 |---|---|---|
-| `catalog` {`local`\|`global`} {`no.query`} | a program that compiles with no errors is catalogued under its own name, as the `catalog` verb would, in the mode given; `no.query` leaves out the question about replacing | here |
+| `catalog` {`local`\|`global`} {`no.query`} | a program that compiles with no errors is cataloged under its own name, as the `catalog` verb would, in the mode given; `no.query` leaves out the question about replacing | here |
 | `no.catalog` | cancels an earlier `catalog` line | here |
 | `define` *name* {*value*} | defines a token as `$define` does, for `$ifdef` and for use in the source; the value is a number or a quoted string | here |
 | `debugging` | every program is compiled for the debugger | here |

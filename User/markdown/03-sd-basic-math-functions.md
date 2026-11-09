@@ -121,7 +121,7 @@ rdiv(dividend, divisor)
 >
 > The two differ only for negative results — for positive ones truncation and
 > floor agree. **If the sign can be negative, use `div()`**, which truncates
-> towards zero whatever the argument types are. This behaviour is inherited
+> towards zero whatever the argument types are. This behavior is inherited
 > from OpenQM and has been kept for compatibility; it is not new in this port.
 
 `div()` returns a whole number even when the arguments are fractional:

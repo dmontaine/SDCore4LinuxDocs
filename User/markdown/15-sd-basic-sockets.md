@@ -308,7 +308,7 @@ finished is the newline it went looking for.
 ## What is not here
 
 **`writepkt` is a restricted statement** — internal programs only. In an
-ordinary account it is *"Unrecognised statement"*. It writes an SDClient
+ordinary account it is *"Unrecognized statement"*. It writes an SDClient
 protocol packet and is not a general socket write.
 
 **No HTTPS.** There is nothing in SD BASIC that speaks HTTPS; a socket carries

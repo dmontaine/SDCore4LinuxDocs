@@ -3,7 +3,7 @@ Subtitle: Every word of the option command, what it changes, and where else it i
 
 This page continues [Migrating to SD](15-migrating-to-sd.html). The words are the
 fourteen that `option` lists. (Six more (`unass.warning`, `div.zero.warning`, `non.numeric.warning`, `inherit`, `query.sort.no.case` and `clear.select`, with the shortcut `sdbasic.warnings` and the `keep.select` statement), then three more (`chain.keep.common`, `backslash.not.quote` and `correlative.reuse`), then four more (`no.sel.list.query`, `catalogue.local`, `inherit.mfile.path`
-and `correlative.nocase`) and eleven before them, whose off behaviour is now the only one, were removed
+and `correlative.nocase`) and eleven before them, whose off behavior is now the only one, were removed
 on 27 October 2026: `run.no.page`, `paginate.on.heading`, `pick.ml.conv.mask`, `chained.select`,
 `default.mv`, `query.string.comp`, `query.str.comp.all`, `assoc.all`, `query.footer.pause`,
 `query.merge.print` and `keep.old.object`. Twenty-two words that existed only to imitate other
@@ -40,7 +40,7 @@ page is where it is described.
 | word | what it does | also described in |
 |---|---|---|
 | `command.level.locks` | a file variable that goes keeps its locks until the program is back at the command processor | *SD Basic - Program Structure* |
-| `force.reload` | compiling or cataloguing a program also refreshes the subroutine links a running program holds | *SD Basic - Program Structure* |
+| `force.reload` | compiling or cataloging a program also refreshes the subroutine links a running program holds | *SD Basic - Program Structure* |
 | `no.phantom.notify` | set in a phantom, it stops the message sent to its parent when it ends | *SD Basic - Program Structure* |
 | `stacked.account` | an `execute` of a command that does a `logto` leaves the process in the account it began in | *SD Basic - Program Structure* |
 

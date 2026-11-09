@@ -21,7 +21,7 @@ braces an optional part.
 
 | | |
 |---|---|
-| ***(restricted)*** | a statement in `BCOMP`'s `restricted.statements`. An ordinary account gets ***"Unrecognised statement"***, which at least names the right line |
+| ***(restricted)*** | a statement in `BCOMP`'s `restricted.statements`. An ordinary account gets ***"Unrecognized statement"***, which at least names the right line |
 | ***(internal)*** | a function in `BCOMP`'s `int.intrinsics`. ***The message names something else entirely***: an unknown function is read as a matrix reference, so the complaint is ***"Matrix X is not referenced in a DIM statement"*** — reported at the **last line of the program**, nowhere near the call. With three or more arguments it is *"Right bracket not found where expected"* instead, because a matrix takes at most two subscripts |
 | ***(no such thing)*** | in a table with no opcode behind it. It compiles for **nobody** — `$internal` does not help |
 

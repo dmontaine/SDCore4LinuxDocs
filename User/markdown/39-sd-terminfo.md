@@ -3,7 +3,7 @@ Subtitle: The terminfo database, the definitions that ship, and the compiler tha
 
 SD uses a terminfo database to know what byte sequences a terminal sends for
 each key, and what sequences to emit for screen control — cursor movement,
-clear, colour, bold, underline.
+clear, color, bold, underline.
 
 Most installations never touch it. The shipped definitions cover the
 terminals in ordinary use, and `linux` works with any standard Linux
@@ -160,7 +160,7 @@ installed. SD asks gpm only when the terminal type is
 screen with `nomouse` is not connected. SED reads its own mouse reports
 and has no mouse on the console.
 
-**Colour and borders.** The console has eight colours and bold, and the
+**Color and borders.** The console has eight colors and bold, and the
 themes (`blue`, `classic`, `mono`) work on it. On a console set to UTF-8, which
 is what Debian gives, the pages draw their borders with line-drawing characters.
 
@@ -181,7 +181,7 @@ definition.
 ## Ending one attribute: `eblink`, `edim`, `erev`, `ebold` and `eprot`
 
 SD turned blink, half intensity, reverse video and bold off with `sgr0`, which ends **every**
-attribute and the colours as well. A terminal entry can now give each its own capability:
+attribute and the colors as well. A terminal entry can now give each its own capability:
 
 | capability | ends | sent by |
 |---|---|---|
@@ -193,10 +193,10 @@ attribute and the colours as well. A terminal entry can now give each its own ca
 
 When the entry defines the capability, the function sends it; **when it does not, the function
 sends `sgr0` as before.** No entry that ships with SD defines any of the five, so nothing changes
-until you add them. SD's own programs that use `@(-14)` to put the colours back (the query
+until you add them. SD's own programs that use `@(-14)` to put the colors back (the query
 processor's styles, SED, the pick lists) therefore behave as they did on every stock terminal.
 Think before you give an entry an `erev` of its own: it ends reverse video and nothing else, where
-`sgr0` ended the colours too.
+`sgr0` ended the colors too.
 
 Put the additions in `terminfo.mods` in the SDSYS account directory, which the installer compiles
 after `terminfo.src` so that an upgrade does not lose them, and compile with `sdtic` as described

@@ -10,7 +10,7 @@ reading, selecting and querying, and, only for a server defined `write` whose
 administrator has also put the remote user in the Linux group `sdfileswrite`, for
 writing and locking.** On the server side there is a second, narrower API route,
 `sdfiles`, which lets a login work with files and do nothing else. The pieces that are
-not there are listed under "What does not exist yet". Behaviour that depends on your own
+not there are listed under "What does not exist yet". Behavior that depends on your own
 network is listed in *Known Limits*.
 
 An earlier SDNet was removed on 9 September 2026 (a `server;file` VOC entry over
@@ -943,7 +943,7 @@ opened again.
 | `DELETE`, `DELETEU` | one request; a record that is not there is not an error |
 | `CLEARFILE` | one request; a big file can take minutes, and the connection is only called lost after five |
 | `READU`, `READL`, `MATREADU/L`, `READVU/L` | the lock, then the read; a busy record takes the `LOCKED` branch (`STATUS()` is the holder) or, without a `LOCKED` clause, the statement tries again every quarter of a second until the lock is free |
-| `RECORDLOCKU`, `RECORDLOCKL` | the lock, with the same busy behaviour |
+| `RECORDLOCKU`, `RECORDLOCKL` | the lock, with the same busy behavior |
 | `FILELOCK` | one request for the **whole file's** lock; a busy file (another user's file lock, or another user's lock on any record of the file) takes the `LOCKED` clause and `STATUS()` is the holder's user number on that server; with no `LOCKED` clause the statement asks again every quarter of a second. **Only for a server defined `write` and a login in the other server's `sdfileswrite` group** (S.72, 20 October 2026) |
 | `FILEUNLOCK` | one request; `STATUS()` afterwards is 0 (it was this session's and is free now), 3011 (another user's, still held) or 3012 (nobody held it), as for a local file. Same conditions as `FILELOCK`. It is never stopped by the definition being set back to `read`: giving a lock back changes no data |
 | `RELEASE` | the record form, the file form (which also gives the file lock back) and plain `RELEASE` (every lock this process holds on a write-mode server) |
@@ -1009,7 +1009,7 @@ is a silent loss of the guarantee the program asked for); the statements that on
 creating or deleting a remote file and `WRITE ... CREATING.SEQKEY` work for a login that also has
 the administration group (*The administration group*, above), and are refused, with nothing
 sent, for a `read` definition.** `MUSTLOCK`
-is honoured as for a local file (there is no `$MODE AUTOLOCK`): a write without the lock held is refused
+is honored as for a local file (there is no `$MODE AUTOLOCK`): a write without the lock held is refused
 with `STATUS()` 3023 (for a login without the write group see `RECORDLOCKED()` above).
 
 **The local edit gates apply by the remote file's name.** A write, delete or clear of a remote

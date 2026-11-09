@@ -422,7 +422,7 @@ Core for Windows). A program using one will not compile.
 | `procread` · `procwrite` · `@pib` · `@sib` · `@pob` · `@sob` | the PROC interface |
 
 **`errmsg` is not in the compiler's statement table, and has not been since
-July 2024.** `errmsg 1000` is rejected with *"Unrecognised statement"*, the
+July 2024.** `errmsg 1000` is rejected with *"Unrecognized statement"*, the
 same message as for any word the compiler does not know (`foobarbaz 1000` gets
 it too). An earlier version of this page said the name was still in the table
 with nothing behind it. That was wrong: `BCOMP` removed the table entry on

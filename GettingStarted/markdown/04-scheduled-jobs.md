@@ -213,7 +213,7 @@ sd-elevate: job nightly is scheduled: daily 02:30
 
 `set.job` alone lists the jobs with their next and last runs;
 `set.job change`, `delete` and `run` do the rest. Everything else — the
-page's keys, what a damaged job is, how a run is recognised, where the
+page's keys, what a damaged job is, how a run is recognized, where the
 definitions and units are kept, and the account lists from the
 administrator's side — is *Scheduled jobs* in the administrator's
 documentation.

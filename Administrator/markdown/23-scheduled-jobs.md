@@ -117,6 +117,7 @@ with its schedule, its command, when it runs next and how its last run ended.
 | **C** or Enter | changes the selected job's job or schedule (its name stays) |
 | **D** | deletes the selected job: you type its name in the box |
 | **R** | starts the selected job now; the page does not wait for it |
+| **/** | goes to the next row of the box you are in whose name holds a text you type (any case; it goes round to the top), since 9 November 2026 |
 | **F5** | reads the list again (a run shows there when it has finished) |
 | **Ctrl-O** | shows what each command answered, newest first |
 
@@ -152,7 +153,7 @@ A file whose name is not a job name, and a link or anything but a plain file und
 be changed or removed by the page or `set.job` (the helper refuses both); remove it as root
 (`rm /etc/sdcore/jobs.d/`*file*).
 
-## How a run is recognised
+## How a run is recognized
 
 A job's run has no login behind it: `systemd` starts it, and nobody signed in. SD therefore does not ask
 who logged in, as it does for every other `sdsys` session; it asks two things that only root controls.

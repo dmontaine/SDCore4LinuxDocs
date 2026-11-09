@@ -1,9 +1,9 @@
 Title: Embedded Python
-Subtitle: The CPython interpreter built into SD, the dictionary, list and string objects it exposes, and the twenty-one catalogued functions that reach it from BASIC.
+Subtitle: The CPython interpreter built into SD, the dictionary, list and string objects it exposes, and the twenty-one cataloged functions that reach it from BASIC.
 
 SD Core for Linux embeds CPython so a BASIC program can run Python code and
-exchange data with it. Twenty-one catalogued routines carry this - counted
-alongside the rest of SD's global catalogue in the User set's *SD Standard
+exchange data with it. Twenty-one cataloged routines carry this - counted
+alongside the rest of SD's global catalog in the User set's *SD Standard
 Subroutines* page, which does not repeat them; this page is where they are
 documented.
 
@@ -16,8 +16,8 @@ deffun PY_CREATEDICT(dictname) calling '!PY_CREATEDICT'
 status = PY_CREATEDICT('mydict')
 ```
 
-All twenty-one are `$internal`-compiled and ship already catalogued, so no
-account needs to compile or catalogue anything to use them - only `deffun`
+All twenty-one are `$internal`-compiled and ship already cataloged, so no
+account needs to compile or catalog anything to use them - only `deffun`
 and a call. Failure is always `status()`, not the returned value: several of
 these functions return an empty string on both "genuinely empty" and
 "failed," so `status()` is what tells them apart. **Every one of the
@@ -30,7 +30,7 @@ switch** - the same one as `OS.EXECUTE`, because Python runs arbitrary code in
 your own process. SDSYS turns it on with `modify.account` *name* `os-on`; a new
 account does not have it. The question is put to the **account**, not to the
 routine: `$internal` controls who may *compile* a new internal-mode program, and
-a catalogued routine like `PY_CREATEDICT` is internal, but the interpreter
+a cataloged routine like `PY_CREATEDICT` is internal, but the interpreter
 itself refuses to start for an account without `os-on`. `PY_INITIALIZE` then
 returns null with `status()` 3035 and prints nothing, so a program that needs
 Python should test for it.

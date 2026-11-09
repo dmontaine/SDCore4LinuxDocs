@@ -42,10 +42,10 @@ Lines beginning `#` are comments. The shipped file is heavily commented and
 those comments record why each value was chosen. Read them before changing
 anything.
 
-### A name SD does not recognise stops it starting
+### A name SD does not recognize stops it starting
 
-An unrecognised parameter is not ignored. The parser abandons the file with
-`Unrecognised configuration parameter`, and SD does not start.
+An unrecognized parameter is not ignored. The parser abandons the file with
+`Unrecognized configuration parameter`, and SD does not start.
 
 That is why a name SD has dropped has to be taken out of the file. On 27 October
 2026 eleven parameters were removed (`APILOGIN`, `CODEPAGE`, `CREATUSR`,
@@ -89,7 +89,7 @@ group.size = config('GRPSIZE')
 **48 parameters are readable this way.** The two that are not are `BACKUPDIR` and `SDSYS`. A name of more than sixteen characters is not found (the function answers an empty string and `status()` is not 0); no parameter name is that long, so that only shows up if you pass something which is not a parameter.
 
 Two further forms exist. `config lptr` reports the settings of the default
-printer, and `config gpl` and `config contrib` display the licence and the list
+printer, and `config gpl` and `config contrib` display the license and the list
 of contributors.
 
 ## Changing a parameter
@@ -164,7 +164,7 @@ A row marked `*` is one where the file and the running SD disagree. The box at t
 parameter whether the sessions started now will read the file's value (`session`) or SD keeps the old
 one until it is restarted (`restart`). **A name in the file that SD does not know is listed at the end
 as `unknown`, and the top of the page names it: SD does not start with it, and no new session starts
-while the file holds it** (the section *A name SD does not recognise stops it starting* above). `D`
+while the file holds it** (the section *A name SD does not recognize stops it starting* above). `D`
 shows only the rows where the file and SD disagree, and `S` only the parameters the file sets. The last
 column, `Change`, says `e` for a parameter the page can change (press `E`) and `by hand` for every
 other.
@@ -342,7 +342,7 @@ the check on the length a reply announces.
 
 | Parameter | Default on a new install | Effect |
 |---|---|---|
-| `SDSYS` | `/usr/local/sdsys` | The system account. SD does not start if the global catalogue is not found beneath it |
+| `SDSYS` | `/usr/local/sdsys` | The system account. SD does not start if the global catalog is not found beneath it |
 | `USRDIR` | `/home/sd/user_accounts` | Where `create.account` puts a user account |
 | `GRPDIR` | `/home/sd/group_accounts` | Where `create.account` puts a group account |
 | `DUMPDIR` | `/usr/local/sdsys/dumps` | Where process dumps are written |
@@ -417,7 +417,7 @@ does not lift that confinement — see *Accounts and Security*.)
 
 | Parameter | Default | Effect |
 |---|---|---|
-| `SCREENTHEME` | unset (`mono`); `paper` in the shipped `sd.conf` | The colour theme that a program using the `SCREEN` statement gets when it does not choose one: `paper`, `night`, `mono`, `classic`, `dark`, `light` or `blue`. `paper` is black and dark blue text on light grey, with the menu bar and menus the other way round (light grey on black); `night` is white and yellow text on black, its menus black on light grey; `mono` uses only reverse video, underline and bold and reads on any terminal. The shipped `sd.conf` says `SCREENTHEME=paper`, so the toolkit pages and any program that opens a screen show paper on a colour terminal on a fresh install; the IDE, SED and the debugger follow it too (the IDE falls back to paper for a name that is not a theme). On an upgrade that keeps the configuration, the installer adds `SCREENTHEME=paper` to a restored `/etc/sd.conf` that has no `SCREENTHEME` line, and changes a restored `SCREENTHEME=blue` (the delivered theme before 2.0-0) to `paper` once, leaving a comment line in the file that says so; set `SCREENTHEME=blue` again afterwards to keep the old look, and later installs leave it. Any other line, `mono` included, is left alone. A terminal with no colour (vt100, a phantom, a pipe) is `mono` whatever the line says, and so is a name that is not a theme, without an error. A program that asks for a theme gets that one. A program reads the value with `config('SCREENTHEME')`. **A person's own choice wins for that person** (since 8 November 2026): Ctrl-T or View > Theme on any full-screen program keeps the theme chosen as the record `theme.`*login name* of the file `&menus&` in the account they are in, and every full-screen program starts in it from then on; `SCREENTHEME` is what a person who has never chosen sees. To give someone the site's theme again, delete that record |
+| `SCREENTHEME` | unset (`mono`); `paper` in the shipped `sd.conf` | The color theme that a program using the `SCREEN` statement gets when it does not choose one: `paper`, `night`, `mono`, `classic`, `dark`, `light` or `blue`. `paper` is black and dark blue text on light gray, with the menu bar and menus the other way round (light gray on black); `night` is white and yellow text on black, its menus black on light gray; `mono` uses only reverse video, underline and bold and reads on any terminal. The shipped `sd.conf` says `SCREENTHEME=paper`, so the toolkit pages and any program that opens a screen show paper on a color terminal on a fresh install; the IDE, SED and the debugger follow it too (the IDE falls back to paper for a name that is not a theme). On an upgrade that keeps the configuration, the installer adds `SCREENTHEME=paper` to a restored `/etc/sd.conf` that has no `SCREENTHEME` line, and changes a restored `SCREENTHEME=blue` (the delivered theme before 2.0-0) to `paper` once, leaving a comment line in the file that says so; set `SCREENTHEME=blue` again afterwards to keep the old look, and later installs leave it. Any other line, `mono` included, is left alone. A terminal with no color (vt100, a phantom, a pipe) is `mono` whatever the line says, and so is a name that is not a theme, without an error. A program that asks for a theme gets that one. A program reads the value with `config('SCREENTHEME')`. **A person's own choice wins for that person** (since 8 November 2026): Ctrl-T or View > Theme on any full-screen program keeps the theme chosen as the record `theme.`*login name* of the file `&menus&` in the account they are in, and every full-screen program starts in it from then on; `SCREENTHEME` is what a person who has never chosen sees. To give someone the site's theme again, delete that record |
 
 ## The shell
 
@@ -477,6 +477,6 @@ directory outside the accounts, put an F-pointer in the VOC, where the
 operating-system access switches apply to it. A Q-pointer whose fourth field
 names another system is refused with status 3003 and is not opened as a local file.
 
-There is no licence parameter and no licence verb. SD Core for Windows is
+There is no license parameter and no license verb. SD Core for Windows is
 GPL v3 and is not licensed per site or per user; `config gpl` displays the
-licence text.
+license text.

@@ -91,7 +91,7 @@ The *Administrator* set's *Configuration* page has the detail.
 ## Virtual file systems
 
 **SD has never been able to open a virtual file system.** Nothing in the
-file-opening code ever recognised a `VFS:` pathname. What the language carried
+file-opening code ever recognized a `VFS:` pathname. What the language carried
 was the *outline* of one, and none of it could be reached: a VOC F-pointer
 written as `VFS:something` was reported as a virtual file system, passed the
 name resolver, and then failed to open with an unrelated error.
@@ -174,7 +174,7 @@ called. **`py_json`, `py_term`, `py_test` and `py_test2` were kept
 deliberately**, as the documented examples for embedded Python, above.
 
 **`pcl` is unaffected as a printer feature** — the `pcl` keyword and the
-catalogued `pcl` routine in `gpl.bp` are both still there. What has gone is
+cataloged `pcl` routine in `gpl.bp` are both still there. What has gone is
 a second, older copy of the source sitting in `bp`.
 
 **SD ships nothing into the SDSYS `bp` file at all now.** It is created

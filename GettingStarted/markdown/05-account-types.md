@@ -73,7 +73,7 @@ administrator loosens it, account by account, for the people who need it:
 | `sh-on` | the `sh` verb |
 | `os-on` | `OS.EXECUTE`, `micro`, the embedded Python, and files or directories of the operating system named by their path outside the account's own directory |
 | `voc-on` | saving a change to the account's VOC |
-| `bp-on` | saving a change to a program file (`bp`, `bp.out`, `*.bp`, `*.bp.out`), and compiling and cataloguing. A new account needs it before it can save or compile its first program |
+| `bp-on` | saving a change to a program file (`bp`, `bp.out`, `*.bp`, `*.bp.out`), and compiling and cataloging. A new account needs it before it can save or compile its first program |
 | `dict-on` | saving a change to a dictionary (a file whose name ends `.dic`) |
 
 `sh-on`, `os-on` and the three edit switches are independent of each other
@@ -111,7 +111,7 @@ ungranted.
 
 ### What every account can do
 
-**Every verb, from the moment it is created.** Compile, catalogue, edit,
+**Every verb, from the moment it is created.** Compile, catalog, edit,
 define files and indexes, run the bulk record editors, inspect processes —
 none of that is withheld. What an account cannot do is administer: create,
 delete, or suspend another account; change system-wide configuration. And
@@ -142,7 +142,7 @@ switches, `shared-read-on` / `shared-read-off` and `shared-write-on` /
 attempt to save, delete or clear a record in a shared file is refused, and
 changing the *structure* of a shared file (clearing it, configuring it,
 indexing it, deleting it) is SDSYS's alone, at a terminal on the machine.
-The verbs, programs and catalogue of `shared` are not shared: only its data
+The verbs, programs and catalog of `shared` are not shared: only its data
 files and their dictionaries. **Nobody but SDSYS signs on to `shared`.**
 Because every account can read it, put nothing there that is not meant for
 everyone.

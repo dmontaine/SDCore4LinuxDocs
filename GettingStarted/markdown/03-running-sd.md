@@ -78,7 +78,7 @@ starting a second `sd` session from inside an `sh` spawned by a first one.
 SD Core for Linux has no such check (no environment marker, no
 session-nesting guard), so typing `sd` inside `sh` may simply start another,
 genuinely nested interactive session rather than being refused. Do not rely
-on either behaviour.
+on either behavior.
 
 ## The command line
 

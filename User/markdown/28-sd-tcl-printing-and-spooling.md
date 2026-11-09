@@ -160,7 +160,7 @@ it alone.)*
 **Unlike SD Core for Windows, `at` accepts any name without checking it
 against a list of installed printers.** This port hands whatever name you
 give it straight to the configured spooler command; a name the spooler
-itself does not recognise fails when the job is actually sent, not when
+itself does not recognize fails when the job is actually sent, not when
 `at` is typed.
 
 ## Holding a unit open
@@ -220,9 +220,9 @@ row of the keys:
 PgDn next  PgUp previous  Home top  End bottom  Left scroll left  Right scroll right  S spool  X delete  Q quit
 ```
 
-The colours are your own theme if you chose one (Ctrl-T on any page), else the site's (`SCREENTHEME` in `sd.conf`; the classic theme
+The colors are your own theme if you chose one (Ctrl-T on any page), else the site's (`SCREENTHEME` in `sd.conf`; the classic theme
 when it names none or names `mono`, as in the debugger; plain on a terminal with
-no colour) and are given back when you leave the record. A page of the record is
+no color) and are given back when you leave the record. A page of the record is
 five lines shorter than the window, so N, P and B move by that many lines. A
 control character in the record (a printer escape, a form feed, a tab) is shown
 as a letter in reverse video, not obeyed, so a held report written for a printer

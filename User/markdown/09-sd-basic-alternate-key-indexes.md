@@ -119,7 +119,7 @@ moves back.
 holding **`LEEDS`** — the first value in order.
 
 > **These four take no `then` or `else` clause.** Writing one is a compile
-> error — *"Unrecognised statement"* — because the parser expects `setting` or
+> error — *"Unrecognized statement"* — because the parser expects `setting` or
 > `to` and finds a keyword it has no use for. To detect the end of the index,
 > read the select list they build: an empty one means there was nothing
 > further.

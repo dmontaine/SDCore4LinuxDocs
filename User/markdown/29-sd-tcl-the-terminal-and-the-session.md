@@ -1,5 +1,5 @@
 Title: SD TCL - The Terminal and the Session
-Subtitle: Screen size, terminal behaviour, silence, the inactivity timer, and writing to the error log.
+Subtitle: Screen size, terminal behavior, silence, the inactivity timer, and writing to the error log.
 
 Two different things are called the terminal. **`term` is the page** — how wide
 and how deep SD thinks your screen is, which decides where output wraps and when
@@ -139,7 +139,7 @@ looks wrong or the mouse does not answer.
 
 | box | what it shows |
 |---|---|
-| **Terminal** | the terminal type SD is using (`TERM (SD)`, what `term` sets) and the one in the environment (`TERM (env)`), the window and the layout, the locale and whether the borders are line characters (UTF-8) or `+ - \|`, whether the terminal can show colour, the theme, how many mouse events have arrived, how keys are being read, and how many of the 52 keys in the grid have been seen |
+| **Terminal** | the terminal type SD is using (`TERM (SD)`, what `term` sets) and the one in the environment (`TERM (env)`), the window and the layout, the locale and whether the borders are line characters (UTF-8) or `+ - \|`, whether the terminal can show color, the theme, how many mouse events have arrived, how keys are being read, and how many of the 52 keys in the grid have been seen |
 | **Last keys** | the 25 newest keys, newest first. **Names** (the start): the name the screen library reports for the key — `up`, `f5`, `ctrl-g`, `alt-s`, `mouse`, or the character itself with its code. **Raw** (Ctrl-R): the bytes the terminal sent, the first eight, in hex, with the characters beside them |
 | **Keys seen** | the arrows, home, end, paging, insert, delete, backspace, tab, back-tab, Enter, Esc, the twelve function keys, the control keys, an Alt-letter, a printable character and the mouse; a key is ticked, and drawn bold, once it has been pressed |
 | **Mouse** | the last mouse event (press, release, drag, wheel), where it was, and the counts |
@@ -148,7 +148,7 @@ looks wrong or the mouse does not answer.
 Every key is shown **before** the program acts on it. The program uses five:
 **Ctrl-L** clears what has been seen (it uses no function key, so every function key can be tested), **Ctrl-R** switches between names and raw
 bytes, **Ctrl-T** takes the next theme and keeps it for you, as on every page (a terminal that cannot
-show colour keeps mono and says so), **Ctrl-K** lists these keys and **Ctrl-Q** leaves, so a key that ends the
+show color keeps mono and says so), **Ctrl-K** lists these keys and **Ctrl-Q** leaves, so a key that ends the
 program can only be tested by leaving. `tool.keys` has no menu bar, so that Esc and F10 can be
 tested here like any other key.
 
@@ -223,7 +223,7 @@ gone quiet — it takes a keyword and `display` is one of them. The full set:
 | **`pterm newline cr`** \| **`lf`** \| **`crlf`** | the output line ending |
 | **`pterm return cr`** \| **`lf`** | the input line ending |
 | **`pterm binary on`** \| **`off`** | pass bytes through untranslated |
-| **`pterm telnet on`** \| **`off`** | recognise `TN_IAC` |
+| **`pterm telnet on`** \| **`off`** | recognize `TN_IAC` |
 | **`pterm reset`** *string* | the terminal reset string |
 | **`pterm prompt`** `":"` `"::"` | change the command prompt and the continuation prompt |
 

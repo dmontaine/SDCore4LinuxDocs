@@ -229,7 +229,7 @@ print total '10r2'
 With `t` holding `1234.5`, `t '10R2'` gives `␣␣␣1234.50`. **There is
 no `fmt` keyword in this form** — writing `t fmt '10R2'` compiles `fmt` as a
 variable name and aborts at run time with *"Unassigned variable FMT"*. The
-qualifier is recognised by juxtaposition alone, which is why it is allowed only
+qualifier is recognized by juxtaposition alone, which is why it is allowed only
 where an expression cannot be followed by something else.
 
 ## Characters and codes
@@ -274,7 +274,7 @@ array.
 
 Missing pieces leave their variables empty; extra pieces are discarded.
 
-`dparse.csv` does the same for a CSV line, honouring quoting — see
+`dparse.csv` does the same for a CSV line, honoring quoting — see
 [SD Basic - CSV Files](11-sd-basic-csv-files.html).
 
 ## Dictionary conversions

@@ -44,8 +44,8 @@ BASIC.
 product, built to behave the same way for the people who use it, and this
 is not a build of it.
 
-SD Core is free software under the GNU General Public Licence v3. `config gpl`
-displays the licence and `config contrib` the list of contributors. Installing
+SD Core is free software under the GNU General Public License v3. `config gpl`
+displays the license and `config contrib` the list of contributors. Installing
 means cloning the source and building it — see the GettingStarted set.
 
 ## The four components

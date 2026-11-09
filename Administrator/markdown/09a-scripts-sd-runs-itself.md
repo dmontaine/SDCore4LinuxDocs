@@ -9,7 +9,7 @@ it is the same `sd-elevate` and the same subcommands (listed on the
 previous page) either way, invoked from `installsdcore.sh` directly, from
 an administrator verb, or from `deletesdcore.sh`.** This page is mostly
 about the handful of places this port's approach genuinely differs from
-what Windows automates, rather than a second catalogue to read alongside
+what Windows automates, rather than a second catalog to read alongside
 the first.
 
 ## What has no separate script at all

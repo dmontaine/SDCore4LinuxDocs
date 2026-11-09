@@ -72,7 +72,7 @@ clear.file {dict|data} file
 `delete.file` removes the file and its VOC record. **`force` is needed if the
 file is not empty.** `clear.file` empties a file and keeps it, along with its
 dictionary, its indexes and its `creating.seqkey` counter (the next sequential id carries on; this is
-SD's behaviour, and `configure.file` *file* `next 1` starts it again).
+SD's behavior, and `configure.file` *file* `next 1` starts it again).
 
 ## Changing a file after it exists
 
@@ -97,7 +97,7 @@ on and off. For a directory file, `binary` turns on mark mapping.
 
 **`next` *n*** sets the next record id that `write … creating.seqkey` will give out in a
 **hashed** file (see [SD Basic - File Handling](07-sd-basic-file-handling.html)); **`next query`** says
-what it is (*The next sequential record id is 103*). A new file's counter is 1, `clear.file` keeps it (SD's behaviour), and rebuilding a file
+what it is (*The next sequential record id is 103*). A new file's counter is 1, `clear.file` keeps it (SD's behavior), and rebuilding a file
 with a different group size carries the counter over. A file made by `copy` starts its own
 counter at 1; `write … creating.seqkey` skips an id that already names a record. A directory file is refused:
 *NEXT applies to a hashed file only*.
@@ -412,8 +412,8 @@ set.trigger file.name
 Set, remove, or display a file's trigger function. An empty string in quotes
 removes it; no argument at all displays it. **`all`** in place of the modes sets
 every one of them: pre- and post-write, pre- and post-delete, read, and pre- and
-post-clear. **The function must be catalogued** first — *Trigger function is not
-catalogued* otherwise.
+post-clear. **The function must be cataloged** first — *Trigger function is not
+cataloged* otherwise.
 
 ```
 set.trigger stock zztrig all
@@ -468,7 +468,7 @@ are set, in the same order as for a hashed file, with the same arguments, and a 
 operation with `@trigger.return.code` or change the data being written. **`writeseq`, `writeblk`, `oswrite` and `osdelete` do
 not call it**, so a query report sent to a file, or a compile listing, never does; that is openQM's limit too. **A change to the
 trigger takes effect when the file is next opened**, not for a program that has it open already (`set.trigger` itself needs the
-file to itself, as it does for a hashed file). If the header names a function that is not catalogued, the first operation that
+file to itself, as it does for a hashed file). If the header names a function that is not cataloged, the first operation that
 needs it stops with *Trigger function 'name' not loaded for the file*.
 
 ## Sizes and who is busy: `file.stat` and `fstat.user`

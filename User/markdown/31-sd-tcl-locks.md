@@ -22,7 +22,7 @@ marks a word typed as it stands; braces mark an optional part.
 
 **Inspecting locks and forcing them open are SDSYS's verbs.**
 `list.readu`, `list.locks`, `lock`, `clear.locks` and `unlock` are not in an
-ordinary account's VOC at all, so the names are not recognised. They are in
+ordinary account's VOC at all, so the names are not recognized. They are in
 the **administrator documentation**, under *Sessions and Locks*, which is a
 separate set your administrator may or may not have given you.
 

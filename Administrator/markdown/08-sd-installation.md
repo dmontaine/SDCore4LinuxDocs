@@ -34,7 +34,7 @@ changes.
 **Unlike SD Core for Windows, this installer does not refuse to run
 because of a pre-existing ssh server.** `openssh-server` is installed as
 an ordinary package regardless, and the ssh boundary (below) is applied to
-whatever `sshd_config` it finds, non-fatally: a customised configuration
+whatever `sshd_config` it finds, non-fatally: a customized configuration
 gets a warning and the command to apply the boundary by hand, not a
 refusal to install at all.
 
@@ -72,9 +72,9 @@ not one.
 
 ## File modes SD relies on, and checks
 
-SD trusts a program in its **global catalogue** (`/usr/local/sdsys/gcat`) to run as part of the system, because only `sdsys` can write there. **The kernel
-therefore refuses to load a global catalogue object that other users, or the group `sdusers`, can write**, and stops with
-`<name> in the global catalogue can be written by other users, so it was not loaded (chmod go-w it)`. The installer leaves every file in `gcat` mode 0755
+SD trusts a program in its **global catalog** (`/usr/local/sdsys/gcat`) to run as part of the system, because only `sdsys` can write there. **The kernel
+therefore refuses to load a global catalog object that other users, or the group `sdusers`, can write**, and stops with
+`<name> in the global catalog can be written by other users, so it was not loaded (chmod go-w it)`. The installer leaves every file in `gcat` mode 0755
 after its last compile, so an installation never meets the check. If you see the message, someone changed a mode: `chmod go-w` the file named, and look for
 why. **A fresh install made before this change left `gcat/$cproc` mode 0664 group `sdusers`; install again, or run `chmod go-w` on it by hand.**
 
@@ -130,7 +130,7 @@ from it any more. A session takes these from places only SDSYS or root can write
 
 | What | Where a session gets it now | It used to come from |
 |---|---|---|
-| the system directory (global catalogue, register, messages, audit trail, errlog) | `SDSYS=` in `sd.conf` | the segment |
+| the system directory (global catalog, register, messages, audit trail, errlog) | `SDSYS=` in `sd.conf` | the segment |
 | the p-code every session runs | `bin/pcode`, read by the session itself; a copy that others or `sdusers` can write is refused | the segment |
 | the per-session settings (`SH`, `SPOOLER`, `USRDIR`, `GRPDIR`, `DUMPDIR`, `TEMPDIR` ...) | `sd.conf`, read by the session when it starts | a template in the segment |
 | the session's own administrator, `sh`, `os.execute` and `sd.accounts` bits and its gates | memory only that process can change | its entry in the segment |
@@ -182,7 +182,7 @@ write, and makes the directory itself immutable** (`chattr +i`).
 | `bin/sdfix`, `bin/sdconv`, `bin/sdtic`, `bin/sdclilib.so`, `bin/libsdcli.so` | `root:root` 755 (no unit runs them; they are in the same directory, and an administrator may run `sdfix` with `sudo`) |
 | `bin` itself | `root:root` 755, immutable |
 | `.sdcore-install`, `/usr/local/sbin/sd-elevate`, `sd-accarchive`, `sd-reconcile-accounts` | root's, as before |
-| everything else in `/usr/local/sdsys` | `sdsys:sdusers`, as before (the register, the global catalogue, `voc`, `bp`, the SDSYS account's files) |
+| everything else in `/usr/local/sdsys` | `sdsys:sdusers`, as before (the register, the global catalog, `voc`, `bp`, the SDSYS account's files) |
 
 **Why the attribute.** The `sdsys` user owns `/usr/local/sdsys`, and the owner of a directory may rename any entry in it, whoever owns the entry. With the files root's
 and nothing more, `sdsys` could move `bin` out of the way and make a `bin` of its own, which `systemd` would run at the next start. The attribute stops that rename, and any new
@@ -199,10 +199,10 @@ What this changes for you:
   from now on, and the second makes `bin/pcode.old` when it is not there yet, which needs the attribute lifted; the `sdsys` login does neither. The installer's own passes
   run as root and finish before this step. With the attribute set, `bin` and its files are `root:root` (the `i` shows in `lsattr -d`), the `sdsys` login cannot write, make or
   rename an entry in `bin` or rename `bin` itself, SD and the audit daemon start from it (and `systemd` starts the daemon again after a `kill -9`), and the `SDSYS` account can
-  still compile, catalogue locally and globally, run a program and run `update.accounts all`.
+  still compile, catalog locally and globally, run a program and run `update.accounts all`.
 - **`deletesdcore.sh`** lifts the attribute before it removes the directory, so a delete (with or without keeping the accounts) works as before.
 
-**What this does not close.** The global catalogue and the sudo helper `sd-elevate` are still routes from a stolen `sdsys` login to root-run or every-account code (see
+**What this does not close.** The global catalog and the sudo helper `sd-elevate` are still routes from a stolen `sdsys` login to root-run or every-account code (see
 [The master files](19-the-master-files.html)); data that root reads but does not run (`terminfo`, `messages`) is still `sdsys`'s; and during the minutes of an install,
 before this step, `bin` is still `sdsys`'s - install while nobody holds that login (a first install has no such login yet). The helper does refuse a session that is `sdsys` only through `su sdsys`, `sudo -u sdsys` or a service: it asks that the login behind the call is `sdsys`'s own, and says so when it is not. A real login as `sdsys` (the machine's console, or any other login that really is `sdsys`) is the case it cannot tell from the administrator.
 
@@ -256,11 +256,11 @@ shipped files and preserves everything the site owns.
 
 | Replaced | Preserved |
 |---|---|
-| the catalogue and compiled programs | your accounts and their passwords |
-| the BASIC source | the private catalogue |
+| the catalog and compiled programs | your accounts and their passwords |
+| the BASIC source | the private catalog |
 | the messages and include records | your print queue and held reports |
 | the VOC templates and library routines | everything under your own accounts, and `sd.conf` |
-| terminfo, the licence, the contributor list | |
+| terminfo, the license, the contributor list | |
 
 **An upgrade asks nothing** at the two remote-access prompts — no tasks
 page is shown, on the principle that the machine already carries the

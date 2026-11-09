@@ -19,7 +19,7 @@ function name {(argument, ...)} {var.args}
 
 | | |
 |---|---|
-| **program** | runs on its own. Started by `run`, by its catalogued name, or from another program with `execute` |
+| **program** | runs on its own. Started by `run`, by its cataloged name, or from another program with `execute` |
 | **subroutine** | called by `call`, and returns nothing. Its arguments carry values back |
 | **function** | called inside an expression, and returns a value with `return` |
 
@@ -82,7 +82,7 @@ There is no function form of `call` (`subr()` is gone). Where you want a result
 in an expression, declare a function with `deffun` and call that.
 
 There is no call by file and program name (`call "bp prog"`): a program is
-called by its catalogued name.
+called by its cataloged name.
 
 **Arguments are passed by reference, not by value.** A subroutine that
 assigns to one of its parameters changes the caller's variable. That is how a

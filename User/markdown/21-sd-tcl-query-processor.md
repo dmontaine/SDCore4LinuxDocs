@@ -6,7 +6,7 @@ selects records, sorts them, formats them into columns and totals them, and it
 does all of that from one line of typing.
 
 **Twelve verbs on this page are the same program.** `list`, `sort`, `count` and
-the rest are one catalogued program reached through fourteen VOC records, each
+the rest are one cataloged program reached through fourteen VOC records, each
 carrying a number that says which verb was typed. Two of the fourteen —
 `select` and `sselect` — build a list instead of printing one and are covered in
 [SD TCL - Select Lists](22-sd-tcl-select-lists.html).

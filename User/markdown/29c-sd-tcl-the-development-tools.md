@@ -478,19 +478,19 @@ judged by the system the same way (its records need `shared-write`).
 tool.catalog
 ```
 
-**`tool.catalog`** lists the records of the account's program files, one row each, file by file and in name order. A program file is a directory file called `bp`, a file whose name ends in `.bp`, or a file that has a file of the same name and `.out` beside it (where the compiler puts the compiled programs). The page also lists the entries of the private and the local catalogue that no program record accounts for, under the file name `(private)` or `(local)`, so that they can be taken out.
+**`tool.catalog`** lists the records of the account's program files, one row each, file by file and in name order. A program file is a directory file called `bp`, a file whose name ends in `.bp`, or a file that has a file of the same name and `.out` beside it (where the compiler puts the compiled programs). The page also lists the entries of the private and the local catalog that no program record accounts for, under the file name `(private)` or `(local)`, so that they can be taken out.
 
 | column | what it says |
 |---|---|
-| File | the program file, or `(private)` / `(local)` for a catalogue entry on its own |
-| Program | the record's name (the entry's name for a catalogue entry on its own) |
+| File | the program file, or `(private)` / `(local)` for a catalog entry on its own |
+| Program | the record's name (the entry's name for a catalog entry on its own) |
 | Kind | `program`, `subroutine`, `function` or `class`, read from the compiled program; `include`, `screen` or `options` for a record that is not compiled by itself; `-` for a record not compiled yet |
 | Compiled | when the compiled program was made |
 | Object | the size of the compiled program in bytes |
 | State | `current`: the source has not been changed since it was compiled; `stale`: the source's file is newer than the compiled program's, so B compiles it again; `?`: the page could not read one of the two times (the box says why); `-`: not compiled |
-| Catalogued | where the program is catalogued under its own name: `private` (a record of the account's `cat` file; `(older)` or `(newer)` when it is a copy of another compile than the one in the `.out` file), `local` (a VOC entry that points at the compiled program; `as name` when the entry has another name), `global` (SDSYS's catalogue has an entry of that name: the page only reports it, and cannot tell whether it is this program) |
+| Cataloged | where the program is cataloged under its own name: `private` (a record of the account's `cat` file; `(older)` or `(newer)` when it is a copy of another compile than the one in the `.out` file), `local` (a VOC entry that points at the compiled program; `as name` when the entry has another name), `global` (SDSYS's catalog has an entry of that name: the page only reports it, and cannot tell whether it is this program) |
 
-The box under the list describes the row under the cursor: the paths of the source and of the compiled program, their sizes and times, current or stale, and the three catalogues in words. The line between the boxes shows the gate **bp-edit**, asked of the system, and the number of programs, compiled programs and catalogue entries.
+The box under the list describes the row under the cursor: the paths of the source and of the compiled program, their sizes and times, current or stale, and the three catalogs in words. The line between the boxes shows the gate **bp-edit**, asked of the system, and the number of programs, compiled programs and catalog entries.
 
 ### What the keys do
 
@@ -498,19 +498,19 @@ The box under the list describes the row under the cursor: the paths of the sour
 |---|---|
 | Up, Down, PgUp, PgDn, Home, End | move the cursor |
 | **B** | compile the program (`basic file name no.query`) and show the compiler's lines, errors and warnings, in a box |
-| **C** | catalogue it privately (`catalog file name no.query`): a copy of the compiled program goes into the account's `cat` file |
-| **L** | catalogue it locally (`catalog file name local no.query`): a VOC entry that points at the compiled program |
+| **C** | catalog it privately (`catalog file name no.query`): a copy of the compiled program goes into the account's `cat` file |
+| **L** | catalog it locally (`catalog file name local no.query`): a VOC entry that points at the compiled program |
 | **X** | take a local entry out **and delete the compiled program it points at** (`decatalog name`) |
 | **D** | take a private or a local entry out (`delete.catalog name`, or `delete.catalog name local`); the compiled program stays. With both, the page asks which |
 | **/** or F11 | show only the rows whose program or file name holds some text |
 | Esc | clear the filter |
-| F5 | read the programs and the catalogues again |
+| F5 | read the programs and the catalogs again |
 | F1, **?**, a click on **[?]** | help |
 | Ctrl-Q | leave |
 
-**Every change goes through a box.** The box shows the exact command and what it does, and has two buttons, *Run* and *Cancel*; **Cancel is the one Enter chooses**. **X** and **D** then ask for the entry's name, typed; so does **C** or **L** when the program is already catalogued somewhere else under the same name, because `no.query` makes `catalog` take that other entry out without asking, and the box names it. The page adds `no.query` to `basic` and `catalog` because a question they would ask could not be shown on this screen; a source with a `$catalog` line is therefore catalogued by its compile without being asked about an entry of the same name elsewhere. What the verb says is what the status line shows. A compile that ran has its lines in a report box; a compile or command the verb refuses shows the refusal on the status line and nothing opens.
+**Every change goes through a box.** The box shows the exact command and what it does, and has two buttons, *Run* and *Cancel*; **Cancel is the one Enter chooses**. **X** and **D** then ask for the entry's name, typed; so does **C** or **L** when the program is already cataloged somewhere else under the same name, because `no.query` makes `catalog` take that other entry out without asking, and the box names it. The page adds `no.query` to `basic` and `catalog` because a question they would ask could not be shown on this screen; a source with a `$catalog` line is therefore cataloged by its compile without being asked about an entry of the same name elsewhere. What the verb says is what the status line shows. A compile that ran has its lines in a report box; a compile or command the verb refuses shows the refusal on the status line and nothing opens.
 
-**Gates.** `basic`, `catalog`, `decatalog` and `delete.catalog` need the **bp-edit** gate (message 11408 from the verb). The page shows whether your session has it, asked of the system, warns in each box when it is off, and leaves the refusal to the verb; nothing changes then. The administrator always has the gate (the line says `on (administrator)`); for anyone else the administrator turns it on with `modify.account`. **X** is not run on a local entry whose pointer leads outside your account: `decatalog` deletes the file the entry points at without asking whether the account may reach it, so the page says which command to type instead. `catalog` looks for an entry of the same name by name: the box names a local entry of that name even when it points at another program, and asks for the name typed. **Global cataloguing is the administrator's own command and is not offered here**; a global entry is shown, never changed.
+**Gates.** `basic`, `catalog`, `decatalog` and `delete.catalog` need the **bp-edit** gate (message 11408 from the verb). The page shows whether your session has it, asked of the system, warns in each box when it is off, and leaves the refusal to the verb; nothing changes then. The administrator always has the gate (the line says `on (administrator)`); for anyone else the administrator turns it on with `modify.account`. **X** is not run on a local entry whose pointer leads outside your account: `decatalog` deletes the file the entry points at without asking whether the account may reach it, so the page says which command to type instead. `catalog` looks for an entry of the same name by name: the box names a local entry of that name even when it points at another program, and asks for the name typed. **Global cataloging is the administrator's own command and is not offered here**; a global entry is shown, never changed.
 **A name the page does not give to a command.** Only names of letters a-z, digits, dot, dash and underscore that begin with a letter or a digit are put into a command (a name beginning with a dot, dash or underscore would be read by the verbs as a global name). A record with a capital, a `$` or another character, or called like an option of the verbs (`local`, `global`, `pcode`, `no.query` ...), is listed and described, and the page says which verb to type, or that it must be renamed.
 
 **Stale.** The page reads the modification times of the source and of the compiled program, which are operating-system files; it asks the account's OS gate about each path first and shows `?` with the reason if the gate refuses. The shared account's programs and programs in other accounts' files are not listed.

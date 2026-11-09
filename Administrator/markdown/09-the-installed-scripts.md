@@ -94,7 +94,7 @@ but is not nothing; and the group-account verbs look for the directory named
 `group_accounts` literally, so a `GRPDIR` set to another name under `/home/sd`
 is refused by them. This narrows route R-C
 of [The master files](19-the-master-files.html) — what the grant of `sd-elevate`
-to `sdsys` can reach — and leaves the global catalogue (route R-B) and whatever
+to `sdsys` can reach — and leaves the global catalog (route R-B) and whatever
 else `sdsys` can do with the helper's other verbs and sudo's other rules as they
 were, so it is a narrower grant and not a wall against a stolen `sdsys` login.
 

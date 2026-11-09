@@ -14,7 +14,7 @@ its API socket at all.
 distribution's own service — installed, started and kept current the way
 every other Linux service is, outside SD's remit entirely. These two verbs
 only move the firewall rule and the API socket that sit in front of it;
-they follow the SD Core for Windows verbs of the same name: a behaviour
+they follow the SD Core for Windows verbs of the same name: a behavior
 prevented on one port is prevented on both, with the mechanism free to differ
 where the operating system does.
 

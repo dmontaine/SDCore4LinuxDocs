@@ -71,7 +71,7 @@ An `open` of a name looks, in this order, at:
 8. **The kernel's test of the path.** The file must exist and lie strictly *inside* `shared`'s
    directory, and no part of the path below the directory may be a VOC, a program file
    (`bp`, `bp.out`, `*.bp`, `*.bp.out`), a dictionary (except the one asked for) or
-   `shared`'s private catalogue. A pointer in `shared`'s VOC to a file anywhere else is refused.
+   `shared`'s private catalog. A pointer in `shared`'s VOC to a file anywhere else is refused.
 9. **The audit line**, once for each name in a session, after the name has been accepted.
 
 A refusal at any step is not a message: the name is simply not there, and the `open` takes its
@@ -80,7 +80,7 @@ accounts opening the same shared file see each other's record locks.
 
 ### What is not shared
 
-The **VOC, verbs, sentences, paragraphs, catalogue and programs of `shared` are never reached from
+The **VOC, verbs, sentences, paragraphs, catalog and programs of `shared` are never reached from
 another account.** Only data files, and their dictionaries, are shared. A program kept in `shared`
 is not run from another account by name, and `shared`'s `voc` and `bp` cannot be opened as data by
 any name. The administrator's own `open` does not follow `shared` either: SDSYS reaches the files with
@@ -174,7 +174,7 @@ with the right can reach (SDSYS's own `open` does not follow `shared`).
 ## What is not done
 
 * `shared` is not replicated to other servers.
-* The programs of `shared` are not shared: there is no catalogue of shared programs.
+* The programs of `shared` are not shared: there is no catalog of shared programs.
 * Every `open` that misses the account's own VOC for an ordinary lower-case name now reads the
   register and `shared`'s VOC to see; nothing caches a miss yet. Names that begin with a symbol and
   the standard names never reach the disk.

@@ -35,7 +35,7 @@ sd
 ```
 
 You land at the `:` prompt. That is TCL — the command processor. From
-here you compile, catalogue and run programs. The programs themselves
+here you compile, catalog and run programs. The programs themselves
 are written in SDBasic, which is a different language from TCL.
 
 Your `bp` file is an ordinary Linux directory. You can write programs
@@ -80,7 +80,7 @@ own source uses.
 
 > **`program` is optional.** A source record with no declaration is a
 > program. But every program on this page has one, because naming the
-> program is how you know what it is when it is catalogued and called
+> program is how you know what it is when it is cataloged and called
 > from another program.
 
 ## 2. Variables and input
