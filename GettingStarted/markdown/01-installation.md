@@ -238,28 +238,6 @@ prompt is SD's `:` prompt, as in earlier releases.
   <account> start-terminal`, `start-menu` or `start-default` sets one account
   (*Accounts and Security* in the Administrator documentation).
 
-## A PDF reader for the documentation
-
-The `pdf` verb shows the documentation PDFs in a PDF reader, and it starts only a
-reader that SDSYS has allowed. Nothing is allowed as delivered. Two questions,
-both defaulting to **no**, deal with it; neither is asked when the system already
-has a reader allowed (an upgrade keeps it).
-
-* **Is one installed?** If the installer finds a known reader (evince, okular,
-  zathura, atril, xreader, mupdf, qpdfview or xpdf) it asks *Allow \<reader\> to
-  show the documentation for every account? (y/N)*.
-* **None is installed, and you are running the installer in a desktop session?**
-  It first asks *Install evince as the PDF reader? (y/N)*; a **y** installs the
-  package with `apt-get`, and the question above follows. Over ssh or on the
-  console a reader has no display to open on, so nothing is asked. If the package
-  cannot be installed the install goes on, says so, and does not allow anything.
-
-Installing a reader and allowing it are separate answers: **y** to the first and
-**n** to the second leaves evince installed and the `pdf` verb unable to use it.
-Signed in as SDSYS, `set.viewer add pdf <reader>` allows one later, and
-`set.viewer remove pdf <reader>` takes it away (*Operating system access* in the
-Administrator documentation).
-
 ## Changing any of it afterwards
 
 Both remote-access settings have a verb that changes them later, which is

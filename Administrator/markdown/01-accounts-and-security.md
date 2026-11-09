@@ -1269,9 +1269,8 @@ box you answer *Run* or *Cancel* (Cancel is the button Enter chooses), run by th
 verbs you can type, and the line under the page is the verb's own answer.
 **Every setting has a `[?]` at the end of its row** (and one on the accounts list and on
 the system default): F1 or `?` on the selected row, or a click on the `[?]`, opens a box
-that says what the setting means, with a *Documentation* button that shows the
-administrator's guide page in the PDF reader (`pdf`, see *Operating-system access*) and a
-*Close* button, which is the one Enter chooses. The text is the record of that setting in
+that says what the setting means, ending with the name of the administrator's guide
+PDF that says more (in the shared account's `pdf` directory), and a *Close* button. The text is the record of that setting in
 the file `context.help` of the shared account.
 
 ```
