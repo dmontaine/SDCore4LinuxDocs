@@ -343,6 +343,8 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | Build, Run with arguments | asks for the words to put after the program's name, then compiles and runs it as Run does (`run bp prog words`); the program reads them with `SENTENCE()` |
 | Alt-= · View, Character code | the code of the character at the cursor, its name when it is a control character, and its field, value and subvalue, on the status line |
 | View, Syntax colour · View, Line numbers | switch the colour and the line numbers off for every tab, and on again (SED's SYNTAX OFF and LNUM OFF) |
+| View, Mouse | stops the terminal reporting the mouse, and starts it again (SED's MOUSE OFF); while it is off a click does nothing and the terminal's own selection works. Every command has a key or a menu entry, so nothing needs the mouse |
+| Ctrl-Up · Ctrl-Down · View, Scroll the view up a line · Scroll the view down a line | moves the text a line in the editor and leaves the cursor where it is, unless it would leave the window (SED's nudge) |
 | F5, Ctrl-L · View, Refresh | draws the screen again from what the IDE holds |
 | Ctrl-T · View, Theme | the next colour theme, kept for you (below) |
 | Ctrl-K · Help, Keys | the IDE's keys, in a box |
@@ -505,6 +507,33 @@ from 1 to 99 for Tab and Shift-Tab (3 to begin with; it took 1 to 8 until 9 Nove
 out again with the rules of the `format` verb, indenting by the tab width; it changes the text as one undo step
 and saves nothing, and leaves a program that has problems, or a record that is not a program, as it is.
 None of the three modes is kept between sessions. A cut or a paste of more than 100 lines is done at once.
+
+**An account can set the IDE's defaults in the record `&ide.options&`** (since 9 November 2026). It is an X
+record in the account's VOC; field 2 holds words, separated by blanks, and the IDE reads them each time it
+starts. **An account that has no `&ide.options&` but has SED's `&sed.options&` gets the IDE's defaults from
+that**, so a record kept for SED goes on working.
+
+| Word | What the IDE starts with |
+|---|---|
+| `CASE_ON` · `CASE_OFF` | the find options' match case on (as delivered) or off |
+| `WORD` · `BWORD` | the find options' whole words on; a word is letters, digits and `.` `_` `$` `%`, which is what SED's BWORD was |
+| `INDENT` | auto-indent on |
+| `OVERLAY` | overwrite mode on |
+| `TABS` *n* | a tab width of *n*, 1 to 99 (field 5 can hold the number instead) |
+| `LNUM` · `NO.LNUM` | line numbers on (as delivered) or off |
+| `SYNTAX` · `SYNTAX.LIGHT` · `NO.SYNTAX` | syntax colour on (as delivered) or off; the colours are the theme's |
+| `MOUSE` · `NO.MOUSE` | the mouse on (as delivered) or off |
+| `NO.CASE.EXPLORE` | the records in the tree in order as if every letter were a capital (`a1` then `_1`, where the delivered order puts `_1` first) |
+
+`SCROLL1` is passed over. Any other word is named on the status line when the IDE starts and is otherwise
+ignored. **Fields 3 and 4, which held SED's key bindings, are not read: the IDE's keys cannot be
+changed.** The IDE never writes the record. To make one at TCL:
+
+```
+ed voc &ide.options&
+```
+
+and enter `X` as line 1 and the words as line 2 (for example `INDENT TABS 4 NO.MOUSE`).
 
 **If `autologout` is set** (the default is off) **the status line counts down the last 60 seconds** before
 the session would be signed out: *Idle: signing out in 42 s*, followed by *; unsaved changes will be
