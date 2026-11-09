@@ -1,5 +1,5 @@
 Title: SD TCL - The SED Screen Editor
-Subtitle: The full-screen editor that runs inside SD — drop-down menus that show the keys, color for the language, split windows and macros.
+Subtitle: The full-screen editor that runs inside SD — drop-down menus that show the keys, color for the language and macros.
 
 ```
 sed {dict} file record
@@ -129,21 +129,13 @@ cursor goes past it; a mode that is on is checked.
 | **Edit** | Undo · Redo · Set mark · Swap mark · Cut region · Copy region · Paste · Delete char · Kill line · Delete word · Close spaces · Upcase word · Lower case word · Capital initial · Upcase region · Downcase region · Align text · Toggle chars · Overlay mode |
 | **Search** | Forward search · Backward search · Replace · Query replace · Goto line · View lines · Top · Bottom · Page up · Page down · Case on · Case off · Word search · Basic word search |
 | **Buffer** | Next buffer · Previous buffer · Goto buffer · List buffers · Delete buffer · Up to list · Dive |
-| **Window** | Split window · Unsplit window · Toggle window · Move split up · Move split down · Refresh screen |
-| **Tools** | Compile · Compile and run · Format · Indent mode · Expand tabs · Stamp · Syntax color · Mouse · Line numbers · Release lock · Keys in use · Run extension · Command · Start macro · End macro · Execute macro |
+| **Window** | Refresh screen |
+| **Tools** | Compile · Compile and run · Format · Indent mode · Expand tabs · Stamp · Syntax color · Mouse · Line numbers · Release lock · Keys in use · Command · Start macro · End macro · Execute macro |
 
 **Several records can be open at once** — they are *buffers*, and a record
 named in a list or opened with *Open record* becomes the next one. *List
 records* shows the records of the file and *Dive* opens the one the cursor is
-on; *Up to list* goes back. The **window** can be split in two, to look at
-two places at once.
-
-**Moving the split point** (*Window*, *Move split up* and *Move split down*, dim
-until the window is split) moves the line between the two windows by one row.
-On SED's command line **`split.up`** and **`split.down`** move it by the number
-of rows given (one without a number). Both windows keep at least two rows, a
-number that would take it further stops there, and the cursor stays in the
-window that is live.
+on; *Up to list* goes back.
 
 **Seeing only some of the lines** — *Search*, *View lines*, or **`view`** *text* on
 the command line (the prompt asks for the text when it is left out) — opens a
@@ -191,7 +183,7 @@ have rebound.
 
 `Esc` followed at once by a letter is a command of the editor's own; `Esc` on
 its own opens the menu bar. `Ctrl-X` is no longer a prefix, so the old
-`Ctrl-X` sequences are gone: the actions that had one (split the window, list
+`Ctrl-X` sequences are gone: the actions that had one (list
 the buffers, import, export and the rest) are reached through the menus, which
 show the key of each item that has one.
 
@@ -239,7 +231,7 @@ behave like it; the Linux console does not.
 
 | | |
 |---|---|
-| a click on the text | puts the cursor there (in the other window of a split, it goes there first) |
+| a click on the text | puts the cursor there |
 | a click on a title of the bar | opens that menu; a click on an item chooses it, and a click anywhere else closes the menu |
 | the wheel | moves the cursor up or down three lines |
 

@@ -201,11 +201,14 @@ an entry chooses it (with `multi` it picks it); a click outside the box cancels.
 ### input box
 
 ```
-screen ask prompt {value v} {width n} {title t} {at x,y} {mask} {returning text}
+screen ask prompt {value v} {width n} {title t} {at x,y} {mask} {history list} {returning text}
 ```
 
 One line of input. `mask` shows a `*` for each character. The keys are those of
-an entry field (below).
+an entry field (below). `history` gives earlier answers, newest first, as fields:
+Up shows the next older one and Down the next newer, and Down past the newest gives
+back what had been typed. Your program keeps the list and adds to it; `screen ask`
+never changes it. A `mask` question recalls nothing.
 
 ## Forms
 
@@ -707,7 +710,7 @@ reset command).
 - A table sorts what it *shows*, never the rows you gave it, and a tree is the list of
   nodes you gave it with the depths you gave it: neither is a database view.
 - It has no widget for editing a record with the editor's own commands: `screen memo` has
-  selection, undo and find, but not SED's macros, buffers, split window or bindings, and
+  selection, undo, find and keyboard macros (Alt-R, Alt-P), but not SED's buffers or bindings, and
   [SED](27a-sd-tcl-sed.html) keeps its own text area and prompt line (its menus and its
   color for the language use the library). [CED](27b-sd-tcl-ced.html) and
   [the debugger](17-sd-basic-debugging.html) are drawn with the library.
