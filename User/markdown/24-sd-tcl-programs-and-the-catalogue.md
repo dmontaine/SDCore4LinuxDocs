@@ -444,8 +444,8 @@ operating system, which is the way out when a save failed or the file was replac
   CR anywhere else is an ordinary character shown as a reverse letter, and a tab is kept as a tab. Whether the
   last line had its line end is remembered: none is added to a file that had none. A file with a **NUL or a
   byte from 248 to 255** (SD's own marks), a file **over 2 MB**, a **directory, device, pipe or socket** is
-  refused with a message; a file with **bytes from 128 to 247** (another character set, or UTF-8) opens
-  read-only, as a record does.
+  refused with a message; a file with **bytes from 128 to 247** (another character set, or UTF-8) is edited
+  like any other, as a record is.
 - **The file is locked while the tab is open**, as a record is: a second session that tries to open it is told
   it is in use, and closing the tab (or any other way out) gives the lock back. A tab for a file you may not
   write (permissions, or an edit gate) opens read-only and says so.
@@ -490,11 +490,10 @@ holds `os-on` is trusted with the whole machine, so for a name outside its own d
   checks (the account's OS gate, the edit gates for a VOC, a dictionary, a program file or the shared account)
   apply as for a program of your own. An account without the access can make files inside its own directory only.
 
-**A record that holds characters outside ASCII (bytes 128 to 247) opens read-only too** (since
-28 October 2026): another character set's letters, or UTF-8. The editor shows such a character a byte at a
-time and could not be trusted to keep it as it is, so Save, Save as, Write a copy, Replace, Edit as
-fields and an AI edit are refused, in a box, and nothing is decoded or changed. The marks 248 to 255
-are SD's own and go through the token form below.
+**A record that holds characters outside ASCII (bytes 128 to 247) can be edited**: SD stores those bytes and
+gives them back unchanged. The editor works a byte at a time, so a UTF-8 character takes more than one cell, and
+deleting one of its bytes leaves a broken character. The marks 248 to 255 are SD's own and go through the token
+form below.
 
 **Tab and Shift-Tab indent and outdent in the editor** (since 28 October 2026): Tab puts blanks in up to
 the next stop (every 3 columns) or, with lines selected, indents them; Shift-Tab takes the indent out;

@@ -187,9 +187,10 @@ editor verb that does nothing is worse than either answer. **`ed`**, the line ed
 full-screen editor with menus, are part of SD and need nothing installed; they
 always work.
 
-If `micro`'s package install fails, the install still succeeds; `micro`'s
-own syntax file still needs a per-user copy (`~/.config/micro/syntax`),
-which the installer also stages where it can.
+`micro` is one of the packages the install requires: if it cannot be
+installed, the install stops. `micro`'s own syntax file still needs a
+per-user copy (`~/.config/micro/syntax`), which the installer also stages
+where it can.
 
 ## Your own account's access gates
 
