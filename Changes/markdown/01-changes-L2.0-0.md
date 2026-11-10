@@ -298,6 +298,7 @@ The kernel, `sd.conf`, and the numbered keys.
 | `pterm` keys | Added | `pterm erase`, `ctrl.filter`, `mark`: which key erases; control characters filtered; control keys that type the marks |
 | `-quiet` | Changed | `sd -quiet` suppresses the VOC update question |
 | `sd.conf` parameters | Added | `dhcache`, `lgnwait`, `maxrlock`, `pwdelay`, `userpool`: `sd.conf` parameters, each optional with the old fixed number as the default |
+| sessions on a dropped connection | Changed | a session whose terminal or ssh connection goes away while it is writing the error log or the audit trail no longer waits for itself for ever, which stopped every later login |
 | `sortmem` | Changed | default 4096|
 | `status` | Changed | file times are in the user's time zone; field 27 is the file pathname |
 | `-status` | Added | `sd -status` shows the version, start time and process counts |
