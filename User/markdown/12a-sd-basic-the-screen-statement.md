@@ -702,7 +702,7 @@ reset command).
 - **It imposes no window size and no lock on your program.** Ask for the size you need with
   `minsize`; a window that becomes smaller later cuts what falls outside it (cells outside the
   window are dropped, not wrapped) and your program keeps its keys. SD's own full-screen
-  programs (SED at 140 by 43, CED at 140 by 42) are laid out for that size and, when their cursor is off the
+  programs (SED and CED, at 140 by 43) are laid out for that size and, when their cursor is off the
   screen, take the keyboard behind a warning until the window is made bigger or you press
   Ctrl-Q, y; the IDE and the toolkit pages are laid out for 140 by 43 and do it whenever the
   window is smaller than that, wherever the cursor is; the library routines that do it are SD's

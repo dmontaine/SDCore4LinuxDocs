@@ -34,7 +34,7 @@ is the short form.
 | Removed features | Removed | words and modes that existed to imitate other products (so far 55 `option` words, 35 `$mode` words, and the second spellings and forms of statements, clauses, functions, conversions, TCL verbs and query keywords, each listed in [REMOVED](#removed)), and other things: see [REMOVED](#removed) |
 | SDSYS over ssh | Changed | had no remote route at all; on Linux its ssh door can now be opened by the administrator (`remote.sdsys on`), after which `sdsys` signs in with its password alone (the API stays closed to it from every other computer); it is shut as delivered, as before, unless the installer's question *Let sdsys sign in over ssh with its password? (y/N)* is answered y |
 | `sed` keys | Changed | were Emacs keys with Ctrl-X sequences; now the keys most editors have (Ctrl-PageDown / Ctrl-PageUp, and Alt-PageDown / Alt-PageUp for a terminal that keeps the Ctrl keys for its own tabs, switch buffers), and `emacs` in `&sed.options&` keeps the old layout |
-| `sed`, `ide`, `!ced()` | Changed | were 120 by 36 or less; now need a window of at least **140 by 43** (`!ced()` **140 by 42**), and `ed` is the editor for a smaller one |
+| `sed`, `ide`, `!ced()` | Changed | were 120 by 36 or less; now need a window of at least **140 by 43**, and `ed` is the editor for a smaller one |
 | `select file field` | Changed | a field not otherwise used was ignored; now it is `saving multivalued field`, so the list holds the values |
 | The default terminal | Changed | was 120 columns by 36 lines; now **140 by 43** (a LIST fills 42 lines before it pauses) |
 | The group size of a new file | Changed | was 2 KB (1 KB when `sd.conf` did not say); now **4 KB** on a new installation. An installed system keeps its `sd.conf`, and so its 2, and a file keeps the size it has |
@@ -658,6 +658,7 @@ Three simple layers, with no vault and nothing on by default.
 | `sdsys` user in kept groups | Changed | an install that keeps accounts and finds the `sdsys` user in their groups asks once whether to keep it there (no unless `y`, and no with no terminal), takes it out on no, and records the decision in `/home/sd/$groups.ruled` so a later install leaves what the administrator did |
 | `sdai` user | Added | made by the installer; removed with the accounts |
 | shared account | Added | made by the installer; its help text and `pdf` directory are loaded |
+| source not installed | Changed | the install compiles SD and removes `gpl.bp`, the C source and objects and the build files; an upgrade removes what an earlier install left; the complete source is in the release zip's `source` folder |
 | start question | Added | the installer asks whether new sessions start at the home screen or at the command prompt; an upgrade offers what the site had, and keeps the prompt for an install from before the home screen (the uninstaller saves the setting) |
 | stored SDNet logins | Changed | the uninstaller removes `/var/lib/sd-net` when the accounts or the configuration are deleted |
 | systemd units on an upgrade | Changed | `sd.service`, `sd-lnxd.service` and `sdclient@.service` are replaced by this release's when they differ (they were copied only on a first install); `sdclient.socket` and drop-ins under `/etc/systemd/system` are kept |
@@ -759,6 +760,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 
 | Name | Change | What |
 |---|---|---|
+| compiled kernel | Changed | built with optimisation (`-O2`, with `-fwrapv` and `-fno-strict-aliasing`) where it had none: string and `locate` work about 3.4 times as fast, a BASIC loop 1.5 times, index builds, sorts and writes 1.15 to 1.2 times; `_FORTIFY_SOURCE=3` and `-fstack-protector-strong` end a session at a buffer overrun instead of letting it corrupt memory |
 | default terminal | Changed | 140 by 43 |
 | `sd -status` | Changed | fixed an overrun on a server that recorded no start time |
 | `sd -stop` and `sd -restart` | Changed | a session still attached ten seconds after the termination signal (an idle one does not leave by itself) is ended with SIGKILL, and the stop says how many; before, it was left running with SD gone under it |

@@ -49,9 +49,9 @@ The depth stayed at 9999 because only the width was given.
 again each time the window is resized, SD reads the size of the window and makes
 it the page: `@crtwide` and `@crthigh` follow it, and so does `term`. A program
 that draws a screen — the SCREEN statement — sees an 80 × 24 window as 80 × 24.
-(**SD's own full-screen programs are the exception: SED, the IDE and the
-full-screen pages are laid out for 140 × 43 or more**, SD's default size, and CED
-for 140 × 42; they refuse a window smaller than that, and the debugger's
+(**SD's own full-screen programs are the exception: SED, the IDE, CED and the
+full-screen pages are laid out for 140 × 43 or more**, SD's default size; they
+refuse a window smaller than that, and the debugger's
 full-screen display says so and is line by line instead. If the window is made smaller while one of them runs, it shows the
 upper left corner and stops taking keys while the cursor is off the screen — see
 the SED page. A `screen open` program of your own asks for the size it needs

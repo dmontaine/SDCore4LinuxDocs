@@ -68,10 +68,16 @@ no execute permission, so `./installsdcore.sh` can fail on it.
 bash /media/<you>/<stick>/installsdcore.sh
 ```
 
-The stick carries only the installer and the documentation. The installer still
-downloads SD and the build packages, so the computer must be online. It checks
-first, before it asks anything or changes anything, and stops with a message if
-it is not. It writes nothing to the stick.
+The zip carries the installer, the documentation and SD's complete source (its
+`source` folder), and SD is built from that. The installer still downloads the
+build packages, so the computer must be online. It checks first, before it asks
+anything or changes anything, and stops with a message if it is not. It writes
+nothing to the stick.
+
+**The source is distributed with the installer and is not installed.** The
+BASIC programs and the C source are compiled during the install and are not left
+on the computer: `/usr/local/sdsys` holds the compiled system. To read or change
+the source, use the `source` folder of the release zip or the repository.
 
 ## What you are asked
 
