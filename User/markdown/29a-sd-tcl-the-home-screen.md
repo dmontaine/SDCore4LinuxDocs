@@ -117,8 +117,9 @@ whichever way the screen was started.
 
 A **click** starts a tile; the **wheel** scrolls the page three rows; a click on the
 menu bar opens the menu under it. The foot of the screen is the same as the
-other full-screen tools: a hint line, the status line, a border and the row of
-function keys.
+other full-screen tools - the status line, a border and the row of function
+keys - with a hint line above it for the keys the row does not show: the
+arrows, a letter and PgDn.
 
 On a terminal with color the tiles are filled in the color of their group; on one
 without, each tile is a box and the one with the focus is in reverse video, so

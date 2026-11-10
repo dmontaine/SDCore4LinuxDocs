@@ -72,9 +72,9 @@ def page_texts(pdf):
 
 
 def labels_for(pages, heads, title):
-    """One label for each page: the last section heading on the page, or the one
-    in force when the page began if it has none.  Taking the LAST heading means
-    every section is named on at least the page it starts on."""
+    """(labels, found): one label for each page - the last section heading on the page, or the one
+    in force when the page began if it has none (taking the LAST heading means every section is
+    named on at least the page it starts on) - and how many of heads were found in the printed text."""
     labels = []
     h2 = title
     h3 = ''
@@ -90,7 +90,7 @@ def labels_for(pages, heads, title):
                 h3 = text
             nxt += 1
         labels.append(h2 + (' · ' + h3 if h2 == UNIQUE and h3 else ''))
-    return labels
+    return labels, nxt
 
 
 def footer_template(label, date):
@@ -143,14 +143,15 @@ def main():
     tab_id = None
     try:
         mkbookpdf.wait_for_debug_port(port)
-        req = urllib.request.Request(
-            'http://127.0.0.1:%d/json/new?%s' % (port, 'file://' + urllib.parse.quote(html_path)),
-            method='PUT')
+        # 9 Nov 26: a blank tab first, then Page.enable, THEN the file.  Opening the file with /json/new?<url> let a local page finish loading
+        # before Page.enable, so Page.loadEventFired never came (the Windows agent met it as a 180 s timeout; mail 2026-11-09T1945).
+        req = urllib.request.Request('http://127.0.0.1:%d/json/new?about:blank' % port, method='PUT')
         with urllib.request.urlopen(req, timeout=10) as r:
             tab = json.loads(r.read().decode())
         tab_id = tab['id']
         cdp = mkbookpdf.CDP(tab['webSocketDebuggerUrl'])
         cdp.call('Page.enable')
+        cdp.call('Page.navigate', {'url': 'file://' + urllib.parse.quote(html_path)})
         cdp.wait_for_event('Page.loadEventFired', timeout=args.timeout)
 
         base = {'printBackground': True, 'marginTop': 0.4, 'marginBottom': 0.5,
@@ -166,9 +167,14 @@ def main():
         full = os.path.join(work, 'full.pdf')
         printed(full, displayHeaderFooter=False)
         pages = page_texts(full)
-        labels = labels_for(pages, heads, title)
-        sys.stdout.write('mkfooterpdf: %d pages, %d headings found in order\n'
-                         % (len(pages), len(heads)))
+        labels, found = labels_for(pages, heads, title)
+        sys.stdout.write('mkfooterpdf: %d pages, %d of %d headings found in the printed text, in order\n'
+                         % (len(pages), found, len(heads)))
+        if found != len(heads):
+            # a heading not found leaves every page after it under the one before (and none found labels every page with the title)
+            sys.stderr.write('mkfooterpdf: heading %d (%r) was not found in the printed text; the footers would be wrong\n'
+                             % (found + 1, heads[found][1]))
+            return 1
 
         runs = []
         for i, lab in enumerate(labels, 1):
@@ -206,7 +212,13 @@ def main():
     if n_out != len(pages):
         sys.stderr.write('mkfooterpdf: %d pages out, %d in the full print\n' % (n_out, len(pages)))
         return 1
-    sys.stdout.write('mkfooterpdf: wrote %s (%d pages)\n' % (pdf_path, n_out))
+    # the footer read back: the date on the first and the last page of what was written
+    for p in sorted({1, n_out}):
+        txt = subprocess.check_output(['pdftotext', '-f', str(p), '-l', str(p), pdf_path, '-']).decode()
+        if args.date not in txt:
+            sys.stderr.write('mkfooterpdf: page %d of %s has no footer date %r\n' % (p, pdf_path, args.date))
+            return 1
+    sys.stdout.write('mkfooterpdf: wrote %s (%d pages; the date %r read back from pages 1 and %d)\n' % (pdf_path, n_out, args.date, n_out))
     return 0
 
 

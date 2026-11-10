@@ -151,6 +151,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `$mode strict.equate` | Added | warns when a name given to `equate` or `$define` is also a statement or function name |
 | `$mode trap.unused.main` | Added | `trap.unused` for the program's own variables |
 | `no.query` on cataloging | Added | the `basic` command, the `$catalogue` directive and the `catalogue` line of `$basic.options` take `no.query`, which stops the compiler asking before it removes an older entry |
+| `oconv()` date `i` | Changed | the `i` code of a `d` conversion (the ISO week number) gives the week; without `yi` beside it, it gave whatever number was left in memory |
 | `open ... non.transactional` | Added | a write through that file variable is not undone by a rollback |
 | `open.socket()` | Changed | takes a connect timeout |
 | `openseq` | Added | `creating` makes the file at once; `shared` lets several processes append; a block device can be opened |
@@ -823,7 +824,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `ide` theme | Changed | starts in the site's `SCREENTHEME` (paper when none or a name that is not a theme, mono without color); View, Theme goes through the themes in the pages' order and skips those the terminal cannot show |
 | `ide` tools menu | Added | Tools, between View and Help, opens `tool.files`, `tool.dict`, `tool.voc`, `tool.query`, `tool.bulk`, `tool.catalog` and `tool.test`; the page gets the terminal as a program run from the IDE does, and the IDE comes back with its tabs and unsaved text |
 | `ide` untitled buffer | Added | a bare `ide` opens an editable "Untitled 1" with the cursor in it; New record writes nothing until it is saved; the arrows stay in the editor at its first and last line |
-| `ide` window lock and foot | Changed | needs 140 by 43 (was 140 by 42) and has the toolkit's foot: the status line, a border and a row of function keys on the last three rows; a window made smaller while it runs holds the keyboard behind a warning that gives both sizes and says unsaved text is lost unless the recovery copy is on, whatever the cursor is doing (the warning is worded shorter in a very small window); `sed` and `ced` keep the cursor-based lock |
+| `ide` window lock and foot | Changed | needs 140 by 43 (was 140 by 42) and has the toolkit's foot: the status line, a border and a row of function keys on the last three rows; a window made smaller while it runs holds the keyboard behind a warning that gives both sizes and says unsaved text is lost unless the recovery copy is on, whatever the cursor is doing (the warning is worded shorter in a very small window); `sed` is the IDE's editor and `!ced()` holds the same window lock (at its own 140 by 42) |
 | immediate messages | Changed | `message ... immediate` is shown in a box on any terminal |
 | `my.menu` | Changed | its list grows with the window (more rows, a wider command column); F1, `?` or a click on the `[?]` shows the page's help |
 | `sed` | Changed | the full-screen editor is back with a menu bar, the keys most editors have (`emacs` in `&sed.options&` keeps the old ones), undo and redo, syntax color and the mouse; its keys are decoded from the terminal's terminfo entry |
