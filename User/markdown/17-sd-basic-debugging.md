@@ -416,7 +416,7 @@ them. `dumb` and `unknown` have no `cup` and stay line by line. Then:
   line about to run and `*` a line with a breakpoint (a breakpoint wins when the
   line about to run has one) — then the line number and the text. The line about
   to run is highlighted from end to end. When the site's theme is `paper`, as
-  delivered (or `night`, `blue`, `dark` or `light`), the text is colored as SD BASIC: comments, strings,
+  delivered (or `night` or `blue`), the text is colored as SD BASIC: comments, strings,
   constants and the statements. In the plain `classic` theme, which the debugger
   uses when the site names none, the source has no syntax color;
 - to the right of the source, from column 93, is the **Autos** pane: the

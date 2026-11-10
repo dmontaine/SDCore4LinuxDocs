@@ -313,7 +313,7 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | editor | on the right, a tab for each open record. **While it has the focus the character at the cursor is shown in the highlight style** (as well as the terminal's own cursor being put there), so the place shows on a terminal that draws its cursor poorly. **If a block flashes beside the text as you type** (seen in lxterminal and Xfce Terminal, not in GNOME Terminal or Terminator), set the terminal's cursor style to underline or I-beam in its preferences: the highlighted character and a block cursor on top of it are what some terminals draw badly. It is the text area `screen memo` uses, so its keys are `memo`'s: selection, cut, copy and paste, undo and redo, find, line numbers. Text is colored as SD BASIC, C, Python, JSON, shell or Markdown **chosen as [SED](27a-sd-tcl-sed.html) chooses** (since 26 October 2026): by the name of the file, then the record id, then the first line - so a script with no suffix that begins `#!/bin/sh` is shell - and then the languages a site added in `&sed.syntax&`. **A horizontal scroll bar runs along its bottom row** (`<` and `>` at the ends, a thumb as long as the visible part is of the longest line; none to speak of when every line fits); clicking an arrow scrolls 8 columns and clicking the track a page |
 | table | under the editor: the compiler's errors, or search results |
 | pane marks | **`[*]` or `[-]` in the top right corner of each pane that can have the keyboard** (since 19 October 2026): the files (on the frame above the tree), the editor (on the frame above it), the tab strip (at its right end) and the messages (at the right end of their bar). `[*]` is on the pane that has the keyboard, `[-]` on the others; F6 moves it round in that order |
-| status line | **the pane that has the focus** first, in brackets (`[Files]`, `[Tabs]`, `[Editor]`, `[Messages]`: F6 goes round them in that order), then the record, the cursor's line and column, and a star when there are unsaved changes |
+| status line | **the pane that has the focus** first, in brackets (`[Files]`, `[Tabs]`, `[Editor]`, `[Messages]`: F6 goes round them in that order, past the messages when there are none), then the record, the cursor's line and column, and a star when there are unsaved changes |
 
 | key | |
 |---|---|
@@ -724,7 +724,7 @@ and scroll bars use line-drawing characters; elsewhere `+ - |`. The colors are
 your own theme if you chose one, else the site's (`SCREENTHEME` in `sd.conf`, paper as delivered), as on the toolkit
 pages, in SED and in the debugger: paper when neither names one or the name is not
 a theme, mono on a terminal with no color. Ctrl-T or View, Theme goes through blue, classic,
-dark, light, mono, night and paper, skipping those the terminal cannot show, and **SD keeps the
+mono, night and paper, skipping those the terminal cannot show, and **SD keeps the
 choice for you** (since 8 November 2026): the IDE, every page, SED and the debugger start in it
 from then on, in this account and in later sessions.
 

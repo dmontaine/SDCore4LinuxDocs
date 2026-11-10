@@ -12,11 +12,11 @@ same shape as JSON and converts to and from JSON text. The editor edits one, a l
 at a time, and shows the **type** of every element, which a text editor on the
 JSON cannot.
 
-**There is no `ced` command and no Record editor tile on the home screen.** The editor
-is reached two ways: `!ced()` edits a collection held in a BASIC variable, and the
-[IDE](24-sd-tcl-programs-and-the-catalogue.html)'s **F12** (Go, *Edit as fields*) edits
-the record in the open tab (below). To edit a record of a collection file, open it in the
-IDE. Like [sed](27a-sd-tcl-sed.html), the editor runs inside SD and needs no
+The editor is reached three ways: **`ced`** {**`dict`**} *file* {*id* ...} at the command
+prompt edits the records named, one after another (**`*`** for every record; with no ids, the
+active select list, and without one it asks for ids); `!ced()` edits a collection held in a BASIC
+variable; and the [IDE](24-sd-tcl-programs-and-the-catalogue.html)'s **F12** (Go, *Edit as
+fields*), which is also in `sed`, edits the record in the open tab (below). Like [sed](27a-sd-tcl-sed.html), the editor runs inside SD and needs no
 operating-system permission; it needs a terminal, and in a phantom it returns
 at once without editing anything.
 
@@ -33,10 +33,10 @@ row. The path of the level is on the line near the bottom, and the last line giv
 messages. Questions — a new value, a name, a type, *Save changes?* — are asked in
 small boxes over the list.
 
-**The screen is laid out for 140 columns by 42 lines or more** (a bigger window
+**The screen is laid out for 140 columns by 43 lines or more** (a bigger window
 is used whole), and since 18 October 2026 **a window smaller than that is
 refused**, before any record is touched, in words (*CED needs a window of at least
-140 columns by 42 lines; this one is 100 by 30*); `!ced()` refuses the same way,
+140 columns by 43 lines; this one is 100 by 30*); `!ced()` refuses the same way,
 prints the message and returns, and the program goes on. If the window is made
 smaller while CED is open it shows the **upper left corner** of the layout and
 nothing past the edge, and draws everything again when the window is made bigger.

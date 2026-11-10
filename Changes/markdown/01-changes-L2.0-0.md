@@ -191,7 +191,7 @@ Data collections, JSON, XML, CSV and the verbs that import them.
 
 | Name | Change | What |
 |---|---|---|
-| `!ced()` | Added | full-screen editor for a collection held in a variable, with the keys every page shares (Ctrl-T, Ctrl-K, F5); the editor is also reached from `ide` F12; there is no `ced` command |
+| `!ced()` | Added | full-screen editor for a collection held in a variable, with the keys every page shares (Ctrl-T, Ctrl-K, F5); the editor is also reached from `ide` and `sed` F12 and by the `ced` command |
 | collection arrays | Added | `mat()`, `c{list, n}`, `ins ... as`, `del`, `inmat()` on an array |
 | collection file verbs | Added | `ed`, `copy`, `compare.files`: work on a collection file; the post-write trigger no longer crashes the process |
 | collection files | Added | `create.file name collection`; records are collections stored as JSON; `read` and `write` them whole; `ct` shows JSON |
@@ -692,7 +692,7 @@ Three simple layers, with no vault and nothing on by default.
 | text area undo | Changed | `screen memo`: Ctrl-Z gives back exactly what was there; a record holding value, subvalue or text marks came back changed |
 | text from data | Changed | the library never sends a control character to the terminal: one in a record, a record id, a file name or an AI answer is drawn as a reverse letter (ESC as `[`), one cell each; UTF-8 text and line drawing are unchanged |
 | theme roles | Added | five new styles, `warning`, `success`, `readonly`, `busy` and `focus`, with a look in every theme (bold, underline and reverse only in `mono`), and `error` gets a `mono` look; programs that include `sl.h` need compiling again |
-| themes | Added | `paper` (black and dark blue on light gray, menus the other way round; the delivered theme), `night` (white and yellow on black), `mono`, `classic`, `blue`, `dark` and `light`; color works on the Linux console terminal type |
+| themes | Added | `paper` (black and dark blue on light gray, menus the other way round; the delivered theme), `night` (white and yellow on black), `mono`, `classic` and `blue`; color works on the Linux console terminal type |
 | `!tk` routines | Added | `!tkopen`, `!tkclose`, `!tkkeys`, `!tkframe`, `!tkmenubar`, `!tklayout`, `!tkconfirm`, `!tkform`, `!tkpickrec`, `!tkout`, `!tkwrap` and the header `tkpub.h`: a program of your own builds a full-screen page with the frame, menu bar, F2 finder, key table, confirm box, form and pick list the tools use; it runs with your own rights and gates and runs nothing itself |
 | window size | Changed | SD reads the terminal's window size at the start and when it is resized; `@crtwide` and `@crthigh` follow it |
 
@@ -780,7 +780,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | home screen Ctrl-Q | Changed | on a screen typed as `home` at the prompt, Ctrl-Q goes back to the prompt (it signs out on a session's own screen, as before); there Sign out is Ctrl-X, the File menu or the tile |
 | home screen Recent group | Added | `View > Recent group`: the tiles started last, newest first, six at most; off as delivered, the person's own record in `&menus&`; `set.tile account recent off` is the administrator's wall |
 | home screen at the same time | Changed | fixed: a session at the home screen kept the next session waiting at sign-on (the absent `start.default` file was read with a lock the program never let go); `osread` of a missing file left a lock too |
-| home screen keys | Changed | the Terminal is Alt-T (it was Ctrl-T) and Sign out after `home` at the prompt Alt-X (it was Ctrl-X); Ctrl-T is the theme and Ctrl-K the keys of the screen, as on every page; Go > Start the tile (Enter) |
+| home screen keys | Changed | the Terminal is Alt-T (it was Ctrl-T); Ctrl-Q is the one key that leaves, for the prompt after `home` typed there and otherwise by signing out; Ctrl-T is the theme and Ctrl-K the keys of the screen, as on every page; Go > Start the tile (Enter) |
 | home screen menu bar | Changed | made from the page's key table like every other page's: each entry shows its key (new: Ctrl-T Terminal, Ctrl-W Switch account, Ctrl-R Recent group, Ctrl-K Keys, F6 the AI line), F10 left the foot row, and / finds a tile by any part of its name |
 | home screen refused tile | Changed | a tile whose command is refused shows its message until a key is pressed, and the home screen no longer ends |
 | home screen small window | Changed | an account that starts in the home screen is signed out when the window is too small for it, even with the Terminal tile on (it used to be left at the prompt); SDSYS always starts at the prompt |

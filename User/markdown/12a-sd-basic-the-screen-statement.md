@@ -306,14 +306,14 @@ keeping its row on the screen.
 **Color for a language.** `syntax` *name* colors the text as the language *name*:
 `sd.basic`, `c`, `json`, `markdown`, `sh`, `python`, or one a site added in the file
 `&sed.syntax&` (the same languages and rules as [SED](27a-sd-tcl-sed.html)'s color). The colors
-are the **theme's**, so the program chooses one that has them (`paper`, `night`, `dark`, `light`, `classic` or `blue`;
+are the **theme's**, so the program chooses one that has them (`paper`, `night`, `classic` or `blue`;
 `mono` has none, and the text is plain in it). A name that is not a language is not an error: the
 text is drawn plain. The text is colored as it is edited — typing `*` at the start of an SD BASIC
 line makes it a comment as it goes in. A text of some thousand lines is slower to draw for it, because
 the color of a line depends on the lines above it.
 
 ```
-screen theme 'dark' returning th else crt 'no colour here'
+screen theme 'night' returning th else crt 'no colour here'
 screen memo f, 'src', text at 2,2 size 40,8 syntax 'sd.basic' lnum
 ```
 
@@ -614,14 +614,12 @@ screen theme name {returning current} {then ... else ...}
 screen style name, foreground, background, flags
 ```
 
-Seven themes ship: **`mono`**, which uses only reverse video and underline and so reads
+Five themes ship: **`mono`**, which uses only reverse video and underline and so reads
 on any terminal; **`paper`**, black and dark blue text on light gray, with the menu bar
 and menus the other way round (light gray on black, their letters yellow and underlined);
 **`night`**, white and yellow text on black, its menus black on light gray; **`classic`**, dark text on light dialogs over a blue desktop;
-**`blue`**, white on blue dialogs; and **`dark`** and **`light`**, which are `mono` with
-the **syntax colors** added, for a dark and a light terminal background (the colors that
-`screen memo ... syntax` and SED's color for the language use; `paper`, `night`,
-`classic` and `blue` have them too, `mono` has none). **A program that never asks gets `mono`**, unless
+and **`blue`**, white on blue dialogs. All but `mono` have the **syntax colors** (the colors that
+`screen memo ... syntax` and SED's color for the language use). **A program that never asks gets `mono`**, unless
 the administrator has set `SCREENTHEME=` in `sd.conf` to the theme the site wants (the
 shipped `sd.conf` says `SCREENTHEME=paper`; a program with no `SCREENTHEME` line at all stays
 `mono`, and a terminal with no color is `mono` whatever the line says); a

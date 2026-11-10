@@ -9,7 +9,7 @@ have forgotten its arguments, it is here. If you want to know what it
 braces an optional part, and a vertical bar separates alternatives. SD
 folds case, so any of this may be typed in either case.
 
-> This page lists every verb SD ships (**208** of them). The shapes come from the
+> This page lists every verb SD ships (**209** of them). The shapes come from the
 > subject documents, where each verb is described in full.
 
 **The "who" column is the VOC, not an opinion.** It is taken from the
@@ -18,7 +18,7 @@ not refused — the name is simply not recognized.**
 
 | | | |
 |---|---|---|
-| **every account** | 161 verbs | `newvoc`, identical for every ordinary account |
+| **every account** | 162 verbs | `newvoc`, identical for every ordinary account |
 | **SDSYS only** | 47 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
@@ -39,6 +39,7 @@ not refused — the name is simply not recognized.**
 | **`break`** | **`break on`** \| **`off`** \| **`on user`** *n* |  |
 | **`build.index`** | **`build.index`** *file* *field* … \| **`all`** |  |
 | **`catalog`** | **`catalog`** {*file* {*call.name*}} {*program*} {**`local`** \| **`global`** \| **`pcode`**} {**`no.xref`**} |  |
+| **`ced`** | **`ced`** {**`dict`**} *file* {*id* … \| **`*`**} |  |
 | **`clean.account`** | **`clean.account`** | S |
 | **`clear.abort`** | **`clear.abort`** |  |
 | **`clear.data`** | **`clear.data`** |  |
