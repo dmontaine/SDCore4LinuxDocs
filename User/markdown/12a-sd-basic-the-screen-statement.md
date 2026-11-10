@@ -216,7 +216,24 @@ A form holds widgets and the focus, and routes the keys. You build it with
 statements, then run it, or wait on it for events.
 
 ```
-screen form {title t} {at x,y} {size w,h} returning f
+screen form {title t} {at x,y} {size w,h} {fill} returning f
+```
+
+**A form that follows the window.** With `fill` the form takes the whole window and is laid
+out again whenever the window changes. Its size (given with `size`, or worked out from what
+is in it) is the smallest window the program is laid out for. A text area or table added with
+`stretch` takes the spare room, and whatever lies to its right or below it moves over by what
+it grew; nothing else changes. Several stretching widgets on the same rows share the room.
+Below the form's own size the keyboard is held behind one warning until the window is made
+larger, and the form then comes back by itself. A program needs no code for a resize:
+
+```
+screen open clear else stop
+screen form title 'Notes' size 60,18 fill returning f
+screen memo f, 'n', text at 2,1 size 56,12 stretch 'both'
+screen button f, 'ok', '&OK' at 2,15 default
+screen run f returning pressed then null else null
+screen close
 ```
 
 `f` is a data collection: `jbuild(f)` writes the form out as JSON and `jparse`
@@ -248,8 +265,8 @@ Most controls take `color fg,bg` as their last clause (a label, entry, check box
 | `screen button f, id, text {at x,y} {default} {cancel} {color fg,bg} {accel key}` | `[ text ]`. `default`: Return in any other widget presses it. `cancel`: pressing it, like Esc, ends the form with `else`. An `&` marks its key. |
 | `screen progress f, id {at x,y} {width n} {value v} {color fg,bg}` | `[#####     ] 60%`, 0 to 100; `color` draws the filled part. It cannot take the focus. |
 | `screen tabs f, id, labels {at x,y} {value n} {accel key}` | A strip of tabs; the chosen one is the form's page (below). |
-| `screen memo f, id, text {at x,y} {size w,h} {readonly} {wrap} {syntax name} {lnum} {accel key}` | A text area of several lines, one line to a field. `readonly` makes it a viewer; `wrap` wraps long lines at a blank instead of panning sideways; `syntax` *name* draws the text in the syntax colors of a language; `lnum` puts line numbers down the left. |
-| `screen table f, id, columns, rows {at x,y} {size w,h} {value n} {multi} {accel key}` | A heading and rows of cells (below). `multi` lets rows be marked. |
+| `screen memo f, id, text {at x,y} {size w,h} {readonly} {wrap} {syntax name} {lnum} {accel key} {stretch how}` | A text area of several lines, one line to a field. `readonly` makes it a viewer; `wrap` wraps long lines at a blank instead of panning sideways; `syntax` *name* draws the text in the syntax colors of a language; `lnum` puts line numbers down the left; `stretch` `'w'`, `'h'` or `'both'` makes it grow with the window in a `fill` form (any other word takes `else`). |
+| `screen table f, id, columns, rows {at x,y} {size w,h} {value n} {multi} {accel key} {stretch how}` | A heading and rows of cells (below). `multi` lets rows be marked; `stretch` as for a text area. |
 | `screen tree f, id, nodes {at x,y} {size w,h} {value n} {expanded} {accel key}` | A tree of nodes, some open to show what is under them (below). |
 | `screen scrollbar f, id, total {at x,y} {size w,h} {visible n} {value n}` | A scroll bar of its own, for content the program draws itself (below). |
 | `screen container f, id {at x,y} {size w,h} {title t} {noborder}` | A rectangle that owns the widgets added after `screen in` (below). |
@@ -488,8 +505,10 @@ screen delete f, id returning n
 first column of the sheet to show and *y* the first row, from 0. It never goes past the
 sheet's edge, and `returning` says where it ended up: the column, a value mark, the row.
 `screen get f, id` of a viewport answers the same. `screen move` gives a widget a new
-place, counted as it was given, and a container, viewport or frame a new size (`size`),
-and a viewport a new sheet (`content`); everything in a container goes with it.
+place, counted as it was given; a container, viewport, frame, text area, table or tree a
+new size (`size`; a label or an entry field takes a width and stays one row high); and a
+viewport a new sheet (`content`). Everything in a container goes with it, and a text area or
+table keeps what it holds.
 `screen delete` takes a widget out of the form (and a container everything in it, at any
 depth) and says how many went; the id may be used again. `else` is taken when the form or
 the widget is not there, or a size is asked of a widget that has none.
@@ -592,7 +611,7 @@ works on a terminal with color and one without.
 | `highlight` | the selected entry, the button or field that has the focus |
 | `bar` | a menu bar and the body of a menu |
 | `barsel` | the selected entry of a bar |
-| `hotkey`, `hotkey.bar` | a key letter, in a menu and on the bar |
+| `hotkey`, `hotkey.bar`, `hotkey.sel` | a key letter: in a menu, on the bar, and on the selected entry |
 | `field` | an entry field that has not the focus |
 | `disabled` | an entry that cannot be chosen |
 | `bar.disabled` | a disabled entry of a menu (dim, on the menu's own background) |

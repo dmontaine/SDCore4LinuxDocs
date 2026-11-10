@@ -681,6 +681,7 @@ Three simple layers, with no vault and nothing on by default.
 | containers and viewports | Added | `screen container`, `screen viewport`: a form bigger than its window: nesting, clipping, scrolling by keys, wheel and bars |
 | redraw | Changed | the library writes only the text that changed, so a screen no longer flashes |
 | resize inside a dialog | Changed | a resize that arrives while a question, a menu or the AI box is open is kept and given to the page afterwards; it used to be lost |
+| `screen form fill`, `stretch` | Added | a form that takes the whole window and follows it: a text area or table with `stretch` gets the spare room and what lies beyond it moves, with no code in the program; below the form's own size one warning holds the keyboard |
 | `screen memo` SED's editing keys | Added | Alt-Backspace and Alt-D delete a word, Alt-E cuts to the end of the line, Alt-T swaps two characters, Alt-U / Alt-L / Alt-C the word's case, Alt-Space closes blanks, Alt-A aligns with the line above, Alt-M swaps the cursor and the mark, Ctrl-Up / Ctrl-Down move the view |
 | `screen msgbox` | Changed | a text taller than the screen scrolls with PgUp, PgDn, Home and End, the bottom border says `lines a-b of n, PgUp PgDn`, and the buttons are always on the screen; the confirm boxes of the toolkit pages are such boxes |
 | `screen selector` | Added | a choice of one word among several |
@@ -691,7 +692,7 @@ Three simple layers, with no vault and nothing on by default.
 | text area keys | Changed | `screen memo` and the IDE's editor: Ctrl-A selects all (Home is the start of the row), Ctrl-O no longer copies (Ctrl-C does), F3 finds the next and Shift-F3 the one before (Ctrl-N found the next), Ctrl-D duplicates the line (Delete joins lines) and Ctrl-K cuts the whole line into the clipboard, where it cut to the end of the row |
 | text area undo | Changed | `screen memo`: Ctrl-Z gives back exactly what was there; a record holding value, subvalue or text marks came back changed |
 | text from data | Changed | the library never sends a control character to the terminal: one in a record, a record id, a file name or an AI answer is drawn as a reverse letter (ESC as `[`), one cell each; UTF-8 text and line drawing are unchanged |
-| theme roles | Added | five new styles, `warning`, `success`, `readonly`, `busy` and `focus`, with a look in every theme (bold, underline and reverse only in `mono`), and `error` gets a `mono` look; programs that include `sl.h` need compiling again |
+| theme roles | Added | six new styles, `warning`, `success`, `readonly`, `busy`, `focus` and `hotkey.sel` (the key letter on the selected entry of a menu), with a look in every theme (bold, underline and reverse only in `mono`), and `error` gets a `mono` look; programs that include `sl.h` need compiling again |
 | themes | Added | `paper` (black and dark blue on light gray, menus the other way round; the delivered theme), `night` (white and yellow on black), `mono`, `classic` and `blue`; color works on the Linux console terminal type |
 | `!tk` routines | Added | `!tkopen`, `!tkclose`, `!tkkeys`, `!tkframe`, `!tkmenubar`, `!tklayout`, `!tkconfirm`, `!tkform`, `!tkpickrec`, `!tkout`, `!tkwrap` and the header `tkpub.h`: a program of your own builds a full-screen page with the frame, menu bar, F2 finder, key table, confirm box, form and pick list the tools use; it runs with your own rights and gates and runs nothing itself |
 | window size | Changed | SD reads the terminal's window size at the start and when it is resized; `@crtwide` and `@crthigh` follow it |
@@ -763,7 +764,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | compiled kernel | Changed | built with optimisation (`-O2`, with `-fwrapv` and `-fno-strict-aliasing`) where it had none: string and `locate` work about 3.4 times as fast, a BASIC loop 1.5 times, index builds, sorts and writes 1.15 to 1.2 times; `_FORTIFY_SOURCE=3` and `-fstack-protector-strong` end a session at a buffer overrun instead of letting it corrupt memory |
 | default terminal | Changed | 140 by 43 |
 | `sd -status` | Changed | fixed an overrun on a server that recorded no start time |
-| `sd -stop` and `sd -restart` | Changed | a session still attached ten seconds after the termination signal (an idle one does not leave by itself) is ended with SIGKILL, and the stop says how many; before, it was left running with SD gone under it |
+| `sd -stop` and `sd -restart` | Changed | a session still attached ten seconds after the termination signal is ended with SIGKILL, and the stop says how many; before, it was left running with SD gone under it. A session idle at a terminal or on a pipe leaves by itself |
 | session whose SD was stopped | Changed | ends at once with a message in syslog and on its terminal, instead of spinning at full processor use for ever |
 
 ### Tools and the home screen

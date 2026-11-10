@@ -105,7 +105,7 @@ open. The line between the boxes shows the **gates your session holds** (`voc-ed
 | **A** | run `analyze.file` on it: the terminal is handed to the verb, which prints its report; Enter brings the page back |
 | **I** | run `list.index` on it (its indices, in full), the same way |
 | **T** | run `list.triggers` on it, the same way |
-| **/** or F11 | show only the names that hold some text (empty shows them all) |
+| **/** | show only the names that hold some text (empty shows them all) |
 | Esc | clear the filter |
 | F5 | read the files again |
 | F1, **?**, a click on **[?]** | help |
@@ -163,7 +163,7 @@ the **gates your session holds**, as `tool.files` does.
 | **D** | delete the entry (`delete voc name`) after a box that shows the command, with the id typed |
 | **T** | choose the type shown: all, verbs, files, pointers, paragraphs and sentences, other |
 | **S** | choose the state shown: all, only the entries that differ from the shipped VOC, only broken pointers |
-| **/** or F11 | show only the ids that hold some text |
+| **/** | show only the ids that hold some text |
 | Esc | clear the filter |
 | F5 | read the VOC again |
 | F1, **?**, a click on **[?]** | help |
@@ -226,7 +226,7 @@ and whether it has been compiled, and the record as it is stored.
 | **T** | try the item on a record of the file: asks the record's id and shows the value the query processor would compute for it, and the same value as a query prints it |
 | **I** or F6 | the indices pane |
 | **F** | back to the list of files |
-| **/** or F11 | show only the ids that hold some text |
+| **/** | show only the ids that hold some text |
 | Esc | clear the filter |
 | F5 | read the dictionary again |
 | F1, **?**, a click on **[?]** | help |
@@ -502,7 +502,7 @@ The box under the list describes the row under the cursor: the paths of the sour
 | **L** | catalog it locally (`catalog file name local no.query`): a VOC entry that points at the compiled program |
 | **X** | take a local entry out **and delete the compiled program it points at** (`decatalog name`) |
 | **D** | take a private or a local entry out (`delete.catalog name`, or `delete.catalog name local`); the compiled program stays. With both, the page asks which |
-| **/** or F11 | show only the rows whose program or file name holds some text |
+| **/** | show only the rows whose program or file name holds some text |
 | Esc | clear the filter |
 | F5 | read the programs and the catalogs again |
 | F1, **?**, a click on **[?]** | help |
@@ -565,7 +565,7 @@ The line between the boxes counts the results of the session and shows the **bp-
 | **F** | run again the tests that failed (an abort counts as a fail), after the same box |
 | **B** | compile a test that has no object code: `basic FILE ID`, after a box that shows the command (Cancel is what Enter chooses) |
 | **Enter**, F6 or Shift-F6 | show what the test printed in the lower box, which then has the keyboard (`[*]`), scrolling with Up, Down, PgUp, PgDn, Home and End; **Esc**, F6 or Shift-F6 comes back to the list (F6 by way of the AI line when the AI is on for your account) |
-| **/** or F11 | show only the tests whose name or program file holds some text; **Esc** clears it |
+| **/** | show only the tests whose name or program file holds some text; **Esc** clears it |
 | F5 | read the program files again (the results are kept) |
 | F1, **?**, a click on **[?]** | help |
 | Ctrl-Q | leave |

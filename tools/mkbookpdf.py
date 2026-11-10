@@ -41,6 +41,29 @@ import urllib.parse
 import urllib.request
 import uuid
 
+# Shrink each <pre> that overflows its own box to fit, no smaller than 5px.  Answers "N of M made smaller, smallest Fpx, D still too wide".
+FIT_WIDE_BLOCKS = r"""
+(function () {
+  var all = document.querySelectorAll('pre'), n = 0, least = 99, over = 0;
+  for (var i = 0; i < all.length; i++) {
+    var p = all[i];
+    if (p.scrollWidth <= p.clientWidth) continue;
+    var size = parseFloat(getComputedStyle(p).fontSize);
+    var want = Math.max(5, size * p.clientWidth / p.scrollWidth * 0.98);
+    p.style.fontSize = want + 'px';
+    p.style.overflow = 'hidden';
+    for (var t = 0; t < 4 && p.scrollWidth > p.clientWidth && want > 5; t++) {   // a font's sizes do not scale exactly
+      want = Math.max(5, want * 0.97);
+      p.style.fontSize = want + 'px';
+    }
+    n++;
+    if (want < least) least = want;
+    if (p.scrollWidth > p.clientWidth) over++;
+  }
+  return n + ' of ' + all.length + ' made smaller, smallest ' + (n ? least.toFixed(1) : '-') + 'px, ' + over + ' still too wide';
+})()
+"""
+
 
 def find_browser():
     for name in ('google-chrome', 'google-chrome-stable', 'chromium',
@@ -248,6 +271,23 @@ def main():
         # The tab was opened AT the target URL already (json/new took it),
         # so wait for that initial load rather than navigating a second time.
         cdp.wait_for_event('Page.loadEventFired', timeout=args.timeout)
+
+        # 10 Nov 2026 (S.139) - a 140-column screen capture ran off the page.
+        # Each code block wider than the printed text width gets a smaller
+        # font, measured in the print layout at the width of the page's text
+        # (Letter, 8.5 in less the 0.4 in margins, 739 CSS px).  The count is
+        # printed so that a run that shrank nothing can be seen to have.
+        cdp.call('Emulation.setEmulatedMedia', {'media': 'print'})
+        cdp.call('Emulation.setDeviceMetricsOverride',
+                 {'width': 739, 'height': 1000, 'deviceScaleFactor': 1,
+                  'mobile': False})
+        shrink = cdp.call('Runtime.evaluate', {
+            'returnByValue': True,
+            'expression': FIT_WIDE_BLOCKS,
+        }, timeout=args.timeout)
+        cdp.call('Emulation.clearDeviceMetricsOverride')
+        sys.stdout.write('mkbookpdf: wide blocks %s\n' % (
+            shrink.get('result', {}).get('value', 'not measured')))
 
         footer_text = (args.footer.replace('&', '&amp;').replace('<', '&lt;')
                       .replace('>', '&gt;'))
