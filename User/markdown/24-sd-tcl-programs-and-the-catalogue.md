@@ -363,7 +363,6 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | Alt-G · Go, Go to line | (Ctrl-L until 8 November 2026) **a line; line,column; or, in a record shown with `:@vm:` marks, field,value,subvalue** (the field is the line, the value follows the (v-1)th `:@vm:`, the subvalue the (s-1)th `:@sm:` inside it; the tokens are found in any case, and a value or subvalue past the last goes to the last; **two marks side by side - an empty value - count as one, so use the line and column there**). A number is made whole (`1.5` is 1) and one above 99,999,999 is taken as 99,999,999; a number under 1 or a word is not taken |
 | Search, Find in the records | find a text in every record of the file the tree is on (the first 2000 records, 500 lines), listed in the table; Return opens the record at the line. The text is at most 256 characters. It has no key (F11 was it) |
 | Ctrl-E · Go, Zoom the editor | the editor fills the screen; Ctrl-E again brings the files and the messages back (below) |
-| Go, Edit in SED | edit the record in [SED](27a-sd-tcl-sed.html) and come back (below) |
 | F12 · Go, Edit as fields | edit the record as a tree of fields, values and subvalues in the IDE's own fields view - the editor of [CED](27b-sd-tcl-ced.html), shown inside the editor's rectangle - and come back (below) |
 | Tab · Shift-Tab | in the editor, **indent and outdent** the line or the selected lines (below); in the tree, the tabs, the messages and the fields they do nothing (since 8 November 2026 they never move between the panes: F6 and Shift-F6 do). In a dialog, such as the name form, Tab still goes from field to field |
 | Go, Open the include | the record that the `$include` line at the cursor names, in a tab: one name is looked for in the file the tab is in and then in `syscom`, two words name the file; a collection-file record is passed over, and one that is not found says where it looked. It has no key |
@@ -563,19 +562,9 @@ between the tabs and the editor only. Anything that fills the messages - a
 compile with errors or warnings, a search, Run a command - ends the zoom so
 that you can read it; a compile with no errors leaves it as it is.
 
-**Go > Edit in SED hands the record to SED, and SED's save brings you back**
-(since 18 October 2026; it was Ctrl-E until 9 November 2026). SED edits the record on disk, so a record with unsaved changes
-is saved first: the IDE asks *Save them, then edit in SED?* and **Cancel**
-leaves everything as it was. In SED you work as you always do; **the first
-successful save ends the edit** and the IDE comes back with the new text in the
-editor, the compile errors forgotten (they named lines of the old text) and a
-line in the status bar, *Back from SED: bp prog is saved*. Leaving SED without
-saving (Ctrl-Q) brings you back too, with the record as it was, and a record
-that someone else holds locked opens in SED **read only**, with SED's own
-message, as it does from the command line. There is no *press Return* pause on
-the way back, which Run has because a program may have written something to
-read. Ctrl-E is the editor's *end of row* key in other programs that use
-`screen memo`; in the IDE it belongs to this and **End** ends a row.
+Ctrl-E is the editor's *end of row* key in other programs that use `screen memo`; in the
+IDE it is the zoom and **End** ends a row. (The IDE no longer hands a record to SED:
+[SED](27a-sd-tcl-sed.html) is the IDE's own editor started by itself.)
 
 **F12 shows the record as fields, values and subvalues, so that nobody types a mark**
 (since 26 October 2026; in the IDE's own form since 30 October 2026, as a pane of the tab since the
