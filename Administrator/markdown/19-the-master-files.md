@@ -285,8 +285,9 @@ VOC and programs are written by the account's user, so nothing in them is truste
   VOC, exactly the entry SD ships. An account that has changed or removed one (its own `basic`, say)
   is refused before anything happens: *run.in: basic is not SD's own entry in the VOC of account
   acme (it is missing or was changed there); nothing was run*. Put SD's own entry back in that
-  account's VOC (the record of the same name in `newvoc`; `update.accounts` adds a missing entry
-  but leaves a changed one alone) and try again.
+  account's VOC (the record of the same name in `newvoc`; `update.accounts` puts the shipped entry
+  back, whether it is missing or was changed: it asks first only when the type differs, and it
+  keeps an entry marked `[LOCKED]` unless it is a verb) and try again.
 - **For the command itself the session is not the administrator.** Only the one gate the command
   needs is on (`bp-edit` for `basic`, `catalog`, `decatalog` and `delete.catalog`, `dict-edit` for
   `compile.dict`, none for `debug`), and `sh` and `os.execute` are off whatever the account's own
