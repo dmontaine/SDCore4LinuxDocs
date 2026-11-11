@@ -278,6 +278,26 @@ catalog it as the administrator, in the global catalog if the directive says `gl
 catalog a program of an account, say so: `run.in acme catalog bp prog`. `run.in` does not start the
 account's `login` paragraph (it would run with the administrator's rights), and it does not nest.
 
+**The command does not run as the administrator** (since 11 November 2026). The account's files,
+VOC and programs are written by the account's user, so nothing in them is trusted:
+
+- **The words must be SD's own.** The command word and every option word must be, in that account's
+  VOC, exactly the entry SD ships. An account that has changed or removed one (its own `basic`, say)
+  is refused before anything happens: *run.in: basic is not SD's own entry in the VOC of account
+  acme (it is missing or was changed there); nothing was run*. Put SD's own entry back in that
+  account's VOC (the record of the same name in `newvoc`; `update.accounts` adds a missing entry
+  but leaves a changed one alone) and try again.
+- **For the command itself the session is not the administrator.** Only the one gate the command
+  needs is on (`bp-edit` for `basic`, `catalog`, `decatalog` and `delete.catalog`, `dict-edit` for
+  `compile.dict`, none for `debug`), and `sh` and `os.execute` are off whatever the account's own
+  switches say. A program being debugged therefore has the account's reach, not yours: it cannot
+  open another account's files, run a shell command, `logto` another account (*logto is refused
+  while run.in is running a command in account acme*) or follow a Q-pointer out of the account.
+  Everything is put back when the command ends, as above.
+- **Compiling reads the account and nothing else.** A `$execute` in the source is a compile error
+  (*$execute is refused in a compile started by run.in*), and an include or a dictionary that lies
+  outside the account is refused; SD's own `syscom` headers are still found.
+
 It adds no authority: the administrator can already `logto` into any registered account. What it
 adds is the way back and a shorter list. Every use writes `run.in begin account=… command=…` and
 `run.in end account=…` (or `run.in revert account=… reason=abort`) to the audit trail, and a
