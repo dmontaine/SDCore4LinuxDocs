@@ -117,7 +117,7 @@ from a script, feed every answer, starting with `s` to stop the paging:
 
 ```
 $ sdfix zzcust
-[ SDFIX L1.1-3   Copyright, Ladybridge Systems, 2007.  All rights reserved. ]
+[ SDFIX L2.0-0   Copyright, Ladybridge Systems, 2007.  All rights reserved. ]
 
 Processing zzcust
 Checking file header...

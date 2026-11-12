@@ -34,7 +34,7 @@ SD takes the type from your terminal's `TERM` when you sign on. `xterm`,
 
 ## What ships
 
-**About 50 terminfo definitions ship with SD**, compiling to **82 terminal
+**25 terminfo definitions ship with SD**, compiling to **36 terminal
 names** — the extra names are variants. For example, `vt100-w` is an alias
 that maps to the same definition as its base name.
 

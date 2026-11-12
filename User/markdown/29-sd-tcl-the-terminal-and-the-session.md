@@ -113,13 +113,13 @@ list.term.types
 ```
 
 ```
-ansi            ansi-generic    dec-vt100       dec-vt330       dec-vt340       dec-vt400
+ansi            ansi-generic    dec-vt100       dec-vt220       dec-vt330       dec-vt340
 ...
 wy50            wy60            wyse50          wyse60          xterm
-51 terminal type(s)
+36 terminal type(s)
 ```
 
-(The list is cut short here: it is 51 names in rows of six, and the count depends
+(The list is cut short here: it is 36 names in rows of six, and the count depends
 on the release. The Data General, MDC Prism, Prime and Televideo 910 definitions that
 were once on it were removed in 2.0-0.) **A type that is not on it has no definition of its own**, and SD
 substitutes one for it.
