@@ -21,6 +21,7 @@ is the short form.
 |---|---|---|
 | A keep-the-accounts upgrade | Changed | could switch the shell and `os.execute` back on; now **never** loosens a gate that is off |
 | A new account | Changed | had ssh and the API on, and the shell and `os.execute` available; now has **no shell, no `os.execute`, no ssh and no API**, and every gate is closed until SDSYS opens it (`modify.account`) |
+| A refused sign-on | Changed | ended with exit status 0, as a session that signed on did; now **1**, so a script, a job or an ssh command can tell refused from done |
 | A `select` or `list` with `by` | Changed | records with equal sort keys came out in an order that depended on where they sat in the file; now in record-id order, as `sort` and `sselect` always gave them (not with `saving unique`) |
 | A silent remote server | Changed | could be waited for without limit; now it is given up on after `netreply` seconds |
 | A sort that uses work files | Changed | gave equal keys in an order that depended on `sortmem` and `sortmrg`; it now gives the order the sort gives in memory (equal keys newest first, the first duplicate kept) |
