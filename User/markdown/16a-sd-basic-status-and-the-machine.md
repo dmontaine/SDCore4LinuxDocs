@@ -91,8 +91,8 @@ and pass it back.
 
 | | Value |
 |---|---|
-| `@who` | `DON` — **upper case** |
-| `@logname` | `don` — **lower case** |
+| `@who` | `don` — the account the session is in, **always lower case** |
+| `@logname` | `don` — the operating-system user who signed on |
 | `@path` | `/home/sd/user_accounts/don` |
 | `@sdsys` | `/usr/local/sdsys` |
 | `@userno` | `67`, the same as `system(18)` |
@@ -101,8 +101,9 @@ and pass it back.
 | `@user.return.code` | `0` |
 | `@crtwide` / `@crthigh` | `200` / `9999` — whatever `TERM` last set |
 
-**`@who` and `@logname` differ in case for the same account.** Compare them
-with `upcase()` on both sides or the test fails on a machine where it worked.
+**`@who` is always lower case**, so compare it with a lower-case literal
+(`if @who = 'sdsys'`) and no `upcase()`. It changes when the session moves to
+another account with `LOGTO`; `@logname` does not.
 
 `set.exit.status` sets what SD returns to the operating system when the session
 ends.

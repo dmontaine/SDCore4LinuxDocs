@@ -148,7 +148,9 @@ exception.** The documentation PDFs are files in the `pdf` directory of the shar
 account, which every account may read. A person reads one by copying it to their own
 computer (`scp`, or any file-copy tool), or, at the machine itself, by opening it with
 a reader they run themselves. A help box that has more in the documentation names the
-PDF on its last line.
+PDF on its last line, exactly as it is named in the `pdf` directory: the book comes first,
+then the chapter (`administrator-01-accounts-and-security.pdf`; the books are `user`,
+`administrator` and `gettingstarted`).
 
 ### Where the documents come from: `docs.install`
 
