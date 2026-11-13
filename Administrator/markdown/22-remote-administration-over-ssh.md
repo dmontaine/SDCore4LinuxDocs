@@ -18,8 +18,10 @@ run SD wanted.
 network port, under any setting; on the machine itself it uses the local Unix socket only. This
 page is about ssh and nothing else.
 
-**This is a feature of SD Core for Linux only.** SD Core for Windows has no equivalent, because
-Windows has Remote Desktop for this, and SD Core Solo does not have it either.
+**This page is about SD Core for Linux.** SD Core for Windows has the same door in its own form:
+there the administrator is an elevated Windows account, so the door opens a separate account that
+signs in over ssh only and is never elevated; its own documentation describes it. Neither SD Core
+Solo has it.
 
 > This document is separate so that it can be withheld. It links to nothing outside the
 > administrator set. Where a page in another set is worth naming, it is named in words.
