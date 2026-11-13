@@ -177,8 +177,8 @@ deliberately**, as the documented examples for embedded Python, above.
 cataloged `pcl` routine in `gpl.bp` are both still there. What has gone is
 a second, older copy of the source sitting in `bp`.
 
-**SD ships nothing into the SDSYS `bp` file at all now.** It is created
-empty and is yours — and because of that, **`bp` and its compiled objects
+**SD ships only those four examples into the SDSYS `bp` file now.**
+Everything else in it is yours — and because of that, **`bp` and its compiled objects
 are preserved when you upgrade**, alongside your accounts and the rest of
 your own data.
 
