@@ -165,7 +165,7 @@ exist.**
 | **`epoch`** | `epoch()` |
 | **`eqs`** | `eqs(`*a*, *b*`)` |
 | **`equate`** | `equate` *name* `to` *value* {, *name* `to` *value*} … |
-| **`execute`** | `execute` *cmd* {`capturing` *v*} {`returning` *v*} {`passlist` *l*} {`rtnlist` *v*} {`stacklist`} |
+| **`execute`** | `execute` *cmd* {`capturing` *v* or `silent`} {`returning` *v*} {`passlist` *l*} {`rtnlist` *v*} {`stacklist`} |
 | **`exit`** | `exit` — leave the enclosing `loop` or `for` |
 | **`exp`** | `exp(`*a*`)` |
 | **`expand`** | `expand(`*c*`{`*path*`}` {, *file.var*}`)` |
@@ -370,7 +370,7 @@ exist.**
 | **`opentemp`** | `opentemp` {*path*} {`non.transactional`} `to` *file.var* {`on error` …} `then` … `else` … |
 | **`ors`** | `ors(`*a*, *b*`)` |
 | **`os.error`** | `os.error()` |
-| **`os.execute`** | `os.execute` *command* {`capturing` *var*} |
+| **`os.execute`** | `os.execute` *command* {`capturing` *var* or `silent`} |
 | **`osdelete`** | `osdelete` *path* |
 | **`ospath`** | `ospath(`*path*, *key* {, *qualifier*}`)` — keys 0 to 18, see [Status and the Machine](16a-sd-basic-status-and-the-machine.html); an internal program's own `ospath()` has other numbers |
 | **`osread`** | `osread` *var* `from` *path* `then` … `else` … |
@@ -501,6 +501,7 @@ exist.**
 | **`shared`** | `openseq` *path*`,` *id* `shared to` *file.var* `then` … `else` … ***(clause word)*** |
 | **`shift`** | `shift(`*a*, *b*`)` |
 | **`signal`** | `signal(`*user.no*`)` |
+| **`silent`** | clause of `execute`, `phantom` and `os.execute` — run the command and throw its output away (not with `capturing`) ***(clause word)*** |
 | **`sin`** | `sin(`*a*`)` |
 | **`sleep`** | `sleep` {*seconds*}   ·   `sleep` *hh:mm:ss* |
 | **`smul`** | `smul(`*a*, *b*`)` |

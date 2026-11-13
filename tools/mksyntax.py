@@ -225,7 +225,7 @@ if not shapes:
 # where the audience is somebody working on SD rather than with it.
 #
 #   RESTRICTED   the 36 in BCOMP's restricted.statements.  An ordinary account
-#                compiling one gets "Unrecognised statement".
+#                compiling one gets "Unrecognized statement".
 #   INTERNAL     the 38 in BCOMP's int.intrinsics.  Worse than unavailable -
 #                the compiler reads an unknown function name as a MATRIX, so
 #                the complaint is "Matrix X is not referenced in a DIM
@@ -234,7 +234,7 @@ if not shapes:
 #                nobody, restricted or not.  Enumerated by hand because the
 #                only way to find one is to compile it: ERRMSG's opcode was
 #                removed on 28 Jul 24 and the name was left in the table.
-#                Measured - "Unrecognised statement", in an ordinary account
+#                Measured - "Unrecognized statement", in an ordinary account
 #                and with the DEBUGGING keyword alike.
 NO_SUCH_THING = {'ERRMSG'}
 
@@ -378,7 +378,7 @@ braces an optional part.
 
 | | |
 |---|---|
-| ***(restricted)*** | a statement in `BCOMP`'s `restricted.statements`. An ordinary account gets ***"Unrecognised statement"***, which at least names the right line |
+| ***(restricted)*** | a statement in `BCOMP`'s `restricted.statements`. An ordinary account gets ***"Unrecognized statement"***, which at least names the right line |
 | ***(internal)*** | a function in `BCOMP`'s `int.intrinsics`. ***The message names something else entirely***: an unknown function is read as a matrix reference, so the complaint is ***"Matrix X is not referenced in a DIM statement"*** — reported at the **last line of the program**, nowhere near the call. With three or more arguments it is *"Right bracket not found where expected"* instead, because a matrix takes at most two subscripts |
 | ***(no such thing)*** | in a table with no opcode behind it. It compiles for **nobody** — `$internal` does not help |
 
