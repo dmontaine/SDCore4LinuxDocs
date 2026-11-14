@@ -239,8 +239,9 @@ prompt is SD's `:` prompt, as in earlier releases.
   where they did, and the installer says which. `deletesdcore.sh` saves the
   setting when it removes the old install, and an install **from before the home
   screen (L1.1-3 or earlier) is saved as the prompt**. Use the `deletesdcore.sh`
-  of the new release package for the upgrade; an older one does not save the
-  setting, and the upgrade then starts sessions at the home screen.
+  of the new release package for the upgrade. When no setting was saved - an
+  older `deletesdcore.sh`, such as L1.1-3's own - the upgrade starts sessions at
+  the prompt, which is where L1.1-3 always started them.
 * The answer is the system's default. An account that has a start setting of its
   own keeps it. Signed in as SDSYS, `set.start.default terminal` or
   `set.start.default menu` changes the default later, and `modify.account
