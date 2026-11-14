@@ -96,6 +96,14 @@ that changes them later (`remote.ssh`, `remote.api` — see the Administrator
 set's *Remote access and the machine*), so nothing here is a one-time
 choice.
 
+**An upgrade does not ask them.** When the uninstaller kept the configuration
+(its *Keep your existing configuration?* answered yes), the installer asks
+neither question and keeps access as it was: ssh is left exactly as the
+machine has it, and the API stays open to other computers if it was open, and
+local if it was local. An install after the configuration was deleted asks
+both again; that uninstall also removes the listener setting `remote.api`
+wrote.
+
 **Neither question is about whether an ssh server or an API listener
 exist.** They always do — `openssh-server` is installed as an ordinary
 package regardless of the answer, and SD's API socket is always defined
