@@ -319,6 +319,17 @@ It refuses inside a phantom or an API session — *Phantom debugger can only be
 executed from an interactive session* — because it needs a terminal to draw the
 debugger on.
 
+**`pdebug` and the phantom leave each other their messages in a private store**,
+`.local/state/sd/pdebug` below your Linux home. SD finds the home in the password
+database (never `$HOME`), makes the missing directories on the way, and uses the
+store only when every directory from the home down is a real directory nobody else
+can write and the store is readable by you alone, so `pdebug` and the phantom must
+run as the same Linux user. `pdebug` says it cannot start (message 11948) when the
+store cannot be set up. The store survives a restart of SD, so `pdebug` clears its
+own user number's records when it starts, and a phantom ignores a start request
+whose `pdebug` has gone. (Until 9 November 2026 the messages were records of `$ipc`,
+which every SD user can write.)
+
 > **Do not send `pdebug` down a pipe.** It polls the keyboard while it waits,
 > and in a piped session the input stream is the script, so it consumes the
 > commands that have not run yet. Together with the phantom it starts, that is

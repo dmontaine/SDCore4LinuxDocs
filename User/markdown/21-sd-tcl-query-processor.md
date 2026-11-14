@@ -5,9 +5,9 @@ The query processor is how you ask a file a question from the command line. It
 selects records, sorts them, formats them into columns and totals them, and it
 does all of that from one line of typing.
 
-**Twelve verbs on this page are the same program.** `list`, `sort`, `count` and
-the rest are one cataloged program reached through fourteen VOC records, each
-carrying a number that says which verb was typed. Two of the fourteen —
+**Thirteen verbs on this page are the same program.** `list`, `sort`, `count` and
+the rest are one cataloged program reached through fifteen VOC records, each
+carrying a number that says which verb was typed. Two of the fifteen —
 `select` and `sselect` — build a list instead of printing one and are covered in
 [SD TCL - Select Lists](22-sd-tcl-select-lists.html).
 
@@ -612,7 +612,7 @@ named.
 
 | | |
 |---|---|
-| **standard** | `count` `list` `list.item` `list.label` `search` `show` `sort` `sort.label` `sum` |
+| **standard** | `count` `list` `list.item` `list.label` `scan` `search` `show` `sort` `sort.label` `sum` |
 | **programmer** | `reformat` `sreformat` `sort.item` |
 
 Reading and reporting are available to every account; the two verbs that

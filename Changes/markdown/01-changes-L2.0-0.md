@@ -359,6 +359,7 @@ Commands and VOC verbs that every account has, and the command language.
 | saved list verbs | Changed | `save.list`, `get.list`, `delete.list`: `keep`, `deleting`, `count.sup`, a default name, a name left out, `in file` |
 | `selectindex` | Added | the command form of the statement |
 | `setptr` | Changed | `form.feed`, `inform`, `eject`, `as ... in file`; the digits of `next` |
+| `sh` with no command | Changed | fixed: starts the interactive shell again (it said *Error 2 executing operating system command*); it still needs the `sh` switch |
 | `show.list` | Added | a page at a time, starring and clearing items|
 | `sort.list`, `select.dir` | Added | sort a saved list; select the files of a directory |
 | `sp.view` | Changed | `by field`; `x` deletes the item shown; shows where output goes for every print unit mode |
@@ -639,6 +640,7 @@ Three simple layers, with no vault and nothing on by default.
 | group size of a new file | Changed | `grpsize` is 4 (kb) in the shipped `sd.conf`, and the built-in value when it is absent; it was 2 and 1. 200,000 records had 5 to 11 percent of their groups overflowed at 2 kb and under 2 percent at 4 kb; writes 5 percent faster, reads 5 percent slower |
 | `index` and the record id | Changed | fixed: an index followed an upper-case copy of the id; it now follows the id as the file stores it |
 | index, deleting many records | Changed | fixed: in an index of three levels, removing the last value of a block took its whole branch out of the index (lookups missed records that were there, deleted values stayed listed), and a branch left with one block left its neighbors pointing at a freed block |
+| index on a right justified item | Changed | a new one keeps its keys in one order, the empty key, then numbers by value, then text, so a scan and a lookup agree when the item holds both numbers and text; building it no longer loses ids under keys equal as numbers (1, 01, 001); an existing index keeps its old order until it is made again, and an older SD cannot open a file holding the new kind |
 | record id counter | Changed | fixed: `write ... creating.seqkey` could give an id out twice after another write of the file header |
 | `sdfix`, `sdidx`, `sdconv` | Changed | fixed several faults (see the changelog); `sdidx -m` says why it cannot make the directory |
 | sort of equal or ordered keys | Changed | fixed: a long run took minutes; 100,000 equal keys took 168 seconds, now a fraction of one |
@@ -729,6 +731,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | Name | Change | What |
 |---|---|---|
 | account directory parents | Changed | the installer leaves `/home/sd`, `/home/sd/user_accounts` and `/home/sd/group_accounts` 755 (they were 775), so one SD user cannot rename another account's directory and put one of their own in its place; an install made before this is fixed by installing again |
+| api `clearfile` | Changed | fixed: it cleared whichever file a stale counter pointed at; it clears the file named |
 | API per-connection server unit | Changed | `sdclient@.service` sets ten of systemd's sandbox settings (`ProtectKernelTunables`, `ProtectKernelModules`, `ProtectKernelLogs`, `ProtectControlGroups`, `ProtectClock`, `ProtectHostname`, `RestrictRealtime`, `RestrictNamespaces`, `LockPersonality`, `SystemCallArchitectures=native`) on the stage of a connection that runs as root before login; not `NoNewPrivileges`, a capability bound, `ProtectSystem`, `ProtectHome` or `PrivateTmp`, which would stop `sudo sd-elevate` and the writes a session makes; a fresh install has them, an upgrade that keeps the unit files keeps the old unit |
 | API Unix socket | Changed | `/tmp/sdsys/sdclient.socket` is mode 0660, group `sdusers` (systemd made it 0666, so the group restricted nothing and anybody on the machine could reach the first stage of an API connection, which runs as root); the installer adds `SocketMode=0660` to an existing unit that has none and leaves a value that is there |
 | audit daemon restart | Added | `sdlnxd` runs as its own `systemd` unit, `sd-lnxd.service`, which starts it again two seconds after it fails (`kill -9`, a crash); a stop (`sd -stop`, exit 0) is not a failure and is not restarted; a daemon that fails five times in a minute is given up on; `sd.service` runs `sd -start -nodaemon` and wants it; a second daemon ends at once |
@@ -742,6 +745,8 @@ Fixes that close a way round a gate, and what the gates now ask.
 | files root runs | Changed | the installer makes `/usr/local/sdsys/bin` and every file in it `root:root` with no group or other write, and makes `bin` immutable (`chattr +i`), so the `sdsys` user cannot replace `sd`, `sdlnxd`, `sdidx` or `pcode`, or rename `bin` away and put its own in its place; a failure to seal is warned about in the closing summary too |
 | global catalog modes | Changed | the kernel refuses to load a global catalog object that others or the group `sdusers` can write (message 11930), and the installer leaves everything in `gcat` 0755 after its last compile (a fresh install left `gcat/$cproc` 0664) |
 | `$ipc` mode | Changed | directories 2770 and files 0660, `sdsys:sdusers` (it was 775): an operating-system user outside `sdusers` can no longer read the commands, `DATA` lines and messages that every SD user's process leaves in it |
+| named common | Changed | fixed: a program that ended while holding objects in named common freed them twice |
+| named common with a `$` or `_` name | Changed | the system's own common blocks: only an internal program may declare or join one; any other program stops with message 11598 |
 | operating system paths | Changed | `dir()`, `select.dir`, `oscopy`, `!oscopy`, `!ioscopy`, `deleteseq` of a path, `setptr ... as pathname`, `setpu` and a VOC pointer out of the account each ask the account's `os` switch, and `sd-on` for another SD account |
 | `ospath()` in the shared account | Changed | the keys to delete (5), make a directory (13) and make a path (14) are refused inside the shared account for anybody but SDSYS (false, `status()` the permission error); the `$internal` opcode already did, the function every other program uses did not |
 | p-code a session runs | Changed | each session reads `bin/pcode` itself, and refuses a file that others or the group `sdusers` can write; the copy in the shared segment, which any SD user with a shell could change, is no longer run |
@@ -759,6 +764,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | shared memory modes | Changed | the shared segment and the semaphores are 0660 and given to the group `sdusers`; they were 0666, open to every local user |
 | `show ... eval` | Changed | compiles its expression in memory; it no longer writes a temporary I-type into the file's dictionary (no edit gate saw it, and a session holding that record made `show` wait) |
 | system directory | Changed | a session takes it from `SDSYS=` in `sd.conf`, not from the shared segment, which any SD user with a shell could change (the global catalog, the register, the messages, the audit trail and the errlog follow it) |
+| tls close | Changed | fixed: closing a TLS connection no longer ends the process when the other side has already gone |
 | `u` conversion names | Changed | `iconv` and `oconv`: fixed: a name that begins with a dollar sign called an internal subroutine from an ordinary program; it is refused now |
 
 ### System
@@ -839,6 +845,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `my.menu` | Changed | its list grows with the window (more rows, a wider command column); F1, `?` or a click on the `[?]` shows the page's help |
 | `sed` | Changed | the full-screen editor is back with a menu bar, the keys most editors have (`emacs` in `&sed.options&` keeps the old ones), undo and redo, syntax color and the mouse; its keys are decoded from the terminal's terminfo entry |
 | `sed` keys every page has | Changed | Ctrl-T the theme, Ctrl-K the keys, F5 and Ctrl-L draw the screen again, **F9 compiles and runs** (it was F5); kill line is Alt-K and toggle characters Alt-T (both were Ctrl keys), go to a line Alt-G; a key of Esc and one character is written Alt-x, as on every page; View and Help menus, and four more Edit items; the emacs layout and your own bindings are as they were |
+| `sed` open of a missing path | Changed | fixed: opening a path that does not exist (and the retry in upper case) kept the name locked until the editor was closed |
 | `sed` `path:` form | Changed | opens no file now: the `path:` form of a file name went with `FILERULE`, so `sed` asks the account's OS gate and cannot open the file; it no longer retries the name in upper case after that check (`ide path:/full/name` opens an operating system file) |
 | `sed`, `ide`, `ed` input ended | Changed | fixed: they used all of a processor for ever when their input had ended |
 | `sp.view` menu bar | Added | on a window of 140 by 43 or more: File, View and Help (Esc or F10), with the keys every page has (F5, Ctrl-L, Ctrl-T, Ctrl-K, Ctrl-Q); the letters still work |

@@ -320,7 +320,7 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | F8 · Build, Compile | save and compile; the compiler's lines go in the table. Return on one goes to its line, F4 to the next |
 | Shift-F9 · Build, Compile and catalog | the build: compile and catalog. *Cataloged* is said only if `catalog` added the program (F9 until 8 November 2026) |
 | F9 · Build, Run | compile and run (F5 until 8 November 2026: F5 now draws the screen again, as on every page) |
-| F7 · Build, Debug | compile with debugging and run the debugger |
+| F7 · Build, Debug | compile with debugging and run the debugger. **Shift-F7** (Build, Toggle breakpoint) marks the cursor's line as a breakpoint for it, Build, Clear breakpoints takes the marks away and Build, Debug from the first line stops at line 1: see [SD Basic - Debugging](17-sd-basic-debugging.html) |
 | Ctrl-S · File, Save | save the record (an untitled buffer asks for its file and name first; an unchanged record says *No changes to save*). **Ctrl-S is the only save key**; F2 no longer saves |
 | Ctrl-N · File, New record | a new record: the name form, then a buffer that is not on the disk until it is saved. **`path:/full/name` there makes an empty file of the operating system and opens it in a tab** (below) |
 | Ctrl-O · File, Open record | the name form, for a record that exists; a file whose name starts with a dollar sign is refused. **Up and Down in the form bring back the files and records opened in this session** (twenty of each) |
@@ -782,7 +782,7 @@ program in a phantom process"*. The debugger itself is covered in
 ## Who has these verbs
 
 **Every account has all of them now**: `format`, `list.common`, `basic`,
-`catalog`, `compile.dict`, `debug`, `delete.catalog`,
+`catalog`, `compile.dict`, `debug`, `decatalog`, `delete.catalog`,
 `delete.common`, `find.program`, `generate`, `ide`, `map`,
 `run`.
 

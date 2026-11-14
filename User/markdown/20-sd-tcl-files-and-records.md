@@ -425,7 +425,7 @@ Modes: PRE.WRITE, PRE.DELETE, POST.WRITE, POST.DELETE, READ, PRE.CLEAR, POST.CLE
 ```
 
 ```
-list.triggers {file ...}
+list.triggers {file ...} {lptr {n}}
 ```
 
 **`list.triggers` says the same for every file of the account at once**: the file,
