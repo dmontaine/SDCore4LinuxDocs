@@ -108,8 +108,9 @@ itself is running). What the two questions actually decide:
 | API | `sdclient.socket` listens on `127.0.0.1:4247` only — a remote client reaches it by tunnelling over ssh (`ssh -L 4247:127.0.0.1:4247 <host>`) | the socket is rebound to `0.0.0.0:4247` and `ufw allow 4247/tcp` is added |
 
 **SDSYS over ssh is not asked about: it is installed shut.** It is an
-available feature that the administrator turns on after the install, and an
-upgrade shuts it again. The closing summary says whether it is open and how to
+available feature that the administrator turns on after the install; an
+upgrade that keeps the configuration leaves it as it was (open stays open, shut
+stays shut). The closing summary says whether it is open and how to
 open it from any login that has `sudo` - on a server with no screen or
 keyboard, this is how SD is administered:
 

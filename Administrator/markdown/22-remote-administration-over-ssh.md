@@ -3,8 +3,8 @@ Subtitle: How SDSYS, the administrator, can sign in over ssh from another comput
 
 **SDSYS can sign in over ssh from another computer, but only after you have opened that door.** As
 delivered the door is shut: `sdsys` is refused a network login at the ssh server. The installer does
-not ask about it and never opens it, and an upgrade shuts it again; open it as "Opening and shutting
-the door" below says. Once you open it, a
+not ask about it; open it as "Opening and shutting the door" below says. An upgrade that keeps the
+configuration leaves it as it was: open stays open, shut stays shut. A full uninstall removes it. Once you open it, a
 sign-in over ssh asks for `sdsys`'s password and lands in an SD session with every right the local
 SDSYS has.
 
