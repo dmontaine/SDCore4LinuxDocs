@@ -74,6 +74,12 @@ forks a daemon of its own, which nothing watches**; use
 daemon runs at a time: a second `sdlnxd` finds the first and ends. See
 *Installation and the daemon* in the Administrator set.
 
+**A script may capture what `sd -start` prints.** `x=$(sd -start)` or
+`sd -start | tee start.log` returns as soon as SD has started. The daemon it
+leaves running does not keep the script's pipe: it writes to `/dev/null`
+instead, so anything it prints after the start is not seen there. Sent to a
+file or a terminal, its output goes there as before.
+
 **A `shmget` System V segment does not survive a reboot** — the kernel
 clears its IPC state on every restart, unlike a file on disk. So unlike a
 port where a stale segment can persist across a restart, a reboot here

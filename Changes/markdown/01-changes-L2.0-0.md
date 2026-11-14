@@ -777,6 +777,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 |---|---|---|
 | compiled kernel | Changed | built with optimisation (`-O2`, with `-fwrapv` and `-fno-strict-aliasing`) where it had none: string and `locate` work about 3.4 times as fast, a BASIC loop 1.5 times, index builds, sorts and writes 1.15 to 1.2 times; `_FORTIFY_SOURCE=3` and `-fstack-protector-strong` end a session at a buffer overrun instead of letting it corrupt memory |
 | default terminal | Changed | 140 by 43 |
+| `sd -start` | Changed | a script that captures its output through a pipe (`x=$(sd -start)`) gets it and goes on; the background daemon kept the pipe and the script waited until `sd -stop`. A phantom and the STARTUP command give back a pipe the same way; a file or a terminal is kept |
 | `sd -status` | Changed | fixed an overrun on a server that recorded no start time |
 | `sd -stop` and `sd -restart` | Changed | a session still attached ten seconds after the termination signal is ended with SIGKILL, and the stop says how many; before, it was left running with SD gone under it. A session idle at a terminal or on a pipe leaves by itself |
 | session whose SD was stopped | Changed | ends at once with a message in syslog and on its terminal, instead of spinning at full processor use for ever |
