@@ -176,6 +176,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `select.socket()` | Added | waits on the sockets held in a matrix |
 | `selectindexv` family | Added | `selectindexv`, `selectleftv`, `selectrightv`: index scans into a select list variable |
 | `send` | Added | `writeseq`, or with a colon `writeblk`, to a file opened with `openseq` |
+| `sendmail` | Changed | fails (`er$ioe`, the mail command's status in `os.error`) when the mail command cannot run or fails; it reported success |
 | `set.socket.mode` trace | Added | `skt$info.trace` logs the data sent and received on a socket to an owner-only file |
 | `socket.info()` | Changed | fixed: `skt$info.open` on a number, a string or an unassigned variable stopped with a fatal error |
 | `!sort` | Changed | sorts a select list variable; the internal sort is open to programs |
@@ -769,6 +770,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `sd -status` | Changed | fixed an overrun on a server that recorded no start time |
 | `sd -stop` and `sd -restart` | Changed | a session still attached ten seconds after the termination signal is ended with SIGKILL, and the stop says how many; before, it was left running with SD gone under it. A session idle at a terminal or on a pipe leaves by itself |
 | session whose SD was stopped | Changed | ends at once with a message in syslog and on its terminal, instead of spinning at full processor use for ever |
+| sign-on banner | Changed | names the platform: `SD Core for Linux, the Essential Multivalue String Database, version L2.0-0` (it said `SD Core, ...`) |
 
 ### Tools and the home screen
 
@@ -789,6 +791,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | home screen refused tile | Changed | a tile whose command is refused shows its message until a key is pressed, and the home screen no longer ends |
 | home screen small window | Changed | an account that starts in the home screen is signed out when the window is too small for it, even with the Terminal tile on (it used to be left at the prompt); SDSYS always starts at the prompt |
 | home screen sub-menus | Added | a tile can open a second page of tiles with a Back tile, Esc and the path on the status line; eight deep; the delivered page declares none yet |
+| home screen version | Added | the date line in the header ends with the product and its version: `SD Core for Linux L2.0-0` |
 | `ide` | Added | tree, tabs, compile errors table, find, run, catalog and debug; Ctrl-E zooms the editor to the whole screen, and Go > Edit in SED hands a record to `sed` |
 | `ide` breakpoints | Added | Shift-F7 or a click in the gutter marks a line of a program tab (`*`); F7 runs to the first mark, Build / Debug from the first line stops at line 1 with them set; what the debugger still has comes back as marks; up to 20, only lines where a statement begins |
 | `ide` autologout countdown | Added | with `autologout` set, the status line counts down the last 60 seconds before the session is signed out and says whether unsaved changes will be lost; any key stops it; it reads the inactivity clock `autologout` itself uses |
