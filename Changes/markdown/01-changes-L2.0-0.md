@@ -77,6 +77,7 @@ The server side of the API, the client library and the language headers.
 
 | Name | Change | What |
 |---|---|---|
+| api sign-in: audit | Added | the first entry to an account writes `api login user= account=` to the audit trail |
 | `autologout` | Changed | reaches an API session; a client hang found while testing it is fixed |
 | client library headers | Added | C# (`sdclient.cs`) and PHP (`sdclient.php`) beside the six already there; neither has been run against a runtime |
 | client library: connections | Changed | the number of simultaneous connections is no longer limited |
@@ -351,6 +352,7 @@ Commands and VOC verbs that every account has, and the command language.
 | `multisort` | Added | `!multisort` sorts several related lists by one of them |
 | `option` words | Added | `dir.dtm`, `git`, `inherit.ownership` and `spool.command` (twenty more were added and removed again, see REMOVED) |
 | `oscopy` | Added | copy an operating system file; `overwrite`, `append` |
+| `pause`, `ctrl-r` search | Changed | a session whose input has ended no longer spins at 100% CPU at `pause` or at the search prompt |
 | `phantom` | Added | `no.msg`, `data`, `log`, `group` and `user` options; `!phlog` gives a phantom's log record; a phantom started while SD is suspended gives back its place |
 | phantom and terminal lists | Added | `list.phantoms`, `list.term.types`: the phantoms and no one else; the terminal types |
 | `private vocabulary` | Added | `$private.voc`: a file of commands searched after all other command sources |
