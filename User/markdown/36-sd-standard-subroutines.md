@@ -160,8 +160,10 @@ machine.
 | `!CREATE_USER` `!SET_PASSWD` | the Linux user account half of `create.account` and `modify.password` |
 | `!CRED_SET` `!CRED_VERIFY` | write and check a credential in the credential store |
 | `!SD_GET_SALT` `!SD_KEY_FROM_PW` | the key derivation behind that credential |
+| `!PW_COMPLEX` | SD's password rule — 8 characters with a lower-case letter, an upper-case letter, a digit and a symbol |
 | `!EUID_SET` `!EUID_RESTORE` | the real POSIX `setuid`/`setgid` calls, load-bearing on this port — see the *Administrator* set's *Encryption and the SDEXT interface* chapter |
 | `!IS_USER` `!IS_GROUP` `!IS_GRP_MEMBER` `!IS_SD_USER` | Linux account and group questions |
+| `!PEER_LOCAL` | whether a connection came from this machine |
 | `!SDCLIENT` | the server side of the client API |
 
 **Unlike SD Core for Windows, there is no `!ELEVATE`, `!PS_SCRIPT`,

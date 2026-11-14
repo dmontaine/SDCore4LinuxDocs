@@ -30,6 +30,9 @@ You land in **the SD account named after your Linux login**. Nothing asks
 for a password — Linux has already authenticated you, at the console or
 over ssh.
 
+The sign-on banner names the product and its version, `L2.0-0`, and the
+date line of the home screen ends with them too.
+
 **SD is already running.** It is a `systemd` service, `sd.service`, enabled
 at every boot; `sdclient.socket` is what actually opens the API port. You
 do not type `sd -start`. See [Running SD](03-running-sd.html).

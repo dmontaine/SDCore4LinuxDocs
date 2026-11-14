@@ -424,6 +424,38 @@ administrator verb, it changes the clock for the whole installation rather than
 for your session, and it is in the **administrator documentation** under
 *Accounts and Security*.
 
+## Currency and separators: `nls`
+
+```
+nls
+nls currency | thousands | decimal
+nls currency | thousands | decimal value
+nls default
+```
+
+Three values control how a number is written: the currency symbol, the thousands
+separator and the decimal separator. **`nls` with nothing after it shows all
+three**, one to a line:
+
+```
+Currency symbol     : '$'
+Thousands separator : ','
+Decimal separator   : '.'
+```
+
+Naming one of the three shows just that one. Naming one and a value sets it, and
+**`nls default`** puts all three back to `$`, `,` and `.`. A setting lasts for the
+session: the next session starts from the defaults. Anything other than the three
+names is refused, *"x is not a recognized NLS key"*.
+
+These are the same three values that **`getnls`** and **`setnls`** read and set
+from SD BASIC (see [Data Conversion](06-sd-basic-data-conversion.html)). SD Core
+is English only; `nls` has nothing to do with the language of messages, month
+names or day names.
+
+Large letters on the terminal, `block.term`, are described with `block.print` in
+[SD TCL - Printing and Spooling](28-sd-tcl-printing-and-spooling.html).
+
 ## Waiting
 
 ```

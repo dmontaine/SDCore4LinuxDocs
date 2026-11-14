@@ -97,6 +97,20 @@ A follow-up is **used once**: the next request takes it whether you send it or c
 
 It needs no terminal features and works over ssh. In a session with no one to answer (a script, a phantom) it asks, gets no answer, and sends nothing.
 
+## The AI in the editors
+
+The IDE, [SED](27a-sd-tcl-sed.html) and [CED](27b-sd-tcl-ced.html) can be asked about what you are editing when the AI
+is on for your account. The IDE has an **AI** menu before Help (Explain the error, Explain the selection, Ask about this record) and an
+**`AI>`** row under the editor and the messages table; F6 goes round the panes to it. SED is the IDE's editor, so it has the same, and
+CED has F2. In all three **Enter shows a preview first**, with Send and Cancel (the default).
+The answer may propose changes to the text: each is shown as a diff, **Accept puts them into the buffer as one
+undo step and saves nothing**, **Reject is the default**, and a set of changes is taken whole or not at all (an old text
+that is missing or is in the record twice, overlapping changes, more than 8 changes or more than 30 lines are ignored with
+a note; if you changed the record while the AI answered, nothing is applied). A command in the answer is ignored.
+
+[The debugger](17-sd-basic-debugging.html) has the command **`AI`** (or `AI` and a question) in its full-screen display: it is told the program and
+the line, the call stack and about fifty lines of the source round the stop, and answers in words only; nothing in your program is changed.
+
 ## See also
 
 [The AI helper](20-the-ai-helper.html) (for the administrator) ·

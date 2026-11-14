@@ -124,7 +124,9 @@ enforces about *where* and *as whom* SDSYS connects. See
 [Accounts](05-account-types.html#sdsys-is-the-only-administrator).
 
 **Failed API logins are written to the audit trail**, with the reason and
-the address they came from. See [Other hardening](13-hardening.html).
+the address they came from. The line is written **before** the three-second
+wait SD adds to slow down guessing, so a program that hangs up during the wait
+is recorded as well. See [Other hardening](13-hardening.html).
 
 ## A session is confined to its own account
 

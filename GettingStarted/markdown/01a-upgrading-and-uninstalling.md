@@ -28,6 +28,15 @@ writes them (`write_install_dicts`) adds and updates the entries SD ships
 and leaves alone any you added. If that step cannot run, the installer says
 so rather than finishing quietly.
 
+**The parameters SD no longer has are taken out of a kept `sd.conf` for
+you.** SD refuses to start on a name it does not recognize, so when the
+installer puts back a `sd.conf` you kept, it removes each line that names a
+parameter this release dropped (`APILOGIN`, `CODEPAGE`, `CREATUSR`, `EXCLREM`,
+`FILERULE`, `FIXUSERS`, `GDI`, `INVCASE`, `JNLDIR`, `JNLMODE`, `PORTMAP`,
+`RINGWAIT` and `TXCHAR`) and says which. A configuration file you copy in by
+hand from an older installation needs the same done to it; see
+*Configuration* in the Administrator set.
+
 **Existing accounts pick up a release's new commands automatically**, as in
 SD Core for Windows. When you kept your accounts, the installer ends by
 running, as the administrator:

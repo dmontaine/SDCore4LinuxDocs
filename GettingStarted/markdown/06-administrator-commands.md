@@ -135,9 +135,9 @@ contains `;`, `|`, `&`, `$`, a backquote, `<`, `>` or a newline** — "Error 2
 executing operating system command", before anything runs. That is a safety
 measure against an accidental injection in a one-liner, applied to every
 account whether or not it has `sh-on`, SDSYS included. **There is no pipe,
-redirection or chaining from the prompt, and no interactive shell** (a bare
-`sh` is refused too); put the work in a script and run the script, `sh
-./myscript`.
+redirection or chaining from the prompt** (a bare `sh`, with nothing after it,
+does start an interactive shell for an account that has `sh-on`; `exit` brings
+you back); put the work in a script and run the script, `sh ./myscript`.
 
 ### Over the API they follow the same switches
 

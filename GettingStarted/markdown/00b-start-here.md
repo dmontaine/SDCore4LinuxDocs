@@ -169,6 +169,6 @@ pages that turns out not to be true of the build you are running**. The second
 is as valuable as the first.
 
 **Quote the version as `L2.0-0`** — the string in the header bar of every
-page here, and in what `sd --version` reports. The bare `2.0-0` is the same
+page here, in the sign-on banner, and in what `sd --version` reports. The bare `2.0-0` is the same
 release; the `L` says it is the Linux one, and that is the part worth
 keeping in a report.

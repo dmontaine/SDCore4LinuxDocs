@@ -298,6 +298,7 @@ directory, or a symbolic link that points out of its own, in any of these:
 | `OPENSEQ` and `OPENPATH` with a path | status 3035, so `OPEN ... ELSE` works as before |
 | `DIR()` and the `select.dir` verb | no entries, and `STATUS()` is set (the verb says why) |
 | `DELETESEQ` of a bare path | status 3035; the file is left alone |
+| `OPENTEMP` with a pathname or in the temporary directory, `DIGEST` of a file, and the file keys of `OSPATH()` | the `ELSE` branch, or a null result, with status 3035 (`DIGEST`'s `STATUS()` says the file is outside what the account may reach) |
 | `!OSCOPY`, `!IOSCOPY` and the `oscopy` verb | refused, status -4 (the verb says why) |
 | printing into a file by path (`setptr ... as pathname`, or the `SETPU` statement) | the verb refuses when the unit is set; for either, the first line printed is refused and the program stops |
 

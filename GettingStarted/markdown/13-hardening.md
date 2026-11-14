@@ -127,7 +127,7 @@ are not readable by other programs.
 your session's actual `TERM` — over ssh, whatever your client sent;
 locally, whatever the terminal emulator or console set.
 
-**About 50 definitions ship, compiling to 82 terminal names** — the extra
+**25 definitions ship, compiling to 36 terminal names** — the extra
 names are variants such as `vt100-w` — so `term wyse60` still works. (The
 `-at` types of AccuTerm and SDTerm's `sdterm` were removed: SD does not
 support those terminal programs.)

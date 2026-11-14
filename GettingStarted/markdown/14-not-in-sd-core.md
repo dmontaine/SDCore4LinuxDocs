@@ -21,6 +21,7 @@ recorded on one side and wonder whether it binds the other.
 |---|---|
 | `update.record` — the full-screen record editor | **`sed`** or **`micro`** |
 | `modify` — the full-screen record editor from OpenQM | **`sed`** or **`micro`** |
+| `nano` — the second external editor (removed in 2.0-0) | **`micro`**, **`sed`** or **`ed`** |
 
 **`sed` was removed and has come back**, with drop-down menus that show the key
 for each action, so it is no longer in this table.
@@ -31,7 +32,7 @@ record in each program by name — see
 what they are good for and what they cannot do. **Unlike SD Core for
 Windows, `edit` is not one of them here — it aliases `ed`, the line editor,
 because there is no Linux program to alias it to the way Microsoft Edit
-serves that role there.** The two removed programs above are gone as
+serves that role there.** The three removed programs above are gone as
 *programs*; the capability is not.
 
 `modify` is not in SD Core at all, for any account.

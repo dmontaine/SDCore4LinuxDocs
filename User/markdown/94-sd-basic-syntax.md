@@ -240,12 +240,12 @@ exist.**
 | **`indices`** | `indices(`*file.var* {, *index*}`)` |
 | **`inherit`** | `inherit` *object* |
 | **`inmat`** | `inmat()`   ·   `inmat(`*matrix*`)` |
-| **`input`** | `input` *var* {, *length* {, *fill*}} {`:`} {`_`} {`hidden`} {`no.echo`} {`raw`} {`overlay`} {`upcase`} {`waiting` *n*} |
+| **`input`** | `input` *var* {, *length* {, *fill*}} {`:`} {`_`} {`hidden`} {`no.echo`} {`raw`} {`overlay`} {`upcase`} {`waiting` *n*} — a *fill* cannot be used with `hidden` |
 | **`inputblk`** | `inputblk(`*a*`)` |
 | **`inputcsv`** | `inputcsv` *var*, … |
 | **`inputerr`** | `inputerr` *message* |
 | **`inputfield`** | `inputfield` *var*, *length* {, *mask*} |
-| **`inputif`** | `inputif` *var* {, *length* {, *fill*}} {`:`} {`_`} {`hidden`} {`no.echo`} {`upcase`} `then` … `else` … |
+| **`inputif`** | `inputif` *var* {, *length* {, *fill*}} {`:`} {`_`} {`hidden`} {`no.echo`} {`upcase`} `then` … `else` … — a *fill* cannot be used with `hidden` |
 | **`inputnull`** | `inputnull` *char* |
 | **`inputtrap`** | `inputtrap` *chars* `goto` *label* {, *label* …}   ·   `inputtrap` *chars* `gosub` *label* {, *label* …} |
 | **`ins`** | `ins` *value* `before` *arr*`<`*f* {, *v* {, *sv*}}`>` |
@@ -363,9 +363,9 @@ exist.**
 | **`oconv`** | `oconv(`*a*, *b*`)` |
 | **`oconvs`** | `oconvs(`*a*, *b*`)` |
 | **`on`** | `on` *n* `goto` *label*, … — ***clamps, it does not fall through*** |
-| **`open`** | `open` {*dict*`,`} *name* {`sync`} `to` *file.var* {`readonly`} {`on error` …} `then` … `else` … — `sync` writes every write and delete of the file to disk |
+| **`open`** | `open` {*dict*`,`} *name* {`readonly`} {`non.transactional`} {`sync`} `to` *file.var* {`on error` …} `then` … `else` … — the three words come before `to`, in any order; `sync` writes every write and delete of the file to disk |
 | **`open.socket`** | `open.socket(`*addr*, *port*, *flags* {, *context*}`)` |
-| **`openpath`** | `openpath` *path* {`sync`} `to` *file.var* {`readonly`} {`on error` …} `then` … `else` … |
+| **`openpath`** | `openpath` *path* {`readonly`} {`non.transactional`} {`sync`} `to` *file.var* {`on error` …} `then` … `else` … — the three words come before `to`, in any order |
 | **`openseq`** | `openseq` *path* `to` *file.var* {`append`} {`overwrite`} {`readonly`} `then` … `else` … — ***`then` = it existed, `else` = it was created*** |
 | **`opentemp`** | `opentemp` {*path*} {`non.transactional`} `to` *file.var* {`on error` …} `then` … `else` … |
 | **`ors`** | `ors(`*a*, *b*`)` |

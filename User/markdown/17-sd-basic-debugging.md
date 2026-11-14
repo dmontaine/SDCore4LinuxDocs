@@ -477,9 +477,9 @@ The program's own screen is kept by the terminal (that is what the alternate
 screen is): when you let the program run, the debugger gives the terminal back
 and the program's output is on its own screen, and it is on the alternate
 screen again at the next stop. The colors are the screen library's: if the
-program asked for no theme, the debugger uses the site's theme (`SCREENTHEME` in
-`sd.conf`, which the installer sets to `paper`) while it is up and the `classic` one
-when the site names none; and whatever the program asked for otherwise. When the
+program asked for no theme, the debugger uses the theme you chose with Ctrl-T,
+else the site's theme (`SCREENTHEME` in `sd.conf`, which the installer sets to
+`paper`) while it is up, and the `classic` one when neither names one; and whatever the program asked for otherwise. When the
 debugger lets the program go, the program's theme is given back, whether or not the
 window was resized or `window` *n* was typed on the way.
 

@@ -180,7 +180,9 @@ record has been altered since you last read it.
 > password. `checksum('')` is `0`, so an empty value and a failed read are
 > indistinguishable by checksum alone.
 
-For real cryptography this port provides `sdencrypt()` and `sddecrypt()`. The
+For real cryptography this port provides `sdencrypt()` and `sddecrypt()`, with
+`sdkey()`, `sdsalt()` and `sdrandkey()` to make the key (see [SD Basic - Encrypting
+Data](06a-sd-basic-encryption.html)). The
 older `encrypt()` and `decrypt()` functions **have been removed** and programs
 using them will not compile.
 

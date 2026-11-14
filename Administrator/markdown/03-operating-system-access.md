@@ -36,10 +36,11 @@ directory, at the account's own Linux permissions:
 hello-from-the-shell
 ```
 
-**There is no interactive shell at the prompt.** A bare `sh`, with nothing
-after it, is refused with the same "Error 2" as below, so a script, a phantom
-or a scheduled job that types it does not hang waiting for somebody at a
-keyboard. For a session of your own, use the local login.
+**A bare `sh`, with nothing after it, starts an interactive shell** (the
+filter below is for a typed command; until 7 November 2026 it refused an empty
+one too, with the same "Error 2"). `exit` brings you back to the SD prompt. It
+needs the account's `sh-on` switch like any other `sh`: an account without it is
+refused first, with "<name> is not permitted to use the operating system shell".
 
 ## One rule about the shape of the command, for everybody
 

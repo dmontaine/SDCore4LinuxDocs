@@ -59,6 +59,21 @@ it is `sd -stop`'s job.
 > ps -C sdlnxd
 > ```
 
+**The clean-up daemon is started again if it dies.** `sdlnxd` is the process
+that notices a session whose process has gone and clears it down, and writes
+the audit trail. It runs as its own unit, `sd-lnxd.service`, and `systemd`
+starts it again two seconds after a failure (`kill -9`, a crash, the process
+being killed for memory). A stop with `sd -stop` is not a failure and is not
+restarted. `systemd` allows five starts of the unit in a minute and refuses the
+sixth; **every start counts, a restart after a crash and your own
+`systemctl restart sd.service` alike**, so five restarts of your own followed by
+a crash leave the daemon down. `sudo systemctl reset-failed sd-lnxd` and
+`sudo systemctl start sd-lnxd` take it from there. **A plain `sd -start` still
+forks a daemon of its own, which nothing watches**; use
+`sudo systemctl restart sd.service` when you want the unit to run it. Only one
+daemon runs at a time: a second `sdlnxd` finds the first and ends. See
+*Installation and the daemon* in the Administrator set.
+
 **A `shmget` System V segment does not survive a reboot** — the kernel
 clears its IPC state on every restart, unlike a file on disk. So unlike a
 port where a stale segment can persist across a restart, a reboot here

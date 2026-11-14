@@ -8,6 +8,10 @@ check boxes, lists and buttons, shows a menu bar, and takes clicks of the mouse.
 It needs no extra package and no change to the rest of the program: it is one
 statement word followed by a verb.
 
+This page is the reference for the statement. A guide to building a whole
+full-screen page with it and SD's own `!tk` routines, with worked examples, is the
+separate *SD Text User Interface - Programmer's Guide* set of this documentation.
+
 SD folds case, so a program may be written in either case. Keywords are shown
 here in lower case. In the tables, *italics* mark something you supply and
 **bold** marks a word typed as it stands; braces mark an optional part.
@@ -639,8 +643,9 @@ and menus the other way round (light gray on black, their letters yellow and und
 **`night`**, white and yellow text on black, its menus black on light gray; **`classic`**, dark text on light dialogs over a blue desktop;
 and **`blue`**, white on blue dialogs. All but `mono` have the **syntax colors** (the colors that
 `screen memo ... syntax` and SED's color for the language use). **A program that never asks gets `mono`**, unless
-the administrator has set `SCREENTHEME=` in `sd.conf` to the theme the site wants (the
-shipped `sd.conf` says `SCREENTHEME=paper`; a program with no `SCREENTHEME` line at all stays
+you have chosen a theme with Ctrl-T on one of SD's own pages (SD keeps that choice, and
+`screen open` starts in it) or the administrator has set `SCREENTHEME=` in `sd.conf` to the
+theme the site wants (the shipped `sd.conf` says `SCREENTHEME=paper`; with neither it stays
 `mono`, and a terminal with no color is `mono` whatever the line says); a
 program that asks for a theme gets the one it asked for.
 `screen theme` gives `else` for a name that is not a theme, on a terminal that cannot

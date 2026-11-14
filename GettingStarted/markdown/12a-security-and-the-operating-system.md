@@ -134,7 +134,8 @@ down guessing, so a program that hangs up during the wait is recorded as well.
 
 **This is not the error log and does not behave like it.** The error log
 throws away its oldest half when it fills; the audit file is **rotated —
-renamed with the date and time and a new one started at boot, so nothing
+renamed with the date and time and a new one started when it reaches one
+megabyte (by the audit daemon as it writes, and by `sd -start`), so nothing
 is ever discarded within a run.** Removing the old ones is your decision —
 SD will not do it for you, and they will accumulate.
 
