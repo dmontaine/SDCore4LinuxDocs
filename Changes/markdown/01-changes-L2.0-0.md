@@ -150,6 +150,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `$mode non.durable.txn` | Added | a committed nested transaction writes nothing until the outer one commits |
 | `$mode partial.expressions` | Added | `a and b` and `a or b` stop evaluating as soon as the value is known |
 | `$mode strict.equate` | Added | warns when a name given to `equate` or `$define` is also a statement or function name |
+| `$mode trap.unused` | Changed | warns only of a variable set by a plain `x = ...` and never read; a variable a statement fills (`readu`, `locate ... setting`) is not reported |
 | `$mode trap.unused.main` | Added | `trap.unused` for the program's own variables |
 | `no.query` on cataloging | Added | the `basic` command, the `$catalogue` directive and the `catalogue` line of `$basic.options` take `no.query`, which stops the compiler asking before it removes an older entry |
 | `oconv()` date `i` | Changed | the `i` code of a `d` conversion (the ISO week number) gives the week; without `yi` beside it, it gave whatever number was left in memory |

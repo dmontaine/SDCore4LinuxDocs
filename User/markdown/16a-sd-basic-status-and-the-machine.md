@@ -227,7 +227,9 @@ table still holds it.
 **`sendmail`, `chgphant()` and `ccall()` compile for an ordinary account**, and
 each needs something outside SD before it can do anything: `sendmail` a mail
 relay, `chgphant` a phantom to change, and `ccall` a C function registered into
-the executable. Nothing on this page depends on them.
+the executable. Nothing on this page depends on them. `sendmail` takes its
+`else` when the mail command cannot be run or ends with a failure: `status()`
+is then 3010 (an I/O error) and `os.error()` holds the command's status.
 
 ## See also
 

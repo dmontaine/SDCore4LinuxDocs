@@ -39,7 +39,7 @@ described in *SD Dictionaries - Formats and Expressions*.
 | mode | what it does | also described in |
 |---|---|---|
 | `explicit` | every scalar must be named in a `dim` before it is used, or the compile fails with *Variable x has not been declared* | *SD Basic - Program Structure* |
-| `trap.unused` | the compiler warns of a variable that is given a value and never used | here |
+| `trap.unused` | the compiler warns of a variable that is given a value by a plain `x = ...` and never used (a variable a statement fills, such as the one of `locate ... setting` or `readu`, is not reported; a call made only for its effect is written `void name(...)`) | here |
 | `trap.unused.main` | as `trap.unused`, but only for variables given a value in the program itself, not in an include record | *SD Basic - Program Structure* |
 | `strict.equate` | warns when `equate` or `$define` gives a name that is also a statement or function name | here |
 | `debug.equates` | an object compiled for the debugger also keeps its `equate` and `$define` tokens | *SD Basic - Debugging* |
