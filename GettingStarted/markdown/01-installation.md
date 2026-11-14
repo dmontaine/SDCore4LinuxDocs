@@ -107,30 +107,23 @@ itself is running). What the two questions actually decide:
 | ssh | `sshd` is left however the box already had it; the SD boundary (below) is written to `sshd_config` regardless, ready for whenever ssh is turned on | `sshd` is enabled at boot and `ufw allow 22/tcp` is added |
 | API | `sdclient.socket` listens on `127.0.0.1:4247` only — a remote client reaches it by tunnelling over ssh (`ssh -L 4247:127.0.0.1:4247 <host>`) | the socket is rebound to `0.0.0.0:4247` and `ufw allow 4247/tcp` is added |
 
-**SDSYS over ssh is a third question, also defaulting to no:**
-
-```
-Let sdsys sign in over ssh with its password? (y/N)
-```
-
-Answer **y** on a server with no screen or keyboard: it is how SD is
-administered there. After the `sdsys` Linux password has been set (step 2 of 3
-of the passwords at the end), the installer opens the door, and from then on
-`ssh sdsys@<host>` asks for that password and lands at the SD prompt. With
-**no**, the door stays shut and the closing summary says how to open it later
-from any login that has `sudo`:
+**SDSYS over ssh is not asked about: it is installed shut.** It is an
+available feature that the administrator turns on after the install, and an
+upgrade shuts it again. The closing summary says whether it is open and how to
+open it from any login that has `sudo` - on a server with no screen or
+keyboard, this is how SD is administered:
 
 ```
 sudo /usr/local/sbin/sd-elevate sdsys-ssh on
 ```
 
 (`remote.sdsys on` at the SD prompt does the same, but needs `sdsys` signed in
-at the machine itself.) Once the door is open, the password alone guards
-`sdsys`, so choose a strong one. If you skip the `sdsys` password, the door can
-be open and still let nobody in until `sudo passwd sdsys` sets one. See the
-Administrator set's *Remote administration over ssh*. (On a machine that an earlier test version
-had set up with an authenticator code, the installer takes that code's
-module, files and sign-in lines out, and the door is shut again.)
+at the machine itself.) From then on `ssh sdsys@<host>` asks for the `sdsys`
+Linux password and lands at the SD prompt. **Once the door is open, that
+password alone stands between the network and the administrator**, so choose a
+strong one and shut the door when it is not needed. If you skip the `sdsys`
+password, the door can be open and still let nobody in until `sudo passwd sdsys`
+sets one. See the Administrator set's *Remote administration over ssh*.
 
 **The ssh boundary is applied either way, and it is what actually confines
 SD accounts.** Every account except SDSYS is `ForceCommand`'d into `sd` the

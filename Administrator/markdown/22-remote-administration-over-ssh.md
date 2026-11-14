@@ -2,9 +2,9 @@ Title: Remote Administration over ssh
 Subtitle: How SDSYS, the administrator, can sign in over ssh from another computer with its password; how to turn it on and off; what it refuses; the risk; and what can stop it working.
 
 **SDSYS can sign in over ssh from another computer, but only after you have opened that door.** As
-delivered the door is shut: `sdsys` is refused a network login at the ssh server. The installer asks
-*Let sdsys sign in over ssh with its password? (y/N)*, and only a **y** opens it, after the `sdsys`
-password is set; otherwise open it later as "Opening and shutting the door" below says. Once you open it, a
+delivered the door is shut: `sdsys` is refused a network login at the ssh server. The installer does
+not ask about it and never opens it, and an upgrade shuts it again; open it as "Opening and shutting
+the door" below says. Once you open it, a
 sign-in over ssh asks for `sdsys`'s password and lands in an SD session with every right the local
 SDSYS has.
 
