@@ -345,26 +345,26 @@ number — which is genuinely useful on a printed report, because it says how th
 report was produced. `heading` replaces it:
 
 ```
-sort voc with processor = "$QPROC" by @id dispatch processor heading "QP verbs"
+sort voc with processor = "$qproc" by @id dispatch processor heading "QP verbs"
 ```
 
 ```
 QP verbs
 @ID.................   Dsp   Processor...............
-count                  CA    $QPROC
-list                   CA    $QPROC
-list.item              CA    $QPROC
-list.label             CA    $QPROC
-reformat               CA    $QPROC
-search                 CA    $QPROC
-select                 CA    $QPROC
-show                   CA    $QPROC
-sort                   CA    $QPROC
-sort.item              CA    $QPROC
-sort.label             CA    $QPROC
-sreformat              CA    $QPROC
-sselect                CA    $QPROC
-sum                    CA    $QPROC
+count                  CA    $qproc
+list                   CA    $qproc
+list.item              CA    $qproc
+list.label             CA    $qproc
+reformat               CA    $qproc
+search                 CA    $qproc
+select                 CA    $qproc
+show                   CA    $qproc
+sort                   CA    $qproc
+sort.item              CA    $qproc
+sort.label             CA    $qproc
+sreformat              CA    $qproc
+sselect                CA    $qproc
+sum                    CA    $qproc
 14 record(s) listed
 ```
 

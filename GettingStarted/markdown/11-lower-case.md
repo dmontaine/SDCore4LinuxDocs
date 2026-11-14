@@ -27,7 +27,7 @@ the `login` paragraph lookup, and `set.file`'s default `qfile` pointer.
 
 | | |
 |---|---|
-| Commands in the VOC | **`list`**, `count`, **`select`**, **`create.file`**, **`setptr`** … 399 of 399 `newvoc` records, 424 of 424 `voc_template` records — and that is how they appear in `list voc`, `listv` and `ct voc` |
+| Commands in the VOC | **`list`**, `count`, **`select`**, **`create.file`**, **`setptr`** … 386 of 386 `newvoc` records, 444 of 444 `voc_template` records — and that is how they appear in `list voc`, `listv` and `ct voc` |
 | BASIC source and include records | 217 `gpl.bp` records, 16 `syscom` includes — all of them |
 | System files on disk | `accounts`, `bp`, `bp.out`, `gpl.bp`, `messages`, `newvoc`, `pcode.out`, `syscom`, `voc`, `voc.dic`, `voc_template` and the rest — 0 of 15 `sdsys` directory names still upper case |
 | Account names on disk | `sdsys/accounts/don`, matching the account's own directory in `user_accounts` |
