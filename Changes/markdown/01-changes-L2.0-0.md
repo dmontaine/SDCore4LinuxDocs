@@ -661,7 +661,7 @@ Three simple layers, with no vault and nothing on by default.
 | `sdai` user | Added | made by the installer; removed with the accounts |
 | shared account | Added | made by the installer; its help text and `pdf` directory are loaded |
 | source not installed | Changed | the install compiles SD and removes `gpl.bp`, the C source and objects and the build files; an upgrade removes what an earlier install left; the complete source is in the release zip's `source` folder |
-| start question | Added | the installer asks whether new sessions start at the home screen or at the command prompt; an upgrade offers what the site had, and keeps the prompt for an install from before the home screen (the uninstaller saves the setting) |
+| start question | Added | a new installation asks whether new sessions start at the home screen or at the command prompt; an upgrade that keeps the accounts does not ask and keeps what the site had - the prompt for an install from before the home screen (the uninstaller saves the setting) |
 | stored SDNet logins | Changed | the uninstaller removes `/var/lib/sd-net` when the accounts or the configuration are deleted |
 | systemd units on an upgrade | Changed | `sd.service`, `sd-lnxd.service` and `sdclient@.service` are replaced by this release's when they differ (they were copied only on a first install); `sdclient.socket` and drop-ins under `/etc/systemd/system` are kept |
 | `upgrade_gates` | Changed | fills only a blank setting, so a kept `no` stays |
