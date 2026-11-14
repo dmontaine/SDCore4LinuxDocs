@@ -50,6 +50,22 @@ only the real server can compute, and the client refuses the connection if it
 does not match. Another program that grabbed the port before SD started cannot
 pretend to be SD in order to collect passwords.
 
+**The client library pins the server's certificate.** The first connection from
+a client to an address and port is trusted, and its certificate is remembered —
+the SHA-256 of the whole certificate — in `~/.sdcore/known_servers` (or the file
+named by the environment variable `SD_KNOWN_SERVERS`), one line,
+`<host>:<port> <64 hex digits>`, per server. Any later connection to the same
+address and port that presents another certificate is **refused before a single
+byte of the login is sent**, with a message that names both fingerprints and the
+line to remove. A server that has been reinstalled has a new certificate: remove
+its line, connect again, and the new certificate is remembered. **A store the
+client cannot read or write refuses the connection** rather than connecting
+unchecked, so a program that runs with no home directory (a web server's, a
+service's) needs `SD_KNOWN_SERVERS` set to a file it may write. This is done in
+the client library, so it applies to every program that connects with
+`SDConnect`. **The very first connection is trusted**, as with ssh: someone in
+the middle at that moment would be remembered instead of the server.
+
 ### What you have to do
 
 | | |

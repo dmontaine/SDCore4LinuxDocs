@@ -77,6 +77,7 @@ The server side of the API, the client library and the language headers.
 
 | Name | Change | What |
 |---|---|---|
+| api server: tls relay filter | Changed | the relay that handles the network's bytes is confined by `no_new_privs` and a system-call filter: it can copy bytes and nothing else, and is killed if it tries to open a file, make a connection or run a program |
 | api sign-in: audit | Added | the first entry to an account writes `api login user= account=` to the audit trail |
 | `autologout` | Changed | reaches an API session; a client hang found while testing it is fixed |
 | client library headers | Added | C# (`sdclient.cs`) and PHP (`sdclient.php`) beside the six already there; neither has been run against a runtime |
@@ -88,6 +89,7 @@ The server side of the API, the client library and the language headers.
 | client library: more functions | Added | `sdrevision`, `sdgetvar`, `sdsystem`, `sdindices`, `sdtrans`, `sdrtrans`, `sdtxn` |
 | client library: python | Added | a Python wrapper for the library |
 | client library: `sdcallx` | Added | `sdcallx` and `sdgetarg`: calls with arguments of any size from the C client library |
+| client library: server certificate | Added | `SDConnect` remembers a server's certificate the first time (`~/.sdcore/known_servers`, or `SD_KNOWN_SERVERS`) and refuses a different one before any login byte is sent; a store it cannot use refuses the connection |
 | client library: threads | Added | each thread has its own session, transfer buffer and arguments; several threads may use the library |
 | client library: tls | Changed | the network session is always encrypted (TLS), so SD meets the QMClient encryption items |
 | `master.login` | Changed | the paragraph runs for API connections as for interactive and phantom sessions |
