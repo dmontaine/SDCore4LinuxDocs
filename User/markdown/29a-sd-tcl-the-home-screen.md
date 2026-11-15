@@ -57,6 +57,7 @@ behind a warning that gives both sizes until the window is big enough again.
 |---|---|
 | **Editor** | runs `sed` (it asks which file and record) |
 | **IDE** | runs `ide` |
+| **Receive files** | runs `receive` (*Moving files in and out*), then waits for Enter so you can read what came; it is there only when a transfer can be opened: the system allows file transfer, you are in your own account, and your account has the `xfer` gate |
 | **Terminal** | leaves the screen for the ordinary command prompt (below) |
 | **Keys** | runs `tool.keys`, the terminal and keyboard diagnostic |
 | **Switch account** | a list of the accounts you may enter; then the home screen of the one you pick |

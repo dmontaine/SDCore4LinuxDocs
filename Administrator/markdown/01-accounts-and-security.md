@@ -1025,8 +1025,12 @@ is refused, before anything is read, to anyone else: in every other account the 
 is the account holder's read-only "what my account may do" page, described in the User
 set under *What this account may do*). One row for each registered
 account but SDSYS, one column for each gate the system has, in the order
-`modify.account` carries them out: `ssh api sh os sd voc bp dict net sh-rd sh-wr files
-f-wr f-adm ai home sock`. **`home`** is where a session of the account starts: ON is
+`modify.account` carries them out: `ssh api sh os sd voc bp dict xfer net sh-rd sh-wr files
+f-wr f-adm ai home sock`. **`xfer`** is file transfer over the ssh login (the words `xfer-on`
+and `xfer-off`, *File transfer*, below): for a user account only, like `sh` and `os`; it is
+off as delivered, it works only while `XFER` is 1 in `sd.conf` and the account has the
+`ssh` gate, and because it opens a door from the network into the account's transfer
+folders, turning it ON asks you to type the account's name. **`home`** is where a session of the account starts: ON is
 the home screen, off the command prompt (the words `start-menu` and `start-terminal`).
 An account that has never been given either follows the system's default, which is the
 installer's answer to *Start new sessions at the home screen or at the command prompt?*

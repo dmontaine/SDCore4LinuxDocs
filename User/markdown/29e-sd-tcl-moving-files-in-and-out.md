@@ -70,6 +70,11 @@ in `xfer.in` is left as it was. To replace files, open the transfer with:
 :receive overwrite
 ```
 
+**From the home screen.** Where a transfer can be opened, your home screen has a **Receive files** tile
+among your own tools; it runs `receive` and, when the transfer ends, waits for Enter so that the list of
+files and their SHA-256 can be read before the home screen comes back. It never replaces a file (type
+`receive overwrite` for that). `send` is typed: it needs the file and the records.
+
 ## Taking files out: `send`
 
 ```

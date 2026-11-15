@@ -139,8 +139,9 @@ myprog
 **There is no `logto` route to it.** SDSYS, the one administrator account,
 is reached only by logging in to the machine itself, locally, as the
 `sdsys` account, its own password — a fresh session, not a command typed
-from inside one you already have. `logto sdsys` from any other account is
-refused outright, whatever route it came in by.
+from inside one you already have. `logto sdsys` is refused outright to every
+other session, whatever route it came in by; only a session that signed in as
+`sdsys` can use it, to come back from an account it visited.
 
 **This needs the console, or a desktop-sharing view of it** (VNC,
 TeamViewer) — a real local login, which counts as local because it *is*.

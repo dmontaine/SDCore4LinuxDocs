@@ -68,7 +68,7 @@ are.**
 | no SD account of that name | refused — *Account %1 not in register* (5018) |
 | not in `sdusers` | refused at the door — *not registered for SD use* (5009) |
 | `sd -a<name>` | **refused unless `<name>` is your own account** (10051) |
-| `logto sdsys` from any other account | **refused unconditionally**, whether or not the session came in as `root` — 10002, audited |
+| `logto sdsys` from any other account | **refused** to every session that did not sign in as `sdsys`, whether or not it came in as `root` — 10002, audited; the administrator's own session, having gone to another account, may `logto sdsys` to come back (audited as `logto account=sdsys`) |
 
 **SDSYS is reached one way only: log in to the machine, locally, as the
 account literally named `sdsys`, its own password, and run `sd`.** Being
