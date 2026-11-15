@@ -178,9 +178,17 @@ end
 
 `spec<1>` is the title, `spec<2>` the label of the button that does the work, with
 its `&` letter, and `spec<3>` the hint line (null gives the library's own). Each
-field from `spec<4>` on is one entry: its id, its label, its width, its longest
-text, and 1 for an entry shown as `*`. The fourth argument of `open` holds the
-starting texts, one to a field.
+field from `spec<4>` on is one field: its id, its label, its width, its longest
+text, its kind (null an entry, 1 an entry shown as `*`, 2 a choice of fixed words),
+1 when an empty entry keeps the value shown beside it, a choice's words separated by
+subvalue marks, and the word put before a value shown (null for `now`). The fourth
+argument of `open` holds the starting values, one to a field.
+
+**Every entry opens empty.** A starting value is shown beside the entry, as
+`now: value`, and Ctrl-R in the entry puts it in to be edited; a field that keeps
+the value returns it when the entry is left empty. A choice is a row of words,
+`[user | GROUP | other]`, changed with Left, Right or the space bar, and starts on
+the word its starting value names.
 
 `run` lets the person fill the form in and returns `ok` (Return in an entry presses
 the default button) or `cancel`, the texts as typed, one to a field, and the id of
@@ -203,10 +211,11 @@ entry named, and the program calls `run` again. Return with the id empty:
 26   |                                   +----------------------------------------------------------------+                                   |
 ```
 
-Tab moved to the next entry. In a small form of two entries, starting texts `ann` and null
-showed `ann` in the first entry; a masked entry showed `1234` as `****`; and Esc
-returned `cancel` with the texts typed so far still in `b` (`ann` and `1234`), so a
-program that keeps only what `ok` returns must test `a` first, as this one does.
+Tab moves to the next entry. In a small form of two entries, a starting value `ann`
+for the first is shown beside it as `now: ann` and the entry itself is empty; a
+masked entry shows `1234` as `****`; and Esc returns `cancel` with the texts typed
+so far still in `b`, so a program that keeps only what `ok` returns must test `a`
+first, as this one does.
 
 `close` puts back the screen that was under the form; call it on every way out of
 the form, as `!tkclose` on every way out of the page.

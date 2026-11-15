@@ -111,7 +111,7 @@ call !tkconfirm(sentence, lines, typed, res, msg, boxtitle, btns)
 | `sentence` | What is about to be done, exactly as the program will do it. Wrapped at spaces, never altered. |
 | `lines` | The explanation, one line to a field; may be null. |
 | `typed` | Null, or a name the person must type after choosing the first button. |
-| `res` | *Returned*: `run` when the first button was chosen (and the name typed exactly); `cancel`; `wrong` when the name typed was another. |
+| `res` | *Returned*: `run` when the first button was chosen (and the name typed, in either case); `cancel`; `wrong` when the name typed was another. |
 | `msg` | *Returned*: null for `run`, otherwise a line for the status line. |
 | `boxtitle` | The title; null is `Run this command?`. |
 | `btns` | Two or three button labels, comma-separated, with `&` letters; null is `&Run,&Cancel`. **The last is Cancel and is the default.** The middle one of three returns `alt`. *(three buttons not used in the examples)* |
@@ -126,8 +126,8 @@ call !tkform(op, ctx, a, b, c)
 
 | `op` | Arguments | |
 |---|---|---|
-| `open` | `a` spec, `b` starting texts, `c` *returned* | Draws the form and returns at once. `c` is `no` when nothing was drawn. |
-| `run` | `a`, `b`, `c` *returned* | `a` is `ok` or `cancel`, `b` the texts one to a field, `c` the id of the entry with the focus. |
+| `open` | `a` spec, `b` starting values, `c` *returned* | Draws the form and returns at once; every entry opens empty, its starting value shown beside it (Ctrl-R puts it in). `c` is `no` when nothing was drawn. |
+| `run` | `a`, `b`, `c` *returned* | `a` is `ok` or `cancel`, `b` the answers one to a field (an entry's text, the starting value for an empty entry that keeps it, a choice's word), `c` the id of the field with the focus. |
 | `say` | `a` text, `b` entry id, `c` null | Writes a refusal or a note under the entries; the focus goes to the entry. |
 | `close` | `a`, `b`, `c` null | Puts back what was under the form. |
 

@@ -313,7 +313,7 @@ year-end processing — without touching the machine's clock.
 ## Deleting an account: `delete.account`
 
 ```
-delete.account account.name {remove.home}
+delete.account account.name {remove.home} {no.query}
 ```
 
 Removes the account directory, its Linux group, its entry in the accounts
@@ -322,6 +322,10 @@ itself. **One confirmation covers all of it**, and the wording is decided
 before the question is asked, so it never offers to remove a Linux account it
 is not going to. **The Linux user's home directory is kept unless you add
 `remove.home`** — see *Managing accounts* in the Getting Started set.
+
+**`no.query` leaves the confirmation out.** It is for a caller that has asked
+already: `tool.accounts` gives it after you have typed the account's name in
+its own dialog. Typed at the prompt it deletes at once, so leave it off there.
 
 **It will not delete a Linux account SD did not create.** The account is
 left in place and it says so.
@@ -502,7 +506,7 @@ Each shows its command and what it does in a box answered Run or Cancel, **and C
 chooses**. The page runs those four commands and no other, through the routine all the toolkit pages
 use; the verbs ask for the administrator again and write their own audit lines. **A restore replaces
 every account the archive holds** with the account of the same name, so its box lists them, from the
-manifest, and wants the word `RESTORE` typed. The verb's own
+manifest, and wants the word `restore` typed (in either case). The verb's own
 question (Enter is No) cannot be answered through a page, so the page gives `no.query` after its box
 has asked; it does not give it any other way. **A restore that would have to make an account is
 refused by the page**: a new user account asks for a password, and that question cannot be answered

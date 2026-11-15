@@ -71,7 +71,7 @@ remote.sdsys {on | off}
 | `off` | shuts it, as `sdsys-ssh off` does |
 
 The same is the sixth view of `tool.remote`, **`6` sdsys login**: it shows the report, and `O` and
-`F` run `remote.sdsys on` and `off` after a box (the box for `on` wants the word `OPEN` typed).
+`F` run `remote.sdsys on` and `off` after a box (the box for `on` wants the word `open` typed).
 
 Each use writes one audit line, `remote.sdsys on status=0` and the like: the keyword and the
 helper's exit status.

@@ -211,8 +211,12 @@ screen ask prompt {value v} {width n} {title t} {at x,y} {mask} {history list} {
 One line of input. `mask` shows a `*` for each character. The keys are those of
 an entry field (below). `history` gives earlier answers, newest first, as fields:
 Up shows the next older one and Down the next newer, and Down past the newest gives
-back what had been typed. Your program keeps the list and adds to it; `screen ask`
-never changes it. A `mask` question recalls nothing.
+back what had been typed. Ctrl-R shows the newest whatever is shown. Your program keeps the list
+and adds to it; `screen ask` never changes it. A `mask` question recalls nothing.
+
+To ask for a change to a value without putting the value in the field, open the field empty and
+give the value as the history: `screen ask 'Directory (now: ' : cv : ')' value '' history cv returning
+nd`. Ctrl-R or Up puts it in to be edited. The full-screen pages of SD ask this way.
 
 ## Forms
 

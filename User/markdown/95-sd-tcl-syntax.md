@@ -70,7 +70,7 @@ not refused — the name is simply not recognized.**
 | **`debug`** | **`debug`** |  |
 | **`decatalog`** | **`decatalog`** {*file*} *name* … |  |
 | **`delete`** | **`delete`** {**`dict`**} *file* {*id* …} {**`no.query`**} |  |
-| **`delete.account`** | **`delete.account`** *account* {**`remove.home`**} | S |
+| **`delete.account`** | **`delete.account`** *account* {**`remove.home`**} {**`no.query`**} | S |
 | **`delete.catalog`** | **`delete.catalog`** *name* … {**`global`** \| **`local`**} |  |
 | **`delete.common`** | **`delete.common`** *name* |  |
 | **`delete.file`** | **`delete.file`** {**`dict`** \| **`data`**} *voc.name* {**`force`**} {**`no.query`**} |  |
@@ -212,7 +212,7 @@ not refused — the name is simply not recognized.**
 | **`sum`** | **`sum`** {**`dict`**} *file* {*selection*} *field* |  |
 | **`term`** | **`term`** \| *width*{`,`*lines*} {*type*} \| **`color`** *bg*{`,`*fg*} \| **`default`** \| **`display`** |  |
 | **`time`** | **`time`** \| **`internal`** |  |
-| **`tool.accounts`** | **`tool.accounts`**  —  the accounts on one screen (administrator): every account with its kind, suspension, gates that are on and sessions; **`modify.account`** (suspend, add or take away a person) and **`create.account`** behind a box answered Run, and **`delete.account`** after the name is typed, with the terminal given to the verb where it asks for a password or confirms | S |
+| **`tool.accounts`** | **`tool.accounts`**  —  the accounts on one screen (administrator): every account with its kind, suspension, gates that are on and sessions; **`modify.account`** (suspend, add or take away a person) and **`create.account`** behind a box answered Run, and **`delete.account`** from one dialog where the name is typed and Run pressed, with the terminal given to the verb only where it asks for a password | S |
 | **`tool.ai`** | **`tool.ai`**  —  the AI choice page (administrator): the provider with a check box (Anthropic, OpenAI, Google, DeepSeek or Custom), its model (each named provider has a default) and key, and which accounts may use the AI | S |
 | **`tool.audit`** | **`tool.audit`**  —  the audit trail on one screen (administrator): read from its end a screen at a time, with filters by time, event, account, user and text, go to a time, follow, the rotated files, and the lines shown saved to a record of **`$HOLD`**; it runs no command | S |
 | **`tool.backups`** | **`tool.backups`**  —  backups and restores on one screen (administrator): the saved directory, the archives in it with the manifest of each, who else is signed on, and **`backup.account`**, **`restore.account`** and **`set.backup.directory`** behind a box answered Run | S |

@@ -161,12 +161,12 @@ chosen with the keys `1` to `6`:
 
 | View | What it shows and does |
 |---|---|
-| `1` doors | what `remote.api` and `remote.ssh` say with no keyword: **the machine's own answer**, read back from the socket unit and the firewall, not what the page meant. `A` changes the API (`on`, `local` or `off`), `S` changes ssh (`on` or `off`); turning either **on** lets other computers reach this one, so its box wants the word `OPEN` typed |
+| `1` doors | what `remote.api` and `remote.ssh` say with no keyword: **the machine's own answer**, read back from the socket unit and the firewall, not what the page meant. `A` changes the API (`on`, `local` or `off`), `S` changes ssh (`on` or `off`), each chosen from a list that starts on `off`; turning either **on** lets other computers reach this one, so its box wants the word `open` typed (in either case) |
 | `2` routes | every user account with the doors it has (`ssh`, `api`, `files`, `files-write`, `files-admin`) and the NET gate, and in words how it can be reached. It only shows: the switches are `tool.gates`'s |
 | `3` servers | the SDNet servers of the `netservers` file (read with `!netdefs`): name, address, remote account and mode, the pin shortened, the local accounts that may use it. `X` deletes the one under the cursor (`delete.server`, which does not ask itself, so the box is the question). `N` asks every field, checks them the way `set.server` does and gives **the terminal to the verb**, whose `connect` step shows the key the server presents and its hash and asks whether to trust it |
 | `4` connected | every session now by the door it came through: the user number, the kind (user, api, sdnet, phantom), the login user, the account and where it came from |
 | `5` TLS | this machine's TLS identity as `settings.report` gives it: the certificate fields and the public-key hash another SD server pins. Never the private key |
-| `6` sdsys login | what `remote.sdsys` says with no keyword: whether the ssh door lets `sdsys` in with its password (shut as delivered). `O` opens it (its box wants the word `OPEN` typed), `F` shuts it. See Remote Administration over ssh |
+| `6` sdsys login | what `remote.sdsys` says with no keyword: whether the ssh door lets `sdsys` in with its password (shut as delivered). `O` opens it (its box wants the word `open` typed), `F` shuts it. See Remote Administration over ssh |
 
 The page runs five commands through the routine all the toolkit pages use, each only after a box that
 shows the command and what it does was answered Run (**Cancel is what Enter chooses**): `remote.api`,

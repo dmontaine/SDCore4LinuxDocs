@@ -1000,16 +1000,19 @@ this page's**: a new account has every gate off, as the verb makes it.
 | `A` | `modify.account group add user`, on a group account, for the Linux user you type |
 | `R` | `modify.account group delete user`, taking one away |
 | `C` | `create.account group name no.query`, `create.account other name path no.query`, or `create.account user name {none\|ssh\|api\|both}` |
-| `X` | `delete.account name {remove.home}`, after you type the account's name |
+| `X` | `delete.account name {remove.home} no.query`, from one dialog where you type the account's name and press Run |
 
 Each shows its command and what it does in a box answered Run or Cancel, **and Cancel is what Enter
 chooses**. The verbs ask for the administrator again and write their own audit lines; the page runs
 nothing else. **`/`** goes to the next account whose name holds a text you type (any case; it goes
-round to the top): the letters are this page's commands, so `/` is how you find an account by typing. **Two of them are not run through the page**: creating a user account and deleting an
-account hand the terminal to the verb, because `create.account user` asks for the new person's password
-at a prompt of its own that shows nothing, and `delete.account` has no `no.query`, asks once for its own
-confirmation and is never to be sent down a pipe. Nothing typed at either prompt passes through the page;
-when the verb ends, the page takes the screen again and shows what is registered now. A suspended
+round to the top): the letters are this page's commands, so `/` is how you find an account by typing. **One of them is not run through the page**: creating a user account hands
+the terminal to the verb, because `create.account user` asks for the new person's password at a prompt of
+its own that shows nothing; nothing typed there passes through the page, and when the verb ends the page
+takes the screen again and shows what is registered now. **`X` is one dialog, not a box**: you type the
+account's name, choose for a user account whether its home directory is kept (the default) or removed, and
+press Run; the page then runs `delete.account name {remove.home} no.query`, since the dialog has asked.
+In the create dialog the kind and the doors are chosen from a row of words (Left, Right or the space bar),
+not typed. A suspended
 account is refused by LOGIN, ssh and the API; sessions already signed on in it keep running until they
 end; nothing changes in Linux, so lifting the suspension costs nothing. `F5` reads everything again, `F1`
 explains the page and `Ctrl-Q` leaves. Opening the page writes the audit line `tool start app=tool.accounts`.

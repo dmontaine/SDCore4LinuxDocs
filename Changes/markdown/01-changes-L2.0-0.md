@@ -335,6 +335,7 @@ Commands and VOC verbs that every account has, and the command language.
 | `decatalog` | Added | deletes a local catalog entry and its object code |
 | `delete` | Changed | a record another user holds locked is reported and skipped |
 | `delete.account` | Changed | not stopped by a file it cannot open when it looks for references |
+| `delete.account` `no.query` | Added | leaves out the confirmation, for a caller that has asked already (the accounts page's delete dialog) |
 | `delete.common all except` | Added | deletes every named common block but those listed |
 | `ed` | Changed | `l` with no text as the first command works; marks typed in input; `ev` on a compound `i`-type; line numbers show positions in edit values mode; `spool` closes the printer; external commands; automatic ids |
 | `fstat` | Changed | wider columns |
@@ -543,7 +544,7 @@ has, with the changes they made.
 | `shared-read-off` | Added | withdraws the shared account's files from one account (on for every account as delivered) |
 | `shared-write-on` | Added | lets one account change the shared account's files (off as delivered) |
 | `ssh` and `api` | Changed | a new account gets neither; `create.account user name ssh`, `api` or `both` and `modify.account` change it |
-| `tool.accounts` | Added | full-screen page of every account: its kind, suspension, the gates that are on and who is signed on; suspends or lifts, adds or takes away a person of a group account, creates (the verb asks for a password on the terminal) and deletes (after the name is typed) |
+| `tool.accounts` | Added | full-screen page of every account: its kind, suspension, the gates that are on and who is signed on; suspends or lifts, adds or takes away a person of a group account, creates (the kind and the doors chosen, not typed; the verb asks for a password on the terminal) and deletes (one dialog: the name typed, the home directory kept or removed, Run; no terminal) |
 | `tool.audit` | Added | full-screen page that reads the audit trail from its end, a screen at a time: filters by time, event, account, user and text, go to a time, follow, the rotated files, and the lines shown saved to a record; it changes nothing else |
 | `tool.backups` | Added | full-screen page for backups and restores: the saved directory, the archives in it with each manifest, who else is signed on (a backup and a restore need everyone else out), and `backup.account`, `restore.account` and `set.backup.directory` behind a box |
 | `tool.config` | Added | full-screen page that shows every `sd.conf` parameter with what SD is running with, what the file says, the default and when a change takes effect, and names a line SD does not know; `E` changes one of 14 tuning parameters through `set.config` behind a box answered Run, and shows why and the line to add by hand for the rest |
@@ -554,7 +555,7 @@ has, with the changes they made.
 | `tool.jobs` | Added | full-screen Scheduled jobs page: every account with the paragraphs and sentences it may run from the command line, changed through `set.batch` behind a box answered Run (an account's schedule is still written in its user's crontab or timer); its Jobs view (`J`) lists the administrator's scheduled jobs and makes, changes, deletes (the name typed) and starts them through `set.job` |
 | `tool.menus` | Added | full-screen page for the home screen: where each account starts, which tiles are on, who may add programs |
 | `tool.menus` | Changed | a row for each development tile and the Recent group (17 rows in the Menu box) |
-| `tool.remote` | Added | full-screen page for everything that reaches SD from outside: the API and ssh doors as the machine reports them (changed after a box, and the word OPEN to turn one on), the routes of each user account, the SDNet servers (delete, define with the terminal given to `set.server`), who is connected, this machine's TLS identity, and the `sdsys` ssh login (`remote.sdsys`: open it after a box and the word OPEN, or shut it) |
+| `tool.remote` | Added | full-screen page for everything that reaches SD from outside: the API and ssh doors as the machine reports them (chosen from a list, changed after a box, and the word open to turn one on), the routes of each user account, the SDNet servers (delete, define with the terminal given to `set.server`), who is connected, this machine's TLS identity, and the `sdsys` ssh login (`remote.sdsys`: open it after a box and the word open, or shut it) |
 | `tool.sessions` | Added | full-screen page of sessions and locks; logs a session out, releases a lock, stops new logins |
 | `update.accounts` deletion list | Changed | after the copy from `newvoc` it removes from the account's VOC the records on SD's deletion list (`sdsys/voc_removed`), but only the record SD shipped (not one of your own, not a `[locked]` one unless it is a verb), after saving a copy, and audits it; before `newvoc.mods` |
 | `update.accounts all` by SDSYS | Changed | an account whose VOC SDSYS cannot write (the `sdsys` user is not in its group) is skipped with a line that says so, and the command goes on and ends with the counts, where it stopped with error 3018 at the first one; the administrator's own VOC is updated from `voc_template` |
@@ -700,6 +701,7 @@ Three simple layers, with no vault and nothing on by default.
 | containers and viewports | Added | `screen container`, `screen viewport`: a form bigger than its window: nesting, clipping, scrolling by keys, wheel and bars |
 | redraw | Changed | the library writes only the text that changed, so a screen no longer flashes |
 | resize inside a dialog | Changed | a resize that arrives while a question, a menu or the AI box is open is kept and given to the page afterwards; it used to be lost |
+| `screen ask` history | Added | `history list` gives earlier answers: Up and Down step through them and Ctrl-R brings back the newest; the SD pages open a question empty and pass the value in force this way |
 | `screen form fill`, `stretch` | Added | a form that takes the whole window and follows it: a text area or table with `stretch` gets the spare room and what lies beyond it moves, with no code in the program; below the form's own size one warning holds the keyboard |
 | `screen memo` SED's editing keys | Added | Alt-Backspace and Alt-D delete a word, Alt-E cuts to the end of the line, Alt-T swaps two characters, Alt-U / Alt-L / Alt-C the word's case, Alt-Space closes blanks, Alt-A aligns with the line above, Alt-M swaps the cursor and the mark, Ctrl-Up / Ctrl-Down move the view |
 | `screen msgbox` | Changed | a text taller than the screen scrolls with PgUp, PgDn, Home and End, the bottom border says `lines a-b of n, PgUp PgDn`, and the buttons are always on the screen; the confirm boxes of the toolkit pages are such boxes |
@@ -714,6 +716,8 @@ Three simple layers, with no vault and nothing on by default.
 | theme roles | Added | six new styles, `warning`, `success`, `readonly`, `busy`, `focus` and `hotkey.sel` (the key letter on the selected entry of a menu), with a look in every theme (bold, underline and reverse only in `mono`), and `error` gets a `mono` look; programs that include `sl.h` need compiling again |
 | themes | Added | `paper` (black and dark blue on light gray, menus the other way round; the delivered theme), `night` (white and yellow on black), `mono`, `classic` and `blue`; color works on the Linux console terminal type |
 | `!tk` routines | Added | `!tkopen`, `!tkclose`, `!tkkeys`, `!tkframe`, `!tkmenubar`, `!tklayout`, `!tkconfirm`, `!tkform`, `!tkpickrec`, `!tkout`, `!tkwrap` and the header `tkpub.h`: a program of your own builds a full-screen page with the frame, menu bar, F2 finder, key table, confirm box, form and pick list the tools use; it runs with your own rights and gates and runs nothing itself |
+| `!tkconfirm` typed word | Changed | the name or word a box asks for (an account's name, `open`, `restore`) is taken in either case, as any command is, and the pages show it in lower case |
+| `!tkform` fields | Changed | every entry opens empty, its starting value shown beside it (`now: ...`) and put in by Ctrl-R, and a field may keep that value when left empty; a field can be a choice of fixed words, which the pages use wherever a fixed set was typed |
 | window size | Changed | SD reads the terminal's window size at the start and when it is resized; `@crtwide` and `@crthigh` follow it |
 
 ### SDNet
