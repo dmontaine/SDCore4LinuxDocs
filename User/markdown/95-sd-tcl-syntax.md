@@ -9,7 +9,7 @@ have forgotten its arguments, it is here. If you want to know what it
 braces an optional part, and a vertical bar separates alternatives. SD
 folds case, so any of this may be typed in either case.
 
-> This page lists every verb SD ships (**209** of them). The shapes come from the
+> This page lists every verb SD ships (**211** of them). The shapes come from the
 > subject documents, where each verb is described in full.
 
 **The "who" column is the VOC, not an opinion.** It is taken from the
@@ -18,7 +18,7 @@ not refused — the name is simply not recognized.**
 
 | | | |
 |---|---|---|
-| **every account** | 162 verbs | `newvoc`, identical for every ordinary account |
+| **every account** | 164 verbs | `newvoc`, identical for every ordinary account |
 | **SDSYS only** | 47 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
@@ -156,6 +156,7 @@ not refused — the name is simply not recognized.**
 | **`qselect`** | **`qselect`** {**`dict`**} *file* {*id* … \| **`*`**} {**`(options`**} |  |
 | **`quit`** | **`quit`** — the same verb as **`off`** |  |
 | **`rebuild.all.indices`** | **`rebuild.all.indices`** {**`no.query`**} |  |
+| **`receive`** | **`receive`** {**`overwrite`**} |  |
 | **`redo`** | **`redo`** {**`times`** *n*} {**`every`** *s*} *command* |  |
 | **`reformat`** | **`reformat`** {**`dict`**} *file* {*selection*} {*fields*} |  |
 | **`release`** | **`release`** *file* *id* …  ·  **`release filelock`** *file* |  |
@@ -176,6 +177,7 @@ not refused — the name is simply not recognized.**
 | **`select`** | **`select`** {**`dict`**} *file* {*selection*} {*list.no*} |  |
 | **`select.dir`** | **`select.dir`** *pathname* {**`to`** *n*} |  |
 | **`selectindex`** | **`selectindex`** {**`dict`**} *file* *index* {*value*} {**`to`** *n*} |  |
+| **`send`** | **`send`** *file* *id* {*id* …} |  |
 | **`set`** | **`set`** *name* *value* |  |
 | **`set.ai`** | **`set.ai`**  ·  **`set.ai provider`** *name* \| **`none`**  ·  **`set.ai model`** *provider* *name* \| **`-`**  ·  **`set.ai models`** *provider*  ·  **`set.ai key`** *provider* {**`clear`** \| **`handover`**}  ·  **`set.ai custom`** *name* *url* *format* *auth* *version* *maxparam* \| **`clear`**  ·  **`set.ai ca`** *path* \| **`-`**  ·  **`set.ai limit`** *name* *number*  ·  **`set.ai context`** *hex* \| **`-`**  —  the AI provider, model, key, limits and standing text for every account (administrator); the key is typed at the helper's own prompt | S |
 | **`set.backup.directory`** | **`set.backup.directory`** {*directory*} | S |
