@@ -187,7 +187,7 @@ A VOC record named `MASTER.LOGIN` in the SDSYS account, if it is a paragraph (it
 line is `PA`), is run **once by every new session, before the account's own `LOGIN`
 paragraph**: an interactive session, a phantom, and — since 15 October 2026 — an
 **API session**, which runs it when it first enters an account. Entering another
-account with `logto` runs the new account's `LOGIN` only. There is none unless you write
+account with `logto` runs the new account's `LOGIN` only, **except when you are the administrator: a `logto` made in an administrator session runs no `LOGIN` paragraph and does not open the home screen, so you land at the prompt and none of the account's own start-up code runs in your session**. There is none unless you write
 one, so nothing runs by default; a session shows what it is by `@tty` (`apisrvr` for the
 API). It runs in the account just entered, **under that account's own switches**: it can do
 no more there than the account's users can.

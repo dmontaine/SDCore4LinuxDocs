@@ -160,7 +160,7 @@ The administrator sets this for each account (`modify.account name start-menu`,
 `start-terminal` or `start-default`, in the Administrator's guide), and sets what
 accounts with no setting of their own do with `set.start.default menu` or
 `terminal`. **It is menu as delivered.** The setting is read when you sign on, and
-when you type `logto` at the prompt to enter an account. Starting in the menu does
+when you type `logto` at the prompt to enter an account (not when the administrator does: an administrator's `logto` always leaves the prompt). Starting in the menu does
 not confine anyone: the Terminal tile is always there.
 
 The screen is never given to a session that cannot use it: a window under 140 by 43
