@@ -142,6 +142,9 @@ DOCS = [
  ('User', '29c-sd-tcl-the-development-tools.md', """
    tool.files tool.voc tool.dict tool.query tool.bulk tool.catalog tool.test
  """),
+ ('User', '29e-sd-tcl-moving-files-in-and-out.md', """
+   receive send
+ """),
  ('User', '30-sd-tcl-processes-and-phantoms.md', """
    pdebug pdump phantom pstat status
  """),

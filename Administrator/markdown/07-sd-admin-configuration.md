@@ -394,8 +394,10 @@ login they use for SD. It is delivered off twice: `XFER` below is the system's
 switch, and each account also needs `modify.account <account> xfer-on`. Both
 must be on before anything can be transferred. **Turning them on lets that
 person put files into, and take copies out of, their account from another
-machine.** The transfer itself (`receive` and `send`) is still being built in
-this release; until it is, these parameters have no effect.
+machine**, with the `receive` and `send` commands and an sftp client; what
+that opens and how it is confined is in *Accounts and Security: File
+transfer*. The parameters are read by each process as it starts, so a change
+is seen by the next session and the next connection without restarting SD.
 
 | Parameter | Default | Effect |
 |---|---|---|
@@ -403,8 +405,8 @@ this release; until it is, these parameters have no effect.
 | `XFERFILE` | 10240 | The largest file one transfer slot takes, in kilobytes (1 to 1048576) |
 | `XFERSLOT` | 102400 | The most one slot takes in all its files, in kilobytes (1 to 4194304) |
 | `XFERWAIT` | 600 | Seconds a slot waits for the sftp client's first connection (10 to 3600) |
-| `XFERIDLE` | 120 | Seconds a slot stays open after its last file has finished (10 to 3600) |
-| `XFERMAX` | 3600 | Seconds a slot may stay open at most; `0` removes the ceiling (0 to 86400). A file still moving is never cut off |
+| `XFERIDLE` | 120 | Seconds a slot stays open with nothing happening after a client has connected (10 to 3600). A file being sent keeps it open; one left half sent and silent this long is dropped |
+| `XFERMAX` | 3600 | Seconds a slot may stay open at most; `0` removes the ceiling (0 to 86400). At the ceiling the transfer ends and a file that is not complete is dropped |
 | `XFERKIND` | blank | The extensions a received file must have, separated by commas; blank takes any plain-text file (no NUL byte and no SD mark byte) |
 
 None of them can be changed from `tool.config` or `set.config`; edit

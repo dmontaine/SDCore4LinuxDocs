@@ -152,7 +152,7 @@ it ends. `create.account` and the installer switch it on for a new account (1 No
 ## Making an account: `create.account`
 
 ```
-create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {files-write-on} {files-admin-on} {ai-on} {start-menu | start-terminal} {pins-on} {recovery-on} {no.query}
+create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {files-write-on} {files-admin-on} {ai-on} {start-menu | start-terminal} {pins-on} {recovery-on} {xfer-on} {no.query}
 
 create.account group <name> {shared-read-off} {shared-write-on} {start-menu | start-terminal} {pins-on} {no.query}
 
@@ -194,6 +194,7 @@ Account fred has NET no
 Account fred has files no
 Account fred has files-write no
 Account fred keeps a recovery copy of unsaved editor text: no
+Account fred may move files over its ssh login (receive / send): no
 ```
 
 **Two words set up the home screen, in the same command** (they are not gates; *Where a
@@ -220,6 +221,10 @@ create.account account=fred type=user gates=pins-on start=menu
 text that was not saved (*The recovery copy*, below). It is off when the word is left out, a group or `other`
 account is refused it before anything is made, and `recovery-off` is for `modify.account` only. The verb says
 it back in a line, `Account fred keeps a recovery copy of unsaved editor text: yes` (`no` when the word was left out).
+
+**And one that opens a door, for a user account only: `xfer-on`** lets the account's person move plain-text
+files in and out with an sftp client (*File transfer*, below). It is off when the word is left out, a group or
+`other` account is refused it before anything is made, and `xfer-off` is for `modify.account` only.
 
 **The installing user's own account is no exception**: the account the
 installer makes so that somebody can sign in starts with all of them off too,
@@ -919,6 +924,7 @@ modify.account account voc-on | voc-off
 modify.account account bp-on | bp-off
 modify.account account dict-on | dict-off
 modify.account account recovery-on | recovery-off
+modify.account account xfer-on | xfer-off
 modify.account account net-on | net-off
 modify.account account shared-read-on | shared-read-off
 modify.account account shared-write-on | shared-write-off
@@ -1103,6 +1109,7 @@ had typed it.
 | **`bp-on`** \| **`bp-off`** | saving a change to a program file, and compiling and cataloging |
 | **`dict-on`** \| **`dict-off`** | saving a change to a dictionary |
 | **`recovery-on`** \| **`recovery-off`** | whether the `ide` keeps a recovery copy of text that was not saved (see *The recovery copy*). Not a gate; **off as delivered**; user accounts only |
+| **`xfer-on`** \| **`xfer-off`** | moving plain-text files in and out with an sftp client over the ssh login (see *File transfer*). **Off as delivered**; user accounts only; needs `XFER=1` in `sd.conf` as well |
 | **`net-on`** \| **`net-off`** | the right to use a server defined for SDNet (see *The NET switch*) |
 | **`shared-read-on`** \| **`shared-read-off`** | opening the files of the `shared` account by name. **On unless the field says no** (see *The shared account*) |
 | **`shared-write-on`** \| **`shared-write-off`** | writing to the files of the `shared` account. Off unless the field says yes |
@@ -1211,6 +1218,48 @@ no copies.
   person's home, not in the account), so a text that was not saved never ends up in a backup that
   the administrator can read; the person's own backup of their home does contain them. `restore.account`
   puts the account back with the switch it had.
+
+### File transfer: `xfer-on` and `xfer-off`
+
+```
+modify.account account xfer-on | xfer-off
+create.account user <name> xfer-on
+:modify.account fred xfer-on
+Account fred may move files over its ssh login (receive / send): yes
+```
+
+With `xfer-on`, and with `XFER=1` in `/etc/sd.conf`, the account's person can move plain-text files into and
+out of their own account with an sftp client (OpenSSH `sftp`, WinSCP, FileZilla) signed in with the same
+login as for ssh. They open each transfer themselves, from their SD session, with `receive` or `send`
+(*User: Moving Files In and Out*); nothing can be moved before that command is typed or after it ends.
+
+**What turning it on opens, plainly.** That person can then bring text of their choosing into the account
+from another machine, and take copies of the account's records out to another machine. That is all it
+opens, and it is held to this:
+
+* **Off twice as delivered.** `XFER` is 0 and every account has the switch off; both must be on. Neither is
+  changed by an upgrade.
+* **One directory.** Files come in to `xfer.in` and go out from `xfer.out`, two directory files in the
+  account's own directory, and the client can reach nothing else: no other directory, no path, no link is
+  followed, and nothing is made, renamed or removed except a file the same connection has just sent. The
+  server is SD itself; there is no shell and no system sftp server behind it.
+* **Plain text only.** A file with a NUL byte or one of the bytes 248 to 255 is refused, in either
+  direction, and so is a name that is not a plain file name. `XFERKIND` narrows it to the extensions you
+  list. `XFERFILE` and `XFERSLOT` bound the size of a file and of a whole transfer; `XFERWAIT`, `XFERIDLE`
+  and `XFERMAX` bound the time (*Configuration: File transfer over ssh*).
+* **Nothing is replaced** unless the person typed `receive overwrite`.
+* **User accounts only, and the person's own.** A group or `other` account is refused the switch ("... is
+  not a user account, and file transfer is only for a user account, for its own person; nothing was
+  changed"), the transfer is opened from the account named after the Linux user and not from one reached
+  with `logto`, and the administrator (`sdsys`) has no transfer at all.
+* **It needs the ssh route.** The client signs in over ssh, so an account with no `ssh` route cannot
+  connect. A file that arrives is only a record in `xfer.in`: bringing a program in does not compile or run
+  it, and what the person may then do with it is what the account's other switches allow.
+* **Everything is in the audit trail** (*The Audit Trail*): each opening and closing, each connection with
+  the address it came from, each file with its size and SHA-256, and each refusal with its reason.
+
+A change takes effect at the next connection: the register is read each time a client connects. To end a
+transfer that is under way, `logout` the person's session or the connection (it shows in `listu` as `sftp`).
 
 ### Where a session starts: `start-menu`, `start-terminal`, `start-default` and `set.start.default`
 

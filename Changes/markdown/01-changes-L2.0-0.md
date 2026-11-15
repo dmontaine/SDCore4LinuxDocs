@@ -498,6 +498,7 @@ has, with the changes they made.
 | `create.account group` | Changed | fixed: the four record files of a new group account now get the account's own group (they were left in `sdusers`) |
 | `create.account` recovery word | Added | `create.account user <name> recovery-on` makes the account's `ide` keep a recovery copy of unsaved text; off as delivered, user accounts only (`recovery-off` is for `modify.account`) |
 | `create.account` start and pins words | Changed | takes `start-menu`, `start-terminal` and `pins-on` on any kind of account; a refused word makes nothing; the audit line gains `pins-on` and a `start=` tail |
+| `create.account` xfer word | Added | `create.account user <name> xfer-on` lets the new account's person move files with `receive` and `send`; off as delivered, user accounts only (`xfer-off` is for `modify.account`) |
 | `dict-on` and `dict-off` | Added | per-account switch for saving a change to a dictionary |
 | `docs.install` | Added | SDSYS puts a directory of PDFs into the shared account's `pdf` directory |
 | `files-admin-on` | Added | third remote permission: the login may configure, index, create and delete files on this server (group `sdfilesadmin`) |
@@ -510,6 +511,7 @@ has, with the changes they made.
 | `modify.account add` and `delete` | Changed | fixed: a program that ran the verb with `execute` read `@system.return.code` as -1 after a change that had been made; it is now 0 (done, or nothing to change) or a failure code |
 | `modify.account files-off` | Changed | fixed: deals with a leftover `sdfileswrite` membership instead of making it live at the next `files-on` |
 | `modify.account recovery-on` and `recovery-off` | Added | per-account switch for the `ide`'s recovery copy of unsaved text; off as delivered; refused for a group or other account (message 11771) |
+| `modify.account xfer-on` and `xfer-off` | Added | per-account switch for file transfer over the ssh login (`receive`, `send`); off as delivered; needs `XFER=1` in `sd.conf` as well; refused for a group or other account |
 | `net-on` and `net-off` | Added | per-account switch for SDNet, off as delivered |
 | new account defaults | Changed | a new account has no ssh, no API, no shell and no `os.execute`; SDSYS opens each, account by account |
 | `remote.sdsys` | Added | the remote `sdsys` ssh login from inside SD: `on` opens the ssh door (`sdsys` then signs in with its password alone), `off` shuts it; no keyword reports whether it is open. Shut as delivered |
@@ -555,6 +557,7 @@ has, with the changes they made.
 | `update.accounts` deletion list | Changed | after the copy from `newvoc` it removes from the account's VOC the records on SD's deletion list (`sdsys/voc_removed`), but only the record SD shipped (not one of your own, not a `[locked]` one unless it is a verb), after saving a copy, and audits it; before `newvoc.mods` |
 | `update.accounts all` by SDSYS | Changed | an account whose VOC SDSYS cannot write (the `sdsys` user is not in its group) is skipped with a line that says so, and the command goes on and ends with the counts, where it stopped with error 3018 at the first one; the administrator's own VOC is updated from `voc_template` |
 | `voc-on` and `voc-off` | Added | per-account switch for saving a change to a VOC |
+| `XFER` and the transfer limits | Added | `sd.conf`: `XFER` (0 as delivered; 1 lets accounts with `xfer-on` transfer files), `XFERFILE` (10 MB a file), `XFERSLOT` (100 MB a transfer), `XFERWAIT`, `XFERIDLE`, `XFERMAX` (60 minutes) and `XFERKIND` (the extensions taken; blank is any plain text); edited by hand |
 
 ### AI
 
@@ -599,6 +602,8 @@ has, with the changes they made.
 |---|---|---|
 | `basic ... no.catalog` | Added | compiles and runs no catalog directive: a `$catalog` line in the source or in a file it includes, or a `CATALOG` line in `$BASIC.OPTIONS`, is not acted on and the compile says so; `run.in` gives it to every `basic` it runs |
 | `menu` | Added | opens the full-screen menu (the home screen) from any account; `home` and `exit` stay |
+| `receive` | Added | opens a transfer for plain-text files coming in to the account's file `xfer.in` from an sftp client (OpenSSH `sftp`, WinSCP, FileZilla) signed in with the person's ssh login, waits, and says what came with each file's SHA-256; `receive overwrite` lets a file replace one of the same name; SD itself is the sftp server, confined to that one directory; off until the administrator sets `XFER=1` and gives the account `xfer-on` |
+| `send` | Added | `send <file> <id> ...` copies records that are plain text to the account's file `xfer.out` and opens a transfer for an sftp client to fetch them; the same switches and the same confinement as `receive` |
 | `tool.*` pages with several boxes | Changed | the box the keyboard is in is marked `[*]` in its top right corner and the others `[-]`, as in the IDE (`tool.bulk`, `tool.query`, `tool.test`, `tool.sessions`, `tool.menus`, `tool.ai`) |
 | `tool.bulk` | Added | full-screen bulk update of one data file: records chosen by conditions, a saved list or all, up to ten operations, a dry run first, apply under record locks after a box that asks the file's name typed, and undo of the last run; for every account |
 | `tool.catalog` | Added | full-screen list of the account's program records (kind, compile time, size, current or stale, private / local / global catalog) with compile (basic), catalog privately or locally (catalog) and take an entry out (delete.catalog, decatalog), each the ordinary verb after a box; for every account, behind the bp-edit gate |
