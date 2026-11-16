@@ -664,6 +664,7 @@ Three simple layers, with no vault and nothing on by default.
 
 | Name | Change | What |
 |---|---|---|
+| account groups on uninstall | Changed | `deletesdcore.sh`, when it deletes the accounts, removes the Linux group of every account the register names (`sdu_*`, `sdg_*`); it used to remove `sdg_shared` alone and say the rest might need removing by hand |
 | access questions on an upgrade | Changed | an upgrade that kept the configuration no longer asks *Allow ssh access from other computers?* and *Allow API access from other computers?*: ssh is left as it was, and the API stays open to other computers if it was open (it used to go back to local unless you answered yes again) and local if it was local. An uninstall that deletes the configuration also removes the listener setting `remote.api` wrote, which used to outlive it |
 | agent pack | Added | the guide and the knowledge pack are copied to `/usr/local/sdsys/agent-pack`, only when they match the installed version |
 | changes document | Added | a release package carries it beside the installer as `sd-core-for-linux-<version>-changes.pdf`, `.html` and `.md`, and the installer copies the three into the shared account's `pdf` directory, where every account can read it |

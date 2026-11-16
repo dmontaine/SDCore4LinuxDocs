@@ -150,7 +150,12 @@ The `sdusers` Linux group and the `sdsys` user are removed only on a full
 removing the group would orphan the permissions on your database. **The Linux
 group `sdg_shared` (the `shared` account's group) goes the same way:** removed on
 a full `DELETE`, kept when the accounts are kept, so that the members an earlier
-install gave it cannot be admitted to a new `shared` account by mistake.
+install gave it cannot be admitted to a new `shared` account by mistake. **So does
+the Linux group of every other account**, `sdu_<name>` for a user account and
+`sdg_<name>` for a group account: on a full `DELETE` the uninstaller reads each
+account's group from the register and removes it. A group with an SD-like name
+that no account of the register names is left alone, and so are the Linux users
+of the user accounts: they hold people's own files.
 
 ## Continued in
 
