@@ -1,7 +1,7 @@
 Title: The AI Helper
 Subtitle: One provider and one model for every account, a key that SD never sees, and a gate for each account.
 
-SD can ask an AI model a question for an account holder (the `ai` verb, see [SD TCL - Asking the AI](29b-sd-tcl-asking-the-ai.html)). This page is for the administrator: it says what is set up, what leaves the machine, how to choose the provider and give it a model and a key, and how to allow or stop an account.
+SD can ask an AI model a question for an account holder (the `ai` verb, see *SD TCL - Asking the AI* in the User documentation). This page is for the administrator: it says what is set up, what leaves the machine, how to choose the provider and give it a model and a key, and how to allow or stop an account.
 
 > **Nothing is on as delivered.** There is no provider, no key, and no account has the gate (each named provider comes with a default model, so the model is the one thing you need not supply). Until you have done the other three, the `ai` verb says so in words and nothing is sent anywhere. Turning one of them on is your act, and each is one command (or one key on the AI choice page) that can be undone.
 

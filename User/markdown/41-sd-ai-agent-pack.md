@@ -10,7 +10,7 @@ An AI agent (Claude Code, or any tool that reads files) that is asked to write S
 | **The guide** (`guide/sd-basic-guide.md`) | about eight thousand words: the language, the system around it, and what SD does not have, with twenty-odd worked programs, and a table of names that SD does not have |
 | **The knowledge pack** (`pack/`) | generated from SD itself: one chunk for each TCL verb and query keyword, VOC record type and layer, dictionary item type, format and conversion code, BASIC statement, function, `$mode` and `option`, message, account word, `sd.conf` setting and key constant, with the file and line each came from. Real VOC records and real dictionary items are quoted verbatim |
 | **The skill** (`skill/sd-core/`) | a Claude Code skill: `SKILL.md` and, under `references/`, the guide and the pack. An agent that is installed with it reads the guide first and looks items up by chunk id |
-| **A CLAUDE.md template and the recipe** | for a project that lives in an SD account, and for giving the agent an account of its own. The recipe is described for the administrator in [Giving an AI Agent an Account](18-the-agent-account.html) |
+| **A CLAUDE.md template and the recipe** | for a project that lives in an SD account, and for giving the agent an account of its own. The recipe is described for the administrator in *Giving an AI Agent an Account*, in the Administrator documentation |
 
 ## Where the facts come from
 

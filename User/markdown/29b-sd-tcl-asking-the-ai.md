@@ -113,5 +113,5 @@ the line, the call stack and about fifty lines of the source round the stop, and
 
 ## See also
 
-[The AI helper](20-the-ai-helper.html) (for the administrator) ·
+*The AI Helper* in the Administrator documentation ·
 [SD TCL - The Terminal and the Session](29-sd-tcl-the-terminal-and-the-session.html).

@@ -66,7 +66,7 @@ those groups, it records the decision in `/home/sd/$groups.ruled` (a group it co
 leave is a warning and no record, so the next install asks again),
 and from then on the installer does not touch these groups, so what the administrator
 does with `modify.account` *name* `sdsys-on` and `sdsys-off` stands. See
-[The master files](19-the-master-files.html) in the administrator set for what
+*The Master Files* in the Administrator documentation for what
 the membership gives the `sdsys` user (write access to everything the account's group
 may write) and for what the default does and does not protect.
 
