@@ -161,7 +161,7 @@ not refused — the name is simply not recognized.**
 | **`reformat`** | **`reformat`** {**`dict`**} *file* {*selection*} {*fields*} |  |
 | **`release`** | **`release`** *file* *id* …  ·  **`release filelock`** *file* |  |
 | **`remote.api`** | **`remote.api`** {**`on`** \| **`local`** \| **`off`**} | S |
-| **`remote.sdsys`** | **`remote.sdsys`** {**`on`** \| **`off`**} | S |
+| **`remote.sdsys`** | **`remote.sdsys`** {**`on`** \| **`off`** \| **`ssh`** {**`on`** \| **`off`**} \| **`api`** {**`on`** *address* ... \| **`on any`** \| **`off`**}} | S |
 | **`remote.ssh`** | **`remote.ssh`** {**`on`** \| **`off`**} | S |
 | **`report.src`** | **`report.src on`** \| **`off`** \| **`report.src`** to toggle |  |
 | **`report.style`** | **`report.style`** {*name* \| **`off`**} |  |

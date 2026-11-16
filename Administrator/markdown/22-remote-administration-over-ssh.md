@@ -14,9 +14,10 @@ else, and shut it again when it is not needed. SD asks for no second factor here
 versions of this release did, and it was taken out because it was more security than the people who
 run SD wanted.
 
-**The API is not part of this.** SDSYS still has no API access from another computer or over the
-network port, under any setting; on the machine itself it uses the local Unix socket only. This
-page is about ssh and nothing else.
+**The API is a separate door.** SDSYS over the API from another computer is shut as delivered too,
+and is opened with `remote.sdsys api on`, for chosen addresses; it is described on its own page,
+[Remote Administration through the API](22a-remote-administration-through-the-api.html). This page is
+about ssh.
 
 **This page is about SD Core for Linux.** SD Core for Windows has the same door in its own form:
 there the administrator is an elevated Windows account, so the door opens a separate account that
@@ -62,13 +63,15 @@ SDSYS signed in at the machine can do the same without leaving SD:
 
 ```
 remote.sdsys {on | off}
+remote.sdsys ssh {on | off}
 ```
 
 | | |
 |---|---|
-| *(no keyword)* | says whether ssh lets `sdsys` in, and changes nothing |
-| `on` | opens the door, as `sdsys-ssh on` does |
-| `off` | shuts it, as `sdsys-ssh off` does |
+| *(no keyword)* | says whether ssh lets `sdsys` in, and whether the API does, and changes nothing |
+| `on`, `ssh on` | opens the door, as `sdsys-ssh on` does |
+| `off`, `ssh off` | shuts it, as `sdsys-ssh off` does |
+| `ssh` | says whether ssh lets `sdsys` in, and changes nothing |
 
 The same is the sixth view of `tool.remote`, **`6` sdsys login**: it shows the report, and `O` and
 `F` run `remote.sdsys on` and `off` after a box (the box for `on` wants the word `open` typed).
@@ -102,7 +105,8 @@ resolved. After an upgrade the door is **shut**; open it again if you want it.
 * **`su sdsys` and `sudo -u sdsys`** from another user's session, as before: SD asks the kernel who
   logged in, and a sign-in that was somebody else's is refused. The root helper `sd-elevate` asks the
   same of anyone who is `sdsys` to `sudo`.
-* **The API** from another computer or over the network port.
+* **The API** from another computer, unless its own door is open for that address (see
+  [Remote Administration through the API](22a-remote-administration-through-the-api.html)).
 * **cron and at for the `sdsys` user.** A cron job starts a login of `sdsys` with nobody there, so the
   installer puts `sdsys` in `/etc/cron.deny` and, where `at` is installed, `/etc/at.deny`.
   A crontab `sdsys` already had is moved to `/var/backups/sdcore-sdsys-crontab.<date>` (root only),
@@ -127,4 +131,5 @@ answer is not the one SD wrote. It names the cause. The ones that happen:
 
 * It does not accept a push approval, an ssh key, or a second factor of any kind.
 * It does not give anyone but SDSYS a remote route. Every other account is unchanged.
+* It does not open the API: that door is opened and shut separately.
 * It does not protect against someone who has the password.
