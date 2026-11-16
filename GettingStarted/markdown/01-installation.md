@@ -205,9 +205,9 @@ where it can.
 An SD account starts with every access gate closed: ssh, the API, the shell,
 `os.execute`, `sd.accounts`, saving changes to a VOC, a program file or a
 dictionary, the recovery copy, SDNet, the shared account's files, the
-files-only login (with its write and admin rights), the AI, pins, and the
-`sdsys` user in the account's group — yours too, the account the installer
-makes for you.
+files-only login (with its write and admin rights), the AI, pins, file transfer,
+and the `sdsys` user in the account's group — yours too, the account the
+installer makes for you.
 
 **When the installer is about to make that account, it asks once:** *Open every
 access gate for <you>'s SD account? (y/N)*. **The answer is No unless you type
@@ -215,7 +215,9 @@ y**, and nothing is asked when your account already exists (an upgrade keeps
 what it has). It is meant for a machine you are testing on. A **y** opens every
 one of the gates above, and the install then says which ones the register and
 the Linux groups really hold, naming any that did not open. The AI gate only
-lets the account use the AI once SDSYS has chosen a provider and given its key.
+lets the account use the AI once SDSYS has chosen a provider and given its key,
+and file transfer only once the system's own switch, `XFER=1` in `sd.conf`, is
+on as well; a **y** does not turn that on.
 
 With **No**, the installer prints the commands that open them. Signed in as SDSYS,
 `modify.account <account> <word>` opens any of them (`both`, `sh-on`, `os-on`,
