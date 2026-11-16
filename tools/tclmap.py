@@ -84,7 +84,7 @@ DOCS = [
    nls
  """),
  ('User', '19-sd-tcl-command-processor.md', """
-   abort clear.data clear.input clr
+   abort clear.data clr
    display go if message off pause quit redo report.src stop break
  """),
  # The command stack, the @-variables and the session verbs left 19 for 19a
@@ -130,8 +130,8 @@ DOCS = [
    printer setptr sp.view spool como report.style
  """),
  ('User', '29-sd-tcl-the-terminal-and-the-session.md', """
-   autologout bell clear.prompts date date.format echo
-   hush list.term.types logmsg pdf pterm sleep term time tool.gates tool.keys
+   autologout bell clear.input clear.prompts date date.format echo
+   hush list.term.types logmsg pterm sleep term time tool.gates tool.keys
  """),
  ('User', '29a-sd-tcl-the-home-screen.md', """
    exit home menu my.menu
@@ -152,7 +152,7 @@ DOCS = [
    release
  """),
  ('Administrator', '01-accounts-and-security.md', """
-   create.account modify.account modify.password set.start.default set.tile tool.accounts tool.gates tool.menus umask
+   create.account modify.account modify.password set.start.default set.tile tool.accounts tool.menus umask
  """),
  # THE MAINTENANCE VERBS MOVED TO 01a AND ONLY ONE OF THEM SAID SO.  tclmap
  # reported set.date and passed the other four, because 01 still MENTIONS
@@ -169,7 +169,7 @@ DOCS = [
    clear.locks list.locks list.readu listu lock logout tool.sessions unlock
  """),
  ('Administrator', '03-operating-system-access.md', """
-   sh ! docs.install load.help set.viewer tool.viewers
+   sh docs.install load.help
  """),
  ('Administrator', '20-the-ai-helper.md', """
    set.ai tool.ai
@@ -209,6 +209,50 @@ DOCS = [
  # 25 Oct 26 - S.75 A6 (the configuration page): tool.config, in voc_template (SDSYS's set), not in newvoc.
  ('Administrator', '07-sd-admin-configuration.md', """
    tool.config
+ """),
+ # 16 Nov 26 - the verbs that were on no page of this map (tclmap said NO PAGE for 25), each given the page that explains it; every one of
+ # them was already named there.
+ ('User', '20-sd-tcl-files-and-records.md', """
+   file.stat find.file fstat.user profiler set.mode
+ """),
+ ('User', '22-sd-tcl-select-lists.md', """
+   execute.list move.list show.list
+ """),
+ ('User', '23-sd-tcl-alternate-key-indexes.md', """
+   analyse.index disable.index
+ """),
+ ('User', '24-sd-tcl-programs-and-the-catalogue.md', """
+   find.program ide
+ """),
+ ('User', '27b-sd-tcl-ced.md', """
+   ced
+ """),
+ ('User', '28-sd-tcl-printing-and-spooling.md', """
+   block.print
+ """),
+ ('User', '29-sd-tcl-the-terminal-and-the-session.md', """
+   block.term command.logging
+ """),
+ ('User', '30-sd-tcl-processes-and-phantoms.md', """
+   list.phantoms
+ """),
+ ('User', '06a-sd-basic-encryption.md', """
+   encrypt.key
+ """),
+ ('Administrator', '02-sessions-and-locks.md', """
+   inhibit.login lock.tracer
+ """),
+ ('Administrator', '01a-account-maintenance.md', """
+   list.voc.removed restore.voc
+ """),
+ ('Administrator', '19-the-master-files.md', """
+   run.in
+ """),
+ ('Administrator', '22-remote-administration-over-ssh.md', """
+   remote.sdsys
+ """),
+ ('Administrator', '07-sd-admin-configuration.md', """
+   set.config
  """),
 ]
 
