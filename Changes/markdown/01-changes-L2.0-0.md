@@ -363,6 +363,7 @@ Commands and VOC verbs that every account has, and the command language.
 | `private vocabulary` | Added | `$private.voc`: a file of commands searched after all other command sources |
 | `profiler` | Added | records what the programs of a session do and where|
 | `redo` | Added | runs a command again and again, `times` and `every` |
+| `remove.examples` | Added | administrator only: takes the shipped example programs and their compiled objects out of `examples.bp` of every account in service, or of the accounts named (a list); keeps programs the administrator added, and deletes the file only when nothing is left in it |
 | saved list verbs | Changed | `save.list`, `get.list`, `delete.list`: `keep`, `deleting`, `count.sup`, a default name, a name left out, `in file` |
 | `selectindex` | Added | the command form of the statement |
 | `setptr` | Changed | `form.feed`, `inform`, `eject`, `as ... in file`; the digits of `next` |
@@ -510,7 +511,7 @@ has, with the changes they made.
 | `files-write-on`, `-off` | Added | per-account switch for changing files over the files route (group `sdfileswrite`); `files-off` removes it first |
 | `list.shared` | Added | administrator only: the files of the shared account that an account with shared read can open by name, and a count; with no shared account in service it says so |
 | `list.voc.removed` | Added | administrator only: the VOC records SD no longer ships, with the release each went in and what to write instead; given an account, what the next `update.accounts` would do in it (changes nothing) |
-| `load.examples` | Added | administrator only: puts the shipped example programs into `examples.bp` of every account in service, or of one, and compiles them there; keeps programs the administrator added |
+| `load.examples` | Added | administrator only: puts the shipped example programs into `examples.bp` of every account in service, or of the accounts named (a list), and compiles them there; keeps programs the administrator added |
 | `load.help` | Added | SDSYS loads the text of the `[?]` help buttons into the shared account; keeps records the administrator added |
 | `modify.account` | Changed | takes more than one action in a command (`modify.account fred sh-on os-on voc-on`), all carried out or none |
 | `logto` by the administrator | Changed | runs no `login` paragraph of the account it enters and does not open the home screen: the administrator lands at the prompt (owner's ruling; an ordinary user's `logto` is unchanged) |

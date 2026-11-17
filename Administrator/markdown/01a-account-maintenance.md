@@ -231,7 +231,7 @@ the SDSYS directory.
 To see it work, put a record in the file and run `update.accounts`; then
 `ct voc` the id in the account.
 
-## The example programs in every account: `load.examples`
+## The example programs in every account: `load.examples` and `remove.examples`
 
 Every account has its own file `examples.bp` of example programs, compiled: the five
 programs of the *SD Text User Interface - Programmer's Guide* and a first course in
@@ -239,8 +239,10 @@ programming (User guide, *SD Example Programs*). They come from the directory `e
 of the SD system directory (`/usr/local/sdsys/examples`), one file to a program.
 
 ```
-load.examples              every account in service
-load.examples <account>    that account only
+load.examples                       every account in service
+load.examples <account> ...         the accounts named, a list
+remove.examples                     every account in service
+remove.examples <account> ...       the accounts named, a list
 ```
 
 The installer runs `load.examples` on every install and upgrade, and `create.account`
@@ -251,6 +253,16 @@ skipped; run `load.examples <account>` once it is back. The two summary lines co
 accounts, the programs written and compiled, and the ones of yours it kept; each program
 that did not compile, or account it could not enter, is named. The run is on the audit
 trail (`load.examples accounts=... compiled=...`).
+
+Both verbs take a list of accounts (`load.examples ann bob`). A name that is not
+registered is said and skipped, and the others go on.
+
+`remove.examples` is the companion. In each account it deletes the shipped programs from
+`examples.bp` together with their compiled objects, and keeps any program you added; it
+deletes `examples.bp` itself only when nothing of yours is left in it. An account with no
+`examples.bp` is counted and left alone. **What it removes comes back:** the next install
+or upgrade, a new account, or a `load.examples` puts the programs back. The run is on the
+audit trail (`remove.examples accounts=... removed=...`).
 
 **No access is opened by it.** `examples.bp` is an ordinary program file of the account,
 so the account's `bp.edit` setting decides whether its person may change it: off as
