@@ -123,8 +123,8 @@ real login as `sdsys` is not an administrator. **The membership is a default
 and a record of your decision, not a wall against a stolen `sdsys` login**,
 which has other ways into an account's code: the global catalog is the
 `sdsys` user's to write, and `sdsys` may run `sudo /usr/local/sbin/sd-elevate`
-with any arguments. (The files `root` runs at the next start used to belong to
-`sdsys` as well; from 2.0-0 they are `root`'s, see
+with any arguments. (The files `root` runs at the next start are not
+`sdsys`'s to write: they belong to `root`, see
 [Installation and the daemon](08a-sd-installation-file-modes-and-root-files.html#the-files-root-runs).)
 An install puts the `sdsys` user in the group of the
 registered accounts that are already there **once** and records that in

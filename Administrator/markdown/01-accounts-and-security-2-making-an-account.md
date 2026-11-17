@@ -176,9 +176,9 @@ directory always works.
 
 **SD says no in words.** `sh` gives "*name* is not permitted to use the
 operating system shell", `OS.EXECUTE` gives "*name* is not permitted to use
-OS.EXECUTE", and the path routes give "*name* has no OS access, so a file or
-directory outside its own account cannot be reached by pathname (SDSYS can
-give it: `modify.account` *name* `os-on`)". **SDSYS is never refused.**
+OS.EXECUTE", and the path routes give "*name* has no OS access, so outside its
+own account it can reach by pathname only a directory the administrator opened
+to all (SDSYS can give it: `modify.account` *name* `os-on`)". **SDSYS is never refused.**
 
 ### The third switch: `sd-on`, other SD accounts' directories
 

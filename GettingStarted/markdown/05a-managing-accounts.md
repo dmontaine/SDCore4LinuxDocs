@@ -94,8 +94,8 @@ each reports where the account now stands ("Account fred has SH yes,
 OS.EXECUTE no"). **A change reaches the account the next time it is
 entered.** Without `sh-on` the verb answers "*name* is not permitted to use
 the operating system shell"; without `os-on`, "*name* is not permitted to use
-OS.EXECUTE" or "*name* has no OS access, so a file or directory outside its
-own account cannot be reached by pathname". See the *Administrator* set's
+OS.EXECUTE" or "*name* has no OS access, so outside its own account it can
+reach by pathname only a directory the administrator opened to all". See the *Administrator* set's
 *Accounts and security* chapter, which says what each switch covers and what
 `os-on` costs on an account that is also reachable from outside.
 

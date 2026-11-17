@@ -32,8 +32,8 @@ account.
 
 **Without a switch SD says so in words** — "*name* is not permitted to use
 the operating system shell", "*name* is not permitted to use OS.EXECUTE", or
-"*name* has no OS access, so a file or directory outside its own account
-cannot be reached by pathname (SDSYS can give it: `modify.account` *name*
+"*name* has no OS access, so outside its own account it can reach by pathname
+only a directory the administrator opened to all (SDSYS can give it: `modify.account` *name*
 `os-on`)" — and a program is told with status 3035, so `OPEN ... ELSE` and
 `DELETESEQ ... ELSE` take their ELSE as for any other refusal.
 

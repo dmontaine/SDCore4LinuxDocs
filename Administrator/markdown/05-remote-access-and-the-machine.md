@@ -149,9 +149,7 @@ nothing already talking to the API is disturbed by a later change.
 
 **Administrator only** — the same gate `modify.account` uses, because this
 changes what the machine offers the network rather than anything about one
-account — **and every change is audited**, a Linux addition matching how
-the port's own account-tier changes used to be audited before tiers were
-removed.
+account — **and every change is audited**.
 
 **What a connection costs while nobody has logged in.** Each API connection is one `sd -n -q` process, running as root until the client has logged in, and it is there before any login is checked. It ends when the connection does, and refuses a request that declares a length over 65,536 bytes (after the login the limit is the largest SD string; the client page, *How big a request may be*, has the rules), leaving a line in the system log. A count of `sd -n -q` processes that does not fall back to the number of clients is the sign of a connection that did not end. **A client that connects, completes the handshake and then says nothing is still left waiting**: SD sets no time limit on a connection that has not logged in, and `remote.api local` or the firewall are what keep it to the people you intend.
 

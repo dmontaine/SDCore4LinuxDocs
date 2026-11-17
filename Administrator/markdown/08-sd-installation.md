@@ -79,10 +79,10 @@ therefore refuses to load a global catalog object that other users, or the group
 after its last compile, so an installation never meets the check. If you see the message, someone changed a mode: `chmod go-w` the file named, and look for
 why. **A fresh install made before this change left `gcat/$cproc` mode 0664 group `sdusers`; install again, or run `chmod go-w` on it by hand.**
 
-`/home/sd`, `/home/sd/user_accounts` and `/home/sd/group_accounts` are mode 755, owner `sdsys`, group `sdusers`. They used to be 775: every SD user is in `sdusers`, so any of
-them could rename another account's directory and make one of their own under the same name, and the account's owner would then sign on to a VOC the other person wrote. Nothing
-needs the group's write here (SD makes an account directory in the `sdsys` session, which owns the parent, and the helper that runs as root does the rest). The installer sets
-the modes every time it runs, so installing again fixes an installation made before this change; to do it by hand,
+`/home/sd`, `/home/sd/user_accounts` and `/home/sd/group_accounts` are mode 755, owner `sdsys`, group `sdusers`. The group may not write them: every SD user is in `sdusers`, so
+with the group's write any of them could rename another account's directory and make one of their own under the same name, and the account's owner would then sign on to a VOC
+the other person wrote. Nothing needs the group's write here (SD makes an account directory in the `sdsys` session, which owns the parent, and the helper that runs as root does
+the rest). The installer sets the modes every time it runs, so installing again corrects an older installation where they are 775; to do it by hand,
 `sudo chmod 755 /home/sd /home/sd/user_accounts /home/sd/group_accounts`. The account directories themselves keep their own owner, group and setgid bit.
 
 **The audit trail** (`/usr/local/sdsys/audit`) is mode 0600, owner `sdsys`, group `sdusers`, **and append-only** (`chattr +a`): the group cannot read it, write it or open it. (It was 0620 until 2.0-0, because

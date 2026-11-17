@@ -134,10 +134,10 @@ message). What they do, and where `voc-on` stops, in an ordinary account:
 and on operating-system paths (these three and the shell, `OS.EXECUTE` and
 `sd-on` gates before them) do not apply to a program compiled in *internal
 mode*, which SD's own commands are. That mark is a bit in the program's own
-object file, and SD used to believe it wherever the object came from, so a
-user who could put an object file where SD would run it (a directory file with
-a `.out` entry in the VOC, or a run file) could set the bit and skip every
-gate. SD now honors the bit only for an object from the global catalog,
+object file. Believed wherever the object came from, it would let a user who
+could put an object file where SD would run it (a directory file with a `.out`
+entry in the VOC, or a run file) set the bit and skip every gate, so SD
+honors the bit only for an object from the global catalog,
 which only SDSYS can write, or for the administrator; for any other object the
 bit is cleared when the object is loaded. SD's own commands are all in the
 global catalog and are unaffected; a program that SDSYS compiled in internal

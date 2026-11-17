@@ -23,10 +23,9 @@ not have files access, so it cannot be given files-write: use files-on first"), 
 the group on its own gives nothing; `files-off` takes the person out of both groups.
 **`files-off` takes the write group away first, then `sdfiles`, and reads each back**, and it
 does the work for a person who is in only one of them. A person who is in `sdfileswrite`
-and not in `sdfiles` (a removal that stopped half way, or a change made by hand) used to be
-told "fred already had that access; nothing changed" and kept the membership, which the next
-`files-on` turned into write access nobody had given; that case is now cleaned up, with the
-line `Account fred has files-write no` before `Account fred has files no`. If a removal fails
+and not in `sdfiles` (a removal that stopped half way, or a change made by hand) is taken out
+of `sdfileswrite` too, so the next `files-on` cannot turn that membership into write access
+nobody gave; SD says `Account fred has files-write no` before `Account fred has files no`. If a removal fails
 SD says so and stops: a failure of the write group's removal leaves the person as they were, and
 a failure of the second removal leaves them in `sdfiles` alone, read access and never write
 without read. `files-on` takes a leftover write membership away before it adds `sdfiles`, and

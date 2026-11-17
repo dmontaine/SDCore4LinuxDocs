@@ -119,8 +119,8 @@ select.dir /home/pat/reports
 There is no option to keep only files or only directories. The directory is read
 **as you**, with your own permissions. A path outside the account's own directory
 needs the `os-on` switch, as `oscopy` does; without it the verb says *name has no
-OS access, so a file or directory outside its own account cannot be reached by
-pathname*. A directory that cannot be read is *Cannot read directory* and the
+OS access, so outside its own account it can reach by pathname only a directory
+the administrator opened to all*. A directory that cannot be read is *Cannot read directory* and the
 pathname; a missing pathname is *Directory pathname required*. A `to` with no
 number, or a bad one, is *Select list number missing or invalid*.
 

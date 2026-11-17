@@ -87,8 +87,8 @@ verb with `!oscopy`.
 **It runs `cp` as you, so it has your own permissions and nobody else's**, and a
 path with a single quote in it is refused. **A path outside the account's own
 directory needs the `os-on` switch**, the same one as `OS.EXECUTE`; an account
-without it gets *name has no OS access, so a file or directory outside its own
-account cannot be reached by pathname* and nothing is copied.
+without it gets *name has no OS access, so outside its own account it can reach
+by pathname only a directory the administrator opened to all* and nothing is copied.
 
 ## Triggers
 
@@ -247,7 +247,8 @@ there is asked about (*Overwrite(y/<n>)?*, Enter is no) unless `no.query`.
 
 **All four go through the same gates as `oswrite` and `write`.** The pathnames need the
 account's OS-access switch (`os-on`) for anything outside the account's own directory
-(*has no OS access ... cannot be reached by pathname*, and nothing is read or written),
+(*has no OS access ... can reach by pathname only a directory the administrator opened to
+all*, and nothing is read or written),
 and the file or the path they write goes through the edit gates: a program file, VOC or
 dictionary changes only when the account has `bp.edit`, `voc.edit` or `dict.edit`.
 
