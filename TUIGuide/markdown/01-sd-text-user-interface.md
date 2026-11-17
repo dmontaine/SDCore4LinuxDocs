@@ -191,6 +191,10 @@ Each example is a complete program. Each was put in the `bp` file of an ordinary
 account, compiled with `basic bp name` and run with `run bp name` on a terminal of
 140 by 43; the screens shown are what that terminal showed.
 
+**All five are already in every account**, compiled, in the file `examples.bp`: `run
+examples.bp hello` runs the first. To change one, copy it to your own `bp` first (`copy from
+examples.bp to bp hello`); the User guide's *SD Example Programs* says why.
+
 | Page | Program | What it adds |
 |---|---|---|
 | [A Bare Page](02-a-bare-page.html) | `hello` | the frame, one pane, the keys `resize` and `guardquit`, a floor |

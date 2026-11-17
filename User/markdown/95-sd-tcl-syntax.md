@@ -9,7 +9,7 @@ have forgotten its arguments, it is here. If you want to know what it
 braces an optional part, and a vertical bar separates alternatives. SD
 folds case, so any of this may be typed in either case.
 
-> This page lists every verb SD ships (**211** of them). The shapes come from the
+> This page lists every verb SD ships (**212** of them). The shapes come from the
 > subject documents, where each verb is described in full.
 
 **The "who" column is the VOC, not an opinion.** It is taken from the
@@ -19,7 +19,7 @@ not refused — the name is simply not recognized.**
 | | | |
 |---|---|---|
 | **every account** | 164 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 47 more | in `voc_template` but not `newvoc` |
+| **SDSYS only** | 48 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -125,6 +125,7 @@ not refused — the name is simply not recognized.**
 | **`list.vars`** | **`list.vars`** {*pattern*} |  |
 | **`list.voc.removed`** | **`list.voc.removed`** {*account*}  —  the VOC records SD no longer ships and, with an account, what the next **`update.accounts`** would do in it (changes nothing) | S |
 | **`listu`** | **`listu`** {**`detail`**} {**`no.page`**} {**`lptr`** {*n*}} | S |
+| **`load.examples`** | **`load.examples`** {*account*}  —  put the shipped example programs into examples.bp of every account (or one) and compile them there (administrator) | S |
 | **`load.help`** | **`load.help`**  —  load the shipped context help into the file context.help of the shared account (administrator) | S |
 | **`lock`** | **`lock`** *n* {**`no.wait`**} | S |
 | **`lock.tracer`** | **`lock.tracer`** **`on`** \| **`off`** \| {**`user`** *n*} {**`lptr`** {*n*}} {**`no.page`**} | S |

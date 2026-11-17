@@ -6,8 +6,9 @@ says which key was pressed. It shows the parts every page has.
 
 ## The program
 
-Put it in the `bp` file of your account as `hello`, then `basic bp hello` and
-`run bp hello`.
+It is already in your account, compiled: `run examples.bp hello`. To change it, put it in the
+`bp` file of your account as `hello` (`copy from examples.bp to bp hello`), then `basic bp hello`
+and `run bp hello`.
 
 ```
 * hello - the smallest page: the frame, one box, and Ctrl-Q to leave

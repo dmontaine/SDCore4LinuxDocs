@@ -13,8 +13,9 @@ which part of the statement a page uses; this page shows the parts together.
 
 ## The program
 
-Put it in the `bp` file of your account as `stock`, then `basic bp stock` and
-`run bp stock`.
+It is already in your account, compiled: `run examples.bp stock`. To change it, put it in the
+`bp` file of your account as `stock` (`copy from examples.bp to bp stock`), then `basic bp stock`
+and `run bp stock`.
 
 ```
 * stock - a form with a table in the body, a box of text beside it, and the

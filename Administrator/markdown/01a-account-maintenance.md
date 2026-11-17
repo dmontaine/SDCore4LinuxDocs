@@ -231,6 +231,34 @@ the SDSYS directory.
 To see it work, put a record in the file and run `update.accounts`; then
 `ct voc` the id in the account.
 
+## The example programs in every account: `load.examples`
+
+Every account has its own file `examples.bp` of example programs, compiled: the five
+programs of the *SD Text User Interface - Programmer's Guide* and a first course in
+programming (User guide, *SD Example Programs*). They come from the directory `examples`
+of the SD system directory (`/usr/local/sdsys/examples`), one file to a program.
+
+```
+load.examples              every account in service
+load.examples <account>    that account only
+```
+
+The installer runs `load.examples` on every install and upgrade, and `create.account`
+runs it for each account it makes. In each account it makes `examples.bp` when it is not
+there, writes each shipped program that is new or has changed, leaves alone a program it
+does not ship (one you added), and compiles what it wrote. A suspended account is
+skipped; run `load.examples <account>` once it is back. The two summary lines count the
+accounts, the programs written and compiled, and the ones of yours it kept; each program
+that did not compile, or account it could not enter, is named. The run is on the audit
+trail (`load.examples accounts=... compiled=...`).
+
+**No access is opened by it.** `examples.bp` is an ordinary program file of the account,
+so the account's `bp.edit` setting decides whether its person may change it: off as
+delivered, so every account can list, read and run the examples and none can alter them
+there. To let a person copy one to `bp` and compile it, give the account `bp-on`. A
+change you want in every account is made to the file under `examples` and spread with
+`load.examples`; a change made in one account's `examples.bp` is put back by the next run.
+
 ## Reading and setting configuration: `config`
 
 ```
