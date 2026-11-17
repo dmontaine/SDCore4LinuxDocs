@@ -42,8 +42,11 @@ update.accounts {all}
 Copying records from NEWVOC to VOC...
 ```
 
-Copies the shipped verb and keyword definitions into an account, adding what is
-missing and leaving that account's own VOC entries alone. It is what brings an
+Copies the shipped verb and keyword definitions into an account. A shipped
+entry that is missing is added, and one that was changed there is put back as
+`newvoc` has it: it asks first only when the type letter differs, and it keeps
+an entry marked `[locked]` unless it is a verb. An entry SD does not ship is
+never touched. It is what brings an
 existing account up to date after SD itself is upgraded — every account gets
 the same `newvoc`, so there is no tier for it to respect any more; a
 suspended account is updated exactly like any other, since suspension

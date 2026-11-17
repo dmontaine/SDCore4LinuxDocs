@@ -261,6 +261,13 @@ Removes the file. `close` releases the variable without deleting anything;
 a sequential file left open is closed when the program ends, but the buffered
 tail is only guaranteed once `close` has run.
 
+**A VOC, a dictionary or a program file is not changed by pathname.** A
+pathname that runs through the VOC, a dictionary or a program file that the
+session may not change (the administrator's edit gates for the account decide
+which) is opened by `openseq` **read only**, `creating` there is refused, and
+`deleteseq` of such a file is refused. A record called `voc`, `x.dic` or
+`sample.bp` in an ordinary directory file is a plain file, not one of these.
+
 ## Directory files, and where the marks go
 
 A **directory** file is an SD file whose records are ordinary files. That is

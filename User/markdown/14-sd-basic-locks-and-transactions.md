@@ -181,7 +181,7 @@ unlock n
 ```
 
 There are **64** of them, numbered 0 to 63, and SD attaches no meaning to any
-of them. They are for serialising something that is not a record — a nightly
+of them. They are for serializing something that is not a record — a nightly
 report, a printer, an external file.
 
 **A `lock` with no `else` clause retries for ever.** The compiler generates
@@ -311,8 +311,7 @@ transaction starts and decremented only on the paths that end in a rollback, so
 **every committed transaction leaves the count one too high for the rest of the
 session.** In a run of four unnested transactions the first reports level 1
 and the fourth reports level 2. **Do not test `system(1008)` to
-find out whether you are in a transaction — test `system(1007)`.** This is
-inherited from the upstream `sdb64` code.
+find out whether you are in a transaction — test `system(1007)`.**
 
 ### Do not nest transactions
 

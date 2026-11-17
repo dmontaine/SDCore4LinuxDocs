@@ -13,11 +13,6 @@ SD folds case, so a command may be typed in either case. Commands are shown here
 in lower case. In the tables, *italics* mark something you supply and **bold**
 marks a word typed as it stands; braces mark an optional part.
 
-> **Every listing on this page was produced by running it**, on SD Core for
-> Linux. The lock listings come from a program that took the locks
-> first and then ran the verb against itself, because a lock nobody holds is not
-> something a listing can show.
-
 ## Two things are not on this page, on purpose
 
 **A programmer needs to understand locks without being able to force one**, so
@@ -247,7 +242,7 @@ There are no active file, read or update locks held by any user
 **`Peak` is the one to watch.** `Current` describes this instant, which is
 rarely the instant that mattered. A peak near the limit is how you find out
 `NUMLOCKS` needs raising **before** a program fails with the lock table full.
-`config` reports the configured limit.
+`config` reports the configured limit, see [Configuration](07-sd-admin-configuration.html).
 
 **A user number** restricts the listing to one session. **`wait`** adds the
 sessions *waiting* for a lock, as `WAIT` rows — left out by default, so the

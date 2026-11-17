@@ -62,7 +62,7 @@ BASIC programs reaching another SD server use the `!sdclient` class, which
 speaks the new login too — `connect()` takes the same arguments, but **the
 program has to be running under this release at both ends.**
 
-Everything about what a connected session may open, the two gates it must
+Everything about what a connected session may open, the three gates it must
 clear, and the identity it runs as is on [API access](09-api-access.html).
 
 ## Building from source

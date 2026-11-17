@@ -98,7 +98,7 @@ count customers
 ```
 
 **Commands are lower case now**, and so are the VOC records behind them. Typing
-`LIST` still works — SD tries what you typed, then lower case, then upper. See
+`LIST` still works — SD converts it. See
 [Lower case](11-lower-case.html).
 
 **THIS IS THE POINT AT WHICH MOST THINGS SHOULD FEEL LIKE OpenQM.** If

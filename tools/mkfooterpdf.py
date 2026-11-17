@@ -116,6 +116,8 @@ def main():
     html_path = os.path.abspath(args.html)
     pdf_path = os.path.abspath(args.pdf)
     page_html = open(html_path, encoding='utf-8').read()
+    sys.stdout.write('mkfooterpdf: page %s\nmkfooterpdf: out %s\nmkfooterpdf: date %s\n'
+                     % (html_path, pdf_path, args.date))
     heads = headings(page_html)
     m = re.search(r'<title>(.*?)</title>', page_html, re.S)
     title = html.unescape(m.group(1)).split(' - ')[0].strip() if m else 'Changes'
@@ -126,6 +128,7 @@ def main():
     if not browser:
         sys.stderr.write('mkfooterpdf: no Chrome or Chromium found\n')
         return 1
+    sys.stdout.write('mkfooterpdf: browser %s\n' % browser)
     for tool in ('pdfinfo', 'pdftotext', 'pdfunite'):
         if not shutil.which(tool):
             sys.stderr.write('mkfooterpdf: %s (poppler-utils) is not installed\n' % tool)

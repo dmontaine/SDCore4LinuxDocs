@@ -29,6 +29,7 @@ is the short form.
 | An index after many deletions | Changed | in a large index (three levels) deleting records could take a whole branch out of the index, so lookups missed records that were still there; fixed, and an index damaged earlier is put right by `build.index` |
 | An index and a record id | Changed | an index kept an upper-case copy of the id; now it follows the id **as the file holds it**, so rebuild an index that was built on L1.1-3 |
 | Dictionary divide by zero | Changed | stopped the report; now gives zero |
+| Fedora | Removed | the installer installed on Fedora; it now refuses it and installs on Debian and Ubuntu (and their derivatives) only |
 | `fileinfo(f, 1021)` | Changed | gave text such as `12 (don), 14 (ann)`; now the user numbers of the other sessions that have the file open, and the text form is key **1100** |
 | `intprec` and `sortmem` | Changed | were 13 and 1024; now **11** and **4096** (set the old values in `sd.conf` if you need them) |
 | Keys of the full-screen programs | Changed | F5 ran a program in the IDE, SED and the debugger; it now draws the screen again everywhere and **F9 runs**. Ctrl-T is the theme and Ctrl-K the keys on every page, so the keys that had them moved (the home screen's Terminal and Sign out, SED's kill line and toggle, the IDE's go to line and build): see [Tools and the home screen](#tools-and-the-home-screen) |
@@ -40,6 +41,7 @@ is the short form.
 | The default terminal | Changed | was 120 columns by 36 lines; now **140 by 43** (a LIST fills 42 lines before it pauses) |
 | The group size of a new file | Changed | was 2 KB (1 KB when `sd.conf` did not say); now **4 KB** on a new installation. An installed system keeps its `sd.conf`, and so its 2, and a file keeps the size it has |
 | The spelling of what SD prints | Changed | was British (catalogue, colour, analyse, initialised, unrecognised, licence); now **US** (catalog, color, analyze, initialized, unrecognized, license). A program or script that matches SD's messages by their words should be checked. Names are unchanged: verbs, keywords, options and files (`analyse.index`, `option catalogue.local`, the `catalogued()` function) |
+| The terminal's size | Changed | every session started at the terminal type's size; now SD asks the terminal how big it is at the start and when it is resized (`term w,h` still sets it by hand); a session with no terminal to ask (a phantom, a piped script, the API) starts at 140 by 43, as `term default` sets |
 | `when field` with no operator | Changed | kept the null values; now keeps the values that are **not** null |
 | Where a session starts | Changed | was the command prompt; a new installation starts at the **home screen** of tiles unless the installer's question is answered with the prompt; **an upgrade from L1.1-3 keeps the prompt**; `set.start.default` and `modify.account` change it later; SDSYS always starts at the prompt |
 
@@ -81,6 +83,8 @@ The server side of the API, the client library and the language headers.
 | api sign-in: audit | Added | the first entry to an account writes `api login user= account=` to the audit trail |
 | `autologout` | Changed | reaches an API session; a client hang found while testing it is fixed |
 | client library headers | Added | C# (`sdclient.cs`) and PHP (`sdclient.php`) beside the six already there; neither has been run against a runtime |
+| client library: call name | Changed | a subroutine called from the client may have a name as long as the lower of 128 and `maxidlen`, as on the server's own `call` |
+| client library: collection files | Changed | a record read from a data collection file reaches the client as its JSON text, as `ct` shows it |
 | client library: connections | Changed | the number of simultaneous connections is no longer limited |
 | client library: detailed error | Changed | the BASIC class `sdclient` returns the detailed status when it cannot connect |
 | client library: dictionary | Added | `sdevaluate`, `sdevalconv`, `sdiconv`, `sdoconv`, `sdiconvs`, `sdoconvs` |
@@ -159,6 +163,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `no.query` on cataloging | Added | the `basic` command, the `$catalog` directive and the `catalog` line of `$basic.options` take `no.query`, which stops the compiler asking before it removes an older entry |
 | `oconv()` date `i` | Changed | the `i` code of a `d` conversion (the ISO week number) gives the week; without `yi` beside it, it gave whatever number was left in memory |
 | `open ... non.transactional` | Added | a write through that file variable is not undone by a rollback |
+| `open ... sync` | Added | `open` and `openpath ... sync`: the file's data is written to disk after every write and delete; `fileinfo(f, fl$sync)` says whether it was opened so |
 | `open.socket()` | Changed | takes a connect timeout |
 | `openseq` | Added | `creating` makes the file at once; `shared` lets several processes append; a block device can be opened |
 | `openseq creating` | Changed | makes a name that is free exclusively: a name taken in the meantime, or a link that leads nowhere, is refused with `status()` 6032 and nothing is made (`shared` refuses a link that leads nowhere the same way, and otherwise still opens or creates); the `openseq file, record` form does the same, and an `openseq` of such a link without `creating` gives a file that cannot be written; the file is made only once the lock on its name is held, so a name another session holds leaves no empty file behind |
@@ -190,7 +195,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `status()` after a transaction | Added | 0 if it committed, 1021 if it rolled back |
 | string arithmetic | Added | `sadd`, `ssub`, `smul`, `sdiv`, `scmp`: exact string arithmetic on numbers of any length and any decimals |
 | substring assignment | Added | `s[3] = "xy"` overwrites the last three characters |
-| `trans()` family | Changed | `trans()`, `rtrans()`: accept `a`, `s` and `c` items and an `l` link; a file that will not open takes the error action of the call |
+| `trans()` family | Changed | `trans()`, `rtrans()`: accept an `l` link; a file that will not open takes the error action of the call |
 | variable names | Changed | a name with two or more underscores together (`a__b`) is valid |
 | `watch` | Changed | the debugger's `watch variable operator value` stops only when the condition is met |
 
@@ -230,6 +235,7 @@ File handling: opening, indexes, triggers, print files, sorting, sequential file
 | `analyze.file` | Changed | `statistics` shows a histogram of group utilization |
 | `analyse.index` | Added | every index with its number of values and spread |
 | `clear.file` | Changed | fixed: a `no.resize` file keeps its modulus |
+| `configure.file ... next` | Added | `next n` sets the record-id counter that `write ... creating.seqkey` gives out from, and `next query` shows it |
 | `configure.file ... reporting` | Added | shows how many records have been converted |
 | `create.file` | Added | `comment`, and a relative `pathname` kept relative in the VOC |
 | `create.index` | Added | `no.case`: keys that differ only in case are one key; `deleting` replaces an index; a default location in `$index.path` |
@@ -243,7 +249,7 @@ File handling: opening, indexes, triggers, print files, sorting, sequential file
 | `fixdir` | Added | takes the carriage returns out of directory file items that came from a Windows system |
 | hashed files | Changed | a split that finds the disk nearly full stops before the file's size is changed; `sdfix -z` clears dead space |
 | `hold.file.logger` | Added | a cataloged subroutine called when a hold file print unit opens and closes |
-| `l-type` dictionary links | Added | usable in an `i`-type; links may follow links, up to ten, and reach `a`, `s` and `e` items |
+| `l-type` dictionary links | Added | usable in an `i`-type; links may follow links, up to ten, and reach `e` items |
 | `list.common detail` | Added | shows where each common block was created |
 | `list.index` | Changed | the report may go to a printer |
 | `list.triggers` | Added | every trigger subroutine used by the files of an account, multifiles, dictionaries and directory files included |
@@ -257,6 +263,7 @@ File handling: opening, indexes, triggers, print files, sorting, sequential file
 | sort of long records | Changed | the disk sort handles records and keys over 32 KB |
 | trigger on a read | Changed | fixed: a locally cataloged read trigger could end the process |
 | `vocname` letters | Added | `r` opens a file read-only, `n` non-transactionally, `s` with forced writes, from field 6 of its VOC entry |
+| `write ... creating.seqkey` | Added | a hashed file keeps a record-id counter: `write` or `writeu ... creating.seqkey id.var` writes under its next value and gives the id, skipping an id a record already has; `configure.file file next n` sets it and `next query` shows it; `ed` and the IDE take `creating.seqkey` for a record id |
 
 ## QUERY
 
@@ -272,6 +279,7 @@ The query processor and the dictionary.
 | dictionary expressions | Changed | divide by zero is zero (an `if` with a part missing, a format after a value and hyphens in names were added and removed again, see REMOVED) |
 | `for`, `from none` | Added | `search file for "text"`; `from none` ignores an active list 0 |
 | `in`, `not.in` | Added | test a value against a saved list or a file record |
+| invalid name in a directory file | Changed | `list`, `count` and `reformat` report "'name' invalid name" for a record whose file is there under a name SD cannot produce (a bare `%` in a file put there from outside); it said "not found" |
 | `median`, `mode`, `range` | Added | figures at the end of a report and each breakpoint |
 | `$mode` in an `i`-type | Added | an `i`-type may begin with `$mode` for a few of the compiler modes |
 | `no.page` | Changed | accepted on any query command |
@@ -311,9 +319,11 @@ The kernel, `sd.conf`, and the numbered keys.
 | `-status` | Added | `sd -status` shows the version, start time and process counts |
 | `system()` keys | Added | 14, 19, 20, 21, 33, 35, 45, 1016, 1036, 1037, 1040, 1045, 1047, 1048, 1049, 1051, 1062, 1065, 1067, 1071, 1073, 1083, 1086, 1088 |
 | terminfo | Changed | `eblink`, `eprot`, `edim`, `erev`, `ebold` capabilities; `xmc#1` in the two ADDS 4000 entries |
+| `system(1057)` | Changed | fixed: a phantom whose parent held a user number above the number of user table cells was told it had no parent; the test is now against the highest user number |
 | the call name | Changed | can be as long as 128 characters (the lower of 128 and `maxidlen`)|
 | the startup process | Changed | its `@tty` is `startup` |
 | time zone and `epoch()` | Added | `epoch()`, `mvdate()`, `mvtime()`, `mvdate.time()`, `mvepoch()`; `set.timezone` and `config timezone` |
+| upgrade: retired `sd.conf` parameters | Changed | an upgrade takes the parameters this release no longer has out of a kept `sd.conf` (SD would not start on them) |
 | `usplit=1` | Added | interactive users take the lowest user number, phantoms and API sessions the highest |
 
 ## TCL
@@ -324,10 +334,12 @@ Commands and VOC verbs that every account has, and the command language.
 |---|---|---|
 | `autologout` | Changed | works in the full-screen programs (the screen library, `ide`, the home screen, the tool pages): idle time is counted across their short timed waits, and only a typed key (or the break key) starts the period again; a program that polls with very short timed `keyin`s and works between them counts as waiting |
 | `block.print`, `block.term` | Added | print text, or show it on the terminal, in letters seven rows high |
+| `catalog ... global c` | Added | puts the prefix `!`, `_` or `$` in front of every call name that has none of its own, so a whole select list can be cataloged globally |
 | `catalog ... local relative` | Added | stores the object file's path relative to the account |
 | `catalog` overwrite | Changed | pointing a local catalog entry at a different object file asks first |
 | `catalog` prefix | Added | a prefix separate from the call name; `$private.catalog` or `$private.catalogue` |
 | catalog name as a command | Changed | a program run by its catalog name takes `lptr`, `no.page` and the like |
+| `ced` | Added | edits a data collection in a full-screen editor, with the keys every page shares |
 | command stack | Changed | `.c-` undoes a `.0`; the stack is kept in the account the user entered |
 | `command.logging` | Added | a log of every command this session runs, in the account directory, mode 0600 |
 | `como` | Added | `append`, `in file`; `$como` ids pass the same name transform |
@@ -522,6 +534,7 @@ has, with the changes they made.
 | `modify.account xfer-on` and `xfer-off` | Added | per-account switch for file transfer over the ssh login (`receive`, `send`); off as delivered; needs `XFER=1` in `sd.conf` as well; refused for a group or other account |
 | `net-on` and `net-off` | Added | per-account switch for SDNet, off as delivered |
 | new account defaults | Changed | a new account has no ssh, no API, no shell and no `os.execute`; SDSYS opens each, account by account |
+| `pins-on`, `pins-off` and `my.menu` | Added | `modify.account name pins-on` lets an account add programs of its own to its home screen, in a group My programs; `my.menu` adds, changes, removes and reorders them; a program added runs exactly as typed, so it adds no access; off as delivered |
 | `remote.sdsys` | Added | the remote `sdsys` logins from inside SD: `on` (or `ssh on`) opens the ssh door (`sdsys` then signs in with its password alone), `off` shuts it; `api on` with addresses or ranges, or `api on any`, opens the API door for `sdsys`, `api off` shuts it; no keyword reports both. Both shut as delivered |
 | `restore.account` | Changed | fixed: no longer overwrites a different global program of the same name; restoring the `shared` account puts it back in the group `sdusers` (it had been given `sdg_shared`, which no ordinary user is in) |
 | `restore.voc` | Added | administrator only: puts back the newest saved copy of a VOC record the update removed, or all of an account's; never overwrites a record the account holds, and audits what it puts back |
@@ -587,6 +600,7 @@ has, with the changes they made.
 | `ai` row on a toolkit page | Added | every page of the toolkit but `tool.keys` (the development pages, `my.menu` and the administrator's pages): F6 (the line is the stop after the page's last box), AI > Ask the AI or a click puts the cursor in a line above the status line, which takes one row from the list; the model is offered the page's keys that change what is shown and, on `tool.dict`, `tool.files` and `tool.catalog`, new and compile (Reject is their default; a name the AI gives is only the page's own question's starting answer), and a proposal is carried out by the page's own key; with the AI off the page is as before |
 | `ai` standing text | Added | a few lines of the administrator's sent first with every AI request (what SD is, its conventions and gates, where its help is, the site's own facts); SD ships a default; `tool.ai` T edits it (Save, Shipped default), `set.ai context` at the prompt; invisible to the person asking and their question is unchanged; plain ASCII, 4,000 characters, and a text naming SD's own code is refused |
 | `ai` verb | Added | asks an AI one question; shows the question and the size of all that will be sent, and sends only on `y` or `yes` |
+| `sd-ai` helper | Added | the one program that talks to the provider, started by the systemd socket `sd-ai.socket` as the operating system user `sdai`; it holds the provider's key, which SD never sees, and checks the account's `ai` gate on every request; its settings and keys are in `/var/lib/sd-ai` and kept by an upgrade |
 | `sdai` operating system user | Added | system user made by the installer for the AI feature: own group, no shell, no home, no SD group |
 | `set.ai` | Added | SDSYS chooses the provider, model and key from the prompt; `set.ai models` lists the provider's own model names, and a model it does not list is warned about |
 | `set.ai limit` | Added | SDSYS sets the limits of AI use: requests an hour (20) and tokens a day (100000) for each Linux user, seconds (30) and bytes each way (65536) for a request, and `max-tokens`, the length of an answer at the prompt and on every page (1024) |
@@ -596,11 +610,15 @@ has, with the changes they made.
 
 | Name | Change | What |
 |---|---|---|
+| api dict file names | Changed | fixed: a dictionary named in lower case (`dict customers`) was not opened as a dictionary by the API server; the name is now taken in any case |
+| api refusal text | Changed | fixed: a reply with nothing of its own to say carried the text of the last refusal in the session; each reply now carries only its own text |
 | api request 29 | Changed | fixed: opened any account's file for any login; now asks the `logto` rules, the `net` gate and `sdclient`, and the OS question for a pointer out of the account |
+| api request 70, `delete.file` | Changed | fixed: a delete the verb refused (the file open in another session, say) left the file on the disk but the client's file number dead; the number now stays good and the status is the verb's |
 | api requests 32 and 33 | Changed | fixed: file lock and unlock acted on the last file opened, not the file named |
 | api server loop | Changed | fixed: a client that hung up before its first request left a server process using 100% of a processor |
 | api server, last reply | Changed | fixed: a refused login (any reply sd sends as it ends) could be lost when systemd killed the TLS relay as sd exited; sd now waits up to two seconds for the relay to deliver it |
 | api server, refused `sdlogto` | Changed | fixed: the session went on naming the refused account, so every later open by VOC name failed; it now stays in the account it was in |
+| client class `sdclient` | Added | the BASIC class gains `getvar`, `revision`, `system`, `trans`, `rtrans`, `txn`, `evaluate`, `evalconv`, `iconv`, `oconv`, `iconvs`, `oconvs`, `openseq`, `readseq`, `readblk`, `writeseq`, `writeblk`, `seek` and `weofseq` |
 | client library: restricted | Changed | fixed two faults under `sdclient 1` and `2`: a heap overrun on a refusal, and a refused call that still ran |
 | client library: `sdchecksum` | Added | a checksum computed on the client |
 | `creating.seqkey` over the API | Added | the server's record-id counter gives the id, over the API |
@@ -678,6 +696,8 @@ Three simple layers, with no vault and nothing on by default.
 | access questions on an upgrade | Changed | an upgrade that kept the configuration no longer asks *Allow ssh access from other computers?* and *Allow API access from other computers?*: ssh is left as it was, and the API stays open to other computers if it was open (it used to go back to local unless you answered yes again) and local if it was local. An uninstall that deletes the configuration also removes the listener setting `remote.api` wrote, which used to outlive it |
 | agent pack | Added | the guide and the knowledge pack are copied to `/usr/local/sdsys/agent-pack`, only when they match the installed version |
 | changes document | Added | a release package carries it beside the installer as `sd-core-for-linux-<version>-changes.pdf`, `.html` and `.md`, and the installer copies the three into the shared account's `pdf` directory, where every account can read it |
+| distributions | Changed | Debian and Ubuntu (and their derivatives) only: Fedora is refused, as RHEL, its clones, Arch and openSUSE were, and every refusal comes before the network check, the questions and the first `sudo` |
+| documentation for the AI | Added | the installer fetches the User and Administrator documentation pages from `SDCore4LinuxDocs` into `docs/user` and `docs/admin` of the system directory, where `ai` looks for the passages it sends with your question; a fetch that fails is a note, never a stop |
 | documentation PDFs | Added | a release package carries one PDF for each chapter of the User, Administrator and Getting Started documents in a folder `pdf` beside the installer, and the installer puts them in the shared account with `docs.install`, where every account can read them; a help box names the PDF that says more |
 | empty `/home/sd` on uninstall | Changed | `deletesdcore.sh`, told to delete both the accounts and the configuration, removes `/home/sd` at the end if it is empty, and says so (it left an empty folder owned by root) |
 | group account files | Changed | an upgrade puts the four record files of every kept group account back in the account's group |
@@ -696,6 +716,7 @@ Three simple layers, with no vault and nothing on by default.
 | start question | Added | a new installation asks whether new sessions start at the home screen or at the command prompt; an upgrade that keeps the accounts does not ask and keeps what the site had - the prompt for an install from before the home screen (the uninstaller saves the setting) |
 | stored SDNet logins | Changed | the uninstaller removes `/var/lib/sd-net` when the accounts or the configuration are deleted |
 | systemd units on an upgrade | Changed | `sd.service`, `sd-lnxd.service` and `sdclient@.service` are replaced by this release's when they differ (they were copied only on a first install); `sdclient.socket` and drop-ins under `/etc/systemd/system` are kept |
+| `upgrade_editgates` | Added | switches the three edit gates (`voc-on`, `bp-on`, `dict-on`) on once for every existing user account whose setting is blank, so no account loses what it had; a group account is left off; it does not run a second time |
 | `upgrade_gates` | Changed | fills only a blank setting, so a kept `no` stays |
 
 ### Screen library
@@ -748,12 +769,13 @@ Three simple layers, with no vault and nothing on by default.
 | remote files, query | Added | `list`, `count`, `sort`, `select`, `list.item`, `list dict` on a remote file; `fileinfo` type 7 |
 | remote files, refusal | Changed | the server's own words are shown, not `status 0`; a lost connection is an error |
 | remote files, reply checked | Changed | a reply that cannot be true is a lost connection at once |
-| remote files, write | Added | for a server defined `write`: `write`, `delete`, `clearfile`, the locking reads and release |
-| remote lock functions | Added | `recordlocked()`, `getlocks()`, `filelock`, `fileunlock`: work on a remote file |
+| remote files, write | Added | for a server defined `write`, and a login that is in the other server's write group (`sdfileswrite`): `write`, `delete`, `clearfile`, the locking reads and release |
+| remote lock functions | Added | `recordlocked()`, `getlocks()`, `filelock`, `fileunlock`: work on a remote file; `recordlocked()` and the file lock need a server defined `write` and a login in its write group |
 | remote `select` | Changed | fixed: a server error stopped the program with an abort |
 | SDNet logins | Added | `set.netlogin`, `delete.netlogin`: a person's login on a server, kept as derived values and never the password |
 | `set.server` | Added | defines a server; `connect` shows its key hash for you to confirm |
 | tls reads | Changed | fixed: a half record or a late ticket made a read wait without limit |
+| uninstall | Changed | removing SD with its accounts also removes the groups `sdfiles`, `sdfileswrite` and `sdfilesadmin`, with `sdssh`, `sdapi` and `sdaiusers` |
 
 ### Security
 
@@ -762,6 +784,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | Name | Change | What |
 |---|---|---|
 | account directory parents | Changed | the installer leaves `/home/sd`, `/home/sd/user_accounts` and `/home/sd/group_accounts` 755 (they were 775), so one SD user cannot rename another account's directory and put one of their own in its place; an install made before this is fixed by installing again |
+| account entry by name | Changed | `logto` and an API session's account take the name of a registered account and nothing else: a pathname or an unregistered name is refused with "User not allowed in requested account" and audited (the administrator could `logto` a directory; over the API a suspended account could be entered by its path) |
 | api `clearfile` | Changed | fixed: it cleared whichever file a stale counter pointed at; it clears the file named |
 | API per-connection server unit | Changed | `sdclient@.service` sets ten of systemd's sandbox settings (`ProtectKernelTunables`, `ProtectKernelModules`, `ProtectKernelLogs`, `ProtectControlGroups`, `ProtectClock`, `ProtectHostname`, `RestrictRealtime`, `RestrictNamespaces`, `LockPersonality`, `SystemCallArchitectures=native`) on the stage of a connection that runs as root before login; not `NoNewPrivileges`, a capability bound, `ProtectSystem`, `ProtectHome` or `PrivateTmp`, which would stop `sudo sd-elevate` and the writes a session makes; a fresh install has them, an upgrade that keeps the unit files keeps the old unit |
 | API Unix socket | Changed | `/tmp/sdsys/sdclient.socket` is mode 0660, group `sdusers` (systemd made it 0666, so the group restricted nothing and anybody on the machine could reach the first stage of an API connection, which runs as root); the installer adds `SocketMode=0660` to an existing unit that has none and leaves a value that is there |
@@ -770,8 +793,11 @@ Fixes that close a way round a gate, and what the gates now ask.
 | audit trail rate bound | Added | the audit daemon takes at most 600 records from one operating-system user in 60 seconds and drops the rest (the journal copy is not limited); the end of that window writes one line, `audit rate limit dropped=N taken=600 limit=600 window=60`, and the error log counts what was dropped |
 | audit trail rotation | Changed | the audit daemon rotates the trail by size as it writes (1 MB, to `audit.<date>-<time>`, new file with the old owner, mode and append-only flag), so a machine that never restarts SD still rotates; `sd -start` uses the same code |
 | audit trail writer | Changed | `sdlnxd` (root) writes the audit trail: a session sends each record over the Unix socket `/run/sd/audit.sock` and the daemon stamps `user=` and `pid=` from the kernel's credentials of the sender, so a person with a shell can no longer add a line that names someone else; the file is mode 0600 (it was 0620); with no daemon a session appends itself, which only `sdsys` and root can do, and the journal copy is then the only one |
+| audit trail, control characters | Changed | fixed: a value written to the audit trail that held a newline started a false line; a control character, DEL or a mark is now written as `?` |
 | control codes in data | Changed | text from data (a record, a lock id another user made, a file name, a command shown by `pstat`) cannot send escape sequences to a terminal: the screen library draws control characters as reverse letters, the kernel's lock list, `getlocks()`, `pstat`, the `profiler` and `hsm` displays show them as `?`; `kernel(k$show.safe, text)` gives a program the kernel's rule |
+| `create.account` taking over a leftover Linux user | Changed | on a restore, the user leaves every route group (ssh, the API, the files routes, the AI) the new account does not ask for; it used to keep the routes of its earlier account |
 | deleting a directory tree | Changed | fixed: `delete.account`, `delete.file` of a directory file and the other deletes of a whole tree followed a symbolic link inside it and deleted what it pointed at, so a link an account holder planted could turn the administrator's delete onto files elsewhere; a link is now removed as a link and its target left alone |
+| `edit` and `micro` | Changed | refuse, before the editor starts, a VOC record, program or dictionary item the account may not change (`voc-on`, `bp-on`, `dict-on`) |
 | error log mode | Changed | `errlog` is 664 (it was 775): every session appends to it and nothing runs it |
 | files root runs | Changed | the installer makes `/usr/local/sdsys/bin` and every file in it `root:root` with no group or other write, and makes `bin` immutable (`chattr +i`), so the `sdsys` user cannot replace `sd`, `sdlnxd`, `sdidx` or `pcode`, or rename `bin` away and put its own in its place; a failure to seal is warned about in the closing summary too |
 | global catalog modes | Changed | the kernel refuses to load a global catalog object that others or the group `sdusers` can write (message 11930), and the installer leaves everything in `gcat` 0755 after its last compile (a fresh install left `gcat/$cproc` 0664) |
@@ -779,6 +805,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `$ipc` mode | Changed | directories 2770 and files 0660, `sdsys:sdusers` (it was 775): an operating-system user outside `sdusers` can no longer read the commands, `DATA` lines and messages that every SD user's process leaves in it |
 | named common | Changed | fixed: a program that ended while holding objects in named common freed them twice |
 | named common with a `$` or `_` name | Changed | the system's own common blocks: only an internal program may declare or join one; any other program stops with message 11598 |
+| `openseq` that fails | Changed | fixed: an `openseq` that took the else branch for an absent file kept the lock on its name until the file variable was closed; the shipped programs now close it there |
 | operating system paths | Changed | `dir()`, `select.dir`, `oscopy`, `!oscopy`, `!ioscopy`, `deleteseq` of a path, `opentemp`, `digest` of a file, `setptr ... as pathname`, `setpu`, the embedded Python and a VOC pointer out of the account each ask the account's `os` switch, and `sd-on` for another SD account |
 | `ospath()` in the shared account | Changed | the keys to delete (5), make a directory (13) and make a path (14) are refused inside the shared account for anybody but SDSYS (false, `status()` the permission error); the `$internal` opcode already did, the function every other program uses did not |
 | p-code a session runs | Changed | each session reads `bin/pcode` itself, and refuses a file that others or the group `sdusers` can write; the copy in the shared segment, which any SD user with a shell could change, is no longer run |
@@ -787,7 +814,10 @@ Fixes that close a way round a gate, and what the gates now ask.
 | print file refusal | Changed | outside the account: the message names the account instead of printing `%1` |
 | privileges of a session | Changed | the administrator, `sh`, `os.execute` and `sd.accounts` bits and the gates are held in the process; the copy in the shared segment, which any SD user with a shell could change, is only shown by `listu` |
 | scheduled administrator job | Added | a run of `sdcore-job-`*name*`.service` is made the administrator only when the process is in that unit's control group (only root can start it) and the root-owned definition names exactly the command the session was started with; every audit line of the run ends `job=`*name*; any other `sdsys` session with no login of its own is still refused |
+| `sd -d`, `-m`, `-suspend`, `-resume` | Changed | need root, as `-start` and `-stop` do; any member of `sdusers` could suspend every update or dump every session |
+| `sd` inside a shell SD started | Changed | refused: the shell that `sh` and `os.execute` start is marked, and `sd` answers "SD is already running in this session - type exit to return to it." (a guard against nesting, not a wall) |
 | `sd.conf` | Changed | every new session reads it: an edit to `SH`, `SPOOLER`, `USRDIR` and the other per-session settings reaches sessions started after it, and a bad line stops new sessions from starting until it is repaired (SD and running sessions are not affected) |
+| `sd.conf` `SH`, `SH1`, `STARTUP` | Changed | a value longer than 80 characters is refused by name; it used to overwrite the settings stored after it |
 | `sdlnxd` | Changed | the root daemon finds the system directory from its own path instead of the shared segment, and starts `sd -cleanup` with `execl`, no shell |
 | SDSYS cron and at | Changed | the `sdsys` user may not use cron or at (the installer adds it to `/etc/cron.deny` and `/etc/at.deny`, moves an existing crontab to a root-only copy, removes queued at jobs); a cron job was a password-only administrator login. Scheduled work is `sd-elevate job-set`; the administrator lifts it by taking `sdsys` out of the deny file |
 | SDSYS in more than one place | Added | SDSYS may be signed on at two terminals, and it is now visible: the audit line `sdsys second session others=<n>`, `sdsys x<n>` on those rows of `tool.sessions` with `SDSYS in <n> places` in its counts line, and `<m> signed, <n> sdsys` on the home screen's Sessions and locks tile; a phantom, an API process and a session with no terminal are not counted |
@@ -800,19 +830,22 @@ Fixes that close a way round a gate, and what the gates now ask.
 | system directory | Changed | a session takes it from `SDSYS=` in `sd.conf`, not from the shared segment, which any SD user with a shell could change (the global catalog, the register, the messages, the audit trail and the errlog follow it) |
 | tls close | Changed | fixed: closing a TLS connection no longer ends the process when the other side has already gone |
 | `u` conversion names | Changed | `iconv` and `oconv`: fixed: a name that begins with a dollar sign called an internal subroutine from an ordinary program; it is refused now |
+| voc pointers | Changed | an `f` pointer must lead into the account (or be what the stock VOC says), and a `q` pointer is followed only into an account the person could `logto` |
 
 ### System
 
 | Name | Change | What |
 |---|---|---|
-| compiled kernel | Changed | built with optimisation (`-O2`, with `-fwrapv` and `-fno-strict-aliasing`) where it had none: string and `locate` work about 3.4 times as fast, a BASIC loop 1.5 times, index builds, sorts and writes 1.15 to 1.2 times; `_FORTIFY_SOURCE=3` and `-fstack-protector-strong` end a session at a buffer overrun instead of letting it corrupt memory |
+| compiled kernel | Changed | built with optimization (`-O2`, with `-fwrapv` and `-fno-strict-aliasing`) where it had none: string and `locate` work about 3.4 times as fast, a BASIC loop 1.5 times, index builds, sorts and writes 1.15 to 1.2 times; `_FORTIFY_SOURCE=3` and `-fstack-protector-strong` end a session at a buffer overrun instead of letting it corrupt memory |
 | default terminal | Changed | 140 by 43 |
 | print and index clear failures | Changed | a print command that fails is reported on the terminal, and an index whose clear could not shrink its file reports an error |
 | `sd -start` | Changed | a script that captures its output through a pipe (`x=$(sd -start)`) gets it and goes on; the background daemon kept the pipe and the script waited until `sd -stop`. A phantom and the STARTUP command give back a pipe the same way; a file or a terminal is kept |
 | `sd -status` | Changed | fixed an overrun on a server that recorded no start time |
 | `sd -stop` and `sd -restart` | Changed | a session still attached ten seconds after the termination signal is ended with SIGKILL, and the stop says how many; before, it was left running with SD gone under it. A session idle at a terminal or on a pipe leaves by itself |
 | session whose SD was stopped | Changed | ends at once with a message in syslog and on its terminal, instead of spinning at full processor use for ever |
+| `sh` whose shell cannot be started | Changed | the command ends with status 127; a copy of the session used to carry on in the background |
 | sign-on banner | Changed | names the platform: `SD Core for Linux, the Essential Multivalue String Database, version L2.0-0` (it said `SD Core, ...`) |
+| `term` and a damaged terminfo file | Changed | a terminfo file that is corrupt or cut short keeps the session's current terminal type; it used to leave the session with none |
 
 ### Tools and the home screen
 
@@ -823,8 +856,10 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `debugger` full-screen display | Added | on a terminal that can address a cell and clear itself (xterm, the Linux console, vt100, vt220, ansi) the debugger takes the whole screen, 140 by 43, in the frame of the other full-screen pages: the bar with the app and the audience, the source with a gutter (`>` the line about to run, `*` a breakpoint) and SD BASIC color in every theme but `classic` and `mono`, an Autos pane (the variables the line uses, the last stop's, the watched one, the rest), the messages, the command line, a status line, a border and a function-key row; F1 help, F4 the program's screen; a smaller window gets line mode, and so does `dumb` and `unknown`; where there is no alternate screen the screen is cleared for the debugger and again when it lets go: a program's SCREEN forms are drawn again, its `PRINT` text and what was there before are not; `LINE.MODE` in `$debug.options` keeps line mode |
 | `debugger` keys F2 and Ctrl-Q | Changed | F2 is Find an action and Ctrl-Q stops the program and leaves, as on every page; Abort, which was F2, is on the Run menu (F2 still aborts in line mode) |
 | `debugger` menu bar and keys | Added | the top row is a menu bar (Run, View, Help; Esc on its own or F10); **F9 runs** (it was F5), F5 and Ctrl-L draw the screen again, Ctrl-T the theme, Ctrl-K the keys; on the command line, delete to the end and swap two characters are Esc K and Esc T (they were Ctrl-K and Ctrl-T) |
+| development pages | Added | `tool.files`, `tool.voc`, `tool.dict`, `tool.query`, `tool.bulk`, `tool.catalog` and `tool.test` in every account |
+| full-screen pages | Added | every page has a menu bar (Esc or F10) and the same keys (F5 redraws, Ctrl-T the theme, Ctrl-K the keys, Ctrl-Q leaves, F6 and Shift-F6 move between boxes); a page fits any window of 140 by 43 or more and follows it when it is resized |
 | home screen | Added | every account starts in a screen of tiles; arrows, Tab, letters, mouse, F5, F10 |
-| home screen `ai` line | Changed | Enter alone accepts a proposal that only opens one of the delivered tools but rejects a proposal of one of your own programs or of the Terminal tile (decided for the proposal, not for the page); it cannot run a command when the account's Terminal tile is off |
+| home screen `ai` line | Changed | Enter alone accepts a proposal that only opens one of the delivered tools but rejects a proposal of one of your own programs or of the Terminal tile (decided for the proposal, not for the page); it cannot run a command when the account's Terminal tile is off; when the AI cannot be used it says why: "not on for this account" only when the `ai` gate is off, "not set up on this computer" when no provider, model or key is set |
 | home screen Ctrl-Q | Changed | on a screen typed as `home` at the prompt, Ctrl-Q goes back to the prompt (it signs out on a session's own screen, as before), also after the Terminal tile and `exit`; there Sign out is on the File menu and the tile |
 | home screen Recent group | Added | `View > Recent group`: the tiles started last, newest first, six at most; off as delivered, the person's own record in `&menus&`; `set.tile account recent off` is the administrator's wall |
 | home screen at the same time | Changed | fixed: a session at the home screen kept the next session waiting at sign-on (the absent `start.default` file was read with a lock the program never let go); `osread` of a missing file left a lock too |
@@ -873,7 +908,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `ide` SED's editing commands | Added | on the Edit menu and the editor's keys: delete the word before, cut to the end of the line, swap two characters, the word's case, close a run of blanks, align with the line above, swap cursor and mark |
 | `ide` SED's small commands | Added | Stamp a history line, Expand tabs, Run with arguments, the character code (Alt-=), switches for syntax color and line numbers, a tab width of 1 to 99 |
 | `ide` select list, recall, tabs list, terminal | Added | an active select list is asked about (No clears it) and Go, Next record from the list opens the next one; Up and Down in Open and in Run a command recall this session's files, records and commands; View, List of tabs; Build, Run a command at the terminal gives the command the screen |
-| `ide` source control | Added | a save calls a catalogued `source.control` before the write, with the arguments `sed` and `ed` give it; it can refuse the write or change the record |
+| `ide` source control | Added | a save calls a cataloged `source.control` before the write, with the arguments `sed` and `ed` give it; it can refuse the write or change the record |
 | `ide` spool | Added | File, Spool the text prints the tab's text without saving it: `at` printer, `lnum`, `region` |
 | `ide` tab indent | Added | Tab and Shift-Tab indent and outdent the line or the selected lines by the tab width (3 as delivered), one undo step each, never a tab character (the `ide` editor only; `screen memo` keeps its Tab); Tab never leaves a pane: F6 and Shift-F6 move between them |
 | `ide` theme | Changed | starts in the site's `SCREENTHEME` (paper when none or a name that is not a theme, mono without color); View, Theme goes through the themes in the pages' order and skips those the terminal cannot show |

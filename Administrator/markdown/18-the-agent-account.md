@@ -16,7 +16,7 @@ The full recipe is `agent-pack/recipe/agent-account.md` in the SD Core for Linux
 
 ## What this does not give you
 
-There are no scopes inside the account: the agent can read, change and delete everything in its own account and in any group account it belongs to, which is why the production data is elsewhere. The audit trail names what the agent did, not what it saw. There is no MCP door yet (`sd-mcp` is planned and not built), and a project-scope `.mcp.json` for it is a shape in the source repository, not something to use. And no setting protects you from a prompt that persuades the agent to ask *you* for more: the answer to a request to switch a gate on is yours, and the safe default is no.
+There are no scopes inside the account: the agent can read, change and delete everything in its own account and in any group account it belongs to, which is why the production data is elsewhere. The audit trail names what the agent did, not what it saw. There is no MCP door: the agent works through its own terminal and the account's own rights, and nothing else is offered to it. And no setting protects you from a prompt that persuades the agent to ask *you* for more: the answer to a request to switch a gate on is yours, and the safe default is no.
 
 ## See also
 

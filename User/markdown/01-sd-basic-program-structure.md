@@ -100,7 +100,7 @@ catalogued(name)
 
 reports whether a name can be called. `catalogued('ZZNOSUCH')` is
 `0`. Use it before a `call @variable` whose name came from data, because an
-uncatalogued name is a runtime abort rather than a testable failure.
+uncataloged name is a runtime abort rather than a testable failure.
 
 ## Variables
 
@@ -238,7 +238,6 @@ With `m` holding `7`, `7`, `7`:
 > keyword as a **variable name** and the program aborts at run time with
 > *"Unassigned variable USING"*, with both `using` and `USING`.
 >
-> **This is inherited from the upstream `sdb64` code, not introduced by this port.**
 > **The delimiter is always a field mark.** If you need another one, use `matbuild`
 > and then `change()`, or build the string with a `for` loop.
 

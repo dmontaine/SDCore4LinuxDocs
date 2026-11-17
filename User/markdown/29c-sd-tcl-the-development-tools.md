@@ -36,7 +36,7 @@ the page.
 The home screen has a tile for each of them, in the group *Develop*.
 
 **On a page with more than one box the keyboard can be in** (the query page, the bulk change page and the
-test page here; on the administrator's side the sessions, menus, AI and viewer pages), the box that has it
+test page here; on the administrator's side the sessions, menus and AI pages), the box that has it
 is marked **`[*]`** in its top right corner and the others **`[-]`**, as the IDE marks its panes (since 1
 November 2026). **F6** moves the keyboard and the marks to the next box and **Shift-F6** back, round and
 round, with the AI line as the stop after the last box when the AI is on for your account (since 8 November

@@ -76,7 +76,9 @@ An `open` of a name looks, in this order, at:
 
 A refusal at any step is not a message: the name is simply not there, and the `open` takes its
 `else` branch as it would for any missing file. Files are locked exactly as in any account, so two
-accounts opening the same shared file see each other's record locks.
+accounts opening the same shared file see each other's record locks. A session that
+came in over the network (the API) has the same `shared.read` and `shared.write` gates
+loaded when it enters its account.
 
 ### What is not shared
 

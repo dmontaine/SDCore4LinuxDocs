@@ -356,6 +356,7 @@ list                   CA    $qproc
 list.item              CA    $qproc
 list.label             CA    $qproc
 reformat               CA    $qproc
+scan                   CA    $qproc
 search                 CA    $qproc
 select                 CA    $qproc
 show                   CA    $qproc
@@ -365,10 +366,10 @@ sort.label             CA    $qproc
 sreformat              CA    $qproc
 sselect                CA    $qproc
 sum                    CA    $qproc
-14 record(s) listed
+15 record(s) listed
 ```
 
-**That is the query processor listing itself** — all fourteen VOC records that
+**That is the query processor listing itself** — all fifteen VOC records that
 reach it, including `count`, which is a keyword record that doubles as a verb.
 
 `footing` does the same at the bottom of the page. Both accept the usual

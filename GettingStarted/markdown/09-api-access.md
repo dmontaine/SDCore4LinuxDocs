@@ -119,14 +119,27 @@ user@host` still works, but the design expects a direct connection to
 port 4247 once you have opened it — tunnelling is only for a `local`-only
 install reached from elsewhere.
 
+## The connection is encrypted
+
+**Every API connection is wrapped in TLS 1.3 before SD sends anything**, and
+the login is bound to that encrypted connection. A machine sitting between a
+client and the server cannot read the traffic or log in on the client's behalf,
+even by pretending to be the server. The client libraries and the `!sdclient`
+class negotiate it themselves; a program linked against an older copy of the
+library cannot connect and needs to be linked again. Which certificate a client
+accepts is described under the pin, above.
+
 ## Reaching the port is not getting in
 
-A caller must clear two gates, in this order:
+A caller must clear three gates, in this order:
 
 1. **Complete the SCRAM exchange** against a password held for that account —
    so **an account with no password cannot connect at all**.
-2. **Not be SDSYS** — except in the one local case below. Every ordinary
-   account already has API access; there is no separate group to join for it.
+2. **Be a member of the `sdapi` group** (or of `sdfiles`, for the files-only
+   route), which an account joins only when you give it API access:
+   `create.account user fred api` or `... both` does that; `ssh` or `none` does
+   not.
+3. **Not be SDSYS** — except in the one local case below.
 
 **SDSYS is admitted only on this machine, and only one way.** It is refused
 from every other computer, and also over the network port on this machine's

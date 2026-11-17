@@ -308,7 +308,7 @@ indefinitely with no message. **Any interactive read-for-update should have
 one.**
 
 `filelock` and `fileunlock` lock a whole file, and `lock` / `unlock` take one
-of 64 numbered general-purpose semaphores — used to serialise something that is
+of 64 numbered general-purpose semaphores — used to serialize something that is
 not a record at all, such as a report run.
 
 **The rest of this is its own page.** What the other session sees, what every

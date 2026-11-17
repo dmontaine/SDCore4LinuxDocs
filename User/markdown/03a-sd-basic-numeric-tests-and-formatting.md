@@ -276,8 +276,7 @@ the one value it is given.
 ## What is not here
 
 These existed in OpenQM and in earlier SD releases and **are not in SD
-Core** (`bcomp`'s statement table, shared source with SD Core for
-Windows). A program using one will not compile.
+Core**. A program using one will not compile.
 
 | | |
 |---|---|

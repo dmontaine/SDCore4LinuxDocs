@@ -66,13 +66,13 @@ in the User set.
 **The argon2id limits are fixed: 2 passes and 64 MiB.** They are part of the
 format of every key `sdkey()` has made. A later release that changed them would
 make a different key from the same passphrase and salt, and everything encrypted
-under the first would be lost, so they are written into the source as numbers
-and held by a build-time check. The cost is about a tenth of a second and 64 MiB
+under the first would be lost, so they are written into the source as numbers.
+The cost is about a tenth of a second and 64 MiB
 of memory for each call; an application derives the key once per run.
 
 `status()` after a failure: **10206** the salt is not base64 for 16 bytes,
 **10207** the passphrase is empty or over 65,536 bytes, **10204** a key of the
-wrong length, **10201** a wrong key or a damaged value.
+wrong length (a passphrase passed straight in as the key is this), **10201** a wrong key or a damaged value.
 
 ### Before this existed
 
@@ -167,6 +167,8 @@ in nine. The argument buffers are zeroed when a call ends.
 | `SD_XORBYTES` | 108 | two equal-length values | Their exclusive-or |
 | `SD_CTEQUAL` | 109 | two values | `1` or `0`, compared in constant time |
 | `SD_TLS_CBIND` | 110 | none | This session's TLS channel binding, as the `c=` value its SCRAM login must carry; empty when the session is not TLS |
+| `SD_FILE_PRIVATE` | 111 | path, `FILE` or `DIR` | `1` when the path is the kind of object a credential may be trusted in, else `0`; every failure answers `0` |
+| `SD_USER_HOME` | 112 | path relative to the caller's home (empty for the home itself) | The absolute path when the home and that directory can be trusted, else empty |
 | `SD_KEYRING` | 120 | `set` name key · `clear` name · `list` | The key ring of the XE conversion: the key id, the number removed, or one field per key. Reached only through `!keyset`, `!keyclear` and `!keylist` |
 
 `SD_CTEQUAL` reports a malformed argument as an error rather than as `0`,

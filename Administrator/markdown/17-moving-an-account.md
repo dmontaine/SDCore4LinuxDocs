@@ -112,6 +112,9 @@ os.group: sdu_jack
 route.ssh: 0
 route.api: 0
 route.files: 0
+route.files.write: 0
+route.files.admin: 0
+route.ai: 0
 os.sh: 1
 os.execute: 0
 edit.voc: 1
@@ -120,6 +123,8 @@ edit.dict: 1
 net: 1
 shared.read: 1
 shared.write: 1
+recovery: 0
+xfer: 0
 description: Jack's test account
 suspended: 0
 source.path: /home/sd/user_accounts/jack

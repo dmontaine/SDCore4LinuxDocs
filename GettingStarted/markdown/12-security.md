@@ -103,7 +103,7 @@ only on the local Unix socket, from a process running as `sdsys`, and only
 with SDSYS's own SD password — see [ssh access](08-ssh-access.html) and
 [API access](09-api-access.html). There is no "administrator, but only over
 the network" middle case for the API; SDSYS's other routes are a genuine
-login — local, or ssh with the code — and, for programs, that local socket.
+login — local, or ssh with its password once `remote.sdsys on` has opened that door — and, for programs, that local socket.
 
 ## Taking an account out of use without deleting it
 

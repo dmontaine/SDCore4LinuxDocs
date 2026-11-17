@@ -46,11 +46,11 @@ valid PROC and it is the interpreter that is gone.
 ### What SDSYS's own VOC holds
 
 Counted directly from `voc_template` in the system directory — SDSYS's own
-VOC, 444 records, by each record's own field-1 type character:
+VOC, 448 records, by each record's own field-1 type character:
 
 | Type | Count |
 |---|---|
-| `V` | 205 |
+| `V` | 209 |
 | `K` | 218 |
 | `F` | 14 |
 | `PA` | 4 |
@@ -60,11 +60,11 @@ VOC, 444 records, by each record's own field-1 type character:
 
 **The `V` count here is the literal type character, not the dispatchable
 total.** `break`, `count`, `display` and `off` are type `K` — the four
-keyword-verbs described below — so the 209 figure used elsewhere on this page
+keyword-verbs described below — so the 213 figure used elsewhere on this page
 (and on the syntax card) for "everything the command processor can run as a
-verb" is this 205 plus those four. No `R` record is shipped.
+verb" is this 209 plus those four. No `R` record is shipped.
 
-**An ordinary account's `newvoc` holds 386** — the same shape of table,
+**An ordinary account's `newvoc` holds 388** — the same shape of table,
 smaller only because it lacks SDSYS's own administration verbs and a few
 system file pointers; it is not a *different kind* of VOC, and every
 ordinary account's copy is identical.
@@ -143,13 +143,13 @@ target, and the remaining fields carry options.
 
 | Field 2 | Field 3 | What it does |
 |---|---|---|
-| `CA` | *catalog name* | a cataloged program — 165 of the shipped verbs |
+| `CA` | *catalog name* | a cataloged program — 169 of the shipped verbs |
 | `IN` | *number* | internal verb *n*, handled by the command processor itself — 39 verbs |
 | `OS` | *text* | an operating-system command — `sh`, and nothing else |
 | `CS` | *path* | a locally cataloged function |
 
-The first three rows account for all 205 of SDSYS's `V` records (none shipped
-is `CS`). The other four of its 209 verbs are the keyword records described above — `break`, `count`,
+The first three rows account for all 209 of SDSYS's `V` records (none shipped
+is `CS`). The other four of its 213 verbs are the keyword records described above — `break`, `count`,
 `display` and `off` — where field 2 holds a keyword number rather than a
 dispatch type, and it is field 3 that marks the record as a verb.
 

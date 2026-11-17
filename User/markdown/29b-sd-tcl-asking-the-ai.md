@@ -88,7 +88,7 @@ A follow-up is **used once**: the next request takes it whether you send it or c
 
 | It says | Why |
 |---|---|
-| `The AI is off: the administrator has not chosen a provider` | nothing has been set up |
+| `The AI is off: the administrator has not chosen a provider (tool.ai or set.ai)` | nothing has been set up |
 | `The AI is not set up for anthropic: the administrator has not set its model` (or `key`) | the provider is chosen but not finished |
 | `This account may not use the AI: the administrator can allow it with modify.account NAME ai-on` | your account has not been allowed |
 | `The AI did not answer: limit (...)` | you, or everyone on your Linux user, have used the hourly or the daily limit |

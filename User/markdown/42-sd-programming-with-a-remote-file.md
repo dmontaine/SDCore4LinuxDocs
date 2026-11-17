@@ -33,7 +33,7 @@ OPEN 'DICT', 'customers' TO d ELSE ...        ;* the dictionary of the remote fi
 | inside `BEGIN TRANSACTION` | reads work | reads work, and so does `RECORDLOCKED()` (it changes nothing); a change or a lock (`FILELOCK` and `FILEUNLOCK` too) is refused: a remote write cannot be rolled back |
 | `WRITE ... CREATING.SEQKEY`, `FCONTROL`, `CONFIGURE.FILE`, `ANALYZE.FILE`, `CREATE.INDEX`, `BUILD.INDEX`, `DELETE.INDEX`, `DISABLE.INDEX`, `CREATE.FILE ... SERVER`, `DELETE.FILE` of a pointer | refused, nothing is sent | work **only if the remote login also has the administration group** (below, *Administering a remote file*) |
 | `INDICES()`, `SELECTINDEX`, `SETLEFT`, `SETRIGHT`, `SELECTLEFT`, `SELECTRIGHT` | work: they ask the other machine's indices (below, *Indices of a remote file*) | work, the same: no gate beyond opening the file |
-| `OPENSEQ` and the other sequential-file statements, the statements that read or change an index's tree (`AKREAD`, `AKWRITE`, `AKDELETE`, `CLEAR.AK`, `AKENABLE`, `AKMAP`) | refused | refused |
+| `OPENSEQ` and the other sequential-file statements, the statements that read or change an index's tree (`AKREAD`, `AKWRITE`, `AKDELETE`, `CLEAR.AK`, `AKENABLE`, `AKMAP`) | refused (message 11501) | refused (message 11511) |
 
 Two things have to be true for a change to be made, a lock to be taken or `RECORDLOCKED()` to be asked, and they are on **two different machines**: the definition on *your* machine says `write` (the administrator of your machine chose that), and the remote login you use is also in the other machine's write group (the administrator of *that* machine chose that, with `modify.account <account> files-write-on`). Either one missing is a refusal, and the program can tell which (below). A definition that says `write` is looked up again at every change, so an administrator who switches it to `read` stops writes through a handle that is already open. **Administering the file is a third thing**, with its own group on the other machine (below).
 
@@ -81,7 +81,7 @@ These do on the other machine what they do on a local file, **for your remote lo
 
 **What it records.** The other machine writes `api admin request=70 op=create.index file=customers user=name` before it runs the verb, and this machine writes `netfile admin server=nfa file=customers op=create.index` (and `netfile fcontrol ... key=n`), so a killed command is still on both trails.
 
-**Not available:** the statements that read or change the tree of an index (`AKREAD`, `AKWRITE`, `AKDELETE`, `CLEAR.AK`, `AKENABLE`, `AKMAP`) on a remote file are still refused, as are `OPENSEQ` and the other sequential-file statements. A change is never sent twice: a lost reply is message 11509, and the program must look at the file to find out what happened.
+**Not available:** the statements that read or change the tree of an index (`AKREAD`, `AKWRITE`, `AKDELETE`, `CLEAR.AK`, `AKENABLE`, `AKMAP`) on a remote file are still refused (message 11501, or 11511 on a write definition), as are `OPENSEQ` and the other sequential-file statements. A change is never sent twice: a lost reply is message 11509, and the program must look at the file to find out what happened.
 
 ## Indices of a remote file
 

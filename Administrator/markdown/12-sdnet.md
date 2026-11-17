@@ -1001,7 +1001,8 @@ read the record to find out.
 **What is refused even with `write`.** A change or lock inside `BEGIN TRANSACTION` (message
 11510: a remote write can't be rolled back, so it never joins a local transaction; this holds for
 `FILELOCK` and `FILEUNLOCK` too, where openQM's QMNet lets them through without a rollback, which
-is a silent loss of the guarantee the program asked for); the statements that only read an index,
+is a silent loss of the guarantee the program asked for); the statements that read or change the tree
+of an index (`AKREAD`, `AKWRITE`, `AKDELETE`, `CLEAR.AK`, `AKENABLE`, `AKMAP`),
 `OPENSEQ` and the other sequential-file statements (message 11511). `FILELOCK`, `FILEUNLOCK`,
 `GETLOCKS` and `RECORDLOCKED()` are not on this list; they work as the table above says
 (`RECORDLOCKED()` and the file lock for a `write` definition and the write group).
@@ -1152,23 +1153,29 @@ server refuses is on the trail too; waiting for a busy file is many requests and
 `refused ... reason=mode` once per handle when the definition says `read` by then, and `lost` when a
 change got no answer. A lost connection during a `FILELOCK`, `FILEUNLOCK` or `RECORDLOCKED()` is
 not a `lost` line: they change no data, so it is message 11497 and nothing else. The refusals the kernel makes itself (a read-mode handle, a transaction,
-an edit gate) write nothing.
+an edit gate) write nothing. The administration group adds
+`netfile admin server=hq file=customers op=create.index` (written before the
+request is sent) and `netfile fcontrol server=hq file=customers key=n`.
 
 On the server that is reached, the files-only route writes, in lower case:
 
 ```
-api login route=sdfiles write=off user=reports
-api refused request=20 route=sdfiles write=off user=reports
+api login route=sdfiles write=off admin=off user=reports
+api refused request=20 route=sdfiles write=off admin=off user=reports
 modify.account files-on account=reports
 modify.account files-write-on account=reports
-api login route=sdfiles write=on user=reports
+modify.account files-admin-on account=reports
+api login route=sdfiles write=on admin=on user=reports
+api admin request=70 op=create.index file=customers user=reports
 api refused user=reports reason=not a member of sdapi or sdfiles
 ```
 
 The first is a successful files-only login (`write=on` when the person is also in
-`sdfileswrite`, as in the fifth line), the second a request the route does not allow or, for a login
-without the write group, a change or a lock (the number is the request; `write` is the state of the
-login), the third and fourth the administrator giving the route and the write group, and the last a
+`sdfileswrite`, `admin=on` when also in `sdfilesadmin`, as in the sixth line), the second a request
+the route does not allow or, for a login without the write or administration group, a change, a lock
+or an administration request (the number is the request; `write` and `admin` are the state of the
+login), the third to fifth the administrator giving the route and the two groups, the seventh an
+administration act (written before the verb runs, so a killed command is on the trail), and the last a
 login of a person who is in neither `sdapi` nor `sdfiles` (the reason named only `sdapi` until 19
 October 2026; the decision is made on both). All of them are written on the server being reached.
 

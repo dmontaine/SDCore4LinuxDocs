@@ -40,7 +40,8 @@ DUMPDIR=/usr/local/sdsys/dumps
 
 Lines beginning `#` are comments. The shipped file is heavily commented and
 those comments record why each value was chosen. Read them before changing
-anything.
+anything. **An upgrade keeps your `sd.conf`**: the installer puts a kept file
+back and takes out only the parameters SD no longer has.
 
 ### A name SD does not recognize stops it starting
 

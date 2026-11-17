@@ -35,7 +35,7 @@ SD takes the type from your terminal's `TERM` when you sign on. `xterm`,
 ## What ships
 
 **25 terminfo definitions ship with SD**, compiling to **36 terminal
-names** — the extra names are variants. For example, `vt100-w` is an alias
+names** (what `list.term.types` lists) — the extra names are variants. For example, `vt100-w` is an alias
 that maps to the same definition as its base name.
 
 Common names that work out of the box: `linux`, `vt100`, `vt220`,
@@ -95,8 +95,7 @@ The full-screen tools - the home screen, the IDE, the administrator and
 development pages, the debugger - work on the text console of a server that
 has no desktop (the screen at tty1 to tty6), over ssh from any terminal, and in
 a terminal emulator alike. On the console SD signs on with the type `linux`.
-What the console needs, and what it cannot do, is below. It was tried on a
-real Debian 13 console.
+What the console needs, and what it cannot do, is below.
 
 **It needs a window of 140 columns by 43 rows.** A text console is as big as
 the screen's resolution divided by the size of one character of its font, so a

@@ -105,7 +105,7 @@ Once the administrator has opened it (`remote.sdsys on`; the Administrator docum
 Administration over ssh", say how, and what it risks), an ssh sign-in as `sdsys` asks for the
 password, which is then all that guards it, and lands in an SD session with no shell behind it.
 The API is different: it is closed to SDSYS from every other computer, and from this
-machine's network port too, whatever is enrolled; on this machine it accepts SDSYS
+machine's network port too, whatever else is set; on this machine it accepts SDSYS
 only on the local Unix socket, from a process running as `sdsys` — see
 [API access](09-api-access.html).
 
@@ -119,9 +119,9 @@ group membership outside `sdusers` has never been what SD asks about.
 **At this machine's own console** — a real login as `sdsys`, its own
 password, either physically at the keyboard or through a desktop-sharing
 view of it (VNC, TeamViewer), which counts as local because it *is* a
-local session from the machine's own point of view — **or, once a code is
-enrolled, over ssh with that code.** Setting up that code does not need
-`sdsys` at all: the machine's own `sudo` user does it from an ordinary ssh login.
+local session from the machine's own point of view — **or, once the
+administrator has opened the door with `remote.sdsys on`, over ssh with
+`sdsys`'s password.**
 
 ### Why
 
@@ -131,18 +131,21 @@ loginuid, set once by a real login and unforgeable by `sudo`, `su`, or a
 service account, so `su sdsys` and `sudo -u sdsys` from somebody else's
 session are refused whatever the ssh settings are. A real ssh sign-in as
 `sdsys` is a real login (sshd sets the record), so it passes that check; what
-guards it is the code and the password. See
+guards it is the password. See
 [Accounts](05-account-types.html#sdsys-is-the-only-administrator).
 
 ### If you rely on remote administration
 
-**It works once a code is enrolled, and not before.** Until then use the
-console, or a service- or session-based remote desktop, logged in as `sdsys`.
+**It works once the administrator has opened the door (`remote.sdsys on`), and
+not before.** Until then use the console, or a service- or session-based remote
+desktop, logged in as `sdsys`.
 An account that needs ordinary, non-administrative work from another machine was
 never an administration question — give that account the `ssh` route
 (`modify.account` *name* `ssh`) and it can connect.
 
 **Scheduled tasks are affected too.** A cron job or a systemd timer has no
-terminal login either, so nothing can become SDSYS to run one. List the
-command in the SD system file `batch.jobs`, run from an ordinary account —
-see [Scheduled jobs](04-scheduled-jobs.html).
+terminal login either, so nothing can become SDSYS to run one. Work that must
+run as SDSYS is set up with `set.job`, which hands it to systemd; see the
+Administrator documents, "Scheduled Jobs". A command for an ordinary account is
+listed in the SD system file `batch.jobs`, run from an ordinary account — see
+[Scheduled jobs](04-scheduled-jobs.html).

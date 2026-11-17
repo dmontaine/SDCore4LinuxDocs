@@ -3,11 +3,11 @@ Subtitle: One provider and one model for every account, a key that SD never sees
 
 SD can ask an AI model a question for an account holder (the `ai` verb, see *SD TCL - Asking the AI* in the User documentation). This page is for the administrator: it says what is set up, what leaves the machine, how to choose the provider and give it a model and a key, and how to allow or stop an account.
 
-> **Nothing is on as delivered.** There is no provider, no key, and no account has the gate (each named provider comes with a default model, so the model is the one thing you need not supply). Until you have done the other three, the `ai` verb says so in words and nothing is sent anywhere. Turning one of them on is your act, and each is one command (or one key on the AI choice page) that can be undone.
+> **Nothing is on as delivered.** There is no provider, no key, and no account has the gate (each named provider comes with a default model, so the model is the one thing you need not supply). Until you have done the other three, the `ai` verb says so in words and nothing is sent anywhere. Turning one of them on is your act, and each is one command (or one key on the AI choice page) that can be undone. The one exception is the installer's question *Open every access gate for your SD account?*: answered `y`, it gives the installing user's own account the `ai` gate along with the others. It still sends nothing until you have chosen a provider and set its key.
 
 ## What leaves the machine
 
-When a person types `ai some text`, SD shows them the text, the provider and the model, and asks whether to send it. Only if they answer `y` or `yes` does anything go out. What goes out is your standing text (below), that text, one fixed sentence that asks for a short plain answer, and a limit on the length of the answer. It is sent over **https**, with the certificate checked, to the address of the provider you chose, and to nowhere else. The key goes only to that address.
+When a person types `ai some text`, SD shows them the text, the provider and the model, and asks whether to send it. Only if they answer `y` or `yes` does anything go out. What goes out is your standing text (below), that text, one fixed sentence that asks for a short plain answer, and a limit on the length of the answer. It is sent over **https**, with the certificate checked, to the address of the provider you chose, and to nowhere else. The key goes only to that address. No proxy is used: a machine that reaches the internet only through an HTTP proxy cannot use the AI.
 
 SD adds nothing of the account, the session or the data. A person can of course type or paste whatever they like into the question, which is why the preview is not optional and why the gate is yours to give.
 
@@ -140,7 +140,7 @@ modify.account NAME ai-off
 create.account user NAME ai-on
 ```
 
-The gate is membership of the Linux group `sdaiusers`, as `sdapi` and `sdfiles` are for the API and the files route. It is **off for every account** as delivered and for every new account; the installer's question about opening the gates leaves it out on purpose, because every request is paid for by whoever holds the provider's key. It is for accounts that belong to a person (not a group account), and `ai-on` needs the person to be a member of `sdusers`, as the other gates do. The line printed is `Account fred has ai yes`, read back from the group file. It takes effect at the person's next request: the helper looks at the group each time. `modify.account NAME ai-on ai-off` in one command is refused.
+The gate is membership of the Linux group `sdaiusers`, as `sdapi` and `sdfiles` are for the API and the files route. It is **off for every account** as delivered and for every new account; the installer's question *Open every access gate for your SD account?*, answered `y`, opens it for the installing user's own account with every other gate, and for no other. Every request is paid for by whoever holds the provider's key, so answer `n` if that account should not have it. It is for accounts that belong to a person (not a group account), and `ai-on` needs the person to be a member of `sdusers`, as the other gates do. The line printed is `Account fred has ai yes`, read back from the group file. It takes effect at the person's next request: the helper looks at the group each time. `modify.account NAME ai-on ai-off` in one command is refused.
 
 SDSYS has no gate: the administrator, who chooses the provider and holds the key, may always use the AI, from the prompt (`ai`) and from the AI line of every page, once a provider, a model and a key are set. `modify.account sdsys ai-on` is not needed and is refused, as every `modify.account` of SDSYS is.
 
@@ -156,7 +156,7 @@ If a key is lost or shown to someone, clear it and ask the provider for a new on
 
 Custom lets you point the helper at any `https://` address. The text people send, and the key, then go to that host. That is your deliberate act and it is the widest thing on this page. What stays fixed: https only (a local model server on `http://` is not allowed), the certificate and the host name are always checked (there is no switch to turn that off), the helper never follows a redirect to another host, and the key is sent only to the address you gave. A private certificate authority is the file you name with `set.ai ca`; **it replaces the system store for the helper**, so whoever holds one of its keys can read what accounts send and the key. Use a file you trust, and `set.ai ca -` to go back to the system store.
 
-If you want only the three named providers, leave Custom unfilled.
+If you want only the four named providers, leave Custom unfilled.
 
 ## The audit trail
 
@@ -190,7 +190,8 @@ The `ai request` line is written by the SD kernel **before** the connection is m
 | `The AI is not set up for anthropic: the administrator has not set its model` (or `key`) | the provider is chosen but its key is missing; a model is missing only for Custom, which has no default (the named providers have one) |
 | `This account may not use the AI: ... modify.account NAME ai-on` | the account is not in `sdaiusers` |
 | `The AI did not answer: limit (...)` | one of the limits above is used up; wait, or raise it |
-| `The AI did not answer: net (...)` or `timeout` | the provider could not be reached; check the address, the certificate and the clock |
+| `The AI did not answer: net (...)` or `timeout` | the provider could not be reached; check the address, the certificate, the clock, and whether the machine needs a proxy to reach the internet (the helper uses none) |
+| `The AI did not answer: refused (the provider refused the request (HTTP 400): ...)` | the provider's own words follow the status: often a model it does not have; choose one from its list with S |
 
 ## What has not been shown
 
@@ -200,4 +201,5 @@ The helper, the verb and the page are tested against a stand-in provider on this
 
 [Accounts and Security](01-accounts-and-security.html) ·
 [Giving an AI Agent an Account](18-the-agent-account.html) ·
-[Operating system access](03-operating-system-access.html).
+[Operating system access](03-operating-system-access.html) ·
+[The Audit Trail](21-the-audit-trail.html).

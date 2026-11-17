@@ -202,6 +202,19 @@ through a record in SD's `$IPC` file. The session's option settings do not go
 with it: a phantom starts with every option off. (Until 27 October 2026
 `option inherit` passed them on; the option is gone.)
 
+**The records are sealed.** `$IPC` is a file every SD user's process can
+write, so a phantom does not believe what it finds there. `phantom` makes a
+secret for each phantom (24 random bytes) before it creates anything, gives it
+to the new process in its **environment** (`SD_PHANTOM_NONCE`; the process
+takes it out as it starts, so nothing the phantom runs inherits it), and puts
+an HMAC-SHA256 seal over the command, the `DATA` queue and the log file name in
+the record. The new process makes the seal again from what it read and **runs,
+stacks and sets nothing unless the two are the same**. A phantom whose records
+do not check ends at once, says so in its `como` log and to its parent
+(*Phantom n : start-up records missing or not from the process that started
+it, nothing was run*), and writes a `phantom refused` line to the audit trail.
+If the secret cannot be made, no process is started.
+
 ## What phantoms have I started: `status`
 
 ```
@@ -339,10 +352,50 @@ which every SD user can write.)
 The debugger itself — the commands it takes once it is attached — is in
 [SD Basic - Debugging](17-sd-basic-debugging.html).
 
+## Where the work goes: `profiler`
+
+```
+profiler on {user n} {event ...}      start logging
+profiler off {user n}                 stop logging and keep what was logged
+profiler {display} {user n}           show it
+```
+
+The kernel of the process being profiled counts its events: what it called,
+what it opened, read, wrote and deleted, and what it executed. `on` starts the
+count, `off` stops it and keeps the table, `display` (the default) shows it.
+The events are `call` `open` `read` `write` `delete` `openseq` `readseq`
+`writeseq` `execute` and `object`; none named means all of them. Without
+`user` the verb profiles your own session.
+
+**The table is kept in SD's `$ipc` file under the user number, so no file is
+left on the disk.** A profile outlives the session that made it.
+
+`profiler` (or `profiler display`) then shows it. With several profiles it
+lists them and asks which to open (*Profiles available (user number, events,
+entries):*, then *User number to open, or Q to quit:*). With exactly one
+profile it opens that one without asking, and `profiler display user 28` names
+one. There are four levels, and you go down by typing the number of a line and
+up with `b`; `q` leaves:
+
+| Level | Shows |
+|---|---|
+| 1 | the types of event, with a count of each |
+| 2 | what the events of that type were on: a file, a subroutine, a command |
+| 3 | the programs that did them |
+| 4 | the lines of the program, with the count at each |
+
+A program with no line table (an I-type) has none to show at level 4 (*No line
+numbers were recorded for this program*), and a profile that filled up says how
+many events it did not log. A profile that is not there is *There is no profile
+for user 1 - use profiler on, run the programs, then profiler off*. **Another
+user's process can be profiled by the administrator only**, because a profile
+holds the files that user's programs open and the commands they execute (*Only
+the administrator can profile another user's process*).
+
 ## Who has these verbs
 
-**Every account has `status`, `phantom`, `pstat`, `pdebug` and `pdump`** —
-there is no withheld set any more.
+**Every account has `status`, `phantom`, `pstat`, `pdebug`, `pdump`,
+`list.phantoms` and `profiler`** — there is no withheld set any more.
 
 **`pdump` still has a gate, and it is not about having the verb.** `pdump`
 *n* is yours to use on your own processes; against another account's

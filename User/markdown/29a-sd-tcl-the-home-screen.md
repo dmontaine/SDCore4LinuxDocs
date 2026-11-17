@@ -51,6 +51,12 @@ behind a warning that gives both sizes until the window is big enough again.
      >_                                          ^K
      Terminal                                    Keys
      type exit to come back                      test your keyboard
+
+   Develop
+     [F]                  [V]                    [D]                    [Q]
+     Files                Vocabulary             Dictionary             Queries
+     files and indices    verbs and pointers     items and indices      build a report
+     ...
 ```
 
 | tile | what it does |
@@ -61,6 +67,7 @@ behind a warning that gives both sizes until the window is big enough again.
 | **Terminal** | leaves the screen for the ordinary command prompt (below) |
 | **Keys** | runs `tool.keys`, the terminal and keyboard diagnostic |
 | **Switch account** | a list of the accounts you may enter; then the home screen of the one you pick |
+| **Files** · **Vocabulary** · **Dictionary** · **Queries** · **Bulk update** · **Programs** · **Tests** | the group *Develop*: each opens a development page (`tool.files`, `tool.voc`, `tool.dict`, `tool.query`, `tool.bulk`, `tool.catalog`, `tool.test`; see [The Development Tools](29c-sd-tcl-the-development-tools.html)) |
 | **Sign out** | asks `Sign out of SD?` and ends the session |
 
 **A tile starts a command exactly as you would have typed it.** It adds no
@@ -159,8 +166,14 @@ screen) asks first and then ends the session as `quit` does.
 
 The administrator sets this for each account (`modify.account name start-menu`,
 `start-terminal` or `start-default`, in the Administrator's guide), and sets what
-accounts with no setting of their own do with `set.start.default menu` or
-`terminal`. **It is menu as delivered.** The setting is read when you sign on, and
+accounts with no setting of their own do with:
+
+```
+set.start.default
+set.start.default menu | terminal
+```
+
+**It is menu as delivered.** The setting is read when you sign on, and
 when you type `logto` at the prompt to enter an account (not when the administrator does: an administrator's `logto` always leaves the prompt). Starting in the menu does
 not confine anyone: the Terminal tile is always there.
 
@@ -172,11 +185,18 @@ or over 500 by 300, a pipe, a phantom, an API server, or a `logto` that a progra
 
 Every tile is on as delivered, and the administrator can turn a tile off **for your
 account** (`set.tile`, or the *Menu management* page): it is then not on your page,
-and its menu entry cannot be chosen. If the **Terminal** tile is off and your account
+and its menu entry cannot be chosen. The tile ids are `editor`, `ide`,
+`terminal`, `keys`, `switch`, `signout`, the seven development tiles `files`,
+`voc`, `dict`, `query`, `bulk`, `catalog` and `test`, and `recent` (the Recent
+group, which is not a tile); **sign out cannot be turned off**. `set.tile` alone
+says what is off. If the **Terminal** tile is off and your account
 starts in the home screen, you are never given the command prompt: when the screen
 ends (an error, the cursor lock) you are signed out. A window too small for the
 screen signs you out whatever the tiles say. An account
-that starts at the prompt keeps it. Sign out cannot be turned off.
+that starts at the prompt keeps it. **It is a wall only for the prompt the screen
+gives**: the programs behind the other tiles (`sed`, `ide` and the rest) are the
+account's own, so to keep an account to the tiles it is given, turn those off too.
+A shell needs the account's `sh` switch, which is off as delivered.
 
 ## Your own programs: `my.menu`
 

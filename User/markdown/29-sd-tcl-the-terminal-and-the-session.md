@@ -419,10 +419,10 @@ conversion code other than `D` is set, `display` names that too.
 
 **`date.format` with no keyword prints nothing** — like `pterm`, it wants one.
 
-**Setting the machine's date is a different thing entirely** — it is an
-administrator verb, it changes the clock for the whole installation rather than
-for your session, and it is in the **administrator documentation** under
-*Accounts and Security*.
+**Changing the date SD reports is a different thing entirely** — `set.date`
+is an administrator verb, it sets the date for your session only and not the
+computer's clock, and it is in the **administrator documentation** under
+*Account Maintenance*.
 
 ## Currency and separators: `nls`
 

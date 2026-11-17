@@ -145,12 +145,12 @@ system](12a-security-and-the-operating-system.html).
 
 ## Field-level encryption
 
-**`encrypt.field` is gone, and with it field-level encryption from TCL.**
-
-**Encryption in SD BASIC is unaffected and is the supported route.**
-`sdencrypt()` and `sddecrypt()` ship — see *SD Basic - System and Environment*.
-What has gone is the TCL verb that encrypted a field in place, and
-**nothing replaces that**.
+**`encrypt.field` is gone, and with it the TCL verb that encrypted a field in
+place.** What replaces it is the application's own: `sdencrypt()` and
+`sddecrypt()` with a key that `sdkey()` makes from a passphrase, and the `XE`
+conversion, which shows an encrypted field decrypted to a session that holds the
+key. SD does not keep the key. See *Encryption and the SDEXT interface* in the
+Administrator set and *SD Basic - Encrypting Data* in the User set.
 
 ## Account and configuration items
 

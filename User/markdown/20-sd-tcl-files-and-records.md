@@ -177,7 +177,9 @@ that user), and an ordinary user sees only their own. It holds 4,000 different
 events: when there are more, `display` says how many were not logged. A user's
 program is named by the pathname of its compiled code. Only a program's own
 statements are counted: a `readv` is one `read`, not that and the reads the
-language does for it.
+language does for it. The listings, and the four levels of `display`, are under
+*Where the work goes: `profiler`* in
+[SD TCL - Processes and Phantoms](30-sd-tcl-processes-and-phantoms.html).
 
 ```
 list.files

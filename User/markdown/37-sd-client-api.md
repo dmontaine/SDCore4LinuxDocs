@@ -1,5 +1,5 @@
 Title: SD Client API
-Subtitle: The sdclilib client library, its functions across four language bindings, and the server status codes.
+Subtitle: The sdclilib client library, its functions across eight language bindings, and the server status codes.
 
 The SDClient API lets an external application connect to SD, open
 files, read and write records, execute commands, call subroutines,
@@ -31,20 +31,26 @@ because Linux resolves a shared library by its own rules (`rpath`,
 `LD_LIBRARY_PATH`, or the standard library paths), not by which directory
 happens to be searched first.
 
-The header, `sdclilib.h`, ships with the source tree at
-`sdb_ai/sd64/gplsrc/sdclilib`.
+The header, `sdclilib.h`, is installed in `/usr/local/sdsys/syscom` with the
+other language headers (see
+[SD Client API: Language Bindings](37b-sd-client-api-bindings.html)).
 
 ## Connection
 
 | | |
 |---|---|
-| `SDConnect(host, port, user, pass, account)` | over the network, to port **4247** |
+| `SDConnect(host, port, user, pass, account)` | over the network, to port **4247** (the default when you name none) |
 | `SDConnectLocal(account)` | on the same machine. Sends no password and never did |
 
 > **`SDConnectUDS` (Unix Domain Socket) is not available, on either
 > port.** It sent its credential over the socket in a way that predates
 > SCRAM, and was removed here for the same reason the old cleartext API
 > login was: `SDConnect` and `SDConnectLocal` are the two routes.
+
+**The connection is encrypted.** Every connection to the server is wrapped in
+TLS 1.3 before the login, and the client library does this itself. A program
+linked against an older copy of the library cannot connect; relink it. The
+Getting Started set's *API access* page has the whole story.
 
 ### How SDConnectLocal actually works here
 
@@ -150,6 +156,8 @@ A packet that declares anything else (below 6, negative, or over the limit) is n
 | `SDMarkMapping(fileNo, state)` | none | enable/disable mark mapping |
 | `SDTrans(file, id, field, action)` | String | `trans()` on the server. `field` is a dictionary name, a field number or -1 for the whole record; `id` may be several ids separated by value marks; `action` is `X` (null if the record is missing, the default) or `C` (the id). The marks of the answer are lowered one level, as `trans()` lowers them. The `B` (binary open) action is refused |
 | `SDRTrans(file, id, field, action)` | String | the same with the marks left as they are |
+
+`SDTrans` and `SDRTrans` open the file and its dictionary on the server, so a session that the administrator has restricted with `SDCLIENT` is refused them (message 5262, "File access is disabled").
 
 ### Record manipulation
 
@@ -261,5 +269,5 @@ Their numbers begin at 10001 and are not those of `SDOpen`, so a number of one k
 
 ## Continued in
 
-[SD Client API: Language Bindings](37b-sd-client-api-bindings.html) — the six
+[SD Client API: Language Bindings](37b-sd-client-api-bindings.html) — the eight
 language headers and what the API cannot do
