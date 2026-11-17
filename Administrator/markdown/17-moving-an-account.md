@@ -142,6 +142,7 @@ lines.
 | the files | fill the new directory | replace the directory |
 | `description`, `suspended` | set from the zip | **set from the zip**, so a suspended account comes back suspended |
 | `route.ssh`, `route.api`, `route.files` | the Linux user joins `sdssh`, `sdapi`, `sdfiles` as the zip says | unchanged |
+| ssh key sign-in (no key in the zip) | the Linux user is put in `sdsshnokey`: **off**; `modify.account` *name* `ssh-key-on` afterwards | unchanged |
 | `os.sh`, `os.execute`, `edit.*`, `net`, `shared.read`, `shared.write` | set as the zip says | **unchanged** |
 | `type`, `members` | the kind of account made, and a group account's members | unchanged |
 | `gcat:` lines | the program is put in the global catalog again | same |
@@ -162,7 +163,7 @@ test the program from the zip **replaced** it, and its name was printed in capit
 removed and the owner always has read and write (and search on a directory). In the test `0640`,
 `0750` and `0755` came back as they were, `0666` as `0664` and `0444` as `0644`. Ownership is not
 in the zip: the restore gives the tree to the account's own Linux user and group, with the setgid
-bit on every directory. That step needs root and was not run in the test.
+bit on every directory. That step needs root.
 
 ## Continued in
 

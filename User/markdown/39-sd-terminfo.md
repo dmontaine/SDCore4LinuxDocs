@@ -77,12 +77,10 @@ The terminfo entries that name a width and a depth say 140 and 43; the
 
 ## The page is 140 × 43
 
-SD's default is **140 columns by 43 lines**, not 80 × 24 — and no longer
-the 120 × 36 of the releases before 18 October 2026 (it was 140 × 42 until
-2 November 2026). A console window
+SD's default is **140 columns by 43 lines**, not 80 × 24. A console window
 narrower than that makes wide reports look wrapped or truncated — which
-reads as a formatting bug and is not one. `term 120,36` gives the old
-size back for a session that wants it.
+reads as a formatting bug and is not one. `term 120,36` sets a smaller
+size for a session that wants it.
 
 The default is only a default. `term w,h` takes any width from 20 to
 32767 and any depth from 10 to 32767, larger or smaller than 140 × 43,
@@ -142,7 +140,7 @@ console sends. `tool.keys` shows what SD was given for each key you press.
 
 **The mouse.** A console does not report the mouse the way a terminal emulator
 does, but the *gpm* daemon reads it there. The installer installs the package
-`gpm` with SD's other packages (since 3 November 2026), and the Debian and
+`gpm` with SD's other packages, and the Debian and
 Ubuntu package enables and starts the daemon itself, which takes the mouse from
 `/dev/input/mice`; the installer does not start or enable it, so an
 administrator who turned the service off finds it off after an upgrade. While
@@ -199,8 +197,7 @@ Think before you give an entry an `erev` of its own: it ends reverse video and n
 
 Put the additions in `terminfo.mods` in the SDSYS account directory, which the installer compiles
 after `terminfo.src` so that an upgrade does not lose them, and compile with `sdtic` as described
-below. The start functions `@(-5)` and `@(-13)` were not changed. Tested with a copy of the `ansi`
-entry that has all five, a copy that has none and a copy with only `erev`.
+below. The start functions `@(-5)` and `@(-13)` are not changed.
 
 ## Compiling a definition
 

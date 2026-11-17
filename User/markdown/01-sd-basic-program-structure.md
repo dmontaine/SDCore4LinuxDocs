@@ -191,7 +191,6 @@ the include is an error only when the last has not got it either.
 
 ```
 dim name(rows {, columns})
-dimension name(rows {, columns})
 mat name = expression
 mat name = mat other.name
 ```
@@ -294,8 +293,7 @@ o->property = value
 
 **SD's own client library is a class module.** `gpl.bp/SDCLIENT` is 1,040
 lines with 33 members and both lifecycle hooks — connecting to another SD server
-from BASIC means instantiating it. *(An earlier version of this page said
-nothing in SD used class modules. That was wrong.)*
+from BASIC means instantiating it.
 
 ## Arguments
 

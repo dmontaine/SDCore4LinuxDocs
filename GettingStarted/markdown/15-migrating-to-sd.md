@@ -25,8 +25,8 @@ moves a program or a session away from it, on purpose.
 as UniVerse's does, and so on. **There is no switch that makes SD behave like D3, mvBase,
 UniData, jBASE or any other product as a whole.** `option d3`, `option mvbase`,
 `$mode d3` and `$mode mvbase` are refused, and so is `option pick`, which switched
-nine words on together and was removed on 27 October 2026. SD has no shortcut that
-sets several words together: `option sdbasic.warnings` went on the same day with the
+nine words on together and does not exist. SD has no shortcut that
+sets several words together: `option sdbasic.warnings` is gone with the
 three words it set.
 
 **A word SD does not have is refused, not skipped.** `option` says *Option name not
@@ -88,14 +88,14 @@ SD refuses each of these.
 | from another product | in SD |
 |---|---|
 | `option d3`, `option mvbase` | not provided; see the rules above |
-| `option qmbasic.warnings`, `option sdbasic.warnings`, `unass.warning`, `div.zero.warning`, `non.numeric.warning` | removed on 27 October 2026: an unassigned variable, a divide by zero and a non-numeric value are always errors; test the value first |
-| `option query.sort.no.case`, `clear.select`, `inherit` and the `keep.select` statement | removed on 27 October 2026: a sort is by case, a select list left active is left for the next command (`clear.select` clears it), and a phantom starts with every option off |
+| `option qmbasic.warnings`, `option sdbasic.warnings`, `unass.warning`, `div.zero.warning`, `non.numeric.warning` | removed: an unassigned variable, a divide by zero and a non-numeric value are always errors; test the value first |
+| `option query.sort.no.case`, `clear.select`, `inherit` and the `keep.select` statement | removed: a sort is by case, a select list left active is left for the next command (`clear.select` clears it), and a phantom starts with every option off |
 | `option x` *hex.string* | not provided; set the options one by one |
 | `option no.echo.data` | a compiler mode: `$mode no.echo.data` |
 | `option create.file.no.case`, `option create.dict.no.case` | not provided; every file `create.file` makes is case insensitive (see [Lower case](11-lower-case.html)) |
 | `option keep.filename.case` | not provided: a new file is always named in lower case (see [Lower case](11-lower-case.html)) |
-| `option pick`, `assoc.unassoc.mv`, `pick.breakpoint`, `pick.breakpoint.u`, `pick.explode`, `pick.grand.total`, `pick.implied.eq`, `pick.null`, `pick.wildcard`, `qualified.display`, `with.implies.or`, `query.no.case`, `query.priority.and` | removed on 27 October 2026, with the Pick style of query they switched on: write `with city = "Reno"`, put the text after a `break.on` field the way SD does, and use the `like` operator for wildcards, `or` and brackets for the order of tests, and `no.case` after an operator for case |
-| `option ampm.upcase`, `crdb.upcase`, `no.date.wrapping`, `space.mct`, `lock.beep`, `ed.no.query.fd`, `create.file.upcase`, `select.keep.case`, `debug.rebind.keys`, `proc.a` | removed on 27 October 2026: the output is as the default always was (`am`, `cr`, `db`), a date such as 31 February rolls into the next month, a lock wait is silent, and `fd` in `ed` asks before it deletes |
+| `option pick`, `assoc.unassoc.mv`, `pick.breakpoint`, `pick.breakpoint.u`, `pick.explode`, `pick.grand.total`, `pick.implied.eq`, `pick.null`, `pick.wildcard`, `qualified.display`, `with.implies.or`, `query.no.case`, `query.priority.and` | removed, with the Pick style of query they switched on: write `with city = "Reno"`, put the text after a `break.on` field the way SD does, and use the `like` operator for wildcards, `or` and brackets for the order of tests, and `no.case` after an operator for case |
+| `option ampm.upcase`, `crdb.upcase`, `no.date.wrapping`, `space.mct`, `lock.beep`, `ed.no.query.fd`, `create.file.upcase`, `select.keep.case`, `debug.rebind.keys`, `proc.a` | removed: the output is as the default always was (`am`, `cr`, `db`), a date such as 31 February rolls into the next month, a lock wait is silent, and `fd` in `ed` asks before it deletes |
 | `option local.cat.relative`, `option no.sel.when.filter`, `option silent.tandem` | not provided |
 | `option pick.proc`, `option proc.if.no.case` | not provided: PROC is gone (see [Not in SD Core](14-not-in-sd-core.html)) |
 | `$mode d3`, `$mode mvbase` | not provided |

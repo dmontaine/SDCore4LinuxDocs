@@ -51,6 +51,11 @@ Q-pointer into another account is followed only if you could `logto` that
 account** — whether or not you hold `os-on`. The Administrator set's
 *Accounts and security* chapter has the full rule.
 
+**One setting of the administrator's opens a directory without `os-on`.** `NETDIRS` in
+`sd.conf` lists directories outside every account that an account without `os-on` may
+read and write by pathname, as it may inside its own directory. It is empty as delivered;
+the Administrator set's *Configuration* chapter has it.
+
 **What the switches do not do.** They stop SD handing the operating system to
 an account that has not been given it. They do not change what the account's
 Linux user may do — that stays whatever Linux says, checked by the kernel.
@@ -103,13 +108,12 @@ Every word before the first `=` is lower case, the event names included
 (`login`, `logto`, `logto refused`, `api refused`, `elevation granted`,
 `modify.account route api`). What follows an `=` is data and keeps its case:
 the account name as it is registered, a `reason=` text, and what a caller
-typed in `command=`. Older lines in a file written before 7 October 2026 are
-upper case and are not rewritten, so match without regard to case when you
+typed in `command=`. A file written by an older version may hold upper case lines, which are not rewritten, so match without regard to case when you
 search a long-lived file.
 
 **An account's gates are on the trail whenever they are given.** `modify.account`
 writes one line for each word it carries out (`modify.account sh-on account=fred`;
-several words in one command give several lines), and, since 19 October 2026,
+several words in one command give several lines), and
 `create.account` records the gates it granted at creation as well:
 
 ```
@@ -120,7 +124,7 @@ several words in one command give several lines), and, since 19 October 2026,
 `gates=` lists, in lower case, every access the new account was given, always
 in this order whatever order the words were typed: `ssh`, `api`, `sh-on`,
 `os-on`, `voc-on`, `bp-on`, `dict-on`, `net-on`, `files-on`, `files-write-on`,
-`files-admin-on`, `shared-read-off`, `shared-write-on`. It says `none` when there is none. The
+`files-admin-on`, `shared-read-off`, `shared-write-on`, and `ssh-key-on` (key sign-in over ssh) when it was asked for. It says `none` when there is none. The
 line is written only after the account has been made: a creation that is
 refused (an empty password, say) leaves no line. (An older line,
 `create.account account=jane type=user`, names none: read the `modify.account`

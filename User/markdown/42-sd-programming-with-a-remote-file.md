@@ -53,7 +53,7 @@ Write `ON ERROR` after the statement and read `STATUS()`; without it the program
 | `RECORDLOCKED()` of a file whose definition says `read` | (the function has no `ON ERROR`) | message 11501, "recordlocked is refused", nothing sent |
 | the id is empty | the `ELSE` branch, `STATUS()` 3000 | as for a local file |
 
-The other machine's text in message 11500 is cut at 100 characters and anything that is not a printable character is dropped. A reply with no text is shown as `status n`. The same holds for a `SELECT` of a remote file whose answer is such an error: it is message 11500 with the other machine's words (until 19 October 2026 the program was stopped with "READLIST generated an abort event", which `ON ERROR` cannot trap; no real server was seen to send this reply, the case is tested against a fake one).
+The other machine's text in message 11500 is cut at 100 characters and anything that is not a printable character is dropped. A reply with no text is shown as `status n`. The same holds for a `SELECT` of a remote file whose answer is such an error: it is message 11500 with the other machine's words; it does not stop the program.
 
 ## Locks
 
@@ -65,7 +65,7 @@ The other machine's text in message 11500 is cut at 100 characters and anything 
 
 **`GETLOCKS(f, user)`** (internal programs only) of a remote file is the **local view**, as in openQM: the locks of a remote file are held on the other machine and do not appear in this machine's lock table, in `LIST.READU` or in `GETLOCKS()`. It returns the one field of three numbers (`NUMLOCKS`, the number of record locks held on this machine, the peak) and **no lock line**, whatever the user number, and it asks the other machine nothing. To see who holds what on the other machine, look there (`LIST.READU`, which an administrator of that machine can run).
 
-## Administering a remote file (added 21 October 2026)
+## Administering a remote file
 
 These do on the other machine what they do on a local file, **for your remote login and in the account that login entered there**, so every switch that account has on that machine applies (a file named `voc`, `*.bp` or `*.dic` still needs `voc.edit`, `bp.edit` or `dict.edit` there, and the shared account's structure rule holds). They need **three things**, the last on the other machine: a `write` definition here, the remote login in the other machine's write group, **and** in its administration group (`modify.account <account> files-admin-on`; it needs `files-on` and `files-write-on` first and is off for every account until the administrator of that machine gives it).
 

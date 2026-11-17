@@ -2,19 +2,19 @@ Title: Migrating to SD: option words
 Subtitle: Every word of the option command, what it changes, and where else it is described.
 
 This page continues [Migrating to SD](15-migrating-to-sd.html). The words are the
-eight that `option` lists. (Seven more were removed on 28 October 2026, each with the
+eight that `option` lists. (Seven more do not exist, each with the
 behavior it named off now the only one, or on where that was the useful one:
 `numeric.exponent` (`123.45E-2` is not numeric), `suppress.abort.msg` (`abort` always
 says where it ran), `dir.sel.omit.hidden` (a select of a directory file includes the
 names that begin with a dot), `no.phantom.notify` (a phantom always tells its parent),
 `force.reload`, `stacked.account` (an `execute` of `logto` stays in the account it
 went to) and `command.level.locks` (a file variable that goes closes its file and its
-locks). Six more (`unass.warning`, `div.zero.warning`, `non.numeric.warning`, `inherit`, `query.sort.no.case` and `clear.select`, with the shortcut `sdbasic.warnings` and the `keep.select` statement), then three more (`chain.keep.common`, `backslash.not.quote` and `correlative.reuse`), then four more (`no.sel.list.query`, `catalogue.local`, `inherit.mfile.path`
-and `correlative.nocase`) and eleven before them, whose off behavior is now the only one, were removed
-on 27 October 2026: `run.no.page`, `paginate.on.heading`, `pick.ml.conv.mask`, `chained.select`,
+locks). Six more (`unass.warning`, `div.zero.warning`, `non.numeric.warning`, `inherit`, `query.sort.no.case` and `clear.select`, with the shortcut `sdbasic.warnings` and the `keep.select` statement), three more (`chain.keep.common`, `backslash.not.quote` and `correlative.reuse`), four more (`no.sel.list.query`, `catalogue.local`, `inherit.mfile.path`
+and `correlative.nocase`) and eleven others, whose off behavior is now the only one, do not exist
+either: `run.no.page`, `paginate.on.heading`, `pick.ml.conv.mask`, `chained.select`,
 `default.mv`, `query.string.comp`, `query.str.comp.all`, `assoc.all`, `query.footer.pause`,
 `query.merge.print` and `keep.old.object`. Twenty-two words that existed only to imitate other
-products were removed on 27 October 2026; see the last section of
+products are not provided; see the last section of
 [Migrating to SD](15-migrating-to-sd.html).) **All are off in a new session.** `option` *name* turns one
 on, `option` *name* `off` turns it off, `option` *name* `display` shows it. The last column
 names the page of the User set that also describes the word; **here** means this

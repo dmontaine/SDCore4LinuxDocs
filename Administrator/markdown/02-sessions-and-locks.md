@@ -79,9 +79,7 @@ it. The mark behind it is set in only one place, the API server's request 29,
 "open an SDNet file", which is refused unless `NETFILES` has bit 2 set (see
 *Configuration*). The SDNet described in this set, where a program opens a file
 on another SD server, does not use request 29, so a session that comes from it
-shows an address like any other API session. This was read from the source and
-not run.
-
+shows an address like any other API session.
 **`(logout pending)`** after the name means somebody has asked that session to
 end and it has not gone. See below.
 
@@ -132,7 +130,7 @@ clear a dead session is `logout` *n*.**
 
 A session that is **alive and does not answer the signal** is the other case,
 and it keeps its entry with **`(logout pending)`** beside it; asking again
-signals it again. *That case was not run for this page.* `sd -cleanup`, run as
+signals it again. `sd -cleanup`, run as
 SDSYS (and a restart of `sd.service` if that does not take it), is the
 remaining way to clear entries of sessions that are not going to end.
 
@@ -173,14 +171,13 @@ The record is the file `login.inhibit` in the SDSYS directory (user number,
 process id, login name, date, time). **It is not the same thing as the hold that
 `backup.account` and `restore.account` take**, which keeps *everybody* out,
 the administrator's new sessions included, while they run. That hold also lapses
-when the session that took it is killed, which it did not until 15 October 2026:
-it used to wait for `sd -cleanup` to remove the dead session's entry.
+when the session that took it is killed, without waiting for `sd -cleanup` to remove the dead session's entry.
 
 ## The paragraph every session runs first: `MASTER.LOGIN`
 
 A VOC record named `MASTER.LOGIN` in the SDSYS account, if it is a paragraph (its first
 line is `PA`), is run **once by every new session, before the account's own `LOGIN`
-paragraph**: an interactive session, a phantom, and — since 15 October 2026 — an
+paragraph**: an interactive session, a phantom and an
 **API session**, which runs it when it first enters an account. Entering another
 account with `logto` runs the new account's `LOGIN` only, **except when you are the administrator: a `logto` made in an administrator session runs no `LOGIN` paragraph and does not open the home screen, so you land at the prompt and none of the account's own start-up code runs in your session**; `logto sdsys` then brings the same session back to SDSYS, with no need to sign out (a session that did not sign in as `sdsys` is refused it). There is none unless you write
 one, so nothing runs by default; a session shows what it is by `@tty` (`apisrvr` for the
@@ -215,7 +212,7 @@ User File Path........................... Type Id..............................
 | **`Type`** | `RU` update · `RL` read · `FX` exclusive file lock · `SX` shared file lock · `WAIT` a session waiting for one |
 | **`Id`** | the record id; blank for a file lock |
 
-**An id is another user's text, and it is shown safely** (since 28 October 2026). Any user may lock a record
+**An id is another user's text, and it is shown safely.** Any user may lock a record
 whose id holds an escape sequence, and the listing, the deadlock report and `tool.sessions` would have sent that
 sequence to **your** terminal, the administrator's. Now a control character, `del`, a byte from 128 to 159 and a
 mark character in an id, a path or a user name are each shown as `?`. The same holds for `getlocks()` and

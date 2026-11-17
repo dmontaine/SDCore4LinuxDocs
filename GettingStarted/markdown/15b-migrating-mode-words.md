@@ -5,17 +5,17 @@ This page continues [Migrating to SD](15-migrating-to-sd.html). A mode changes h
 program** is compiled: `$mode` *name* `{, name ...}` in the source, or a `mode` line in
 a `$basic.options` record. **All are off unless asked for.** A name SD does not have stops the
 compile with *Unrecognized mode name*; `$mode default` turns every mode off, `$mode -name` one.
-Seven names that existed to imitate other products were removed on 27 October 2026 (and an eighth, below) and are
-refused now: `conditional.statements` (it did nothing: the file statements may always be the
+Seven names that existed to imitate other products do not exist (nor does an eighth, below) and are
+refused: `conditional.statements` (it did nothing: the file statements may always be the
 condition of `while` and `until`), `exception.save.stack` (write `saving.stack` on the `catch`),
 `implied.stop` (end a program with `stop`), `no.case.invert` (terminal case inversion is gone altogether), `optional.then.else` (a `read` takes a `then` or an `else`), `prclose.default.0`
-(`printer close on` *unit*) and `unassigned.common` (a common variable starts as zero). An eighth, `pick.enter`, went the same
-day with the `enter` statement it switched on (use `call`, or `chain` to hand control on for good).
-Three more went later that day, each doing without the mode what it did with the mode off: `execute.clearlist`
+(`printer close on` *unit*) and `unassigned.common` (a common variable starts as zero). An eighth, `pick.enter`, does not exist
+either, nor does the `enter` statement it switched on (use `call`, or `chain` to hand control on for good).
+Three more are refused, each doing without the mode what it did with the mode off: `execute.clearlist`
 (the default select list is no longer cleared before an `execute`; `clearselect 0` does it), `open.fail.zero.fvar`
 (the file variable of a failed `open` stays unassigned) and `pick.readnext` (a `readnext` that takes its `else`
 sets the id variable to the null string).
-Twenty-two more went on 27 October 2026, each doing without the mode what it did with the mode off, and are refused now: `string.locate`, `composite.readnext`, `pick.read`, `selectv`, `pick.select`, `stdfil`, `stdfil.shared`, `write.delete.then.else`, `autolock`, `pick.substr`, `pick.substr.assign`, `compatible.append`, `pick.convert`, `count.overlap`, `index.overlap`, `change.no.overlap`, `case.sensitive`, `for.store.before.test`, `pick.jump.range`, `optional.final.end`, `pick.matrix` and `heading.no.eject` (for the last, write `heading no.eject`; the others have no replacement, because the behavior they switched on is not offered at all). `selectv` is still a statement: `selectv` *file* `to` *var*.
+Twenty-two more are refused, each doing without the mode what it did with the mode off: `string.locate`, `composite.readnext`, `pick.read`, `selectv`, `pick.select`, `stdfil`, `stdfil.shared`, `write.delete.then.else`, `autolock`, `pick.substr`, `pick.substr.assign`, `compatible.append`, `pick.convert`, `count.overlap`, `index.overlap`, `change.no.overlap`, `case.sensitive`, `for.store.before.test`, `pick.jump.range`, `optional.final.end`, `pick.matrix` and `heading.no.eject` (for the last, write `heading no.eject`; the others have no replacement, because the behavior they switched on is not offered at all). `selectv` is still a statement: `selectv` *file* `to` *var*.
 The last column names the page of the User set that also describes the word; **here** means this
 page is where it is described. Some modes also work at the start of an I-type, which is
 described in *SD Dictionaries - Formats and Expressions*.

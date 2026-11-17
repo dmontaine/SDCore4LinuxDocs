@@ -117,7 +117,7 @@ with its schedule, its command, when it runs next and how its last run ended.
 | **C** or Enter | changes the selected job's job or schedule (its name stays) |
 | **D** | deletes the selected job: you type its name in the box |
 | **R** | starts the selected job now; the page does not wait for it |
-| **/** | goes to the next row of the box you are in whose name holds a text you type (any case; it goes round to the top), since 9 November 2026 |
+| **/** | goes to the next row of the box you are in whose name holds a text you type (any case; it goes round to the top) |
 | **F5** | reads the list again (a run shows there when it has finished) |
 | **Ctrl-O** | shows what each command answered, newest first |
 

@@ -112,6 +112,10 @@ sd -u               list current users
 sd -k <n> | -k all  log out user n, or everybody
 sd -start           start the system
 sd -stop            stop the system
+sd -suspend         suspend updates   -- root only
+sd -resume          resume updates    -- root only
+sd -d               diagnostic dump   -- root only
+sd -m               dump shared memory -- root only
 sd --version        report the version
 sd --help           this summary
 ```
@@ -129,6 +133,12 @@ VOC now, so there is nothing about the account to consider here; SDSYS's own
 `batch.jobs` list is what decides what may run. That is what makes scheduled
 jobs possible without giving them SDSYS's own rights — see
 [Scheduled jobs](04-scheduled-jobs.html).
+
+**`sd -suspend`, `sd -resume`, `sd -d` and `sd -m` need root**, as `-start`, `-stop`,
+`-restart` and `-k` do, and otherwise answer "Command requires administrator
+privileges". `-suspend` stops every update on the system and the two dumps show every
+session and the configuration, so they are not for ordinary users. `sd -cleanup`,
+`sd -u` and `sd -status` are as they were.
 
 **`sd <command>` runs and exits, and is never asked to set a password.** Nor
 is any session with no terminal — a scheduled task, or a piped script. **Only

@@ -43,19 +43,18 @@ reverse video.
 | **F5** | Read everything again and draw the page again. |
 | **Ctrl-L** | Draw the whole page again, as it is, without reading anything. |
 | **Tab**, **Back-tab** (Shift-Tab) | Never move between boxes. In a form or a dialog they go from field to field; in the IDE's editor they indent and outdent; on `tool.gates` they move between the matrix's columns. |
-| **Ctrl-O** | The output of the commands this visit to the page ran: each command, and what it printed or why it was refused, newest first (*View > Output*). `tool.jobs`, `tool.sessions` and `tool.test` show it in a pane of the page that Ctrl-O shows and hides; every other page shows it in a window over the page (since 9 November 2026), where typing narrows it and Enter or Esc closes it. The status line still says the result of the last one. |
+| **Ctrl-O** | The output of the commands this visit to the page ran: each command, and what it printed or why it was refused, newest first (*View > Output*). `tool.jobs`, `tool.sessions` and `tool.test` show it in a pane of the page that Ctrl-O shows and hides; every other page shows it in a window over the page, where typing narrows it and Enter or Esc closes it. The status line still says the result of the last one. |
 | **Ctrl-T** | The next color theme (*View > Theme*): blue, classic, mono, night, paper, in that order, skipping any your terminal cannot show. **SD keeps your choice**: every page, the IDE, SED, the debugger and SP.VIEW start in it from then on, in this account and in later sessions, until you choose another. Where you have not chosen one, the site's theme is used (`SCREENTHEME`, set by the administrator). |
 | **Ctrl-K** | The keys of this page, with what each does (*Help > Keys*). |
-| *View > Mouse* | Stop the terminal reporting the mouse, and start it again (since 9 November 2026). While it reports the mouse, a click goes to SD and the terminal's own selection needs **Shift** held while you drag; with the mouse off you can select and copy text as at the prompt. The choice holds for every page and the IDE until you change it or sign off. It has no key. |
+| *View > Mouse* | Stop the terminal reporting the mouse, and start it again. While it reports the mouse, a click goes to SD and the terminal's own selection needs **Shift** held while you drag; with the mouse off you can select and copy text as at the prompt. The choice holds for every page and the IDE until you change it or sign off. It has no key. |
 | **Ctrl-Q** | Leave the page. |
 
-**These keys mean the same thing everywhere** (since 8 November 2026): on every page, on the home
+**These keys mean the same thing everywhere**: on every page, on the home
 screen, and in the IDE and SED. F5 draws the screen again there too; the IDE, SED and the debugger
 run a program with **F9**. **Everything a page can do is also on its menus**: a key is a short way
 to a menu entry, never the only way. The exceptions:
 
-- **The debugger** has F1, F2, F5, Ctrl-L, Ctrl-T, Ctrl-K and Ctrl-Q as above (F2 since 9 November
-  2026; it aborted the program until then); **Ctrl-Q stops the program** being debugged, as F3 does,
+- **The debugger** has F1, F2, F5, Ctrl-L, Ctrl-T, Ctrl-K and Ctrl-Q as above; **Ctrl-Q stops the program** being debugged, as F3 does,
   and Abort is on its Run menu. Its function keys F3 to F9 are its own (stop, the program's screen,
   step, run).
 - **SP.VIEW** answers F1, F5, Ctrl-L, Ctrl-T, Ctrl-K and Ctrl-Q as above, and its own letters (shown on
@@ -74,7 +73,7 @@ or F2 and type part of its name. The key tester `tool.keys` shows what your term
 **On the administrator pages a letter is often a command** (`s` suspends on `tool.accounts`, `l`
 logs out on `tool.sessions`), shown on the key row; it opens a box that asks first and runs nothing
 until you choose Run. **On such a page `/` is how you find a row by typing**: it asks for a text and
-goes to the next row that holds it, in any case, going round to the top (since 9 November 2026). **A box opened by a key waits until you let go of the key**, so that holding
+goes to the next row that holds it, in any case, going round to the top. **A box opened by a key waits until you let go of the key**, so that holding
 the key down cannot answer it.
 
 Inside a list, the arrow keys, Page Up, Page Down, Home and End move as you would expect; a letter usually jumps to the

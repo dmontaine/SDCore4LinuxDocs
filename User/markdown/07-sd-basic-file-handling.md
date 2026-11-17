@@ -198,11 +198,12 @@ Actions 2, 3 and 7 are refused on a file opened `readonly`: `status()` is 3018 a
 (null for 3), and the counter is not touched. On a file that is not hashed `status()` is 3005; a
 qualifier under 1 sets `status()` to 1. `FC$CRLF` on a hashed file gives 0 with `status()` 3004 (*not a directory
 file*: a hashed file has no line terminators); a mode outside 0 to 3 gives the mode the file is in and sets
-`status()` to 1, changing nothing. Until 16 Oct 2026 `FC$CRLF` stopped the program with *FCONTROL cannot do this
-action in SD*. Any action number SD does not know stops the program with *the action is not one SD knows*.
+`status()` to 1, changing nothing. Any action number SD does not know stops the program with *the action is not one SD knows*.
 `FC$SYNC` works on a hashed file only (`status()` is 3005 on any other). The qualifier may be left out where the action does not use it. The
-internal programs' own function is called `fcontrol.int` since 15 Oct 2026 and is not available to
-ordinary programs.
+internal programs' own function is called `fcontrol.int` and is not available to
+ordinary programs. On a file reached through an `N` pointer to another SD server the call goes to
+that server: the test for an id (action 6) needs only read access there, and every other action needs
+the server's administration group, as the server decides ([page 42](42-sd-programming-with-a-remote-file.html)).
 
 ### Line terminators: `fcontrol` `FC$CRLF` and the letters `L C B X`
 
@@ -366,8 +367,8 @@ On a newly created dynamic file:
 | `1100` (`FL$HOLDERS`) | the same sessions as text, for messages | `14 (ann), 22 (don)` |
 
 **Key `1021` is the openQM `FL$WHO`, and the caller is left out** unless it has the file
-open through more than one file variable. `1021` returned the text form until 17 Oct 2026; code
-that wants text for a message now asks `1100`, and SD's own "cannot gain exclusive access"
+open through more than one file variable. Code
+that wants text for a message asks `1100`, as SD's own "cannot gain exclusive access"
 messages do. Compile with `$include keys.h`, so that the names carry whatever number they have.
 
 File types: `1` SH, **`3` DH — an ordinary dynamic file**, `4` directory, `5`
@@ -386,8 +387,8 @@ sequential.
 `dir(pathname)` lists an operating-system directory as a dynamic array - one field
 per entry, with the name, `F` or `D` and the size in bytes as its values. **An entry
 is `F` only when it is a plain file and `D` only when it is a directory** (a link is
-judged by what it leads to; since 30 October 2026): a socket, a device or a pipe is
-left out. A socket used to be listed as a file and a block device as a directory.
+judged by what it leads to): a socket, a device or a pipe is
+left out.
 
 ## Reaching another file's data
 
@@ -410,8 +411,7 @@ cannot be opened at all**, which takes the same action:
 | **c** | return the record id itself |
 | **n** | return the record id itself |
 
-(Before 14 Oct 2026 a file that would not open always printed the message,
-whatever the action. A program that relied on the message now needs **v**.)
+(A file that would not open prints the message only with **v**.)
 
 A *field* of `0` returns the record id.
 
@@ -433,7 +433,7 @@ it is what the examples on this page use.
 
 `set.trigger` attaches a program that runs on every write or delete to a file.
 A trigger runs inside the caller's transaction, so anything it does is part of
-the same all-or-nothing unit. A directory file can have one too (16 Oct 2026): it is
+the same all-or-nothing unit. A directory file can have one too: it is
 called by `read`, `write`, `delete` and `clearfile`, and not by `writeseq`, `writeblk`,
 `oswrite` or `osdelete`; see *Triggers* in
 [SD TCL - Files and Records](20-sd-tcl-files-and-records.html).

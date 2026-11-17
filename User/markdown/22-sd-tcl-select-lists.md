@@ -9,8 +9,7 @@ SD folds case, so a command may be typed in either case. Commands and keywords
 are shown here in lower case. In the tables, *italics* mark something you supply
 and **bold** marks a word typed as it stands; braces mark an optional part.
 
-> **Every listing on this page was produced by running it**, on SD Core for
-> Linux, in an administrator account. The file being queried is `voc`,
+> The file queried in the listings is `voc`,
 > because it is the one file every account has.
 
 ## The one thing to understand first
@@ -278,10 +277,9 @@ A list that is not there is *Saved select list 'name' not found*, and no name is
 `merge.list` works on **list numbers**: the numbered lists in your session.
 (To combine saved lists, pick them up with `get.list` first.)
 
-It finds a key of one list in the other without scanning it
-(since 16 Oct 2026), so lists of tens of thousands of keys merge in seconds
-where the time used to grow with the product of the two lengths. The result
-is what it always was: a union keeps the first list and adds each new key of
+It finds a key of one list in the other without scanning it,
+so lists of tens of thousands of keys merge in seconds
+and the time does not grow with the product of the two lengths. A union keeps the first list and adds each new key of
 the second once; an intersection gives the keys of the second list that are in
 the first, a key repeated in the second repeated; a difference takes away one
 occurrence in the first list for each key of the second.

@@ -58,6 +58,7 @@ Neither root can be changed. The installer does not ask.
 | | |
 |---|---|
 | `sdusers` group | the Linux group every SD account belongs to |
+| `sdsshnokey` group | the Linux users SD makes are put in it, and the ssh server's SD block offers its members no key sign-in; `modify.account` *name* `ssh-key-on` takes one out (see [Accounts and Security](01-accounts-and-security.html)). Empty as installed; SD never deletes it |
 | `sdsys` user | the one administrator account — a real Linux user, its own home, shell and password |
 | `sdu_<name>` | one supplementary group per user account, created by `create.account` with `root` and the user in it; **the `sdsys` user is a member of every one of them as delivered** (`create.account` puts it in a new account's group, the install in the groups of the accounts already there, once), which gives the `sdsys` user write access to everything the group may write (see [The master files](19-the-master-files.html)). `modify.account` *name* `sdsys-off` takes it out of one account's group and `sdsys-on` puts it back |
 | `sd.service`, `sdclient.socket` | the `systemd` units, enabled at boot |
@@ -148,7 +149,7 @@ The installer leaves a new user's login shell as the operating system's default,
 console login that starts `sd`; `sudo usermod -s shell user` changes it for one user. (sshd runs a forced command through the user's login shell, so a shell
 that refuses commands closes that route too: choose per user, and see *Remote access and the machine*.)
 
-**The file `$ipc`.** `$ipc`, in the system directory, is the one SD file every user's process has to write (it is `sdsys:sdusers`, directories 2770 and files 0660 since 30 October 2026, where it was 0775: an operating-system user
+**The file `$ipc`.** `$ipc`, in the system directory, is the one SD file every user's process has to write (it is `sdsys:sdusers`, directories 2770 and files 0660; an operating-system user
 who is not in `sdusers` can no longer read the commands, `DATA` lines and messages it holds), so a member of `sdusers`
 with a shell can write it as well. It holds working records and nothing a session is configured from: the lock that orders a phantom's start-up, the start-up
 records of a phantom (its command, its `DATA` queue and its log file name), the messages waiting for a user, the phantom register
@@ -308,9 +309,9 @@ commands that turn them on (as `sdsys`).
 
 ### An upgrade puts a group account's record files back in its group
 
-**A group account made before 19 October 2026 has four files in the wrong
-group, and an upgrade that keeps the accounts corrects them.** `create.account
-group` used to leave `voc/%0`, `voc/%1`, `$hold.dic/%0` and `$hold.dic/%1`
+**A group account made by an earlier version has four files in the wrong
+group, and an upgrade that keeps the accounts corrects them.** An earlier
+`create.account group` left `voc/%0`, `voc/%1`, `$hold.dic/%0` and `$hold.dic/%1`
 in the group `sdusers`, which every SD user belongs to. They are the two
 parts of the account's VOC and of the dictionary of its print-hold file, so
 any SD user could write them from outside SD. The installer now asks

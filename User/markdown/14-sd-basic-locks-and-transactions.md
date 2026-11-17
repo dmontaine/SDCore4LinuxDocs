@@ -61,8 +61,7 @@ transaction does.
 recordlocked(file.variable, record.id)
 ```
 
-Every one of the seven codes below was produced deliberately, three of them by
-a second session holding the lock:
+There are seven codes below; three of them come from a second session holding the lock:
 
 | Code | Meaning |
 |---|---|
@@ -343,7 +342,7 @@ commit writes. For one nested inside another, the commit **writes nothing**:
 the records the nested transaction changed and deleted, and the locks it holds,
 are handed to the transaction around it, which alone writes them when it commits
 or throws them away with its own work when it aborts. Afterwards the enclosing
-transaction is the running one again. Measured with the same program compiled
+transaction is the running one again. With the same program compiled
 with and without the directive, the nested transaction taking its own records and
 the parent taking its own:
 

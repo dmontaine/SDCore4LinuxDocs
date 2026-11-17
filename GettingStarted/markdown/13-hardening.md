@@ -144,8 +144,7 @@ a definition that is not there.
 
 ### The page is 140 × 43, not 80 × 24
 
-**SD's default terminal size is 140 columns by 43 lines** (it was 120 by 36
-until 18 October 2026, and 140 by 42 until 2 November 2026). **A terminal narrower than that makes wide reports
+**SD's default terminal size is 140 columns by 43 lines.** **A terminal narrower than that makes wide reports
 look wrapped or truncated**, which reads as a formatting bug and is not one.
 
 `term` reports the size in force, above the `Device` line:

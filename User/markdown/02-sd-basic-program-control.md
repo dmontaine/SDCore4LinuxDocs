@@ -420,14 +420,9 @@ A program using one will not compile.
 | `errmsg` | |
 | `procread` · `procwrite` · `@pib` · `@sib` · `@pob` · `@sob` | the PROC interface |
 
-**`errmsg` is not in the compiler's statement table, and has not been since
-July 2024.** `errmsg 1000` is rejected with *"Unrecognized statement"*, the
+**`errmsg` is not in the compiler's statement table.** `errmsg 1000` is rejected with *"Unrecognized statement"*, the
 same message as for any word the compiler does not know (`foobarbaz 1000` gets
-it too). An earlier version of this page said the name was still in the table
-with nothing behind it. That was wrong: `BCOMP` removed the table entry on
-28 July 2024 and left the name only in a comment beside the line that was
-changed, and a tool that read the table by matching quoted names picked it up
-from the comment.
+it too).
 
 `procread` and `procwrite` are gone as well, with the PROC language they
 served, and so are the variables `@pib`, `@sib`, `@pob` and `@sob`. A program

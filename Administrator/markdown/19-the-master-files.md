@@ -8,17 +8,15 @@ record, in its own account. That is the purpose of the master files: most accoun
 of editing their own VOC, dictionaries and programs (the edit gates `voc-edit`, `dict-edit` and
 `bp-edit`), and the administrator does that work for them.
 
-> **From 2.0-0 there are no master copies.** The development of 2.0-0 first kept a copy of every
-> account's VOC and dictionary records in the SDSYS account (`voc_master`, `dict_master`,
-> `master_state` and a journal, with the verbs `sync.masters`, `check.masters`,
-> `list.master.pending` and the page `tool.masters`). Those were retired on 2 November 2026, before
-> any release had them: see [What went with the copies](#what-went-with-the-copies) below.
+> **There are no master copies.** SD does not keep a copy of every account's VOC and dictionary
+> records in the SDSYS account, and has no verbs `sync.masters`, `check.masters` or
+> `list.master.pending` and no page `tool.masters`: see
+> [What went with the copies](#what-went-with-the-copies) below.
 
 > **Read this first: what the grant is, and what it is not.** To write into an account's own VOC,
 > dictionaries or programs, **the `sdsys` operating-system user has to be a member of that account's
 > Linux group (`sdu_`*name*), and the account's files have to be writable by that group.**
-> **As delivered, `sdsys` is a member of every user account's group** (from 1 November 2026; it was
-> none from 26 October), so the administrator's edits reach a user account. The administrator can take
+> **As delivered, `sdsys` is a member of every user account's group**, so the administrator's edits reach a user account. The administrator can take
 > it away **for one account**: `modify.account acme sdsys-off`; `modify.account acme sdsys-on` puts it
 > back. The membership gives the `sdsys` user **write access to everything the account's group
 > may write** - not only the VOC and the dictionaries (files that SD sessions create are group-writable
@@ -44,12 +42,11 @@ of editing their own VOC, dictionaries and programs (the edit gates `voc-edit`, 
 > one.** What it does is make the choice visible and the administrator's: `sdsys-off` and `sdsys-on` leave
 > an audit line (`modify.account sdsys-off account=acme`) and a line in the system log (`sd-elevate`), and
 > each can be taken back. How much further protection the machine needs is the administrator's to
-> decide (the owner's ruling of 1 November 2026: simplicity first). It is not a route in from the
+> decide (simplicity comes first). It is not a route in from the
 > network (`sdsys` has no remote access at all), and a process that is not a real `sdsys` login is not
 > an administrator.
 >
-> From 2.0-0 the membership is **on as delivered** for every user account (it was off from 26 to 31
-> October of the development). `create.account` puts `sdsys` in a new account's group; an install puts it
+> The membership is **on as delivered** for every user account. `create.account` puts `sdsys` in a new account's group; an install puts it
 > in the group of the accounts that are already there, once, and records that in `/home/sd/$sdsys.access`,
 > so a `sdsys-off` you give afterwards stands.
 
@@ -206,8 +203,7 @@ form**, where a wrong answer is said under the fields and the form stays:
   on **one record only**: when more than one record is shown it is refused before the box
   (`field 1 is the type of the record: G changes it on one record only, and 3 are shown ...`), and
   on a single record the box carries a **WARNING** line with the old and the new type (`"X" ->
-  "PA"`). Cancel is still the default, and `U` puts field 1 back like any other field (the owner,
-  3 Nov 2026: exclude field 1 from batch actions, allow it on a single item with a confirm warning).
+  "PA"`). Cancel is still the default, and `U` puts field 1 back like any other field (field 1 is kept out of batch actions and allowed on a single item with a confirm warning).
 - **Programs**: a text to replace in the source and what replaces it. Each program changed is then
   compiled again **in its own account** through `run.in` (as `C` does), and is counted as failed
   when the compiler does not say it compiled.
@@ -216,8 +212,7 @@ The texts are printable characters only, up to 120 of them. **One box** (titled 
 records?*) then shows the change, and each account with how many records would change, the first
 ids, how many are as they are already and how many would be refused, with the first reasons. **Run
 or Cancel is all it asks** (Cancel is the default): no name or count is typed. This is looser than
-`D`, which asks for the id; it is the owner's choice (3 Nov 2026), made after he was told so, and
-it is how the page is delivered.
+`D`, which asks for the id; that is how the page is delivered.
 
 Run writes **account by account**. Each account is judged again (it must still be in the register,
 and an SDSYS session in the `relog` state is refused for it, as for `E`), and each file by **the
@@ -281,7 +276,7 @@ catalog it as the administrator, in the global catalog if the directive says `gl
 catalog a program of an account, say so: `run.in acme catalog bp prog`. `run.in` does not start the
 account's `login` paragraph (it would run with the administrator's rights), and it does not nest.
 
-**The command does not run as the administrator** (since 11 November 2026). The account's files,
+**The command does not run as the administrator.** The account's files,
 VOC and programs are written by the account's user, so nothing in them is trusted:
 
 - **The words must be SD's own.** The command word and every option word must be, in that account's
@@ -310,7 +305,7 @@ refusal writes `run.in refused …` with the reason.
 ## Who is in the group, and what the files must say
 
 A write into an account (an edit, a delete or a compile from `tool.entries`, a save in the editor it opens) needs the `sdsys` user in the account's group **and** the account's files writable by that
-group. **As delivered both are arranged for a user account** (from 1 November 2026, below). The state
+group. **As delivered both are arranged for a user account** (see below). The state
 *is* the Linux group membership, as it is for `ssh` and the API (`sdssh`, `sdapi`); nothing is written
 to the register, and there is no row for it in the gate matrix (`tool.gates`).
 
@@ -347,7 +342,7 @@ modify.account acme sdsys-off
   nothing changed) and may be given in a command with other words. Both are audited, in lower case:
   `modify.account sdsys-on account=acme`, and `sd-elevate` writes a line of its own to the system log
   (`journalctl -t sd-elevate`).
-* **`create.account` and the installer switch it on** for a new account (from 1 November 2026): the
+* **`create.account` and the installer switch it on** for a new account: the
   installing user's account is delivered on like every other. `sdsys-off` takes it away from one.
 
 **What is expected to stop working when an account is off.** An edit, delete or compile from `tool.entries` into it. So
@@ -382,8 +377,7 @@ exist** is joined but its modes are not repaired (the helper repairs only those 
 with the reason, in a warning of its own, and does **not** hold back the marker - set its modes by hand
 (`chmod g+rw`, setgid on the directories). The marker is in `/home/sd`, not in the
 sdsys directory, because `deletesdcore.sh` removes the sdsys directory in every cycle and would lose it;
-`/home/sd` is kept with the accounts and removed with them. (It is a different file from the one the
-26 October development used, `$groups.ruled`, so an install made then gets this once too. Only groups
+`/home/sd` is kept with the accounts and removed with them. (Only groups
 named `sdu_`*name* are looked at; `sdusers` and a group account's group never are.)
 
 **Three `sd-elevate` verbs do the work, each confined**, and none is more than `modify.account` and the
@@ -443,9 +437,8 @@ group-write`) puts them right, the ones made while the account was off included.
 
 ## What went with the copies
 
-The copies kept in the SDSYS account during the development of 2.0-0 were **retired on 2 November
-2026** (the owner's decision), because `tool.entries` edits the real records and the copies had
-nothing left to do. Gone with them:
+SD keeps **no copies** in the SDSYS account, because `tool.entries` edits the real records. A
+system that had them (a development build) loses:
 
 * the files `voc_master`, `dict_master`, `master_state` (each with its dictionary) and the journal
   `$master.journal` in the SDSYS directory. **The installer removes any of them it still finds**,

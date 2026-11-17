@@ -16,9 +16,7 @@ server's installation carries them so that whoever writes a client has them,
 and a client on Windows uses the same files with the C client library of SD
 Core for Windows, `sdclilib.dll`; a client on Linux uses `sdclilib.so`. The two
 libraries have the same functions and speak the same protocol and login, so a
-client built on either can connect to a server of either kind. (A Windows
-program against a Linux server has not been run in this release; the protocol
-is shared, the programs have not met.) The Visual Basic header, `sdclient.bas`,
+client built on either can connect to a server of either kind. The Visual Basic header, `sdclient.bas`,
 is the exception that proves it: it is for the Windows VB DLL, `sdclient.dll`.
 
 | Language | File | Notes |

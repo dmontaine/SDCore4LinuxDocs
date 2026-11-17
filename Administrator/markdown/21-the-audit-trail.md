@@ -69,7 +69,7 @@ compiled in and is not a setting.
 | | |
 |---|---|
 | File | `audit` in the system directory (`/usr/local/sdsys/audit`) |
-| Owner and mode | `sdsys:sdusers`, mode 600 (620 on an install made before 24 October 2026; the installer puts it right) |
+| Owner and mode | `sdsys:sdusers`, mode 600 (an older install may have 620; the installer puts it right) |
 | Append only | the installer sets the append-only attribute (`chattr +a`) where the file system has it; if it cannot, it says so, and the file is then protected by its mode alone |
 | Rotation | at one megabyte the daemon (and `sd -start`) renames it to `audit.yyyymmdd-hhmmss` and starts a new file with the same owner, mode and attribute. A rotated file is not pruned by SD: that is the site's decision, and it starts with `chattr -a` |
 
@@ -96,7 +96,7 @@ whole.
 | Up, Down, PgUp, PgDn | move; above the first loaded line, older lines are loaded when the file has them |
 | Home, End | the first loaded line; the newest line (End reads the file again) |
 | F | asks, one after another: from, to, event words, account, user, text. `from` and `to` are the start of a time stamp (`2026-10-25`, or `2026-10-25 14:30`; `to` with only a date includes the whole day). Event, account, user and text are matched without regard to case; `account` is the line's `account=` value, `user` its `user=` or `sudo=`. Esc leaves every filter as it was |
-| / | the same as F: on every page `/` is the key that finds by typing (since 9 November 2026) |
+| / | the same as F: on every page `/` is the key that finds by typing |
 | C | clears the filters |
 | D | goes to the first line at or after a time; no filter changes |
 | O | shows the next audit file: the current one, then the rotated ones, newest first |

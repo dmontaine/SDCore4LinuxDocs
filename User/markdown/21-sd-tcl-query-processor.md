@@ -15,8 +15,7 @@ SD folds case, so a query may be typed in either case. Commands and keywords are
 shown here in lower case. In the tables, *italics* mark something you supply and
 **bold** marks a word typed as it stands; braces mark an optional part.
 
-> **Every listing on this page was produced by running it**, on SD Core for
-> Linux. The file being queried is `voc`, because it is the one file
+> The file queried in the listings is `voc`, because it is the one file
 > every account has and it is interesting enough to ask real questions of.
 
 ## The shape of a query

@@ -29,8 +29,8 @@ administrator, is the one exception: it always starts at the prompt, whatever th
 system's default, and opens the home screen only when `home` is typed. In a session with no terminal (a
 pipe, a phantom, a script) it says `home needs a terminal` and reads nothing, so
 a script is never taken for someone typing. **In a bigger window the tiles spread over
-the whole window** (since 28 October 2026): as many columns of tiles as fit, each tile a little
-wider, and the page follows the window when it is resized; at 140 by 43 it looks as it always did.
+the whole window**: as many columns of tiles as fit, each tile a little
+wider, and the page follows the window when it is resized; at 140 by 43 each tile has its standard width.
 If the window is made smaller than 140 by 43 while the home screen is up, it holds the keyboard
 behind a warning that gives both sizes until the window is big enough again.
 
@@ -81,7 +81,10 @@ shows `administrator` at the top and at the right end of the menu bar; an accoun
 holder's page says `My tools` and `name @ account`. The two are built from one
 table and differ only in what is in it. The tools that other parts of SD add (the
 account manager, the gate matrix and the rest) each add their own tile when they
-are built.
+are built. **A tile for one of SD's own pages (a `tool.` verb) is left off when that verb is
+not in your account's VOC**, so choosing a tile never ends in an unknown-verb error; when
+the verb arrives (an update of the account's VOC) the tile appears. A pinned program's
+tile, the Editor and IDE tiles are not hidden by this.
 
 **The page scrolls.** It is laid out at its full height and only the rows that fit
 are drawn, with a scroll bar in the last column when there is more than fits, so
@@ -106,10 +109,10 @@ date and time, Switch account and Sign out) stays where it is.
 | F10, Alt and a title's letter, a click on the top row | open the menu bar (File, Go, View, AI, Help). Every entry shows its key and does what the key does: **File** Sign out (Ctrl-Q, or no key when you typed `home` at the prompt) and, in that case, Back to the prompt (Ctrl-Q); **Go** Back (Esc or Backspace, only in a sub-menu), Terminal (Alt-T), Switch account (Ctrl-W), Find a tile (/), Start the tile (Enter); **View** Refresh (F5), Recent group on or off (Ctrl-R), Theme (Ctrl-T); **AI** Ask the AI (F6), dimmed when the AI is not on for the account; **Help** Help on this page (F1), Keys (Ctrl-K: the keys of the home screen). An entry whose tile the administrator turned off for your account is dimmed, and its key only says so. The Keys tile still opens the keyboard and terminal page `tool.keys` |
 | Ctrl-T | the next color theme, kept for you: every page, the IDE, SED and the debugger start in it from then on (see *Using the full-screen pages*) |
 | Ctrl-K | the keys of the home screen, in a box |
-| F2 | find an action: every entry of the menus in one list (*Go > Terminal*, with its key); type part of a name to narrow it, Enter chooses (since 3 November 2026). An entry that cannot be used now says *(not now)* and only explains why |
-| a right click, Shift-F10 | the menu of the page's actions at the pointer (Shift-F10: in the middle), ending with *Find an action...* (F2) (since 3 November 2026). The home screen has one box, so the right click does not move anything first |
+| F2 | find an action: every entry of the menus in one list (*Go > Terminal*, with its key); type part of a name to narrow it, Enter chooses. An entry that cannot be used now says *(not now)* and only explains why |
+| a right click, Shift-F10 | the menu of the page's actions at the pointer (Shift-F10: in the middle), ending with *Find an action...* (F2). The home screen has one box, so the right click does not move anything first |
 | Ctrl-Q | sign out (asks first; **Cancel** is the button Enter chooses, so a stray Enter signs nobody out). **When you typed `home` at the prompt, Ctrl-Q goes back to that prompt instead** and does not ask; the row then reads *^Q prompt* |
-| Alt-T | the Terminal tile (Ctrl-T until 8 November 2026: Ctrl-T is now the theme on every page) |
+| Alt-T | the Terminal tile (Ctrl-T is the theme on every page) |
 
 Backspace, Alt-T, Ctrl-W, Ctrl-R, Ctrl-T and Ctrl-K are not on the row of keys at the foot of
 the screen (F1 lists every key). The row shows Enter, F1, F5, Ctrl-Q and /, Esc in a
@@ -223,7 +226,7 @@ for Enter** when the command has finished printing.
 | Ctrl-Q | leave; the home screen is built again and shows the list |
 
 In a window bigger than 140 by 43 the list takes the extra rows and the command column
-the extra width (since 2 November 2026).
+the extra width.
 
 **It manages only your own list.** The standard tiles are the administrator's and
 are not touched. A program of yours runs the command exactly as you would type it,

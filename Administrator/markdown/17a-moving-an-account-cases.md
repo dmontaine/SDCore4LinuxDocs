@@ -14,7 +14,7 @@ This page continues [Moving an Account](17-moving-an-account.html).
 * **Anything the account only points at.** A VOC pointer to a file outside the account is named
   (*outer in jack points outside the account (/etc) and was left unchanged.*) and not followed.
   Indices kept outside the account are not in the zip; the restore says *Rebuild them with
-  build.index* (from the source, not run).
+  build.index*.
 * **Accounts outside the accounts folders.** An account whose directory is not directly inside
   `user_accounts` or `group_accounts` is refused by the privileged helper, and **with `all` that
   stops the whole backup**, leaving no zip. Name the other accounts one by one.
@@ -23,7 +23,7 @@ This page continues [Moving an Account](17-moving-an-account.html).
 Restoring `shared` is not covered by anything said here: the restore gives a group account's files
 to its register group, `sdg_shared`, while the installer gives that directory to `sdusers`
 (see [The Shared Account](13-the-shared-account.html)), so check the group of its files after a
-restore. This is from the source and was not run. When you move only some accounts, name them.
+restore. When you move only some accounts, name them.
 
 ## The Linux user and groups
 
@@ -41,8 +41,8 @@ files, its description and its suspension change.
   characters, with a lower-case letter, an upper-case letter, a digit and a symbol.*) and allows
   three tries. If it is refused or you decline to retry, SD removes the Linux user again, says *An
   account must have a password. Nothing was created.* and the account is *not restored*.
-  **`no.query` removes the "Restore these accounts" question and not this one.** In the test the
-  commands typed after a `no.query` restore were taken as passwords.
+  **`no.query` removes the "Restore these accounts" question and not this one.** Commands
+  typed after a `no.query` restore are taken as passwords.
 * A route the machine cannot yet serve is said and not refused: *… is set up to sign in over ssh,
   but this machine has no ssh server yet.* The account is still made.
 
@@ -63,8 +63,13 @@ modify.account once it is an SD user.*
   record or a program is left as it is.
 * **The Linux user name is already taken.** SD reuses the user only if SD itself made it (its
   comment is exactly `SD account`) and keeps its password: *jack is a Linux user that SD itself
-  created earlier, so the restored account uses it. Its Linux password is unchanged.* That case was
-  not run, as no such user was available. Any other user is refused, nothing is created, and the
+  created earlier, so the restored account uses it. Its Linux password is unchanged.* **The
+  user is taken out of every route group the restored account does not ask for** (`sdssh`,
+  `sdapi`, `sdfiles`, `sdfileswrite`, `sdfilesadmin` and `sdaiusers`), so a leftover user does not
+  keep the remote routes of the account it belonged to before; a membership SD cannot read or
+  remove stops the restore with *Unable to change remote access*. **It is also restored with
+  key sign-in over ssh off** (a backup holds no such setting; `modify.account` *name*
+  `ssh-key-on` afterwards if it should have it). Any other user is refused, nothing is created, and the
   account is not restored:
 
   ```
@@ -93,7 +98,7 @@ modify.account once it is an SD user.*
 None of these changed an account, and the restore leaves no `.sdrestore.`*n* folder behind (except
 in the last row, where it is the folder that is the cause). The source also refuses a zip with
 an entry outside `manifest.txt` and `accounts/`, a `..` or absolute path, a backslash, or a symbolic
-link; that was not run.
+link.
 
 ## See also
 

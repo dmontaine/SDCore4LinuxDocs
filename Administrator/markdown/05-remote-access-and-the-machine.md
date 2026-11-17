@@ -30,6 +30,11 @@ where the operating system does.
 > `sdsys` at the machine's own keyboard, or a desktop-sharing view of it. See [Accounts and
 > Security](01-accounts-and-security.html#read-this-before-anything-else-being-sdsys-is-the-whole-of-it).
 
+**An account that has the ssh route signs in with its password, not a key, as delivered.**
+Key sign-in for a Linux user SD made is a separate, per-account loosening
+(`modify.account` *name* `ssh-key-on`), and `remote.ssh on` does not open it. See *Signing in
+over ssh with a key* in [Accounts and Security](01-accounts-and-security.html).
+
 > This document is separate so that it can be withheld. It links to nothing
 > outside the administrator set. Where a page in another set is worth naming,
 > it is named in words.
@@ -125,7 +130,7 @@ do not change the mode. A person who has just been added to `sdusers` must log o
 tree. The installer adds `SocketMode=0660` to an existing `sdclient.socket` that has no `SocketMode=` line, and never touches one that has; to widen it on purpose,
 `systemctl edit sdclient.socket` and write `SocketMode=` in the drop-in. `ls -l /tmp/sdsys/sdclient.socket` shows the mode.
 
-**The first stage of a connection is confined** (since 30 October 2026). The unit that starts one server for each connection, `sdclient@.service`, sets the safe part of systemd's
+**The first stage of a connection is confined.** The unit that starts one server for each connection, `sdclient@.service`, sets the safe part of systemd's
 sandbox: `ProtectKernelTunables`, `ProtectKernelModules`, `ProtectKernelLogs`, `ProtectControlGroups`, `ProtectClock`, `ProtectHostname`, `RestrictRealtime`, `RestrictNamespaces`,
 `LockPersonality` and `SystemCallArchitectures=native`. That stage runs as root until a session has logged in, so a fault in the reader would otherwise have all of root's reach; these
 settings take from it what it never uses. **They are not the whole sandbox, on purpose:** `NoNewPrivileges` and a capability bound would stop the `sudo sd-elevate` that a session
@@ -148,7 +153,7 @@ account — **and every change is audited**, a Linux addition matching how
 the port's own account-tier changes used to be audited before tiers were
 removed.
 
-**What a connection costs while nobody has logged in.** Each API connection is one `sd -n -q` process, running as root until the client has logged in, and it is there before any login is checked. Since 20 Oct 2026 it ends when the connection does, and refuses a request that declares a length over 65,536 bytes (after the login the limit is the largest SD string; the client page, *How big a request may be*, has the rules), leaving a line in the system log. Before that date a client that closed at the wrong moment, or sent four bytes that read as a huge length, left its process running at 100% of a processor with nothing to end it but `kill`; a count of `sd -n -q` processes that does not fall back to the number of clients is the sign. **A client that connects, completes the handshake and then says nothing is still left waiting**: SD sets no time limit on a connection that has not logged in, and `remote.api local` or the firewall are what keep it to the people you intend.
+**What a connection costs while nobody has logged in.** Each API connection is one `sd -n -q` process, running as root until the client has logged in, and it is there before any login is checked. It ends when the connection does, and refuses a request that declares a length over 65,536 bytes (after the login the limit is the largest SD string; the client page, *How big a request may be*, has the rules), leaving a line in the system log. A count of `sd -n -q` processes that does not fall back to the number of clients is the sign of a connection that did not end. **A client that connects, completes the handshake and then says nothing is still left waiting**: SD sets no time limit on a connection that has not logged in, and `remote.api local` or the firewall are what keep it to the people you intend.
 
 ## Everything that reaches SD from outside, on one screen: `tool.remote`
 
@@ -173,8 +178,10 @@ shows the command and what it does was answered Run (**Cancel is what Enter choo
 `remote.ssh`, `delete.server`, `remote.sdsys on` and `remote.sdsys off`, besides the three reports. `set.server`
 is run by the verb itself on the terminal. The verbs ask for the administrator again and write their own audit lines; the page writes
 nothing. A door that the firewall cannot gate is refused by `remote.ssh`, and the page shows the
-verb's words. `F5` reads everything again, `F1` explains the page and `Ctrl-Q` leaves. Opening the page
-writes the audit line `tool start app=tool.remote`.
+verb's words. `F5` reads everything again, `F1` explains the page and `Ctrl-Q` leaves. While the page reads the state of
+ssh, the API and the `sdsys` login, which can take a few seconds, the status line says
+"Reading the settings (a few seconds)..."; the page's own message comes back when the reading is done.
+Opening the page writes the audit line `tool start app=tool.remote`.
 
 ## When a change fails
 

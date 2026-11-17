@@ -302,7 +302,7 @@ shows as `name = value`, and `set` and `watch` refuse it with *Variable not
 defined*. Without the mode a token is not known to the debugger, as it
 never was.
 
-**A token may also be the value** of a `set` (16 Oct 2026): `set tot = numc`
+**A token may also be the value** of a `set`: `set tot = numc`
 gives the variable the number the token stands for, and a token of a string or
 of `char(n)` gives it that. A token of a **variable** is not a value, and is
 refused with *Illegal value* as before.
@@ -438,23 +438,22 @@ them. `dumb` and `unknown` have no `cup` and stay line by line. Then:
 - **F1** shows the help in a box, **F4** shows the program's own screen until
   you press a key, and Page Up and Page Down move the source. The commands are as
   they were.
-- **The top row is a menu bar** (since 8 November 2026): **Esc** on its own or **F10** opens
+- **The top row is a menu bar**: **Esc** on its own or **F10** opens
   it. **Run** has Run to a breakpoint (F9), Step (F7), Step a line (F8), Run to the parent
   (Ctrl-F7), Run to the parent program (Ctrl-F8), Stop the program (F3 or Ctrl-Q) and Abort;
   **View** the program's screen (F4), Theme (Ctrl-T) and Refresh (F5); **Help** Help (F1),
   Keys (Ctrl-K) and Find an action (F2). The program and its line follow the titles.
-- **F2 finds an action and Ctrl-Q stops the program and leaves**, as on every page (since
-  9 November 2026; F2 aborted until then). F2 lists every entry of the menus; type part of a
+- **F2 finds an action and Ctrl-Q stops the program and leaves**, as on every page. F2 lists every entry of the menus; type part of a
   name to narrow the list, Enter to do it, Esc to close it. **Abort has no key on this screen**:
   it is on the Run menu and in the F2 list. In line mode (a terminal too small or with no
   cursor addressing), which has no menu bar, F2 still aborts.
-- **The keys every page has** (since 8 November 2026): **F9 runs** (it was F5), **F5** and
+- **The keys every page has**: **F9 runs**, **F5** and
   **Ctrl-L** draw the screen again, **Ctrl-T** takes the next color theme and keeps it for
   you, **Ctrl-K** lists the keys. On the command line, delete to the end of the line and swap
   two characters, which were Ctrl-K and Ctrl-T, are **Alt-K** and **Alt-T** (or Esc, then K or T).
 
 **The full-screen display is laid out for 140 columns by 43 lines or more**
-(it was 42 until 1 November 2026, when the foot was added; a bigger window is used
+(a bigger window is used
 whole, and the extra width goes to the source). **On a window smaller than that the
 debugger does not refuse: it says why, once, and is line by line for the session** —
 *The debugger needs a window of at least 140 columns by 43 lines for its full-screen
@@ -512,8 +511,7 @@ be fed down a pipe.
 
 `@tty` reads empty in a piped session, and the debugger works there anyway.
 
-(Until 13 October 2026 the full-screen display needed AccuTerm, which kept the
-screen pictures; SD no longer supports AccuTerm.)
+(The full-screen display does not use AccuTerm, which SD does not support.)
 
 ## Asking the AI
 
@@ -557,7 +555,7 @@ holds the program's data**, so remove it when you have read it.
 
 ## What is not here
 
-**`trace` is gone.** It was removed from the compiler in July 2024. In an
+**`trace` does not exist.** In an
 ordinary account it is *"Unrecognized statement"*.
 
 **The programmatic debug statements are restricted.** `debug.on`,

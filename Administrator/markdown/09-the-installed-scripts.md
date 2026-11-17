@@ -117,14 +117,12 @@ installer runs `--install` non-fatally; a refusal here leaves SD
 installed and working, with the boundary not yet applied, and prints
 the command to apply it once the conflict is resolved.
 
-**The `sdai` user (added 21 October 2026).** The installer also makes a system user,
+**The `sdai` user.** The installer also makes a system user,
 `sdai`, with its own group, no login shell, no home directory and no SD group, for the
 model call that SD will make itself in a later release; nothing runs as it yet and it
 holds no key. A full delete removes it with the route groups and keeps it when the
 accounts are kept. There is **no MCP door at the server**: an AI agent uses the command
-line over ssh, and people use the full screen programs. (A group `sdagent` and an ssh
-arm for such a door were built and pushed earlier on 21 October and taken out again the
-same day; no release carried them.)
+line over ssh, and people use the full screen programs.
 
 ## `sd-reconcile-accounts`
 

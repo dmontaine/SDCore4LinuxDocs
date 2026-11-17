@@ -80,9 +80,9 @@ mechanism and are unchanged. See [API access](09-api-access.html).
 **`NETFILES` is still accepted in `sd.conf`**, so an existing configuration
 file will not stop SD starting, and the new SDNet does not use it. The only
 thing that reads it is the API server's old request to open an SDNet file,
-which is refused unless bit 2 of `NETFILES` is set (and, since October 2026,
-unless the caller could `logto` that account and the account has `net-on`, and, since
-20 October 2026, a file pointer that leads out of the account is followed only if the
+which is refused unless bit 2 of `NETFILES` is set (and
+unless the caller could `logto` that account and the account has `net-on`, and
+a file pointer that leads out of the account is followed only if the
 account has `os-on`); the
 value is 0 unless `sd.conf` sets it. The two settings the new SDNet does read
 are `NETWAIT` and `NETREPLY`, the seconds to wait for a connection and for each
@@ -156,7 +156,7 @@ Administrator set and *SD Basic - Encrypting Data* in the User set.
 
 | Gone | Notes |
 |---|---|
-| `CREATUSR` | `config` no longer lists it; `config('CREATUSR')` returns nothing. The parameter itself was removed on 27 October 2026, and a `CREATUSR` line in `sd.conf` now stops SD from starting (the installer takes it out of a kept file) — `create.account` always creates the Linux user, there is nothing to opt in to |
+| `CREATUSR` | `config` no longer lists it; `config('CREATUSR')` returns nothing. The parameter itself no longer exists, and a `CREATUSR` line in `sd.conf` stops SD from starting (the installer takes it out of a kept file) — `create.account` always creates the Linux user, there is nothing to opt in to |
 | `grant`/`revoke`/`list.grants` | folded into `modify.account add`/`delete` — see [Accounts](05-account-types.html) |
 | the `os.users` permit list | the file is gone; `sh-on`/`sh-off`/`os-on`/`os-off` are kept, and they set two fields of the account's own register record instead — see [Security and the operating system](12a-security-and-the-operating-system.html) |
 

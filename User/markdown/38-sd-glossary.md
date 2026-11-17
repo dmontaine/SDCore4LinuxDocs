@@ -155,7 +155,7 @@ TCL commands. Replaces the removed PROC language.
 
 **Phantom** — see Background process.
 
-**Programmer** — retired, 18 Sep 2026. Used to name the middle of three
+**Programmer** — retired. Used to name the middle of three
 account tiers. Every account now has the full development set (compile,
 catalog, edit, file creation, index management, bulk record editing,
 process introspection) that this tier used to grant — see *Accounts* in
@@ -197,7 +197,7 @@ with substitution parameters.
 session runs as the invoking user's Linux identity (a real `setuid`
 for an API session, not a filtered credential).
 
-**Standard** — retired, 18 Sep 2026. Used to name the lowest of three
+**Standard** — retired. Used to name the lowest of three
 account tiers: enough to run an application and nothing that edited code
 or data in bulk. Every account gets the full VOC now — there is no
 reduced starting set to default to.

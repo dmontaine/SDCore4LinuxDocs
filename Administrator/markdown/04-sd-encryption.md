@@ -47,7 +47,7 @@ the machine's.
 | | |
 |---|---|
 | The `encrypt.field` verb | Removed. It pointed at a program, `$CRYPTO`, which never existed in the GPL release, so the verb could not have worked in any build derived from it |
-| `encrypt()` and `decrypt()` | Removed upstream in July 2024 and replaced by `sdencrypt()` and `sddecrypt()`. The old names do not compile |
+| `encrypt()` and `decrypt()` | Removed and replaced by `sdencrypt()` and `sddecrypt()`. The old names do not compile |
 
 ## The functions an application uses
 
@@ -118,8 +118,7 @@ is encrypted with a fresh nonce), `total` adds cipher text, an index holds ciphe
 text and no plaintext reaches the disk, and `copy` moves the stored value. The
 User page lists each.
 
-**`encrypt.key set` refuses a passphrase of fewer than 12 characters** (since 30
-October 2026; message 11994), after it has seen that the two typed copies match.
+**`encrypt.key set` refuses a passphrase of fewer than 12 characters** (message 11994), after it has seen that the two typed copies match.
 That is its only rule. The rule for SD passwords is not applied, because this is
 not an SD password: nothing is stored or compared. `sdkey()`, the function a
 program calls, is unchanged and takes any passphrase that is not empty, so a site

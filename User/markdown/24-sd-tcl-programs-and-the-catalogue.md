@@ -8,8 +8,7 @@ SD folds case, so a command may be typed in either case. Commands are shown here
 in lower case. In the tables, *italics* mark something you supply and **bold**
 marks a word typed as it stands; braces mark an optional part.
 
-> **Every listing on this page was produced by running it**, on SD Core for
-> Linux, against a two-line program in an account's `bp` file.
+> The listings use a two-line program in an account's `bp` file.
 
 An account that SDSYS has not given `bp-on` cannot save a program to `bp`, and
 `basic`, `catalog`, `delete.catalog` and `decatalog` are refused for it. A new
@@ -296,30 +295,30 @@ ide path:/full/name
 Opens a full-screen environment for BASIC programs and the other text records
 of an account, built on the screen library. `ide file record` starts on that
 record. **`ide dict file record` starts on an item of the file's dictionary and `ide voc record` on a
-record of the account's VOC** (since 28 October 2026). A record that does not exist yet opens as a new,
+record of the account's VOC**. A record that does not exist yet opens as a new,
 unsaved one, after the account's gate allows it; **`creating.seqkey` in place of the record name takes the
 file's next sequential id** (in quotes it is a record of that name). With a select list active,
 `ide file` **asks whether to open it**: Yes opens the first ten records of the list in tabs and lists them all, and
-Go, Next record from the list opens the next one that is not already in a tab; No clears the list (since 9 November 2026). **`ide file record record ...`
+Go, Next record from the list opens the next one that is not already in a tab; No clears the list. **`ide file record record ...`
 opens a tab for each record named** (one that is not there is a new record) **and `ide file *` lists the
-records of the file as a select list does, the first ten in tabs** (since 31 October 2026; both work after
+records of the file as a select list does, the first ten in tabs** (both work after
 `dict`; the ids are the words of the command, so an id with a blank in it is opened with Ctrl-O). It needs a terminal and
 **stops in a phantom**.
 
 | part | what it is |
 |---|---|
-| menu bar | the top row; F10 or Esc opens it, and a click on a title opens that menu (since 19 October 2026; a click on the bar beside the titles does nothing). Its right end says *ide* and who you are (*ide  pat@sales*), as the toolkit pages and SED do (since 1 November 2026) |
-| tree | the account's files on the left (**the entries whose names start with a dollar sign - `$acc`, `$hold`, `$map`, `$release` - are not listed**, since 28 October 2026: they belong to SD itself). Return on a file lists its records (the first 2000, and a message says when there are more; a big file is no longer read whole first), and Return again closes the list. **A file that has a dictionary shows the dictionary as a node of its own under it** (since 28 October 2026), read only when you open it, and its items are listed the same way. Return on a record opens it. A letter jumps to the next entry that starts with it. **An account that has operating system access (the administrator, or `os-on`) also sees an *Operating system files* node after its files** (since 30 October 2026): Return on it lists `/`, Return on a directory lists its entries (directories first, then files, each in the order of the names; 1000 at most) and again closes it, and Return on a file opens it in a tab, as `path:/full/name` does. Names that hold a control character or a byte from 248 to 255 cannot be shown or put in a path; a message says how many entries were left out. A directory the operating system does not let the session read says so, with the operating system's error number (message 11599, since 2 November 2026; it said *has no OS access* before). An account without the access has no node |
-| editor | on the right, a tab for each open record. **While it has the focus the character at the cursor is shown in the highlight style** (as well as the terminal's own cursor being put there), so the place shows on a terminal that draws its cursor poorly. **If a block flashes beside the text as you type** (seen in lxterminal and Xfce Terminal, not in GNOME Terminal or Terminator), set the terminal's cursor style to underline or I-beam in its preferences: the highlighted character and a block cursor on top of it are what some terminals draw badly. It is the text area `screen memo` uses, so its keys are `memo`'s: selection, cut, copy and paste, undo and redo, find, line numbers. Text is colored as SD BASIC, C, Python, JSON, shell or Markdown **chosen as [SED](27a-sd-tcl-sed.html) chooses** (since 26 October 2026): by the name of the file, then the record id, then the first line - so a script with no suffix that begins `#!/bin/sh` is shell - and then the languages a site added in `&sed.syntax&`. **A horizontal scroll bar runs along its bottom row** (`<` and `>` at the ends, a thumb as long as the visible part is of the longest line; none to speak of when every line fits); clicking an arrow scrolls 8 columns and clicking the track a page |
+| menu bar | the top row; F10 or Esc opens it, and a click on a title opens that menu (a click on the bar beside the titles does nothing). Its right end says *ide* and who you are (*ide  pat@sales*), as the toolkit pages and SED do |
+| tree | the account's files on the left (**the entries whose names start with a dollar sign - `$acc`, `$hold`, `$map`, `$release` - are not listed**: they belong to SD itself). Return on a file lists its records (the first 2000, and a message says when there are more; a big file is no longer read whole first), and Return again closes the list. **A file that has a dictionary shows the dictionary as a node of its own under it**, read only when you open it, and its items are listed the same way. Return on a record opens it. A letter jumps to the next entry that starts with it. **An account that has operating system access (the administrator, or `os-on`) also sees an *Operating system files* node after its files**: Return on it lists `/`, Return on a directory lists its entries (directories first, then files, each in the order of the names; 1000 at most) and again closes it, and Return on a file opens it in a tab, as `path:/full/name` does. Names that hold a control character or a byte from 248 to 255 cannot be shown or put in a path; a message says how many entries were left out. A directory the operating system does not let the session read says so, with the operating system's error number (message 11599). An account without the access has no node |
+| editor | on the right, a tab for each open record. **While it has the focus the character at the cursor is shown in the highlight style** (as well as the terminal's own cursor being put there), so the place shows on a terminal that draws its cursor poorly. **If a block flashes beside the text as you type** (seen in lxterminal and Xfce Terminal, not in GNOME Terminal or Terminator), set the terminal's cursor style to underline or I-beam in its preferences: the highlighted character and a block cursor on top of it are what some terminals draw badly. It is the text area `screen memo` uses, so its keys are `memo`'s: selection, cut, copy and paste, undo and redo, find, line numbers. Text is colored as SD BASIC, C, Python, JSON, shell or Markdown **chosen as [SED](27a-sd-tcl-sed.html) chooses**: by the name of the file, then the record id, then the first line - so a script with no suffix that begins `#!/bin/sh` is shell - and then the languages a site added in `&sed.syntax&`. **A horizontal scroll bar runs along its bottom row** (`<` and `>` at the ends, a thumb as long as the visible part is of the longest line; none to speak of when every line fits); clicking an arrow scrolls 8 columns and clicking the track a page |
 | table | under the editor: the compiler's errors, or search results |
-| pane marks | **`[*]` or `[-]` in the top right corner of each pane that can have the keyboard** (since 19 October 2026): the files (on the frame above the tree), the editor (on the frame above it), the tab strip (at its right end) and the messages (at the right end of their bar). `[*]` is on the pane that has the keyboard, `[-]` on the others; F6 moves it round in that order |
+| pane marks | **`[*]` or `[-]` in the top right corner of each pane that can have the keyboard**: the files (on the frame above the tree), the editor (on the frame above it), the tab strip (at its right end) and the messages (at the right end of their bar). `[*]` is on the pane that has the keyboard, `[-]` on the others; F6 moves it round in that order |
 | status line | **the pane that has the focus** first, in brackets (`[Files]`, `[Tabs]`, `[Editor]`, `[Messages]`: F6 goes round them in that order, past the messages when there are none), then the record, the cursor's line and column, and a star when there are unsaved changes |
 
 | key | |
 |---|---|
 | F8 · Build, Compile | save and compile; the compiler's lines go in the table. Return on one goes to its line, F4 to the next |
-| Shift-F9 · Build, Compile and catalog | the build: compile and catalog. *Cataloged* is said only if `catalog` added the program (F9 until 8 November 2026) |
-| F9 · Build, Run | compile and run (F5 until 8 November 2026: F5 now draws the screen again, as on every page) |
+| Shift-F9 · Build, Compile and catalog | the build: compile and catalog. *Cataloged* is said only if `catalog` added the program |
+| F9 · Build, Run | compile and run (F5 draws the screen again, as on every page) |
 | F7 · Build, Debug | compile with debugging and run the debugger. **Shift-F7** (Build, Toggle breakpoint) marks the cursor's line as a breakpoint for it, Build, Clear breakpoints takes the marks away and Build, Debug from the first line stops at line 1: see [SD Basic - Debugging](17-sd-basic-debugging.html) |
 | Ctrl-S · File, Save | save the record (an untitled buffer asks for its file and name first; an unchanged record says *No changes to save*). **Ctrl-S is the only save key**; F2 no longer saves |
 | Ctrl-N · File, New record | a new record: the name form, then a buffer that is not on the disk until it is saved. **`path:/full/name` there makes an empty file of the operating system and opens it in a tab** (below) |
@@ -329,21 +328,21 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | File, Write a copy | the name form; the text is written to another record and the editor stays on the record it had. **With `path:/full/name` the text is written to a new file of the operating system** and no tab or lock is kept. It has no key |
 | Ctrl-W · File, Close record | closes the record's tab; with unsaved changes it asks whether to save them, discard them or cancel |
 | Ctrl-PageDown · Go, Next tab | the next record tab; Ctrl-PageUp (Go, Previous tab) the one before. **Alt-PageDown and Alt-PageUp do the same** (the second tab keys): GNOME Terminal keeps Ctrl-PageUp and Ctrl-PageDown for its own tabs, so use the Alt keys there |
-| F6 · Go, Next pane | the keyboard goes to the next pane (the AI line is one, after the messages, when the AI is on for your account). **Shift-F6** (Go, Previous pane) goes to the one before. These are the only keys that move between the panes, here and on every full-screen page (since 8 November 2026) |
+| F6 · Go, Next pane | the keyboard goes to the next pane (the AI line is one, after the messages, when the AI is on for your account). **Shift-F6** (Go, Previous pane) goes to the one before. These are the only keys that move between the panes, here and on every full-screen page |
 | Go, Files and records | the keyboard goes to the tree. It has no key, because F3 is the text area's find next (below). From the editor, Shift-F6 twice reaches the tree (editor, tabs, tree); so does F6 twice (editor, messages, tree) when the AI pane is not open |
 | F3 · Shift-F3 | with the editor focused, **find next** and **find previous** of the text last searched for |
-| Ctrl-R · Search, Replace in the record | replace a text through the record, **as one undo step** (since 29 October 2026: one Ctrl-Z gives the whole text back; it used to forget the undo steps). The find options below apply. **In a record shown with `:@vm:` marks it changes the record's own text** (the colon in `10:30` is a colon; a mark's token is never found or changed, and a result that cannot be shown in the token form is refused and leaves the text alone). A text to find is at most **256 characters** |
-| Search, List matching lines | **the lines of this record that hold a text, with their numbers, in the table at the bottom** (SED's VIEW; since 29 October 2026); Return on one goes to it, F4 to the next. It looks at a read-only tab too. It has no key |
+| Ctrl-R · Search, Replace in the record | replace a text through the record, **as one undo step** (one Ctrl-Z gives the whole text back). The find options below apply. **In a record shown with `:@vm:` marks it changes the record's own text** (the colon in `10:30` is a colon; a mark's token is never found or changed, and a result that cannot be shown in the token form is refused and leaves the text alone). A text to find is at most **256 characters** |
+| Search, List matching lines | **the lines of this record that hold a text, with their numbers, in the table at the bottom** (SED's VIEW); Return on one goes to it, F4 to the next. It looks at a read-only tab too. It has no key |
 | Search, Query replace | each match is shown with its line and asked about: **Yes, No, All, Quit**; the answers are collected and the text is set once at the end, so one Ctrl-Z undoes the lot. A Quit keeps the Yes answers given before it |
 | Search, Find options | **C** = match case, **W** = whole words (a letter, a digit, `.`, `_`, `$` or `%` next to the match makes it part of another word); a blank answer is neither. As delivered the case is matched (how Replace always compared) and any word is found. The options are for List matching lines, Replace and Query replace; the text area's own Find (Ctrl-F, F3) ignores case and is not changed |
 | Search, Upcase the selection · Downcase the selection | the characters between the mark (**Ctrl-G** sets it where the cursor is) and the cursor change case; the rest of the text does not; one undo step |
-| Search, Import a record here | the name form (the record must exist); its lines go in at the cursor, one undo step. A record that holds value, subvalue or text marks or characters outside ASCII and a collection file's record are refused, with the reason. **`path:/full/name` imports a file of the operating system** (since 30 October 2026): from the text of the tab that holds the file, if there is one, else from the file itself, read through the account's gates and closed again; a file the IDE would not open (a NUL or a byte from 248 to 255, over 2 MB, a directory, a device) is refused as Open refuses it |
+| Search, Import a record here | the name form (the record must exist); its lines go in at the cursor, one undo step. A record that holds value, subvalue or text marks or characters outside ASCII and a collection file's record are refused, with the reason. **`path:/full/name` imports a file of the operating system**: from the text of the tab that holds the file, if there is one, else from the file itself, read through the account's gates and closed again; a file the IDE would not open (a NUL or a byte from 248 to 255, over 2 MB, a directory, a device) is refused as Open refuses it |
 | Search, Export the selection | the name form (a record that is not there, as Write a copy asks); the selected text is written to it, under the account's edit gate and the record's lock, as the record when the selection is whole lines of a record shown with `:@vm:` marks (the tokens are written as the marks; a part of a line is written as the text shown). It works on a read-only tab, but not on a record that holds characters outside ASCII. **`path:/full/name` writes the selection to a new file of the operating system** (below) |
 | Build, Run a command | **a command of the account's TCL, typed in a question**, is run as the prompt would run it - through the same command processor, so with the same gates - and what it printed is in the table at the bottom (500 lines at most). The changed texts' recovery copies are kept first and the tabs' locks taken again after. **A command that aborts (a program with a run-time error, `abort`) is stopped and the IDE stays up**; it prints nothing in the table. A command that asks the keyboard for an answer is not for this, and neither is one that changes the account (`logto`): the IDE goes on in the account the command left |
 | Up · Down in a Run a command question | bring back the commands run from either Run a command in this session (twenty) |
 | Saving a record | when a subroutine `source.control` is catalogued, every save calls it before the write, as `sed` and `ed` do: it can refuse the write or change the record |
 | Build, Run a command at the terminal | for a command that needs the terminal: **the screen is given to the command**, Return brings the IDE back with the tabs as they were. It goes through the same command processor, so with the same gates; a command that aborts gives the IDE back too. A record the command changed is not read again by the tab that holds it |
-| Search, Stamp a history line | puts `* Updated by` *who* `(`*login name*`)` and the time and date above the cursor's line, as SED's STAMP did; one undo step, nothing saved (since 9 November 2026) |
+| Search, Stamp a history line | puts `* Updated by` *who* `(`*login name*`)` and the time and date above the cursor's line, as SED's STAMP did; one undo step, nothing saved |
 | Search, Expand tabs | every tab character in the text becomes blanks to the next tab stop of the tab width, as SED's EXPAND.TABS did; one undo step |
 | Build, Run with arguments | asks for the words to put after the program's name, then compiles and runs it as Run does (`run bp prog words`); the program reads them with `SENTENCE()` |
 | Alt-= · View, Character code | the code of the character at the cursor, its name when it is a control character, and its field, value and subvalue, on the status line |
@@ -353,21 +352,21 @@ records of the file as a select list does, the first ten in tabs** (since 31 Oct
 | F5, Ctrl-L · View, Refresh | draws the screen again from what the IDE holds |
 | Ctrl-T · View, Theme | the next color theme, kept for you (below) |
 | Ctrl-K · Help, Keys | the IDE's keys, in a box |
-| Edit, Undo · Redo · Cut · Copy · Paste · Select all | the editor's Ctrl-Z, Ctrl-Y, Ctrl-X, Ctrl-C, Ctrl-V and Ctrl-A, from the menu (since 8 November 2026); in the fields pane, the pane's own copy, cut and paste |
-| Edit, Delete the word before · Cut to the end of the line · Swap two characters · Word in capitals · Word in small letters · Capital initial of the word · Close a run of blanks · Align with the line above · Swap cursor and mark | SED's editing commands (since 9 November 2026), on the editor's own keys: Alt-Backspace, Alt-E, Alt-T, Alt-U, Alt-L, Alt-C, Alt-Space, Alt-A and Alt-M; Alt-D deletes the word at the cursor and Ctrl-Up / Ctrl-Down move the view a line. They work on the text, not in the fields pane |
+| Edit, Undo · Redo · Cut · Copy · Paste · Select all | the editor's Ctrl-Z, Ctrl-Y, Ctrl-X, Ctrl-C, Ctrl-V and Ctrl-A, from the menu; in the fields pane, the pane's own copy, cut and paste |
+| Edit, Delete the word before · Cut to the end of the line · Swap two characters · Word in capitals · Word in small letters · Capital initial of the word · Close a run of blanks · Align with the line above · Swap cursor and mark | SED's editing commands, on the editor's own keys: Alt-Backspace, Alt-E, Alt-T, Alt-U, Alt-L, Alt-C, Alt-Space, Alt-A and Alt-M; Alt-D deletes the word at the cursor and Ctrl-Up / Ctrl-Down move the view a line. They work on the text, not in the fields pane |
 | Go, Filter the records | **which records the tree lists for a file or its dictionary**: a pattern (`abc...`), a text in quotes, or `like` or `with` and a query, as at `sed`'s record name; empty lists them all. A filter sorts the whole file. A list longer than 2,000 records goes by pages: the last row of the list goes on to the next 2,000 and the first row back |
 | File, Spool the text | **prints the tab's text as it is now, saved or not**, to print unit 0, and changes nothing. The question takes `at` *printer* (for this job only), `lnum` (line numbers) and `region` (the lines of the selection) |
 | Alt-R · Edit, Start or end a macro · Alt-P · Edit, Execute the macro | **Alt-R** records the keys the editor acts on until Alt-R again (the status line says so) and **Alt-P** plays them, each as if typed, stopping at a key the editor refused; a function key, a menu and a paste are not recorded. One macro, kept while the IDE runs |
 | Edit, Insert a field · Delete a field · Rename the field · Change the type | the fields pane's Ins, Del, F3 and Alt-T; outside the fields pane they say to show the fields first (F12) |
-| Tools, Files · Dictionary · Vocabulary · Queries · Bulk update · Programs · Tests | **opens that development page** (`tool.files`, `tool.dict`, `tool.voc`, `tool.query`, `tool.bulk`, `tool.catalog`, `tool.test`; see [The Development Tools](29c-sd-tcl-the-development-tools.html)) on the whole screen, since 3 November 2026. The IDE gives the terminal to the page as Run gives it to a program: what you typed in the editor stays in its tab, unsaved; leave the page (Ctrl-Q), press Return at *Press Return to go back to the IDE*, and the IDE is back with its tabs, saying *Back from ...*. The page asks your account's gates exactly as when you type its name at the prompt. A record the page changed while it is open in a tab is not read again: close the tab and open it to see the change. The menu has no keys; F10 then T opens it |
-| Alt-G · Go, Go to line | (Ctrl-L until 8 November 2026) **a line; line,column; or, in a record shown with `:@vm:` marks, field,value,subvalue** (the field is the line, the value follows the (v-1)th `:@vm:`, the subvalue the (s-1)th `:@sm:` inside it; the tokens are found in any case, and a value or subvalue past the last goes to the last; **two marks side by side - an empty value - count as one, so use the line and column there**). A number is made whole (`1.5` is 1) and one above 99,999,999 is taken as 99,999,999; a number under 1 or a word is not taken |
+| Tools, Files · Dictionary · Vocabulary · Queries · Bulk update · Programs · Tests | **opens that development page** (`tool.files`, `tool.dict`, `tool.voc`, `tool.query`, `tool.bulk`, `tool.catalog`, `tool.test`; see [The Development Tools](29c-sd-tcl-the-development-tools.html)) on the whole screen. The IDE gives the terminal to the page as Run gives it to a program: what you typed in the editor stays in its tab, unsaved; leave the page (Ctrl-Q), press Return at *Press Return to go back to the IDE*, and the IDE is back with its tabs, saying *Back from ...*. The page asks your account's gates exactly as when you type its name at the prompt. A record the page changed while it is open in a tab is not read again: close the tab and open it to see the change. The menu has no keys; F10 then T opens it |
+| Alt-G · Go, Go to line | **a line; line,column; or, in a record shown with `:@vm:` marks, field,value,subvalue** (the field is the line, the value follows the (v-1)th `:@vm:`, the subvalue the (s-1)th `:@sm:` inside it; the tokens are found in any case, and a value or subvalue past the last goes to the last; **two marks side by side - an empty value - count as one, so use the line and column there**). A number is made whole (`1.5` is 1) and one above 99,999,999 is taken as 99,999,999; a number under 1 or a word is not taken |
 | Search, Find in the records | find a text in every record of the file the tree is on (the first 2000 records, 500 lines), listed in the table; Return opens the record at the line. The text is at most 256 characters. It has no key (F11 was it) |
 | Ctrl-E · Go, Zoom the editor | the editor fills the screen; Ctrl-E again brings the files and the messages back (below) |
 | F12 · Go, Edit as fields | edit the record as a tree of fields, values and subvalues in the IDE's own fields view - the editor of [CED](27b-sd-tcl-ced.html), shown inside the editor's rectangle - and come back (below) |
-| Tab · Shift-Tab | in the editor, **indent and outdent** the line or the selected lines (below); in the tree, the tabs, the messages and the fields they do nothing (since 8 November 2026 they never move between the panes: F6 and Shift-F6 do). In a dialog, such as the name form, Tab still goes from field to field |
+| Tab · Shift-Tab | in the editor, **indent and outdent** the line or the selected lines (below); in the tree, the tabs, the messages and the fields they do nothing (they never move between the panes: F6 and Shift-F6 do). In a dialog, such as the name form, Tab still goes from field to field |
 | Go, Open the include | the record that the `$include` line at the cursor names, in a tab: one name is looked for in the file the tab is in and then in `syscom`, two words name the file; a collection-file record is passed over, and one that is not found says where it looked. It has no key |
 
-**A bare `ide` opens "Untitled 1"** (since 28 October 2026): an editable buffer, colored as a
+**A bare `ide` opens "Untitled 1"**: an editable buffer, colored as a
 program, with the cursor in it and the tree two keys away (Shift-F6 twice) or in the Go menu. Type, then save: **the name form** asks
 for the file and the record id together. The file is filled in - the file of the record you are in, else
 the file the tree is on, else `bp` - and the cursor
@@ -382,15 +381,14 @@ editor. A refusal by the edit gate on a save is shown whole in a box. **Catalog 
 only if `catalog` said it added the program**; otherwise its answer is shown in a box. In the editor the
 up and down arrows stop at the first and last line.
 
-**Each tab has a kind** (since 28 October 2026): a program, an item of a file's dictionary, a record
+**Each tab has a kind**: a program, an item of a file's dictionary, a record
 of the VOC, or a record of a data file. The kind decides the marks (below) and the gate that a save
 asks: a program asks `bp.edit`, a dictionary item `dict.edit` and a VOC record `voc.edit`, as SED and
 `ed` do, and the refusal is shown in a box that says which switch and what the administrator can do.
 Compile and Catalog on a dictionary item say it is not a program. A dictionary named in the New
 record form is not yet taken (use `ide dict`).
 
-**A record of a collection file opens as the text of its JSON** (since 29 October 2026; it was refused
-before), one element to a line, in a tab of its own. You edit the text as any other; **Ctrl-S parses it and
+**A record of a collection file opens as the text of its JSON**, one element to a line, in a tab of its own. You edit the text as any other; **Ctrl-S parses it and
 writes the COLLECTION to the file**, and the tab keeps the text in the same layout (`jbuild` with the pretty
 mode, the layout `ct` shows) so that a text you typed compact is not "changed" for ever. Text that is not a
 JSON object or array is refused in a box that says where the parse stopped, and the record on the disk is
@@ -403,7 +401,7 @@ it). A record that is neither an object nor an array (a plain value) is refused,
 The record is locked while the tab is open, as any record is. Find in the records still skips collection
 files.
 
-**A record open in a tab is locked for as long as the tab is open** (since 28 October 2026), as in
+**A record open in a tab is locked for as long as the tab is open**, as in
 SED. If another session already holds it the tab opens **read-only** and the status line says which
 user holds it: it cannot be changed or saved, and Write a copy keeps its text under another name.
 Closing the tab, quitting, a lost connection or any other way out gives the locks back; Run, Debug,
@@ -413,7 +411,7 @@ writes on those records** until it is closed, AUTOLOGOUT ends it or the administ
 session is making is refused. Compile, Run, Debug and Catalog work on a read-only tab that has no
 changes (they save first only when there is something to save).
 
-**A file of the operating system opens in a tab of its own** (since 28 October 2026): `ide
+**A file of the operating system opens in a tab of its own**: `ide
 path:/full/name`, or `path:/full/name` typed in the *File* entry of Open (Ctrl-O) - or `path:` there and the
 full name in the *Record* entry. **The name is the full path, as you typed it** (its case is not changed):
 it starts with a slash, has no `.` or `..` part, no doubled slash and no control character, and a path with
@@ -451,7 +449,7 @@ operating system, which is the way out when a save failed or the file was replac
 - **No recovery copy is kept** for such a tab, whatever the account's switch: the copy would be kept in your
   home, and the file may be anywhere.
 
-**Making a file of the operating system** (since 30 October 2026). In the name form of New (Ctrl-N), Save as,
+**Making a file of the operating system**. In the name form of New (Ctrl-N), Save as,
 the first save of an untitled buffer, Write a copy and Export the selection, type `path:/full/name` in the
 *File* entry (or `path:` there and the full name in the *Record* entry), spelled as for Open. The form asks the
 account's operating system access and its edit gate for operating system files first and says a refusal in
@@ -472,8 +470,8 @@ holds `os-on` is trusted with the whole machine, so for a name outside its own d
   or by a file someone else made a moment ago is refused (*was not made: a file with that name is there already*,
   message 11762); open it to change it. An existing **empty** plain file is filled. A name that is a directory,
   device, pipe or socket says it is not a plain file (11749). **A name another session holds locked** is
-  refused in a box (11997) and **nothing is made** (since 2 November 2026: the file is made only once its lock is
-  held; before, an empty file of that name could be left behind).
+  refused in a box (11997) and **nothing is made** (the file is made only once its lock is
+  held).
 - **The directory it goes in must be there**; the IDE never makes one. A missing directory, or a directory the
   operating system or the account's edit gate does not let this session make a file in, is refused with the
   error number (11763).
@@ -494,27 +492,27 @@ gives them back unchanged. The editor works a byte at a time, so a UTF-8 charact
 deleting one of its bytes leaves a broken character. The marks 248 to 255 are SD's own and go through the token
 form below.
 
-**Tab and Shift-Tab indent and outdent in the editor** (since 28 October 2026): Tab puts blanks in up to
+**Tab and Shift-Tab indent and outdent in the editor**: Tab puts blanks in up to
 the next stop (every 3 columns) or, with lines selected, indents them; Shift-Tab takes the indent out;
 each is one undo step and neither ever puts a tab character in. This is the IDE's editor only: a
 program's own `screen memo` keeps its Tab. F6 and Shift-F6 move between the panes, and Tab never leaves a pane.
 
-**Ctrl-Home and Ctrl-End, Ctrl-Left and Ctrl-Right, Ctrl-Del** (since 29 October 2026): the start and the
+**Ctrl-Home and Ctrl-End, Ctrl-Left and Ctrl-Right, Ctrl-Del**: the start and the
 end of the text, a word back and a word on, and delete the word at the cursor (the blanks before it and
 the word; the selection if there is one; at the end of a line it joins the next line, as one undo step).
 Again the IDE's editor only. A terminal that sends nothing for these keys, or something SD does not name,
 leaves them without effect; Home, End, Ctrl-U and Ctrl-P still move.
 
-**Overwrite mode, auto-indent, tab width and Format** (since 29 October 2026). **Ins**, or *View, Overwrite
+**Overwrite mode, auto-indent, tab width and Format**. **Ins**, or *View, Overwrite
 mode*, makes a typed character replace the one under the cursor (the status line shows `[overwrite]`; at the end
 of a line, and over a selection, typing inserts as ever). *View, Auto-indent* makes Return begin the new line
 with the blanks the line begins with (as many as stand before the cursor). *View, Tab width* asks for a number
-from 1 to 99 for Tab and Shift-Tab (3 to begin with; it took 1 to 8 until 9 November 2026). *Build, Format the program* lays the program in the tab
+from 1 to 99 for Tab and Shift-Tab (3 to begin with). *Build, Format the program* lays the program in the tab
 out again with the rules of the `format` verb, indenting by the tab width; it changes the text as one undo step
 and saves nothing, and leaves a program that has problems, or a record that is not a program, as it is.
 None of the three modes is kept between sessions. A cut or a paste of more than 100 lines is done at once.
 
-**An account can set the IDE's defaults in the record `&ide.options&`** (since 9 November 2026). It is an X
+**An account can set the IDE's defaults in the record `&ide.options&`**. It is an X
 record in the account's VOC; field 2 holds words, separated by blanks, and the IDE reads them each time it
 starts. **An account that has no `&ide.options&` but has SED's `&sed.options&` gets the IDE's defaults from
 that**, so a record kept for SED goes on working.
@@ -567,13 +565,12 @@ IDE it is the zoom and **End** ends a row. (The IDE no longer hands a record to 
 [SED](27a-sd-tcl-sed.html) is the IDE's own editor started by itself.)
 
 **F12 shows the record as fields, values and subvalues, so that nobody types a mark**
-(since 26 October 2026; in the IDE's own form since 30 October 2026, as a pane of the tab since the
-same day). The record in the open tab is shown in the *fields pane* - the editor of
+(in the IDE's own form, as a pane of the tab). The record in the open tab is shown in the *fields pane* - the editor of
 [CED](27b-sd-tcl-ced.html) in its *data mode*, drawn in the editor's rectangle with the tree, the tab
 strip and the messages still on the screen: a list of the fields, each field a text or a list of its
 values, each value a text or a list of its subvalues. Dive into a field with Return, go up with
 **Esc**, **Left** or **Backspace** (Esc at the top is the IDE's own Esc and opens the menu bar), change
-a text with Return, add or delete with **Ins** and **Del**, change the type with **Alt-T** (Ctrl-T until 8 November 2026), rename with
+a text with Return, add or delete with **Ins** and **Del**, change the type with **Alt-T**, rename with
 **F3**, and copy, cut and paste with **Ctrl-C**, **Ctrl-X** and **Ctrl-V**; the value and subvalue
 marks are put in from the shape of the tree. **The pane is a part of the tab, not a mode of the IDE**:
 the tabs, the menu bar, F6 and every IDE key keep working, each tab remembers whether it shows its
@@ -586,7 +583,7 @@ fields: bp prog is changed, save it to keep it*; *... is as it was* when nothing
 writes nothing and takes no lock. **Commands that work on the text of the record** - Replace, the case
 changes, Import and Export, Format, Go to line and Open the include - **wait while the pane
 is up** (*This works on the text of the record: show the text first (F12), then do it*). **The AI line
-works in the pane** (since 31 October 2026): a request typed in the AI entry, and the AI menu's
+works in the pane**: a request typed in the AI entry, and the AI menu's
 *explain the selection*, which explains the element the table has selected, send the record as
 indented JSON, one element to a line; the preview and the diff come first, and what you accept
 changes the fields and so the tab's text. Explaining a compile message does not apply to the pane.
@@ -595,12 +592,12 @@ Esc); a new record of a collection file starts as an empty collection. If someth
 else changes the text under the pane (the overwrite question's *Reload*, SED), the pane follows it,
 staying in the same container when it can; text that is no longer a record the fields can show ends the
 pane and the text is shown, untouched. With no record open, F12 says so.
-**A record of an ordinary file whose text is a JSON object or array** (since 29 October 2026, with no
+**A record of an ordinary file whose text is a JSON object or array** (with no
 value or subvalue mark in it) goes to CED as the *tree of the JSON*, as a collection file's record
 does, and comes back as the JSON text in the same layout; anything else (marks in the record, text
 that does not parse, text that does not begin with `{` or `[`) is shown as fields, as above.
 
-**A dictionary item opens as a form** (since 31 October 2026): `ide dict file record` (a record that is not
+**A dictionary item opens as a form**: `ide dict file record` (a record that is not
 there yet opens as a new D item) and **Return on an item in the tree** show the item as a form first, and so
 does the **E** of TOOL.DICT, which hands the item to the IDE. `ide dict file record /text` opens it as text;
 **Cancel** (or **Esc**) in the form leaves the item as text in its tab, and **Go, Dictionary item as
@@ -640,7 +637,7 @@ does not show (the compile stamp and object code of an I item, and any field aft
 they were while the type stays; a changed type starts from the new type's rows. The form is modal: the tabs and
 the menu wait until it is left.
 
-**The form has an AI line** (since 3 November 2026) when the AI is on for your account: **AI>** on its last
+**The form has an AI line** when the AI is on for your account: **AI>** on its last
 row, reached with **F6** or a click (Shift-F6, or F6 again, goes back to the row you were on; Tab goes from row to row, the AI line among them). Say what the item should be and press Enter there (Enter in that
 line asks the AI; it does not accept the form). Everything that will be sent is shown first, Cancel the
 default; the values the AI proposes are shown in full, Reject the default; **Accept puts into the rows only
@@ -648,8 +645,8 @@ the values that pass the form's own checks** and the line near the foot names an
 written until you Accept the form and the IDE saves it. An item of SD's own files is never sent. See
 [SD TCL - Asking the AI](29b-sd-tcl-asking-the-ai.html).
 
-**A record that holds marks is shown with the marks written as tokens** (since 26 October 2026), so
-that nobody types one. Since 28 October 2026 this follows the tab's kind: **a dictionary item, a VOC record
+**A record that holds marks is shown with the marks written as tokens**, so
+that nobody types one. This follows the tab's kind: **a dictionary item, a VOC record
 and a record of a data file are always shown so, even one that had no marks when it was read**, so that a mark
 can be typed into it; **a program never is**. A value mark is `@vm`, a subvalue mark `@sm` and a text mark `@tm`, joined to
 the text beside them by a colon as in BASIC: the field *Don, Henry, June* with value marks between
@@ -669,7 +666,7 @@ It is shown as it is, with the marks drawn as the characters they are, and the s
 file looks at the real records, and replace works on the real record, so neither matches a token;
 the item mark is not converted.
 
-**The AI in the IDE** (since 24 October 2026). When the AI is on for your account (see
+**The AI in the IDE**. When the AI is on for your account (see
 [Asking the AI](29b-sd-tcl-asking-the-ai.html)) the IDE has an **AI** menu before Help and an
 **`AI>`** row under the editor and the messages table (the table is one row shorter); without the AI
 neither is there and nothing else changes. F6 goes round the panes to the AI row (Shift-F6 the other
@@ -714,10 +711,10 @@ your own theme if you chose one, else the site's (`SCREENTHEME` in `sd.conf`, pa
 pages, in SED and in the debugger: paper when neither names one or the name is not
 a theme, mono on a terminal with no color. Ctrl-T or View, Theme goes through blue, classic,
 mono, night and paper, skipping those the terminal cannot show, and **SD keeps the
-choice for you** (since 8 November 2026): the IDE, every page, SED and the debugger start in it
+choice for you**: the IDE, every page, SED and the debugger start in it
 from then on, in this account and in later sessions.
 
-**A recovery copy of text you have not saved** (since 28 October 2026), **if the administrator has turned it
+**A recovery copy of text you have not saved**, **if the administrator has turned it
 on for your account** (`modify.account` *account* `recovery-on`, for a user account; it is off as delivered). Then
 the IDE copies the text of every changed record after a second without typing, before it hands the screen to a
 program, and when the session ends. **The copies are in your own Linux home**, in
@@ -738,8 +735,7 @@ edit collection-file records only as JSON text or fields, and an operating-syste
 most; a file with content is never replaced by a new one, no directory is made, and there is no rename, delete
 or change of mode; SED's own `path:` form no longer opens one).
 
-**The IDE is laid out for 140 columns by 43 lines or more** (it was 140 by 42
-until 28 October 2026, and 60 by 16 before 18 October); a bigger window is used
+**The IDE is laid out for 140 columns by 43 lines or more**; a bigger window is used
 whole. **A window smaller than 140 by 43 when the IDE starts is refused**, in words
 (*IDE needs a window of at least 140 columns by 43 lines; this one is 100 by 30*),
 and nothing is drawn; `ed` is the editor for a small window. The window measured is
@@ -762,7 +758,7 @@ drawn again with everything as it was. [SED](27a-sd-tcl-sed.html) and
 at the window.
 
 A window made bigger, or smaller and then big enough again, keeps everything you
-were doing (since 2 November 2026): the editor's undo and redo steps, the selection,
+were doing: the editor's undo and redo steps, the selection,
 the text to find (F3), the cursor and the view, the messages table's row, the open
 nodes of the tree and a half-typed AI request. The parts of the screen are moved and
 sized where they are; if one of them cannot be moved, the IDE builds the screen again,

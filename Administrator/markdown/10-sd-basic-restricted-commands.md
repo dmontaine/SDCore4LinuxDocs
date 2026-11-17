@@ -31,10 +31,10 @@ exist, and this account may not call it.
 
 **`$internal` needs both halves.** `BCOMP` tests
 `kernel(K$INTERNAL, -1) and kernel(K$ADMINISTRATOR, -1)` — internal mode alone
-was enough until 13 Aug 2026, and it was not safe: internal programs are the
+is not enough, because internal programs are the
 only ones that may set the administrator flag, and `sd -internal` is not itself
-gated, so any account could have compiled a three-line program that granted
-itself administrator rights. That was demonstrated, not theorised.
+gated, so any account could otherwise compile a three-line program that grants
+itself administrator rights.
 
 
 ## A
@@ -93,7 +93,7 @@ itself administrator rights. That was demonstrated, not theorised.
 
 | | |
 |---|---|
-| **`fcontrol.int`** | `fcontrol.int(`*a*, *b*, *c*`)` ***(internal)*** — until 15 Oct 2026 this was `fcontrol`; that name is now the public function with openQM's numbers |
+| **`fcontrol.int`** | `fcontrol.int(`*a*, *b*, *c*`)` ***(internal)*** — the internal form; the name `fcontrol` is the public function with openQM's numbers |
 | **`find`** | `find` *x* `in` *arr* {, *occ*} `setting` *f* {, *v* {, *sv*}} `then` … `else` … ***(internal)*** |
 | **`formcsv`** | `formcsv(`*a*`)` ***(internal)*** |
 
@@ -140,7 +140,7 @@ itself administrator rights. That was demonstrated, not theorised.
 | | |
 |---|---|
 | **`option`** | `option(`*a*`)` ***(internal)*** |
-| **`ospath`** | `ospath(`*a*, *b*`)` ***(internal)***. **Any program may call the openQM form, with openQM's key numbers (16 Oct 2026), behind the account's OS access gate;** the internal form keeps its own numbers. See *SD Basic - Status and the Machine* |
+| **`ospath`** | `ospath(`*a*, *b*`)` ***(internal)***. **Any program may call the openQM form, with openQM's key numbers, behind the account's OS access gate;** the internal form keeps its own numbers. See *SD Basic - Status and the Machine* |
 | **`osrename`** | `osrename(`*a*, *b*`)` ***(internal)*** |
 
 ## P

@@ -23,8 +23,7 @@ marks a word typed as it stands; braces mark an optional part. **`ed`'s own
 commands are shown in upper case**, which is how `ed`'s `HELP` prints them; it
 folds case too.
 
-> **Every listing on this page was produced by running it**, on SD Core for
-> Linux, against a scratch record in an account's `bp` file.
+> The listings use a scratch record in an account's `bp` file.
 
 ## Starting it
 
@@ -260,7 +259,7 @@ Returned from EV mode
 `SV` leaves `EV` keeping the changes, `QV` discards them. Three levels are
 available: values, subvalues, and the elements of a compound I-type.
 
-**In `EV` a line number carries the positions above it** (16 Oct 2026): the
+**In `EV` a line number carries the positions above it**: the
 example edited field 1, so its values are `1.0001`, `1.0002`, `1.0003`; one
 level down, in the subvalues of value 2 of field 1, a line is `1.2.0001`.
 `NO.EV.POSITION` in the `$ed.options` record of the VOC leaves the prefix out
@@ -320,9 +319,7 @@ The start-line and end-line questions of `LOAD` and `UNLOAD` are different: Ente
 takes their default (the whole record), and the end of the input is not an Enter,
 so the command is canceled and `UNLOAD` writes nothing. A script that wants its
 work kept ends with `FI` (or `SAVE`). An empty Enter at the `----:` prompt on a
-terminal is still an empty command and shows the next line. Before 19 October 2026
-such a session went on for as long as it was left, printing the prompt without end
-and using all of a CPU.
+terminal is still an empty command and shows the next line.
 
 ### `XEQ` runs a TCL command without leaving the editor
 
@@ -354,7 +351,7 @@ FIle [[filename] record.id]
 
 ### External commands: a cataloged subroutine as an ED command
 
-**You can add commands to `ed`** (16 Oct 2026) by writing a subroutine and naming
+**You can add commands to `ed`** by writing a subroutine and naming
 the commands it handles in the `$ed.options` record of the VOC. A line of that
 record such as
 

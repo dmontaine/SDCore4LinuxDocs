@@ -126,9 +126,7 @@ which has other ways into an account's code: the global catalog is the
 with any arguments. (The files `root` runs at the next start used to belong to
 `sdsys` as well; from 2.0-0 they are `root`'s, see
 [Installation and the daemon](08-sd-installation.html#the-files-root-runs).)
-**History:** before 2.0-0 the membership was there for every account; the
-development of 2.0-0 made it off as delivered (26 October 2026) and then, on
-1 November 2026, on again. An install puts the `sdsys` user in the group of the
+An install puts the `sdsys` user in the group of the
 registered accounts that are already there **once** and records that in
 `/home/sd/$sdsys.access`; after that a `sdsys-off` you gave stands.
 
@@ -147,12 +145,12 @@ repairs the modes and changes nothing else; `sdsys-off` for an account that is
 off changes nothing. The two words conflict only with each other. **A session of
 SDSYS that is already running keeps the groups it started with**: sign on again
 after `sdsys-on`, and after `sdsys-off` that session still has the write until
-it ends. `create.account` and the installer switch it on for a new account (1 November 2026).
+it ends. `create.account` and the installer switch it on for a new account.
 
 ## Making an account: `create.account`
 
 ```
-create.account user <name> {ssh | api | both | none} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {files-write-on} {files-admin-on} {ai-on} {start-menu | start-terminal} {pins-on} {recovery-on} {xfer-on} {no.query}
+create.account user <name> {ssh | api | both | none} {ssh-key-on} {sh-on} {os-on} {voc-on} {bp-on} {dict-on} {shared-read-off} {shared-write-on} {net-on} {files-on} {files-write-on} {files-admin-on} {ai-on} {start-menu | start-terminal} {pins-on} {recovery-on} {xfer-on} {no.query}
 
 create.account group <name> {shared-read-off} {shared-write-on} {start-menu | start-terminal} {pins-on} {no.query}
 
@@ -195,7 +193,11 @@ Account fred has files no
 Account fred has files-write no
 Account fred keeps a recovery copy of unsaved editor text: no
 Account fred may move files over its ssh login (receive / send): no
+Account fred may sign in over ssh with a key: no
 ```
+
+The last line is `ssh-key-on`'s state (see *Signing in over ssh with a key*, below); it is
+not said for an account attached to an existing Linux user.
 
 **Two words set up the home screen, in the same command** (they are not gates; *Where a
 session starts* and *What the home screen shows*, below): `start-menu` or `start-terminal`
@@ -257,7 +259,12 @@ or the API route is checked: if this computer has no ssh server installed,
 or the API listener is off (`remote.api on` turns it on), `create.account`
 says so after the route line. The warning does not stop anything: the
 account is made and the route works the day the server or listener is
-turned on.
+turned on. `modify.account` gives the same two warnings when it grants `ssh`,
+`api` or `both`, again with no refusal and nothing undone. Neither checks that
+`sshd` is running (Ubuntu starts it on demand).
+
+**`create.account` ends with `@system.return.code` 0 when the account is made**, so
+a paragraph that tests the code after it sees success as success.
 
 **Every account gets the same VOC**, the whole of `newvoc` — there is no
 tier. What differs from one account to the next is what it is *allowed to
@@ -335,6 +342,11 @@ are one switch. Two things stay shut:
   is never reachable this way; the account's own VOC is, as always.
 - Any directory that is not an SD account's, `/etc` included, still needs
   `os-on`.
+
+**A smaller thing to open than `os-on` is `NETDIRS`** in `sd.conf`: directories outside every
+account that every account without `os-on` may read and write by pathname, for a site whose
+data lives in a shared directory. It is empty as delivered and filling it is a loosening
+for every such account on every route; see *`NETDIRS`* in *Configuration*.
 
 **SDSYS is not affected** — it is never refused. `os-on` implies `sd-on`.
 The setting lives in field 9 of the register record and is not carried by an
@@ -653,8 +665,7 @@ Account fred has files yes
 Account fred has files no
 ```
 
-(The word was "FILES" in capitals until 19 October 2026; SD writes a keyword it prints in
-lower case, as the line for `files-write` always did.)
+(SD writes a keyword it prints in lower case.)
 
 Asking for what is already so changes nothing and says so ("fred already had that
 access; nothing changed"). The change is made by the same privileged helper as the
@@ -675,8 +686,7 @@ end of the login, after the password has been proved:
    connection.
 4. A person in **neither** group is refused exactly as before: "*name* is not
    permitted to use the API", with the reason `not a member of sdapi or sdfiles` in the
-   audit trail (it said only `not a member of sdapi` until 19 October 2026, although the
-   decision is made on both groups). If the group file cannot be read the login is refused,
+   audit trail (the decision is made on both groups). If the group file cannot be read the login is refused,
    not guessed, with a reason of its own.
 5. `sdsys` is exempt from both groups by name and keeps the doors it has always
    had; it is never made files-only.
@@ -695,7 +705,7 @@ number this release has never heard of.
 | 11 to 15 | select; read the next id; clear a select list; read a saved list; release a lock |
 | 16 to 19 | write; write and keep the lock; delete; delete and keep the lock: **only with `files-write-on`** |
 | 26 | select on an index. Allowed because it is a select, with 37 to 39 |
-| 30 to 34 | lock a record; clear a file; lock and unlock a file; ask whether a record is locked (34, added on 20 October 2026: the answer names the holder by his user number on this server): **only with `files-write-on`** |
+| 30 to 34 | lock a record; clear a file; lock and unlock a file; ask whether a record is locked (34: the answer names the holder by his user number on this server): **only with `files-write-on`** |
 | 35, 36 | list the indices |
 | 37 to 39 | select a list; select by an index value; select by an index key |
 | 40, 41 | file information; read one field (a `readv` that takes a lock is a change and needs `files-write-on`) |
@@ -826,8 +836,7 @@ To take the route away from somebody who is connected now, `files-off` and end t
 connection.
 
 **Audit trail.** A files-only login writes `api login route=sdfiles write=off admin=off user=fred`
-(`write=on` for a person in `sdfileswrite`, `admin=on` for one in `sdfilesadmin`; the `admin=` word
-has been there since 21 October 2026). Each refusal writes
+(`write=on` for a person in `sdfileswrite`, `admin=on` for one in `sdfilesadmin`). Each refusal writes
 `api refused request=26 route=sdfiles write=off admin=off user=fred` (the number is the
 request; `write` and `admin` are the state of the login, so a refusal with both `on` is a request
 no files-only login may make). A user in neither group, as before, has the refused login in the usual
@@ -860,9 +869,7 @@ directory is refused unless the account holds `os-on`. A refused open takes
 the `ELSE` branch with status 3035, like any other refusal here. **SDSYS is
 never refused.**
 
-**The API's request 29, "open an SDNet file", asks the same question** (since 20
-October 2026; it used to open any such pointer for a caller the `net-on` switch
-admitted, and the SDNet page of this set listed that as a limit). It asks it of the
+**The API's request 29, "open an SDNet file", asks the same question.** It asks it of the
 account **named in the request**, from that account's own register record, and not of
 the account the API session happens to be in: a file pointer in the named account's VOC
 must lead inside that account's own directory (`..` and links resolved, a directory
@@ -884,8 +891,7 @@ own pointers keep working; the Q-pointer rule applies to them too.
 The `account:file` form of a file name is always available, with no `sd.conf`
 setting: a name in no VOC record with one colon is read as a Q-pointer to that
 account and file, and the **Q-pointer rule above applies to it unchanged**, so it
-opens only what a Q-pointer the account wrote could open. The `path:name` form went
-with the `FILERULE` setting on 28 October 2026. Any other file outside the account
+opens only what a Q-pointer the account wrote could open. There is no `path:name` form. Any other file outside the account
 is reached only through a VOC pointer, which is held to the `os-on` rule and the
 Q-pointer rule above.
 
@@ -917,6 +923,7 @@ value a process can forget to set.
 ```
 modify.account account add | delete  <user.name>
 modify.account account ssh | api | both | none
+modify.account account ssh-key-on | ssh-key-off
 modify.account account sh-on | sh-off
 modify.account account os-on | os-off
 modify.account account sd-on | sd-off
@@ -936,7 +943,7 @@ modify.account account pins-on | pins-off
 modify.account account suspended | unsuspended
 ```
 
-**More than one action in a command** (from 19 Oct 2026). Any number of the
+**More than one action in a command.** Any number of the
 words above except `add` and `delete` may follow the account, in one command:
 `modify.account fred sh-on os-on voc-on bp-on`. SD reads every word first and
 then carries out all of them, or none of them:
@@ -974,10 +981,7 @@ Account hr: NOT every action was carried out. Done: voc-on. Not done: sh-on
 `add` and `delete` take one user name and stand alone: among other words, or
 with a word after the user name, they are refused with the message
 *add and delete take a user name and stand alone, and nothing was changed: ...*.
-The same word twice is one action. (Until 18 Oct 2026 the second word was read
-by nobody: `voc-off` was done and `bp-off` dropped without a message; from 18
-Oct it was refused with *modify.account does one action at a time*; it is done
-since 19 Oct.)
+The same word twice is one action.
 
 ### The accounts on one screen: `tool.accounts`
 
@@ -1029,7 +1033,11 @@ is the account holder's read-only "what my account may do" page, described in th
 set under *What this account may do*). One row for each registered
 account but SDSYS, one column for each gate the system has, in the order
 `modify.account` carries them out: `ssh api sh os sd voc bp dict xfer net sh-rd sh-wr files
-f-wr f-adm ai home sock`. **`xfer`** is file transfer over the ssh login (the words `xfer-on`
+f-wr f-adm ai key home sock`. **`key`** is ssh key sign-in (the words `ssh-key-on` and
+`ssh-key-off`, *Signing in over ssh with a key*, below): for a user account whose Linux user SD
+made, off as delivered, and turning it ON asks you to type the account's name; a dash for
+any other account. With this column an account's name is cut to ten characters in the
+matrix and shown in full in the box below it. **`xfer`** is file transfer over the ssh login (the words `xfer-on`
 and `xfer-off`, *File transfer*, below): for a user account only, like `sh` and `os`; it is
 off as delivered, it works only while `XFER` is 1 in `sd.conf` and the account has the
 `ssh` gate, and because it opens a door from the network into the account's transfer
@@ -1087,7 +1095,7 @@ had typed it.
   (`shared-read`, which is on as delivered, is left alone).
 * **Turning ON a gate that is off as delivered says so**, and says that leaving it off is
   the tighter choice. **Turning ON a gate that reaches beyond SD** (ssh, api, sh, os,
-  sd, net, files, files-write, files-admin, ai) **asks for the account's name to be
+  sd, net, files, files-write, files-admin, ai, ssh-key) **asks for the account's name to be
   typed**; turning anything OFF does not.
 * **ssh and api are one setting** in the verb: the words `ssh`, `api`, `both` and `none`
   SET the pair. The page therefore sends the one word that gives the pair of states you
@@ -1109,6 +1117,7 @@ had typed it.
 | | |
 |---|---|
 | **`ssh`** \| **`api`** \| **`both`** \| **`none`** | what the account's remote access **is**. Absolute: `api` takes ssh away |
+| **`ssh-key-on`** \| **`ssh-key-off`** | ssh sign-in with a key, for a user account whose Linux user SD made (see *Signing in over ssh with a key*). **Off as delivered**; independent of `ssh`: the account still needs its ssh route |
 | **`sh-on`** \| **`sh-off`** | the `sh` verb |
 | **`os-on`** \| **`os-off`** | `OS.EXECUTE`, the screen editors, the embedded Python, and operating-system paths outside the account's own directory (see above) |
 | **`sd-on`** \| **`sd-off`** | the directories of other SD accounts the user could `logto` (see above) |
@@ -1189,8 +1198,7 @@ Account fred keeps a recovery copy of unsaved editor text: yes
 
 With `recovery-on` the `ide` of that account copies the text of every record it has changed and not
 saved: after a second without typing, before it hands the screen to a program, and when the session
-ends. A hung-up terminal, a lost connection or an abort then does not lose the text. **Since 28 October 2026
-the copy sits in the person's own Linux home**, in `~/.local/state/sd/recovery/<account>/` (the home the
+ends. A hung-up terminal, a lost connection or an abort then does not lose the text. **The copy sits in the person's own Linux home**, in `~/.local/state/sd/recovery/<account>/` (the home the
 password database gives their Linux user, never the `HOME` variable), one file per record, readable only by
 the person, **outside every account**; it is deleted when the person saves, closes or quits normally, and the
 next time the record is opened the `ide` asks whether to use the copy, delete it, or leave the record
@@ -1215,8 +1223,8 @@ no copies.
 * **You cannot read the copies, by design.** `modify.account` runs as `sdsys`; the directories and the files are
   mode 700 and 600 for the person. `recovery-off` stops new copies; copies already made stay and are still
   offered to the person.
-* **Copies the first version left.** A copy in the directory `$recovery` of the account (kept there until
-  28 October 2026) is still offered once: with `recovery-on` it is moved to the person's home, with the
+* **Copies an earlier version left.** A copy in the directory `$recovery` of the account (where an
+  earlier version kept them) is still offered once: with `recovery-on` it is moved to the person's home, with the
   switch off it stays where it is until the person answers (use it or delete it; leaving the record
   unopened keeps it).
 * **When it reaches a session.** `recovery-off` stops new copies at once. A running `ide` learned at its start
@@ -1383,12 +1391,70 @@ modify.account account pins-off   they may not (the delivered state)
   changed`) and is audited as `set.tile off tile=ide account=fred`; `modify.account` says
   `Account fred may add its own programs to the home screen: yes`.
 
+### Signing in over ssh with a key: `ssh-key-on` and `ssh-key-off`
+
+```
+modify.account fred ssh-key-on
+modify.account fred ssh-key-off
+create.account user fred ssh ssh-key-on
+```
+
+**A Linux user that `create.account` makes cannot sign in over ssh with a key, as delivered.**
+It signs in with its password, and only if the account's ssh route is on. `ssh-key-on` lets
+that one account sign in with a key as well as with its password; `ssh-key-off` takes it
+back; `create.account user` *name* `ssh-key-on` makes the account with it on. `ssh-key-on`
+does not give the ssh route: the account still needs `ssh` or `both`. The gate matrix
+(`tool.gates`) has a column for it, turning it ON there asks you to type the account's
+name, and each account's own gate page shows its state. After the word SD says
+`Account fred may sign in over ssh with a key: yes` (or `no`).
+
+**What opening it means for security.** A key is a second way in that the account's password
+does not control. Whoever holds the private key signs in without the password, SD cannot see
+who holds a copy, and changing or removing the password does not close it: the key stays valid until it
+is taken out of the person's `authorized_keys` file. Turn it on only for an account whose
+keys you trust, and leave it off for everything else; leaving it off is the tighter choice.
+
+**How it is done.** The installer adds a setting to the ssh server's SD block that offers no
+key sign-in to the members of the Linux group `sdsshnokey`, and `create.account` puts each
+Linux user it makes in that group. `ssh-key-on` takes the user out of the group and
+`ssh-key-off` puts it back. The account's password sign-in is not touched either way.
+
+**Who it never affects.** Only a Linux user that SD itself made. The user who ran the
+installer, a Linux user attached to an account, root, the `sdsys` user and every user outside
+SD keep exactly the ssh settings they had, and `modify.account` refuses `ssh-key-on` and
+`ssh-key-off` for them, saying that their keys are their own (a group account or an
+`other` account has no Linux user and refuses them too). **The gate pages show a dash** for them.
+
+**What it does not do:**
+
+* **An upgrade changes no existing account.** Every account that existed before keeps the
+  key sign-in it had; only accounts made after the upgrade start with keys off. To shut keys
+  for an older account, `ssh-key-off` puts it in the group.
+* **It does not help on a machine whose own ssh server allows no password sign-in.** There an
+  account SD makes cannot use ssh at all until `ssh-key-on`.
+* **It does not override a rule you wrote.** A `Match` block or setting of your own in the ssh
+  server's configuration that is read before SD's block and sets `PubkeyAuthentication yes` for
+  the user wins: the first value the server finds is the one it uses.
+* **A backup made before this release restores with it off.** Such a backup holds no setting,
+  so `restore.account` puts the user in the group; `ssh-key-on` afterwards if it should have it.
+* **The group must exist.** It fails open: if `sdsshnokey` is missing or cannot be read, the
+  ssh server offers keys according to the machine's own settings. SD will not delete the
+  group, and an installation made before this release has none until it is installed again
+  (`ssh-key-off` then says the group is not a valid Linux group).
+
 ### `suspended`/`unsuspended` is a state, not a tier
 
 **Nothing about the account moves except the one field.** No group
 membership changes, no VOC changes — every account's VOC is the whole of
 `newvoc` regardless of the field. Three doors refuse a suspended account:
 signing in, `logto`, and the API.
+
+**`logto` refuses it to the administrator too.** `logto` into a suspended account is
+refused for every session, SDSYS's included: `Account fred is suspended`, the session stays
+where it was, and the audit trail says `logto refused account=fred reason=suspended`. The
+administrator's maintenance of a suspended account does not need `logto`: `run.in fred ...`
+(`basic`, `catalog`, `decatalog`, `delete.catalog`, `debug`, `compile.dict`) still works in
+one, and `modify.account fred unsuspended` lifts the suspension.
 
 ### `add`/`delete` is the grant
 

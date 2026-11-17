@@ -38,8 +38,8 @@ load-bearing and the remaining thirty are not.**
 | `X` | text | miscellaneous data — not a command |
 | `D` | descriptor | a data descriptor, which is what dictionary records are |
 
-**`PQ` is a valid type and is refused.** PROC was removed from this port
-(23 Aug 2026). A record of type `PQ` is reported as *"PROC is not
+**`PQ` is a valid type and is refused.** PROC is not supported in
+SD. A record of type `PQ` is reported as *"PROC is not
 supported"* rather than being dispatched, because the record itself is
 valid PROC and it is the interpreter that is gone.
 
@@ -69,13 +69,10 @@ smaller only because it lacks SDSYS's own administration verbs and a few
 system file pointers; it is not a *different kind* of VOC, and every
 ordinary account's copy is identical.
 
-> **`edit` used to be exactly this kind of trap** — a record present in the
-> VOC whose old type field read `Verb - Full screen editor` rather than `V`,
-> so it looked callable and refused at dispatch with *"Full screen editor is
-> no longer supported."* **That is history, not current behavior**: `edit`
-> is a real `V` record now, reinstated 26 Aug 2026, and works. The lesson
-> stands even though the example does not: **being in the VOC is not
-> evidence a command works** — check the type field, not just the name.
+> **Being in the VOC is not evidence a command works.** A record whose type
+> field does not read `V` (a record whose type field read `Verb - Full screen
+> editor`, say) looks callable and is refused at dispatch. `edit` is a real `V`
+> record and works. Check the type field, not just the name.
 
 ## The F record — a file
 
@@ -189,7 +186,7 @@ a marginal verb.
 ```
 
 This is `sd.accounts`. Field 2 is the account name, field 3 is the file
-name in that account. `set.file` writes Q-pointers; see below. Since 16 Oct 2026 the
+name in that account. `set.file` writes Q-pointers; see below. The
 target of `set.file` may itself be a Q-pointer, which makes a chain (not recommended, but it opens): each link is
 followed with the same account test, so a chain cannot reach where its links alone could not.
 

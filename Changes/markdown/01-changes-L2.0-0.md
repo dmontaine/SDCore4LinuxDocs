@@ -307,18 +307,18 @@ The kernel, `sd.conf`, and the numbered keys.
 | `deadlock=2` | Added | saves the lock tables when a deadlock is found |
 | `fileinfo()` | Added | the keys 1022 to 1040 as the openQM manual numbers them; `fl$seqtype`, `fl$locks`; 1021 now answers the user numbers |
 | `intprec` | Changed | default 11 |
-| lock table | Changed | the time each lock was taken and each wait began is noted; more than 65,535 locks in a file work; a program that filled the table can be logged out |
+| lock table | Changed | the time each lock was taken and each wait began is noted; a program that filled the table can be logged out |
 | `numlocks` | Changed | range checked, 1 to 32767 |
 | `phantoms=u,n` | Added | keeps user numbers for phantoms started with `user` |
 | process dump | Changed | shows the length of each string, the variables of objects and the environment |
-| `pterm` keys | Added | `pterm erase`, `ctrl.filter`, `mark`: which key erases; control characters filtered; control keys that type the marks |
+| `pterm` keys | Added | `pterm erase`, `ctrl.filter`, `mark`, `query`: which key erases; control characters filtered; control keys that type the marks; shows what your keys send, in hex and in terminfo form |
 | `sd.conf` parameters | Added | `dhcache`, `lgnwait`, `maxrlock`, `pwdelay`, `userpool`: `sd.conf` parameters, each optional with the old fixed number as the default |
 | sessions on a dropped connection | Changed | a session whose terminal or ssh connection goes away while it is writing the error log or the audit trail no longer waits for itself for ever, which stopped every later login |
 | `sortmem` | Changed | default 4096|
 | `status` | Changed | file times are in the user's time zone; field 27 is the file pathname |
 | `-status` | Added | `sd -status` shows the version, start time and process counts |
 | `system()` keys | Added | 14, 19, 20, 21, 33, 35, 45, 1016, 1036, 1037, 1040, 1045, 1047, 1048, 1049, 1051, 1062, 1065, 1067, 1071, 1073, 1083, 1086, 1088 |
-| terminfo | Changed | `eblink`, `eprot`, `edim`, `erev`, `ebold` capabilities; `xmc#1` in the two ADDS 4000 entries |
+| terminfo | Changed | `eblink`, `eprot`, `edim`, `erev`, `ebold` capabilities |
 | `system(1057)` | Changed | fixed: a phantom whose parent held a user number above the number of user table cells was told it had no parent; the test is now against the highest user number |
 | the call name | Changed | can be as long as 128 characters (the lower of 128 and `maxidlen`)|
 | the startup process | Changed | its `@tty` is `startup` |
@@ -340,6 +340,7 @@ Commands and VOC verbs that every account has, and the command language.
 | `catalog` prefix | Added | a prefix separate from the call name; `$private.catalog` or `$private.catalogue` |
 | catalog name as a command | Changed | a program run by its catalog name takes `lptr`, `no.page` and the like |
 | `ced` | Added | edits a data collection in a full-screen editor, with the keys every page shares |
+| `cname` | Changed | a renamed file's new name is stored in lower case; a name already in the VOC in any case, or one that differs from the old name only in case, is refused |
 | command stack | Changed | `.c-` undoes a `.0`; the stack is kept in the account the user entered |
 | `command.logging` | Added | a log of every command this session runs, in the account directory, mode 0600 |
 | `como` | Added | `append`, `in file`; `$como` ids pass the same name transform |
@@ -372,10 +373,12 @@ Commands and VOC verbs that every account has, and the command language.
 | `pause`, `ctrl-r` search | Changed | a session whose input has ended no longer spins at 100% CPU at `pause` or at the search prompt |
 | `phantom` | Added | `no.msg`, `data`, `log`, `group` and `user` options; `!phlog` gives a phantom's log record; a phantom started while SD is suspended gives back its place |
 | phantom and terminal lists | Added | `list.phantoms`, `list.term.types`: the phantoms and no one else; the terminal types |
+| phantom that cannot start | Changed | the reason is written to the error log (`phantom: cannot start a phantom from <path> - <reason>`); nothing is printed on the terminal |
 | `private vocabulary` | Added | `$private.voc`: a file of commands searched after all other command sources |
 | `profiler` | Added | records what the programs of a session do and where|
 | `redo` | Added | runs a command again and again, `times` and `every` |
 | `remove.examples` | Added | administrator only: takes the shipped example programs and their compiled objects out of `examples.bp` of every account in service, or of the accounts named (a list); keeps programs the administrator added, and deletes the file only when nothing is left in it |
+| `.s` (command stack) | Changed | a new saved sentence's VOC name is lower case; an existing one keeps its name |
 | saved list verbs | Changed | `save.list`, `get.list`, `delete.list`: `keep`, `deleting`, `count.sup`, a default name, a name left out, `in file` |
 | `selectindex` | Added | the command form of the statement |
 | `setptr` | Changed | `form.feed`, `inform`, `eject`, `as ... in file`; the digits of `next` |
@@ -513,6 +516,7 @@ has, with the changes they made.
 | `create.account` audit line | Changed | the audit line ends `gates=` with every access the command granted, or `gates=none` |
 | `create.account group` | Changed | fixed: the four record files of a new group account now get the account's own group (they were left in `sdusers`) |
 | `create.account` recovery word | Added | `create.account user <name> recovery-on` makes the account's `ide` keep a recovery copy of unsaved text; off as delivered, user accounts only (`recovery-off` is for `modify.account`) |
+| `create.account` return code | Changed | `@system.return.code` is 0 when the account is made |
 | `create.account` start and pins words | Changed | takes `start-menu`, `start-terminal` and `pins-on` on any kind of account; a refused word makes nothing; the audit line gains `pins-on` and a `start=` tail |
 | `create.account` xfer word | Added | `create.account user <name> xfer-on` lets the new account's person move files with `receive` and `send`; off as delivered, user accounts only (`xfer-off` is for `modify.account`) |
 | `dict-on` and `dict-off` | Added | per-account switch for saving a change to a dictionary |
@@ -526,11 +530,13 @@ has, with the changes they made.
 | `load.examples` | Added | administrator only: puts the shipped example programs into `examples.bp` of every account in service, or of the accounts named (a list), and compiles them there; keeps programs the administrator added |
 | `load.help` | Added | SDSYS loads the text of the `[?]` help buttons into the shared account; keeps records the administrator added |
 | `modify.account` | Changed | takes more than one action in a command (`modify.account fred sh-on os-on voc-on`), all carried out or none |
+| `logto` and a suspended account | Changed | refused to every session, the administrator's included; `run.in` still works in one, and `modify.account` *name* `unsuspended` lifts the suspension |
 | `logto` by the administrator | Changed | runs no `login` paragraph of the account it enters and does not open the home screen: the administrator lands at the prompt (owner's ruling; an ordinary user's `logto` is unchanged) |
 | `logto sdsys` | Changed | the administrator's session, having gone to another account, can come back with `logto sdsys` instead of signing out; every other session is still refused (10002) |
 | `modify.account add` and `delete` | Changed | fixed: a program that ran the verb with `execute` read `@system.return.code` as -1 after a change that had been made; it is now 0 (done, or nothing to change) or a failure code |
 | `modify.account files-off` | Changed | fixed: deals with a leftover `sdfileswrite` membership instead of making it live at the next `files-on` |
 | `modify.account recovery-on` and `recovery-off` | Added | per-account switch for the `ide`'s recovery copy of unsaved text; off as delivered; refused for a group or other account (message 11771) |
+| `modify.account` route warnings | Changed | `ssh` and `api` warn, as `create.account` does, when the machine has no ssh server or no API listener yet |
 | `modify.account xfer-on` and `xfer-off` | Added | per-account switch for file transfer over the ssh login (`receive`, `send`); off as delivered; needs `XFER=1` in `sd.conf` as well; refused for a group or other account |
 | `net-on` and `net-off` | Added | per-account switch for SDNet, off as delivered |
 | new account defaults | Changed | a new account has no ssh, no API, no shell and no `os.execute`; SDSYS opens each, account by account |
@@ -563,10 +569,12 @@ has, with the changes they made.
 | `shared-read-off` | Added | withdraws the shared account's files from one account (on for every account as delivered) |
 | `shared-write-on` | Added | lets one account change the shared account's files (off as delivered) |
 | `ssh` and `api` | Changed | a new account gets neither; `create.account user name ssh`, `api` or `both` and `modify.account` change it |
+| `ssh-key-on` and `ssh-key-off` | Added | `modify.account` and `create.account`: ssh key sign-in for an account whose Linux user SD made; off as delivered (the user is in the group `sdsshnokey`); refused for a Linux user SD did not make; a column on the gate pages |
 | `tool.accounts` | Added | full-screen page of every account: its kind, suspension, the gates that are on and who is signed on; suspends or lifts, adds or takes away a person of a group account, creates (the kind and the doors chosen, not typed; the verb asks for a password on the terminal) and deletes (one dialog: the name typed, the home directory kept or removed, Run; no terminal) |
 | `tool.audit` | Added | full-screen page that reads the audit trail from its end, a screen at a time: filters by time, event, account, user and text, go to a time, follow, the rotated files, and the lines shown saved to a record; it changes nothing else |
 | `tool.backups` | Added | full-screen page for backups and restores: the saved directory, the archives in it with each manifest, who else is signed on (a backup and a restore need everyone else out), and `backup.account`, `restore.account` and `set.backup.directory` behind a box |
 | `tool.config` | Added | full-screen page that shows every `sd.conf` parameter with what SD is running with, what the file says, the default and when a change takes effect, and names a line SD does not know; `E` changes one of 14 tuning parameters through `set.config` behind a box answered Run, and shows why and the line to add by hand for the rest |
+| `tool.config` and `tool.remote` status line | Changed | the status line says "Reading the settings (a few seconds)..." while the settings are read |
 | `tool.gates` | Added | full-screen matrix of every account against every gate; changes go through `modify.account`, never by themselves; A (all gates on) and N (all gates off) queue every gate of the cursor's account at once, to be trimmed before R runs them; in any other account the same verb is a read-only page of what that session may do |
 | `tool.gates` home gate | Added | a home column: ON starts the account's sessions at the home screen, off at the command prompt (`start-menu`, `start-terminal`); an account given neither follows the installer's answer |
 | `tool.gates` xfer gate | Added | an xfer column for file transfer (`xfer-on`, `xfer-off`), read from the register as the transfer server reads it; user accounts only; turning it ON asks for the account's name; the matrix now shows 15 letters of a name, the box below the whole name; the holder's page has the row too |
@@ -578,6 +586,7 @@ has, with the changes they made.
 | `tool.sessions` | Added | full-screen page of sessions and locks; logs a session out, releases a lock, stops new logins |
 | `update.accounts` deletion list | Changed | after the copy from `newvoc` it removes from the account's VOC the records on SD's deletion list (`sdsys/voc_removed`), but only the record SD shipped (not one of your own, not a `[locked]` one unless it is a verb), after saving a copy, and audits it; before `newvoc.mods` |
 | `update.accounts all` by SDSYS | Changed | an account whose VOC SDSYS cannot write (the `sdsys` user is not in its group) is skipped with a line that says so, and the command goes on and ends with the counts, where it stopped with error 3018 at the first one; the administrator's own VOC is updated from `voc_template` |
+| VOC descriptions | Changed | `backup.account`, `restore.account`, `settings.report` and `tool.jobs` carry a one-line description in the VOC |
 | `voc-on` and `voc-off` | Added | per-account switch for saving a change to a VOC |
 | `XFER` and the transfer limits | Added | `sd.conf`: `XFER` (0 as delivered; 1 lets accounts with `xfer-on` transfer files), `XFERFILE` (10 MB a file), `XFERSLOT` (100 MB a transfer), `XFERWAIT`, `XFERIDLE`, `XFERMAX` (60 minutes) and `XFERKIND` (the extensions taken; blank is any plain text); edited by hand |
 
@@ -603,6 +612,7 @@ has, with the changes they made.
 | `sd-ai` helper | Added | the one program that talks to the provider, started by the systemd socket `sd-ai.socket` as the operating system user `sdai`; it holds the provider's key, which SD never sees, and checks the account's `ai` gate on every request; its settings and keys are in `/var/lib/sd-ai` and kept by an upgrade |
 | `sdai` operating system user | Added | system user made by the installer for the AI feature: own group, no shell, no home, no SD group |
 | `set.ai` | Added | SDSYS chooses the provider, model and key from the prompt; `set.ai models` lists the provider's own model names, and a model it does not list is warned about |
+| `set.ai key` | Added | the key typed at the prompt shows one `*` for each character and is never shown itself; if the helper's client fails, `set.ai` says the key was not set and writes no audit line, even when an earlier key is stored |
 | `set.ai limit` | Added | SDSYS sets the limits of AI use: requests an hour (20) and tokens a day (100000) for each Linux user, seconds (30) and bytes each way (65536) for a request, and `max-tokens`, the length of an answer at the prompt and on every page (1024) |
 | `tool.ai` | Added | SDSYS page: Anthropic, OpenAI, Google, DeepSeek or custom, one provider for every account, each named provider with its address and a default model (a key is all it needs), each account's gate; S, one setup dialog that looks the same every time: the key in a password field and the model chosen from the provider's own list |
 
@@ -707,6 +717,7 @@ Three simple layers, with no vault and nothing on by default.
 | installer packages | Changed | also installs `gpm`, the console mouse daemon, so the full-screen tools have a mouse on a bare Linux console; the package starts it, the installer does not, and removing SD leaves it; on a machine with no console mouse device (a container, say) it is not installed at all, and if it cannot be installed the installer removes it again, warns and goes on |
 | installer: the `sdsys` user's groups | Changed | an install that keeps the accounts leaves the `sdsys` user in the group of each group account (`sdg_shared` among them); it used to take it out of all of them |
 | installer source message | Changed | says which source it is downloading, the release tag or `main` |
+| release package check | Added | a release zip carries the complete source in a `source` folder with its `SHA256SUMS`; the installer checks every file against the list before it asks anything, builds from that folder instead of downloading it, and stops on a changed, missing or unlisted file |
 | scheduled jobs on uninstall | Added | `deletesdcore.sh` switches every `sdcore-job-*` timer off, removes the timers and services, then `/etc/sdcore/jobs.d` |
 | root and `sdusers` | Changed | the installer adds root to `sdusers` for its own steps and takes it out again when they are done; if it cannot, it warns and goes on |
 | `sdsys` user in kept groups | Changed | an install that keeps accounts puts the `sdsys` user in the group of every user account already there, once, with no question, and records it in `/home/sd/$sdsys.access` so that a later `sdsys-off` is not undone by the next install |
@@ -805,6 +816,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `$ipc` mode | Changed | directories 2770 and files 0660, `sdsys:sdusers` (it was 775): an operating-system user outside `sdusers` can no longer read the commands, `DATA` lines and messages that every SD user's process leaves in it |
 | named common | Changed | fixed: a program that ended while holding objects in named common freed them twice |
 | named common with a `$` or `_` name | Changed | the system's own common blocks: only an internal program may declare or join one; any other program stops with message 11598 |
+| `netdirs` | Added | `sd.conf`: directories, separated by semicolons, that an account without `os-on` may read and write by pathname; no line as delivered; filling it loosens every such account |
 | `openseq` that fails | Changed | fixed: an `openseq` that took the else branch for an absent file kept the lock on its name until the file variable was closed; the shipped programs now close it there |
 | operating system paths | Changed | `dir()`, `select.dir`, `oscopy`, `!oscopy`, `!ioscopy`, `deleteseq` of a path, `opentemp`, `digest` of a file, `setptr ... as pathname`, `setpu`, the embedded Python and a VOC pointer out of the account each ask the account's `os` switch, and `sd-on` for another SD account |
 | `ospath()` in the shared account | Changed | the keys to delete (5), make a directory (13) and make a path (14) are refused inside the shared account for anybody but SDSYS (false, `status()` the permission error); the `$internal` opcode already did, the function every other program uses did not |
@@ -869,6 +881,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | home screen refused tile | Changed | a tile whose command is refused shows its message until a key is pressed, and the home screen no longer ends |
 | home screen small window | Changed | an account that starts in the home screen is signed out when the window is too small for it, even with the Terminal tile on (it used to be left at the prompt); SDSYS always starts at the prompt |
 | home screen sub-menus | Added | a tile can open a second page of tiles with a Back tile, Esc and the path on the status line; eight deep; the delivered page declares none yet |
+| home screen tiles | Changed | a tile for a `tool.` page whose verb is not in the account's VOC is not shown |
 | home screen version | Added | the date line in the header ends with the product and its version: `SD Core for Linux L2.0-0` |
 | `ide` | Added | tree, tabs, compile errors table, find, run, catalog and debug; Ctrl-E zooms the editor to the whole screen, and Go > Edit in SED hands a record to `sed` |
 | `ide` breakpoints | Added | Shift-F7 or a click in the gutter marks a line of a program tab (`*`); F7 runs to the first mark, Build / Debug from the first line stops at line 1 with them set; what the debugger still has comes back as marks; up to 20, only lines where a statement begins |

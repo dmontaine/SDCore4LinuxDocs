@@ -32,8 +32,7 @@ command, enter another account (`logto`), read a variable or use a sequential
 file is refused with *"This login is for files only: request n is not
 allowed"*, and the connection stays open. An account with `api` has the whole
 API whether or not it also has `files-on`. This is the route SDNet's logins are
-meant to use. It has not been run against a live server yet.
-
+meant to use.
 ## The login is SCRAM-SHA-256, and the old one is gone
 
 **A client that sends a password in clear is refused.** It gets *"Cleartext
@@ -183,12 +182,12 @@ is where the answer is — a suspended account shows it in that listing.
 
 ### If your data lives outside an account
 
-**There is no config-file mechanism here that widens an API session's
-reach — a real difference from SD Core for Windows's `NETDIRS` setting,
-which this port does not have** (`APIPORT` and `NETDIRS` are not parameters
-this port's configuration file accepts at all). An API session's file access is exactly its own account's,
-full stop: what the account's own file permissions and the confinement
-described above allow. The `os-on` switch is read for an API session like any
+**An API session's file access is its own account's**: what the account's own
+file permissions and the confinement described above allow. The one setting that
+widens it is `NETDIRS` in `sd.conf`, a list of directories outside every account that
+an account without `os-on` may also reach; it is empty as delivered, and the
+administrator fills it (see *`NETDIRS`* in the Administrator set's *Configuration*
+chapter). `APIPORT` is not a parameter of this port. The `os-on` switch is read for an API session like any
 other, but it does not lift this confinement (see
 [Security and the operating system](12a-security-and-the-operating-system.html)).
 If data needs to be reachable from more than one account, put it somewhere

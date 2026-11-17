@@ -193,10 +193,6 @@ The `ai request` line is written by the SD kernel **before** the connection is m
 | `The AI did not answer: net (...)` or `timeout` | the provider could not be reached; check the address, the certificate, the clock, and whether the machine needs a proxy to reach the internet (the helper uses none) |
 | `The AI did not answer: refused (the provider refused the request (HTTP 400): ...)` | the provider's own words follow the status: often a model it does not have; choose one from its list with S |
 
-## What has not been shown
-
-The helper, the verb and the page are tested against a stand-in provider on this machine, in a private copy of SD. They have **not been run against a real provider**: the request layouts follow each provider's published documentation, and the one for OpenAI (`max_completion_tokens`) has not been checked against a real key. A real install, the real systemd socket and the helper running as `sdai` are a separate check.
-
 ## See also
 
 [Accounts and Security](01-accounts-and-security.html) ·

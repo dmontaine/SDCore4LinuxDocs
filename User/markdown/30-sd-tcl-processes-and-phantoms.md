@@ -14,10 +14,8 @@ SD folds case, so a command may be typed in either case. Commands are shown here
 in lower case. In the tables, *italics* mark something you supply and **bold**
 marks a word typed as it stands; braces mark an optional part.
 
-> **The listings on this page were produced by running them**, on SD Core for
-> Linux. The two exceptions are `phantom` and `pdebug`, and the reason
-> is on the page: neither can be driven down a pipe, so both are described from
-> their source rather than shown.
+> `phantom` and `pdebug` are described rather than shown, for a reason
+> that is on the page: neither can be driven down a pipe.
 
 ## What is not on this page
 
@@ -58,7 +56,7 @@ and the address in hexadecimal.
 For a process that is **waiting for a lock**, `pstat` also shows when the wait
 began, as `list.readu detail` already did.
 
-**What `pstat` prints is another session's text, and it is made safe first** (since 28 October 2026).
+**What `pstat` prints is another session's text, and it is made safe first.**
 The command, the record it waits for, its program names and its account are shown with each control
 character, `del`, byte from 128 to 159 and mark character as `?`, so that a session cannot send a code to
 your terminal by what it types or locks. The text of `@pstat` (below) gets the same treatment, except that
@@ -136,6 +134,11 @@ never started.
 | *Phantom processes cannot be started within a transaction* | inside `begin transaction` |
 | *Failed to create phantom process* | the operating system would not create the process |
 
+**A phantom that is created and then cannot run SD's program ends without a word on your
+terminal**, and `phantom` returns as it always did. The reason is written to SD's error
+log, for the administrator to read, as a line beginning `phantom: cannot start a phantom
+from` and the path, then the reason.
+
 > **A phantom cannot be started from a scripted session, and this is the one
 > to know.** When SD is fed commands down a pipe, the phantom child inherits
 > that pipe. The job then never completes — not even after the parent session
@@ -199,8 +202,7 @@ program's own text and is not cleared for it.
 holds in memory reaches it** — no `@`-variables, no unnamed common, no open
 files, no active select list. **The command string is the only thing passed**,
 through a record in SD's `$IPC` file. The session's option settings do not go
-with it: a phantom starts with every option off. (Until 27 October 2026
-`option inherit` passed them on; the option is gone.)
+with it: a phantom starts with every option off. (There is no `option inherit`.)
 
 **The records are sealed.** `$IPC` is a file every SD user's process can
 write, so a phantom does not believe what it finds there. `phantom` makes a
@@ -340,9 +342,7 @@ can write and the store is readable by you alone, so `pdebug` and the phantom mu
 run as the same Linux user. `pdebug` says it cannot start (message 11948) when the
 store cannot be set up. The store survives a restart of SD, so `pdebug` clears its
 own user number's records when it starts, and a phantom ignores a start request
-whose `pdebug` has gone. (Until 9 November 2026 the messages were records of `$ipc`,
-which every SD user can write.)
-
+whose `pdebug` has gone.
 > **Do not send `pdebug` down a pipe.** It polls the keyboard while it waits,
 > and in a piped session the input stream is the script, so it consumes the
 > commands that have not run yet. Together with the phantom it starts, that is

@@ -57,8 +57,7 @@ upper left corner and stops taking keys while the cursor is off the screen — s
 the SED page. A `screen open` program of your own asks for the size it needs
 with `minsize`, and SD asks nothing more of it.)
 
-**SD's default is 140 columns by 43 lines, not 80 × 24** (it was 120 by 36
-until 18 October 2026, and 140 by 42 until 2 November 2026). It is what a session gets when there is no terminal to
+**SD's default is 140 columns by 43 lines, not 80 × 24.** It is what a session gets when there is no terminal to
 ask — a phantom, a piped script, a service — and a report that looks wrapped or
 truncated on a narrow window is usually the window, not the report.
 
@@ -177,8 +176,10 @@ tool.gates
 A full-screen page, for anyone, that answers "why can I not do that?" — it shows every
 **gate** the system has, the switches the administrator turns on or off for an account
 (`sh`, `os`, `sd`, `voc`, `bp`, `dict`, `net`, the shared account's read and write, and the
-routes `ssh`, `api`, `files`, `files-write`, `files-admin` and `ai`), each **ON** or **off
-for this session**. It needs a window of at least **140 columns by 43 lines**. (For the
+routes `ssh`, `api`, `files`, `files-write`, `files-admin` and `ai`, and `ssh-key`, whether
+you may sign in over ssh with a key as well as with your password; it is off as delivered
+for an account SD made, and a dash for a Linux user SD did not make, whose keys are its
+own), each **ON** or **off for this session**. It needs a window of at least **140 columns by 43 lines**. (For the
 administrator the same verb is the gate matrix of every account; this is the page every
 other account gets.)
 
@@ -195,7 +196,7 @@ again; **F1**, `?` or a click on the `[?]` explains the page; **Ctrl-Q** leaves.
 * **It reports what the session holds, not what the register says now.** `sh`, `os`, `sd`,
   `net` and the shared account were loaded when you entered this account, and `voc`, `bp`
   and `dict` when you signed on (`logto` does not reload them): after the administrator
-  changes one, sign off and on again to see it. The route gates are membership of a Linux
+  changes one, sign off and on again to see it. The route gates (and `ssh-key`) are membership of a Linux
   group by your **login name**, read from the system each time (F5 shows a change).
 * **Every account starts with every gate off, except the right to read the shared
   account.** A gate that is `plan` (raw sockets) is not built yet.
@@ -315,9 +316,8 @@ executes `autologout 10` (`SDExecute("AUTOLOGOUT 10")`) has its server session e
 ten minutes in which it sent nothing, and its next request fails at once
 (see [SD Client API](37-sd-client-api.html)). The setting belongs to the one session that gave it.
 
-**It works in the full-screen programs too** (since 28 October 2026). The screen library, `ide`, the
-home screen and every tool page wait for a key one second at a time, and each of those waits used to
-start the timer again, so a session left in one of them was never logged out. SD now adds up the time
+**It works in the full-screen programs too.** The screen library, `ide`, the
+home screen and every tool page wait for a key one second at a time, and SD adds up the time
 spent waiting across such short waits: only a key actually typed (or the break key) starts the period
 again, and the logout is the same as at the prompt. A page left open without typing, `tool.sessions`
 included, is therefore logged out like any other session. A program that waits for a key with no time

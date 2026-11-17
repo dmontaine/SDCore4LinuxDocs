@@ -54,7 +54,7 @@ messages. Questions — a new value, a name, a type, *Save changes?* — are ask
 small boxes over the list.
 
 **The screen is laid out for 140 columns by 43 lines or more** (a bigger window
-is used whole), and since 18 October 2026 **a window smaller than that is
+is used whole), and **a window smaller than that is
 refused**, before any record is touched, in words (*CED needs a window of at least
 140 columns by 43 lines; this one is 100 by 30*); `!ced()` refuses the same way,
 prints the message and returns, and the program goes on. If the window is made
@@ -108,7 +108,7 @@ terminal hangs up), it leaves without saving.
 ## Data mode: a record of fields, values and subvalues
 
 CED has a second use, started by the [IDE](24-sd-tcl-programs-and-the-catalogue.html)'s **F12**
-(Go, *Edit as fields*; since 26 October 2026). The thing edited is an ordinary multivalue **record** shown as an array of its fields:
+(Go, *Edit as fields*). The thing edited is an ordinary multivalue **record** shown as an array of its fields:
 a field is a text, or - if it holds value marks or subvalue marks - a list of its values; a
 value is a text, or a list of its subvalues; a subvalue is always a text. The top level is
 the record (the positions are the field numbers), **Return** on a list dives into it, and the
@@ -126,7 +126,7 @@ The keys are the ones above, with these differences:
 - **Ctrl-S** makes the record from the tree and keeps it; if the tree cannot be a record (for
   instance after an AI edit that put a number in a field) it says so, in the same words, and keeps
   nothing. The IDE passes no file, so CED writes nothing and holds no lock; the IDE does the saving.
-  **In the IDE** the editor is a pane of the tab (since 30 October 2026): there Ctrl-S is the IDE's own
+  **In the IDE** the editor is a pane of the tab: there Ctrl-S is the IDE's own
   save, **Alt-T** is the change of type, **Ctrl-C / Ctrl-X / Ctrl-V** are copy, cut and paste, **F12**
   shows the text again, and the engine's change is in the tab's text as soon as it is made. The AI
   works there through the IDE's AI entry and Tools menu and not through F2 (see [the IDE](24-sd-tcl-programs-and-the-catalogue.html)).

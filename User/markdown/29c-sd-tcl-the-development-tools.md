@@ -14,7 +14,7 @@ access: every change they make is a command you could have typed, run for you af
 exact command. A gate that is off for your account is met as the command's own refusal; the page shows
 the gates you hold, and never tries an operation to find out.
 
-**In a window bigger than 140 by 43 the pages use the whole window** (since 28 October 2026): the lists show
+**In a window bigger than 140 by 43 the pages use the whole window**: the lists show
 more rows, the boxes are wider, a long explanation is wrapped at the width of its box instead of being cut,
 and a page follows the window when it is resized, also while a question or a menu is open. At 140 by 43 each
 page looks exactly as it did. 140 by 43 is still the smallest window: if the window is made smaller while a
@@ -37,13 +37,11 @@ The home screen has a tile for each of them, in the group *Develop*.
 
 **On a page with more than one box the keyboard can be in** (the query page, the bulk change page and the
 test page here; on the administrator's side the sessions, menus and AI pages), the box that has it
-is marked **`[*]`** in its top right corner and the others **`[-]`**, as the IDE marks its panes (since 1
-November 2026). **F6** moves the keyboard and the marks to the next box and **Shift-F6** back, round and
-round, with the AI line as the stop after the last box when the AI is on for your account (since 8 November
-2026, the same keys on every page and in the IDE; Tab no longer moves between boxes). On the test page F6 goes
+is marked **`[*]`** in its top right corner and the others **`[-]`**, as the IDE marks its panes. **F6** moves the keyboard and the marks to the next box and **Shift-F6** back, round and
+round, with the AI line as the stop after the last box when the AI is on for your account (the same keys on every page and in the IDE; Tab does not move between boxes). On the test page F6 goes
 from the list to what the test under the cursor printed, and back. A box the keyboard never goes to has no mark.
 
-**Every page has a menu bar on its top row** (since 29 October 2026), made from the page's own key table, so
+**Every page has a menu bar on its top row**, made from the page's own key table, so
 the bar, the key row at the foot and the keys cannot disagree. **F10**, **Alt and the letter** marked in a
 title, or a **click** on a title opens a menu; **Esc** opens the first menu that does not begin with Quit
 (so Esc and Enter never leave a page by accident; F10 opens *File*) when the page has nothing of its
@@ -53,13 +51,13 @@ entry is shown dimmed when the page cannot do it now, and **Quit is the last ent
 other entries**. Choosing an entry does exactly what its key does, through
 the page's own checks and boxes: the bar adds no access and runs no command by itself.
 
-**F2 finds an action by its name** (since 3 November 2026). It opens a list of every entry of the page's
+**F2 finds an action by its name.** It opens a list of every entry of the page's
 menus, written *Menu > Entry* with its key beside it (*Query > Run the query   R*). Type part of a name to
 narrow the list, Up and Down move, Enter chooses, Esc leaves. An entry the page cannot do now says *(not
 now)*; choosing it shows why in a box and does nothing. Choosing any other entry does what its key does,
 exactly as the menu bar's entry would.
 
-**A right click on a box opens that box's menu** (since 3 November 2026), at the pointer. If the box did not
+**A right click on a box opens that box's menu**, at the pointer. If the box did not
 have the keyboard, the right click first gives it the keyboard, as a click does (its mark becomes `[*]`), and
 then opens its menu. A right click outside the boxes, and **Shift-F10** from the keyboard (in the middle of the
 screen), open the menu of the box marked `[*]`. The menu lists that box's actions with their keys, dimmed when
@@ -121,7 +119,7 @@ what the verb says is what the status line shows.
 digits, dot, dash and underscore. A file whose name has anything else (a capital, an `&`, a `$`) is listed and
 described, and the page says which verb to type at the prompt for it instead.
 
-**A VOC keyword is not a file name** (since 28 October 2026). A name that the VOC holds as a keyword,
+**A VOC keyword is not a file name.** A name that the VOC holds as a keyword,
 `all` for one, is refused as the name of a file to make, clear, delete or report on, with the words *... is a
 keyword of the VOC, which a command would read as that keyword and not as a name: this page does not give it
 to a command*. The verb would read the word as the keyword, not as your file (`delete voc all` empties the
@@ -159,7 +157,7 @@ the **gates your session holds**, as `tool.files` does.
 | key | does |
 |---|---|
 | Up, Down, PgUp, PgDn, Home, End | move the cursor |
-| **E** | edit the entry in the [IDE](24-sd-tcl-programs-and-the-catalogue.html) (`ide voc name`; since 28 October 2026 it was SED): the terminal is handed to the IDE, and leaving it brings the page back at the same entry |
+| **E** | edit the entry in the [IDE](24-sd-tcl-programs-and-the-catalogue.html) (`ide voc name`): the terminal is handed to the IDE, and leaving it brings the page back at the same entry |
 | **D** | delete the entry (`delete voc name`) after a box that shows the command, with the id typed |
 | **T** | choose the type shown: all, verbs, files, pointers, paragraphs and sentences, other |
 | **S** | choose the state shown: all, only the entries that differ from the shipped VOC, only broken pointers |
@@ -177,7 +175,7 @@ it was (the IDE says why, in a box). A VOC pointer made by an ordinary command s
 **An id the page does not give to a command.** As in `tool.files`, only ids of letters a-z, digits, dot,
 dash and underscore are put into a command. A VOC id may have much else (a capital, `$`, `%`, `&`); such an
 entry is listed and shown, and the page says which command to type for it instead. **Delete does not offer a
-keyword either** (since 28 October 2026): an entry of type K, `all` for one, is refused with the page's
+keyword either**: an entry of type K, `all` for one, is refused with the page's
 words, because `delete voc all` would not delete that entry but ask to empty the VOC. Type the command at the
 prompt if you mean it.
 
@@ -220,7 +218,7 @@ and whether it has been compiled, and the record as it is stored.
 |---|---|
 | Up, Down, PgUp, PgDn, Home, End | move the cursor |
 | **N** | make an item: asks the id, then hands the terminal to the [IDE](24-sd-tcl-programs-and-the-catalogue.html) on a new item, shown as the dictionary form |
-| **E** | edit the item in the [IDE](24-sd-tcl-programs-and-the-catalogue.html) (`ide dict file item`; since 28 October 2026 it was SED): the terminal is handed to the IDE, and leaving it brings the page back at the same item |
+| **E** | edit the item in the [IDE](24-sd-tcl-programs-and-the-catalogue.html) (`ide dict file item`): the terminal is handed to the IDE, and leaving it brings the page back at the same item |
 | **D** | delete the item (`delete dict file item`) after a box, with the item's id typed |
 | **C** | compile an I item (`compile.dict file item`) after a box |
 | **T** | try the item on a record of the file: asks the record's id and shows the value the query processor would compute for it, and the same value as a query prints it |
@@ -333,13 +331,13 @@ The operators are `=` `#` `<` `>` `<=` `>=` `like` and `unlike`. A value is plai
 | F1, **?**, a click on **[?]** | help |
 | Ctrl-Q | leave |
 
-**Every question is a small form** (since 2 November 2026): the file filter, a condition's value, the heading, the footing, the first-*n* sample, the sentence edited by hand and the name a query is saved under. The form explains what it wants. An answer the page refuses (a quote or a semicolon in a value, a sample that is not a whole number from 1 to 99999, a sentence with a word that sends the output elsewhere, a name with a character other than those above) is explained inside the form, with the form's explanation kept under the reason, and the form stays open with what you typed so you can correct it; Esc or Cancel leaves it and changes nothing.
+**Every question is a small form**: the file filter, a condition's value, the heading, the footing, the first-*n* sample, the sentence edited by hand and the name a query is saved under. The form explains what it wants. An answer the page refuses (a quote or a semicolon in a value, a sample that is not a whole number from 1 to 99999, a sentence with a word that sends the output elsewhere, a name with a character other than those above) is explained inside the form, with the form's explanation kept under the reason, and the form stays open with what you typed so you can correct it; Esc or Cancel leaves it and changes nothing.
 
 In the Results box Up, Down, PgUp, PgDn, Home and End scroll, Left and Right move 20 columns sideways, and Esc goes back to the boxes. The box keeps 2000 lines and says how many there were. A query on a big file is run in full and cannot be stopped from here: use the first-*n* option for a trial. A select list that is waiting narrows the query, and the box says so.
 
 **Everything that is run is checked first.** A sentence the page runs starts with `list`, `sort`, `count` or `sum`, names the chosen file, and then holds only words from a fixed list, numbers, the items of that file's dictionary and values in double quotes. A word that sends the output somewhere else or writes (`to`, `saving`, `lptr`, `csv`, `as`, `file` and others) is refused, even when it is the name of a dictionary item. So is a semicolon, a single quote and a word the page does not know. The sentence the boxes make, a sentence you edit and a sentence a saved query holds are checked again by the same routine just before they run. An item whose name has a character the page does not use, or is also a word of the query language or a VOC keyword, is listed but cannot be marked. A phrase (`PH`) is not listed.
 
-**Saved queries** are records of the file `&queries&` in your account. The page makes the file when you save the first query, after a box that shows `create.file &queries& dynamic`. Every save is a box too, and replacing a saved query asks its name typed. A saved query is data: when it is loaded every part is checked against the file's dictionary, the operator table and the quoting rule, and what does not pass is dropped and counted in the status line. **L** shows them in a pick window (since 3 November 2026): a row a query with its name, its file, its kind (list, count or sum) and the sentence it was saved with, under a heading row; typing narrows the list to the queries that hold the text in any column. **Enter** loads the query under the cursor, **Del** deletes it after a box that asks its name typed, Esc closes the window and loads nothing. After a load, a refusal or a delete the page is shown again with what happened on the status line; L opens the list again. **Before every save and every delete the page checks the file** (since 28 October 2026): `&queries&` must be an ordinary data file standing in your own account directory under that name, of no protected kind, and one your gates allow you to change. An entry `&queries&` in your VOC that leads somewhere else, to the program file `bp` for example, is refused (*nothing was saved* / *nothing was deleted*, with the reason). A record that is not a saved query (its first field is not `query1`) is never written over or deleted from here: *... is not a query this page saved ...: it was not changed*. `tool.bulk` makes the same check of its undo file.
+**Saved queries** are records of the file `&queries&` in your account. The page makes the file when you save the first query, after a box that shows `create.file &queries& dynamic`. Every save is a box too, and replacing a saved query asks its name typed. A saved query is data: when it is loaded every part is checked against the file's dictionary, the operator table and the quoting rule, and what does not pass is dropped and counted in the status line. **L** shows them in a pick window: a row a query with its name, its file, its kind (list, count or sum) and the sentence it was saved with, under a heading row; typing narrows the list to the queries that hold the text in any column. **Enter** loads the query under the cursor, **Del** deletes it after a box that asks its name typed, Esc closes the window and loads nothing. After a load, a refusal or a delete the page is shown again with what happened on the status line; L opens the list again. **Before every save and every delete the page checks the file**: `&queries&` must be an ordinary data file standing in your own account directory under that name, of no protected kind, and one your gates allow you to change. An entry `&queries&` in your VOC that leads somewhere else, to the program file `bp` for example, is refused (*nothing was saved* / *nothing was deleted*, with the reason). A record that is not a saved query (its first field is not `query1`) is never written over or deleted from here: *... is not a query this page saved ...: it was not changed*. `tool.bulk` makes the same check of its undo file.
 
 **Limits.** One file at a time. No run-time prompts, no VOC paragraph, no printing (`lptr`) and no output to a file or a list. The phrases and the `$query.defaults` record of a dictionary belong to the account and are expanded by the query processor; the page does not list a phrase and cannot see the defaults.
 

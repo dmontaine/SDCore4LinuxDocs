@@ -48,10 +48,10 @@ back and takes out only the parameters SD no longer has.
 An unrecognized parameter is not ignored. The parser abandons the file with
 `Unrecognized configuration parameter`, and SD does not start.
 
-That is why a name SD has dropped has to be taken out of the file. On 27 October
-2026 eleven parameters were removed (`APILOGIN`, `CODEPAGE`, `CREATUSR`,
+That is why a name SD has dropped has to be taken out of the file. These
+twelve parameters no longer exist (`APILOGIN`, `CODEPAGE`, `CREATUSR`,
 `EXCLREM`, `FIXUSERS`, `GDI`, `JNLDIR`, `JNLMODE`, `PORTMAP`, `RINGWAIT` and
-`TXCHAR`), and `INVCASE` before them; `FILERULE` followed on 28 October 2026. The installer removes those lines from a
+`TXCHAR` and `FILERULE`), and so does `INVCASE`. The installer removes those lines from a
 `sd.conf` it restores when you keep the configuration across a re-install, and
 says which it removed. A file copied in by hand must have them taken out before SD will
 start.
@@ -77,9 +77,9 @@ ERRLOG    50 kb
 YEARBASE  1930
 ```
 
-SD accepts **50** parameters on this port (`APIPORT` and `NETDIRS` do not
+SD accepts **58** parameters on this port (`APIPORT` does not
 exist here — see *The API*, below). The verb prints all of them except
-`BACKUPDIR` and `SDSYS`, and `DEBUG` and `FDS` only when they are set.
+`BACKUPDIR`, `NETDIRS` and `SDSYS`, and `DEBUG` and `FDS` only when they are set.
 
 The `config()` function reads one parameter from a program:
 
@@ -112,8 +112,7 @@ other session, and it is gone when the session ends.
 The 23 are `DUMPDIR`, `FLTDIFF`, `FSYNC`, `GRPSIZE`, `INTPREC`,
 `LPTRHIGH`, `LPTRWIDE`, `MAXCALL`, `MUSTLOCK`, `OBJECTS`, `OBJMEM`, `RECCACHE`,
 `SAFEDIR`, `SDCLIENT`, `SH`, `SH1`, `SORTMEM`, `SORTMRG`, `SORTWORK`,
-`SPOOLER`, `TEMPDIR`, `TERMINFO` and `YEARBASE`. (The list predates `MAXRLOCK`, `PWDELAY` and, since 19 October 2026,
-`NETWAIT` and `NETREPLY`, which can be changed for the session in the same way.)
+`SPOOLER`, `TEMPDIR`, `TERMINFO` and `YEARBASE`. (`MAXRLOCK`, `PWDELAY`, `NETWAIT` and `NETREPLY` can be changed for the session in the same way.)
 
 Everything else takes effect only when SD is next started. That includes every
 limit which sizes the shared memory segment and every setting the API listener
@@ -170,7 +169,7 @@ shows only the rows where the file and SD disagree, and `S` only the parameters 
 column, `Change`, says `e` for a parameter the page can change (press `E`) and `by hand` for every
 other.
 
-`SDSYS` and `BACKUPDIR` cannot be read with the `config()` function (a name longer than sixteen characters, or one the function does not have); the page says
+`SDSYS`, `BACKUPDIR` and `NETDIRS` cannot be read with the `config()` function (a name longer than sixteen characters, or one the function does not have); the page says
 `(not readable)` for what SD is running with and shows the file's value. `DEBUG` is not compared: the
 function reports it in another form than the file writes it.
 
@@ -178,7 +177,8 @@ function reports it in another form than the file writes it.
 **R, the report**: the operating system part of `settings.report` (the ssh and API doors, the groups of
 `sdusers`, `sdssh` and `sdapi`, the services and the sudoers file), made when the view is opened and on
 F5. It holds no key and no password hash. `F5` reads the file, the backup directory and the report
-again; `E` changes the parameter under the cursor, or says why it cannot be changed here; `F1`
+again, and while the report is made the status line says "Reading the settings (a few seconds)...";
+`E` changes the parameter under the cursor, or says why it cannot be changed here; `F1`
 explains the page; `Ctrl-Q` leaves. Opening the page writes the audit line
 `tool start app=tool.config`; a change writes the line of `set.config` (below), and nothing else the
 page does is written.
@@ -248,9 +248,9 @@ sizes, the printer's defaults); none is a door, a path, a command, a log or a se
 | `SORTMRG` | 2 to 10 | session |
 | `USPLIT` | 0 to 1 | restart |
 
-**The other 36 are not changed from SD**, and the helper refuses them by name (a name it does not
+**The other 37 are not changed from SD**, and the helper refuses them by name (a name it does not
 know at all it refuses with a different sentence, because an unknown name in `sd.conf` stops SD from
-starting). They are the doors and what they allow (`NETFILES`, `SDCLIENT`), every
+starting). They are the doors and what they allow (`NETDIRS`, `NETFILES`, `SDCLIENT`), every
 path and command, the log, dump and diagnostic settings, the security throttle `PWDELAY`, the sizes
 and combinations that SD does not check or checks against each other, and the ones that change
 what existing programs compute. Change them by hand, as before. The page
@@ -271,6 +271,7 @@ shows the same sentence in its box:
 | `INTPREC` | Changes the results of arithmetic in programs that already exist. |
 | `MAXIDLEN` | Structural: the longest record id of the whole system, which reaches every file and program. |
 | `MUSTLOCK` | Makes a write fail unless the record is locked first, which can stop programs that exist. |
+| `NETDIRS` | A door: it widens what an account without os-on may reach beyond its own directory. |
 | `NETFILES` | A door: bit 2 gates API request 29, a remote open of an account. |
 | `NUMFILES` | Sizes the open file table in shared memory; SD checks no range. |
 | `NUMUSERS` | Sizes the user table, which bounds who can sign on; SD checks no range. |
@@ -314,7 +315,7 @@ file as root: the verb asks the helper, and the helper is the one program that d
 |---|---|---|
 | `NUMUSERS` | 20 | Maximum concurrent sessions. Sizes the user table in shared memory |
 | `NUMFILES` | 80 | Maximum open files across all sessions |
-| `NUMLOCKS` | 100 | Maximum record locks across all sessions. Range 1 to 32767 (the lock table's cells are 16 bits; a value outside it stops SD starting, which it did not before the check of 16 Oct 2026, when 40000 wrapped) |
+| `NUMLOCKS` | 100 | Maximum record locks across all sessions. Range 1 to 32767 (the lock table's cells are 16 bits; a value outside it stops SD starting) |
 | `MAXCALL` | 10000 | Maximum subroutine call depth. Range 10 to 1000000 |
 | `CMDSTACK` | 99 | Depth of the command stack |
 | `FDS` | unset | Limit on file descriptors. No limit when unset |
@@ -327,8 +328,8 @@ file as root: the verb asks the helper, and the helper is the one program that d
 
 | Parameter | Default | Effect |
 |---|---|---|
-| `NETWAIT` | 5 | Seconds to wait for a connection to another SD server: `set.server ... connect`, `set.netlogin` and the first use of a defined server. It bounds the TCP connect and then, again, the TLS handshake (the handshake had 15 seconds fixed until 20 October 2026). 1 to 3600; **0 is refused and SD does not start with it** (openQM reads 0 as "wait for ever") |
-| `NETREPLY` | 30 | Seconds to wait for each reply from another SD server once connected. 1 to 3600, 0 refused. A server slower than this is treated as lost, whatever it has sent meanwhile (the TLS session tickets, or half a record, no longer use the wait up: 20 October 2026), and a change that got no answer is never sent again. A `CLEARFILE` waits the longer of 300 seconds and this |
+| `NETWAIT` | 5 | Seconds to wait for a connection to another SD server: `set.server ... connect`, `set.netlogin` and the first use of a defined server. It bounds the TCP connect and then, again, the TLS handshake. 1 to 3600; **0 is refused and SD does not start with it** (openQM reads 0 as "wait for ever") |
+| `NETREPLY` | 30 | Seconds to wait for each reply from another SD server once connected. 1 to 3600, 0 refused. A server slower than this is treated as lost, whatever it has sent meanwhile (the TLS session tickets, or half a record, do not use the wait up), and a change that got no answer is never sent again. A `CLEARFILE` waits the longer of 300 seconds and this |
 | `NETFILES` | 0 | Not read by SDNet. Bit 2 gates one old API request, number 29 (below). Leave it at 0 |
 
 Both waits are per computer. See [SDNet](12-sdnet.html#the-two-waits-netwait-and-netreply) for what they bound and
@@ -338,7 +339,7 @@ the check on the length a reply announces.
 
 | Parameter | Default | Effect |
 |---|---|---|
-| `GRPSIZE` | 4 | Default group size for a new dynamic file, in 1 KB units. Read by `create.file` and `configure.file` when no group size is given. **4 since 25 Oct 2026** (the shipped `sd.conf` said 2): 200,000 records of 130 bytes had 5 to 11 percent of their groups overflowed at 2 KB and under 2 percent at 4 KB. A system that is already installed keeps the `sd.conf` it has, and so keeps 2 until you change it; a file keeps the size it was made with |
+| `GRPSIZE` | 4 | Default group size for a new dynamic file, in 1 KB units. Read by `create.file` and `configure.file` when no group size is given. **4** is the shipped value: 200,000 records of 130 bytes had 5 to 11 percent of their groups overflowed at 2 KB and under 2 percent at 4 KB. A system whose `sd.conf` says 2 keeps 2 until you change it; a file keeps the size it was made with |
 | `MAXIDLEN` | 63 | Maximum record id length. 63 is also the lower bound |
 | `MUSTLOCK` | 0 | When 1, a `write` or `delete` requires the record to be locked first |
 | `DEADLOCK` | 0 | When 1, SD traps deadlocks |
@@ -355,7 +356,7 @@ the check on the length a reply announces.
 | `GRPDIR` | `/home/sd/group_accounts` | Where `create.account` puts a group account |
 | `DUMPDIR` | `/usr/local/sdsys/dumps` | Where process dumps are written |
 | `TEMPDIR` | unset | Temporary files. Falls back to the system default when unset |
-| `SORTWORK` | unset | Work files for a sort that does not fit in memory. Falls back to the system default when unset |
+| `SORTWORK` | unset | Work files for a sort that does not fit in memory. When it is not set, or does not exist, SD uses `TEMPDIR` |
 | `TERMINFO` | empty | An additional terminfo directory. The shipped definitions are found without it |
 
 `DUMPDIR` is set rather than left empty on purpose. A blank value falls back to
@@ -368,20 +369,19 @@ can be listed or read.
 
 | Parameter | Default | Effect |
 |---|---|---|
-| `SDCLIENT` | 0 | Restricts what an API session may do. Non-zero disables file access outright (no file can be opened, so no dictionary can be evaluated either) and refuses `SDIConv`, `SDOConv`, `SDIConvs` and `SDOConvs` a conversion code that reads a file (`T` with a file) or calls a program (`U`); any non-zero value also refuses `SDOpenSeq` and `SDExecute`; `2` additionally refuses any subroutine not compiled as callable from a client (a subroutine whose name begins with `$` must be so compiled at every setting, `0` included). Before 15 Oct 2026 the refusal at `2` was reported but the subroutine still ran |
+| `SDCLIENT` | 0 | Restricts what an API session may do. Non-zero disables file access outright (no file can be opened, so no dictionary can be evaluated either) and refuses `SDIConv`, `SDOConv`, `SDIConvs` and `SDOConvs` a conversion code that reads a file (`T` with a file) or calls a program (`U`); any non-zero value also refuses `SDOpenSeq` and `SDExecute`; `2` additionally refuses any subroutine not compiled as callable from a client (a subroutine whose name begins with `$` must be so compiled at every setting, `0` included) |
 
-**There is no `APIPORT` and no `NETDIRS` on this port — a real structural
+**There is no `APIPORT` on this port — a real structural
 difference, not an oversight.** SD Core for Windows sizes its listener from
 `sd.conf` at start-up and restarts SD itself to change it; here, whether SD
 listens for the API at all is `systemd`'s `sdclient.socket` unit, activated
 independently of any running `sd` process (see *Remote access and the
 machine*, in this set), and who may reach it is the firewall (`ufw`, or firewalld), moved
-by the `remote.api` verb rather than by editing this file. **And there is
-no config-file mechanism here that widens an API session's reach beyond
-its own account** — Windows's `NETDIRS` names directories every API session
-in every account may additionally open; this port has nothing playing that
-role, so an API session's file access is exactly its own account's, full
-stop. (The `os-on` switch is read for an API session like any other, but it
+by the `remote.api` verb rather than by editing this file. **An API session's file
+access is its own account's, widened only by `NETDIRS`** (below, *`NETDIRS`:
+directories outside an account*), which names directories every account without
+`os-on` may additionally open, the API session's included, and which is empty as
+delivered. (The `os-on` switch is read for an API session like any other, but it
 does not lift that confinement — see *Accounts and Security*.)
 
 `SDCLIENT` is not reported by the `config` verb and has no entry in the shipped
@@ -451,7 +451,7 @@ None of them can be changed from `tool.config` or `set.config`; edit
 
 | Parameter | Default | Effect |
 |---|---|---|
-| `SCREENTHEME` | unset (`mono`); `paper` in the shipped `sd.conf` | The color theme that a program using the `SCREEN` statement gets when it does not choose one: `paper`, `night`, `mono`, `classic` or `blue`. `paper` is black and dark blue text on light gray, with the menu bar and menus the other way round (light gray on black); `night` is white and yellow text on black, its menus black on light gray; `mono` uses only reverse video, underline and bold and reads on any terminal. The shipped `sd.conf` says `SCREENTHEME=paper`, so the toolkit pages and any program that opens a screen show paper on a color terminal on a fresh install; the IDE, SED and the debugger follow it too (the IDE falls back to paper for a name that is not a theme). On an upgrade that keeps the configuration, the installer adds `SCREENTHEME=paper` to a restored `/etc/sd.conf` that has no `SCREENTHEME` line, and changes a restored `SCREENTHEME=blue` (the delivered theme before 2.0-0) to `paper` once, leaving a comment line in the file that says so; set `SCREENTHEME=blue` again afterwards to keep the old look, and later installs leave it. Any other line, `mono` included, is left alone. A terminal with no color (vt100, a phantom, a pipe) is `mono` whatever the line says, and so is a name that is not a theme, without an error. A program that asks for a theme gets that one. A program reads the value with `config('SCREENTHEME')`. **A person's own choice wins for that person** (since 8 November 2026): Ctrl-T or View > Theme on any full-screen program keeps the theme chosen as the record `theme.`*login name* of the file `&menus&` in the account they are in, and every full-screen program starts in it from then on; `SCREENTHEME` is what a person who has never chosen sees. To give someone the site's theme again, delete that record |
+| `SCREENTHEME` | unset (`mono`); `paper` in the shipped `sd.conf` | The color theme that a program using the `SCREEN` statement gets when it does not choose one: `paper`, `night`, `mono`, `classic` or `blue`. `paper` is black and dark blue text on light gray, with the menu bar and menus the other way round (light gray on black); `night` is white and yellow text on black, its menus black on light gray; `mono` uses only reverse video, underline and bold and reads on any terminal. The shipped `sd.conf` says `SCREENTHEME=paper`, so the toolkit pages and any program that opens a screen show paper on a color terminal on a fresh install; the IDE, SED and the debugger follow it too (the IDE falls back to paper for a name that is not a theme). On an upgrade that keeps the configuration, the installer adds `SCREENTHEME=paper` to a restored `/etc/sd.conf` that has no `SCREENTHEME` line, and changes a restored `SCREENTHEME=blue` (the delivered theme before 2.0-0) to `paper` once, leaving a comment line in the file that says so; set `SCREENTHEME=blue` again afterwards to keep the old look, and later installs leave it. Any other line, `mono` included, is left alone. A terminal with no color (vt100, a phantom, a pipe) is `mono` whatever the line says, and so is a name that is not a theme, without an error. A program that asks for a theme gets that one. A program reads the value with `config('SCREENTHEME')`. **A person's own choice wins for that person**: Ctrl-T or View > Theme on any full-screen program keeps the theme chosen as the record `theme.`*login name* of the file `&menus&` in the account they are in, and every full-screen program starts in it from then on; `SCREENTHEME` is what a person who has never chosen sees. To give someone the site's theme again, delete that record |
 
 ## The shell
 
@@ -467,11 +467,67 @@ SH        /bin/bash -i
 SH1       /bin/bash -c
 ```
 
+**A value longer than 80 characters for `SH`, `SH1` or `STARTUP` stops SD** with "SH value is
+longer than 80 characters." (or `SH1`, `STARTUP`); a terminal type given to `sd -term`
+that is longer than 32 characters is refused the same way. A value that fits is unchanged.
+If the shell named cannot be run, the command ends with status 127.
+
 **Both run at the account's own Linux permissions, and only for an account
 that has the `sh-on` switch** (see *Accounts and Security*, "The
 operating-system switches: `sh-on` and `os-on`"); the setting says which
 shell it is, the switch says who may use it. Operating system access has its
 own page in this set.
+
+## `NETDIRS`: directories outside an account
+
+An account that has not been given `os-on` is held to its own directory: it
+opens no file by pathname anywhere else. `NETDIRS` names directories that such
+an account may reach all the same, for a site whose data lives in a shared
+directory outside every account:
+
+```
+NETDIRS=/srv/sales;/srv/shared
+```
+
+The entries are absolute paths separated by semicolons. **Nothing is listed as
+delivered**: `sd.conf` has no `NETDIRS` line, and every account is held to its
+own directory as before.
+
+**What filling it opens.** Every account without `os-on`, on every route (a
+terminal session, a phantom, the API), can then read, change, create and delete
+files in the listed directories and below them, by pathname: `openseq`,
+`openpath`, `dir()`, `select.dir`, `ospath`, `deleteseq`, a print file, an `f`
+pointer in its VOC. The Linux permissions of the account's own user still
+apply. It is a smaller thing to open than `os-on`, which opens the whole
+machine to one account, but it is opened for every account at once: list only
+directories that hold nothing one account must keep from another.
+
+**What it does not open.** `sh` and `os.execute`, the edit gates (`voc-on`,
+`bp-on`, `dict-on`), the shared account's rules and what the `ai` line may send
+are separate and unchanged. The administrator and an account with `os-on` are
+not affected: they reach every path already.
+
+**Entries SD ignores.** An entry is left out, and named in the error log and
+the system log when SD starts, when it is not an absolute path, is not an
+existing directory, is `/`, or holds or lies inside the SD system directory,
+the directory of `sd.conf`, the user or group accounts directory, or the
+directory of any registered account. An account created later inside a listed
+directory closes that entry at once. At most 16 entries are taken.
+
+**How a path is judged.** The name a program gives is resolved first, links
+and `..` included, and then compared: a link inside a listed directory that
+leads somewhere unlisted is refused, upper and lower case differ, and
+`/data/xkey` is not inside `/data/x`. An entry that is itself a link counts as
+the directory it leads to.
+
+A session reads the line when it starts, so a change reaches the sessions
+started after it; no restart is needed. A value longer than 191 characters is
+refused: SD does not start, and a new session does not begin, with `NETDIRS
+value is longer than 191 characters.` It is not shown by `config()`.
+
+One API route is not widened: request 29, the old remote open of an account's
+file that `NETFILES` gates (below). A pointer followed there must still lead
+inside the account, whatever `NETDIRS` lists.
 
 ## `NETFILES` and SDNet
 
@@ -480,8 +536,8 @@ SDNet is the way a program opens a file that lives on another SD server: a VOC
 entry of type `N`, a server you define with `set.server`, and a per-account
 `net-on` switch, all off until SDSYS turns them on. It is built and is
 described on the SDNet page of this set. None of it reads `NETFILES`,
-and the older SDNet that was removed on 9 September 2026 (a `server;file` VOC
-entry, with each server's password in `sd.conf`) is still gone: that form of
+and the older SDNet (a `server;file` VOC
+entry, with each server's password in `sd.conf`) does not exist: that form of
 name is refused. `NETFILES` is parsed, stored, shown by `config` and readable
 with `config('NETFILES')`. **One
 thing reads it:** the API server's request 29, "open an SDNet
@@ -500,9 +556,9 @@ is 0 unless `sd.conf` sets it, and the installer does not, so the request is
 refused as delivered. Leave it at 0: no client function in this set sends
 request 29.
 
-There is no `FILERULE` parameter any more (removed 28 October 2026). **The
-`account:file` form of a file name is always available** (back on 3 November 2026,
-for programs moved from openQM): a name that is in no VOC record and has one colon,
+There is no `FILERULE` parameter. **The
+`account:file` form of a file name is always available** (for programs moved
+from openQM): a name that is in no VOC record and has one colon,
 such as `open 'sales:orders'`, opens that account's file exactly as a Q-pointer to it
 would, with the same checks: the account must be registered, the person must be able
 to `logto` it, and it must not be suspended. It reaches nothing a Q-pointer could not.

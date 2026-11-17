@@ -147,6 +147,18 @@ administrator means signing in to the machine as the `sdsys` account, with
 its own password, and starting a fresh session — see the *Administrator*
 set's *Accounts and Security* chapter.
 
+**`logto` takes the name of a registered account and nothing else.** A name the register
+does not hold, a pathname included, is refused with "User not allowed in requested
+account" — the same answer as for an account you may not enter — and the session stays in
+the account it was in. A directory that should be an account is registered first
+(`create.account other` *name* *path*) and then entered by its name. An API session's
+account is chosen the same way.
+
+**A suspended account is refused to every session, the administrator's included**:
+"Account *name* is suspended", and the session stays where it was. This is what signing
+on to a suspended account has always given everyone. The administrator maintains such an
+account with `run.in` and lifts the suspension with `modify.account` *name* `unsuspended`.
+
 ### `logto … reset` and `logto … reset all`
 
 When a program runs `logto` with `execute`, the session is several command levels deep: the
@@ -164,9 +176,7 @@ have gone.
 
 **`reset all` is refused in an API session**, with *LOGTO RESET ALL is not available in a client
 session* (message 11392), before anything is changed: the API server is its own bottom level and
-has no prompt to return to. That refusal was written but not run, because a test session cannot
-host an API connection.
-
+has no prompt to return to.
 ## What is not here
 
 **There is no online help and `help` is not a verb.** The command processor

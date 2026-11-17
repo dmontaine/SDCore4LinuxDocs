@@ -208,8 +208,7 @@ script that runs it stops and waits. Like the screen editors, it wants a person
 at a terminal. Everything on this page except `sp.view` can be scripted.
 
 **On a window of at least 140 by 43 the record view looks like the other
-full-screen pages** (a bigger window is used whole): the top row is a **menu bar** (since
-8 November 2026; Esc on its own or F10 opens it) - **File** Spool to a printer (S), Delete the
+full-screen pages** (a bigger window is used whole): the top row is a **menu bar** (Esc on its own or F10 opens it) - **File** Spool to a printer (S), Delete the
 item (X), Quit (Ctrl-Q); **View** the page and scroll moves, Theme (Ctrl-T) and Refresh (F5);
 **Help** Keys (Ctrl-K, F1 too) - followed by the file and the record, with `sp.view  name@account` at the right; the record
 starts on the row below it, and the bottom four rows are the prompt, a status

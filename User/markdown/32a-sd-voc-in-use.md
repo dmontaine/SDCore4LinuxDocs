@@ -71,8 +71,7 @@ update.accounts
 ```
 
 Re-runs `LOGIN`'s `update.voc` paragraph, which copies any changed
-records from the system `NEWVOC` into the account's VOC. **Since 17 Aug
-2026 this is incremental** — it re-copies only the records whose stamp has
+records from the system `NEWVOC` into the account's VOC. **This is incremental** — it re-copies only the records whose stamp has
 changed, not the whole file. Every ordinary account gets the same `NEWVOC`
 now, so `update.accounts` is only ever bringing an existing account's copy
 up to date after a release changes something — there is no tier list left
@@ -108,7 +107,10 @@ Removes the record. **`.d` *name* at the command prompt asks first**;
 `.s` writes stack lines *s* to *e* into the VOC as *name* — a sentence
 when the range is one line, a paragraph when it is more. `.r` loads a
 sentence or paragraph from the VOC into the stack. **The record type
-follows from what you saved** rather than from anything you say.
+follows from what you saved** rather than from anything you say. **A new record is saved
+under the name in lower case**, however you typed it. A name already in the VOC is found
+in any case and you are asked "Overwrite VOC record ...?" as before; if you say yes the
+record keeps the name it has.
 
 ### Listing the VOC by type
 
@@ -165,8 +167,8 @@ entry actually contains without an editor.
 ## The VOC and account creation
 
 `create.account` copies the VOC from `NEWVOC` in the system directory —
-**386 records**, counted directly, and identical for every ordinary
-account. SDSYS's own VOC is copied from `voc_template` instead — **444
+**388 records**, counted directly, and identical for every ordinary
+account. SDSYS's own VOC is copied from `voc_template` instead — **448
 records** — which carries the administration verbs `NEWVOC` does not:
 `create.account`, `delete.account`, `modify.account`, `config`, `set.date`,
 `update.accounts`, `clean.account`, `list.readu`, `list.locks`, `lock`,
@@ -185,13 +187,13 @@ account tiers used before they were removed.
 
 ## Case on disk
 
-Since 18 Aug 2026 the VOC ids are stored in lower case — `list`,
+The VOC ids are stored in lower case — `list`,
 `create.account` and so on. This changes nothing about what you type —
 SD tries a name as typed, then lower, then upper. What it changes is what
 SD prints back: `CT VOC LIST` answers `VOC list`.
 
-The file-pointer entries — `bp`, `bp.out`, `gpl.bp`, `gpl.bp.out` — moved
-to lower case on 19 Aug 2026. **The migration is complete, not partial**: an
+The file-pointer entries — `bp`, `bp.out`, `gpl.bp`, `gpl.bp.out` — are
+in lower case too. **It is complete, not partial**: an
 account's own `voc`, and the system directory's `newvoc`, `accounts`,
 `messages` and `syscom`, are all lower case on disk too, confirmed directly
 — there is nothing left in upper case to migrate. `qfile` was never a path
@@ -213,10 +215,8 @@ wrote.
 **The `M` (menu) record type is removed.** A VOC record of that type is no
 longer dispatched; the home screen (`home`, or `menu`) is the menu system.
 
-**`EDIT` runs.** It was once exactly the kind of VOC entry described
-above — present but undispatchable, its type field reading
-`Verb - Full screen editor` rather than `V`. That was reversed 26 Aug
-2026: it is a real `V` record now, a working full-screen editor. See [SD
+**`EDIT` runs.** It is a real `V` record, a working full-screen editor, not
+an undispatchable entry of the kind described above. See [SD
 VOC - Structure and Usage](32-sd-voc-structure-and-usage.html#what-sdsyss-own-voc-holds).
 
 ## See also

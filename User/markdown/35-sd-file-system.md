@@ -21,6 +21,11 @@ record. The record id is the file name.
 The `bp` file is a directory file. VOC, `batch.jobs`, and the
 dictionaries are all directory files.
 
+**A file put in the directory from outside** under a name SD's own naming cannot produce (a
+bare `%`, say) is a record SD cannot read by its name: `list`, `count` and `reformat`
+report it as *'name' invalid name*, where they used to say *not found*. A name holding a slash, and
+`.` and `..`, are still *not found*, and SD does not look outside the file's own directory.
+
 **`dir_dict`**, in the SDSYS directory, is a ready-made dictionary for a directory file whose records are
 plain text. Make the file without a dictionary (or `delete.file` its dictionary), then set field 3 of its VOC
 entry to `@sdsys/dir_dict`. Besides `@id` it has three items, each of which asks the operating system about
@@ -43,7 +48,7 @@ group structure and resizes automatically as data grows or shrinks.
 | On disk | binary files in the account directory |
 | Record id | up to `MAXIDLEN`, which is 63 by default |
 | Readable by | SD only |
-| Group size | set by `GRPSIZE` in `sd.conf`, 4 KB by default (2 KB until 25 Oct 2026; a file keeps the size it was made with) |
+| Group size | set by `GRPSIZE` in `sd.conf`, 4 KB by default (a file keeps the size it was made with) |
 | Resizing | automatic, at a load of 80% to grow and 50% to shrink |
 
 ### Group structure
@@ -141,14 +146,14 @@ fstat customers on
 
 | | |
 |---|---|
-| `analyze.file` | the file's structure — type, group size, modulus, load factors and size, as shown above. `statistics` adds the group distribution, a histogram of record lengths and (since 16 Oct 2026) a **histogram of group utilization**: how many groups use up to 10%, 20% … 100% of their size, and how many are *over 100%*, which means they have overflow blocks. A group is counted with its overflow blocks, so a heavily overflowed file shows its groups in the last bar. The report stops at each page; answer `S` to see it all |
+| `analyze.file` | the file's structure — type, group size, modulus, load factors and size, as shown above. `statistics` adds the group distribution, a histogram of record lengths and a **histogram of group utilization**: how many groups use up to 10%, 20% … 100% of their size, and how many are *over 100%*, which means they have overflow blocks. A group is counted with its overflow blocks, so a heavily overflowed file shows its groups in the last bar. The report stops at each page; answer `S` to see it all |
 | `fstat` | read and write counts. It is a **switch**: `fstat` *file* `on` starts collecting, `off` stops, and `fstat` alone reports. `fstat global` covers every file and `fstat reset` clears the counters |
 
 `fstat` collects nothing until it is turned on, so a report immediately after
 an `on` is empty rather than wrong.
 
 **`sdfix`**, the file check tool (`bin/sdfix`, run on a file that nobody has open), has a
-**`-Z`** option, added 16 Oct 2026: it walks the groups as `-C` does and clears the **dead space** at the
+**`-Z`** option: it walks the groups as `-C` does and clears the **dead space** at the
 end of each — the bytes after the used part of a block, where a deleted record's old text can still be.
 It says *Dead space cleared in n block(s)*, a second run says 0, and no record changes. Clearing makes the
 file compress better and stops old text lingering in a backup; it is not needed for the file to work.

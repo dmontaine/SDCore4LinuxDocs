@@ -50,8 +50,7 @@ type the full path. **It opens the file's `%0` for read and write even to answer
 data file [13]* and exited 1). Run it as the user who owns the account, or as
 `sdsys`. Files it creates (`-m` copies the index to a new file) belong to
 whoever runs it, with that user's umask, so a run as root leaves root-owned
-index files that an account's own user may not be able to write. *Not run as
-root here*; check with `ls -l` and `chown` them back.
+index files that an account's own user may not be able to write. Check with `ls -l` and `chown` them back.
 
 It needs no configuration file and takes no option other than the mode.
 
@@ -112,9 +111,8 @@ and ends with status 1. The reason is the operating system's (for a parent you
 cannot write: *Permission denied*), or *a file of that name exists* when a
 component of the path is a file. *akpath* in the message is the whole path as you
 typed it, not the component that failed, and the indexes and the header are
-where they were. Before 19 October 2026 the tool ended with status 1 and printed
-nothing at all in these two cases. (as an ordinary user, on a parent with
-mode 555 and on a path through a regular file.)
+where they were. (An ordinary user meets the first on a parent with
+mode 555 and the second on a path through a regular file.)
 
 * **With no `akpath`, it moves the indexes back** into the data file's own
   directory and clears the path in the header.

@@ -47,8 +47,8 @@ With `a` holding `1`, `2`, `3` as values, and `b` holding a field of
 
 A non-numeric value used where a number was expected stops the program with a
 runtime error, so a class of silent wrong answers is something you can see.
-(Until 27 October 2026 `option non.numeric.warning` turned the error into a
-warning that read the value as zero; the option is gone.) `option` on its own
+(There is no option that turns the error into a
+warning that reads the value as zero.) `option` on its own
 lists every option and its current state; `option all off` clears them.
 
 Negative values are handled correctly: `maximum()` of `-5` and `-3` is `-3`.

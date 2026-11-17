@@ -2,7 +2,7 @@ Title: Operating System Access
 Subtitle: The `sh` verb, and the per-account switch that decides who may use it.
 
 `sh` runs a Linux command from the SD prompt. (The `!` form, a shorter name for
-the same verb, was removed on 28 October 2026: write `sh command`.) **Each
+the same verb, does not exist: write `sh command`.) **Each
 account has its own switch for it, `sh-on`, and a new account does not have
 it** — SDSYS turns it on, account by account, with `modify.account`. Without it
 the verb refuses.
@@ -19,9 +19,6 @@ close*.
 SD folds case, so a command may be typed in either case. Commands are shown here
 in lower case.
 
-> **The listings below were produced by running them**, on a build of SD Core
-> for Linux made from the tree, in an account that had `sh-on`.
-
 ## The verb
 
 ```
@@ -37,8 +34,7 @@ hello-from-the-shell
 ```
 
 **A bare `sh`, with nothing after it, starts an interactive shell** (the
-filter below is for a typed command; until 7 November 2026 it refused an empty
-one too, with the same "Error 2"). `exit` brings you back to the SD prompt. It
+filter below is for a typed command, and a bare `sh` is not refused by it). `exit` brings you back to the SD prompt. It
 needs the account's `sh-on` switch like any other `sh`: an account without it is
 refused first, with "<name> is not permitted to use the operating system shell".
 
@@ -106,6 +102,12 @@ for everything `os-on` covers.
 
 **The form that does go through this gate is `execute 'sh …'` from a program**,
 because that runs the TCL verb.
+
+**Reaching one directory outside the account takes less than `os-on`.** Where an
+account only has to read and write files in a shared directory, `NETDIRS` in `sd.conf`
+lists such directories (empty as delivered) and every account without `os-on` may
+reach them by pathname, on every route. It is a loosening for all of those accounts at
+once; see *`NETDIRS`* in [Configuration](07-sd-admin-configuration.html).
 
 ## Over the API
 

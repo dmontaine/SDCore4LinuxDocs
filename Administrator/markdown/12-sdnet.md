@@ -13,9 +13,9 @@ writing and locking.** On the server side there is a second, narrower API route,
 not there are listed under "What does not exist yet". Behavior that depends on your own
 network is listed in *Known Limits*.
 
-An earlier SDNet was removed on 9 September 2026 (a `server;file` VOC entry over
-port 4245, with each server's password in `sd.conf`, which any local user could
-read). **This is not that.** Nothing from it is back: there is no `;` in a path, no
+SD has no `server;file` VOC entry over
+port 4245 with each server's password in `sd.conf`, which any local user could
+read. **This is not that.** Nothing of that kind exists: there is no `;` in a path, no
 port 4245 and no password in any file.
 
 ## What SDNet is
@@ -944,10 +944,10 @@ opened again.
 | `CLEARFILE` | one request; a big file can take minutes, and the connection is only called lost after five |
 | `READU`, `READL`, `MATREADU/L`, `READVU/L` | the lock, then the read; a busy record takes the `LOCKED` branch (`STATUS()` is the holder) or, without a `LOCKED` clause, the statement tries again every quarter of a second until the lock is free |
 | `RECORDLOCKU`, `RECORDLOCKL` | the lock, with the same busy behavior |
-| `FILELOCK` | one request for the **whole file's** lock; a busy file (another user's file lock, or another user's lock on any record of the file) takes the `LOCKED` clause and `STATUS()` is the holder's user number on that server; with no `LOCKED` clause the statement asks again every quarter of a second. **Only for a server defined `write` and a login in the other server's `sdfileswrite` group** (S.72, 20 October 2026) |
+| `FILELOCK` | one request for the **whole file's** lock; a busy file (another user's file lock, or another user's lock on any record of the file) takes the `LOCKED` clause and `STATUS()` is the holder's user number on that server; with no `LOCKED` clause the statement asks again every quarter of a second. **Only for a server defined `write` and a login in the other server's `sdfileswrite` group** |
 | `FILEUNLOCK` | one request; `STATUS()` afterwards is 0 (it was this session's and is free now), 3011 (another user's, still held) or 3012 (nobody held it), as for a local file. Same conditions as `FILELOCK`. It is never stopped by the definition being set back to `read`: giving a lock back changes no data |
 | `RELEASE` | the record form, the file form (which also gives the file lock back) and plain `RELEASE` (every lock this process holds on a write-mode server) |
-| `RECORDLOCKED()` | the other server's answer (-3 -2 -1 another user holds a file, update or read lock; 0 none; 1 2 3 this session holds a read, update or file lock), and `STATUS()` is the lock owner's user number on that server. **Only for a server defined `write` and a login in the other server's `sdfileswrite` group**, like a lock (a first version on 20 October 2026 served a `read` definition and any files login; the same day the owner closed that). A `read` definition stops the program with message 11501 (`recordlocked`) and nothing is sent; a login without the write group is refused by the other server (message 11500 with its text, "request 34"). It is allowed inside `BEGIN TRANSACTION` for a `write` definition: it changes nothing, so a rollback has nothing to undo |
+| `RECORDLOCKED()` | the other server's answer (-3 -2 -1 another user holds a file, update or read lock; 0 none; 1 2 3 this session holds a read, update or file lock), and `STATUS()` is the lock owner's user number on that server. **Only for a server defined `write` and a login in the other server's `sdfileswrite` group**, like a lock. A `read` definition stops the program with message 11501 (`recordlocked`) and nothing is sent; a login without the write group is refused by the other server (message 11500 with its text, "request 34"). It is allowed inside `BEGIN TRANSACTION` for a `write` definition: it changes nothing, so a rollback has nothing to undo |
 | `GETLOCKS()` | **the local view, for either mode, and nothing is sent**: the one field of three counters (`NUMLOCKS`, the lock count, the peak) of *this* machine's lock table and no lock line. The locks of a remote file are held on the other server and never appear here, in `GETLOCKS()` or in `LIST.READU`, which is what openQM's QMNet documents too; look on the other server for them. `GETLOCKS()` is an internal-programs-only function |
 
 **A verb that takes the file lock now works.** `CLEAR.FILE` locks the file, clears it and gives the
@@ -1176,8 +1176,7 @@ the route does not allow or, for a login without the write or administration gro
 or an administration request (the number is the request; `write` and `admin` are the state of the
 login), the third to fifth the administrator giving the route and the two groups, the seventh an
 administration act (written before the verb runs, so a killed command is on the trail), and the last a
-login of a person who is in neither `sdapi` nor `sdfiles` (the reason named only `sdapi` until 19
-October 2026; the decision is made on both). All of them are written on the server being reached.
+login of a person who is in neither `sdapi` nor `sdfiles` (the decision is made on both). All of them are written on the server being reached.
 
 ## See also
 

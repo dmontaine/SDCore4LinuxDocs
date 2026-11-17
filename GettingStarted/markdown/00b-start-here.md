@@ -67,7 +67,7 @@ so on. Nothing was renumbered when they were split.
 | **11** | [Lower case](11-lower-case.html) | Case in commands, file names, record ids and account names |
 | **12** | [Security](12-security.html) | The identity model, and what protects the database |
 | **12a** | [Security and the operating system](12a-security-and-the-operating-system.html) | Reaching the machine from inside SD, how privileged work is done, and the audit trail |
-| **13** | [Other hardening](13-hardening.html) | Auditing, the shell permit list, and the rest |
+| **13** | [Other hardening](13-hardening.html) | The global catalog, the pcode library, scheduled jobs, the logs, line endings, the terminal, and running SD |
 | **14** | [Not in SD Core](14-not-in-sd-core.html) | What has been removed, and what to use instead |
 | **15** | [Migrating to SD](15-migrating-to-sd.html) | Bringing programs and queries from another MultiValue database: where the compatibility words are set, and the words SD does not accept |
 | **15a** | [Option words](15a-migrating-option-words.html) | The fourteen words of the `option` command, one line each |

@@ -8,8 +8,7 @@ SD folds case, so a command may be typed in either case. Commands are shown here
 in lower case. In the tables, *italics* mark something you supply and **bold**
 marks a word typed as it stands; braces mark an optional part.
 
-> **Every listing on this page was produced by running it**, on SD Core for
-> Linux, against a six-record file whose field 1 held five `V` and one
+> The listings use a six-record file whose field 1 holds five `V` and one
 > `K`.
 
 ## Create it, then build it

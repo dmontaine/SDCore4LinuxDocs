@@ -107,7 +107,10 @@ over the API only if it is in `sdapi` — those two memberships are what the
 `files-on` and `files-off` words make and take it away, and `ssh`, `api`,
 `both` and `none` leave it alone. `sdsys` is in
 none of them, and is refused at the door on both routes rather than left
-ungranted.
+ungranted. One more group works the other way round: a Linux user that `create.account`
+makes is put in `sdsshnokey`, and its members are offered no ssh key sign-in (only the
+password), until `modify.account` *name* `ssh-key-on` takes the user out; see
+[ssh access](08-ssh-access.html).
 
 ### What every account can do
 

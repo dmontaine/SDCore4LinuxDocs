@@ -92,7 +92,7 @@ Every request starts with a 4-byte length that counts the whole packet, itself i
 | before the client has logged in (the server is still running as root) | 6 to 65,536 bytes. The login messages are all under 4 KB |
 | after the login | 6 to 1,073,741,832 bytes: the largest SD string (1,073,741,822) plus the 10 bytes of header the client library allows for, the number `SD_MAX_PACKET_BYTES` in the library |
 
-A packet that declares anything else (below 6, negative, or over the limit) is not read: the server ends the session at once and writes one line to the system log (`API packet length ... refused (before login)` or `(after login)`). The same test applies to the reply a client sends to an `INPUT` prompt. A client that closes its connection, however early, also ends its session at once; *before 20 Oct 2026 about half of the clients that completed the TLS handshake and closed straight away, and every one that sent four bytes that read as a huge length, left the server process running at 100% of a processor until it was killed.*
+A packet that declares anything else (below 6, negative, or over the limit) is not read: the server ends the session at once and writes one line to the system log (`API packet length ... refused (before login)` or `(after login)`). The same test applies to the reply a client sends to an `INPUT` prompt. A client that closes its connection, however early, also ends its session at once, so no server process is left running.
 
 ## Server status codes
 
@@ -120,9 +120,9 @@ A packet that declares anything else (below 6, negative, or over the limit) is n
 | `SDSetSession(session)` | Boolean | switch to a session |
 | `SDLogto(account)` | Boolean | switch to another account: true if the server moved there, false (and `SDError()` says why) if not, in which case the session stays where it was |
 
-**Sessions.** One program can hold up to **1024** sessions at once, each with its own server process, number and account (it held four before 15 Oct 2026). The server's own user table (`USERPOOL`, 1023 by default) is the real ceiling. Open more than one with `SDConnect` or `SDConnectLocal`, one after another, noting `SDGetSession()` each time, and move between them with `SDSetSession`.
+**Sessions.** One program can hold up to **1024** sessions at once, each with its own server process, number and account. The server's own user table (`USERPOOL`, 1023 by default) is the real ceiling. Open more than one with `SDConnect` or `SDConnectLocal`, one after another, noting `SDGetSession()` each time, and move between them with `SDSetSession`.
 
-**Threads** (from 15 Oct 2026; before that the library kept its state in plain globals and a program with more than one thread could not use it safely). The client library may be used from several threads of one process, as OpenQM's QMClient may, on these rules:
+**Threads.** The client library may be used from several threads of one process, as OpenQM's QMClient may, on these rules:
 
 - **The current session belongs to the thread.** `SDSetSession` and `SDGetSession` act on the calling thread's own selection, so two threads can work on two sessions at the same time. A thread that has not selected a session starts on session 0, which is the one the first connection of the process received; a thread given a session by another thread must `SDSetSession` it before use.
 - **A session must not be used by two threads at the same time.** The library does not serialise requests on one session. If more than one thread can reach it, take your own lock round each action, and treat an `SDExecute` and the `SDRespond` calls that answer it as one action.
@@ -133,7 +133,7 @@ A packet that declares anything else (below 6, negative, or over the limit) is n
 
 *Not changed:* a local session is still a server process of its own, so a program that starts many threads each with a session starts that many `sd` processes.
 
-**A session whose server has ended** — its `AUTOLOGOUT` period ran out, the administrator logged it out, the process was killed — does not hang the client: the next request on it comes back empty, `SDError()` says the pipe or connection failed, and `SDDisconnect()` cleans it up. *Before 15 Oct 2026 a local session in that state waited for ever, and writing to it could end the program with `SIGPIPE`.* A session can set its own limit by executing the `AUTOLOGOUT` command (`SDExecute("AUTOLOGOUT 10")`: ten minutes idle; the period is in minutes, 0 turns it off).
+**A session whose server has ended** — its `AUTOLOGOUT` period ran out, the administrator logged it out, the process was killed — does not hang the client: the next request on it comes back empty, `SDError()` says the pipe or connection failed, and `SDDisconnect()` cleans it up. A session can set its own limit by executing the `AUTOLOGOUT` command (`SDExecute("AUTOLOGOUT 10")`: ten minutes idle; the period is in minutes, 0 turns it off).
 
 **`MASTER.LOGIN`.** If the administrator has put a `MASTER.LOGIN` paragraph in the SDSYS VOC it is run when an API session first enters an account, before that account's own `LOGIN` paragraph, as it is for a terminal session; entering another account with `SDLogto` runs the new account's `LOGIN` only. A session can be recognized inside either paragraph by `@TTY`, which is `apisrvr`.
 
@@ -174,7 +174,7 @@ A packet that declares anything else (below 6, negative, or over the limit) is n
 | Function | Returns | Description |
 |---|---|---|
 | `SDField(str, delim, first, occurrences)` | String | extract a field from a delimited string |
-| `SDDcount(src, delim)` | Long | the number of delimited items: 1 more than the number of times `delim` occurs, counting non-overlapping occurrences from the left; 0 for a null string or a null delimiter. **The delimiter may be more than one character** (`a::b::c` by `::` is 3); before 15 Oct 2026 only its first character was used |
+| `SDDcount(src, delim)` | Long | the number of delimited items: 1 more than the number of times `delim` occurs, counting non-overlapping occurrences from the left; 0 for a null string or a null delimiter. **The delimiter may be more than one character** (`a::b::c` by `::` is 3) |
 | `SDChange(str, old, new, occurrences, start)` | String | replace substrings |
 | `SDMatch(src, template)` | Boolean | match a string against a pattern |
 | `SDMatchfield(src, template, component)` | String | extract a matched component |
