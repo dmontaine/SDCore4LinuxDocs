@@ -672,7 +672,7 @@ Three simple layers, with no vault and nothing on by default.
 | group account files | Changed | an upgrade puts the four record files of every kept group account back in the account's group |
 | gates of the installing user's account | Added | when it makes your own account the installer asks once whether to open every access gate on it (no unless `y`); a `y` opens all of them, the AI and the `sdsys` user in its group included, and the install says which really opened |
 | immutable `bin` | Changed | `deletesdcore.sh` lifts the attribute before it removes the system directory |
-| installer packages | Changed | also installs `gpm`, the console mouse daemon, so the full-screen tools have a mouse on a bare Linux console; the package starts it, the installer does not, and removing SD leaves it; if `gpm` cannot be installed (a container, say) the installer warns and goes on |
+| installer packages | Changed | also installs `gpm`, the console mouse daemon, so the full-screen tools have a mouse on a bare Linux console; the package starts it, the installer does not, and removing SD leaves it; on a machine with no console mouse device (a container, say) it is not installed at all, and if it cannot be installed the installer removes it again, warns and goes on |
 | installer: the `sdsys` user's groups | Changed | an install that keeps the accounts leaves the `sdsys` user in the group of each group account (`sdg_shared` among them); it used to take it out of all of them |
 | installer source message | Changed | says which source it is downloading, the release tag or `main` |
 | scheduled jobs on uninstall | Added | `deletesdcore.sh` switches every `sdcore-job-*` timer off, removes the timers and services, then `/etc/sdcore/jobs.d` |

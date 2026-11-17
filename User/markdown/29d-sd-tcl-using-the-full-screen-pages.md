@@ -94,7 +94,7 @@ last entry is always *Find an action...*, which opens the F2 list.
 
 A click chooses a row, presses a button or opens a menu; the wheel scrolls the list under the pointer; a right click
 opens the action menu (above). On a bare Linux console with no desktop, the mouse works through **gpm**, which the
-installer installs. `tool.keys` shows which keys your terminal sends.
+installer installs where the machine has a console mouse device (not in a container). `tool.keys` shows which keys your terminal sends.
 
 ## Boxes that ask before anything happens
 
