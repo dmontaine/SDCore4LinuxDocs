@@ -85,7 +85,7 @@ The server side of the API, the client library and the language headers.
 | client library: detailed error | Changed | the BASIC class `sdclient` returns the detailed status when it cannot connect |
 | client library: dictionary | Added | `sdevaluate`, `sdevalconv`, `sdiconv`, `sdoconv`, `sdiconvs`, `sdoconvs` |
 | client library: files | Added | `sdopenseq`, `sdreadseq`, `sdreadblk`, `sdwriteseq`, `sdwriteblk`, `sdseek`, `sdweofseq` |
-| client library: fixes | Changed | `sdlogto`, `sdchange`, `sddcount` and a second `sdconnect` were checked and found correct, with tests |
+| client library: fixes | Changed | `sddcount` counts a delimiter of several characters; a program may hold 1024 sessions (it was four); a waiting session is no longer damaged when another connects and disconnects; a request to a local server that has ended fails at once instead of waiting for ever; `sdchange` and `sdlogto` were checked and found correct |
 | client library: more functions | Added | `sdrevision`, `sdgetvar`, `sdsystem`, `sdindices`, `sdtrans`, `sdrtrans`, `sdtxn` |
 | client library: python | Added | a Python wrapper for the library |
 | client library: `sdcallx` | Added | `sdcallx` and `sdgetarg`: calls with arguments of any size from the C client library |
@@ -103,7 +103,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `~=` | Added | comparison that ignores case |
 | `account.path()`, `vocpath()` | Added | the pathname of an account and of a file named in the VOC, told only where the account may open it |
 | `arg.present()`, `reusing()` | Added | whether the caller passed an argument, and whether with `reuse()` |
-| `$basic.options` | Changed | a `mode` line takes a list and a minus turns a mode off; an `include` line names records or files that every program includes |
+| `$basic.options` | Changed | a `mode` line takes a list and a minus turns a mode off; an `include` line names records or files that every program includes; a `search` line names the files, in order, that an `$include` with no file name looks in |
 | `bool()` and friends | Added | `bool()`, `is.null()`, `numeric()`: Boolean, SQL-null and numeric conversions |
 | `@build.time`, `@line` | Added | the time the program was compiled and the source line it stands on |
 | `casing on` and `off` | Added | case sensitivity of string comparisons for the rest of the program |
@@ -117,11 +117,12 @@ Statements, functions, `$mode` words and compiler directives.
 | `clearcommon name` | Added | sets the variables of the named common block to zero |
 | `compare()` | Changed | an `i` after `l` or `r` in the justification compares ignoring case; `compares()` does it over two arrays |
 | `convert()` | Changed | `mcn-`, `mc/n-`, `mcs`, `mcp` with a quoted replacement character, `mt` with `m`, `md` options in any order |
-| `dir()` | Changed | includes the size of each file; lists a plain file as `F` and a directory as `D` only, so a socket is no longer a file and a block device no longer a directory |
+| default argument values | Added | `subroutine name(a, b = 7)`: a number, a string, `@true` or `@false` for an argument the caller leaves out; the program needs `var.args` |
+| `dir()` | Changed | includes the size of each file; lists a plain file as `F` and a directory as `D` only, so a socket is no longer a file and a block device no longer a directory; sets `status()` (0 when it works, a code when the directory cannot be opened) |
 | `fix()` | Added | a number with a fixed number of decimals, rounded or cut off |
 | exceptions | Added | `try`, `catch`, `throw`, `caught()` and `@exception`; many run time errors are caught under openQM's `sys.` names; `dumping` and `saving.stack` |
 | `execute ... capturing` and `os.execute ... capturing` | Changed | output whose final newline stands alone (one empty line, or a newline just past a full 16 KB block) gives the right value; it used to end the session ("double free or corruption") or read freed memory |
-| `execute ... silent` and `os.execute ... silent` | Added | the command's output is thrown away; `silent` used to compile as a variable and stop the program at run time |
+| `execute ... silent`, `phantom ... silent` and `os.execute ... silent` | Added | the command's output is thrown away; `silent` used to compile as a variable and stop the program at run time |
 | `execute ... stacklist` | Added | keeps the default select list and puts it back when the command returns |
 | `execute.list` | Added | runs commands for each id of list 0 in turn |
 | `fcontrol()` | Added | the openQM function: next sequential key, valid id, minimum modulus, line terminator modes, forced writes |
@@ -140,7 +141,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `inputif` | Added | reads a line only if one is already there, else takes `else` |
 | `inputnull`, `inputtrap` | Added | a single character typed alone makes the answer null, or sends the program to a label |
 | `last()` and more | Added | `last()`, `lasts()`, `nv()`, `ns()`: the final element of a delimited string; value and subvalue position numbers (`left()` and `right()` were added and removed again, see REMOVED) |
-| `locate ... by` | Added | `c` forces a case-sensitive search and `n` a case-insensitive one |
+| `locate ... by` | Added | `c` forces a case-sensitive search and `n` a case-insensitive one; fixed: `by 'ar'` of a number in a list of one text item gave position 2, it now gives 1 |
 | `matchess` and `trimws` | Added | `matchess`, `matchfields`, `trimws`, `trimw()`: `matches`, `matchfield` and `trimw` over a dynamic array; `trimw` trims white space |
 | matrix arguments | Changed | a matrix passed as an argument needs no `dim` in the receiving subroutine; `if mat a = mat b` compares two matrices; the compiler no longer reports an undimensioned argument |
 | `matstr()` | Added | converts a two dimensional matrix to a dynamic array |
@@ -155,7 +156,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `$mode strict.equate` | Added | warns when a name given to `equate` or `$define` is also a statement or function name |
 | `$mode trap.unused` | Changed | warns only of a variable set by a plain `x = ...` and never read; a variable a statement fills (`readu`, `locate ... setting`) is not reported |
 | `$mode trap.unused.main` | Added | `trap.unused` for the program's own variables |
-| `no.query` on cataloging | Added | the `basic` command, the `$catalogue` directive and the `catalogue` line of `$basic.options` take `no.query`, which stops the compiler asking before it removes an older entry |
+| `no.query` on cataloging | Added | the `basic` command, the `$catalog` directive and the `catalog` line of `$basic.options` take `no.query`, which stops the compiler asking before it removes an older entry |
 | `oconv()` date `i` | Changed | the `i` code of a `d` conversion (the ISO week number) gives the week; without `yi` beside it, it gave whatever number was left in memory |
 | `open ... non.transactional` | Added | a write through that file variable is not undone by a rollback |
 | `open.socket()` | Changed | takes a connect timeout |
@@ -166,6 +167,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `option()` | Added | reads and sets the state of an option |
 | `ospath()` | Added | keys `os$fullpathx`, `os$info`, `os$parent`, `os$uid`, `os$gid`, `os$modes`, `os$is.file` and `os$is.dir` |
 | `parse()` and `ttyget()` | Added | `parse()`, `sort.compare()`, `ttyget()`, `ttyset`: split by a pattern; compare by a sort rule; the terminal modes as an array |
+| `pdump` | Added | a statement that writes a process dump file of the running process and goes on |
 | `phantom` statement | Added | starts a phantom from a program; the log name may be a variable |
 | `precision inherit` | Added | takes the precision of the calling program |
 | `@pstat` | Added | text a program leaves for `pstat` to show |
@@ -182,6 +184,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `sendmail` | Changed | fails (`er$ioe`, the mail command's status in `os.error`) when the mail command cannot run or fails; it reported success |
 | `set.socket.mode` trace | Added | `skt$info.trace` logs the data sent and received on a socket to an owner-only file |
 | `socket.info()` | Changed | fixed: `skt$info.open` on a number, a string or an unassigned variable stopped with a fatal error |
+| `sort()` and sort variables | Added | `sort()`, `sortadd`, `sortclear`, `sortdata()`, `sortnext()`: several sorts at once in sort variables, up to 32 keys each with its own `srt$` flags |
 | `!sort` | Changed | sorts a select list variable; the internal sort is open to programs |
 | `sselectv`, `sselectn` | Added | sorted selects into a select list variable; `right.aligned` and `descending` |
 | `status()` after a transaction | Added | 0 if it committed, 1021 if it rolled back |
@@ -224,12 +227,11 @@ File handling: opening, indexes, triggers, print files, sorting, sequential file
 | Name | Change | What |
 |---|---|---|
 | `account:file` file names | Changed | always available, with no `filerule` setting: a name in no VOC entry with one colon opens that account's file, with exactly the checks of a Q-pointer (an account you may `logto`, not suspended) |
-| `analyse.file` | Changed | `statistics` shows a histogram of group utilisation |
+| `analyze.file` | Changed | `statistics` shows a histogram of group utilization |
 | `analyse.index` | Added | every index with its number of values and spread |
-| `catalog -name` | Added | a hyphen is a global catalog prefix; `delete.catalog -name` removes it |
 | `clear.file` | Changed | fixed: a `no.resize` file keeps its modulus |
 | `configure.file ... reporting` | Added | shows how many records have been converted |
-| `create.file` | Added | `comment`, `multifile` and a relative `pathname` kept relative in the VOC |
+| `create.file` | Added | `comment`, and a relative `pathname` kept relative in the VOC |
 | `create.index` | Added | `no.case`: keys that differ only in case are one key; `deleting` replaces an index; a default location in `$index.path` |
 | `dir_dict` | Added | three items for a directory file's dictionary: `days`, `dtm` and `owner` |
 | directory file line ends | Added | line terminator modes (`l`, `c`, `b`, `x`) and triggers |
@@ -245,13 +247,13 @@ File handling: opening, indexes, triggers, print files, sorting, sequential file
 | `list.common detail` | Added | shows where each common block was created |
 | `list.index` | Changed | the report may go to a printer |
 | `list.triggers` | Added | every trigger subroutine used by the files of an account, multifiles, dictionaries and directory files included |
-| `listf`, `listfl`, `listfr` | Changed | list a multifile line by line, and take `with` and `without trigger`, `encryption` and `replication` |
 | print unit mode 3 | Changed | takes an update lock on the `$hold` item while it is written |
 | `rebuild.all.indices` | Added | rebuilds the indices of every file in the account |
 | `select` of a directory file | Changed | fixed: at the open-file limit it closes the oldest cached file and goes on |
 | `set.file` | Changed | the target may be a `q`-pointer; a `q`-pointer with no file name points at the VOC |
 | `set.mode` | Added | the permission bits of records of a directory file |
 | `set.trigger` | Changed | fixed: refused every function name; takes `all`; no longer needs exclusive access |
+| `$setptr.defaults`, `@seqno` | Added | an X record `$setptr.defaults` in the VOC gives the options every `setptr` of a mode takes (field mode + 1); `@seqno` and `getpu(pu$seqno, unit)` give the number of the last `as next` hold file |
 | sort of long records | Changed | the disk sort handles records and keys over 32 KB |
 | trigger on a read | Changed | fixed: a locally cataloged read trigger could end the process |
 | `vocname` letters | Added | `r` opens a file read-only, `n` non-transactionally, `s` with forced writes, from field 6 of its VOC entry |
@@ -283,7 +285,7 @@ The query processor and the dictionary.
 | `show` | Changed | `b` goes to the bottom; `sort.sup`; a missing record is listed and the command ends |
 | `sorted.sample n` | Added | counts the records after the sort |
 | `vertically` | Changed | `fmt` for the name and data format; `$vlist` sets them for the file; multivalued data and a wrapped line are told apart |
-| `when field` | Changed | with no operator keeps the values that are not null |
+| `when field` | Changed | with no operator keeps the values that are not null; `when field between a b` compares every value of a multivalued field, not only the first |
 | `x` breakpoint control | Added | captures the previous value of a break field in `@bpv` |
 
 ## SYSTEM
@@ -302,7 +304,6 @@ The kernel, `sd.conf`, and the numbered keys.
 | `phantoms=u,n` | Added | keeps user numbers for phantoms started with `user` |
 | process dump | Changed | shows the length of each string, the variables of objects and the environment |
 | `pterm` keys | Added | `pterm erase`, `ctrl.filter`, `mark`: which key erases; control characters filtered; control keys that type the marks |
-| `-quiet` | Changed | `sd -quiet` suppresses the VOC update question |
 | `sd.conf` parameters | Added | `dhcache`, `lgnwait`, `maxrlock`, `pwdelay`, `userpool`: `sd.conf` parameters, each optional with the old fixed number as the default |
 | sessions on a dropped connection | Changed | a session whose terminal or ssh connection goes away while it is writing the error log or the audit trail no longer waits for itself for ever, which stopped every later login |
 | `sortmem` | Changed | default 4096|
@@ -337,6 +338,7 @@ Commands and VOC verbs that every account has, and the command language.
 | `delete.account` | Changed | not stopped by a file it cannot open when it looks for references |
 | `delete.account` `no.query` | Added | leaves out the confirmation, for a caller that has asked already (the accounts page's delete dialog) |
 | `delete.common all except` | Added | deletes every named common block but those listed |
+| `delete.file` | Changed | when it stops because the data or dictionary part is open, `@system.return.code` is -3021 (no exclusive access) |
 | `ed` | Changed | `l` with no text as the first command works; marks typed in input; `ev` on a compound `i`-type; line numbers show positions in edit values mode; `spool` closes the printer; external commands; automatic ids |
 | `fstat` | Changed | wider columns |
 | `fstat.user` | Added | file activity of each session |
@@ -377,14 +379,12 @@ The debugger and the editors, from the openQM list. The full-screen tools that a
 | Name | Change | What |
 |---|---|---|
 | `debugger` | Changed | full-screen display on any terminal that can address a cell and clear itself; `/*` for every variable; `^`; `window n`; `set v = token`; a stop before each `case`; a blank line repeats the last command; `brk` lists the breakpoints |
+| `debugger` missing source | Changed | says when it cannot find the source of the program, then lets the program run on; a `$debug.options` record in the VOC holding `no.source.warning` leaves the message out |
 | `debugger` phantom | Changed | an `@variable` is read from the process being debugged|
 | `sed` | Changed | is the IDE's editor, started alone: no files pane, the same keys and menus; asks File name? and Record name? when not given, `?` lists the records; takes `creating.seqkey` in place of a record id, like `ed` |
-| `sed` line numbers | Changed | are on when a record is opened (they were off until `lnum`); Tools > Line numbers toggles them (checked while on), and `no.lnum` in `&sed.options&` starts SED with them off |
+| `sed` line numbers | Changed | are on when a record is opened (they were off until `lnum`); View > Line numbers switches them, and `no.lnum` in `&ide.options&` (or `&sed.options&`) starts with them off |
 | `sed` option `no.case.explore` | Added | in `&sed.options&`: the list of records is in order whatever the case of the ids, not capitals first|
-| `sed` option `scroll1` | Added | in `&sed.options&`: page up and page down move one line less than a page, so one line of the old page stays|
-| `sed` screen | Changed | looks like the toolkit pages: a key row at the bottom (the keys of the layout in use), the editor's name and the person at the right of the menu bar, and the site's screen theme's colors; no key or command changed |
-| `sed` syntax color | Changed | is on when SED starts, on a terminal that can show color (it was off until asked for); `no.syntax` in `&sed.options&` or `syntax off` turns it off, and the bare `syntax` switches it |
-| `sed` view | Added | Search > View lines, or `view` and a text: a new read-only buffer holding only the lines of this one that contain the text|
+| `sed` syntax color | Changed | is on when SED starts, on a terminal that can show color (it was off until asked for); View > Syntax color switches it, and `no.syntax` in `&ide.options&` (or `&sed.options&`) starts with it off |
 
 
 ## REMOVED
@@ -399,7 +399,7 @@ compiled with until it is compiled again. More rows are added as the removal goe
 |---|---|---|
 | AccuTerm terminal types | Removed | the eleven `-at` terminal types and AccuTerm's escape sequences |
 | `$mode` words that imitated other products | Removed | `prclose.default.0` (write `printer close on` *unit*), `unassigned.common` (a common variable starts as zero), `no.case.invert` (give `input` the `nocaseinvert` clause) and `optional.then.else` (a `read` takes a `then` or an `else`) are refused now with *Unrecognized mode name*; `conditional.statements`, `implied.stop` (end a program with `stop`) and `exception.save.stack` (write `saving.stack` on the `catch`) were added and removed within 2.0-0, so they never shipped |
-| `option` words that imitated other products | Removed | `option pick` and 22 words, refused now with *Option name not recognized*: `assoc.unassoc.mv`, `pick.breakpoint`, `pick.breakpoint.u`, `pick.explode`, `pick.grand.total`, `pick.implied.eq`, `pick.null`, `pick.wildcard`, `qualified.display`, `with.implies.or`, `query.no.case`, `query.priority.and`, `ampm.upcase`, `crdb.upcase`, `no.date.wrapping`, `space.mct`, `lock.beep`, `ed.no.query.fd`, `create.file.upcase`, `select.keep.case`, `debug.rebind.keys`, `proc.a`. SD does what it did with them off: write `with city = "Reno"`, use `like` for wildcards, brackets and `or` for the order of tests, `no.case` after an operator or `option query.sort.no.case` for case; times and amounts are `am`, `pm`, `cr`, `db`; a date such as 31 February rolls into the next month; a lock wait is silent; `fd` in `ed` asks first; `create.file` names a file in lower case |
+| `option` words that imitated other products | Removed | `option pick` and 22 words, refused now with *Option name not recognized*: `assoc.unassoc.mv`, `pick.breakpoint`, `pick.breakpoint.u`, `pick.explode`, `pick.grand.total`, `pick.implied.eq`, `pick.null`, `pick.wildcard`, `qualified.display`, `with.implies.or`, `query.no.case`, `query.priority.and`, `ampm.upcase`, `crdb.upcase`, `no.date.wrapping`, `space.mct`, `lock.beep`, `ed.no.query.fd`, `create.file.upcase`, `select.keep.case`, `debug.rebind.keys`, `proc.a`. SD does what it did with them off: write `with city = "Reno"`, use `like` for wildcards, brackets and `or` for the order of tests, `no.case` after an operator for case; times and amounts are `am`, `pm`, `cr`, `db`; a date such as 31 February rolls into the next month; a lock wait is silent; `fd` in `ed` asks first; `create.file` names a file in lower case |
 | screen save and restore | Removed | `save.screen()` and `restore.screen`: still exist and do nothing the terminal could see |
 | `sed` extension language | Removed | compile and run of `proc` / `func` extensions, `&sed.extensions&`, and Tools, Run extension: a program in SD BASIC does the work of one |
 | `sed` key rebinding, Emacs layout and typed commands | Removed | `&sed.bindings&`, `load.keys`, `save.keys`, the repeat count, the quote character and the words typed at Alt-X: use the menus and the keys of the IDE's editor; Alt-X runs nothing now, Build, Run a command does |
@@ -450,7 +450,7 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | `system:account:file` file names | Removed | bit 2 of `FILERULE` and a Q-pointer's fourth field named a file on another system and opened nothing; the name form is gone and a Q-pointer with a fourth field is refused (3003) |
 | eleven `sd.conf` settings, `sd -<n>`, and the `gdi` and `raw` words of `setptr` | Removed | `apilogin`, `codepage`, `creatusr`, `exclrem`, `fixusers`, `gdi`, `jnldir`, `jnlmode`, `portmap`, `ringwait` and `txchar` (the first two groups did nothing; `fixusers` and `portmap` gave a connection a fixed user number): a line naming one stops SD from starting, so the installer takes it out of a kept `sd.conf`; `config('...')` no longer answers them and `config` no longer lists them; `tool.config` has no `inert` or `retired` status left; `sd -<n>` (start with a given user number) is gone; `setptr` always uses its raw mode, and its `gdi` and `raw` words are no longer keywords |
 | six `option` words and `keep.select` | Removed | `unass.warning`, `div.zero.warning` and `non.numeric.warning` (with the shortcut `sdbasic.warnings`): an unassigned variable, a divide by zero and a non-numeric value are always errors, so test the value first; `inherit`: a phantom starts with every option off; `query.sort.no.case`: a sort is by case (`sp.view ... by field no.case` still ignores it, by sorting the list itself); `clear.select` and the `keep.select` statement: a select list left active is left for the next command, and `clear.select` clears it |
-| twenty-two `$mode` words | Removed | `string.locate`, `composite.readnext`, `pick.read`, `selectv`, `pick.select`, `stdfil`, `stdfil.shared`, `write.delete.then.else`, `autolock`, `pick.substr`, `pick.substr.assign`, `compatible.append`, `pick.convert`, `count.overlap`, `index.overlap`, `change.no.overlap`, `case.sensitive`, `for.store.before.test`, `pick.jump.range`, `optional.final.end`, `pick.matrix` and `heading.no.eject`: each is refused with *Unrecognized mode name*, and the program does what it did with the mode off (the `keep.select` statement went in the same way with `option clear.select`); write `heading no.eject` for the last, and name the file variable for `stdfil`. `selectv` *file* `to` *var* stays a statement. The programs that used `$mode stdfil` and `$mode selectv` had no replacement; an I-type may no longer say `$mode count.overlap`, `index.overlap`, `change.no.overlap` or `compatible.append`
+| twenty-two `$mode` words | Removed | `string.locate`, `composite.readnext`, `pick.read`, `selectv`, `pick.select`, `stdfil`, `stdfil.shared`, `write.delete.then.else`, `autolock`, `pick.substr`, `pick.substr.assign`, `compatible.append`, `pick.convert`, `count.overlap`, `index.overlap`, `change.no.overlap`, `case.sensitive`, `for.store.before.test`, `pick.jump.range`, `optional.final.end`, `pick.matrix` and `heading.no.eject`: each is refused with *Unrecognized mode name*, and the program does what it did with the mode off (the `keep.select` statement went in the same way with `option clear.select`); write `heading no.eject` for the last, and name the file variable for `stdfil`. `selectv` *file* `to` *var* stays a statement. The programs that used `$mode stdfil` and `$mode selectv` had no replacement; an I-type may no longer say `$mode count.overlap`, `index.overlap`, `change.no.overlap` or `compatible.append` |
 | seven more `option` words | Removed | `numeric.exponent` (`123.45E-2` is not numeric), `suppress.abort.msg` (`abort` always says where it ran), `dir.sel.omit.hidden` (a select of a directory file includes dot files), `no.phantom.notify` (a phantom always tells its parent), `force.reload`, `stacked.account` (an `execute` of `logto` stays in the account it went to) and `command.level.locks` (a file variable that goes closes its file and its locks) |
 | `$mode time.ms` and `$mode default.unass.args` | Removed | write `system(1020) / 1000` for milliseconds; a default argument value needs `var.args` |
 | `closeseq` and `equ` | Removed | write `close` and `equate` |
@@ -481,6 +481,8 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | Fedora support | Removed | the installer now refuses Fedora, as it already refused RHEL and its clones, before it changes anything; Debian and Ubuntu are supported. An L1.1-3 Fedora system cannot be upgraded: install on Debian or Ubuntu |
 | `check.masters`, `list.master.pending`, `sync.masters`, `tool.masters` | Removed | added and taken out again in this release with the master copies (`voc_master`, `dict_master`, `master_state`, `$master.journal`, which the installer removes): use `tool.entries`, which edits each account's own records in that account |
 | `sd-elevate job-set` ids `check-masters`, `sync-masters` | Removed | added and taken out again with those verbs: the job ids left are `backup-all` and `update-accounts` |
+| `pdf`, `set.viewer`, `tool.viewers` | Removed | added and taken out again in this release, with the installer's two questions about a PDF reader and the Documentation button of a help box: the documentation PDFs are still in the shared account's `pdf` directory, where every account can read them (copy one to your own computer), and a help box's last line names the PDF that says more; an upgrade removes the three VOC entries and the list of allowed readers |
+| `sed` option `scroll1` | Removed | added and taken out again in this release: SED is the IDE's editor, page up and page down move a whole page, and the word in `&sed.options&` is passed over |
 
 ## New Features Unique to SD Core
 
@@ -494,7 +496,7 @@ has, with the changes they made.
 | Name | Change | What |
 |---|---|---|
 | `bp-on` and `bp-off` | Added | per-account switch for saving a change to a program file (source or object code) |
-| `create.account` | Changed | a user account's group is made with `root` and the user; the `sdsys` user is no longer put in it |
+| `create.account` | Changed | a user account's group is made with `root`, the user and the `sdsys` user (see the `sdsys` operating system user below) |
 | `create.account` audit line | Changed | the audit line ends `gates=` with every access the command granted, or `gates=none` |
 | `create.account group` | Changed | fixed: the four record files of a new group account now get the account's own group (they were left in `sdusers`) |
 | `create.account` recovery word | Added | `create.account user <name> recovery-on` makes the account's `ide` keep a recovery copy of unsaved text; off as delivered, user accounts only (`recovery-off` is for `modify.account`) |
@@ -505,6 +507,7 @@ has, with the changes they made.
 | `files-admin-on` | Added | third remote permission: the login may configure, index, create and delete files on this server (group `sdfilesadmin`) |
 | `files-on` and `files-off` | Added | per-account switch for the files route SDNet uses (group `sdfiles`) |
 | `files-write-on`, `-off` | Added | per-account switch for changing files over the files route (group `sdfileswrite`); `files-off` removes it first |
+| `list.shared` | Added | administrator only: the files of the shared account that an account with shared read can open by name, and a count; with no shared account in service it says so |
 | `list.voc.removed` | Added | administrator only: the VOC records SD no longer ships, with the release each went in and what to write instead; given an account, what the next `update.accounts` would do in it (changes nothing) |
 | `load.help` | Added | SDSYS loads the text of the `[?]` help buttons into the shared account; keeps records the administrator added |
 | `modify.account` | Changed | takes more than one action in a command (`modify.account fred sh-on os-on voc-on`), all carried out or none |
@@ -567,8 +570,9 @@ has, with the changes they made.
 | Name | Change | What |
 |---|---|---|
 | `agent-pack` | Added | a guide (examples compiled and run), a generated reference of 3,932 entries and a Claude Code skill, in the source and installed under `/usr/local/sdsys/agent-pack` |
+| `ai` answers on a page | Changed | the AI line of every page shows the whole answer, in paragraphs, in a box that scrolls (it was cut to one short sentence); the cursor stands after what is typed and stays in the line after Follow up and F6 |
 | `ai` boundary | Added | the AI is never given SD's own files (decided by where a file is: the system directory, the helper's, `/etc/sd.conf`, a `gplsrc` directory) and a question that names SD's own code or build (`gpl.bp`, `gplsrc`, `$internal`, kernel files) is refused before anything is sent, for every provider and for the administrator too; the second is a screen, said to be one |
-| `ai` documentation passages | Added | the AI line adds up to four matching sections of the installed User documentation (the Administrator pages only for the administrator: `docs/admin` is mode 700, owner `sdsys`) to the request; the preview names each page and section, shows its first lines and its size, and Cancel is still the default; the `ai` verb adds none |
+| `ai` documentation passages | Added | the AI line adds up to four matching sections of the installed User documentation (the Administrator pages only for the administrator: `docs/admin` is mode 700, owner `sdsys`) to the request; they are sent and counted in the size the preview shows, but not shown, and Cancel is still the default; the `ai` verb adds none |
 | `ai` follow-up | Added | every AI answer has a Follow up button (never the default; it applies nothing): the next request from the same place carries that question and answer, shown in full in its preview and sent as earlier turns; used once, the last three at most, dropped after ten minutes |
 | `ai` gate | Added | per-account switch, `ai-on` and `ai-off` (also on `create.account`); off as delivered; SDSYS needs none and may always use the AI once a provider and key are set |
 | `ai` in the editors | Added | the debugger, `sed` and the collection editor: ask about what you are looking at; a preview of what you send; proposed changes shown as diffs and never saved by the AI |
@@ -582,6 +586,7 @@ has, with the changes they made.
 | `ai` verb | Added | asks an AI one question; shows the question and the size of all that will be sent, and sends only on `y` or `yes` |
 | `sdai` operating system user | Added | system user made by the installer for the AI feature: own group, no shell, no home, no SD group |
 | `set.ai` | Added | SDSYS chooses the provider, model and key from the prompt; `set.ai models` lists the provider's own model names, and a model it does not list is warned about |
+| `set.ai limit` | Added | SDSYS sets the limits of AI use: requests an hour (20) and tokens a day (100000) for each Linux user, seconds (30) and bytes each way (65536) for a request, and `max-tokens`, the length of an answer at the prompt and on every page (1024) |
 | `tool.ai` | Added | SDSYS page: Anthropic, OpenAI, Google, DeepSeek or custom, one provider for every account, each named provider with its address and a default model (a key is all it needs), each account's gate; S, one setup dialog that looks the same every time: the key in a password field and the model chosen from the provider's own list |
 
 ### API and client library
@@ -592,6 +597,7 @@ has, with the changes they made.
 | api requests 32 and 33 | Changed | fixed: file lock and unlock acted on the last file opened, not the file named |
 | api server loop | Changed | fixed: a client that hung up before its first request left a server process using 100% of a processor |
 | api server, last reply | Changed | fixed: a refused login (any reply sd sends as it ends) could be lost when systemd killed the TLS relay as sd exited; sd now waits up to two seconds for the relay to deliver it |
+| api server, refused `sdlogto` | Changed | fixed: the session went on naming the refused account, so every later open by VOC name failed; it now stays in the account it was in |
 | client library: restricted | Changed | fixed two faults under `sdclient 1` and `2`: a heap overrun on a refusal, and a refused call that still ran |
 | client library: `sdchecksum` | Added | a checksum computed on the client |
 | `creating.seqkey` over the API | Added | the server's record-id counter gives the id, over the API |
@@ -619,7 +625,7 @@ has, with the changes they made.
 | `tool.query` | Changed | before every save and delete it checks that `&queries&` is an ordinary data file in your own account that your gates let you change, and deletes only saved queries (`tool.bulk`'s undo file has the same check) |
 | `tool.query` questions | Changed | its seven questions are asked on a form; a refused answer is explained in the form, with the form's explanation, and the form stays open with the text typed |
 | `tool.query` saved queries | Changed | L shows them in the toolkit's pick window with columns (name, file, kind, sentence); typing narrows it, Enter loads, Del deletes after the name is typed (X no longer does) |
-| `tool.test` boxes | Changed | Tab and Shift-Tab move between the list and what the test under the cursor printed, as on the other pages with two boxes |
+| `tool.test` boxes | Changed | F6 and Shift-F6 move between the list and what the test under the cursor printed, as on every page |
 | `tool.test` | Added | full-screen test runner: lists the `test.*` programs of the account's program files, runs one, all of those shown or the failed ones (after a box) with `run`, and judges each by its last line `N passed, M failed` (pass, fail, no verdict; an abort is a fail); shows what a test printed; compiles a test that has no object code through `basic` after a box; for every account |
 | `tool.voc` | Added | full-screen list of the account's VOC (type, what each entry points at, whether a pointer works, how it differs from the shipped VOC) with edit in SED and delete after a box; for every account |
 | `tool.voc` | Changed | Delete no longer offers `delete voc all` or any other VOC keyword as an entry name |
@@ -629,10 +635,11 @@ has, with the changes they made.
 | Name | Change | What |
 |---|---|---|
 | `convert.data` | Added | converts a file between formats |
-| CSV functions | Added | `csvparse()`, `csvbuild()`, `readcsv`, `matreadcsv`: read and write whole CSV texts and rows with another delimiter, quote and escape, including a field with a line break |
+| CSV functions | Added | `csvparse()`, `csvbuild()`, `csvopen()`, `readcsv`, `matreadcsv`: read and write whole CSV texts and rows with another delimiter, quote and escape, including a field with a line break (`csvopen()` says whether a quoted field is still open at the end of a line) |
 | `import.*` verbs | Added | `import.csv`, `import.json`, `import.xml`: read a CSV, JSON or XML file into the records of an SD file |
-| `json` keyword | Added | queries can write JSON |
+| `json` keyword | Added | queries can write JSON (`json`, an array of objects) and JSON Lines (`json.lines`, one object to a line) |
 | JSON merge, patch, path | Added | `jmerge()`, `jpatch()`, `jpath()`: RFC 7396 merge, RFC 6902 patch and JSONPath (RFC 9535) |
+| `jvalidate()` | Added | checks a document against a JSON Schema (draft 2020-12) and gives an array of the faults, each with its path, the keyword and a message; empty means valid |
 | `readjson`, `writejson` | Added | read and write JSON Lines through `openseq` |
 | XML functions | Added | `xparse()`, `xbuild()`, `xpath()`: XML into a collection and back, and a path query |
 
@@ -669,14 +676,17 @@ Three simple layers, with no vault and nothing on by default.
 | agent pack | Added | the guide and the knowledge pack are copied to `/usr/local/sdsys/agent-pack`, only when they match the installed version |
 | changes document | Added | a release package carries it beside the installer as `sd-core-for-linux-<version>-changes.pdf`, `.html` and `.md`, and the installer copies the three into the shared account's `pdf` directory, where every account can read it |
 | documentation PDFs | Added | a release package carries one PDF for each chapter of the User, Administrator and Getting Started documents in a folder `pdf` beside the installer, and the installer puts them in the shared account with `docs.install`, where every account can read them; a help box names the PDF that says more |
+| empty `/home/sd` on uninstall | Changed | `deletesdcore.sh`, told to delete both the accounts and the configuration, removes `/home/sd` at the end if it is empty, and says so (it left an empty folder owned by root) |
 | group account files | Changed | an upgrade puts the four record files of every kept group account back in the account's group |
 | gates of the installing user's account | Added | when it makes your own account the installer asks once whether to open every access gate on it (no unless `y`); a `y` opens all of them, the AI and the `sdsys` user in its group included, and the install says which really opened |
+| install in a container over ssh | Changed | on a VPS that is an unprivileged container the installing user's and `sdsys`'s SD passwords are now set (every attempt was refused and the install still reported success), and letting `sdsys` sign in over ssh works there |
 | immutable `bin` | Changed | `deletesdcore.sh` lifts the attribute before it removes the system directory |
 | installer packages | Changed | also installs `gpm`, the console mouse daemon, so the full-screen tools have a mouse on a bare Linux console; the package starts it, the installer does not, and removing SD leaves it; on a machine with no console mouse device (a container, say) it is not installed at all, and if it cannot be installed the installer removes it again, warns and goes on |
 | installer: the `sdsys` user's groups | Changed | an install that keeps the accounts leaves the `sdsys` user in the group of each group account (`sdg_shared` among them); it used to take it out of all of them |
 | installer source message | Changed | says which source it is downloading, the release tag or `main` |
 | scheduled jobs on uninstall | Added | `deletesdcore.sh` switches every `sdcore-job-*` timer off, removes the timers and services, then `/etc/sdcore/jobs.d` |
-| `sdsys` user in kept groups | Changed | an install that keeps accounts and finds the `sdsys` user in their groups asks once whether to keep it there (no unless `y`, and no with no terminal), takes it out on no, and records the decision in `/home/sd/$groups.ruled` so a later install leaves what the administrator did |
+| root and `sdusers` | Changed | the installer adds root to `sdusers` for its own steps and takes it out again when they are done; if it cannot, it warns and goes on |
+| `sdsys` user in kept groups | Changed | an install that keeps accounts puts the `sdsys` user in the group of every user account already there, once, with no question, and records it in `/home/sd/$sdsys.access` so that a later `sdsys-off` is not undone by the next install |
 | `sdai` user | Added | made by the installer; removed with the accounts |
 | shared account | Added | made by the installer; its help text and `pdf` directory are loaded |
 | source not installed | Changed | the install compiles SD and removes `gpl.bp`, the C source and objects and the build files; an upgrade removes what an earlier install left; the complete source is in the release zip's `source` folder |
@@ -757,11 +767,12 @@ Fixes that close a way round a gate, and what the gates now ask.
 | audit trail rate bound | Added | the audit daemon takes at most 600 records from one operating-system user in 60 seconds and drops the rest (the journal copy is not limited); the end of that window writes one line, `audit rate limit dropped=N taken=600 limit=600 window=60`, and the error log counts what was dropped |
 | audit trail rotation | Changed | the audit daemon rotates the trail by size as it writes (1 MB, to `audit.<date>-<time>`, new file with the old owner, mode and append-only flag), so a machine that never restarts SD still rotates; `sd -start` uses the same code |
 | audit trail writer | Changed | `sdlnxd` (root) writes the audit trail: a session sends each record over the Unix socket `/run/sd/audit.sock` and the daemon stamps `user=` and `pid=` from the kernel's credentials of the sender, so a person with a shell can no longer add a line that names someone else; the file is mode 0600 (it was 0620); with no daemon a session appends itself, which only `sdsys` and root can do, and the journal copy is then the only one |
-| control codes in data | Changed | text from data (a record, a lock id another user made, a file name, a command shown by `pstat`) cannot send escape sequences to a terminal: the screen library draws control characters as reverse letters, the kernel's lock list, `getlocks()`, `pstat`, the `profiler` and `hsm` displays and `check.masters` show them as `?`; `kernel(k$show.safe, text)` gives a program the kernel's rule |
+| control codes in data | Changed | text from data (a record, a lock id another user made, a file name, a command shown by `pstat`) cannot send escape sequences to a terminal: the screen library draws control characters as reverse letters, the kernel's lock list, `getlocks()`, `pstat`, the `profiler` and `hsm` displays show them as `?`; `kernel(k$show.safe, text)` gives a program the kernel's rule |
 | deleting a directory tree | Changed | fixed: `delete.account`, `delete.file` of a directory file and the other deletes of a whole tree followed a symbolic link inside it and deleted what it pointed at, so a link an account holder planted could turn the administrator's delete onto files elsewhere; a link is now removed as a link and its target left alone |
 | error log mode | Changed | `errlog` is 664 (it was 775): every session appends to it and nothing runs it |
 | files root runs | Changed | the installer makes `/usr/local/sdsys/bin` and every file in it `root:root` with no group or other write, and makes `bin` immutable (`chattr +i`), so the `sdsys` user cannot replace `sd`, `sdlnxd`, `sdidx` or `pcode`, or rename `bin` away and put its own in its place; a failure to seal is warned about in the closing summary too |
 | global catalog modes | Changed | the kernel refuses to load a global catalog object that others or the group `sdusers` can write (message 11930), and the installer leaves everything in `gcat` 0755 after its last compile (a fresh install left `gcat/$cproc` 0664) |
+| internal programs | Changed | the internal mark in a program's object code is honored only for an object from the global catalog, which only SDSYS can write, or for the administrator; any other object that carries it is an ordinary program, held to every gate |
 | `$ipc` mode | Changed | directories 2770 and files 0660, `sdsys:sdusers` (it was 775): an operating-system user outside `sdusers` can no longer read the commands, `DATA` lines and messages that every SD user's process leaves in it |
 | named common | Changed | fixed: a program that ended while holding objects in named common freed them twice |
 | named common with a `$` or `_` name | Changed | the system's own common blocks: only an internal program may declare or join one; any other program stops with message 11598 |
@@ -782,6 +793,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `setptr ... spooler`, `setpu` | Changed | fixed: the spooler string ran as a shell command for any account; only a session with the `os` switch may set it |
 | shared memory modes | Changed | the shared segment and the semaphores are 0660 and given to the group `sdusers`; they were 0666, open to every local user |
 | `show ... eval` | Changed | compiles its expression in memory; it no longer writes a temporary I-type into the file's dictionary (no edit gate saw it, and a session holding that record made `show` wait) |
+| ssh rules and root | Changed | the two rules SD writes into `/etc/ssh/sshd_config` end `User *,!root`: root's ssh sign-in is decided by the server's own `PermitRootLogin`, as before SD was installed (root was refused); written by the next install or upgrade |
 | system directory | Changed | a session takes it from `SDSYS=` in `sd.conf`, not from the shared segment, which any SD user with a shell could change (the global catalog, the register, the messages, the audit trail and the errlog follow it) |
 | tls close | Changed | fixed: closing a TLS connection no longer ends the process when the other side has already gone |
 | `u` conversion names | Changed | `iconv` and `oconv`: fixed: a name that begins with a dollar sign called an internal subroutine from an ordinary program; it is refused now |
@@ -792,6 +804,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 |---|---|---|
 | compiled kernel | Changed | built with optimisation (`-O2`, with `-fwrapv` and `-fno-strict-aliasing`) where it had none: string and `locate` work about 3.4 times as fast, a BASIC loop 1.5 times, index builds, sorts and writes 1.15 to 1.2 times; `_FORTIFY_SOURCE=3` and `-fstack-protector-strong` end a session at a buffer overrun instead of letting it corrupt memory |
 | default terminal | Changed | 140 by 43 |
+| print and index clear failures | Changed | a print command that fails is reported on the terminal, and an index whose clear could not shrink its file reports an error |
 | `sd -start` | Changed | a script that captures its output through a pipe (`x=$(sd -start)`) gets it and goes on; the background daemon kept the pipe and the script waited until `sd -stop`. A phantom and the STARTUP command give back a pipe the same way; a file or a terminal is kept |
 | `sd -status` | Changed | fixed an overrun on a server that recorded no start time |
 | `sd -stop` and `sd -restart` | Changed | a session still attached ten seconds after the termination signal is ended with SIGKILL, and the stop says how many; before, it was left running with SD gone under it. A session idle at a terminal or on a pipe leaves by itself |
@@ -802,14 +815,14 @@ Fixes that close a way round a gate, and what the gates now ask.
 
 | Name | Change | What |
 |---|---|---|
-| 140 by 42 layout | Changed | the collection editor: 140 by 42, refused below it, survives a window made smaller, takes no keys while the cursor is off the screen (`sed`, the `ide` and the debugger do the same at 140 by 43, see their rows) |
+| 140 by 43 layout | Changed | the collection editor: 140 by 43, refused below it, survives a window made smaller, takes no keys while the cursor is off the screen (`sed`, the `ide` and the debugger do the same at 140 by 43, see their rows) |
 | `!ced()` data mode | Added | edits a multivalue record as a tree of fields, values and subvalues (a text or a list; a list never below the second level), so that nobody types a mark; started by `ide` F12 |
-| `debugger` full-screen display | Added | on a terminal that can address a cell and clear itself (xterm, the Linux console, vt100, vt220, ansi) the debugger takes the whole screen, 140 by 43, in the frame of the other full-screen pages: the bar with the app and the audience, the source with a gutter (`>` the line about to run, `*` a breakpoint) and SD BASIC color under the blue, dark and light themes, an Autos pane (the variables the line uses, the last stop's, the watched one, the rest), the messages, the command line, a status line, a border and a function-key row; F1 help, F4 the program's screen; a smaller window gets line mode, and so does `dumb` and `unknown`; where there is no alternate screen the screen is cleared for the debugger and again when it lets go: a program's SCREEN forms are drawn again, its `PRINT` text and what was there before are not; `LINE.MODE` in `$debug.options` keeps line mode |
+| `debugger` full-screen display | Added | on a terminal that can address a cell and clear itself (xterm, the Linux console, vt100, vt220, ansi) the debugger takes the whole screen, 140 by 43, in the frame of the other full-screen pages: the bar with the app and the audience, the source with a gutter (`>` the line about to run, `*` a breakpoint) and SD BASIC color in every theme but `classic` and `mono`, an Autos pane (the variables the line uses, the last stop's, the watched one, the rest), the messages, the command line, a status line, a border and a function-key row; F1 help, F4 the program's screen; a smaller window gets line mode, and so does `dumb` and `unknown`; where there is no alternate screen the screen is cleared for the debugger and again when it lets go: a program's SCREEN forms are drawn again, its `PRINT` text and what was there before are not; `LINE.MODE` in `$debug.options` keeps line mode |
 | `debugger` keys F2 and Ctrl-Q | Changed | F2 is Find an action and Ctrl-Q stops the program and leaves, as on every page; Abort, which was F2, is on the Run menu (F2 still aborts in line mode) |
 | `debugger` menu bar and keys | Added | the top row is a menu bar (Run, View, Help; Esc on its own or F10); **F9 runs** (it was F5), F5 and Ctrl-L draw the screen again, Ctrl-T the theme, Ctrl-K the keys; on the command line, delete to the end and swap two characters are Esc K and Esc T (they were Ctrl-K and Ctrl-T) |
 | home screen | Added | every account starts in a screen of tiles; arrows, Tab, letters, mouse, F5, F10 |
 | home screen `ai` line | Changed | Enter alone accepts a proposal that only opens one of the delivered tools but rejects a proposal of one of your own programs or of the Terminal tile (decided for the proposal, not for the page); it cannot run a command when the account's Terminal tile is off |
-| home screen Ctrl-Q | Changed | on a screen typed as `home` at the prompt, Ctrl-Q goes back to the prompt (it signs out on a session's own screen, as before); there Sign out is Ctrl-X, the File menu or the tile |
+| home screen Ctrl-Q | Changed | on a screen typed as `home` at the prompt, Ctrl-Q goes back to the prompt (it signs out on a session's own screen, as before), also after the Terminal tile and `exit`; there Sign out is on the File menu and the tile |
 | home screen Recent group | Added | `View > Recent group`: the tiles started last, newest first, six at most; off as delivered, the person's own record in `&menus&`; `set.tile account recent off` is the administrator's wall |
 | home screen at the same time | Changed | fixed: a session at the home screen kept the next session waiting at sign-on (the absent `start.default` file was read with a lock the program never let go); `osread` of a missing file left a lock too |
 | home screen keys | Changed | the Terminal is Alt-T (it was Ctrl-T); Ctrl-Q is the one key that leaves, for the prompt after `home` typed there and otherwise by signing out; Ctrl-T is the theme and Ctrl-K the keys of the screen, as on every page; Go > Start the tile (Enter) |
@@ -822,13 +835,15 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `ide` | Added | tree, tabs, compile errors table, find, run, catalog and debug; Ctrl-E zooms the editor to the whole screen, and Go > Edit in SED hands a record to `sed` |
 | `ide` breakpoints | Added | Shift-F7 or a click in the gutter marks a line of a program tab (`*`); F7 runs to the first mark, Build / Debug from the first line stops at line 1 with them set; what the debugger still has comes back as marks; up to 20, only lines where a statement begins |
 | `ide` autologout countdown | Added | with `autologout` set, the status line counts down the last 60 seconds before the session is signed out and says whether unsaved changes will be lost; any key stops it; it reads the inactivity clock `autologout` itself uses |
+| `ide` characters outside ASCII | Added | a record or a file holding bytes 128 to 247 can be edited; SD stores them and gives them back unchanged (the editor works a byte at a time) |
 | `ide` collection-file records | Added | a record of a data collection file opens as the text of its JSON (one element to a line) and Ctrl-S parses it and writes the collection; text that is not a JSON object or array is refused with the record untouched; F12 hands the collection to `ced`; a missing record opens as a new `{}`; compile, SED, Save as and the include do not apply; a text is not saved into a collection file under a new name |
 | `ide` command line records | Added | `ide file id1 id2 ...` opens a tab for each record named (one that is not there is a new record) and `ide file *` lists the records of the file as a select list does, the first ten in tabs; both work after `dict`; an id is a word of the command |
 | `ide` dictionary item form | Added | `ide dict file item` and Return on an item in the tree open a dictionary item as a form (`/text` asks for the text; Go, Dictionary item as form, or `/form`, shows it for the open tab): a dictionary item is edited as one full-screen form: the Type is an entry (D, E, I, L, PH, X) and when it is entered the rows of that type appear, each a label and an entry (Field #, Conversion Cd, Column Heading, Len & Just such as `30 L`, ...), an existing item with its values filled in; each value is checked as you leave it (a field number is a whole number from 0 to 9999, Len & Just a width 1 to 200 then L, R, T or C, a conversion one SD knows); Accept writes the item through the IDE's own save and Cancel leaves it as text; an item the form cannot show stays text |
 | `ide` dictionary items and VOC records | Added | `ide dict file item` and `ide voc record` edit them; the tree shows a file's dictionary as a node of its own; a save asks `dict.edit` or `voc.edit` as a program asks `bp.edit`; they show marks as tokens; `creating.seqkey` takes the file's next sequential id; a record that does not exist opens as a new one; an active select list opens its first records |
-| `ide` edit as fields | Added | F12 or Go, Edit as fields: the record is shown as fields, values and subvalues in a pane of the tab inside the IDE's own form (the collection editor's engine; the tree, the tab strip, the menu and the messages stay alive, each tab remembers its view, and a resize keeps it); each change is in the tab's text at once, Ctrl-S is the IDE's save, F12 shows the text again (one Ctrl-Z takes the visit back) and the commands that work on the text wait while it is up; the pane writes nothing |
+| `ide` edit as fields | Added | F12 or Go, Edit as fields: the record is shown as fields, values and subvalues in a pane of the tab inside the IDE's own form (the collection editor's engine; the tree, the tab strip, the menu and the messages stay alive, each tab remembers its view, and a resize keeps it); each change is in the tab's text at once, Ctrl-S is the IDE's save, F12 shows the text again (one Ctrl-Z takes the visit back) and the commands that work on the text wait while it is up; the pane writes nothing; the record of an ordinary file whose text is a JSON object or array with no marks goes to the collection editor as the tree of the JSON and comes back as JSON text |
 | `ide` Edit menu | Added | after File: Undo, Redo, Cut, Copy, Paste, Select all, and the fields pane's Insert, Delete, Rename and Change the type, each doing exactly what its key does |
 | `ide` editing commands | Added | Search, List matching lines (SED's VIEW: the lines that hold a text, in the table), Query replace (Yes, No, All, Quit; one undo step), Find options (match case, whole words), Upcase and Downcase the selection, Import a record here, Export the selection; Build, Run a command (its output in the table; a command that aborts is stopped and the IDE stays up); View, Refresh; none writes a record. In a record shown with `:@vm:` marks Replace changes the record's text, never a mark's token; a text to find is at most 256 characters |
+| `ide` editor modes | Added | Ins (View > Overwrite mode) types over the character at the cursor; View > Auto-indent starts a new line with the blanks of the one before; View > Tab width (1 to 99); Build > Format the program lays a program out again as one undo step; the modes start off in each session |
 | `ide` fields view, AI line and the kind of a new record | Added | in the fields view a request typed in the AI entry, and the AI menu's explain-the-selection (the element the table has selected), go to the model with the record as indented JSON, and what is accepted changes the fields; on the empty top level Ctrl-T asks whether the record is a collection or an array |
 | `ide` filter and pages of records | Added | Go, Filter the records: a pattern or a `like` / `with` query for what the tree lists; a list over 2,000 records goes by pages |
 | `ide` go to line | Changed | takes line,column, and field,value,subvalue in a record shown with `:@vm:` marks, as well as a line |
@@ -857,18 +872,19 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `ide` select list, recall, tabs list, terminal | Added | an active select list is asked about (No clears it) and Go, Next record from the list opens the next one; Up and Down in Open and in Run a command recall this session's files, records and commands; View, List of tabs; Build, Run a command at the terminal gives the command the screen |
 | `ide` source control | Added | a save calls a catalogued `source.control` before the write, with the arguments `sed` and `ed` give it; it can refuse the write or change the record |
 | `ide` spool | Added | File, Spool the text prints the tab's text without saving it: `at` printer, `lnum`, `region` |
-| `ide` tab indent | Added | Tab and Shift-Tab indent and outdent the line or the selected lines by 3, one undo step each, never a tab character (the `ide` editor only; `screen memo` keeps its Tab); Tab never leaves a pane: F6 and Shift-F6 move between them |
+| `ide` tab indent | Added | Tab and Shift-Tab indent and outdent the line or the selected lines by the tab width (3 as delivered), one undo step each, never a tab character (the `ide` editor only; `screen memo` keeps its Tab); Tab never leaves a pane: F6 and Shift-F6 move between them |
 | `ide` theme | Changed | starts in the site's `SCREENTHEME` (paper when none or a name that is not a theme, mono without color); View, Theme goes through the themes in the pages' order and skips those the terminal cannot show |
 | `ide` tools menu | Added | Tools, between View and Help, opens `tool.files`, `tool.dict`, `tool.voc`, `tool.query`, `tool.bulk`, `tool.catalog` and `tool.test`; the page gets the terminal as a program run from the IDE does, and the IDE comes back with its tabs and unsaved text |
 | `ide` untitled buffer | Added | a bare `ide` opens an editable "Untitled 1" with the cursor in it; New record writes nothing until it is saved; the arrows stay in the editor at its first and last line |
-| `ide` window lock and foot | Changed | needs 140 by 43 (was 140 by 42) and has the toolkit's foot: the status line, a border and a row of function keys on the last three rows; a window made smaller while it runs holds the keyboard behind a warning that gives both sizes and says unsaved text is lost unless the recovery copy is on, whatever the cursor is doing (the warning is worded shorter in a very small window); `sed` is the IDE's editor and `!ced()` holds the same window lock (at its own 140 by 42) |
+| `ide` word and end keys | Added | Ctrl-Home and Ctrl-End go to the start and the end of the text, Ctrl-Left and Ctrl-Right a word back and on, and Ctrl-Del deletes the word at the cursor (or the selection) as one undo step; the IDE's editor only |
+| `ide` window lock and foot | Changed | needs 140 by 43 (was 140 by 42) and has the toolkit's foot: the status line, a border and a row of function keys on the last three rows; a window made smaller while it runs holds the keyboard behind a warning that gives both sizes and says unsaved text is lost unless the recovery copy is on, whatever the cursor is doing (the warning is worded shorter in a very small window); `sed` is the IDE's editor and `!ced()` holds the same window lock |
 | immediate messages | Changed | `message ... immediate` is shown in a box on any terminal |
 | `my.menu` | Changed | its list grows with the window (more rows, a wider command column); F1, `?` or a click on the `[?]` shows the page's help |
-| `sed` | Changed | the full-screen editor is back with a menu bar, the keys most editors have, undo and redo, syntax color and the mouse; its keys are decoded from the terminal's terminfo entry |
+| `sed` | Changed | the full-screen editor is back as the IDE's editor started alone (see TOOLS): a menu bar, the keys most editors have, undo and redo, syntax color and the mouse |
 | `sed` keys every page has | Changed | Ctrl-T the theme, Ctrl-K the keys, F5 and Ctrl-L draw the screen again, **F9 compiles and runs** (it was F5); kill line is Alt-K and toggle characters Alt-T (both were Ctrl keys), go to a line Alt-G; a key of Esc and one character is written Alt-x, as on every page; View and Help menus, and four more Edit items |
 | `sed` open of a missing path | Changed | fixed: opening a path that does not exist (and the retry in upper case) kept the name locked until the editor was closed |
 | `sed` `path:` form | Changed | opens no file now: the `path:` form of a file name went with `FILERULE`, so `sed` asks the account's OS gate and cannot open the file; it no longer retries the name in upper case after that check (`ide path:/full/name` opens an operating system file) |
-| `sed`, `ide`, `ed` input ended | Changed | fixed: they used all of a processor for ever when their input had ended |
+| `sed`, `ide`, `ed`, `sp.view` input ended | Changed | fixed: they used all of a processor for ever when their input had ended (`sp.view` rang the bell; it now leaves as `q` would, and prints nothing from the spool form) |
 | `sp.view` menu bar | Added | on a window of 140 by 43 or more: File, View and Help (Esc or F10), with the keys every page has (F5, Ctrl-L, Ctrl-T, Ctrl-K, Ctrl-Q); the letters still work |
 | `sp.view` screen | Changed | on a window of 140 by 43 or more (used whole) the record view has the frame of the other full-screen pages: the bar with the file and record and `sp.view  name@account`, a status line, a border and a row of function keys, in the site's theme; the keys, the spool form and the list of records are unchanged, and a smaller window or no terminal keeps the old layout |
 | theme of your own | Added | Ctrl-T or View > Theme on every full-screen program takes the next color theme and **SD keeps your choice** (the record theme.*login name* of `&menus&` in the account): every page, the IDE, SED, the debugger and SP.VIEW start in it from then on; the site's `SCREENTHEME` is used until you choose |
@@ -913,10 +929,11 @@ feature was already there, or it does not apply. They are here so that nobody lo
 | `matbuild` trailing elements | None | unassigned elements at the end: no change recorded |
 | `matchfield()` `n-mx` pattern | None | at the start of the template: no change recorded |
 | memory alignment in `redim` | None | no change recorded |
-| negative default argument | None | for an optional argument: the defect cannot occur, because the feature it belongs to was not in SD |
+| negative default argument | None | for an optional argument: no change recorded (default argument values are new in this release, see BASIC) |
 | Pick wildcards in `ne` | None | nothing to fix: the Pick wildcards (`option pick.wildcard`) were removed on 27 October 2026 |
 | `qmbasic.warnings` | None | `sdbasic.warnings` was removed on 27 October 2026 with the three warning options |
 | `$qmcall` | None | already there as the `$sdcall` flag, which lets a restricted client session call a subroutine |
+| `-quiet` | None | `sd -quiet` was already accepted; SD has no VOC update question for it to suppress |
 | `readv` fatal error | None | no change recorded |
 | record cache and case | None | no change recorded |
 | `set.date` | None | SD still has the command; nothing was withdrawn |
