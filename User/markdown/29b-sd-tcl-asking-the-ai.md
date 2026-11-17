@@ -69,7 +69,7 @@ An action you accept is carried out by **the page's own key**, exactly as if you
 
 ## The AI line in the dictionary form
 
-The [dictionary form](24-sd-tcl-programs-and-the-catalogue.html) of the IDE (an item of a file's dictionary shown as rows: Type, Field #, Conversion Cd, Column Heading, Len & Just and the rest) has an **AI>** line at its foot when the AI is on for your account. Press **F6**, Tab to it or click it, say what the item should be in your own words - *a date in field 3 headed Joined*, *a total of the amounts, two decimals* - and press Enter. Enter in this line asks the AI; it does not accept the form.
+The [dictionary form](24d-sd-tcl-the-ide-zoom-fields-and-dictionary-items.html) of the IDE (an item of a file's dictionary shown as rows: Type, Field #, Conversion Cd, Column Heading, Len & Just and the rest) has an **AI>** line at its foot when the AI is on for your account. Press **F6**, Tab to it or click it, say what the item should be in your own words - *a date in field 3 headed Joined*, *a total of the amounts, two decimals* - and press Enter. Enter in this line asks the AI; it does not accept the form.
 
 The preview shows your request and the size of all that will be sent, and **Cancel is the default**. Sent with it, and counted but not shown: the instruction, which says the page is a form and how values for it are given, **the list of the form's fields** (the key and what each holds), what the form is, and **the item's values as they are on the screen**. Because the item's values are sent, **an item of the dictionary of one of SD's own files is never sent**: SD asks where the item is first and refuses, before any preview, as it does in the editors.
 

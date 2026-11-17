@@ -17,7 +17,7 @@ JSON cannot.
 The editor is reached three ways: **`ced`** {**`dict`**} *file* {*id* ...} at the command
 prompt edits the records named, one after another (**`*`** for every record; with no ids, the
 active select list, and without one it asks for ids); `!ced()` edits a collection held in a BASIC
-variable; and the [IDE](24-sd-tcl-programs-and-the-catalogue.html)'s **F12** (Go, *Edit as
+variable; and the [IDE](24d-sd-tcl-the-ide-zoom-fields-and-dictionary-items.html)'s **F12** (Go, *Edit as
 fields*), which is also in `sed`, edits the record in the open tab (below). Like [sed](27a-sd-tcl-sed.html), the editor runs inside SD and needs no
 operating-system permission; it needs a terminal, and in a phantom it returns
 at once without editing anything.
@@ -107,7 +107,7 @@ terminal hangs up), it leaves without saving.
 
 ## Data mode: a record of fields, values and subvalues
 
-CED has a second use, started by the [IDE](24-sd-tcl-programs-and-the-catalogue.html)'s **F12**
+CED has a second use, started by the [IDE](24d-sd-tcl-the-ide-zoom-fields-and-dictionary-items.html)'s **F12**
 (Go, *Edit as fields*). The thing edited is an ordinary multivalue **record** shown as an array of its fields:
 a field is a text, or - if it holds value marks or subvalue marks - a list of its values; a
 value is a text, or a list of its subvalues; a subvalue is always a text. The top level is
@@ -129,7 +129,7 @@ The keys are the ones above, with these differences:
   **In the IDE** the editor is a pane of the tab: there Ctrl-S is the IDE's own
   save, **Alt-T** is the change of type, **Ctrl-C / Ctrl-X / Ctrl-V** are copy, cut and paste, **F12**
   shows the text again, and the engine's change is in the tab's text as soon as it is made. The AI
-  works there through the IDE's AI entry and Tools menu and not through F2 (see [the IDE](24-sd-tcl-programs-and-the-catalogue.html)).
+  works there through the IDE's AI entry and Tools menu and not through F2 (see [the IDE](24e-sd-tcl-the-ide-ai-and-the-window.html)).
 - Rename (F3) does nothing: an array has no names.
 
 Text is shown exactly as stored: a text mark or an item mark inside a text is part of the text

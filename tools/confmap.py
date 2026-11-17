@@ -157,15 +157,15 @@ for param in roster:
 # refuses a name that is not on the roster, so it cannot drift silently.
 
 DOCUMENTS = {
- # 22 Sep 26 - LINUX FORK.  APIPORT and NETDIRS are not parameters this
- # port's config.c accepts at all: whether SD listens for the API is
- # systemd's sdclient.socket unit, not a start-up config value, and there
- # is no config-file mechanism here widening an API session's file access
- # beyond its own account (see 07's own "The API" section).
+ # 22 Sep 26 - LINUX FORK.  APIPORT is not a parameter this port's config.c
+ # accepts: whether SD listens for the API is systemd's sdclient.socket unit,
+ # not a start-up config value.  NETDIRS IS one since 17 Nov 26 (the
+ # four-version audit: directories outside its account that an account
+ # without os-on may reach; empty as delivered).
  'Administrator/markdown/07-sd-admin-configuration.md': """
    BACKUPDIR CLEANUP CMDSTACK DEADLOCK DEBUG DHCACHE DUMPDIR ERRLOG
    FDS FLTDIFF FSYNC GRPDIR GRPSIZE INTPREC LGNWAIT
-   LPTRHIGH LPTRWIDE MAXCALL MAXIDLEN MAXRLOCK MUSTLOCK NETFILES
+   LPTRHIGH LPTRWIDE MAXCALL MAXIDLEN MAXRLOCK MUSTLOCK NETDIRS NETFILES
    NETREPLY NETWAIT NUMFILES NUMLOCKS NUMUSERS OBJECTS OBJMEM PDUMP PHANTOMS
    PWDELAY RECCACHE SAFEDIR SCREENTHEME SDCLIENT SDSYS SH SH1 SORTMEM SORTMRG
    SORTWORK SPOOLER STARTUP TEMPDIR TERMINFO USERPOOL USPLIT USRDIR
@@ -198,11 +198,22 @@ for name in roster:
 # Same rule as tclmap: the name backticked, or opening a line inside a fenced
 # block, or in the first column of a table row.  Prose alone is not evidence.
 
+PAGE_PARTS = {
+    'Administrator/markdown/07-sd-admin-configuration.md': [
+        'Administrator/markdown/07a-sd-admin-configuration-changing-from-sd.md',
+        'Administrator/markdown/07b-sd-admin-configuration-api-printing-and-netfiles.md'],
+}
+
+
 def evidences(path, name):
     full = os.path.join(HERE, path)
     if not os.path.isfile(full):
         return False
     text = io.open(full, encoding='utf-8').read()
+    # The page is kept to about 14,000 characters by splitting it into parts
+    # (Nov 2026); a parameter is documented when any part of it is evidence.
+    for extra in PAGE_PARTS.get(path, []):
+        text += '\n' + io.open(os.path.join(HERE, extra), encoding='utf-8').read()
     if re.search(r'`%s`' % re.escape(name), text):
         return True
     if re.search(r'^\|\s*%s\s*\|' % re.escape(name), text, re.M):

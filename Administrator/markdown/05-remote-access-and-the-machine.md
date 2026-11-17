@@ -33,7 +33,7 @@ where the operating system does.
 **An account that has the ssh route signs in with its password, not a key, as delivered.**
 Key sign-in for a Linux user SD made is a separate, per-account loosening
 (`modify.account` *name* `ssh-key-on`), and `remote.ssh on` does not open it. See *Signing in
-over ssh with a key* in [Accounts and Security](01-accounts-and-security.html).
+over ssh with a key* in [Accounts and Security: The Home Screen, ssh Keys and Passwords](01-accounts-and-security-8-home-screen-ssh-keys-passwords.html).
 
 > This document is separate so that it can be withheld. It links to nothing
 > outside the administrator set. Where a page in another set is worth naming,

@@ -97,7 +97,7 @@ editors, the embedded Python, or reaching an operating-system file by its path.
 They are governed by the other switch, `os-on`, which is independent: `sh-off`
 leaves it alone, and an account can be refused the shell and still run
 `micro`. See [Accounts and
-Security](01-accounts-and-security.html#the-operating-system-switches-sh-on-and-os-on)
+Security](01-accounts-and-security-2-making-an-account.html#the-operating-system-switches-sh-on-and-os-on)
 for everything `os-on` covers.
 
 **The form that does go through this gate is `execute 'sh …'` from a program**,
@@ -107,7 +107,7 @@ because that runs the TCL verb.
 account only has to read and write files in a shared directory, `NETDIRS` in `sd.conf`
 lists such directories (empty as delivered) and every account without `os-on` may
 reach them by pathname, on every route. It is a loosening for all of those accounts at
-once; see *`NETDIRS`* in [Configuration](07-sd-admin-configuration.html).
+once; see *`NETDIRS`* in [Configuration](07b-sd-admin-configuration-api-printing-and-netfiles.html).
 
 ## Over the API
 
@@ -117,7 +117,7 @@ sign-in and `logto` do, so an account with `sh-on` has the shell over the API
 and an account without it is refused there too. **That is what makes `sh-on`
 on an account that also has the API route a shell behind its credential from
 wherever the API port is reachable** — see *What `os-on` actually costs* in
-[Accounts and Security](01-accounts-and-security.html). SDSYS over the API is
+[Accounts and Security: File Writing, the AI and VOC Pointers](01-accounts-and-security-5-files-write-ai-pointers.html). SDSYS over the API is
 the exception to the exception: an API session carries no administrator flag,
 and SDSYS's own record holds no switch, so it has no shell over the API; use
 the local login. See also

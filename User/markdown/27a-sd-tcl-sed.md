@@ -11,7 +11,7 @@ sed file *
 sed file creating.seqkey
 ```
 
-**SED is the IDE's editor, started alone.** Everything [the IDE's page](24-sd-tcl-programs-and-the-catalogue.html) says about the editor is true of SED: the same keys, the same menus, tabs for the records
+**SED is the IDE's editor, started alone.** Everything [the IDE's page](24a-sd-tcl-find-program-dictionaries-and-the-ide.html) says about the editor is true of SED: the same keys, the same menus, tabs for the records
 that are open, compile and run on F8 and F9, find and replace, undo, keyboard macros, Spool, the color for the language and the line numbers. An account's `&ide.options&` record sets how it starts, or
 `&sed.options&` when there is no `&ide.options&`. It needs a window of at least 140 by 43.
 

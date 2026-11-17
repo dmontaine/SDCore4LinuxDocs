@@ -14,7 +14,7 @@ pointer to make in the account's VOC, and `list`, `sort`, `select`, `count` and 
 > you fill the account. Writing is the other way: it is off until you turn it on.
 
 The switches, the words and the upgrade rule are in
-[Accounts and Security](01-accounts-and-security.html#the-shared-account-shared-read-on-shared-read-off-shared-write-on-and-shared-write-off).
+[Accounts and Security](01-accounts-and-security-4-shared-and-files-only.html#the-shared-account-shared-read-on-shared-read-off-shared-write-on-and-shared-write-off).
 This page is the full description.
 
 ## What it is, on disk

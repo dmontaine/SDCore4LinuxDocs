@@ -267,8 +267,60 @@ EXEMPT = {}
 
 # ------------------------------------------------------------------ evidence
 
+# A long page is kept to about 14,000 characters by splitting it into parts
+# (Nov 2026, page-length rule in README.md).  The map names the page that kept
+# the number; a verb is documented on it when ANY part of it is evidence, so
+# the map need not change each time a section moves from one part to the next.
+SPLITS = {
+    ('Administrator', '01-accounts-and-security.md'): [
+        '01-accounts-and-security-%s.md' % s for s in (
+            '2-making-an-account', '3-edit-switches', '4-shared-and-files-only',
+            '5-files-write-ai-pointers', '6-modify-account', '7-other-keywords',
+            '8-home-screen-ssh-keys-passwords')],
+    ('Administrator', '01a-account-maintenance.md'): ['01b-backup-and-restore.md'],
+    ('Administrator', '02-sessions-and-locks.md'): ['02a-locks-and-the-sessions-screen.md'],
+    ('Administrator', '07-sd-admin-configuration.md'): [
+        '07a-sd-admin-configuration-changing-from-sd.md',
+        '07b-sd-admin-configuration-api-printing-and-netfiles.md'],
+    ('Administrator', '12-sdnet.md'): [
+        '12a-sdnet-servers.md', '12b-sdnet-logins.md', '12c-sdnet-files-only-route.md',
+        '12d-sdnet-administration-group-and-read-only-files.md',
+        '12e-sdnet-writing-and-locking.md', '12f-sdnet-waits-and-audit.md'],
+    ('Administrator', '19-the-master-files.md'): [
+        '19a-the-master-files-global-change.md', '19b-run-in.md',
+        '19c-the-master-files-group-and-modes.md'],
+    ('Administrator', '20-the-ai-helper.md'): ['20a-the-ai-helper-set-ai-and-the-key.md'],
+    ('User', '17-sd-basic-debugging.md'): ['17a-sd-basic-debugging-full-screen-and-ai.md'],
+    ('User', '20-sd-tcl-files-and-records.md'): [
+        '20-sd-tcl-files-and-records-2-comparing-triggers-and-import.md'],
+    ('User', '24-sd-tcl-programs-and-the-catalogue.md'): [
+        '24a-sd-tcl-find-program-dictionaries-and-the-ide.md', '24b-sd-tcl-the-ide-keys.md',
+        '24c-sd-tcl-the-ide-other-files-and-options.md',
+        '24d-sd-tcl-the-ide-zoom-fields-and-dictionary-items.md',
+        '24e-sd-tcl-the-ide-ai-and-the-window.md'],
+    ('User', '29-sd-tcl-the-terminal-and-the-session.md'): [
+        '29-sd-tcl-the-terminal-and-the-session-2-timers-dates-and-logging.md'],
+    ('User', '29a-sd-tcl-the-home-screen.md'): [
+        '29a-sd-tcl-the-home-screen-2-my-menu-and-the-ai-line.md'],
+    ('User', '29c-sd-tcl-the-development-tools.md'): [
+        '29c1-sd-tcl-tool-dict.md', '29c2-sd-tcl-tool-query.md', '29c3-sd-tcl-tool-bulk.md',
+        '29c4-sd-tcl-tool-catalog-and-tool-test.md'],
+}
+
+
 def evidence(setname, filename):
-    """Names backticked on the page, plus names starting a line in a fence."""
+    """Names backticked on the page (and its split parts), plus names starting a line in a fence."""
+    parts = [filename] + SPLITS.get((setname, filename), [])
+    union = None
+    for part in parts:
+        one = evidence_one(setname, part)
+        if one is None:
+            return None
+        union = one if union is None else (union | one)
+    return union
+
+
+def evidence_one(setname, filename):
     path = os.path.join(HERE, setname, 'markdown', filename)
     if not os.path.exists(path):
         return None
