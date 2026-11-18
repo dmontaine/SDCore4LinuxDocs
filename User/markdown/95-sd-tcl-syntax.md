@@ -54,7 +54,7 @@ not refused — the name is simply not recognized.**
 | **`command.logging`** | **`command.logging`** {**`on`** \| **`off`**} |  |
 | **`como`** | **`como on`** {*record*} \| **`off`** \| **`pause`** \| **`resume`** |  |
 | **`compare.files`** | **`compare.files`** {**`dict`**} *file1* {**`dict`**} *file2* {**`detail`**} |  |
-| **`compile.dict`** | **`compile.dict`** {**`dict`** \| **`data`**} *file* {*i-type* …} {**`no.query`**} {**`no.page`**}  ·  **`compile.dict local`**  ·  **`compile.dict all`** |  |
+| **`compile.dict`** | **`compile.dict`** {**`data`**} *file* {*i-type* …} {**`no.query`**} {**`no.page`**}  ·  **`compile.dict local`**  ·  **`compile.dict all`** |  |
 | **`config`** | **`config`** {**`lptr`** \| **`gpl`** \| **`contrib`** \| *param* *value*} | S |
 | **`configure.file`** | **`configure.file`** {**`dict`**} *voc.name* {*parameters*} \| **`default`**  ·  **`configure.file`** *voc.name* **`next`** *n* \| **`query`** |  |
 | **`convert.data`** | **`convert.data`** *from.pathname* *to.pathname* {**`from`** *format*} {**`as`** *format*} {**`header`**} {**`no.query`**} |  |
