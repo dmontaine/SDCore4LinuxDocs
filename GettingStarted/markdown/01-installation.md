@@ -8,7 +8,7 @@ installing means building.
 
 This is a real difference from SD Core for Windows, which ships as a single
 installer carrying its own compiled runtime. Windows has one target and one
-ABI; this port supports Debian and Ubuntu (and their derivatives), detected
+ABI; SD Core for Linux supports Debian and Ubuntu (and their derivatives), detected
 from `/etc/os-release`. Any other distribution — Fedora, RHEL and RHEL's
 clones, Arch, openSUSE, or a machine with no `/etc/os-release` — is refused
 before the installer changes anything. It builds from source so that changes elsewhere in the

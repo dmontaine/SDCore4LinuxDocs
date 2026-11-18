@@ -16,8 +16,8 @@ term
 ```
 
 ```
-Page width: 120
-Page depth: 36
+Page width: 140
+Page depth: 43
 Device    : linux
 ```
 
@@ -27,23 +27,23 @@ SD takes the type from your terminal's `TERM` when you sign on. `xterm`,
 `linux`; a name SD has no entry for falls back to `linux`. You can still type
 `term xterm` or `term linux`: the keys work either way.
 
-> Before this release every account's `login` paragraph said `term linux`, so a
-> graphical terminal was signed on as `linux` and its F1 to F5 and Home keys did
-> not work. Existing accounts lose that line the next time their VOC is updated;
-> until then `term xterm` sets it for the session.
+> An account whose `login` paragraph still says `term linux` signs a graphical
+> terminal on as `linux`, and its F1 to F5 and Home keys do not work. The line
+> goes the next time the account's VOC is updated; until then `term xterm` sets
+> it for the session.
 
 ## What ships
 
 **25 terminfo definitions ship with SD**, compiling to **36 terminal
-names** (what `list.term.types` lists) — the extra names are variants. For example, `vt100-w` is an alias
-that maps to the same definition as its base name.
+names** (what `list.term.types` lists) — the extra names are variants. For example, `vt200` is an alias
+that maps to the same definition as `vt220`.
 
 Common names that work out of the box: `linux`, `vt100`, `vt220`,
 `wyse60`, `ansi`, `xterm`.
 
 The `-at` terminal types (`vt100-at`, `vt220-at`, `wy60-at` and the rest)
-were AccuTerm's, and `sdterm` was SDTerm's. They are gone: SD no longer
-supports either terminal program. A session that was set to one of them
+were AccuTerm's, and `sdterm` was SDTerm's. SD does not support either
+terminal program. A session that was set to one of them
 should use `xterm`, `vt100` or `vt220`.
 
 A name that is not installed is refused and your current type is kept:

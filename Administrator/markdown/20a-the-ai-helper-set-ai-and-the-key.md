@@ -64,7 +64,7 @@ The backup of an account records the gate (`route.ai`) and a restore puts it bac
 
 ## The key
 
-The key is typed at the helper's own prompt (`set.ai key anthropic`) or in the setup dialog on the page. At the prompt it goes from your terminal straight to the helper and SD never sees it; the prompt shows one `*` for each character you type or paste (Backspace takes one back), so a long key shows that it arrived, and the key itself is never shown (the number of stars is its length, which anyone looking at the screen can count). From the dialog it passes through SD's memory and a hand-over file only `sdsys` can reach, which is removed at once (see above). Either way it is written to `/var/lib/sd-ai/keys/anthropic`, mode 0600, owned by `sdai`; SD does not keep it, print it or put it in the audit trail, and the page and the verb read back only whether it is **set**. `set.ai key anthropic clear` removes it. A key is never an argument of a command, so it is in no process list and no history.
+The key is typed at the helper's own prompt (`set.ai key anthropic`) or in the setup dialog on the page. At the prompt it goes from your terminal straight to the helper and SD never sees it; the prompt shows one `*` for each character you type or paste (Backspace takes one back), so a long key shows that it arrived, and the key itself is never shown (the number of stars is its length, which anyone looking at the screen can count). From the dialog it passes through SD's memory and a hand-over file only `sdsys` can reach, which is removed at once (see above). Either way it is written to `/var/lib/sd-ai/keys/anthropic`, mode 0600, owned by `sdai`; SD does not keep it, print it or put it in the audit trail, and the page and the verb read back only whether it is **set**. `set.ai key anthropic clear` removes it. If the helper's client fails, or the key cannot be read back as set, the verb stops with `The AI helper refused: nokey (the key was not set)`, writes no audit line, and does not report a key stored earlier as the new one. A key is never an argument of a command, so it is in no process list and no history.
 
 If a key is lost or shown to someone, clear it and ask the provider for a new one: SD cannot tell you who has seen it.
 
@@ -98,6 +98,14 @@ tool start app=tool.ai
 The `ai request` line is written by the SD kernel **before** the connection is made, with the account and the program that called, so a crash or a refusal still leaves the record. The Custom line names the host and never the whole address.
 
 ## Troubleshooting
+
+Start with the helper's socket, as an ordinary or an administrator's login:
+
+```
+systemctl status sd-ai.socket
+```
+
+A line that says `active (listening)` is what you want. `could not be found` means the helper was never set up on this machine (run the installer again). The socket starts one `sd-ai@` service for each request, and that service writes what went wrong to the system journal (`journalctl -u 'sd-ai@*'`).
 
 | What you see | What it means |
 |---|---|

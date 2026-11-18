@@ -265,8 +265,8 @@ read a CSV file with `readseq` and build the rows yourself.
 ## Line endings
 
 CSV written by SD is documented as following **RFC 4180**, which specifies
-CRLF. **Unlike SD Core for Windows, this port's sequential-file writing —
-which `writecsv` shares — uses LF only**, the platform's own convention
+CRLF. **Sequential-file writing — which `writecsv` shares — uses LF only**,
+the platform's own convention
 (see [SD Basic - Sequential Files](10-sd-basic-sequential-files.html)); if
 another program's CSV reader is strict about RFC 4180's CRLF, check it
 against real output rather than assume the pair is there. Reading accepts
@@ -279,14 +279,6 @@ Nothing in the CSV group has been removed from this port. The whole group is
 names appears in its by-type list, so the old help is no guide to them, and the
 three functions of the section on whole texts are SD's own.
 
-Two behaviors were fixed in this port and are worth knowing if you are moving
-files across from the Linux original:
-
-| | |
-|---|---|
-| **reading** | a conformant CRLF file used to lose its last field on every row, because the stray CR stayed attached to it |
-| **writing** | output is now CRLF, so a file SD produced conforms to the RFC its own documentation claims |
-
 ## See also
 
 [SD Basic - Sequential Files](10-sd-basic-sequential-files.html) ·
@@ -295,4 +287,4 @@ files across from the Linux original:
 [SD Basic - JSON and Collection Files](05c-sd-basic-json-and-collection-files.html) ·
 [SD Basic - XML](05d-sd-basic-xml.html) ·
 [SD TCL - The Query Processor](21-sd-tcl-query-processor.html) (the `csv` and `delimiter` keywords) ·
-[SD TCL - Files and Records](20-sd-tcl-files-and-records.html) (`import.csv` and `convert.data`).
+[SD TCL - Files and Records: Comparing, Triggers and Importing](20-sd-tcl-files-and-records-2-comparing-triggers-and-import.html) (`import.csv` and `convert.data`).

@@ -181,7 +181,7 @@ A trigger runs inside the caller's transaction, so anything it does is part of
 the same all-or-nothing unit. A directory file can have one too: it is
 called by `read`, `write`, `delete` and `clearfile`, and not by `writeseq`, `writeblk`,
 `oswrite` or `osdelete`; see *Triggers* in
-[SD TCL - Files and Records](20-sd-tcl-files-and-records.html).
+[SD TCL - Files and Records: Comparing, Triggers and Importing](20-sd-tcl-files-and-records-2-comparing-triggers-and-import.html).
 
 ## What is not here
 

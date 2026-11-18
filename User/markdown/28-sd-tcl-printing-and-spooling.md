@@ -306,14 +306,29 @@ block.print text
 block.term text
 ```
 
-The text in large letters, each character drawn as a 7 by 7 block of the letter **W**
-with two blank columns after it, so that **eight characters fill an 80-column line**.
+The text in large letters, each character drawn with the letter **W** as a block seven
+rows high and five columns wide, with a blank column before it and three after, so that
+**the eight characters a line holds fill 72 columns of an 80-column line**.
 `block.print` goes to the default printer (print unit 0), `block.term` to the terminal.
 Long text wraps, breaking at a space where it can; lower case prints as upper case.
 Letters, digits and `. , ! ? - : / + = * ( ) '` have shapes, any other character prints as a
 question mark, and a space is a blank block. **openQM can change the drawing character and the
 shapes through a `$BIGLTRS` record in the VOC of QMSYS. SD has no such record: the letter is
-always W.**
+always W.** With no text the verb answers *Text to print required*.
+
+```
+block.term Hi 2
+```
+
+```
+ W   W     WWW               WWW
+ W   W      W               W   W
+ W   W      W                   W
+ WWWWW      W                  W
+ W   W      W                 W
+ W   W      W                W
+ W   W     WWW              WWWWW
+```
 
 ## Printing on this port
 

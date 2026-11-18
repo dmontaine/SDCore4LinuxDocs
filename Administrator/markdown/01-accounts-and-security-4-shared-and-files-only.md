@@ -81,7 +81,7 @@ accounts removes the Linux group `sdg_shared` too; keeping the accounts keeps it
 
 ### The files-only route: `files-on` and `files-off`
 
-There are now **two API routes, and the second is narrower.** `api` (the Linux
+There are **two API routes, and the second is narrower.** `api` (the Linux
 group `sdapi`) lets a person do everything the API offers: execute commands, call
 cataloged subroutines, enter other accounts with `logto`, read and write
 sequential files, and work with files. **`files-on` (the Linux group `sdfiles`)
@@ -93,8 +93,10 @@ there. **Changing files there is a further permission, `files-write-on` (the Lin
 group `sdfileswrite`)**, given separately and off for a new account (below, *Changing files: `files-write-on`*), and **administering them there - configure, index, create and delete a file, the file's counter - is a third, `files-admin-on` (the Linux group `sdfilesadmin`)**, off for every account (below, *Administering files: `files-admin-on`*).
 
 **Off for a new account, like every other door.** `create.account user` takes
-`files-on`; `modify.account` *name* `files-on` / `files-off` turns it on and off.
-Membership of `sdfiles` *is* the route, as membership of `sdapi` is for `api`, so
+`files-on`, `files-write-on` and `files-admin-on` (each needs the one before it: `files-write-on`
+needs `files-on`, and `files-admin-on` needs both); `modify.account` *name* `files-on` / `files-off`,
+`files-write-on` / `files-write-off` and `files-admin-on` / `files-admin-off` turn them on and off.
+Membership of the group *is* the route, as membership of `sdapi` is for `api`, so
 there is no field for it in the register. After a change SD says where the account
 stands, **read back from the operating system's group file** rather than taken from
 the request, in a line of its own:
@@ -173,9 +175,12 @@ number this release has never heard of.
 | 0, 72 and above, anything else | no such request here |
 
 A refused request is answered with "This login is for files only: request *n* is not
-allowed", **the request is not carried out**, and a line goes to the audit trail
-(below). The connection stays open, so a client that asks for something it should not
-can carry on with files.
+allowed" (a change or lock without the write group: "This login cannot change or lock
+files here: ask the administrator for files-write-on (request *n*)"), **the request is not
+carried out**, and a line goes to the audit trail (`api refused request=16 route=sdfiles
+write=off admin=off user=fred`; a login by this route is `api login route=sdfiles write=on
+admin=off user=fred`, with `admin=on` for a person in `sdfilesadmin`). The connection stays
+open, so a client that asks for something it should not can carry on with files.
 
 **What is not changed.** Everything else about the session applies as it does to any
 other: the account must be entered, the account's own switches (the OS-access

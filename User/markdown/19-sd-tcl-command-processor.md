@@ -53,9 +53,7 @@ first character is load-bearing and the remaining thirty are not.
 
 ### Names are tried as typed, then lower, then upper
 
-This port shipped a change here. Where SD used to try the name exactly as typed
-and then in upper case, it now tries **as typed, then lower case, then upper
-case**. That is what lets a lower-case `voc`, `bp` and `newvoc` on disk coexist
+SD tries a name **as typed, then lower case, then upper case**. That is what lets a lower-case `voc`, `bp` and `newvoc` on disk coexist
 with code and habits that still type names in upper case, and it is why you can
 type `list voc` or `LIST VOC` and reach the same file.
 
@@ -98,8 +96,8 @@ Field 2 of a verb record says how to run it, and field 3 says what to run:
 
 | | | |
 |---|---|---|
-| `CA` | *name* | a cataloged program — 95 of the shipped verbs |
-| `IN` | *n* | internal verb *n*, handled by the command processor itself — 43 |
+| `CA` | *name* | a cataloged program |
+| `IN` | *n* | internal verb *n*, handled by the command processor itself |
 | `OS` | *text* | an operating-system command — `sh` |
 | `CS` | *path* | a locally cataloged function |
 
@@ -111,12 +109,11 @@ and what SDSYS alone can do is withheld by giving or withholding the VOC
 record itself**, not by a security subroutine — but the mechanism is there
 for a site that wants a verb guarded rather than absent.
 
-There are **40 internal verb numbers**, and the numbers are positional in the
+There are **42 internal verbs**, numbered, and the numbers are positional in the
 command processor's dispatch list. Several names share one: `off` and `quit` are
-both internal verb 1, and `clr` is internal verb 2. (`cs` for `clr`, and the
-run-together `cleardata`, `clearinput`, `clearprompts` and `clearselect` for
-`clear.data` and the rest, were second names for the same numbers and were
-removed in 2.0-0.)
+both internal verb 1, and `clr` is internal verb 2. The `clear.data`,
+`clear.input`, `clear.prompts` and `clear.select` verbs are internal verbs 19,
+25, 20 and 6.
 
 ## Sentences and paragraphs
 
@@ -184,6 +181,10 @@ one stops `redo` with the reason:
 | *The number after times must be a whole number of 1 or more* | `times 0`, or a word where the number should be |
 | *The number after every must be a whole number of seconds* | `every x` |
 | *Command required* | nothing after the words |
+
+**`every 0` is accepted, and it means no pause at all**: the command is run again
+the moment it ends, for as long as nobody presses the break key. Give such a
+`redo` a `times`.
 
 **`redo` has no idea what the command does**, so a command that waits for a person
 holds up every later run, and one that changes data changes it every time.

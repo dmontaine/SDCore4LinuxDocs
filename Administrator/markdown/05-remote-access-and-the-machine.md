@@ -178,7 +178,8 @@ is run by the verb itself on the terminal. The verbs ask for the administrator a
 nothing. A door that the firewall cannot gate is refused by `remote.ssh`, and the page shows the
 verb's words. `F5` reads everything again, `F1` explains the page and `Ctrl-Q` leaves. While the page reads the state of
 ssh, the API and the `sdsys` login, which can take a few seconds, the status line says
-"Reading the settings (a few seconds)..."; the page's own message comes back when the reading is done.
+"Reading the settings (a few seconds)..."; the page's own message comes back when the reading is done. While a
+change runs, the status line says "Making the change (a few seconds)...".
 Opening the page writes the audit line `tool start app=tool.remote`.
 
 ## When a change fails

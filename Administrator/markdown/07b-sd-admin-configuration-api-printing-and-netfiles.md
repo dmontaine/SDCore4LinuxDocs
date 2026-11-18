@@ -69,7 +69,7 @@ None of them can be changed from `tool.config` or `set.config`; edit
 
 | Parameter | Default | Effect |
 |---|---|---|
-| `INTPREC` | 13 | Digits of precision in integer arithmetic. Range 0 to 14 |
+| `INTPREC` | 11 | Digits of precision in integer arithmetic. Range 0 to 14 |
 | `FLTDIFF` | 0.00000000002910 | Two floating point numbers closer together than this compare equal |
 | `YEARBASE` | 1930 | The century a two-digit year is read into |
 

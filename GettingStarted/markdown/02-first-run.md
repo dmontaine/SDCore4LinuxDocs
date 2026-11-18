@@ -1,7 +1,7 @@
 Title: Your first thirty minutes
 Subtitle: From a finished install to a working account, a file and a second user signing in over ssh.
 
-This page assumes SD Core is installed and you have never used this port
+This page assumes SD Core is installed and you have never used SD Core for Linux
 before. It is a walkthrough, not a reference — every step links to the page
 that explains it properly.
 
@@ -178,8 +178,8 @@ off
    records. Then query it — the query processor is where most of the surface
    area is.
 2. **A client program against the API.** Point it at port 4247. It needs a
-   client library from this release, because the old cleartext login is
-   gone — `sdclilib.so`, built as part of this port, or the source at
+   client library that speaks SCRAM, because there is no cleartext login —
+   `sdclilib.so`, built as part of SD Core, or the source at
    <https://github.com/dmontaine/linuxsdclilib>. See
    [API access](09-api-access.html) and
    [Client distribution](10-client-distribution.html).

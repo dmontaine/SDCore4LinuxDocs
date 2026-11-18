@@ -11,7 +11,7 @@ and `pdf/` folders beside it are generated.
 
 | Set | For | Contents |
 |---|---|---|
-| `GettingStarted/` | everyone | installing SD Core on Linux, running it, accounts and security, what differs from OpenQM, and moving programs over from other MultiValue databases |
+| `GettingStarted/` | everyone | installing SD Core on Linux, running it, accounts and security, what differs from OpenQM and from SD Core for Windows, and moving programs over from other MultiValue databases |
 | `User/` | programmers and users | SD BASIC by subject, SD TCL by subject, the VOC and dictionaries, files, standard subroutines, the client API, the terminal screen library, a tutorial with worked programs, the glossary and the generated syntax cards (`94` SD BASIC, `95` SD TCL) |
 | `Administrator/` | the administrator | accounts and access gates, sessions and locks, operating system access, encryption, remote access, system limits, configuration, installation and the service, the installed scripts, restricted commands, known limits, SDNet, the shared account, the master files, the `sdfix`, `sdidx` and `sdconv` tools, moving an account to another machine, giving an AI agent an account of its own, the AI helper, the audit trail, remote administration over ssh, and scheduled jobs. Everything in it is administrator-only or unavailable to an application, so an administrator can withhold the whole set |
 | `TUIGuide/` | programmers, from the administrator's documents | *SD Text User Interface - Programmer's Guide*: building a full-screen page of your own in SD BASIC with the public `!tk` routines and `tkpub.h` - the shape of a program, the window and its floor, the key table and menus, the finder, the confirm box, the form, the pick lists, the output pane, and how a page uses the `screen` statement with the routines - with five worked example programs and a reference of every routine. A document of its own, with its own page numbers and its own book |
@@ -49,21 +49,34 @@ pip install markdown
 python3 tools/mkdoc.py --in GettingStarted/markdown --out GettingStarted/html
 ```
 
+Every step is a plain Python script; the only dependency is **python-markdown**
+(`python3-markdown` in a distribution's packages). Run `mkdoc.py` once for each
+set, with that set's `markdown` and `html` folders.
+
 `tools/mkdoc.py` renders each Markdown page to one self-contained HTML file (the
 style is embedded, so a page can be copied anywhere). `tools/add_nav.py` adds the
 previous/next links and checks that each set has its license page first, and
-`tools/mkbook.py` joins a set into one book. The generated pages are not
-tracked; the Markdown is the source.
+`tools/mkbook.py` joins a set into one book (`tools/mkbookpdf.py` and
+`tools/mkpdf.sh` make a PDF). The generated pages are not tracked; the Markdown
+is the source.
 
 The syntax cards are generated from SD itself and are not edited by hand:
 
 ```sh
-python3 tools/mksyntax.py <sdsys>/gpl.bp/bcomp User/markdown/94-sd-basic-syntax.md Administrator/markdown/10-sd-basic-restricted-commands.md
-python3 tools/mktclsyntax.py <sdsys> User/markdown/95-sd-tcl-syntax.md
+SD64=/path/to/SDCore4Linux/sdb_ai/sd64
+python3 tools/mksyntax.py $SD64/sdsys/gpl.bp/bcomp User/markdown/94-sd-basic-syntax.md Administrator/markdown/10-sd-basic-restricted-commands.md
+python3 tools/mktclsyntax.py $SD64/sdsys User/markdown/95-sd-tcl-syntax.md
+python3 tools/linkup.py User/markdown
 ```
 
-`tools/checklinks.py`, `tools/docmap.py` and `tools/tclmap.py` check the links
-and that every SD BASIC name and TCL verb is documented.
+`mksyntax.py` and `mktclsyntax.py` refuse to write a card if a name the compiler
+accepts, or a verb the VOC holds, has no line in `tools/syntax-shapes.txt` or
+`tools/tcl-syntax-shapes.txt`, one `NAME = syntax` per line. `linkup.py` turns
+the page names the two cards write in italics into links.
+
+`tools/checklinks.py`, `tools/docmap.py`, `tools/tclmap.py`, `tools/confmap.py`
+and `tools/verbcounts.py` check the links and that every SD BASIC name, TCL verb
+and `sd.conf` parameter is documented.
 
 ## License
 

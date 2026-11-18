@@ -7,7 +7,7 @@ It covers three functions that turn XML text into a
 text. To write a **query report** as XML, see the `xml` keyword on
 [SD TCL - The Query Processor](21-sd-tcl-query-processor.html); to read a document in the shape
 that report writes into the records of a file, see `import.xml` on
-[SD TCL - Files and Records](20-sd-tcl-files-and-records.html).
+[SD TCL - Files and Records: Comparing, Triggers and Importing](20-sd-tcl-files-and-records-2-comparing-triggers-and-import.html).
 
 SD folds case, so a program may be written in either case. Keywords are shown here
 in lower case. In the tables, *italics* mark something you supply and **bold**
@@ -133,8 +133,9 @@ What it takes:
 
 **Namespaces are names, not resolved addresses**: `//p:note` finds an element whose tag is written
 `p:note`, and `local-name()` leaves the prefix off. A query that is not well formed gives a null
-string, `status()` **1024** and `inmat()` the place; an argument that is not an element (JSON text,
-a collection without a `name`) gives a null string and `status()` 1020.
+string, `status()` **1024** and `inmat()` the place; an argument that is not an element collection (JSON text, a string, or an
+array) gives a null string and `status()` 1020. A collection with no `name` is
+taken as an element whose tag is empty.
 
 ## What is not here
 

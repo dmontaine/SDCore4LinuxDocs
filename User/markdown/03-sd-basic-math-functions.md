@@ -171,7 +171,7 @@ neg(expr)
 > **`int()` is affected by a configuration parameter.** `INTPREC` sets how
 > many decimal places are considered before truncating, which stops a value
 > that is `2.9999999999` only because of floating-point representation from
-> truncating to `2`. It defaults to `13` and may be set from `0` to `14`.
+> truncating to `2`. It defaults to `11` and may be set from `0` to `14`.
 > `config('INTPREC')` reports the value in force, and `config gpl` is not
 > where to look — the whole parameter list is shown by the `config` verb.
 

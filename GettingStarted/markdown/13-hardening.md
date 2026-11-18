@@ -83,28 +83,37 @@ Every accepted API connection is logged with the address and port it came
 from:
 
 ```
-API connection over TCP from 203.0.113.4 port 51322 (SD login required)
+sd_Log[115214]: API connection over TCP from 203.0.113.4 port 51322 (SD login required)
 ```
 
 or, over the Unix socket used for a local connection:
 
 ```
-Connection over Unix socket /run/sd/api.sock from uid 1000 (don)
+sd_Log[115214]: Connection over Unix socket /run/sd/api.sock from uid 1000 (don)
 ```
 
 **Nothing is refused on the strength of it.** This records who connected; it
 does not decide who may. The API's own checks are unchanged.
 
 **A connection forwarded over ssh shows the tunnel's own endpoint, not the
-person at the far end** — the same limitation SD Core for Windows has, for
-the same reason: the tunnel genuinely does terminate on this machine.
+person at the far end**: the tunnel genuinely does terminate on this machine, so
+the line cannot name a remote person.
+
+> **This matters beyond the log.** A tunnelled connection arrives from
+> `127.0.0.1` because it really does start here, and SD treats that as this
+> computer. SDSYS over the API is not admitted from a loopback address, so a
+> tunnel cannot carry SDSYS's login in; the address list of `remote.sdsys api on`
+> is consulted only for connections from other computers, and listing
+> `127.0.0.1` does not change that. Keep the door shut (`remote.sdsys api off`)
+> unless you need it, and turn port forwarding off in `sshd_config` if you do not
+> want tunnels at all.
 
 ## Line endings
 
 **Directory files exist so you can edit their records with an ordinary text
 editor**, and a file that started life on a Windows machine — a CSV saved
 from Excel, a record pasted from Notepad — may still carry CR+LF line
-endings. SD reads either ending correctly on this port: only the CR+LF
+endings. SD reads either ending correctly: only the CR+LF
 pair that ends a line is treated as a line ending, so a bare CR that
 happens to be data is left exactly as it is.
 
@@ -143,7 +152,7 @@ a definition that is not there.
 
 **SD's default terminal size is 140 columns by 43 lines.** **A terminal narrower than that makes wide reports
 look wrapped or truncated**, which reads as a formatting bug and is not one. SD's own
-full-screen programs (`sed`, `ced`, `ide`) want at least 140 columns by
+full-screen programs (`sed`, `ced`, `ide`, the home screen) want at least 140 columns by
 43 lines and refuse a smaller window.
 
 `term` reports the size in force, above the `Device` line:
@@ -173,6 +182,7 @@ phantom or a piped script.
 |---|---|
 | The unit | `sd.service`, `sdclient.socket` |
 | After an unclean shutdown | SD starts anyway, once the daemon's own liveness — not just the segment's presence — is checked. See [Running SD](03-running-sd.html) |
+| Nested sessions | SD will not start a second time inside itself — see [Running SD](03-running-sd.html) |
 | `sd <command>` | needs SDSYS, or an entry in `batch.jobs` — see above |
 
 ## Setting no password

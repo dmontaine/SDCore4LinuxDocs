@@ -39,7 +39,6 @@ formlist array {to list}
 | `selectn` | as `select`, but does not clear the list first |
 | `selectv` | the list into a **variable** rather than a numbered list |
 | `sselectv` | the sorted ids into a **variable**: `sselect` and `selectv` in one. The file may be a dynamic array instead, and `to` is required |
-
 | `selectindex` | from an alternate key index — see [SD Basic - Alternate Key Indexes](09-sd-basic-alternate-key-indexes.html) |
 | `formlist` | builds a list from a dynamic array you already have |
 

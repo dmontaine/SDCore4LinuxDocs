@@ -36,7 +36,7 @@ Capitals do not matter.
 such a file is refused with a message that names the missing switch (or sets
 the `ON ERROR` status). The verbs and statements that change a file the
 person names ask the same question first, before they lock or change
-anything, and give the reason: `sed` and `ide` show it in their
+anything, and give the reason: `sed`, `ide` and `ced` show it in their
 message line, and every other verb prints it (the same text as above) and
 stops. They are `ed`, `edit` and `copy` into the file or moving
 records out of it, `delete`, `clear.file`, `cname` of a record, `delete.file`
@@ -144,11 +144,11 @@ global catalog and are unaffected; a program that SDSYS compiled in internal
 mode into a user's account runs there as an ordinary program.
 
 **SDSYS is never refused.** On a terminal or in a batch job the
-administrator passes every gate. An API session carries no administrator
-flag, so SDSYS over the local API (a process running as `sdsys` entering the
-`sdsys` account on the Unix socket) is given all three switches on when it
-signs on; `modify.account` refuses SDSYS as a target, so there is nothing to
-set for it.
+administrator passes every gate. So does an SDSYS session over the API that
+SD admitted, by either door (a process running as `sdsys` entering the `sdsys`
+account on the Unix socket, or SDSYS from another computer when `remote.sdsys api`
+lists that computer's address): it is the administrator, and nothing is loaded for it.
+`modify.account` refuses SDSYS as a target, so there is nothing to set for it.
 
 **Group and other accounts.** The three words are accepted for a group or
 other account, and they do matter: a member of the account's Linux group can
@@ -164,7 +164,8 @@ account already exists, the upgrade switches all three on, **once**, for every
 *user* account in the register, so that no such account loses what it had;
 group and other accounts, and accounts made afterwards, start with all three
 off. On a fresh install, the installing user's own account is made with all
-three off like any other. If a different OS user runs the installer over
+three off like any other, unless the installer's "open every gate" question was
+answered `y`. If a different OS user runs the installer over
 existing accounts (so the installing user's account does not exist yet), the
 upgrade walk is not run, and the existing accounts stay off until SDSYS turns
 the switches on. The switches are kept in the account archive, but
@@ -199,7 +200,7 @@ to the account the person is *in*: it is read at sign-on, again at `logto` into
 another account, and given back when `logto` returns, and the API server reads it
 at every entry to an account. A change takes effect the next time the account is
 entered. It may be set on a group account, as `sd-on` may (`sh-on` may not).
-**SDSYS is never refused**, and an SDSYS session over the local API is given the
+**SDSYS is never refused**, and an SDSYS session over the API is given the
 switch on when it signs on. If the switch already had the value asked for, SD
 says only that the account already had that access and that nothing changed.
 The change is written to the audit trail (`modify.account net-on account=fred`).

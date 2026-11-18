@@ -34,9 +34,9 @@ These pages describe changes, so **used to**, **no longer** and **now**
 run all through them. **The comparison is against the code this version was
 made from** — upstream `sdb64`, and ScarletDME and OpenQM 2.6.6 behind it.
 
-**It does not mean an earlier release of SD Core for Linux.** Some of the
-changes are Linux-only and have no upstream original to differ from; those
-say **earlier builds of this port** instead, so the two are never confused.
+Some of the changes are Linux-only and have no upstream original to differ
+from. What changed since an earlier release of SD Core for Linux is in the
+*Changes* document that comes with the release, not in these pages.
 
 ## The pages
 
@@ -61,7 +61,7 @@ so on.
 | **06** | [Administrator commands](06-administrator-commands.html) | The verbs only SDSYS has, and how to use them |
 | **07** | [Development and file commands](07-programmer-commands.html) | Compiling, editing, and the verbs that maintain files, indexes and records in bulk |
 | **08** | [ssh access](08-ssh-access.html) | How people reach SD on this machine over ssh |
-| **09** | [API access](09-api-access.html) | The client API, its port, and the login that replaced the old one |
+| **09** | [API access](09-api-access.html) | The client API, its port, and the SCRAM login |
 | **10** | [Client distribution](10-client-distribution.html) | Which library an application needs, and the one file no installer can update |
 | **11** | [Lower case](11-lower-case.html) | Case in commands, file names, record ids and account names |
 | **12** | [Security](12-security.html) | The identity model, and what protects the database |

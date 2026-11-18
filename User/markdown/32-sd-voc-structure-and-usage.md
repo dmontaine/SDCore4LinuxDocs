@@ -109,9 +109,8 @@ needs:
 | `dict.dic` | `@SDSYS/...` |
 | `$ipc` | (system IPC file) |
 
-These are **read-only to a network session**. The account-root gate in
-the file engine allows them on read paths but sets `FV_RDONLY` on the
-file variable, so every write path in the engine refuses them. SDSYS is
+These are **read-only to a network session**: they can be opened and read,
+and every way of writing to them is refused. SDSYS is
 exempt; an ordinary account cannot write these files.
 
 ### The $ACC record
@@ -161,10 +160,9 @@ verb guarded rather than absent.
 
 `IN` verbs are numbered, and the numbers are positional in the command
 processor's dispatch list. Several names share one: `off` and `quit` are
-both internal verb 1, and `clr` is internal verb 2. (`cs` for `clr`, and the
-run-together `cleardata`, `clearinput`, `clearprompts` and `clearselect` for
-`clear.data` and the rest, were second names for the same numbers and were
-removed in 2.0-0.)
+both internal verb 1, and `clr` is internal verb 2. The `clear.data`,
+`clear.input`, `clear.prompts` and `clear.select` verbs are internal verbs 19,
+25, 20 and 6.
 
 ### The four keyword-verbs
 
@@ -262,7 +260,7 @@ in the command instead.
 002  26
 ```
 
-This is `#`, the comment keyword. Field 2 is the keyword number the query
+This is `ne`, the not-equal keyword. Field 2 is the keyword number the query
 processor uses. Keywords are not commands in their own right; they are
 the words the query processor — `LIST`, `SELECT`, `SORT` and the rest —
 recognizes inside a command line. `all` is `K` with number 5; `and` is `K`.

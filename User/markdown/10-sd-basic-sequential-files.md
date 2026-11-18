@@ -284,9 +284,8 @@ untouched, which is what you want for a file another system produced.
 
 ## What is not here
 
-Nothing in the sequential-file group has been removed from this port. The
-**VFS** layer, which used to sit between these statements and the operating
-system, has been removed from the C entirely.
+Nothing in the sequential-file group has been removed from this port. There is no
+layer between these statements and the operating system.
 
 ## See also
 

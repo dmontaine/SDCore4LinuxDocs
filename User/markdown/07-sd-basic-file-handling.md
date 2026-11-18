@@ -178,7 +178,7 @@ already committed to the file are looked at; an id this process took earlier is 
 records with numeric ids were copied in; the skipping is what protects them. The counter is changed in
 the file header at once, so a power failure can leave it one behind the records; setting it with
 `configure.file … next` puts that right. The client library
-has it as `SDWriteSeqKey` and `SDWriteuSeqKey` ([SD Client API](37-sd-client-api.html)).
+has it as `SDWriteSeqKey` and `SDWriteuSeqKey` ([SD Client API: Select Lists to Error Handling](37-sd-client-api-2-select-lists-and-the-rest.html)).
 On a file reached through an `N` pointer to another SD server the write goes to that
 server, which decides whether to allow it
 ([Programming with a Remote File](42-sd-programming-with-a-remote-file.html)).

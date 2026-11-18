@@ -157,7 +157,8 @@ both lists hold the ids. A list moved onto itself, and an empty list, are left
 as they are. A number outside 0 to 10, a missing number, or a word other than
 `to` and `keep` is refused (*Select list number missing or invalid*,
 *Unexpected token (xx)*) and nothing is moved. `move.list 3 to 0` is how a
-list kept in 3 is made the one the next command uses.
+list kept in 3 is made the one the next command uses. It is the command form of
+the `movelist` statement.
 
 ### A command for each id: `execute.list`
 
@@ -196,11 +197,44 @@ asterisk.
 | **`qc`** | quit, keeping nothing |
 | **`?`** | help |
 
+For a file `t3` that holds the records `a1` to `a5`:
+
+```
+select t3
+show.list
+```
+
+```
+    1 * a1
+    2 * a2
+    3 * a3
+    4 * a4
+    5 * a5
+: c 3-4
+    1 * a1
+    2 * a2
+    3   a3
+    4   a4
+    5 * a5
+: s 3
+    1 * a1
+    2 * a2
+    3 * a3
+    4   a4
+    5 * a5
+: q
+```
+
+After the `q` above, the list holds `a1`, `a2`, `a3` and `a5`, and the next
+`list t3` shows those four.
+
 *Items* is a number, a range `a-b` with no spaces round the hyphen, `visible`
 (the items on this page) or `all` (`v` and `a` will do); several may be given
 separated by spaces or commas, as `1,4,8-11`. The space after `s` and `c` is
 optional. **`show.list` changes only the list in memory** — it does not save it;
-use `save.list` for that.
+use `save.list` for that. **`qc` leaves no list at all**, so the command after it
+works on the whole file, not on an empty list. A list that is not active is
+refused (`show.list 7` answers *Select list 7 is not active*).
 
 ## Saving a list by name
 
@@ -216,8 +250,8 @@ account's `$savedlists` file and outlives it.
 | **`sort.list`** *name* {**from** *file*} | sort a saved list, in place |
 
 Both default to list 0, and `save.list` defaults the name to the list number.
-**`save.list`** takes **`keep`** to leave the active list as it was (it has always
-emptied it) and **`count.sup`** to leave out the count of records, and **`get.list`**
+**`save.list`** takes **`keep`** to leave the active list as it was (without it the
+list is emptied) and **`count.sup`** to leave out the count of records, and **`get.list`**
 takes **`deleting`** to delete the saved list once it is loaded and `count.sup`
 too. With the name left out, a list is called after its number: `save.list` saves
 list 0 as `0`, and `get.list 0` brings it back.
@@ -269,7 +303,10 @@ sort.list reports
 ```
 
 A list that is not there is *Saved select list 'name' not found*, and no name is
-*Source list name required*.
+*Source list name required*. `@system.return.code` is the number of items. The file
+named by `from` is held to the same rule as for `copy`: a VOC, a dictionary or a
+program file can be changed only by an account with the matching `voc-edit`,
+`dict-edit` or `bp-edit` switch.
 
 
 ## Combining two lists

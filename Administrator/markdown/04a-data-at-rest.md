@@ -6,10 +6,6 @@ disk. SD itself is unchanged by it. The encryption is done by the operating
 system, to the volume the SD directories live on. The encryption page explains
 the other two layers, which are the application's.
 
-> This document is separate so that it can be withheld. It links to nothing
-> outside the administrator set. Where a page in another set is worth naming,
-> it is named in words.
-
 SD folds case, so a command may be typed in either case. Commands are shown
 here in lower case.
 
@@ -46,9 +42,9 @@ is not a file. It is recreated each time SD starts.
 
 **The sort work area is not under SDSYS.** SD's default places are
 `TEMPDIR`, which is `$TMP` or `/tmp`, and `SORTWORK`, which follows `TEMPDIR`.
-The sort files are named `~SDS<user>.<n>`. A sort of 150,000 keys under
-default settings put the work files in `/tmp`, and one of them held the
-plaintext keys. So the sort area must be moved onto the volume as well:
+The sort files are named `~SDS<user>.<n>`. A sort that does not fit in memory
+writes its work files there, and they hold the keys being sorted in plain
+text. So the sort area must be moved onto the volume as well:
 
 ```
 # in /etc/sd.conf
@@ -91,21 +87,22 @@ start fails.
 
 ```bash
 sudo modprobe loop dm_crypt
-truncate -s 300M /var/tmp/l1-luks.img
-printf '%s' "PASSPHRASE" | sudo /usr/sbin/cryptsetup luksFormat --type luks2 -q --key-file=- /var/tmp/l1-luks.img
-printf '%s' "PASSPHRASE" | sudo /usr/sbin/cryptsetup open --key-file=- /var/tmp/l1-luks.img l1crypt
-sudo mkfs.ext4 -q -L sdl1luks /dev/mapper/l1crypt
-sudo mkdir -p /mnt/l1-luks
-sudo mount /dev/mapper/l1crypt /mnt/l1-luks
+truncate -s 300M /var/tmp/sd-luks.img
+printf '%s' "PASSPHRASE" | sudo /usr/sbin/cryptsetup luksFormat --type luks2 -q --key-file=- /var/tmp/sd-luks.img
+printf '%s' "PASSPHRASE" | sudo /usr/sbin/cryptsetup open --key-file=- /var/tmp/sd-luks.img sdcrypt
+sudo mkfs.ext4 -q -L sdluks /dev/mapper/sdcrypt
+sudo mkdir -p /mnt/sd-luks
+sudo mount /dev/mapper/sdcrypt /mnt/sd-luks
 ```
 
-The container above uses aes-xts-plain64 with a 512-bit key, an argon2id
-keyslot and 4096-byte sectors. In a real installation size the image to the
-data, and put it on a disk you choose, not in `/var/tmp`; the 300 MB size here
-is only an example.
+The container uses aes-xts-plain64 with a 512-bit key, an argon2id keyslot and
+4096-byte sectors. In a real installation size the image to the data, and put
+it on a disk you choose, not in `/var/tmp`; the 300 MB size here is only an
+example.
 
 Replace `PASSPHRASE` with the passphrase. Do not write it into a script or a
-history file.
+history file. Unlocking a passphrase keyslot needs about 1 GiB of free memory,
+which is the `cryptsetup` default.
 
 ### Move the data, in order
 
@@ -114,11 +111,11 @@ Stop SD first. Do not copy the trees while SD is running.
 ```bash
 sudo systemctl stop sd.service
 for d in usr/local/sdsys home/sd var/lib/sd-net etc/sd-tls; do
-  sudo mkdir -p /mnt/l1-luks/$d
-  sudo rsync -aHAX --numeric-ids /$d/ /mnt/l1-luks/$d/
+  sudo mkdir -p /mnt/sd-luks/$d
+  sudo rsync -aHAX --numeric-ids /$d/ /mnt/sd-luks/$d/
 done
 for d in usr/local/sdsys home/sd var/lib/sd-net etc/sd-tls; do
-  sudo mount --bind /mnt/l1-luks/$d /$d
+  sudo mount --bind /mnt/sd-luks/$d /$d
 done
 sudo systemctl start sd.service
 ```
@@ -144,24 +141,23 @@ sudo systemctl stop sd.service
 for d in etc/sd-tls var/lib/sd-net home/sd usr/local/sdsys; do
   sudo umount /$d
 done
-sudo umount /mnt/l1-luks
-sudo /usr/sbin/cryptsetup close l1crypt
+sudo umount /mnt/sd-luks
+sudo /usr/sbin/cryptsetup close sdcrypt
 sync
 ```
 
-### What the raw container showed
+### Checking a closed volume
 
-After a record was written through SD and the volume closed, the raw image was
-searched for the text of the record, the record id, the account path and the
-SDSYS path. Every search returned 0. The same flow on an unencrypted ext4 image
-returned matches for each.
+With the volume closed, the image should show no text of yours. Search it for a
+word you know is in a record, and for the record id, the account path and the
+SDSYS path; each count should be 0:
 
 ```bash
-sudo grep -a -c PLAINTEXT-MARKER-ZEBRA-4417 /var/tmp/l1-luks.img
-sudo strings -a /var/tmp/l1-luks.img | grep -c PLAINTEXT-MARKER-ZEBRA-4417
+sudo grep -a -c "a text you wrote into a record" /var/tmp/sd-luks.img
+sudo strings -a /var/tmp/sd-luks.img | grep -c "a text you wrote into a record"
 ```
 
-`file` describes the image as "LUKS encrypted file, ver 2". The text search is
+`file` describes the image as "LUKS encrypted file, ver 2". A search is
 evidence about the bytes that were searched, not a proof about every byte.
 
 ## Unlock at boot
@@ -181,11 +177,11 @@ RequiresMountsFor=/usr/local/sdsys /home/sd /var/lib/sd-net /etc/sd-tls
 With the four bind mounts in `/etc/fstab`, each marked to wait for the volume:
 
 ```
-/dev/mapper/l1crypt /mnt/l1-luks ext4 noauto,nofail,x-systemd.requires=systemd-cryptsetup@l1crypt.service 0 0
-/mnt/l1-luks/usr/local/sdsys /usr/local/sdsys none bind,noauto,nofail,x-systemd.requires-mounts-for=/mnt/l1-luks 0 0
-/mnt/l1-luks/home/sd /home/sd none bind,noauto,nofail,x-systemd.requires-mounts-for=/mnt/l1-luks 0 0
-/mnt/l1-luks/var/lib/sd-net /var/lib/sd-net none bind,noauto,nofail,x-systemd.requires-mounts-for=/mnt/l1-luks 0 0
-/mnt/l1-luks/etc/sd-tls /etc/sd-tls none bind,noauto,nofail,x-systemd.requires-mounts-for=/mnt/l1-luks 0 0
+/dev/mapper/sdcrypt /mnt/sd-luks ext4 noauto,nofail,x-systemd.requires=systemd-cryptsetup@sdcrypt.service 0 0
+/mnt/sd-luks/usr/local/sdsys /usr/local/sdsys none bind,noauto,nofail,x-systemd.requires-mounts-for=/mnt/sd-luks 0 0
+/mnt/sd-luks/home/sd /home/sd none bind,noauto,nofail,x-systemd.requires-mounts-for=/mnt/sd-luks 0 0
+/mnt/sd-luks/var/lib/sd-net /var/lib/sd-net none bind,noauto,nofail,x-systemd.requires-mounts-for=/mnt/sd-luks 0 0
+/mnt/sd-luks/etc/sd-tls /etc/sd-tls none bind,noauto,nofail,x-systemd.requires-mounts-for=/mnt/sd-luks 0 0
 ```
 
 Then:
@@ -201,21 +197,20 @@ paths.
 
 **Without the drop-in, SD starts on the wrong disk.** With the volume not
 mounted and no ordering, `systemctl start sd.service` reports `active`, and SD
-runs on the unencrypted directories underneath the mount points. `COUNT l1test`
-prints "File not found", and anything written then lands in plaintext. With
-the drop-in and the fstab entries the same start fails with "A dependency job
-for sd.service failed", return code 1, and SD stays down.
+runs on the unencrypted directories underneath the mount points: the data
+written earlier is not found, and anything written then lands in plaintext.
+With the drop-in and the fstab entries the same start fails with "A dependency
+job for sd.service failed", and SD stays down.
 
 ### Unlock by keyfile
 
 ```
 # /etc/crypttab
-l1crypt /var/tmp/l1-luks.img /var/tmp/l1-keyfile luks,nofail
+sdcrypt /var/tmp/sd-luks.img /var/tmp/sd-keyfile luks,nofail
 ```
 
-With a keyfile, `systemctl start sd.service` from a fully locked state opened
-the container, mounted it, bound the four paths and started SD. The record was
-readable at once.
+With a keyfile, `systemctl start sd.service` from a fully locked state opens
+the container, mounts it, binds the four paths and starts SD.
 
 **The trade-off, stated plainly.** A keyfile on the same machine as the
 container gives no protection against anyone who can read that machine's root
@@ -228,7 +223,7 @@ in `/var/tmp` only to show the commands; do not keep a real one there.
 
 ```
 # /etc/crypttab
-l1crypt /var/tmp/l1-luks.img none luks,nofail,timeout=90s,tries=1
+sdcrypt /var/tmp/sd-luks.img none luks,nofail,timeout=90s,tries=1
 ```
 
 With the key field `none`, the boot waits for a passphrase. Answer the
@@ -240,8 +235,9 @@ sudo systemctl start sd.service --no-block
 printf '%s' "PASSPHRASE" | sudo /usr/lib/systemd/systemd-reply-password 1 SOCKET
 ```
 
-SD comes up and can read its records. With nobody answering, the start fails
-closed, as above (`timeout=` in `crypttab` sets how long the boot waits).
+Once the passphrase is accepted SD starts on the volume. With nobody answering,
+the start fails closed, as above (`timeout=` in `crypttab` sets how long the
+boot waits).
 
 **The trade-off.** A passphrase is typed at every boot, so a machine that
 restarts unattended stays down until someone unlocks it, and a
@@ -258,14 +254,14 @@ change the root filesystem. To use fscrypt for the data, make the volume with
 `mkfs.ext4 -O encrypt` from the start.
 
 ```bash
-truncate -s 300M /var/tmp/l1-fsc.img
-sudo losetup -f --show /var/tmp/l1-fsc.img
-sudo mkfs.ext4 -q -O encrypt -L sdl1fsc /dev/loopN
-sudo mount /dev/loopN /mnt/l1-fsc
+truncate -s 300M /var/tmp/sd-fsc.img
+sudo losetup -f --show /var/tmp/sd-fsc.img
+sudo mkfs.ext4 -q -O encrypt -L sdfsc /dev/loopN
+sudo mount /dev/loopN /mnt/sd-fsc
 sudo fscrypt setup --quiet --force
-sudo fscrypt setup /mnt/l1-fsc --quiet
-sudo mkdir /mnt/l1-fsc/sdenc
-printf '%s\n' "PASSPHRASE" | sudo fscrypt encrypt /mnt/l1-fsc/sdenc --source=custom_passphrase --name=sdenc-prot --quiet
+sudo fscrypt setup /mnt/sd-fsc --quiet
+sudo mkdir /mnt/sd-fsc/sdenc
+printf '%s\n' "PASSPHRASE" | sudo fscrypt encrypt /mnt/sd-fsc/sdenc --source=custom_passphrase --name=sdenc-prot --quiet
 ```
 
 `/dev/loopN` is the loop device `losetup` reported. Replace `PASSPHRASE` as
@@ -279,22 +275,22 @@ package.
 `fscrypt setup` writes `/etc/fscrypt.conf` and a `/.fscrypt` directory on the
 root filesystem. Those are part of the set-up and are not on the volume.
 
-After encryption the status shows policy version 2, contents `AES_256_XTS`,
-filenames `AES_256_CTS`, and `Unlocked: Yes`.
+`fscrypt status` of the directory shows policy version 2, contents
+`AES_256_XTS`, filenames `AES_256_CTS`, and `Unlocked: Yes`.
 
-The four trees were copied into `sdenc/` under the same relative paths, bound
-over their usual places, and SD is started as in method one. Then, with SD
-stopped and the binds removed:
+Copy the four trees into `sdenc/` under the same relative paths, bind them over
+their usual places, and start SD as in method one. To lock the directory, stop
+SD and remove the binds first, then:
 
 ```bash
-sudo fscrypt lock /mnt/l1-fsc/sdenc
+sudo fscrypt lock /mnt/sd-fsc/sdenc
 ```
 
-While locked, `ls` shows encrypted names, and the raw image holds no record
-text, no `l1test`, no `user_accounts` and no `sdsys`. Unlock with:
+While it is locked, `ls` shows encrypted names and the contents cannot be
+read. Unlock with:
 
 ```bash
-printf '%s\n' "PASSPHRASE" | sudo fscrypt unlock /mnt/l1-fsc/sdenc --quiet
+printf '%s\n' "PASSPHRASE" | sudo fscrypt unlock /mnt/sd-fsc/sdenc --quiet
 ```
 
 fscrypt hides contents and file names only. File sizes, owners, modes, the
@@ -319,9 +315,6 @@ work out the unlock at boot for your own machine.
   system's. Try the whole unlock path with a real reboot on your own machine before you rely
   on it.
 - **fscrypt on the root filesystem.** It is not possible without re-making the filesystem.
-
-The 1 GiB argon2id memory for the keyslot is the cryptsetup default, so
-unlocking a passphrase keyslot needs about 1 GiB of free memory.
 
 ## What to do, in order
 

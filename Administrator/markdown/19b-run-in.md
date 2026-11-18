@@ -26,7 +26,7 @@ SDSYS itself, never a path), and **it is back in SDSYS when the command ends**. 
 command that aborts, a break and a run-time error in a program being debugged: the session is put
 back before anything else happens and says so ("run.in: the command did not finish; the session is
 back in account acme"). Without this an administrator would be left in the account, with the
-command's reach, until typing `LOGTO sdsys` (the administrator's way back by hand; it is refused to
+command's reach, until typing `logto sdsys` (the administrator's way back by hand; it is refused to
 every other session).
 
 What it checks before it changes anything: the account and every name are one plain word (a-z,
@@ -60,6 +60,16 @@ VOC and programs are written by the account's user, so nothing in them is truste
 - **Compiling reads the account and nothing else.** A `$execute` in the source is a compile error
   (*$execute is refused in a compile started by run.in*), and an include or a dictionary that lies
   outside the account is refused; SD's own `syscom` headers are still found.
+- **Nothing is written outside the account, and no trigger of the account's runs.** The command
+  itself runs as the `sdsys` user, which may write anywhere under the accounts root, so `run.in`
+  looks first at every file the command would write or delete: the named file, its dictionary, its
+  `.out` file, the private catalog a `$private.catalogue` record names, the object file a
+  `decatalog` would remove. If one of them lies outside the account's own directory (links and
+  `..` followed) the command is refused: *run.in: bp.out in account acme names a path outside the
+  account; nothing was run*. A trigger is code the account's user wrote, and it would run on the
+  command's reads and writes, so a trigger on the account's VOC or on any of those files is
+  refused the same way: *run.in: voc in account acme has a trigger; nothing was run*. Edit such a
+  file in the account it lives in, or take the trigger off first.
 
 It adds no authority: the administrator can already `logto` into any registered account. What it
 adds is the way back and a shorter list. Every use writes `run.in begin account=… command=…` and

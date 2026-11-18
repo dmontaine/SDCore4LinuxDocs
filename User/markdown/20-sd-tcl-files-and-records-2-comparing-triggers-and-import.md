@@ -256,7 +256,7 @@ dictionary changes only when the account has `bp.edit`, `voc.edit` or `dict.edit
 
 ## Who has these verbs
 
-**Every account has all of them now** — there is no longer a withheld set.
+**Every account has all of them** — none is withheld.
 `ct`, `list.files`, `set.file`, `analyze.file`, `clear.file`,
 `cname`, `configure.file`, `compare.files`, `copy`, `create.file`,
 `delete`, `delete.file`, `dump`, `file.stat`, `fixdir`, `find.file`, `fstat`,

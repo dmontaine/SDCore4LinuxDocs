@@ -135,9 +135,8 @@ Read out of an account's own VOC:
 | `debugging` | a `K` keyword, 53 | the compiler keyword |
 | `pdebug` | a `V` verb, `CA $PDEBUG` | the phantom debugger |
 
-**Every account has `debug` and `pdebug`** — there is no longer a tier that
-would withhold them. `debugging` is a keyword rather than a verb, and always
-was available regardless.
+**Every account has `debug` and `pdebug`.** `debugging` is a keyword rather
+than a verb, and every account has it.
 
 ## A process dump from inside the program: `pdump`
 

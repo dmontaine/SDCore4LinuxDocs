@@ -60,6 +60,27 @@ the obvious thing: write the work into a script file and run the script
 `sh-on` is a decision to give a person a shell on the machine, not a
 decision to give them a restricted one.
 
+## SD refuses to nest
+
+```
+:sh sd
+SD is already running in this session - type exit to return to it.
+```
+
+A shell that SD starts, with `sh` or with `OS.EXECUTE`, is marked, and `sd` checks the mark before it
+reads anything else, so every form of the command is refused inside it (`sd -status` and `sd --version`
+too):
+
+```
+:sh printenv SD_SESSION
+1
+```
+
+**That is worth knowing when writing a script for `sh` to run**: anything it starts inherits `SD_SESSION`,
+so a script that starts SD as part of its work is refused, wherever it is called from. It is a guard and
+not a boundary: the mark is a variable of the shell, and a person with a shell can remove it there. A shell
+you start yourself outside SD is not marked.
+
 ## Who is allowed: a switch in the account's own record
 
 **The permission is a field of the account's own register record** — field 7,

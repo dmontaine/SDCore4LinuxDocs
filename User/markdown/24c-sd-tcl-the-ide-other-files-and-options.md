@@ -4,7 +4,7 @@ Subtitle: Collection files, locks, operating system files, indenting, the option
 This page continues [Programs: The IDE's Keys](24b-sd-tcl-the-ide-keys.html).
 
 **A record of a collection file opens as the text of its JSON**, one element to a line, in a tab of its own. You edit the text as any other; **Ctrl-S parses it and
-writes the COLLECTION to the file**, and the tab keeps the text in the same layout
+writes the collection to the file**, and the tab keeps the text in the same layout
 (the layout `ct` shows) so that a text you typed compact is not "changed" for ever. Text that is not a
 JSON object or array is refused in a box that says where the parse stopped, and the record on the disk is
 untouched. **Edit as fields (F12) shows the collection in the fields view** (it writes

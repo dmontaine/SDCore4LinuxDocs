@@ -132,8 +132,9 @@ never started.
 
 **A phantom that is created and then cannot run SD's program ends without a word on your
 terminal**, and `phantom` returns as it always did. The reason is written to SD's error
-log, for the administrator to read, as a line beginning `phantom: cannot start a phantom
-from` and the path, then the reason.
+log as a line beginning `phantom: cannot start a phantom from` and the path of `bin/sd`,
+then the reason; a path too long to start from is a line beginning `phantom: cannot start
+a phantom - the path of`.
 
 > **A phantom cannot be started from a scripted session, and this is the one
 > to know.** When SD is fed commands down a pipe, the phantom child inherits
@@ -141,8 +142,7 @@ from` and the path, then the reason.
 > has exited — and the only way out is to kill the process, which leaves an
 > entry in the user table that needs `sd -cleanup`, run as SDSYS, to clear.
 > **`phantom` is for a person at a prompt, or for a program, and not for a
-> piped script.** The listings above are quoted from the verb's own message
-> texts for that reason.
+> piped script.**
 
 **A phantom is not a scheduled job.** It runs once, now. Recurring work is
 a cron job or systemd timer that starts SD, and that is a different

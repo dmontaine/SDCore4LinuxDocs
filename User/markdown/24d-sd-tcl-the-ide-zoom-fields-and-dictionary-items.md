@@ -28,8 +28,8 @@ that you can read it; a compile with no errors leaves it as it is.
 Ctrl-E is the editor's *end of row* key in other programs that use `screen memo` (and in `sed`); in the
 IDE **End** ends a row. Nothing is handed to another editor: [SED](27a-sd-tcl-sed.html) is this editor, started by itself.
 
-**F12 shows the record as fields, values and subvalues, so that nobody types a mark**
-(in the IDE's own form, as a pane of the tab). The record in the open tab is shown in the *fields pane* - the editor of
+**F12 shows the record as fields, values and subvalues, so that nobody types a mark.**
+The record in the open tab is shown in the *fields pane* - the editor of
 [CED](27b-sd-tcl-ced.html) in its *data mode*, drawn in the editor's rectangle with the tree, the tab
 strip and the messages still on the screen: a list of the fields, each field a text or a list of its
 values, each value a text or a list of its subvalues. Dive into a field with Return, go up with
@@ -63,7 +63,7 @@ that does not parse, text that does not begin with `{` or `[`) is shown as field
 
 **A dictionary item opens as a form**: `ide dict file record` (a record that is not
 there yet opens as a new D item) and **Return on an item in the tree** show the item as a form first, and so
-does the **E** of TOOL.DICT, which hands the item to the IDE. `ide dict file record /text` opens it as text;
+does the **E** of `tool.dict`, which hands the item to the IDE. `ide dict file record /text` opens it as text;
 **Cancel** (or **Esc**) in the form leaves the item as text in its tab, and **Go, Dictionary item as
 form** (or `/form` on the command line) shows the form for the tab you are in. A record found by a search,
 items opened together from a list, Ctrl-O, an item already in a tab, an item another session holds (it is

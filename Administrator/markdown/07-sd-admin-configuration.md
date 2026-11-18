@@ -79,7 +79,14 @@ YEARBASE  1930
 
 SD accepts **58** parameters (`APIPORT` does not
 exist here — see *The API*, below). The verb prints all of them except
-`BACKUPDIR`, `NETDIRS` and `SDSYS`, and `DEBUG` and `FDS` only when they are set.
+`BACKUPDIR`, `NETDIRS` and `SDSYS`, and `DEBUG`, `FDS` and `PHANTOMS` only when they are set.
+
+`NETDIRS` is the one to know about. It decides what a session held to its account
+by the `os` switch, the API's included, may reach outside its own account (see
+[The API, Printing and the Rest](07b-sd-admin-configuration-api-printing-and-netfiles.html#netdirs-directories-outside-an-account)).
+The verb will not tell you what it is set to, and `config('NETDIRS')` does not read it. Read it from the file.
+
+**`config` pages its output** — press Return for more, or `Q`.
 
 The `config()` function reads one parameter from a program:
 
@@ -177,7 +184,7 @@ function reports it in another form than the file writes it.
 **R, the report**: the operating system part of `settings.report` (the ssh and API doors, the groups of
 `sdusers`, `sdssh` and `sdapi`, the services and the sudoers file), made when the view is opened and on
 F5. It holds no key and no password hash. `F5` reads the file, the backup directory and the report
-again, and while the report is made the status line says "Reading the settings (a few seconds)...";
+again, and while the report is made the status line says "Reading the settings (a few seconds)...", and while `set.config` runs a change it says "Making the change (a few seconds)...";
 `E` changes the parameter under the cursor, or says why it cannot be changed here; `F1`
 explains the page; `Ctrl-Q` leaves. Opening the page writes the audit line
 `tool start app=tool.config`; a change writes the line of `set.config` (below), and nothing else the

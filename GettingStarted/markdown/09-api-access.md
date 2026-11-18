@@ -1,5 +1,5 @@
 Title: API access
-Subtitle: The client API, the port it answers on, the login that replaced the old one, and what a remote session may reach.
+Subtitle: The client API, the port it answers on, the SCRAM login, and what a remote session may reach.
 
 The client API is a normal way for any account to use SD. A person running a
 custom GUI program that talks to SD needs API access and may need nothing
@@ -34,16 +34,15 @@ file is refused with *"This login is for files only: request n is not
 allowed"*, and the connection stays open. An account with `api` has the whole
 API whether or not it also has `files-on`. This is the route SDNet's logins are
 meant to use.
-## The login is SCRAM-SHA-256, and the old one is gone
+## The login is SCRAM-SHA-256
 
 **A client that sends a password in clear is refused.** It gets *"Cleartext
 login is no longer supported; this server requires SCRAM authentication"* and
 the connection drops.
 
-The API used to send the user name and password as plain text — anything able
-to watch the connection could read the password. It now runs a challenge and
-response: the server sets a puzzle only someone who knows the password can
-answer, and **the password itself is never sent in any form.**
+The API runs a challenge and response rather than sending the user name and
+password as plain text: the server sets a puzzle only someone who knows the
+password can answer, and **the password itself is never sent in any form.**
 
 **The server also proves itself to you.** It finishes by returning a value
 only the real server can compute, and the client refuses the connection if it
@@ -66,29 +65,24 @@ the client library, so it applies to every program that connects with
 `SDConnect`. **The very first connection is trusted**, as with ssh: someone in
 the middle at that moment would be remembered instead of the server.
 
-### What you have to do
+**A client library that does not speak SCRAM is refused outright.** Use the
+client library that comes with SD (see
+[Client distribution](10-client-distribution.html)).
 
-| | |
-|---|---|
-| **Use a client library from this release or later.** | An older one is refused outright |
-| **Run `modify.password` again for every account that uses the API.** | The stored credentials changed shape and the old ones cannot be converted |
-
-**An account whose password has not been re-set is refused, and the refusal
-reads as a wrong password.** From the server's point of view there is no
-credential to check. If a working client suddenly cannot log in after an
-upgrade, this is the first thing to try.
+**An account that has no password set is refused, and the refusal reads as a
+wrong password.** From the server's point of view there is no credential to
+check; `modify.password` sets one.
 
 **Known issue: `TLS read failed`.** A refused login made through the C client
 library can report `TLS read failed` instead of *Invalid username or password*.
 The login is refused either way and nothing else is affected.
 
-The old credentials cannot be converted because **the password was never kept
-anywhere, by design** — there is nothing to convert them from.
+**The password is never kept anywhere, by design** — SD stores only what the
+challenge and response needs to check an answer.
 
 **Programs using the `!sdclient` class are covered.** The class module BASIC
-programs use to reach another SD server speaks the new login too. Your code
-does not change — `connect()` takes the same arguments — but the program has to
-be running under this release **at both ends**.
+programs use to reach another SD server speaks the same login, so a program
+that uses it needs no change.
 
 **`SDConnectLocal()` connections are unaffected.** They send no password and
 never did.
@@ -158,7 +152,12 @@ SDSYS's own SD password — the third password the installer asks for:
   stands between the listed addresses and the administrator.** Open it only for
   addresses you control, with a long password used nowhere else, and shut it when it
   is not needed. The Administrator set's chapter *Remote Administration through the
-  API* says what opening it means.
+  API* says what opening it means. **A connection tunnelled through ssh
+  (`ssh -L`) arrives from `127.0.0.1`, because the tunnel ends on this machine, and
+  SD counts that as this computer.** The address list is not consulted for it, so
+  listing `127.0.0.1` (or `any`) does not let a tunnel in: SDSYS over a tunnel is
+  refused like any other loopback connection, and only the Unix socket door above
+  admits it.
 
 An API session into any other account has exactly that account's rights and
 nothing more. See [Accounts](05-account-types.html#sdsys-is-the-only-administrator).
@@ -173,7 +172,7 @@ is recorded as well. See [Other hardening](13-hardening.html).
 | | |
 |---|---|
 | **Allowed** | everything inside its own account, and the shipped SDSYS files every account needs — messages, `syscom`, the dictionaries. Ordinary programs are unaffected |
-| **Not allowed** | opening, renaming, deleting or listing anything else |
+| **Not allowed** | opening, renaming, deleting or listing anything else, while the account's `os-on` switch is off (as delivered) |
 
 **A refused `OPEN` takes the `ELSE` branch and `STATUS()` is 3035**, which means
 *not permitted* rather than *not found*. That distinction matters when you are
@@ -200,8 +199,9 @@ file permissions and the confinement described above allow. The one setting that
 widens it is `NETDIRS` in `sd.conf`, a list of directories outside every account that
 an account without `os-on` may also reach; it is empty as delivered, and the
 administrator fills it (see *`NETDIRS`* in the Administrator set's *Configuration*
-chapter). `APIPORT` is not a parameter of this port. The `os-on` switch is read for an API session like any
-other, but it does not lift this confinement (see
+chapter). `APIPORT` is not a parameter of SD Core. **The account's `os-on`
+switch lifts this confinement**, for an API session as for any other: an
+account that holds it reaches whatever its Linux user may (see
 [Security and the operating system](12a-security-and-the-operating-system.html)).
 If data needs to be reachable from more than one account, put it somewhere
 every account can already open on its own terms, or reach it through a
@@ -252,7 +252,7 @@ callable from a client. It defaults to `0` — see the *Administrator* set's
 | | |
 |---|---|
 | The shared library | `sdclilib.so` |
-| Source | built as part of this port, or standalone at <https://github.com/dmontaine/linuxsdclilib> |
+| Source | built as part of SD Core, or standalone at <https://github.com/dmontaine/linuxsdclilib> |
 
-**Must come from this release or later.** A client library that predates
-SCRAM is refused by the server.
+**It must speak SCRAM.** A client library that sends the password in clear
+is refused by the server.

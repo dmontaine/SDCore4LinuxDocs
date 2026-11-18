@@ -119,8 +119,7 @@ wy50            wy60            wyse50          wyse60          xterm
 ```
 
 (The list is cut short here: it is 36 names in rows of six, and the count depends
-on the release. The Data General, MDC Prism, Prime and Televideo 910 definitions that
-were once on it were removed in 2.0-0.) **A type that is not on it has no definition of its own**, and SD
+on the release.) **A type that is not on it has no definition of its own**, and SD
 substitutes one for it.
 
 ### What a key does: `tool.keys`
@@ -156,7 +155,7 @@ has no name for.** SD understands the usual keys of every terminal in both
 cursor-key modes (the arrows, Home, End, Insert, Delete, Page Up and Down,
 Shift-Tab, F1 to F12, and the Ctrl, Shift and Alt forms of them such as
 `ctrl-left` and `ctrl-pgup`), then adds those of the terminfo entry for the type
-in force. A control sequence it has no name for is ignored whole: it is no longer
+in force. A control sequence it has no name for is ignored whole: it is not
 typed into your text. A byte of 128 or more is never a key. Press **Ctrl-R**,
 then press the key again: the bytes it sent are shown, which is what a terminfo
 entry needs. An Alt-letter shows as `alt-x` on a terminal that sends Alt+x as Esc

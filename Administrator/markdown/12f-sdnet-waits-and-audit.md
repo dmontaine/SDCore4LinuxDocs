@@ -32,8 +32,7 @@ connection open after the last file is closed, is not this and does not exist in
 the reply. A server that announces less than the ten bytes of its own header, or more than the
 largest string SD can hold (a little over a gigabyte), is treated as a lost connection at once:
 nothing of it is read, a changing request answers 11509 as for any lost reply, and the
-connection is dropped. Before this the client read for as long as the server sent, and waited a
-whole `NETREPLY` for a reply that was never coming. Nothing is refused that a real record could
+connection is dropped. Nothing is refused that a real record could
 need: the ceiling is the size of the largest record. **The ceiling applies once the login is
 over.** The login exchange itself has no ceiling on the length a reply announces (only the test
 for less than ten bytes), so a server whose key you have pinned, and which has turned hostile,
@@ -68,6 +67,9 @@ that got no answer is never sent again**). A reply that stops in the *middle of 
 the same lost connection as a reply that never started: message 11497, and the connection is
 dropped. A server that sends a little at a time and never stops is still waited for one read at
 a time; the limit is for each read, not for a whole reply.
+
+`open.socket` takes the number of seconds to wait for the connection as its fourth argument
+(`NETWAIT` for every SDNet caller); see the User set's page on sockets.
 
 ## What is audited
 

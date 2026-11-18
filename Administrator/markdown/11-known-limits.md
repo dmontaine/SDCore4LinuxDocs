@@ -14,21 +14,6 @@ application depends on them.
 | **What to expect** | how the feature behaves, as far as SD controls it |
 | **Check before relying on it** | what to try, on your own system |
 
-## Sessions
-
-### Starting `sd` from inside an `sh` session
-
-**What to expect.** `sh` runs a shell for an account that has the `sh-on`
-switch (and always for SDSYS), and starting `sd` from an ordinary Linux shell
-works normally. SD does not include a guard that refuses to start `sd` from
-*inside* an `sh` session that SD itself launched, so the result is a second,
-nested interactive session. See [Operating System
-Access](03-operating-system-access.html).
-
-**Check before relying on it.** Do not build a procedure on it. If you need to
-know what a nested session does in your environment, start `sd`, then `sh`,
-then `sd` again at a real terminal and watch the second one.
-
 ## Locking and contention
 
 ### Semaphores under heavy contention

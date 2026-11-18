@@ -7,7 +7,7 @@ document the removed features themselves.**
 
 Everything here was in OpenQM, in ScarletDME, or in upstream `sdb64`, and is
 not in SD Core for Linux. **Most of these removals were made independently
-on SD Core for Windows too, for the same reasons** — see that port's own
+on SD Core for Windows too, for the same reasons** — see its own
 version of this page — which is worth knowing if you come across a decision
 recorded on one side and wonder whether it binds the other.
 
@@ -22,6 +22,11 @@ recorded on one side and wonder whether it binds the other.
 | `update.record` — the full-screen record editor | **`sed`** or **`micro`** |
 | `modify` — the full-screen record editor from OpenQM | **`sed`** or **`micro`** |
 | `nano` — the second external editor (removed in 2.0-0) | **`micro`**, **`sed`** or **`ed`** |
+
+**`sed` has a menu bar that shows the key of every action.** It runs inside SD,
+so it needs no operating-system permission, and it needs a window of 140 columns
+by 43 lines. With it came `ced`, a full-screen editor for a record that is a data
+collection, and `ide`, a workbench for programs and files.
 
 **SD Core's own full-screen editing is `sed` and `micro`**, which open the
 record in each program by name — see
@@ -108,10 +113,11 @@ ER$VFS.CLASS     SYSCOM ERR.H
 ER$VFS.NGLBL     SYSCOM ERR.H
 ```
 
-`ftype` no longer returns `VFS` for a `VFS:` pathname.
+`ftype` no longer returns `VFS` for a `VFS:` pathname. **Error numbers 3038,
+3039 and 3040 are retired and will not be given a new meaning.**
 
-**IF ONE OF YOUR PROGRAMS REFERS TO ANY OF THESE, it was testing for a state
-SD could not reach, and the test can be deleted.**
+**If one of your programs refers to any of these, it was testing for a state SD
+could not reach, and the test can be deleted.**
 
 ## Tape and restore
 
@@ -195,7 +201,9 @@ verbs and Linux tools the installer itself uses.
 **scp and sftp do not work inbound over ssh, for anybody**, once SD's ssh
 boundary is in place — which it is, regardless of whether remote ssh
 access is turned on. This is the accepted cost of putting every ssh
-session straight into SD. See
+session straight into SD. **Pull files rather than pushing them**, or use
+`receive` and `send`, which move plain-text files over the same login once the
+administrator has turned file transfer on (it is off as delivered). See
 [ssh access](08-ssh-access.html#the-cost-scp-and-sftp-stop-working-inbound-over-ssh).
 
 **The cleartext API login is gone**, and a client that still sends a password

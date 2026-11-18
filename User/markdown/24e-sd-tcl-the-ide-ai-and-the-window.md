@@ -71,7 +71,7 @@ the recovery copy off does not delete copies that exist. `sed` keeps none.
 **What it does not do:** it has no replace across records, no project files and no completion, and it does
 edit collection-file records only as JSON text or fields, and an operating-system file is a plain text file in one piece (no NUL, no byte from 248 to 255, 2 MB at
 most; a file with content is never replaced by a new one, no directory is made, and there is no rename, delete
-or change of mode; SED's own `path:` form no longer opens one).
+or change of mode; SED's own `path:` form does not open one).
 
 **The IDE is laid out for 140 columns by 43 lines or more**; a bigger window is used
 whole. **A window smaller than 140 by 43 when the IDE starts is refused**, in words

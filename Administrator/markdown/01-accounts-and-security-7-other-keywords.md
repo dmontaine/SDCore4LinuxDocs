@@ -9,7 +9,7 @@ Account](01-accounts-and-security-6-modify-account.html).
 | | |
 |---|---|
 | **`ssh`** \| **`api`** \| **`both`** \| **`none`** | what the account's remote access **is**. Absolute: `api` takes ssh away |
-| **`ssh-key-on`** \| **`ssh-key-off`** | ssh sign-in with a key, for a user account whose Linux user SD made (see *Signing in over ssh with a key*). **Off as delivered**; independent of `ssh`: the account still needs its ssh route |
+| **`ssh-key-on`** \| **`ssh-key-off`** | ssh sign-in with a key, for a user account whose Linux user SD made (see [Signing in over ssh with a key](01-accounts-and-security-8-home-screen-ssh-keys-passwords.html#signing-in-over-ssh-with-a-key-ssh-key-on-and-ssh-key-off)). **Off as delivered**; independent of `ssh`: the account still needs its ssh route |
 | **`sh-on`** \| **`sh-off`** | the `sh` verb |
 | **`os-on`** \| **`os-off`** | `OS.EXECUTE`, the screen editors, the embedded Python, and operating-system paths outside the account's own directory (see above) |
 | **`sd-on`** \| **`sd-off`** | the directories of other SD accounts the user could `logto` (see above) |
@@ -22,7 +22,13 @@ Account](01-accounts-and-security-6-modify-account.html).
 | **`shared-read-on`** \| **`shared-read-off`** | opening the files of the `shared` account by name. **On unless the field says no** (see *The shared account*) |
 | **`shared-write-on`** \| **`shared-write-off`** | writing to the files of the `shared` account. Off unless the field says yes |
 | **`files-on`** \| **`files-off`** | the files-only API login: membership of the Linux group `sdfiles` (see *The files-only route*). Independent of `ssh`/`api`/`both`/`none`: those words leave it alone |
-| **`files-write-on`** \| **`files-write-off`** | the right to CHANGE files over the files-only login: membership of the Linux group `sdfileswrite`, which needs `files-on` first (`files-off` takes both away) |
+| **`files-write-on`** \| **`files-write-off`** | the right to CHANGE files over the files-only login: membership of the Linux group `sdfileswrite`, which needs `files-on` first (`files-off` takes every files group away) |
+| **`files-admin-on`** \| **`files-admin-off`** | the right to ADMINISTER files over the files-only login: membership of the Linux group `sdfilesadmin`, which needs `files-on` and `files-write-on` first (see *Administering files*) |
+| **`ai-on`** \| **`ai-off`** | the right to use the AI the administrator has chosen: membership of the Linux group `sdaiusers` (see [The AI](01-accounts-and-security-5-files-write-ai-pointers.html#the-ai-ai-on-and-ai-off)) |
+| **`start-menu`** \| **`start-terminal`** \| **`start-default`** | where a session on a terminal starts (see *Where a session starts*) |
+| **`pins-on`** \| **`pins-off`** | whether the person may add their own programs to the home screen |
+| **`sdsys-on`** \| **`sdsys-off`** | whether the `sdsys` user is in the account's Linux group, so that SDSYS can write the account's files; user accounts only (see [The Master Files: The Group and the Modes](19c-the-master-files-group-and-modes.html)) |
+| **`suspended`** \| **`unsuspended`** | whether the account can be entered at all |
 | **`add`** \| **`delete`** *user* | put a Linux user in, or out of, the account's group |
 
 **The first group is absolute and the second is not.** `ssh`/`api`/`both`/
@@ -102,10 +108,7 @@ no copies.
   the audit line of a `create.account` that used it ends `gates=` with `recovery-on` among the words.
 * **User accounts only, as the verbs have it.** `recovery-on` for a group or other account is refused
   ("... is not a user account, and a recovery copy is kept only in a user account, for its own person; nothing
-  was changed"). That was needed while the copies sat in a directory of the account that several people
-  could replace; with the copies in each person's own home the technical reason is gone, and the refusal is
-  now only a rule of the two verbs, kept until it is decided to allow the switch for those accounts. The
-  administrator is not given a copy either, by the same rule.
+  was changed"). The administrator is not given a copy either, by the same rule.
 * **Where, and when there are none.** The copies are made only when the person's home and every directory
   below it (`.local`, `state`, `sd`, `recovery`, the account's own) are real directories of that Linux user
   that nobody else can write, and every directory **above** the home belongs to root or to that user and
@@ -115,10 +118,6 @@ no copies.
 * **You cannot read the copies, by design.** `modify.account` runs as `sdsys`; the directories and the files are
   mode 700 and 600 for the person. `recovery-off` stops new copies; copies already made stay and are still
   offered to the person.
-* **Copies an earlier version left.** A copy in the directory `$recovery` of the account (where an
-  earlier version kept them) is still offered once: with `recovery-on` it is moved to the person's home, with the
-  switch off it stays where it is until the person answers (use it or delete it; leaving the record
-  unopened keeps it).
 * **When it reaches a session.** `recovery-off` stops new copies at once. A running `ide` learned at its start
   whether to keep copies, so `recovery-on` reaches it the next time the person starts the `ide`.
 * **The copies are not part of the account.** `backup.account` archives do not contain them (they are in the

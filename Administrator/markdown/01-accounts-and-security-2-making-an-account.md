@@ -20,11 +20,14 @@ create.account other <name> <pathname> {shared-read-off} {shared-write-on} {star
 | **`other`** | an SD account over a directory you name |
 
 **A new user account starts with every door shut** (but one: it can read the
-files of the `shared` account, below, and not write them). Say nothing and it has
+files of the `shared` account, [The Shared Account](13-the-shared-account.html), and not write them). Say nothing and it has
 no ssh, no API, no `sh` and no `OS.EXECUTE`, it cannot save a change to
 a VOC, a program file or a dictionary, it has no right to use a server
 defined for SDNet, no files-only login and no use of the AI; you open each
-one by naming it. `ssh`, `api` or `both` give the remote routes (`none` is the default
+one by naming it. **That includes the installing user's account: a first install leaves the
+`sdssh` group empty, so that user has no ssh until the installer's question below was
+answered `y` or you run `modify.account` *name* `ssh`; an upgrade keeps the ssh access the
+system had.** `ssh`, `api` or `both` give the remote routes (`none` is the default
 and is accepted so that a script can say so); `files-on` gives the narrower
 files-only API route (below, *The files-only route*); `sh-on` and `os-on` give the
 two operating-system switches, and they are independent, so `sh-on os-on`
@@ -44,16 +47,19 @@ where it stands:
 fred has no remote access: not ssh, not the API
 Account fred has SH no, OS.EXECUTE no
 Account fred has VOC.EDIT no, BP.EDIT no, DICT.EDIT no
-Account fred has shared.read yes, shared.write no
 Account fred has NET no
+Account fred has shared.read yes, shared.write no
 Account fred has files no
 Account fred has files-write no
+Account fred has files-admin no
+Account fred has ai no
 Account fred keeps a recovery copy of unsaved editor text: no
 Account fred may move files over its ssh login (receive / send): no
 Account fred may sign in over ssh with a key: no
 ```
 
-The last line is `ssh-key-on`'s state (see *Signing in over ssh with a key*, below); it is
+The last line is `ssh-key-on`'s state (see *Signing in over ssh with a key*, in
+[Accounts and Security: The Home Screen, ssh Keys and Passwords](01-accounts-and-security-8-home-screen-ssh-keys-passwords.html)); it is
 not said for an account attached to an existing Linux user.
 
 **Two words set up the home screen, in the same command** (they are not gates; *Where a
@@ -65,21 +71,17 @@ takes, and the verb says them back in the same lines (`Account fred starts at: m
 `Account fred may add its own programs to the home screen: yes`); **any kind of account may have
 them**, a group or an `other` account included. Two different start words in one command are
 refused ("start-menu and start-terminal set the same access to different states ... give one of
-them") before anything is made, and so is a start word that is neither (a program that calls the
-account-making routine itself gets "Unexpected token"): the Linux user, the password and the
-directory come after, so a refused word creates **nothing**. The words that restate what an
-account has when they are left out, `start-default` and `pins-off`, are for `modify.account`
-only, as `shared-read-on` is. The audit line gains `pins-on` in its `gates=` list and, when a
+them") before anything is made, and so is a start word that is neither: a refused word creates
+**nothing**. `start-default` and `pins-off` are for `modify.account` only, as `shared-read-on`
+is. The audit line gains `pins-on` in its `gates=` list and, when a
 start word was typed, a tail `start=menu` or `start=terminal`:
 
 ```
 create.account account=fred type=user gates=pins-on start=menu
 ```
 
-The `gates=` list names every access the command granted, from `ssh`, `api`, `sh-on`,
-`os-on`, `voc-on`, `bp-on`, `dict-on`, `net-on`, `files-on`, `files-write-on`,
-`files-admin-on`, `ai-on`, `shared-read-off`, `shared-write-on`, `pins-on`,
-`recovery-on`, `xfer-on` and `ssh-key-on`, and says `none` when it granted none.
+The `gates=` list names every access word the command was given (`ssh` and `api` included), and
+says `none` when it was given none.
 
 **One more word, for a user account only: `recovery-on`** makes the account's `ide` keep a recovery copy of
 text that was not saved (*The recovery copy*, below). It is off when the word is left out, a group or `other`
@@ -90,12 +92,19 @@ it back in a line, `Account fred keeps a recovery copy of unsaved editor text: y
 files in and out with an sftp client (*File transfer*, below). It is off when the word is left out, a group or
 `other` account is refused it before anything is made, and `xfer-off` is for `modify.account` only.
 
-**The installing user's own account is no exception**: the account the
-installer makes so that somebody can sign in starts with all of them off too,
-and the installer says so and how to change it; **the installer asks no
-question about it and opens nothing**. The accounts that keep their access
-are the ones that already exist when you *upgrade* — see *Changing one*,
-below.
+**The installing user's own account is no exception**: it starts with all of them
+off too. **The installer asks one question about it, "Open every access gate for
+*name*'s SD account? (y/N)", and the answer is No unless you type `y`**; it is asked
+only when that account does not exist yet. On `y` it opens, through `modify.account`,
+ssh and the API, `sh-on`, `os-on`, `sd-on`, the three edit switches, `recovery-on`,
+`net-on`, `shared-write-on`, the files-only login with its write and administration
+groups, `ai-on`, `pins-on` and `xfer-on`, puts the `sdsys` user in the account's group,
+reads each result back and names any gate it could not open; it does not turn on
+`ssh-key-on` or set `XFER=1` in `sd.conf`. **That is every door at once** (a shell, any
+path on the machine, the network routes, and the AI, paid for by the provider's key), so
+answer `y` only on a machine you are testing on. Left alone, the installer opens nothing.
+The accounts that keep their access are the ones that already exist when you *upgrade* —
+see *Changing one*, below.
 
 **A group account and an `other` account have no Linux user of their own,
 so `sh-on` and `os-on` are refused for them** — "is a group account and has
@@ -111,19 +120,15 @@ person, and a group account is not one.
 **An account is never left without a password.** If SD cannot set the new
 user's password and you answer `n` at "Retry", it removes the Linux user it
 has just made, with its home directory, and says "An account must have a
-password. Nothing was created." Should the removal itself fail it says so and
-gives the `userdel` command that finishes it. This applies to a user SD
-creates; it does not touch an existing Linux user, which `create.account`
-still refuses.
+password. Nothing was created." Should the removal itself fail it gives the
+`userdel` command that finishes it. This applies to a user SD creates, not to an
+existing Linux user, which `create.account` still refuses.
 
-**It warns when a route has nothing behind it.** An account given the ssh
-or the API route is checked: if this computer has no ssh server installed,
-or the API listener is off (`remote.api on` turns it on), `create.account`
-says so after the route line. The warning does not stop anything: the
-account is made and the route works the day the server or listener is
-turned on. `modify.account` gives the same two warnings when it grants `ssh`,
-`api` or `both`, again with no refusal and nothing undone. Neither checks that
-`sshd` is running (Ubuntu starts it on demand).
+**It warns when a route has nothing behind it.** If this computer has no ssh
+server installed, or the API listener is off (`remote.api on` turns it on),
+`create.account` says so after the route line of an account given that route, and
+`modify.account` says so when it grants `ssh`, `api` or `both`. The warning stops
+nothing. Neither checks that `sshd` is running (Ubuntu starts it on demand).
 
 **`create.account` ends with `@system.return.code` 0 when the account is made**, so
 a paragraph that tests the code after it sees success as success.
@@ -179,10 +184,12 @@ directory, or a symbolic link that points out of its own, in any of these:
 | `OPENTEMP` with a pathname or in the temporary directory, `DIGEST` of a file, and the file keys of `OSPATH()` | the `ELSE` branch, or a null result, with status 3035 (`DIGEST`'s `STATUS()` says the file is outside what the account may reach) |
 | `!OSCOPY`, `!IOSCOPY` and the `oscopy` verb | refused, status -4 (the verb says why) |
 | printing into a file by path (`setptr ... as pathname`, or the `SETPU` statement) | the verb refuses when the unit is set; for either, the first line printed is refused and the program stops |
+| the socket trace file (`set.socket.mode` with `skt$info.trace`) | `set.socket.mode` is refused with status 3035 and nothing is written |
 
 The containment is by **real path**: `..` and a symbolic link are resolved
 before the test, so neither gets round it. A path inside the account's own
-directory always works.
+directory always works, and so does a directory the administrator listed in `NETDIRS`
+(below).
 
 **SD says no in words.** `sh` gives "*name* is not permitted to use the
 operating system shell", `OS.EXECUTE` gives "*name* is not permitted to use

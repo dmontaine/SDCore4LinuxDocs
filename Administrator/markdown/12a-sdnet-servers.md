@@ -188,9 +188,7 @@ What that command relies on:
 | `host:port completed the handshake but gave no public key hash.  Nothing was written` | a TLS session was made but no hash could be read from it |
 
 The first two are told apart by the operating system's error number, which is
-zero for a handshake that failed after the connection was made. That is read off
-the source and has not been tried against a closed port, a port that is not TLS
-and an address that does not answer.
+zero for a handshake that failed after the connection was made.
 
 **One thing to know about the lock.** The definitions are locked from the time
 they are read until the answer is acted on, which includes the connection (up to

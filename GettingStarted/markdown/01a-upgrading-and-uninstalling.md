@@ -175,6 +175,10 @@ account's group from the register and removes it. A group with an SD-like name
 that no account of the register names is left alone, and so are the Linux users
 of the user accounts: they hold people's own files.
 
+**What changed since the previous release**, and what an upgrade might break,
+is in the *Changes* document that comes with the release: every addition,
+change and removal, listed by section.
+
 ## Continued in
 
 [Your first thirty minutes](02-first-run.html) — install to a second user

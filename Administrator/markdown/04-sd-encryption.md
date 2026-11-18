@@ -74,6 +74,13 @@ of memory for each call; an application derives the key once per run.
 **10207** the passphrase is empty or over 65,536 bytes, **10204** a key of the
 wrong length (a passphrase passed straight in as the key is this), **10201** a wrong key or a damaged value.
 
+### A passphrase is not a key
+
+`sdencrypt('The quick brown fox', 'secretkey', 202)` returns nothing and sets
+`status()` to **10204**: a passphrase is not a key. The way to turn a passphrase
+into a key these functions accept is `sdkey()`, above; `sdext()`'s
+`SD_KEYFROMPW` is internal-only, so an ordinary program cannot call it.
+
 ## The XE conversion and the key ring
 
 A dictionary item names a key and never holds one: field 3 is `XE` or
@@ -176,12 +183,17 @@ also how `cproc` drops back to `sdsys`'s own identity after a privileged step.
 
 ### What uses it
 
-The shipped programs that call `sdext()` are `apisrvr`, `cred_set`,
-`cred_verify`, `sd_get_salt`, `sd_key_from_pw`, `sdclient`, `euid_set`,
-`euid_restore` and the three key ring subroutines `keyring_set`, `keyring_clear`
-and `keyring_list`. The last three are cataloged for general use as `!keyset`,
-`!keyclear` and `!keylist`, so an application reaches the ring without reaching
-`sdext()`.
+Every shipped program that calls `sdext()` is an internal program, which runs
+only from the global catalog and cannot be compiled by an ordinary account. They
+are the credential and login programs (`apisrvr`, `cred_set`, `cred_verify`,
+`sd_get_salt`, `sd_key_from_pw`, `sdclient`, `set_acc_password`, `euid_set` and
+`euid_restore`), the programs for phantoms and network logins (`phantom`,
+`ipc_seal`, `setnetlogin`, `netcred`), the two that keep a recovery copy or a
+debugger store in a private folder (`edit_recovery`, `pdbg_store`), the
+embedded-Python interface (the `py_*` programs), and the three key ring
+subroutines `keyring_set`, `keyring_clear` and `keyring_list`. The last three
+are cataloged for general use as `!keyset`, `!keyclear` and `!keylist`, so an
+application reaches the ring without reaching `sdext()`.
 
 ## Two constants that are not SDEXT keys
 

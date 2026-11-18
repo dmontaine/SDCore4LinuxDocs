@@ -104,7 +104,7 @@ my.report may now be run from the command line in account fred
 account before it adds it, writes the account's record in `batch.jobs`,
 and records the change in the audit trail. `set.batch remove fred my.report`
 takes it off, and `set.batch` alone lists every account's commands. The
-administrator's own account has no list.
+administrator's own account has no list. Nothing is allowed as delivered.
 
 **Or use the Scheduled jobs page**, `tool.jobs`. It lists every account
 with the number of commands it may run this way. F6 or Enter moves to

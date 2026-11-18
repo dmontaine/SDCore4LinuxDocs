@@ -91,7 +91,8 @@ created. **Moving an account to another machine** is covered by
 - It does not follow symbolic links inside an account; any it finds are named
   and left out.
 - A program recompiled after it was cataloged globally is not recognized as the
-  account's and is not cataloged again.
+  account's and is not cataloged again. Such a program is listed by
+  `settings.report`, which is why it is missing from a backup.
 
 ## Saying where backups go: `set.backup.directory`
 
@@ -108,7 +109,8 @@ the saved directory and changes nothing.
 
 With a directory saved, `backup.account` no longer needs `to`; with none saved
 it asks for one and saves the answer exactly as this verb would.
-`restore.account` does the same for an archive named without a directory.
+`restore.account` does the same for an archive named without a directory; with
+`no.query` it has nobody to ask and refuses instead.
 `to directory`, or an archive name that carries a directory, still works and
 changes nothing that is saved.
 
@@ -192,7 +194,7 @@ object file is in that account.
 
 **All of them are SDSYS's** — `create.account`, `modify.account`,
 `modify.password` for another account, `delete.account`, `clean.account`,
-`update.accounts`, `config`, `backup.account`, `restore.account`,
+`update.accounts`, `load.examples`, `remove.examples`, `config`, `backup.account`, `restore.account`,
 `set.backup.directory`, `settings.report`. An ordinary account has none of these names at
 all — this is not a permission it lacks, the verbs are simply not in its
 VOC. **Who may enter an account is changed in one place**, `modify.account`

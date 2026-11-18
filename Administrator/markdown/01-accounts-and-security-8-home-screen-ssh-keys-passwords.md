@@ -94,7 +94,9 @@ back; `create.account user` *name* `ssh-key-on` makes the account with it on. `s
 does not give the ssh route: the account still needs `ssh` or `both`. The gate matrix
 (`tool.gates`) has a column for it, turning it ON there asks you to type the account's
 name, and each account's own gate page shows its state. After the word SD says
-`Account fred may sign in over ssh with a key: yes` (or `no`).
+`Account fred may sign in over ssh with a key: yes` (or `no`). Only SDSYS may use the
+words. The word is audited as `modify.account ssh-key-on account=fred`, and the audit
+line of a `create.account` that used it ends `gates=` with `ssh-key-on` among the words.
 
 **What opening it means for security.** A key is a second way in that the account's password
 does not control. Whoever holds the private key signs in without the password, SD cannot see
@@ -123,12 +125,11 @@ SD keep exactly the ssh settings they had, and `modify.account` refuses `ssh-key
 * **It does not override a rule you wrote.** A `Match` block or setting of your own in the ssh
   server's configuration that is read before SD's block and sets `PubkeyAuthentication yes` for
   the user wins: the first value the server finds is the one it uses.
-* **A backup made before this release restores with it off.** Such a backup holds no setting,
-  so `restore.account` puts the user in the group; `ssh-key-on` afterwards if it should have it.
+* **A backup that holds no such setting restores with it off**: `restore.account` puts the
+  user in the group; `ssh-key-on` afterwards if it should have it.
 * **The group must exist.** It fails open: if `sdsshnokey` is missing or cannot be read, the
   ssh server offers keys according to the machine's own settings. SD will not delete the
-  group, and an installation made before this release has none until it is installed again
-  (`ssh-key-off` then says the group is not a valid Linux group).
+  group; an installation without it needs the installer run again.
 
 ### `suspended`/`unsuspended` is a state, not a tier
 
@@ -151,19 +152,35 @@ one, and `modify.account fred unsuspended` lifts the suspension.
 :modify.account don delete pete
 ```
 
-**This is Linux group membership, and it *is* what a grant is** —
-`usermod -aG` under `sd-elevate`, with SD's own audit line added. There is
-no separate `grant`/`revoke`/`list.grants` set of verbs the way SD Core for
-Windows has: on Windows, group membership is Windows' own mechanism and SD
-wraps it with three verbs of its own name and an audit trail; on Linux the
-wrapping is folded into `modify.account` instead, for the same reason
-Windows's own reference names its `grant` as "not an extra capability" —
-`usermod -aG` reaches the identical Linux group directly, outside SD, at
-any time, by an administrator with a shell. `modify.account`'s value is the
-audit line, not a gate nothing else could reach.
+**`add` and `delete` are the grant.** There is no separate `grant`, `revoke`
+or `list.grants` verb: `modify.account` replaces them. **The grant is Linux
+group membership, and nothing is written to the account record.** Every SD
+account has a Linux group — `sdu_`*name* for a user account, `sdg_`*name* for a
+group account — and entry to the account **is** membership of that group (the
+test `logto` makes). `add` puts a Linux user into that group and `delete` takes
+one out, through the privileged helper (`sd-elevate addgroup` and `delgroup`).
+`usermod -aG` reaches the identical group directly, outside SD, at any time, by
+an administrator with a shell, so `modify.account`'s value is the audit line, not
+a gate nothing else could reach.
 
-**`delete` is deliberately unguarded** — taking access away is always
-allowed.
+SD says *added to group*, *removed from group*, *is already a member of group*
+or *is not a member of* (nothing changed), *is not a member of sdusers, not
+allowed* (the person is not a Linux user SD knows; `add` only), or *Unable to add
+user ... status: n* when the system refused the change.
+
+**To see who is in an account,** read the Linux group: `tool.accounts` shows a
+group account's members, and any account's group can be listed with
+`getent group sdu_`*name* (`sdg_`*name* for a group account). The account's own
+user is a member like any other.
+
+**A successful `add` or `delete` writes an audit record** to SD's audit trail
+(`modify.account add account=`*name*` to=`*user* and `modify.account delete
+account=`*name*` from=`*user*), stamped with the user and process that did it. The
+identity is stamped by SD and is not passed in, so a caller cannot get it wrong
+or forge it.
+
+**`delete` is deliberately unguarded**: taking access away is always allowed. To
+take it from somebody who is signed in now, `delete` and then end their session.
 
 ## Passwords: `modify.password`
 
@@ -184,22 +201,28 @@ than ignored:**
 A password is never given on the command line; modify.password prompts for it
 ```
 
-**That refusal is the point of the verb's design.** The older behavior set
-the password from the prompt and threw the extra word away without a word,
-so every visible sign said it had worked — while the password had already
-reached SD's command stack, and a shell's history and process list if the
-verb was reached from one. Refusing does not put it back, but it says so.
+**That refusal is the point of the verb's design.** A verb that threw the extra
+word away without a word would look as if it had worked, while the password had
+already reached SD's command stack, and a shell's history and process list if
+the verb was reached from one. Refusing does not put it back, but it says so.
 
-The prompts are hidden, asked twice, and the account must already exist in
-the register. **`modify.password` cannot be scripted**, by design.
+The prompts are hidden, and the account must already exist in the register.
+**The rule is checked before the repeat is asked for**, and there are up to
+three tries:
 
-**Under the hood, an ordinary account's own write goes through a
-privileged helper it cannot bypass** (`sd-elevate cred-own`), because the
-credential file (`$cred`) belongs to `sdsys` alone; an administrator — a
-real `sdsys` login — writes it directly. Both follow the same visible
-process from the terminal; only what happens underneath differs, and only
-because the account writing its own record has no other way to reach a
-file it does not own.
+The rule is said first (*A password needs at least 8 characters, with a lower-case
+letter, an upper-case letter, a digit and a symbol.*). A password that does not meet the rule is refused at once and is not asked for
+again; one that does is asked for a second time, and a difference between the
+two says *Passwords do not match.* Each failure says which attempt it was; the
+third ends the command with *Password not changed.* and nothing is changed. An
+empty line at *New password* leaves the password as it was. `create.account user`
+asks the same way, with the same three tries, saying the rule first and asking
+*Retype new password*. **`modify.password` cannot be scripted**, by design.
+
+**An ordinary account's own change goes through a privileged helper it cannot
+bypass** (`sd-elevate cred-own`), because the credential file (`$cred`) belongs
+to `sdsys` alone; an administrator — a real `sdsys` login — writes it directly.
+At the terminal both look the same.
 
 **SDSYS's own *Linux* login password is a separate thing** — set once,
 during installation (`sudo passwd sdsys`), and changed afterward the

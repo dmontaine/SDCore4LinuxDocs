@@ -9,20 +9,17 @@ Pointers](01-accounts-and-security-5-files-write-ai-pointers.html).
 ```
 modify.account account add | delete  <user.name>
 modify.account account ssh | api | both | none
-modify.account account ssh-key-on | ssh-key-off
 modify.account account sh-on | sh-off
 modify.account account os-on | os-off
 modify.account account sd-on | sd-off
-modify.account account voc-on | voc-off
-modify.account account bp-on | bp-off
-modify.account account dict-on | dict-off
+modify.account account voc-on | voc-off | bp-on | bp-off | dict-on | dict-off
 modify.account account recovery-on | recovery-off
 modify.account account xfer-on | xfer-off
 modify.account account net-on | net-off
-modify.account account shared-read-on | shared-read-off
-modify.account account shared-write-on | shared-write-off
-modify.account account files-on | files-off
-modify.account account files-write-on | files-write-off
+modify.account account shared-read-on | shared-read-off | shared-write-on | shared-write-off
+modify.account account files-on | files-off | files-write-on | files-write-off | files-admin-on | files-admin-off
+modify.account account ai-on | ai-off
+modify.account account ssh-key-on | ssh-key-off
 modify.account account sdsys-on | sdsys-off
 modify.account account start-menu | start-terminal | start-default
 modify.account account pins-on | pins-off
@@ -69,7 +66,7 @@ Account hr: NOT every action was carried out. Done: voc-on. Not done: sh-on
 `add` and `delete` take one user name and stand alone: among other words, or
 with a word after the user name, they are refused with the message
 *add and delete take a user name and stand alone, and nothing was changed: ...*.
-The same word twice is one action.
+The same word twice is one action. With no action at all the command prints its usage.
 
 ### The accounts on one screen: `tool.accounts`
 
@@ -122,9 +119,9 @@ set under *What this account may do*). One row for each registered
 account but SDSYS, one column for each gate the system has, in the order
 `modify.account` carries them out: `ssh api sh os sd voc bp dict xfer net sh-rd sh-wr files
 f-wr f-adm ai key home sock`. **`key`** is ssh key sign-in (the words `ssh-key-on` and
-`ssh-key-off`, *Signing in over ssh with a key*, below): for a user account whose Linux user SD
+`ssh-key-off`, [Signing in over ssh with a key](01-accounts-and-security-8-home-screen-ssh-keys-passwords.html#signing-in-over-ssh-with-a-key-ssh-key-on-and-ssh-key-off)): for a user account whose Linux user SD
 made, off as delivered, and turning it ON asks you to type the account's name; a dash for
-any other account. With this column an account's name is cut to ten characters in the
+any other account, including a user account whose Linux user SD did not make (its keys are its own). With this column an account's name is cut to ten characters in the
 matrix and shown in full in the box below it. **`xfer`** is file transfer over the ssh login (the words `xfer-on`
 and `xfer-off`, *File transfer*, below): for a user account only, like `sh` and `os`; it is
 off as delivered, it works only while `XFER` is 1 in `sd.conf` and the account has the
@@ -182,12 +179,14 @@ had typed it.
   narrower "all off": it queues OFF only for what is on and off as delivered
   (`shared-read`, which is on as delivered, is left alone).
 * **Turning ON a gate that is off as delivered says so**, and says that leaving it off is
-  the tighter choice. **Turning ON a gate that reaches beyond SD** (ssh, api, sh, os,
-  sd, net, files, files-write, files-admin, ai, ssh-key) **asks for the account's name to be
+  the tighter choice. **Turning ON a gate that reaches beyond SD** (ssh, api, ssh-key, sh, os,
+  sd, net, files, files-write, files-admin, ai) **asks for the account's name to be
   typed**; turning anything OFF does not.
 * **ssh and api are one setting** in the verb: the words `ssh`, `api`, `both` and `none`
   SET the pair. The page therefore sends the one word that gives the pair of states you
-  queued, and its box says which.
+  queued, and its box says which. A first install leaves the `sdssh` group empty, so the
+  installing user's account has ssh only if the installer's "open every gate" question was
+  answered `y`, or after `ssh` or `both` is given here.
 * **files-write needs files, and files-admin needs files-write.** A queue that breaks
   that is refused by the page before the box opens, and the verb refuses it again.
 * **A group or other account cannot have `sh` or `os`:** the verb refuses them in both

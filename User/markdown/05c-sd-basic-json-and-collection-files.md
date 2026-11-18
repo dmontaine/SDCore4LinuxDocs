@@ -347,5 +347,5 @@ and `trans(zzcf, @id, name, 'X')`, with the item name unquoted. The query comman
 [SD Basic - XML](05d-sd-basic-xml.html) ·
 [SD Basic - CSV Files](11-sd-basic-csv-files.html) ·
 [SD TCL - The Query Processor](21-sd-tcl-query-processor.html) (the `json` and `json.lines` keywords) ·
-[SD TCL - Files and Records](20-sd-tcl-files-and-records.html) (`import.json` and `convert.data`) ·
+[SD TCL - Files and Records: Comparing, Triggers and Importing](20-sd-tcl-files-and-records-2-comparing-triggers-and-import.html) (`import.json` and `convert.data`) ·
 [SD TCL - The CED Data Collection Editor](27b-sd-tcl-ced.html).

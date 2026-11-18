@@ -76,8 +76,7 @@ Pages can be nested **eight deep**; a page that is already open above cannot be 
 (*... is already open above this page*), and a menu none of whose tiles is on your page has no
 tile to open it. Switch account starts the other account at its top page.
 
-**No tile of the delivered page opens a sub-menu yet**: the mechanism is in the page table
-of the `home` program, and the delivered table has not used it. The tiles you start inside a
+**No tile of the delivered page opens a sub-menu yet.** The tiles you start inside a
 sub-menu are kept by the Recent group like any other.
 
 ## The AI line

@@ -273,8 +273,8 @@ with `I NAME^253Smith^253Jones`.
 `NPRINT`.** The field mark (`^254`) and the item mark (`^255`) still need it,
 because one in a line would split the line without showing it.
 
-`EV` on an I-type that holds quoted text, brackets and semicolons no longer
-corrupts the expression; a quoted string used to be cut at the wrong place.
+`EV` on an I-type that holds quoted text, brackets and semicolons leaves the
+expression intact.
 
 ### Leaving
 

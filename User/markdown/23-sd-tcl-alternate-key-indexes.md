@@ -161,7 +161,10 @@ city                          4                           5
 With an index name the totals follow (index entries, key values, least, average
 and most records for a value) and how the values spread over the number of
 records they point at; `detail` lists every value with its count, as
-`list.index ... detail` does. The index name is taken in any case.
+`list.index ... detail` does. The index name is taken in any case. `lptr` sends
+the report to a print unit and `no.page` shows it without pausing at each page.
+An index name that is not there is *Unrecognized index name (NOSUCH)*, and no
+file name at all is *File name required*.
 
 **openQM's `statistics` also shows the index's node settings and a
 distribution of node sizes. SD does not read its indices at that level from
@@ -267,12 +270,14 @@ not kept up as records are written, and the query processor does not use it. It 
 a large load, or a batch run that would change most of the records, where keeping
 three indexes live costs far more than building them afterwards. **`build.index`
 builds it again and switches it on.** Until then its data are out of date, and
-`list.index` shows an `N` for it in the `En` (enabled) column.
+`list.index` shows it with `N` in the `En` column. A query on the field still
+answers, from the records. `selectindex` reads the index as it is, so on a disabled
+index it may be out of date. Without an index name `disable.index` answers
+*Index name:* and does nothing; a name that is not there is *Unrecognized index name
+(NOSUCH)* and a file that is not there is *File not found*.
 
 **Like `delete.index` it needs the file to itself.** Another session that had the file
-open would go on using, and keeping up, an index this one had switched off. (openQM
-removed that need in 2.10-4; doing so here would mean telling every open copy of the
-file, which SD does not do.)
+open would go on using, and keeping up, an index this one had switched off.
 
 ## Removing an index
 
@@ -295,11 +300,10 @@ Deleting the file removes its indexes with it.
 
 ## Who has these verbs
 
-**Every account has all of them now** — `create.index`, `build.index`,
+**Every account has all of them** — `create.index`, `build.index`,
 `delete.index`, `disable.index`, `list.index`, `analyse.index`,
 `selectindex` and `rebuild.all.indices`.
-An index changes how a query runs, not how data is written, so there was never a
-reason to withhold them even under the old model.
+An index changes how a query runs, not how data is written.
 
 ## See also
 

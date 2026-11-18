@@ -173,8 +173,8 @@ records** — which carries the administration verbs `NEWVOC` does not:
 `create.account`, `delete.account`, `modify.account`, `config`, `set.date`,
 `update.accounts`, `clean.account`, `list.readu`, `list.locks`, `lock`,
 `unlock`, `listu`, `remote.ssh`, `remote.api`, and the rest of the set the
-*Administrator* documentation covers. **Unlike SD Core for Windows, there is
-no separate `grant`/`revoke`/`list.grants` set** — `modify.account
+*Administrator* documentation covers. **There is no separate
+`grant`/`revoke`/`list.grants` set** — `modify.account
 add`/`delete` folds the grant into one place; see *Accounts and Security* in
 the Administrator set.
 
@@ -182,19 +182,17 @@ the Administrator set.
 account does not have `create.account` because the VOC record for it is
 not there, not because a security subroutine refuses it. The name is
 simply not recognized. This is the design: what only SDSYS may do is
-withheld by giving or withholding the record, the same mechanism the old
-account tiers used before they were removed.
+withheld by giving or withholding the record.
 
 ## Case on disk
 
 The VOC ids are stored in lower case — `list`,
-`create.account` and so on. This changes nothing about what you type —
+`create.file` and so on. This changes nothing about what you type —
 SD tries a name as typed, then lower, then upper. What it changes is what
 SD prints back: `CT VOC LIST` answers `VOC list`.
 
-The file-pointer entries — `bp`, `bp.out`, `gpl.bp`, `gpl.bp.out` — are
-lower case. An
-account's own `voc`, and the system directory's `newvoc`, `accounts`,
+The file-pointer entries — `bp`, `bp.out`, `gpl.bp`, `gpl.bp.out` — are in
+lower case. An account's own `voc`, and the system directory's `newvoc`, `accounts`,
 `messages` and `syscom`, are all lower case on disk too. `qfile` was never a path
 of its own; it is a VOC pointer to `@SDSYS/$ipc`, the session IPC area, and
 has no on-disk name to fold.

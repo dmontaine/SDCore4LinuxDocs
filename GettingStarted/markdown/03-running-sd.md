@@ -59,6 +59,14 @@ it is `sd -stop`'s job.
 > ps -C sdlnxd
 > ```
 
+**A session still attached ten seconds after the stop is ended.** `sd -stop`
+and `sd -restart` send every session the termination signal, wait up to ten
+seconds for them to leave, and end any process still attached to SD's shared
+memory with `SIGKILL`; they say how many they ended, for example `1
+process(es) still attached after ten seconds were ended with SIGKILL`. Only a
+process that is attached to SD's own segment is touched, and a session ended
+this way does not run its own logout.
+
 **The clean-up daemon is started again if it dies.** `sdlnxd` is the process
 that notices a session whose process has gone and clears it down, and writes
 the audit trail. It runs as its own unit, `sd-lnxd.service`, and `systemd`

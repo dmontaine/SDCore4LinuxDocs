@@ -162,8 +162,8 @@ DOCS = [
  # arriving from the other direction: the name is on the page and the
  # explanation is not.  Each verb is assigned where it is actually explained.
  ('Administrator', '01a-account-maintenance.md', """
-   backup.account clean.account config delete.account restore.account set.backup.directory
-   set.date settings.report tool.backups update.accounts
+   backup.account clean.account config delete.account load.examples remove.examples
+   restore.account set.backup.directory set.date settings.report tool.backups update.accounts
  """),
  ('Administrator', '02-sessions-and-locks.md', """
    clear.locks list.locks list.readu listu lock logout tool.sessions unlock
@@ -290,6 +290,12 @@ SPLITS = {
         '19a-the-master-files-global-change.md', '19b-run-in.md',
         '19c-the-master-files-group-and-modes.md'],
     ('Administrator', '20-the-ai-helper.md'): ['20a-the-ai-helper-set-ai-and-the-key.md'],
+    ('Administrator', '22-remote-administration-over-ssh.md'): ['22a-remote-administration-through-the-api.md'],
+    ('User', '07-sd-basic-file-handling.md'): ['07a-sd-basic-locking-and-asking-about-a-file.md'],
+    ('User', '12a-sd-basic-the-screen-statement.md'): [
+        '12b-sd-basic-the-screen-statement-forms.md',
+        '12c-sd-basic-the-screen-statement-widgets.md',
+        '12d-sd-basic-the-screen-statement-events-and-styles.md'],
     ('User', '17-sd-basic-debugging.md'): ['17a-sd-basic-debugging-full-screen-and-ai.md'],
     ('User', '20-sd-tcl-files-and-records.md'): [
         '20-sd-tcl-files-and-records-2-comparing-triggers-and-import.md'],

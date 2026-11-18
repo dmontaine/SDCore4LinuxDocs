@@ -125,6 +125,9 @@ the embedded Python, a file or directory of the operating system
 by its path outside the account's own directory — takes the switch above:
 see
 [Security and the operating system](12a-security-and-the-operating-system.html#the-shell-and-operating-system-access-are-per-account-switches).
+Saving a change to a VOC, a program file or a dictionary takes the account's
+`voc-on`, `bp-on` or `dict-on` switch, which SDSYS turns on account by account;
+see [Managing accounts](05a-managing-accounts.html#saving-changes-to-a-voc-a-program-file-or-a-dictionary-three-more-switches).
 
 > **The VOC is the same for every ordinary account and is not the wall.**
 > What stops one account reaching another's data is the operating system's

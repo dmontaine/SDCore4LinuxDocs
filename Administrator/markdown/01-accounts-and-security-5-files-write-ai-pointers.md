@@ -21,14 +21,13 @@ Account fred has files-write yes
 `files-write-on` for a person who is not in `sdfiles` is refused ("Account fred does
 not have files access, so it cannot be given files-write: use files-on first"), because
 the group on its own gives nothing; `files-off` takes the person out of both groups.
-**`files-off` takes the write group away first, then `sdfiles`, and reads each back**, and it
+**`files-off` takes the groups above `sdfiles` away first (administration, then write), then `sdfiles`, and reads each back**, and it
 does the work for a person who is in only one of them. A person who is in `sdfileswrite`
 and not in `sdfiles` (a removal that stopped half way, or a change made by hand) is taken out
 of `sdfileswrite` too, so the next `files-on` cannot turn that membership into write access
 nobody gave; SD says `Account fred has files-write no` before `Account fred has files no`. If a removal fails
-SD says so and stops: a failure of the write group's removal leaves the person as they were, and
-a failure of the second removal leaves them in `sdfiles` alone, read access and never write
-without read. `files-on` takes a leftover write membership away before it adds `sdfiles`, and
+SD says so and stops, leaving the person with the lower access and never a higher one without it.
+`files-on` takes a leftover `sdfileswrite` or `sdfilesadmin` membership away before it adds `sdfiles`, and
 stops with the same message if it cannot. A
 refused change is answered "This login cannot change or lock files here: ask the
 administrator for files-write-on (request *n*)", is not carried out, and goes to the audit
@@ -46,7 +45,7 @@ in both `sdfileswrite` and the Linux group `sdfilesadmin`**: `modify.account` *n
 `files-admin-on` (needs `files-on` and `files-write-on` first, else "Account fred does not have
 files-write, so it cannot be given files-admin: use files-write-on first"), `files-admin-off`, and
 `files-admin-on` after `files-on` and `files-write-on` in `create.account user`. **It is off for
-every new account, and the installer does not turn it on.** The line printed is `Account fred has files-admin yes`, read back from the group file.
+every new account, and the installer turns it on only for the installing user's own account, when its "open every access gate" question is answered `y`.** The line printed is `Account fred has files-admin yes`, read back from the group file.
 The three groups are a chain, `sdfiles` < `sdfileswrite` < `sdfilesadmin`: `files-write-off` and
 `files-off` take the higher groups away first (administration, write, files), each removal read
 back, and a failure half way reports the removals that did happen; `files-on` and `files-write-on`
@@ -62,7 +61,8 @@ files-admin-on (request *n*)" and nothing is carried out. The account's manifest
 An account may send text to the AI provider you have chosen (the `ai` verb) **only if the person is in
 the Linux group `sdaiusers`**: `modify.account` *name* `ai-on`, `ai-off`, and `ai-on` in
 `create.account user`. **It is off for every new account, and the installer
-does not turn it on**, because each request is paid for by whoever holds the provider's key.
+turns it on only for the installing user's own account, and only when that question is answered
+`y`** ("Open every access gate", see [Accounts and Security: Making an Account](01-accounts-and-security-2-making-an-account.html)), because each request is paid for by whoever holds the provider's key.
 The line printed is `Account fred has ai yes`, read back from the group file. It stands alone (no
 other gate is needed), is for accounts that belong to a person (a group account is refused), and takes
 effect at the person's next request. The account's manifest records it as `route.ai`, and
@@ -83,10 +83,9 @@ login. Withdraw it with `files-off`. `sdapi` is never touched by `files-on` or
 refuse them first. If the Linux group `sdfiles` does not exist, `files-on` says
 "sdfiles is not a valid Linux Group" and changes nothing, and
 `create.account user ... files-on` looks for the group **before** it makes the Linux
-user, so nothing is left behind. **An installation made before this release has no
-`sdfiles` group, and its helper does not accept it, until the installer is run
-again**; the installer makes the group (empty) beside `sdssh` and `sdapi`, and the
-helper's list of groups it will touch includes it. Like `sdssh` and `sdapi`, the
+user, so nothing is left behind. **An installation that has no
+`sdfiles` group needs the installer run again**; the installer makes the group (empty)
+beside `sdssh` and `sdapi`, and the helper's list of groups it will touch includes it. Like `sdssh` and `sdapi`, the
 group cannot be deleted with the helper's `groupdel`; a full DELETE of SD (not one
 that keeps the accounts) removes it with the others.
 
@@ -105,8 +104,8 @@ no files-only login may make). A user in neither group, as before, has the refus
 **The archive.** For a user account the manifest carries `route.files: 1` or `0`
 beside `route.ssh` and `route.api` (not `files:`, which is already the count of files
 in the archive), and `restore.account` puts an account it has to create back in
-`sdfiles` if the manifest says so. An archive from before this release has no such
-line and restores the account out of the group. A manifest that says `1`, restored on
+`sdfiles` if the manifest says so. An archive with no such
+line restores the account out of the group. A manifest that says `1`, restored on
 a machine with no `sdfiles` group, fails for that account with the group message
 and creates nothing.
 

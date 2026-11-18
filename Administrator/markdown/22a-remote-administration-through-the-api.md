@@ -89,6 +89,17 @@ the other end runs as `sdsys` **and** the machine was logged in as `sdsys`: a pr
 at the terminal. A loopback TCP connection (`127.0.0.1`) is not this way in; it is refused for
 SDSYS, because a tunnel ends there and its owner cannot be seen.
 
+## A tunnelled connection does not show where it began
+
+An ssh tunnel (port forwarding to the API port) ends on this machine, so what SD sees is an address
+of this machine and not the address of the computer the person is sitting at. **Do not put this
+machine's own address, or a range that contains it, in the list.** A tunnel that is aimed at this
+machine's network address arrives from that address and is then listed: whoever holds an ssh login
+on this machine can forward a port and reach SDSYS's sign-in with the password alone. Name only the
+addresses of the administration computers. A tunnel that ends on the loopback address (`127.0.0.1`,
+`::1`) is refused for SDSYS whatever the list holds, because loopback is the local door, which
+SDSYS may not use over TCP; listing that address does nothing.
+
 ## What refuses
 
 | SD says | when |

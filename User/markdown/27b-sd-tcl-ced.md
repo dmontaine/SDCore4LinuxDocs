@@ -128,7 +128,7 @@ The keys are the ones above, with these differences:
   nothing. The IDE passes no file, so CED writes nothing and holds no lock; the IDE does the saving.
   **In the IDE** the editor is a pane of the tab: there Ctrl-S is the IDE's own
   save, **Alt-T** is the change of type, **Ctrl-C / Ctrl-X / Ctrl-V** are copy, cut and paste, **F12**
-  shows the text again, and the engine's change is in the tab's text as soon as it is made. The AI
+  shows the text again, and a change is in the tab's text as soon as it is made. The AI
   works there through the IDE's AI entry and Tools menu and not through F2 (see [the IDE](24e-sd-tcl-the-ide-ai-and-the-window.html)).
 - Rename (F3) does nothing: an array has no names.
 

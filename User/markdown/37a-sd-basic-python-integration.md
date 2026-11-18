@@ -17,13 +17,16 @@ status = PY_CREATEDICT('mydict')
 ```
 
 All twenty-one are `$internal`-compiled and ship already cataloged, so no
-account needs to compile or catalog anything to use them - only `deffun`
-and a call. Failure is always `status()`, not the returned value: several of
+account needs to compile or catalog anything to use them - only the
+declarations and a call. `$include sdpyfunc.h` declares all of them at once.
+Failure is always `status()`, not the returned value: several of
 these functions return an empty string on both "genuinely empty" and
-"failed," so `status()` is what tells them apart. **Every one of the
-twenty-one refuses an empty object, dictionary, list or string name before
-making the underlying call**, setting `status()` to 1 - checked directly in
-`sdsys/gpl.bp/py_*`, not assumed.
+"failed," so `status()` is what tells them apart. **Every function that takes an object,
+dictionary, list or string name refuses an empty one before making the
+underlying call**, setting `status()` to 1: a function that returns a value
+returns an empty string (`PY_OBJLEN` returns 0), and one that returns a status
+returns 1 - never one of the `-120xx` codes below, which all describe
+something Python said.
 
 **Starting the interpreter and running code in it need the account's `os-on`
 switch** - the same one as `OS.EXECUTE`, because Python runs arbitrary code in
@@ -35,35 +38,42 @@ itself refuses to start for an account without `os-on`. `PY_INITIALIZE` then
 returns null with `status()` 3035 and prints nothing, so a program that needs
 Python should test for it.
 
-**The installer brings what this needs.** `installsdcore.sh` installs
-`python3-dev` itself (Debian and Ubuntu are the supported distributions), and refuses to proceed if `python3` and
-`python3-config` do not already resolve. Nothing is left for an administrator
-to install separately afterwards.
+**The installer brings what this needs.** Python is built into SD when it is
+installed, so nothing is left for an administrator to install separately
+afterwards.
 
 ## Interpreter lifecycle
 
 | Function | Returns |
 |---|---|
-| `PY_INITIALIZE()` | 0 if the interpreter is already running or starts cleanly. Also points Python's own `stdout`/`stderr` at CRLF line endings, to match a terminal session |
-| `PY_IS_INITIALIZED()` | 1 if the interpreter is running, 0 if not |
-| `PY_FINALIZE()` | Shuts the interpreter down. The source's own note on it: probably not needed, kept in case SD's shutdown path turns out to want it |
-| `PY_RUNSTRING(script)` | Runs `script` as Python source in the interpreter |
-| `PY_RUNFILE(path)` | Runs the Python file at `path`, checked by the same `valid_os_path()` gate other file-taking verbs use. `path` is bounded by Linux's `PATH_MAX` (4096 bytes) |
+| `PY_INITIALIZE()` | 0 if the interpreter is already running or starts cleanly; otherwise an error code below. A second call is a no-op that also returns `0`. Python's own `print()` writes to your terminal, with line endings that suit a terminal session |
+| `PY_IS_INITIALIZED()` | 1 if the interpreter is running, 0 if not. Never fails and never needs the permission check, so it is the one `PY_` call safe to make from any session as a probe |
+| `PY_FINALIZE()` | Shuts the interpreter down. Rarely needed - a session ending does this for you |
+| `PY_RUNSTRING(script)` | Runs `script` as Python source in the interpreter's global namespace. An empty `script` is refused before it reaches Python (`status()` 1) |
+| `PY_RUNFILE(path)` | Runs the Python file at `path`. `path` is checked for shape before it is run: a path that is empty, is longer than 255 characters, or holds anything but letters, digits and `. _ - / :` is refused (`status()` 1) without reaching Python |
+
+```
+st = PY_INITIALIZE()
+if st # 0 then
+   * st is one of the error codes below
+end
+```
 
 ## Dictionaries
 
 A "dictionary" here is a Python `dict`, held by name in the interpreter's own
-namespace - `dictname` is a handle, not a value.
+namespace - `dictname` is a handle, not a value. It has string keys and string
+values.
 
 | Function | Returns |
 |---|---|
 | `PY_CREATEDICT(dictname)` | Creates an empty dictionary |
 | `PY_CLEARDICT(dictname)` | Empties it. The name stays in the namespace |
 | `PY_DICTVALSETS(dictname,key,value)` | Sets (or creates) `key` to the string `value` |
-| `PY_DICTVALGETS(dictname,key)` | Returns the string value of `key` |
+| `PY_DICTVALGETS(dictname,key)` | Returns the string value of `key`, or an empty string if it is not there (`status()` -12007) |
 | `PY_DICTIDEL(dictname,key)` | Deletes `key` |
-| `PY_DICTGETKEYS(dictname)` | Returns every key, tab-separated |
-| `PY_DICTGETVALUES(dictname)` | Returns every value, field-mark (`@FM`) separated - not tabs, unlike the keys |
+| `PY_DICTGETKEYS(dictname)` | Returns every key, field-mark (`@fm`) separated |
+| `PY_DICTGETVALUES(dictname)` | Returns every value, field-mark (`@fm`) separated |
 
 ## Lists
 
@@ -73,12 +83,12 @@ A Python `list`, likewise held by name.
 |---|---|
 | `PY_LISTCREATE(listname)` | Creates an empty list. `PY_LISTCRTE` is the same function under an older name; both work |
 | `PY_LISTCLR(listname)` | Empties it |
-| `PY_LISTAPPD(listname,objname)` | Appends the named Python object to the list |
-| `PY_LISTGETS(listname)` | Returns every item, tab-separated |
+| `PY_LISTAPPD(listname,objname)` | Appends the named Python object - a string, a dictionary, another list made with these functions, or anything a script left in the namespace - to the list |
+| `PY_LISTGETS(listname)` | Returns every item, field-mark (`@fm`) separated |
 
 A list has to be made with `PY_LISTCREATE` before anything is appended to it.
-It is shaped like `PY_CREATEDICT`: `PyList_New()` against the interpreter's
-global dictionary, and a name that is already taken is refused.
+It is shaped like `PY_CREATEDICT`, and a name that is already taken is refused
+with its own "list already exists" code (`-12038`).
 
 ## Strings
 
@@ -102,9 +112,8 @@ namespace - rather than a type-specific handle.
 | `PY_OBJTYPE(objname)` | A numeric type code, **not a type name** - see the table below |
 | `PY_GETATTR(objname)` | Its value as a string |
 
-`PY_OBJTYPE` returns one of six codes, checked directly against a real call
-(`PY_LISTCRTE` followed by `PY_OBJTYPE` on the result returned `2`, matching
-the table below, not the word "list"):
+`PY_OBJTYPE` returns one of six codes - a number, not the word "list" or
+"dictionary" (a list made with `PY_LISTCREATE` answers `2`):
 
 | Code | Python type |
 |---|---|
@@ -117,8 +126,8 @@ the table below, not the word "list"):
 
 ## Error codes
 
-**-12001 through -12034 are shared with SD Core for Windows** - checked
-directly against its `err.h`, same numbers, same meanings, name for name:
+Every function that returns a status uses one of these, defined in `err.h`
+of the `syscom` file:
 
 | Code | Meaning |
 |---|---|
@@ -150,26 +159,11 @@ directly against its `err.h`, same numbers, same meanings, name for name:
 
 The gap between -12020 and -12030 is not a reservation for anything
 documented here - it is simply where the two error blocks were written, ten
-codes apart, on both ports.
+codes apart.
 
-**-12035 and up are this port's own, not shared.** SD Core for Windows
-defines no equivalent of -12035/-12036 at all: its list-append and list-clear
-paths reuse codes from the shared
-range instead of minting their own - a wrong type reports -12034
-(`NotList`) on both, but Windows reports a missing append target as -12014
-(`ObjNOF`) and the append or clear call itself failing as -12033
-(`LstItem`) or -12004 (`Excpt`), where this port reports -12035/-12036
-directly. Its list-create function reuses -12012 (`DictExsts`) for a name
-collision, rather than a dedicated "list already exists" code the way this
-port's -12038 (`LstExsts`) does. Neither choice is wrong; they are simply
-different, confirmed by both sides checking their own source rather than
-assuming. Conversely, this port has no equivalent of Windows's
--12040/-12041/-12042, because those describe a *helper process* failing to
-start or an *OS permission* being unclear or refused. There is no helper
-process here. The permission is the account's `os-on` switch, above: a
-program whose account has not got it is refused by SD before Python is
-touched, and the `PY_` function gives back a non-zero `status()` (3035), not
-one of the codes in these tables.
+**The list functions have four codes of their own, -12035 to -12038.** A wrong
+type reports -12034 and a missing append target -12014; the append or clear
+call itself failing is -12035 or -12036:
 
 | Code | Meaning |
 |---|---|
@@ -178,7 +172,35 @@ one of the codes in these tables.
 | -12037 | `PyList_New()` failed |
 | -12038 | list already exists |
 
-**A program written against these codes and expecting to run on both ports
-should treat -12001 through -12034 as portable and everything from -12035 up
-as this port's own.**
+The permission is the account's `os-on` switch, above: a program whose account
+has not got it is refused by SD before Python is touched, and the `PY_`
+function gives back a non-zero `status()` (3035), not one of the codes in these
+tables.
+
+## Example programs
+
+Four example programs are installed in the SDSYS account's `bp` file:
+
+| Program | What it shows |
+|---|---|
+| `PY_TEST` | starting Python, running a short script, and reading its results back: the dictionary and list the script made, a dictionary and a string made with the functions above, the keys, values and items as field-mark lists, the size and type of each object, and a string appended to a list |
+| `PY_TEST2` | the same with data read from a file: a record is stored as a Python string, read back, and compared with the original (`Match` or `Do Not Match!`). Set the file's path near the start (`xxxx` is an account name) before you run it |
+| `PY_JSON` | Python's `json` module on a file you name: the file is loaded, then walked object by object with `PY_OBJTYPE`, `PY_OBJLEN` and `PY_DICTGETKEYS`, and every key and value is printed, indented by nesting |
+| `PY_TERM` | a minimal prompt that runs the Python you type: lines are collected and `!` runs them, `??` shows them, `?` gives help and `quit` ends; the up and down arrows recall earlier lines |
+
+Copy one into your own account's `bp` to compile and run it. Like any use of
+Python, it needs the account's `os-on` switch. A short sequence of the same
+kind of calls:
+
+```
+$include sdpyfunc.h
+st = PY_INITIALIZE()
+if st # 0 then stop
+st = PY_RUNSTRING('countdown = {"3": "Three", "2": "Two", "1": "One"}')
+st = PY_CREATEDICT('my_dict')
+st = PY_DICTVALSETS('my_dict', 'k1', 'first value')
+crt PY_DICTVALGETS('my_dict', 'k1')    ;* first value
+crt PY_OBJLEN('countdown')             ;* 3
+keys = PY_DICTGETKEYS('countdown')     ;* the keys, separated by @fm
+```
 

@@ -356,7 +356,7 @@ the parent taking its own:
 
 The directive is *the program's*: it covers the program's own commits, not those
 of a subroutine compiled without it. A client session reaches the same thing with
-`SDTxn(4)` ([SD Client API](37-sd-client-api.html)).
+`SDTxn(4)` ([SD Client API: Select Lists to Error Handling](37-sd-client-api-2-select-lists-and-the-rest.html)).
 
 `set.trigger` attaches a program that runs on every write or delete. A trigger
 runs inside the caller's transaction, so it is bound by the same locking rule.
