@@ -165,7 +165,8 @@ service. Here the administrator can always open a new session, and **any
 administrator session may switch it off**. If the session that set it is killed
 the inhibit is ignored from then on — the record names a user number *and* a
 process id, and a process that is not there holds nothing — and the next `on`
-replaces it.
+replaces it. `inhibit.login on` while another live session holds it is refused
+(*Logins are already inhibited by* name*. Switch it off first (inhibit.login off)*).
 
 The record is the file `login.inhibit` in the SDSYS directory (user number,
 process id, login name, date, time). **It is not the same thing as the hold that

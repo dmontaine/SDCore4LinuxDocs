@@ -132,7 +132,7 @@ set's SD TCL syntax card.)
 | Parameters settable for the current session | **29** |
 
 The three parameters the verb does not display and `config()` cannot read are
-`BACKUPDIR`, `NETDIRS` and `SDSYS`. The verb displays `DEBUG` and `FDS` only when
+`BACKUPDIR`, `NETDIRS` and `SDSYS`. The verb displays `DEBUG`, `FDS` and `PHANTOMS` only when
 they are set, and `TIMEZONE`, which is not a file parameter; `config()` reads it
 and a session can set it, and it is counted among the 29. No parameter is accepted and ignored:
 a line naming a name SD does not have (such as `APILOGIN`, `CODEPAGE`, `CREATUSR`,

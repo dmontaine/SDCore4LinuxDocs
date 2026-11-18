@@ -44,7 +44,7 @@ What is kept:
 - plain English: printable ASCII characters and new lines, at most 4,000 characters;
 - nothing that names SD's own code or build (`gpl.bp`, `gplsrc` and the other names of the screen above). Such a text is refused when you save it, with the line `set.ai context refused name=...` in the audit trail. A text that names them all the same (written into the helper's file by hand) stops every request, with `ai refused why=context`, until it is put right.
 
-The text is sent to the provider with every request, before SD's own instruction, and counts towards `bytes-request`. It is invisible to the person asking: it is not in their preview (the size shown there counts it) and their question is sent as they typed it. It is kept by the helper in `/var/lib/sd-ai/context` (owner `sdai`, mode 0640), and only you can change it. An upgrade keeps it; removing SD with its configuration removes it.
+The text is sent to the provider with every request, before SD's own instruction, and counts toward `bytes-request`. It is invisible to the person asking: it is not in their preview (the size shown there counts it) and their question is sent as they typed it. It is kept by the helper in `/var/lib/sd-ai/context` (owner `sdai`, mode 0640), and only you can change it. An upgrade keeps it; removing SD with its configuration removes it.
 
 At the prompt the verb takes the text as one word of hexadecimal (`set.ai context 48656c6c6f`), which is how the page passes a text of several lines; `set.ai context -` goes back to the default. `sd-ai-ctl show` says whose text is in use and how long it is.
 

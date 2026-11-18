@@ -93,8 +93,8 @@ rdiv(dividend, divisor)
 
 | Function | Rule |
 |---|---|
-| `div()` | divides and discards the fraction, **always towards zero** |
-| `idiv()` | **towards zero when both arguments are integers, downwards when either is floating point** — see the warning below |
+| `div()` | divides and discards the fraction, **always toward zero** |
+| `idiv()` | **toward zero when both arguments are integers, downwards when either is floating point** — see the warning below |
 | `rdiv()` | divides and rounds to the **nearest** integer, with a half rounded **away from zero** |
 
 ### The four side by side
@@ -109,7 +109,7 @@ rdiv(dividend, divisor)
 | `idiv(-7, 2)` | `-3` | | | |
 
 > **`idiv()` changes its rounding when a floating-point number is involved,
-> and nothing in the call shows it.** With two integers it truncates towards
+> and nothing in the call shows it.** With two integers it truncates toward
 > zero; if either argument is floating point it takes the floor, which for a
 > negative result is a different number:
 >
@@ -120,7 +120,7 @@ rdiv(dividend, divisor)
 >
 > The two differ only for negative results — for positive ones truncation and
 > floor agree. **If the sign can be negative, use `div()`**, which truncates
-> towards zero whatever the argument types are. This behavior is inherited
+> toward zero whatever the argument types are. This behavior is inherited
 > from OpenQM and has been kept for compatibility; it is not new in this port.
 
 `div()` returns a whole number even when the arguments are fractional:
@@ -164,7 +164,7 @@ neg(expr)
 
 | | |
 |---|---|
-| `int()` | discards the fractional part, **towards zero**. `int(3.7)` is `3` and `int(-3.7)` is `-3`. It does not round: use `rdiv(n, 1)` or add `0.5` if you want rounding |
+| `int()` | discards the fractional part, **toward zero**. `int(3.7)` is `3` and `int(-3.7)` is `-3`. It does not round: use `rdiv(n, 1)` or add `0.5` if you want rounding |
 | `abs()` | the magnitude, with any sign removed. `abs(-3.5)` is `3.5` |
 | `neg()` | the value with its sign reversed. `neg(3)` is `-3` |
 
@@ -267,7 +267,7 @@ greatest not above it. Where `int()` drops the fraction, `floor(-3.1)` is -4
 and `ceil(-3.1)` is -3.
 
 `roundup()` goes to the next multiple of *step* away from zero and
-`rounddown()` to the previous one towards zero; a value that is already a
+`rounddown()` to the previous one toward zero; a value that is already a
 multiple is unchanged. With a step of 3, `roundup(10, 3)` is 12,
 `rounddown(10, 3)` is 9, `roundup(-4, 3)` is -6 and `rounddown(-4, 3)` is -3.
 **A step under 1 gives 0.**
