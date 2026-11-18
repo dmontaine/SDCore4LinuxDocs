@@ -13,7 +13,7 @@ not the Linux one. Use a long password that is used nowhere else, name the narro
 work, and shut the door again when it is not needed.
 
 **What a session gets.** An API session signed in as SDSYS has every right the administrator has,
-the same as SDSYS at the machine's own keyboard. An API session into any other account has exactly
+the same as SDSYS at the computer's own keyboard. An API session into any other account has exactly
 that account's rights and nothing more: the API never gives an ordinary account more than it has
 elsewhere.
 
@@ -22,7 +22,7 @@ elsewhere.
 
 ## Opening and shutting the door
 
-Signed in as `sdsys` at the machine, or over ssh if that door is open:
+Signed in as `sdsys` at the computer, or over ssh if that door is open:
 
 ```
 remote.sdsys api on address ...
@@ -81,24 +81,24 @@ A client that comes in through a gateway that translates addresses (a home route
 balancer) arrives from the gateway's address, not its own; name that one. A refusal says which
 address SD saw.
 
-## From this machine
+## From this computer
 
-SDSYS may always use the API from this machine, over SD's Unix socket, whatever the door says, and
+SDSYS may always use the API from this computer, over SD's Unix socket, whatever the door says, and
 such a session also has every right of the administrator. It is admitted only when the program at
-the other end runs as `sdsys` **and** the machine was logged in as `sdsys`: a program that reached
+the other end runs as `sdsys` **and** the computer was logged in as `sdsys`: a program that reached
 `sdsys` through `su sdsys` or `sudo -u sdsys` from somebody else's login is refused, exactly as it is
 at the terminal. A loopback TCP connection (`127.0.0.1`) is not this way in; it is refused for
 SDSYS, because a tunnel ends there and its owner cannot be seen. The administrator can also list
-Linux users whose programs on this machine may sign in as SDSYS over the same socket; the list is
+Linux users whose programs on this computer may sign in as SDSYS over the same socket; the list is
 empty as delivered (see [Reaching SDSYS from Your Own Login](22b-reaching-sdsys-from-your-own-login.html)).
 
 ## A tunnelled connection does not show where it began
 
-An ssh tunnel (port forwarding to the API port) ends on this machine, so what SD sees is an address
-of this machine and not the address of the computer the person is sitting at. **Do not put this
-machine's own address, or a range that contains it, in the list.** A tunnel that is aimed at this
-machine's network address arrives from that address and is then listed: whoever holds an ssh login
-on this machine can forward a port and reach SDSYS's sign-in with the password alone. Name only the
+An ssh tunnel (port forwarding to the API port) ends on this computer, so what SD sees is an address
+of this computer and not the address of the computer the person is sitting at. **Do not put this
+computer's own address, or a range that contains it, in the list.** A tunnel that is aimed at this
+computer's network address arrives from that address and is then listed: whoever holds an ssh login
+on this computer can forward a port and reach SDSYS's sign-in with the password alone. Name only the
 addresses of the administration computers. A tunnel that ends on the loopback address (`127.0.0.1`,
 `::1`) is refused for SDSYS whatever the list holds, because loopback is the local door, which
 SDSYS may not use over TCP; listing that address does nothing.
@@ -109,8 +109,8 @@ SDSYS may not use over TCP; listing that address does nothing.
 |---|---|
 | SDSYS may be reached through the API from another computer only when the administrator has opened it | the door is shut |
 | ... only from an address the administrator listed with remote.sdsys api on, and *address* is not one of them | the door is open, but not for that address |
-| This session runs as sdsys but the machine was not logged in as sdsys ... | from this machine, through `su` or `sudo -u` |
-| SDSYS may use the API only from a process running as the sdsys user on this machine ... | from this machine, by a program that is not `sdsys` |
+| This session runs as sdsys but the machine was not logged in as sdsys ... | from this computer, through `su` or `sudo -u` |
+| SDSYS may use the API only from a process running as the sdsys user on this machine ... | from this computer, by a program that is not `sdsys` |
 
 A wrong password is refused in the same words as for any account, after the same delay.
 
@@ -124,7 +124,7 @@ A wrong password is refused in the same words as for any account, after the same
   user's program at the Unix socket ([Reaching SDSYS from Your Own Login](22b-reaching-sdsys-from-your-own-login.html)).
 * Each refusal: the reason and the address, in the audit trail.
 
-## What SD changes on the machine
+## What SD changes on the computer
 
 * **`/etc/sdcore/sdsys-api`**: root's, readable by root only. The first line is `on`, and each line
   after it is one address or range, written in its standard form (`192.168.1.99/24` becomes

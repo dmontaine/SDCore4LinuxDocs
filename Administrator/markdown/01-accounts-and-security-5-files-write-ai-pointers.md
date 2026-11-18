@@ -58,7 +58,7 @@ files-admin-on (request *n*)" and nothing is carried out. The account's manifest
 
 ### The AI: `ai-on` and `ai-off`
 
-An account may send text to the AI provider you have chosen (the `ai` verb) **only if the person is in
+An account may send text to the AI provider you have chosen (the `ai` verb and the AI line of the pages and editors) **only if the person is in
 the Linux group `sdaiusers`**: `modify.account` *name* `ai-on`, `ai-off`, and `ai-on` in
 `create.account user`. **It is off for every new account, and the installer
 turns it on only for the installing user's own account, and only when that question is answered

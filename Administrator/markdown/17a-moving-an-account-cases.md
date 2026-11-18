@@ -61,8 +61,16 @@ modify.account once it is an SD user.*
   file. A renamed file is also never picked by `latest`.
 * **A different accounts folder.** Values in the account's VOC that begin with the old account's
   path are rewritten to the new one: a pointer to `/home/sd/user_accounts/jack/inv`
-  becomes the account's path on the new machine. Only the VOC is rewritten: a path written in a
-  record or a program is left as it is.
+  becomes the account's path on the new machine. **A pointer to somewhere outside the account is
+  listed, not followed** (*… points outside the account (…) and was left unchanged.*). Only the
+  VOC is rewritten: a path written in a record or a program is left as it is.
+* **Indices kept outside the account.** A hashed file whose indices were relocated inside the
+  account is pointed at its new index path. Indices outside the account are not in the archive,
+  and the restore says so (*The indices of … were at …, outside the account, so they are not in
+  the backup. Rebuild them with build.index.*): build them again with `build.index`.
+* **The account's Linux user, when the account already exists.** An account the new machine
+  already has keeps its own Linux user, password and groups. One that SD creates is made as
+  `create.account` makes it, from the manifest's description, routes, members and suspension.
 * **The Linux user name is already taken.** SD reuses the user only if SD itself made it (its
   comment is exactly `SD account`) and keeps its password: *jack is a Linux user that SD itself
   created earlier, so the restored account uses it. Its Linux password is unchanged.* **The

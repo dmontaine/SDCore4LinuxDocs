@@ -59,7 +59,7 @@ to let that login do.
 - **`files-write-on` needs `files-on` first.** The group alone gives nothing (the login
   route is `sdfiles`), so for a person who is not in `sdfiles` it is refused: "Account
   *name* does not have files access, so it cannot be given files-write: use files-on
-  first". `create.account user` *name* `files-write-on` without `files-on` is refused
+  first" (message 11523). `create.account user` *name* `files-write-on` without `files-on` is refused
   the same way before anything is made. A group or other account is refused as for
   `files-on`.
 - **`files-off` takes the person out of `sdfileswrite` too, and first**, so a later
@@ -88,7 +88,7 @@ to let that login do.
   delete (18), deleteu (19), lock record (30), clearfile (31), file lock (32) and file
   unlock (33), a test of a lock (34, which is what `RECORDLOCKED()` sends), the four locking reads (7 to 10), and a `READV` with a lock flag. They are
   answered "This login cannot change or lock files here: ask the administrator for
-  files-write-on (request *n*)" and **nothing is carried out**. Reads, selects, `READV` without
+  files-write-on (request *n*)" (message 11521) and **nothing is carried out**. Reads, selects, `READV` without
   a lock, file information, the indices and `RELEASE` still work. (A test of a lock names the
   holder by his user number on this server, which a login that cannot lock has no business
   with.)
@@ -103,7 +103,7 @@ to let that login do.
   here: ask the administrator for files-write-on (request 16)". (The client shows the
   text of any `ON ERROR` reply that has one, cut at 100 characters; a reply with no text
   still shows "status *n*".) A
-  program that traps the error with `ON ERROR` sees `STATUS()` 7000. The audit
+  program that traps the error with `ON ERROR` sees `STATUS()` 7000, as before. The audit
   trail on the target also has the request number.
 - **The group is read at login**, from `/etc/group`, so a change takes effect at the
   person's **next** login on that server, and a refusal to read the group file refuses
