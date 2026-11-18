@@ -64,10 +64,13 @@ the Linux group `sdaiusers`**: `modify.account` *name* `ai-on`, `ai-off`, and `a
 turns it on only for the installing user's own account, and only when that question is answered
 `y`** ("Open every access gate", see [Accounts and Security: Making an Account](01-accounts-and-security-2-making-an-account.html)), because each request is paid for by whoever holds the provider's key.
 The line printed is `Account fred has ai yes`, read back from the group file. It stands alone (no
-other gate is needed), is for accounts that belong to a person (a group account is refused), and takes
-effect at the person's next request. The account's manifest records it as `route.ai`, and
-`restore.account` gives it back. Which provider, model and key, what leaves the machine, and the page
-that does all of this, `tool.ai`, are in [The AI Helper](20-the-ai-helper.html).
+other gate is needed), is for accounts that belong to a person (a group account is refused), needs the
+person to be in `sdusers` (the AI helper's socket belongs to that group), and takes effect at the
+person's next request: the AI helper, the service `sd-ai`, reads the group each time, from the Linux
+user it sees at the other end of its socket. SDSYS has no gate and may always use the AI. The
+account's manifest records it as `route.ai`, and `restore.account` gives it back. Which provider,
+model and key, what leaves the machine, the security warning, and the page that does all of this,
+`tool.ai`, are in [The AI Helper](20-the-ai-helper.html).
 
 **The route words are not one state.** `ssh`, `api`, `both` and `none` are
 absolute about the two routes they name, and **leave `files-on` alone**:

@@ -64,7 +64,8 @@ who is signed in now, change the setting and then end their session.
 
 **Every one of these words is written to the audit trail** (`modify.account
 sh-on account=fred` and its siblings), and **SDSYS is never a target**: the
-account name is refused as invalid before the word is read. A group account
+account is refused before the word is read, whatever you asked for, with
+*"Account name is invalid"*. A group account
 is refused too for the `sh-on`/`sh-off`/`os-on`/`os-off` forms: it has no
 Linux user to hold the switch.
 

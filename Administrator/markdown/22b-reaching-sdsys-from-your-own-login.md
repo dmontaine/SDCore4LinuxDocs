@@ -114,6 +114,9 @@ from this computer. **What counts as "an ssh login from this computer" is this: 
 through the ssh server, and the ssh server recorded its source as a loopback address** (`127.x.x.x`
 or `::1`). A login that came in from another computer does not count, nor one that came in at this
 computer's own network address; neither does the console, a desktop terminal, `su` or `sudo`.
+SD cannot tell the keyboard from the network, though: a listed user who signs in to this computer
+from elsewhere and then uses ssh to `localhost` arrives from this computer, because the ssh server
+records that inner login's source as a loopback address.
 
 * **The password** is asked for once, with nothing shown as it is typed. The answer is the SD
   password of `sdsys`.
@@ -237,6 +240,8 @@ in**, and nothing else was changed to give it. The next try by that user is refu
   empty as delivered.
 * **It does not protect against a listed user.** That user, and anyone who has that user's login on
   this computer, can ask for the administrator; only the password stands in the way.
+* **It cannot tell the keyboard from the network.** A listed user who signs in to this computer from
+  elsewhere and then uses ssh to `localhost` arrives from this computer.
 * **It is not in SD Core Solo**, which has no `sdsys`.
 * **A background process cannot be started from such a session.** A phantom begins a session of its
   own, which has no terminal to be asked the password at, and is refused as a session without a

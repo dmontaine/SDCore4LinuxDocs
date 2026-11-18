@@ -143,7 +143,9 @@ directories that hold nothing one account must keep from another.
 `bp-on`, `dict-on`), the shared account's rules and what the `ai` line may send
 are separate and unchanged. The administrator and an account with `os-on` are
 not affected: they reach every path already. `NETDIRS` is asked last: after the
-account's own directory and the `sd-on` gate.
+account's own directory and the `sd-on` gate. The shipped SDSYS entries that
+every VOC names are open to an account without `os-on` whatever this line says
+(read only), and are not part of the list.
 
 **Entries SD ignores.** An entry is left out, and named in the error log and
 the system log when SD starts, when it is not an absolute path, is not an

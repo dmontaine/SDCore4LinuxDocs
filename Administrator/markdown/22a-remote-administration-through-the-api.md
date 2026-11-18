@@ -120,7 +120,8 @@ A wrong password is refused in the same words as for any account, after the same
   like, with the addresses you gave and the helper's exit status; the system log has the helper's own
   line.
 * Each SDSYS sign-in through the API: `elevation granted reason=sdsys api from=192.168.1.20`, or
-  `from=this machine`.
+  `from=this machine` for the local connection, or `from=this machine user=fred` for a listed
+  user's program at the Unix socket ([Reaching SDSYS from Your Own Login](22b-reaching-sdsys-from-your-own-login.html)).
 * Each refusal: the reason and the address, in the audit trail.
 
 ## What SD changes on the machine

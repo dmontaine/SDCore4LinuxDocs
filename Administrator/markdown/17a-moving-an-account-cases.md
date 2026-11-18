@@ -37,10 +37,12 @@ files, its description and its suspension change.
   `sdusers`, and joins `sdssh`, `sdapi` and `sdfiles` where the manifest says 1. Its user number is
   whatever the machine gives it, and ownership is set by name, so a different number on the old
   machine does not matter.
-* **SD asks for the password at the terminal**, prints the rule (*A password needs at least 8
-  characters, with a lower-case letter, an upper-case letter, a digit and a symbol.*) and allows
-  three tries. If it is refused or you decline to retry, SD removes the Linux user again, says *An
-  account must have a password. Nothing was created.* and the account is *not restored*.
+* **SD asks for the password at the terminal** and prints the rule (*A password needs at least 8
+  characters, with a lower-case letter, an upper-case letter, a digit and a symbol.*). It gives
+  three attempts at the pair of entries. If Linux or SD refuses the password, SD says why and
+  asks *Warning, user created but password not set, Retry (y/<n>)?*. If you decline, SD removes
+  the Linux user again, says *An account must have a password. Nothing was created.* and the
+  account is *not restored*.
   **`no.query` removes the "Restore these accounts" question and not this one.** Commands
   typed after a `no.query` restore are taken as passwords.
 * A route the machine cannot yet serve is said and not refused: *… is set up to sign in over ssh,
@@ -80,19 +82,25 @@ modify.account once it is an SD user.*
   Rename or remove that Linux user with the operating system's tools, then run the restore again.
   **There is no way to restore under another account name.** A word such as `as` is read as an
   account name: *as is not in this backup.*
-* **A Windows backup.** The archive format is shared with SD Core for Windows and the restore has
-  code for it. It was not tried.
+* **A Windows backup.** The archive format is shared with SD Core for Windows, and the restore
+  accepts a full backup of it by the same manifest rules as a Linux one (a Solo backup, or a
+  different format, is refused). It reads the Windows paths in the account's VOC pointers, both
+  separators and without regard to case, and rewrites those that lead into the account to the
+  new place. A pointer whose file is not in the backup under that exact spelling is reported
+  (*… points at …, which does not exist here with that exact spelling.*), and a pointer that
+  leads outside the account is left as it was (*… points outside the account (…) and was left
+  unchanged.*).
 
 ## When it refuses
 
 | It says | Why |
 |---|---|
 | The archive does not match its manifest: jack (manifest 99/45332/6, unpacked 10/45332/6). Nothing was restored. | the zip was changed or damaged |
-| … has manifest format 2, and this version reads format 1. | a newer zip format |
+| … has manifest format 2, and this version reads format 1. Nothing was restored. | a newer zip format |
 | This backup is from linux-solo and this system is linux-full. … | the wrong product |
 | nosuch is not in this backup. | the name is not in the manifest |
 | Making the archive … failed (status 2): sd-elevate: REFUSED … | an account outside the accounts folders |
-| 1 other session(s) are logged in. | log them out and run it again |
+| 1 other session(s) are logged in. Every other session must log out first: | log them out and run it again |
 | … already exists, left by an earlier restore that did not finish. | remove that `.sdrestore.`*n* folder |
 
 None of these changed an account, and the restore leaves no `.sdrestore.`*n* folder behind (except

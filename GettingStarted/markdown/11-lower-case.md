@@ -60,6 +60,10 @@ indexed file, a file outside its account's directory or under SDSYS, and SDSYS's
 files. The walk is kept in `/var/tmp/sdcore-install-nocase.log`, which names each one.
 The mechanics are in [Upgrading and uninstalling](01a-upgrading-and-uninstalling.html).
 
+**An upgrade also brings your VOC up to the release.** `update.accounts` adds the records the
+release ships and takes out those on SD's deletion list (`list.voc.removed` shows them), as
+[Upgrading and uninstalling](01a-upgrading-and-uninstalling.html) describes.
+
 ## One lookup order everywhere
 
 **`list` and `ct` find a name the same way.** `list voc $hold` finds the record

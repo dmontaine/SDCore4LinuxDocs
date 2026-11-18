@@ -191,13 +191,14 @@ directory, or a symbolic link that points out of its own, in any of these:
 | `DELETESEQ` of a bare path | status 3035; the file is left alone |
 | `OPENTEMP` with a pathname or in the temporary directory, `DIGEST` of a file, and the file keys of `OSPATH()` | the `ELSE` branch, or a null result, with status 3035 (`DIGEST`'s `STATUS()` says the file is outside what the account may reach) |
 | `!OSCOPY`, `!IOSCOPY` and the `oscopy` verb | refused, status -4 (the verb says why) |
-| printing into a file by path (`setptr ... as pathname`, or the `SETPU` statement) | the verb refuses when the unit is set; for either, the first line printed is refused and the program stops |
+| printing into a file by path (`setptr ... as pathname`, `SETPU`, or a `$hold` print name that climbs out with `..`) | the verb refuses when the unit is set; for either, the first line printed is refused and the program stops |
 | the socket trace file (`set.socket.mode` with `skt$info.trace`) | `set.socket.mode` is refused with status 3035 and nothing is written |
 
 The containment is by **real path**: `..` and a symbolic link are resolved
 before the test, so neither gets round it. A path inside the account's own
-directory always works, and so does a directory the administrator listed in `NETDIRS`
-(below).
+directory always works. Two more places are open to an account without the
+switch: the shipped SDSYS entries that every VOC names (**read only**) and a
+directory the administrator listed in `NETDIRS` (below).
 
 **SD says no in words.** `sh` gives "*name* is not permitted to use the
 operating system shell", `OS.EXECUTE` gives "*name* is not permitted to use
