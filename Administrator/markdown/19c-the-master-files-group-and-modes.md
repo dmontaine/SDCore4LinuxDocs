@@ -99,7 +99,7 @@ what it did, and a second run changes nothing.
 
 ### The modes of what SD makes
 
-Every session starts with a `umask` of 002, so a VOC or a dictionary made in the ordinary way is
+Every session in an ordinary account starts with a `umask` of 002 (022 in the SDSYS account), so a VOC or a dictionary made in the ordinary way is
 already group-writable (664 files, 775 directories). A user who changes the umask (the `umask`
 verb) would make them closed, so **SD gives a VOC or a dictionary that it has just made its group's
 write bit, whatever the umask**: the directory g+rwx and setgid, `%0` and `%1` g+rw. It does so

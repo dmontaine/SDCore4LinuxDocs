@@ -180,6 +180,13 @@ reaches the same guarantee a different way, one inheritable ACL entry set
 once by the installer, applied by NTFS below the runtime rather than by a
 value a process can forget to set.
 
+The value a session starts with follows the account it is in: 002 in every
+account, so the members of an account can change what one of them made
+there, and **022 in the SDSYS account**, whose directory's group is
+`sdusers` — every SD user — so that nothing the administrator makes there
+can be changed by another user. SD sets it again at sign-on, after `logto`,
+and when `run.in` enters an account and comes back.
+
 ## Continued in
 
 [Accounts and Security: Changing One
