@@ -249,7 +249,7 @@ DOCS = [
    run.in
  """),
  ('Administrator', '22-remote-administration-over-ssh.md', """
-   remote.sdsys
+   remote.sdsys local.sdsys
  """),
  ('Administrator', '07-sd-admin-configuration.md', """
    set.config
@@ -290,7 +290,8 @@ SPLITS = {
         '19a-the-master-files-global-change.md', '19b-run-in.md',
         '19c-the-master-files-group-and-modes.md'],
     ('Administrator', '20-the-ai-helper.md'): ['20a-the-ai-helper-set-ai-and-the-key.md'],
-    ('Administrator', '22-remote-administration-over-ssh.md'): ['22a-remote-administration-through-the-api.md'],
+    ('Administrator', '22-remote-administration-over-ssh.md'): [
+        '22a-remote-administration-through-the-api.md', '22b-reaching-sdsys-from-your-own-login.md'],
     ('User', '07-sd-basic-file-handling.md'): ['07a-sd-basic-locking-and-asking-about-a-file.md'],
     ('User', '12a-sd-basic-the-screen-statement.md'): [
         '12b-sd-basic-the-screen-statement-forms.md',

@@ -87,7 +87,9 @@ such a session also has every right of the administrator. It is admitted only wh
 the other end runs as `sdsys` **and** the machine was logged in as `sdsys`: a program that reached
 `sdsys` through `su sdsys` or `sudo -u sdsys` from somebody else's login is refused, exactly as it is
 at the terminal. A loopback TCP connection (`127.0.0.1`) is not this way in; it is refused for
-SDSYS, because a tunnel ends there and its owner cannot be seen.
+SDSYS, because a tunnel ends there and its owner cannot be seen. The administrator can also list
+Linux users whose programs on this machine may sign in as SDSYS over the same socket; the list is
+empty as delivered (see [Reaching SDSYS from Your Own Login](22b-reaching-sdsys-from-your-own-login.html)).
 
 ## A tunnelled connection does not show where it began
 

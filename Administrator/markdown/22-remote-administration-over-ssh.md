@@ -19,6 +19,9 @@ and is opened with `remote.sdsys api on`, for chosen addresses; it is described 
 [Remote Administration through the API](22a-remote-administration-through-the-api.html). This page is
 about ssh.
 
+**Reaching SDSYS from a listed user's own login on this computer is a third, separate thing**,
+off as delivered, described in [Reaching SDSYS from Your Own Login](22b-reaching-sdsys-from-your-own-login.html).
+
 **This page is about SD Core for Linux.** SD Core for Windows has the same door in its own form:
 there the administrator is an elevated Windows account, so the door opens a separate account that
 signs in over ssh only and is never elevated; its own documentation describes it. Neither SD Core

@@ -532,6 +532,7 @@ has, with the changes they made.
 | `list.voc.removed` | Added | administrator only: the VOC records SD no longer ships, with the release each went in and what to write instead; given an account, what the next `update.accounts` would do in it (changes nothing) |
 | `load.examples` | Added | administrator only: puts the shipped example programs into `examples.bp` of every account in service, or of the accounts named (a list), and compiles them there; keeps programs the administrator added |
 | `load.help` | Added | SDSYS loads the text of the `[?]` help buttons into the shared account; keeps records the administrator added |
+| `local.sdsys` | Added | administrator only: two lists of Linux users who may reach `sdsys` from this computer, by `ssh -t` *user*`@localhost sd-sdsys` and over the API's Unix socket, each with the SD password of `sdsys`; both empty as delivered; `add`, `remove` and `clear` per list, and also two fields on the sdsys view of `tool.remote` |
 | `modify.account` | Changed | takes more than one action in a command (`modify.account fred sh-on os-on voc-on`), all carried out or none |
 | `logto` and a suspended account | Changed | refused to every session, the administrator's included; `run.in` still works in one, and `modify.account` *name* `unsuspended` lifts the suspension |
 | `logto` by the administrator | Changed | runs no `login` paragraph of the account it enters and does not open the home screen: the administrator lands at the prompt (owner's ruling; an ordinary user's `logto` is unchanged) |

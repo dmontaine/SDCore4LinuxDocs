@@ -66,6 +66,7 @@ desktop-sharing view of it (VNC, TeamViewer). Nothing else grants it:
 | `sdsys` over ssh, after the administrator has opened that door (`remote.sdsys on`) | asked for the password, which is then all that stands between the network and the administrator — see [Remote Administration over ssh](22-remote-administration-over-ssh.html) |
 | `sdsys` over the API from another computer or the network port | refused at the door — the API is never a remote route for SDSYS |
 | `sdsys` over the API, on the local Unix socket, from a process running as `sdsys` | granted, with SDSYS's own SD password |
+| a Linux user the administrator has listed (`local.sdsys`), by `ssh -t` *user*`@localhost sd-sdsys` or from a program over the local API socket | asked for SDSYS's SD password; off as delivered, since both lists are empty — see [Reaching SDSYS from Your Own Login](22b-reaching-sdsys-from-your-own-login.html) |
 
 **This is not the elevation model SD Core for Windows uses**, and the
 difference is deliberate, not a gap: Windows checks whether the session is

@@ -108,6 +108,11 @@ the line cannot name a remote person.
 > unless you need it, and turn port forwarding off in `sshd_config` if you do not
 > want tunnels at all.
 
+**Listed users are a third way to SDSYS, and it is off as delivered.** The administrator can list Linux
+users (`local.sdsys ssh add`, `local.sdsys api add`) who may become SDSYS from this computer with
+SDSYS's SD password. Both lists are empty until someone lists a name. List only your own
+administrator login, and check with `local.sdsys` that the lists say what you expect.
+
 ## Line endings
 
 **Directory files exist so you can edit their records with an ordinary text

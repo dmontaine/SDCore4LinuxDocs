@@ -24,6 +24,7 @@ to apply — it is what `create.account` and the installer already do:
 | Scheduled jobs | **nothing is allowed or scheduled as delivered**. An account's command runs unattended only when SDSYS lists its name for that account (`set.batch add`), and SDSYS's own jobs (`set.job`) exist only when SDSYS adds them. A listed command runs with nobody at the keyboard, as the account's Linux user; a `set.job` job runs one of two fixed commands (`backup-all`, `update-accounts`) as `sdsys` — see [Scheduled jobs](04-scheduled-jobs.html) |
 | The `shared` account | the one door that is **open** in a new installation, on purpose: every account can read the data files of the `shared` account by file name, and none can write them — see [The shared account](#the-shared-account-is-open-to-read-by-design) |
 | The API | local-only (`127.0.0.1:4247`) until an administrator opens it to the network — see [API access](09-api-access.html) |
+| SDSYS from a listed user's own login on this computer | **off**: both lists (`local.sdsys ssh` and `local.sdsys api`) are empty. An administrator who lists a Linux user lets that user, from any session of theirs on this computer, become SDSYS with SDSYS's SD password; the Administrator set's *Reaching SDSYS from Your Own Login* says what that means and how to take a name off |
 | SDSYS | **both remote doors shut**: ssh only after an administrator has opened that door (`remote.sdsys ssh on`, then the password alone), and no API route from another computer until an administrator has opened that door for chosen addresses (`remote.sdsys api on` *address*, then SDSYS's SD password alone); on the machine itself the API accepts it only on the local Unix socket, from a process whose login is `sdsys` — the one thing this page treats as non-negotiable rather than a default |
 
 **An ordinary account is not denied a console login here**, unlike SD Core
@@ -74,8 +75,10 @@ are.**
 | `sd -a<name>` | **refused unless `<name>` is your own account** (10051) |
 | `logto sdsys` from any other account | **refused** to every session that did not sign in as `sdsys`, whether or not it came in as `root` — 10002, audited; the administrator's own session, having gone to another account, may `logto sdsys` to come back (audited as `logto account=sdsys`) |
 
-**SDSYS is reached one way only: log in to the machine, locally, as the
-account literally named `sdsys`, its own password, and run `sd`.** Being
+**As delivered, SDSYS is reached one way only: log in to the machine, locally, as the
+account literally named `sdsys`, its own password, and run `sd`.** (An administrator can
+list Linux users who may also reach it from their own login on this computer; both lists are empty as
+delivered.) Being
 able to `sudo` — able to or not — grants nothing by itself, and there is no
 route from any other account into SDSYS once a session has started. See
 [Accounts](05-account-types.html#sdsys-is-the-only-administrator).

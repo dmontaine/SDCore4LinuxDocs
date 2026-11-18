@@ -26,6 +26,15 @@ a pair belongs to that pair's value.
 **Every line written by a run of a scheduled administrator job ends `job=`*name***, starting with
 `elevation granted reason=scheduled job`; see [Scheduled Jobs](23-scheduled-jobs.html).
 
+**The lists of Linux users who may reach SDSYS from this computer write these lines**
+(see [Reaching SDSYS from Your Own Login](22b-reaching-sdsys-from-your-own-login.html)): a change by the
+administrator, `local.sdsys ssh add user=fred status=ok` (or `status=refused`; `remove` and `clear`
+the same, `clear` with no `user=`); a grant over ssh, `elevation granted reason=sdsys local ssh user=fred`;
+a refusal after the password was asked, `elevation refused reason=sdsys local ssh wrong password user=fred`
+or `... no credential user=fred`; a grant through the API,
+`elevation granted reason=sdsys api from=this machine user=fred`; and, while the ssh list has names,
+`elevation refused reason=sdsys session without a sdsys login why=not-listed` (the existing refusal of an sdsys session that did not start as a sdsys login, with a `why=` word added).
+
 **A file transfer writes lines that begin `xfer`** (*Accounts and Security: File transfer*). The person's
 session writes the opening and the closing; the connection of their sftp client, a process of its own,
 writes the rest:
