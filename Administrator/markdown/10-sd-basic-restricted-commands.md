@@ -85,7 +85,7 @@ itself administrator rights.
 
 | | |
 |---|---|
-| **`errmsg`** | ***(no such thing)*** — in the statement table with no opcode behind it |
+| **`errmsg`** | ***(no such thing)*** — removed; not in the compiler's statement table, so it is refused as "Unrecognized statement" |
 | **`events`** | `events(`*a*, *b*`)` ***(internal)*** |
 | **`expand.hf`** | `expand.hf(`*a*, *b*, *c*`)` ***(internal)*** |
 
