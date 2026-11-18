@@ -229,7 +229,7 @@ the standard records, so it has the last word.
 
 The file is a directory file: one record per file, the record id as the file
 name, the VOC record as its contents. There is no file until you make one, and
-nothing is created for you. The tested form is a directory file made by hand in
+nothing is created for you. The form to use is a directory file made by hand in
 the SDSYS directory.
 
 To see it work, put a record in the file and run `update.accounts`; then
@@ -281,7 +281,7 @@ change you want in every account is made to the file under `examples` and spread
 config                     report every setting
 config lptr                the same, to the default printer
 config param value         set one
-config gpl                 display the licence
+config gpl                 display the license
 config contrib             display the contributors
 ```
 

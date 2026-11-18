@@ -124,18 +124,12 @@ zzcust is a hashed file: sdconv converts compiled programs only, nothing was cha
 rc=1
 ```
 
-`%0` and `%1` are byte for byte as before, with `-B`, with `-L` and with no
-option. The source has a routine, `process_file`, that would convert the header,
-the data groups and the index nodes with a "partly converted" marker for a run
-that stops part way. It was commented out of `convert_file` in a compiler-warning
-clean-up, nothing records a decision to do that, and it has faults of its own
-(an endless loop on an unknown block type, a 64-bit field cut to 32 bits, two
-buffer overflows, no open-file check and no backup), so it is not used.
+`%0` and `%1` are left byte for byte, with `-B`, with `-L` and with no
+option: the tool converts neither the header, the data groups nor the index nodes
+of a hashed file.
 
 **A hashed file taken to a machine of the other byte order cannot be converted by
-this tool, and this SD could not open it if it were.** The change-log entry that
-once said a conversion of a file "carries the sequential counter over; sdconv
-reverses it" was wrong and has been removed.
+this tool, and this SD could not open it if it were.**
 
 ## What it will not do
 

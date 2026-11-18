@@ -4,8 +4,10 @@ Subtitle: How people reach SD on this machine over ssh, and the one thing it cos
 **An account has ssh access only if SDSYS gave it** — `ssh` or `both` at
 `create.account`, or `modify.account` *name* `ssh` later; a new account has
 none. Without it the account is refused at the ssh door, with a message that
-says SD is not available to it over ssh. SDSYS is different: it has no remote
-route at all, ssh or otherwise, whatever it is given. This page covers the
+says SD is not available to it over ssh. SDSYS is different: its two remote
+doors, ssh and the API, are shut as delivered, are not among the account words,
+and are opened only by the administrator (`remote.sdsys`; see
+[SDSYS's remote door](#sdsyss-remote-door) below). This page covers the
 ssh route; [API access](09-api-access.html) covers the other.
 
 **Unlike SD Core for Windows, an ordinary account is *not* denied a local
@@ -87,15 +89,25 @@ is confined the same as a connection from anywhere else.
 
 ### The cost: scp and sftp stop working inbound, over ssh
 
-**No file can be pushed to this machine over ssh this way, by anybody**
-who is `ForceCommand`'d into `sd`. The command is forced, so there is no
-file-transfer subsystem left to run. This is the accepted cost of the
-boundary above.
+**`scp`, `rsync` and a general `sftp` session cannot push a file to this
+machine over ssh**, for anybody who is `ForceCommand`'d into `sd`. The command
+is forced, so there is no system file-transfer subsystem left to run. This is the
+accepted cost of the boundary above.
+
+**File transfer is the one way in, and it is closed as delivered.** SD has a
+small sftp server of its own for plain-text files, and an account uses it by
+typing `receive` (to bring files in) or `send` (to take copies of records out) in its
+own SD session, then connecting an sftp client with the same ssh login. It is off
+twice as delivered: the system switch `XFER` in `sd.conf` is 0, and every account's
+`xfer-on` switch is off. The administrator turns on both, deliberately. Turning it on
+lets that person bring text into their own account from another machine and take
+copies of the account's records out, into one directory each way and nothing else;
+there is no shell behind it. See *File transfer* in the Administrator set and
+*Moving Files In and Out* in the User set.
 
 **The cost is inbound, over ssh, only.** `scp` or `rsync` run **on** this
 machine, connecting outward, makes it the client — `sshd_config`'s
-`ForceCommand` is never consulted for an outbound connection. And **unlike
-SD Core for Windows, this port does not deny a local login**, so an
+`ForceCommand` is never consulted for an outbound connection. And an
 account can also simply log in at the machine directly to move a file, or
 reach it through SD's own file access (an editor, or an API client) rather
 than needing a separate remote-desktop product.
@@ -136,13 +148,15 @@ file permissions allow it. See [Security](12-security.html).
 **SDSYS cannot ssh in until the administrator has opened that door.**
 Until then `Match User sdsys` denies it outright, at the ssh server, before
 authentication starts — there is no session for `ForceCommand` to ever apply to.
-Once the administrator has opened it (`remote.sdsys on`; the Administrator documents, "Remote
+Once the administrator has opened it (`remote.sdsys ssh on`, or `remote.sdsys on`; the Administrator documents, "Remote
 Administration over ssh", say how, and what it risks), an ssh sign-in as `sdsys` asks for the
 password, which is then all that guards it, and lands in an SD session with no shell behind it.
-The API is different: it is closed to SDSYS from every other computer, and from this
-machine's network port too, whatever else is set; on this machine it accepts SDSYS
-only on the local Unix socket, from a process running as `sdsys` — see
-[API access](09-api-access.html).
+**Opening it means that nothing but that password stands between the network and the
+administrator**, so open it only on a machine whose `sdsys` password is long and used nowhere
+else, and shut it again (`remote.sdsys ssh off`) when it is not needed.
+The API door is a separate one with its own switch, also shut as delivered
+(`remote.sdsys api on` *address*); on this machine SDSYS reaches the API through the local
+Unix socket from a process running as `sdsys` — see [API access](09-api-access.html).
 
 **Nothing changes for ordinary accounts.** Every account `create.account`
 makes reaches ssh from wherever `sdusers` membership allows, whether or
@@ -155,7 +169,7 @@ group membership outside `sdusers` has never been what SD asks about.
 password, either physically at the keyboard or through a desktop-sharing
 view of it (VNC, TeamViewer), which counts as local because it *is* a
 local session from the machine's own point of view — **or, once the
-administrator has opened the door with `remote.sdsys on`, over ssh with
+administrator has opened the door with `remote.sdsys ssh on`, over ssh with
 `sdsys`'s password.**
 
 ### Why
@@ -171,7 +185,7 @@ guards it is the password. See
 
 ### If you rely on remote administration
 
-**It works once the administrator has opened the door (`remote.sdsys on`), and
+**It works once the administrator has opened the door (`remote.sdsys ssh on`), and
 not before.** Until then use the console, or a service- or session-based remote
 desktop, logged in as `sdsys`.
 An account that needs ordinary, non-administrative work from another machine was

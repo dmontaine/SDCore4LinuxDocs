@@ -18,7 +18,7 @@ time rather than papered over by a bundled runtime.
 ## Before you start
 
 **Run it as yourself, not as root and not with `sudo`.** The script refuses
-outright if `$EUID` is 0 — building as root would leave build artefacts
+outright if `$EUID` is 0 — building as root would leave build artifacts
 root-owned, and the script needs to know who "the installing user" is to
 create your own SD account. It asks for your `sudo` password itself, at the
 one point where it is needed, and checks up front that you can `sudo` at
@@ -283,7 +283,7 @@ earlier attempt) is already there:
 |---|---|
 | 1. Your own SD password | reaching your account through the SD API (SCRAM) — not needed at all for a local `sd` session, which your Linux login already reaches |
 | 2. `sdsys`'s Linux password | logging in to the machine **as** `sdsys` — the only way to administer SD |
-| 3. `sdsys`'s SD password | reaching SDSYS through the API — and even with it, SD admits `sdsys` over the API only from a process already running as `sdsys` on this machine |
+| 3. `sdsys`'s SD password | reaching SDSYS through the API — as delivered, SD admits `sdsys` over the API only from a process already running as `sdsys` on this machine, until the administrator opens the remote API door for chosen addresses (`remote.sdsys api on`) |
 
 All three are required — the closing summary names any that are still
 missing and prints the exact `modify.password` command to set it,

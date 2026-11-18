@@ -77,16 +77,15 @@ SD trusts a program in its **global catalog** (`/usr/local/sdsys/gcat`) to run a
 therefore refuses to load a global catalog object that other users, or the group `sdusers`, can write**, and stops with
 `<name> in the global catalog can be written by other users, so it was not loaded (chmod go-w it)`. The installer leaves every file in `gcat` mode 0755
 after its last compile, so an installation never meets the check. If you see the message, someone changed a mode: `chmod go-w` the file named, and look for
-why. **A fresh install made before this change left `gcat/$cproc` mode 0664 group `sdusers`; install again, or run `chmod go-w` on it by hand.**
+why.
 
 `/home/sd`, `/home/sd/user_accounts` and `/home/sd/group_accounts` are mode 755, owner `sdsys`, group `sdusers`. The group may not write them: every SD user is in `sdusers`, so
 with the group's write any of them could rename another account's directory and make one of their own under the same name, and the account's owner would then sign on to a VOC
 the other person wrote. Nothing needs the group's write here (SD makes an account directory in the `sdsys` session, which owns the parent, and the helper that runs as root does
-the rest). The installer sets the modes every time it runs, so installing again corrects an older installation where they are 775; to do it by hand,
+the rest). The installer sets the modes every time it runs; to set them by hand,
 `sudo chmod 755 /home/sd /home/sd/user_accounts /home/sd/group_accounts`. The account directories themselves keep their own owner, group and setgid bit.
 
-**The audit trail** (`/usr/local/sdsys/audit`) is mode 0600, owner `sdsys`, group `sdusers`, **and append-only** (`chattr +a`): the group cannot read it, write it or open it. (It was 0620 until 2.0-0, because
-every session runs as its user and so had to append to the file itself; that also let a member of `sdusers` add a line of their own that claimed any user.) **Now a session sends each record to the root daemon
+**The audit trail** (`/usr/local/sdsys/audit`) is mode 0600, owner `sdsys`, group `sdusers`, **and append-only** (`chattr +a`): the group cannot read it, write it or open it, so no member of `sdusers` can add a line of their own that claims any user. **A session sends each record to the root daemon
 `sdlnxd`** over the Unix socket `/run/sd/audit.sock` (mode 0660, group `sdusers`, in a directory only root can write), and **the daemon writes the line**. The `user=` and the `pid=` on the line are the ones the
 kernel reports for the sending process, not anything in the record's text, so no one can make a line that names someone else; the text of a record comes after them, and the `uid=` is the SD user number the
 sender gave, which the daemon cannot check. `sudo=` is the user the kernel logged in, which survives `su` and `sudo`. A record is cut at 1900 bytes, its control characters become `?`, and one record is one line.

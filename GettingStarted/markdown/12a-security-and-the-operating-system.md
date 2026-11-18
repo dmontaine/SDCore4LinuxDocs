@@ -124,11 +124,10 @@ several words in one command give several lines), and
 `gates=` lists, in lower case, every access the new account was given, always
 in this order whatever order the words were typed: `ssh`, `api`, `sh-on`,
 `os-on`, `voc-on`, `bp-on`, `dict-on`, `net-on`, `files-on`, `files-write-on`,
-`files-admin-on`, `shared-read-off`, `shared-write-on`, and `ssh-key-on` (key sign-in over ssh) when it was asked for. It says `none` when there is none. The
+`files-admin-on`, `ai-on`, `shared-read-off`, `shared-write-on`, `pins-on`, `recovery-on`, `xfer-on` and
+`ssh-key-on` (key sign-in over ssh), each only when it was asked for. It says `none` when there is none. The
 line is written only after the account has been made: a creation that is
-refused (an empty password, say) leaves no line. (An older line,
-`create.account account=jane type=user`, names none: read the `modify.account`
-lines after it.)
+refused (an empty password, say) leaves no line.
 
 **The refusals are the interesting half.** An entry saying somebody who is
 not SDSYS asked for SDSYS by name, or asked for an account they have not

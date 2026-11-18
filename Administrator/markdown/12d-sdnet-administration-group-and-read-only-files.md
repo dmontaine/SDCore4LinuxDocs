@@ -92,11 +92,11 @@ the exchange. A `set.netlogin` made against a user who is only in `sdfiles` succ
 remote reads and queries work for that user; writes and locks work once it is also in
 `sdfileswrite`.
 
-**On the machine being reached:** the group `sdfiles` is made, empty, by the
-installer beside `sdssh` and `sdapi`. An installation made before this release has
-neither the group nor a copy of the helper that accepts it until the installer is run
-again; until then `files-on` says "sdfiles is not a valid Linux Group" and changes
-nothing. The API listener has to be on (`remote.api`), as for any API login.
+**On the machine being reached:** the groups `sdfiles`, `sdfileswrite` and
+`sdfilesadmin` are made, empty, by the installer beside `sdssh` and `sdapi`, and
+removed with them by a full delete (they are kept when the accounts are kept). The
+API listener has to be on (`remote.api`, see [Remote Access and the
+Machine](05-remote-access-and-the-machine.html)), as for any API login.
 
 ## Remote files, read only
 
@@ -120,9 +120,8 @@ a lock (see "Writing and locking" below).
 `OPEN 'DICT', 'customers' TO d` opens the **dictionary** of the remote file, from the same
 server, and the same statements work on it. (The request the client sends for a dictionary
 is `dict customers` in lower case; the server opens `dict` and a name, in any case, as a
-dictionary. A client on this release against a server that has not been updated cannot
-open a dictionary, so `LIST`, `COUNT`, `SORT` and `SELECT` on a remote file stop at
-"Cannot open dictionary".)
+dictionary. A server that does not answer this request leaves `LIST`, `COUNT`, `SORT` and
+`SELECT` on a remote file stopped at "Cannot open dictionary".)
 **Nothing else does.** Every other statement
 given the file variable (writes, deletes, `CLEARFILE`, locks including `FILELOCK` and
 `FILEUNLOCK`, `AKREAD`...) stops with

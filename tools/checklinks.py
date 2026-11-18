@@ -33,7 +33,7 @@ if not ids:
 # This pattern was \d\d- and would have skipped every link to a continuation
 # WITHOUT SAYING SO: the count would have stayed plausible and the new pages
 # would have been the only unchecked ones in the tree.
-LINK = re.compile(r'\]\((\d\d[a-z]?-[a-z0-9.-]+\.html)(#[A-Za-z0-9_-]+)?\)')
+LINK = re.compile(r'\]\((\d\d[a-z]?\d?-[a-z0-9.-]+\.html)(#[A-Za-z0-9_-]+)?\)')
 
 bad = 0
 checked = 0

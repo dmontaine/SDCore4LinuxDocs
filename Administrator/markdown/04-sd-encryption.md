@@ -34,7 +34,7 @@ writes the application.
 
 | Layer | What it is | Protects against | Does not protect against |
 |---|---|---|---|
-| The disk | encryption of the volume the SD directories are on, by the operating system (LUKS, fscrypt). SD is unchanged. It has a page of its own in this set | a stolen or discarded disk; a backup copied off the machine | anyone logged in to the running system; root; a mounted volume |
+| The disk | encryption of the volume the SD directories are on, by the operating system (LUKS, fscrypt). SD is unchanged. It has a page of its own in this set ([Encrypting the data SD keeps on disk](04a-data-at-rest.html)) | a stolen or discarded disk; a backup copied off the machine | anyone logged in to the running system; root; a mounted volume |
 | The program | `sdkey()` and `sdencrypt()` in an application | a copy of the SD files, a backup, a person with file access but not the key | the program itself, its variables, anyone who holds the key |
 | The conversion | `XE` in a dictionary item, with the key held in a ring in the process | the same, and the field reads decrypted for a session that holds the key | the same, and root or a debugger on that process |
 
@@ -73,15 +73,6 @@ of memory for each call; an application derives the key once per run.
 `status()` after a failure: **10206** the salt is not base64 for 16 bytes,
 **10207** the passphrase is empty or over 65,536 bytes, **10204** a key of the
 wrong length (a passphrase passed straight in as the key is this), **10201** a wrong key or a damaged value.
-
-### Before this existed
-
-`sdencrypt('The quick brown fox', 'secretkey', 202)` returns nothing and sets
-`status()` to **10204**: a passphrase is not a key. Until the three functions
-above the only way to turn a passphrase into a key was `sdext()`'s
-`SD_KEYFROMPW`, which is internal-only, so an ordinary program could not obtain
-a key these functions accepted. That is no longer so, and `10204` for a
-passphrase passed straight in is still the answer.
 
 ## The XE conversion and the key ring
 
@@ -144,7 +135,8 @@ the complaint is about a `dim` statement the program does not contain, reported
 at the last line rather than at the call. That behavior is covered by
 [SD Basic - Restricted Commands](10-sd-basic-restricted-commands.html) in this
 set. `$internal` needs both halves: the compiler tests for internal mode **and**
-for the administrator flag.
+for the administrator flag. Internal mode alone is not enough, because only an
+internal program may set the administrator flag.
 
 ### The keys
 

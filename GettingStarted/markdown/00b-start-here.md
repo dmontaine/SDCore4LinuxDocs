@@ -34,19 +34,18 @@ These pages describe changes, so **used to**, **no longer** and **now**
 run all through them. **The comparison is against the code this version was
 made from** — upstream `sdb64`, and ScarletDME and OpenQM 2.6.6 behind it.
 
-**It never means an earlier release of SD Core for Linux**, because this is
-the first one. Some of the changes are Linux-only and have no upstream
-original to differ from; those say **earlier builds of this port** instead,
-so the two are never confused.
+**It does not mean an earlier release of SD Core for Linux.** Some of the
+changes are Linux-only and have no upstream original to differ from; those
+say **earlier builds of this port** instead, so the two are never confused.
 
 ## The pages
 
-**There are twenty-two, and they are numbered.** Read them in numerical order the
-first time; after that they stand alone.
+**The pages are numbered.** Read them in numerical order the first time; after
+that they stand alone.
 
-**A number with a letter after it is the second half of a long page**, split so
+**A number with a letter after it continues the page before it**, split so
 that no page runs longer than a reader will scroll: `01a` continues `01`, and
-so on. Nothing was renumbered when they were split.
+so on.
 
 | | | |
 |---|---|---|
@@ -70,7 +69,7 @@ so on. Nothing was renumbered when they were split.
 | **13** | [Other hardening](13-hardening.html) | The global catalog, the pcode library, scheduled jobs, the logs, line endings, the terminal, and running SD |
 | **14** | [Not in SD Core](14-not-in-sd-core.html) | What has been removed, and what to use instead |
 | **15** | [Migrating to SD](15-migrating-to-sd.html) | Bringing programs and queries from another MultiValue database: where the compatibility words are set, and the words SD does not accept |
-| **15a** | [Option words](15a-migrating-option-words.html) | The fourteen words of the `option` command, one line each |
+| **15a** | [Option words](15a-migrating-option-words.html) | The words of the `option` command, one line each |
 | **15b** | [Mode words](15b-migrating-mode-words.html) | The names `$mode` accepts and the lines of a `$basic.options` record, one line each |
 
 ## The five things most likely to surprise you
@@ -89,10 +88,11 @@ cannot save a change to a VOC, a program file or a dictionary, until SDSYS
 gives them.** SD is delivered with the tighter setting, and the
 administrator loosens it one account and one switch at a time: `ssh`,
 `api`, `both`, `sh-on`, `os-on`, `voc-on`, `bp-on` and `dict-on`, at
-`create.account` or later with `modify.account`. **SDSYS has no API route from another computer at all**, whatever it is given, and
-**its ssh door stays shut until the administrator opens it** (`remote.sdsys on`) — administration is a real
-login at this machine's own keyboard, a desktop-sharing view of it, or, once that door is open, ssh
-with the `sdsys` password. See
+`create.account` or later with `modify.account`. **SDSYS's two remote doors are shut as delivered**: ssh
+(`remote.sdsys ssh on`) and the API from chosen addresses (`remote.sdsys api on` *address*). Administration is
+a real login at this machine's own keyboard, a desktop-sharing view of it, or, once the administrator has
+opened a door, ssh or an API client with SDSYS's password; with a door open, nothing but that password stands
+between the allowed computers and the administrator. See
 [ssh access](08-ssh-access.html) and [API access](09-api-access.html).
 
 **3. An ordinary account is not denied the console, and that is not a
@@ -120,8 +120,7 @@ connect.
 
 ## What this release is
 
-**L2.0-0.** Linux only, and English only. There are no `#ifdef` branches
-keeping Windows alive in this source — SD Core for Windows is a separate
+**L2.0-0.** Linux only, and English only. SD Core for Windows is a separate
 project and this is not a build of it.
 
 **It is a hobby project with no release schedule.**
@@ -144,12 +143,11 @@ installed tree carries it as a file.
 
 **Neither repository contains a built binary, deliberately** — no compiled
 executable, no `.so`, no object files. A clone builds. That is why installing
-means building, and why there is no download of a compiled artefact in the
+means building, and why there is no download of a compiled artifact in the
 repository itself.
 
 The documentation repository holds the **Markdown only**; the HTML and PDF you
-are reading (once this set's own rendering toolchain exists — see the
-repository's own README) are generated from it and are not stored there.
+are reading are generated from it and are not stored there.
 
 ## Reporting what you find
 

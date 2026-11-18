@@ -108,7 +108,7 @@ sd -a               prompt for an account
 sd -a<name>         enter account <name>  -- refused unless it is your own
 sd <command>        run one command       -- needs SDSYS, or batch.jobs
 sd -quiet           suppress the displays on entry
-sd -u               list current users
+sd -u               list current users    -- root or sdsys
 sd -k <n> | -k all  log out user n, or everybody
 sd -start           start the system
 sd -stop            stop the system
@@ -137,8 +137,12 @@ jobs possible without giving them SDSYS's own rights — see
 **`sd -suspend`, `sd -resume`, `sd -d` and `sd -m` need root**, as `-start`, `-stop`,
 `-restart` and `-k` do, and otherwise answer "Command requires administrator
 privileges". `-suspend` stops every update on the system and the two dumps show every
-session and the configuration, so they are not for ordinary users. `sd -cleanup`,
-`sd -u` and `sd -status` are as they were.
+session and the configuration, so they are not for ordinary users.
+
+**`sd -cleanup` and `sd -u` are for root or the `sdsys` user**, and answer anybody
+else the same way: `-u` lists every session on the machine with its user and
+process, and `-cleanup` removes other people's entries from the user table. Inside
+SD, `listu` shows an ordinary user their own sessions. `sd -status` is for anyone.
 
 **`sd <command>` runs and exits, and is never asked to set a password.** Nor
 is any session with no terminal — a scheduled task, or a piped script. **Only
@@ -165,4 +169,4 @@ journalctl -u sd.service
 ```
 
 `systemctl` reports whether `systemd` thinks the units are running;
-`sd -u` (from inside an SD session) reports who is actually connected.
+`sd -u`, run as `sdsys` or root, reports who is actually connected.

@@ -61,6 +61,9 @@ without arguments.
 on input (`iconv`) or output (`oconv`). Examples: `D` for dates, `MR`
 for masked decimal, `MC` for case conversion.
 
+**Correlative** — a computation applied to a field value before the conversion is
+applied. SD has no A or S dictionary items; the computation is written as an I-type item.
+
 ## D
 
 **Dictionary** — a file that defines the fields of a data file for the
@@ -221,13 +224,9 @@ prompt and dispatches it.
 
 **Terminfo** — the terminal capability database. Defines what
 sequences a terminal sends for keys and what sequences to use for
-screen control. SD ships about 50 definitions compiling to 82 terminal
-names. The terminfo compiler (`sdtic`) is built alongside the server
-during install, but — unlike SD Core for Windows, which keeps a
-permanent copy — **is not currently left on the machine afterward**:
-the installer deletes its whole temporary build tree, `sdtic` included,
-once installation finishes. See [SD
-Terminfo](39-sd-terminfo.html).
+screen control. SD ships 25 definitions compiling to 36 terminal
+names. The terminfo compiler (`sdtic`) is installed with SD, in its
+`bin` directory. See [SD Terminfo](39-sd-terminfo.html).
 
 **Transaction** — a group of file updates that succeed or fail together.
 Declared with `start transaction` and committed with `commit` or

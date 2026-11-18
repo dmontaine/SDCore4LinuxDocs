@@ -24,14 +24,14 @@ a page in another set is worth naming, it is named in words.
 
 A number with a letter after it is the second half of a long page (`04` and
 `04a`); pages are kept to about 14,000 characters so a reader moves between
-pages rather than scrolling through one. `00a` is the copyright and licence
+pages rather than scrolling through one. `00a` is the copyright and license
 page, which comes first in every set; `00b` is the introduction. The syntax
 cards sit at the end (`94` and `95`) so they can grow without renumbering
 anything.
 
-The copyright and licence block appears in full once per set, on `00a`; every
+The copyright and license block appears in full once per set, on `00a`; every
 other page carries a one-line footer with the product, version, copyright and
-licence name.
+license name.
 
 ## Reading the pages
 
@@ -51,7 +51,7 @@ python3 tools/mkdoc.py --in GettingStarted/markdown --out GettingStarted/html
 
 `tools/mkdoc.py` renders each Markdown page to one self-contained HTML file (the
 style is embedded, so a page can be copied anywhere). `tools/add_nav.py` adds the
-previous/next links and checks that each set has its licence page first, and
+previous/next links and checks that each set has its license page first, and
 `tools/mkbook.py` joins a set into one book. The generated pages are not
 tracked; the Markdown is the source.
 
@@ -65,6 +65,6 @@ python3 tools/mktclsyntax.py <sdsys> User/markdown/95-sd-tcl-syntax.md
 `tools/checklinks.py`, `tools/docmap.py` and `tools/tclmap.py` check the links
 and that every SD BASIC name and TCL verb is documented.
 
-## Licence
+## License
 
 See `GettingStarted/markdown/00a-copyright-and-licence.md`.

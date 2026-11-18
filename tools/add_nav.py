@@ -370,7 +370,7 @@ def check_licence_block(set_name, pages):
 
     if len(carriers) != 1:
         raise SystemExit(
-            'add_nav: %s has %d page(s) carrying the licence block and must '
+            'add_nav: %s has %d page(s) carrying the license block and must '
             'have exactly 1%s' % (set_name, len(carriers),
                                   (' - ' + ', '.join(carriers)) if carriers else ''))
     # AND IT MUST BE THE FIRST PAGE OF THE SET.  Counting it was not enough:
@@ -384,12 +384,12 @@ def check_licence_block(set_name, pages):
     # than left to whoever next reads a rendered set.  PRE_RELEASE 181.
     if carriers[0] != pages[0]:
         raise SystemExit(
-            'add_nav: %s opens with %s and its licence page is %s - the '
-            'licence page must sort first.  Rename so it does; do not '
+            'add_nav: %s opens with %s and its license page is %s - the '
+            'license page must sort first.  Rename so it does; do not '
             'special-case the order here, because the book takes this same '
             'order and the two must agree' % (set_name, pages[0], carriers[0]))
 
-    print(f"  {set_name}: licence block on {carriers[0]}, first page of the "
+    print(f"  {set_name}: license block on {carriers[0]}, first page of the "
           f"set, and on no other page")
 
 
@@ -500,7 +500,7 @@ def create_master_index():
 <div class="page">
 <main class="master-index">
 <h1>Documentation</h1>
-<p class="mi-subtitle">The {PRODUCT} documentation is organised into {len(SETS)} sets, each aimed at a different audience. Each page is a self-contained HTML file.</p>
+<p class="mi-subtitle">The {PRODUCT} documentation is organized into {len(SETS)} sets, each aimed at a different audience. Each page is a self-contained HTML file.</p>
 <div class="mi-sets">
 {sets_html}
 </div>
@@ -562,7 +562,7 @@ print("Adding prev/next navigation...")
 for set_name, info in SETS.items():
     add_navigation(set_name, info["pages"])
 
-print("\nChecking the licence block...")
+print("\nChecking the license block...")
 for set_name, info in SETS.items():
     check_licence_block(set_name, info["pages"])
 

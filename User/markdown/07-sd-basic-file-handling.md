@@ -174,6 +174,9 @@ records with numeric ids were copied in; the skipping is what protects them. The
 the file header at once, so a power failure can leave it one behind the records; setting it with
 `configure.file … next` puts that right. The client library
 has it as `SDWriteSeqKey` and `SDWriteuSeqKey` ([SD Client API](37-sd-client-api.html)).
+On a file reached through an `N` pointer to another SD server the write goes to that
+server, which decides whether to allow it
+([Programming with a Remote File](42-sd-programming-with-a-remote-file.html)).
 
 ### `fcontrol`: the counter, a test for an id, the minimum modulus
 

@@ -40,7 +40,7 @@ behind a warning that gives both sizes until the window is big enough again.
  File  Go  View  AI  Help                                                       home  alice@sales
 
    alice @ sales                                                  <> Switch account   -> Sign out
-   Thursday 22 Oct 2026  -  18:52
+   Thursday 22 Oct 2026  -  18:52  -  SD Core for Linux L2.0-0
 
    My tools
      [=]                  </>
@@ -89,7 +89,7 @@ tile, the Editor and IDE tiles are not hidden by this.
 **The page scrolls.** It is laid out at its full height and only the rows that fit
 are drawn, with a scroll bar in the last column when there is more than fits, so
 the number of tiles can pass the height of the screen. The header (your name, the
-date and time, Switch account and Sign out) stays where it is.
+date and time, the product and its version, Switch account and Sign out) stays where it is.
 
 ## Keys and the mouse
 
@@ -146,7 +146,7 @@ Terminal - type exit to return to the home screen
 
 That is the ordinary command prompt, with all of its features (the command stack,
 paragraphs, select lists, everything you can type at a prompt that did not come
-from the home screen). **`exit`** brings the home screen back. At a prompt that
+from the home screen). **`exit`** (or **`menu`**) brings the home screen back. At a prompt that
 *did not* come from the home screen, `exit` does what `quit` does and ends the
 session. The home screen remembers that you left by the Terminal tile for the rest
 of the session, so `exit` goes on coming back to it.

@@ -86,7 +86,7 @@ zzprog hello
 ```
 
 ```
-ZZPROG added to private catalogue
+ZZPROG added to private catalog
 ZZPROG OK
 ```
 
@@ -131,8 +131,8 @@ map {all} {lptr {n}} {file {name}}
 ```
 
 ```
-System catalogue map at 23:12:07 on 26 Aug 2026                    Page 1
-  Catalogue name..................  Compiled.  Time....  ...Obj  ..Xref  ..Size
+System catalog map at 23:12:07 on 26 Aug 2026                    Page 1
+  Catalog name....................  Compiled.  Time....  ...Obj  ..Xref  ..Size
   ZZPROG                            26 Aug 26  23:12:07     189       6     195
                                                                 Total:      195
 ```
@@ -141,7 +141,7 @@ System catalogue map at 23:12:07 on 26 Aug 2026                    Page 1
 `Size` is the total. An empty one says so:
 
 ```
-Catalogue is empty
+Catalog is empty
 ```
 
 ```
@@ -149,7 +149,7 @@ delete.catalog name... {global | local}
 ```
 
 ```
-ZZPROG deleted from the private catalogue
+ZZPROG deleted from the private catalog
 ```
 
 ```
@@ -166,8 +166,8 @@ decatalog zzdocprog
 ```
 
 ```
-zzdocprog added to local catalogue
-zzdocprog deleted from the local catalogue
+zzdocprog added to local catalog
+zzdocprog deleted from the local catalog
 ```
 
 Several names may be given. A name that is not in the local catalog is said so

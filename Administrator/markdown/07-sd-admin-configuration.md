@@ -48,13 +48,13 @@ back and takes out only the parameters SD no longer has.
 An unrecognized parameter is not ignored. The parser abandons the file with
 `Unrecognized configuration parameter`, and SD does not start.
 
-That is why a name SD has dropped has to be taken out of the file. These
-twelve parameters no longer exist (`APILOGIN`, `CODEPAGE`, `CREATUSR`,
-`EXCLREM`, `FIXUSERS`, `GDI`, `JNLDIR`, `JNLMODE`, `PORTMAP`, `RINGWAIT` and
-`TXCHAR` and `FILERULE`), and so does `INVCASE`. The installer removes those lines from a
+That is why a name SD does not have has to be taken out of the file. These
+thirteen names are not parameters of SD: `APILOGIN`, `CODEPAGE`, `CREATUSR`,
+`EXCLREM`, `FILERULE`, `FIXUSERS`, `GDI`, `INVCASE`, `JNLDIR`, `JNLMODE`,
+`PORTMAP`, `RINGWAIT` and `TXCHAR`. The installer removes those lines from a
 `sd.conf` it restores when you keep the configuration across a re-install, and
-says which it removed. A file copied in by hand must have them taken out before SD will
-start.
+says which it removed. A file copied in by hand from an older installation must have them
+taken out before SD will start.
 
 Range failures behave the same way. `GRPSIZE`, `INTPREC`, `LPTRHIGH`,
 `LPTRWIDE`, `MAXCALL`, `RECCACHE`, `SORTMRG` and `MAXIDLEN` are bounds-checked
@@ -77,7 +77,7 @@ ERRLOG    50 kb
 YEARBASE  1930
 ```
 
-SD accepts **58** parameters on this port (`APIPORT` does not
+SD accepts **58** parameters (`APIPORT` does not
 exist here — see *The API*, below). The verb prints all of them except
 `BACKUPDIR`, `NETDIRS` and `SDSYS`, and `DEBUG` and `FDS` only when they are set.
 
@@ -87,7 +87,7 @@ The `config()` function reads one parameter from a program:
 group.size = config('GRPSIZE')
 ```
 
-**48 parameters are readable this way.** The two that are not are `BACKUPDIR` and `SDSYS`. A name of more than sixteen characters is not found (the function answers an empty string and `status()` is not 0); no parameter name is that long, so that only shows up if you pass something which is not a parameter.
+**55 of the 58 parameters are readable this way.** The three that are not are `BACKUPDIR`, `NETDIRS` and `SDSYS`; `TIMEZONE`, which is not a file parameter, can be read as well. A name of more than sixteen characters is not found (the function answers an empty string and `status()` is not 0); no parameter name is that long, so that only shows up if you pass something which is not a parameter.
 
 Two further forms exist. `config lptr` reports the settings of the default
 printer, and `config gpl` and `config contrib` display the license and the list
@@ -97,9 +97,9 @@ of contributors.
 
 Editing `sd.conf` and restarting SD is the durable route, and for most
 parameters it is the only one. Fourteen tuning parameters can also be changed from SD itself, with
-`set.config` or the `E` key of `tool.config` (see *Changing a parameter from SD*, below).
+`set.config` or the `E` key of `tool.config` (see [Configuration: Changing a Parameter from SD](07a-sd-admin-configuration-changing-from-sd.html)).
 
-**23 parameters can also be changed for the current session:**
+**29 settings can also be changed for the current session:**
 
 ```
 config sortmem 8192
@@ -109,24 +109,24 @@ That writes to the session's own copy of the settings, which the session read
 from `sd.conf` when it started. It does not reach `sd.conf`, it does not affect any
 other session, and it is gone when the session ends.
 
-The 23 are `DUMPDIR`, `FLTDIFF`, `FSYNC`, `GRPSIZE`, `INTPREC`,
-`LPTRHIGH`, `LPTRWIDE`, `MAXCALL`, `MUSTLOCK`, `OBJECTS`, `OBJMEM`, `RECCACHE`,
-`SAFEDIR`, `SDCLIENT`, `SH`, `SH1`, `SORTMEM`, `SORTMRG`, `SORTWORK`,
-`SPOOLER`, `TEMPDIR`, `TERMINFO` and `YEARBASE`. (`MAXRLOCK`, `PWDELAY`, `NETWAIT` and `NETREPLY` can be changed for the session in the same way.)
+The 29 are `DHCACHE`, `DUMPDIR`, `FLTDIFF`, `FSYNC`, `GRPSIZE`, `INTPREC`,
+`LPTRHIGH`, `LPTRWIDE`, `MAXCALL`, `MAXRLOCK`, `MUSTLOCK`, `NETREPLY`, `NETWAIT`,
+`OBJECTS`, `OBJMEM`, `PWDELAY`, `RECCACHE`, `SAFEDIR`, `SDCLIENT`, `SH`, `SH1`,
+`SORTMEM`, `SORTMRG`, `SORTWORK`, `SPOOLER`, `TEMPDIR`, `TERMINFO`, `TIMEZONE` and
+`YEARBASE`.
 
 Everything else takes effect only when SD is next started. That includes every
 limit which sizes the shared memory segment and every setting the API listener
 reads.
 
-**Since 2.0-0 a session reads `sd.conf` itself when it starts.** It used to copy
-the settings the starter had left in the shared memory, which an SD user with a
-shell could change. So an edit to a setting a session keeps for itself (the 23
-above, and others such as `USRDIR`, `GRPDIR` and `TIMEZONE`)
+**A session reads `sd.conf` itself when it starts**, and not from the shared memory,
+which an SD user with a shell could change. So an edit to a setting a session keeps for
+itself (the 29 above, and others such as `USRDIR` and `GRPDIR`)
 reaches the sessions started after it, without a restart. **A bad line in
 `sd.conf` stops a new session from starting**, with the message `sd -start`
 gives, until it is repaired; SD and the sessions already running are not
-affected. Every SD user's session now opens the file, so it must stay readable by
-them (as installed: mode 0644, owned by root). Edit the file with the same care as before.
+affected. Every SD user's session opens the file, so it must stay readable by
+them (as installed: mode 0644, owned by root). Edit the file with care.
 
 ## The parameters on one screen: `tool.config`
 
@@ -136,9 +136,9 @@ tool.config
 
 A full-screen page in SDSYS's VOC only (a window of 140 columns by 43 lines or more). **It looks, and
 it can change 14 of the parameters**; it writes no file itself. A change is made by the verb
-`set.config` (see *Changing a parameter from SD*, below) through the root helper, and only after you
+`set.config` (see [Configuration: Changing a Parameter from SD](07a-sd-admin-configuration-changing-from-sd.html)) through the root helper, and only after you
 have typed a value, the page has checked it against the range SD enforces and a box has shown the
-exact command and been answered Run. The other 36 parameters are not changed from SD; editing the
+exact command and been answered Run. The other 44 parameters are not changed from SD; editing the
 file as root and restarting SD stays the way to change them.
 
 The page has three views. **P, the parameters**: one row for every parameter SD knows, from the table

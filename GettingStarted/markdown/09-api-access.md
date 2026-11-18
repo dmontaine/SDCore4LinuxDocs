@@ -16,9 +16,10 @@ take the same arguments and return the same things. **What changed is
 underneath: the login protocol, the port, the identity a session runs as, and
 what it is allowed to open.**
 
-> **SDSYS is the one exception, and its API access is local only**: never
-> from another computer, under any setting, and on this machine only through
-> the local Unix socket from a process running as `sdsys` — see
+> **SDSYS is the one exception: from another computer it has no API access
+> until the administrator opens that door**, and then only from the addresses
+> named; on this machine it comes through the local Unix socket from a
+> process running as `sdsys` — see
 > [Reaching the port is not getting in](#reaching-the-port-is-not-getting-in)
 > below. **Every other account has no API access until SDSYS gives it** —
 > `modify.account` *name* `api` (or `both`), or `api` at `create.account` — and
@@ -79,9 +80,7 @@ upgrade, this is the first thing to try.
 
 **Known issue: `TLS read failed`.** A refused login made through the C client
 library can report `TLS read failed` instead of *Invalid username or password*.
-The login is refused either way and nothing else is affected. It has been seen
-only on test computers running under VirtualBox (Fedora and Debian guests), and
-not on Windows.
+The login is refused either way and nothing else is affected.
 
 The old credentials cannot be converted because **the password was never kept
 anywhere, by design** — there is nothing to convert them from.
@@ -130,7 +129,7 @@ accepts is described under the pin, above.
 
 ## Reaching the port is not getting in
 
-A caller must clear three gates, in this order:
+A caller must clear two gates, in this order, and SDSYS has a door of its own:
 
 1. **Complete the SCRAM exchange** against a password held for that account —
    so **an account with no password cannot connect at all**.
@@ -138,18 +137,31 @@ A caller must clear three gates, in this order:
    route), which an account joins only when you give it API access:
    `create.account user fred api` or `... both` does that; `ssh` or `none` does
    not.
-3. **Not be SDSYS** — except in the one local case below.
 
-**SDSYS is admitted only on this machine, and only one way.** It is refused
-from every other computer, and also over the network port on this machine's
-own loopback (`127.0.0.1:4247`). It is accepted only on the local Unix
-socket, and only when the operating system reports that the connecting
-process itself runs as the Linux user `sdsys`. It must still complete the
-SCRAM exchange with SDSYS's own SD password — the third password the
-installer asks for — so a process that merely runs as `sdsys` is not enough
-on its own. There is no keyword that widens this: it is a rule the API
-enforces about *where* and *as whom* SDSYS connects. See
-[Accounts](05-account-types.html#sdsys-is-the-only-administrator).
+**SDSYS is never joined to `sdapi`**, because only `create.account` does that
+and SDSYS is not created that way, so the ordinary route is closed to it. It has
+two doors of its own, and in both it must still complete the SCRAM exchange with
+SDSYS's own SD password — the third password the installer asks for:
+
+* **On this machine**, through the local Unix socket only, and only when the
+  operating system reports that the connecting process runs as the Linux user
+  `sdsys` and that the login that started it is `sdsys`'s own, so `sudo -u sdsys`
+  or `su` does not pass. Over the network port on this machine's own loopback
+  (`127.0.0.1:4247`) it is refused.
+* **From another computer, only through a door the administrator opens.** Signed in
+  as `sdsys` at the machine, the administrator opens it for chosen addresses or
+  ranges with `remote.sdsys api on` *address ...* and shuts it with
+  `remote.sdsys api off`; as delivered it is shut, and an address that is not listed is
+  refused. The API must also be open to other computers (`remote.api`) for a client to
+  reach it at all. **A session that comes through this door is the administrator's,
+  with every right SDSYS has at the machine, so nothing but SDSYS's SD password
+  stands between the listed addresses and the administrator.** Open it only for
+  addresses you control, with a long password used nowhere else, and shut it when it
+  is not needed. The Administrator set's chapter *Remote Administration through the
+  API* says what opening it means.
+
+An API session into any other account has exactly that account's rights and
+nothing more. See [Accounts](05-account-types.html#sdsys-is-the-only-administrator).
 
 **Failed API logins are written to the audit trail**, with the reason and
 the address they came from. The line is written **before** the three-second
@@ -163,8 +175,9 @@ is recorded as well. See [Other hardening](13-hardening.html).
 | **Allowed** | everything inside its own account, and the shipped SDSYS files every account needs — messages, `syscom`, the dictionaries. Ordinary programs are unaffected |
 | **Not allowed** | opening, renaming, deleting or listing anything else |
 
-**A refused `OPEN` takes the `ELSE` branch**, distinguishing a containment
-refusal from a genuinely missing file.
+**A refused `OPEN` takes the `ELSE` branch and `STATUS()` is 3035**, which means
+*not permitted* rather than *not found*. That distinction matters when you are
+debugging: 3035 is a containment refusal, not a missing file.
 
 **A suspended account is refused here too, and deliberately says nothing
 about why.** `modify.account fred suspended` denies the API as well as ssh,
@@ -214,9 +227,7 @@ Authentication succeeded but the session could not take your Linux identity
 Because the privilege drop is one atomic system call that either succeeds
 or is checked and refused, there is no window in which a session could
 believe it is you while actually running as something else — the failure
-mode SD Core for Windows had to add a specific alarm for (a filtered
-access token that could silently fail to apply) does not have a Linux
-equivalent to guard against here.
+mode a filtered credential could have.
 
 ## `sh` and `OS.EXECUTE` over the API
 
@@ -227,9 +238,8 @@ enters the account for an API session — so an account that holds `sh-on` has
 the `sh` verb over the API, one that holds `os-on` has `OS.EXECUTE`, and a new
 account has neither. **That puts a shell behind the account's API credential,
 reachable from wherever the API port is** — weigh it before you turn either
-on for an account that also has the `api` route. (SDSYS is the exception: an
-API session carries no administrator flag and SDSYS holds no switch, so there
-is no shell over the API for it; use the local login.) An API session still
+on for an account that also has the `api` route. (SDSYS holds no `sh-on` or `os-on`
+switch; an administrator who needs a shell uses the local login.) An API session still
 runs as the real account (`setuid`, above), so what it can reach is bounded by
 that account's own file permissions. `SDCLIENT` in `sd.conf` is the further
 control, if you want one: non-zero disables file access outright for an API

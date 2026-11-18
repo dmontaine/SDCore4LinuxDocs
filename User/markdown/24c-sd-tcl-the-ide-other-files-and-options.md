@@ -4,24 +4,23 @@ Subtitle: Collection files, locks, operating system files, indenting, the option
 This page continues [Programs: The IDE's Keys](24b-sd-tcl-the-ide-keys.html).
 
 **A record of a collection file opens as the text of its JSON**, one element to a line, in a tab of its own. You edit the text as any other; **Ctrl-S parses it and
-writes the COLLECTION to the file**, and the tab keeps the text in the same layout (`jbuild` with the pretty
-mode, the layout `ct` shows) so that a text you typed compact is not "changed" for ever. Text that is not a
+writes the COLLECTION to the file**, and the tab keeps the text in the same layout
+(the layout `ct` shows) so that a text you typed compact is not "changed" for ever. Text that is not a
 JSON object or array is refused in a box that says where the parse stopped, and the record on the disk is
-untouched. **Edit as fields (F12) shows the collection in the fields view** (CED's editor, inside the IDE; it writes
+untouched. **Edit as fields (F12) shows the collection in the fields view** (it writes
 nothing and takes no lock) and brings the JSON text of what you kept back into the tab; the save is the IDE's.
-A record that is not there opens as a new `{}`. Compile, run, debug, catalog, SED, Save as and the include do
+A record that is not there opens as a new `{}`. Compile, run, debug, catalog, Save as and the include do
 not apply to such a tab (the IDE says so); **Write a copy keeps its JSON text in a record of an ordinary
 file, and a text cannot be saved into a collection file under a new name** (New record makes a record of
 it). A record that is neither an object nor an array (a plain value) is refused, and the lock goes back.
-The record is locked while the tab is open, as any record is. Find in the records still skips collection
+The record is locked while the tab is open, as any record is. Find in the records skips collection
 files.
 
-**A record open in a tab is locked for as long as the tab is open**, as in
-SED. If another session already holds it the tab opens **read-only** and the status line says which
+**A record open in a tab is locked for as long as the tab is open.** If another session already holds it the tab opens **read-only** and the status line says which
 user holds it: it cannot be changed or saved, and Write a copy keeps its text under another name.
-Closing the tab, quitting, a lost connection or any other way out gives the locks back; Run, Debug,
-SED and CED keep them while they run. **An IDE left open therefore blocks other sessions and batch
-writes on those records** until it is closed, AUTOLOGOUT ends it or the administrator's
+Closing the tab, quitting, a lost connection or any other way out gives the locks back; Run and Debug
+keep them while they run. **An IDE left open therefore blocks other sessions and batch
+writes on those records** until it is closed, `autologout` ends it or the administrator's
 `tool.sessions` page unlocks them. A new record is locked for its creation, and one that another
 session is making is refused. Compile, Run, Debug and Catalog work on a read-only tab that has no
 changes (they save first only when there is something to save).
@@ -31,18 +30,17 @@ path:/full/name`, or `path:/full/name` typed in the *File* entry of Open (Ctrl-O
 full name in the *Record* entry. **The name is the full path, as you typed it** (its case is not changed):
 it starts with a slash, has no `.` or `..` part, no doubled slash and no control character, and a path with
 blanks is fine on the command line. The tab strip shows `os` and the last part of the name; the status line
-shows the whole path (blanks inside a name are kept as typed). Open needs the file to exist (**New, Save as,
+shows the whole path. Open needs the file to exist (**New, Save as,
 Write a copy and Export make one: see *Making a file of the operating system* below**), and **compile, run,
-debug, catalog, SED, edit as fields, Save as and open the include do not apply to such a tab** (the IDE says
+debug, catalog, edit as fields, Save as and open the include do not apply to such a tab** (the IDE says
 why). **Write a copy does work on it**: it keeps the tab's text in a record, or in another new file of the
 operating system, which is the way out when a save failed or the file was replaced. How it behaves:
 
 - **The account's gates apply, and the kernel asks them.** An account without the OS gate can open and save
   only files inside its own directory (a link inside the account that leads out of it is outside); an account
   with `os-on`, and SDSYS, can reach what the Linux user can. A file in a VOC, a dictionary, a program file or
-  the shared account that the account may not change opens read-only. All of it is done by the program
-  `!ide_osfile`, which is **not** an internal program, so the kernel puts the same questions to it that it puts
-  to your own `openseq`, `readblk` and `writeblk`; the IDE itself contains no statement that opens a file.
+  the shared account that the account may not change opens read-only. The IDE asks exactly what your own
+  `openseq`, `readblk` and `writeblk` would be asked.
 - **It is written where it is.** Saving writes the new text over the file and cuts it to the new length: the
   same inode, owner, mode and links (a file renamed over it would change all four). The IDE reads the file once
   more just before it writes and asks *has been changed by someone else, Overwrite it?* (Cancel is the default)
@@ -82,25 +80,25 @@ holds `os-on` is trusted with the whole machine, so for a name outside its own d
 - **The file is made before anything else changes.** When it cannot be made, the tab, the record and its lock
   are as they were. The text read back from the disk is what the tab holds afterwards.
 - **A file that is there is never replaced.** A name taken by a file with content, by a link that leads nowhere
-  or by a file someone else made a moment ago is refused (*was not made: a file with that name is there already*,
-  message 11762); open it to change it. An existing **empty** plain file is filled. A name that is a directory,
-  device, pipe or socket says it is not a plain file (11749). **A name another session holds locked** is
-  refused in a box (11997) and **nothing is made** (the file is made only once its lock is
+  or by a file someone else made a moment ago is refused (*was not made: a file with that name is there already*);
+  open it to change it. An existing **empty** plain file is filled. A name that is a directory,
+  device, pipe or socket says it is not a plain file. **A name another session holds locked** is
+  refused in a box and **nothing is made** (the file is made only once its lock is
   held).
 - **The directory it goes in must be there**; the IDE never makes one. A missing directory, or a directory the
   operating system or the account's edit gate does not let this session make a file in, is refused with the
-  error number (11763).
+  error number.
 - **Text with a NUL or a byte from 248 to 255, or more than 2 MB (2,097,152 bytes), is refused before any file
-  is touched** (11765); the text stays in the editor.
-- **A write that fails** (a full disk) says so in a box (11764): the file was made and an empty or partly
+  is touched**; the text stays in the editor.
+- **A write that fails** (a full disk) says so in a box: the file was made and an empty or partly
   written one may be there. The text is still in the editor.
 - **The new file's mode is 0666 less the session's umask**, the mode `openseq ... creating` gives (the IDE has
   no setting of its own); SD sets the umask to 002 when a session starts, so the mode is 0664 unless the session
   has changed it with `umask`. Its owner is the Linux user the session runs as.
-- **Nothing outside the account is reachable without the account's operating system access.** The IDE contains
-  no statement that opens a file: the file is made by `openseq ... creating` in `!ide_osfile`, so the kernel's
-  checks (the account's OS gate, the edit gates for a VOC, a dictionary, a program file or the shared account)
-  apply as for a program of your own. An account without the access can make files inside its own directory only.
+- **Nothing outside the account is reachable without the account's operating system access.** The file is made
+  as `openseq ... creating` makes it, so the account's OS gate and the edit gates for a VOC, a dictionary, a
+  program file or the shared account apply as for a program of your own. An account without the access can make
+  files inside its own directory only.
 
 **A record that holds characters outside ASCII (bytes 128 to 247) can be edited**: SD stores those bytes and
 gives them back unchanged. The editor works a byte at a time, so a UTF-8 character takes more than one cell, and

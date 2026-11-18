@@ -134,7 +134,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `flush.dh.cache` | Added | makes every process close the dynamic files it keeps cached |
 | `for` with a list | Added | a loop over a list of values, and over the elements of a delimited string, with a delimiter |
 | `get var from device` | Added | reads from a FIFO, port, character device or `openseq` file a character at a time, with a timeout |
-| `getlocks()`, `testlock()` | Added | information about file and record locks; the owner of a task lock |
+| `getlocks()`, `testlock()` | Added | information about file and record locks; the owner of a task lock; `getlocks(file, user)` of a user number outside the user table, or one nobody holds, gives nobody's locks <!--s 508 42--> |
 | `getpu()` | Added | the `pu$pathname` key (`pu$form.queue` was added and removed again, see REMOVED) |
 | `groupstore` and `revremove` | Added | `groupstore`, `revremove`, `setrem`, `rmvd()`: statements and functions over delimited strings |
 | `$ifdef`, `$ifndef` | Changed | accept `and` and `or` between token names |
@@ -252,9 +252,10 @@ File handling: opening, indexes, triggers, print files, sorting, sequential file
 | `l-type` dictionary links | Added | usable in an `i`-type; links may follow links, up to ten, and reach `e` items |
 | `list.common detail` | Added | shows where each common block was created |
 | `list.index` | Changed | the report may go to a printer |
-| `list.triggers` | Added | every trigger subroutine used by the files of an account, multifiles, dictionaries and directory files included |
+| `list.triggers` | Added | every trigger subroutine used by the files of an account, dictionaries and directory files included |
 | print unit mode 3 | Changed | takes an update lock on the `$hold` item while it is written |
 | `rebuild.all.indices` | Added | rebuilds the indices of every file in the account |
+| record id spelling | Changed | writing `R2` over a record held as `r2` replaces it and always keeps the first spelling (a write of a different size took the new one) |
 | `select` of a directory file | Changed | fixed: at the open-file limit it closes the oldest cached file and goes on |
 | `set.file` | Changed | the target may be a `q`-pointer; a `q`-pointer with no file name points at the VOC |
 | `set.mode` | Added | the permission bits of records of a directory file |
@@ -307,6 +308,7 @@ The kernel, `sd.conf`, and the numbered keys.
 | `deadlock=2` | Added | saves the lock tables when a deadlock is found |
 | `fileinfo()` | Added | the keys 1022 to 1040 as the openQM manual numbers them; `fl$seqtype`, `fl$locks`; 1021 now answers the user numbers |
 | `intprec` | Changed | default 11 |
+| kernel faults | Changed | fixed: `getlocks(file, user)` with a user number out of range read outside the user table; a time conversion with negative parts or long hours overran its buffer, and a prefix strip in a conversion copied over itself |
 | lock table | Changed | the time each lock was taken and each wait began is noted; a program that filled the table can be logged out |
 | `numlocks` | Changed | range checked, 1 to 32767 |
 | `phantoms=u,n` | Added | keeps user numbers for phantoms started with `user` |
@@ -369,9 +371,9 @@ Commands and VOC verbs that every account has, and the command language.
 | `move.list` | Added | the command form of `movelist` |
 | `multisort` | Added | `!multisort` sorts several related lists by one of them |
 | `option` words | Added | `dir.dtm`, `git`, `inherit.ownership` and `spool.command` (twenty more were added and removed again, see REMOVED) |
-| `oscopy` | Added | copy an operating system file; `overwrite`, `append` |
+| `oscopy` | Added | copy an operating system file; `overwrite`, `append`; `!oscopy` and `!ioscopy` (a whole tree) for programs |
 | `pause`, `ctrl-r` search | Changed | a session whose input has ended no longer spins at 100% CPU at `pause` or at the search prompt |
-| `phantom` | Added | `no.msg`, `data`, `log`, `group` and `user` options; `!phlog` gives a phantom's log record; a phantom started while SD is suspended gives back its place |
+| `phantom` | Added | `no.msg`, `data`, `log`, `group` and `user` options; `!phlog` gives a phantom's log record; a phantom started while SD is suspended gives back its place; a grouped phantom whose parent has gone ends at once |
 | phantom and terminal lists | Added | `list.phantoms`, `list.term.types`: the phantoms and no one else; the terminal types |
 | phantom that cannot start | Changed | the reason is written to the error log (`phantom: cannot start a phantom from <path> - <reason>`); nothing is printed on the terminal |
 | `private vocabulary` | Added | `$private.voc`: a file of commands searched after all other command sources |
@@ -490,7 +492,7 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | delete.file name,part | Removed | delete.file part (each part is an ordinary file); the multifile cancel question (6133) is gone |
 | open "name,part" (BASIC) and file,part in TCL verbs | Removed | open the part by its own VOC name; a comma is part of the name, so "a,b" is only found if a VOC record is called a,b |
 | VOC field 4 (multifile component list) | Removed | none; the field is ignored and the record is read as an ordinary F-pointer |
-| PARSER$MFILE (!parser key 5) | Removed | PARSER$GET.TOKEN |
+| `parser$mfile` (`!parser` key 5) | Removed | `parser$get.token` |
 | error 3031 (component not found) and 3032 (no component name) | Removed | none; the numbers are retired |
 | the Pick style matrix in the run-time system | Removed | nothing could make one since `$mode pick.matrix` went; the matrix descriptor type, its opcode (reserved), its flag and their branches in the kernel, the debugger and the process dump are gone, with messages 1136 and 1139, `readnext` mode 0, the wait path of a remote `write`/`delete` under `autolock`, and the option-flags field of a phantom's start-up record and its seal. No program changes |
 | dictionary field numbers 9998 and 9999 | Removed | a `d`, `a` or `s` item whose location was 9998 gave the item count and one whose location was 9999 the record length in bytes; they are ordinary field numbers now. Write an I-type with `@ni` or `len(@record)` |
@@ -556,7 +558,7 @@ has, with the changes they made.
 | `sd-elevate sdsys-ssh` | Added | `on`, `off` and `status`: opens, shuts or reports the sdsys arm of sshd (shut as delivered; `on` lets `sdsys` in over ssh with its password alone) |
 | `sd-elevate setpw`, `passwd` and `userdel` | Changed | act only on a user carrying the `SD account` comment, as `userdel-home` always did; `setpw` sets a first password only |
 | `sd-on` and `sd-off` | Added | per-account switch: programs may reach files under the directory of any SD account the user could `logto` |
-| `sdsys` operating system user | Changed | a member of every user account's group as delivered, so SDSYS has read and write access to the `/home/sd` tree (the owner's ruling of 1 November 2026, "up to the administrator the level of external security"); `create.account` does it for a new account and the install, once, for the accounts already there (marker `/home/sd/$sdsys.access`); `sdsys-off` takes it out of one |
+| `sdsys` operating system user | Changed | a member of every user account's group as delivered, so SDSYS has read and write access to the `/home/sd` tree; `create.account` does it for a new account and the install, once, for the accounts already there (marker `/home/sd/$sdsys.access`); `sdsys-off` takes it out of one |
 | `sdsys-on` and `sdsys-off` | Added | per-account switch for the `sdsys` user's membership of the account's group (SDSYS writing inside the account); on as delivered, `sdsys-off` tightens one account, `sdsys-on` puts it back and repairs the modes; the install joins only the groups of registered accounts and repairs each at its registered place |
 | `set.batch` | Added | allows or stops allowing a paragraph or sentence that an account may run from the command line (`sd -a<account> <command>`, as a scheduled job does), after checking it in that account's VOC; none is allowed as delivered; until now `batch.jobs` was edited by hand |
 | `set.config` | Added | changes one of 14 tuning parameters of `sd.conf` (administrator, through the root helper): a name on the helper's list and a whole number inside the range SD enforces; the old file is kept as `sd.conf.bak` |
@@ -574,7 +576,7 @@ has, with the changes they made.
 | `tool.audit` | Added | full-screen page that reads the audit trail from its end, a screen at a time: filters by time, event, account, user and text, go to a time, follow, the rotated files, and the lines shown saved to a record; it changes nothing else |
 | `tool.backups` | Added | full-screen page for backups and restores: the saved directory, the archives in it with each manifest, who else is signed on (a backup and a restore need everyone else out), and `backup.account`, `restore.account` and `set.backup.directory` behind a box |
 | `tool.config` | Added | full-screen page that shows every `sd.conf` parameter with what SD is running with, what the file says, the default and when a change takes effect, and names a line SD does not know; `E` changes one of 14 tuning parameters through `set.config` behind a box answered Run, and shows why and the line to add by hand for the rest |
-| `tool.config` and `tool.remote` status line | Changed | the status line says "Reading the settings (a few seconds)..." while the settings are read |
+| `tool.config` and `tool.remote` status line | Changed | the status line says "Reading the settings (a few seconds)..." while the settings are read, and "Making the change (a few seconds)..." after Run is chosen until the command has run |
 | `tool.gates` | Added | full-screen matrix of every account against every gate; changes go through `modify.account`, never by themselves; A (all gates on) and N (all gates off) queue every gate of the cursor's account at once, to be trimmed before R runs them; in any other account the same verb is a read-only page of what that session may do |
 | `tool.gates` home gate | Added | a home column: ON starts the account's sessions at the home screen, off at the command prompt (`start-menu`, `start-terminal`); an account given neither follows the installer's answer |
 | `tool.gates` xfer gate | Added | an xfer column for file transfer (`xfer-on`, `xfer-off`), read from the register as the transfer server reads it; user accounts only; turning it ON asks for the account's name; the matrix now shows 15 letters of a name, the box below the whole name; the holder's page has the row too |
@@ -585,7 +587,8 @@ has, with the changes they made.
 | `tool.remote` | Added | full-screen page for everything that reaches SD from outside: the API and ssh doors as the machine reports them (chosen from a list, changed after a box, and the word open to turn one on), the routes of each user account, the SDNet servers (delete, define with the terminal given to `set.server`), who is connected, this machine's TLS identity, and the `sdsys` ssh login (`remote.sdsys`: open it after a box and the word open, or shut it) |
 | `tool.sessions` | Added | full-screen page of sessions and locks; logs a session out, releases a lock, stops new logins |
 | `update.accounts` deletion list | Changed | after the copy from `newvoc` it removes from the account's VOC the records on SD's deletion list (`sdsys/voc_removed`), but only the record SD shipped (not one of your own, not a `[locked]` one unless it is a verb), after saving a copy, and audits it; before `newvoc.mods` |
-| `update.accounts all` by SDSYS | Changed | an account whose VOC SDSYS cannot write (the `sdsys` user is not in its group) is skipped with a line that says so, and the command goes on and ends with the counts, where it stopped with error 3018 at the first one; the administrator's own VOC is updated from `voc_template` |
+| `update.accounts all` by SDSYS | Changed | an account whose VOC SDSYS cannot write (the `sdsys` user is not in its group) is skipped with a line that says so, and the command goes on and ends with the counts, where it stopped with error 3018 at the first one |
+| `update.accounts` in the SDSYS account | Changed | the administrator's own VOC is updated from `voc_template`, not `newvoc`, so a page that is the administrator's own (`tool.gates`) is not written over by the holder's version |
 | VOC descriptions | Changed | `backup.account`, `restore.account`, `settings.report` and `tool.jobs` carry a one-line description in the VOC |
 | `voc-on` and `voc-off` | Added | per-account switch for saving a change to a VOC |
 | `XFER` and the transfer limits | Added | `sd.conf`: `XFER` (0 as delivered; 1 lets accounts with `xfer-on` transfer files), `XFERFILE` (10 MB a file), `XFERSLOT` (100 MB a transfer), `XFERWAIT`, `XFERIDLE`, `XFERMAX` (60 minutes) and `XFERKIND` (the extensions taken; blank is any plain text); edited by hand |
@@ -694,7 +697,7 @@ Three simple layers, with no vault and nothing on by default.
 | index, deleting many records | Changed | fixed: in an index of three levels, removing the last value of a block took its whole branch out of the index (lookups missed records that were there, deleted values stayed listed), and a branch left with one block left its neighbors pointing at a freed block |
 | index on a right justified item | Changed | a new one keeps its keys in one order, the empty key, then numbers by value, then text, so a scan and a lookup agree when the item holds both numbers and text; building it no longer loses ids under keys equal as numbers (1, 01, 001); an existing index keeps its old order until it is made again, and an older SD cannot open a file holding the new kind |
 | record id counter | Changed | fixed: `write ... creating.seqkey` could give an id out twice after another write of the file header |
-| `sdfix`, `sdidx`, `sdconv` | Changed | fixed several faults (see the changelog); `sdidx -m` says why it cannot make the directory |
+| `sdfix`, `sdidx`, `sdconv` | Changed | fixed several faults (see the changelog); `sdidx -m` says why it cannot make the directory; `sdidx` refuses a link put in place of a file's primary subfile instead of following it |
 | sort of equal or ordered keys | Changed | fixed: a long run took minutes; 100,000 equal keys took 168 seconds, now a fraction of one |
 | sort that uses work files | Changed | fixed: equal keys came out in an order that depended on `sortmem` and `sortmrg`, and a `srt$unique` sort could keep a duplicate that was not the first to arrive; it now gives what the same sort gives in memory |
 
@@ -742,6 +745,7 @@ Three simple layers, with no vault and nothing on by default.
 | focus in `mono` | Changed | the role `focus` is reverse, bold and underline (it was plain reverse, the look of the selected row), and in `paper` it is underlined too |
 | `color fg,bg` | Added | on the controls of a screen: label, entry, combo, check, slider, radio, list, button, progress |
 | key decoding | Changed | a graphical terminal's F1 to F12, arrows, Home, End and the modified keys (`ctrl-left`, `shift-up`, `ctrl-pgup` ...) are read in both cursor-key modes; an unknown control sequence is ignored, not typed; a byte of 128 or more is never a command; a cut-short mouse report is ignored, not taken as the end of the input |
+| `keycode()` Alt-letter | Added | `keycode()` can return an Alt-letter (`bindkey(, -7)`, off by default) |
 | Linux console keys | Changed | on the Linux text console Shift-F1 to Shift-F8 (which the kernel sends as F13 to F20) and Shift-Tab (which it sends as Esc Tab) are read as those keys, for the terminal type `linux` only; the IDE's previous pane and the editor's find previous work there |
 | Linux console mouse | Added | on a text console SD takes the mouse from the gpm daemon (terminal type `linux`, input a text console, not with `nomouse`) and gives programs the same reports an emulator gives; the installer installs `gpm`; no mouse while the daemon is stopped, and not in SED |
 | containers and viewports | Added | `screen container`, `screen viewport`: a form bigger than its window: nesting, clipping, scrolling by keys, wheel and bars |
@@ -785,6 +789,7 @@ Three simple layers, with no vault and nothing on by default.
 | remote `select` | Changed | fixed: a server error stopped the program with an abort |
 | SDNet logins | Added | `set.netlogin`, `delete.netlogin`: a person's login on a server, kept as derived values and never the password |
 | `set.server` | Added | defines a server; `connect` shows its key hash for you to confirm |
+| `settings.report` | Changed | the `[api]` section shows the hash of the API's public key, the figure another administrator pins |
 | tls reads | Changed | fixed: a half record or a late ticket made a read wait without limit |
 | uninstall | Changed | removing SD with its accounts also removes the groups `sdfiles`, `sdfileswrite` and `sdfilesadmin`, with `sdssh`, `sdapi` and `sdaiusers` |
 
@@ -805,6 +810,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | audit trail rotation | Changed | the audit daemon rotates the trail by size as it writes (1 MB, to `audit.<date>-<time>`, new file with the old owner, mode and append-only flag), so a machine that never restarts SD still rotates; `sd -start` uses the same code |
 | audit trail writer | Changed | `sdlnxd` (root) writes the audit trail: a session sends each record over the Unix socket `/run/sd/audit.sock` and the daemon stamps `user=` and `pid=` from the kernel's credentials of the sender, so a person with a shell can no longer add a line that names someone else; the file is mode 0600 (it was 0620); with no daemon a session appends itself, which only `sdsys` and root can do, and the journal copy is then the only one |
 | audit trail, control characters | Changed | fixed: a value written to the audit trail that held a newline started a false line; a control character, DEL or a mark is now written as `?` |
+| `backup.account` and a group that cannot be read | Changed | the backup stops with "Cannot read the Linux group" when it cannot read whether the account's user is in `sdssh`, `sdapi`, `sdfiles`, `sdfileswrite`, `sdfilesadmin`, `sdaiusers` or `sdsshnokey`, instead of recording "not a member": a restore from such a backup could turn ssh key sign-in on |
 | control codes in data | Changed | text from data (a record, a lock id another user made, a file name, a command shown by `pstat`) cannot send escape sequences to a terminal: the screen library draws control characters as reverse letters, the kernel's lock list, `getlocks()`, `pstat`, the `profiler` and `hsm` displays show them as `?`; `kernel(k$show.safe, text)` gives a program the kernel's rule |
 | `create.account` taking over a leftover Linux user | Changed | on a restore, the user leaves every route group (ssh, the API, the files routes, the AI) the new account does not ask for; it used to keep the routes of its earlier account |
 | `delete.account` and a kept Linux user | Changed | a Linux user that is kept also leaves `sdfiles`, `sdfileswrite`, `sdfilesadmin` and `sdaiusers`, so a later account for the same user gets none of those rights |
@@ -813,11 +819,12 @@ Fixes that close a way round a gate, and what the gates now ask.
 | error log mode | Changed | `errlog` is 664 (it was 775): every session appends to it and nothing runs it |
 | files root runs | Changed | the installer makes `/usr/local/sdsys/bin` and every file in it `root:root` with no group or other write, and makes `bin` immutable (`chattr +i`), so the `sdsys` user cannot replace `sd`, `sdlnxd`, `sdidx` or `pcode`, or rename `bin` away and put its own in its place; a failure to seal is warned about in the closing summary too |
 | global catalog modes | Changed | the kernel refuses to load a global catalog object that others or the group `sdusers` can write (message 11930), and the installer leaves everything in `gcat` 0755 after its last compile (a fresh install left `gcat/$cproc` 0664) |
+| `$internal` | Changed | the compiler accepts it only in a session that is both in internal mode and the administrator, not from internal mode alone |
 | internal programs | Changed | the internal mark in a program's object code is honored only for an object from the global catalog, which only SDSYS can write, or for the administrator; any other object that carries it is an ordinary program, held to every gate |
 | `$ipc` mode | Changed | directories 2770 and files 0660, `sdsys:sdusers` (it was 775): an operating-system user outside `sdusers` can no longer read the commands, `DATA` lines and messages that every SD user's process leaves in it |
 | named common | Changed | fixed: a program that ended while holding objects in named common freed them twice |
 | named common with a `$` or `_` name | Changed | the system's own common blocks: only an internal program may declare or join one; any other program stops with message 11598 |
-| `netdirs` | Added | `sd.conf`: directories, separated by semicolons, that an account without `os-on` may read and write by pathname; no line as delivered; filling it loosens every such account |
+| `netdirs` | Added | `sd.conf`: directories, separated by semicolons, that an account without `os-on` may read and write by pathname; no line as delivered; filling it loosens every such account. An entry that is not an absolute path to an existing directory, is `/`, or holds or lies inside the SD system directory, the directory of `sd.conf`, `usrdir`, `grpdir` or any account is ignored and named in the error log when SD starts; at most 16 entries; a value over 191 characters is refused by name |
 | `openseq` that fails | Changed | fixed: an `openseq` that took the else branch for an absent file kept the lock on its name until the file variable was closed; the shipped programs now close it there |
 | operating system paths | Changed | `dir()`, `select.dir`, `oscopy`, `!oscopy`, `!ioscopy`, `deleteseq` of a path, `opentemp`, `digest` of a file, `setptr ... as pathname`, `setpu`, the embedded Python and a VOC pointer out of the account each ask the account's `os` switch, and `sd-on` for another SD account |
 | `ospath()` in the shared account | Changed | the keys to delete (5), make a directory (13) and make a path (14) are refused inside the shared account for anybody but SDSYS (false, `status()` the permission error); the `$internal` opcode already did, the function every other program uses did not |
@@ -827,7 +834,9 @@ Fixes that close a way round a gate, and what the gates now ask.
 | print file refusal | Changed | outside the account: the message names the account instead of printing `%1` |
 | privileges of a session | Changed | the administrator, `sh`, `os.execute` and `sd.accounts` bits and the gates are held in the process; the copy in the shared segment, which any SD user with a shell could change, is only shown by `listu` |
 | scheduled administrator job | Added | a run of `sdcore-job-`*name*`.service` is made the administrator only when the process is in that unit's control group (only root can start it) and the root-owned definition names exactly the command the session was started with; every audit line of the run ends `job=`*name*; any other `sdsys` session with no login of its own is still refused |
+| `sd -cleanup`, `sd -u` | Changed | run only for root or the `sdsys` user; anybody else is told "Command requires administrator privileges" (`-u` lists every session on the machine, `-cleanup` removes other people's entries from the user table) |
 | `sd -d`, `-m`, `-suspend`, `-resume` | Changed | need root, as `-start` and `-stop` do; any member of `sdusers` could suspend every update or dump every session |
+| `sd -internal` | Changed | refused with an account other than SDSYS named (`-a`*account*); without one it goes to SDSYS as before |
 | `sd` inside a shell SD started | Changed | refused: the shell that `sh` and `os.execute` start is marked, and `sd` answers "SD is already running in this session - type exit to return to it." (a guard against nesting, not a wall) |
 | `sd.conf` | Changed | every new session reads it: an edit to `SH`, `SPOOLER`, `USRDIR` and the other per-session settings reaches sessions started after it, and a bad line stops new sessions from starting until it is repaired (SD and running sessions are not affected) |
 | `sd.conf` `SH`, `SH1`, `STARTUP` | Changed | a value longer than 80 characters is refused by name; it used to overwrite the settings stored after it |
@@ -881,7 +890,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | home screen Receive files | Added | a tile that runs `receive` and waits for Enter after it, shown only where a transfer can be opened (`XFER` on, the person's own account, the `xfer` gate) |
 | home screen refused tile | Changed | a tile whose command is refused shows its message until a key is pressed, and the home screen no longer ends |
 | home screen small window | Changed | an account that starts in the home screen is signed out when the window is too small for it, even with the Terminal tile on (it used to be left at the prompt); SDSYS always starts at the prompt |
-| home screen sub-menus | Added | a tile can open a second page of tiles with a Back tile, Esc and the path on the status line; eight deep; the delivered page declares none yet |
+| home screen sub-menus | Added | a tile can open a second page of tiles (a tile whose action is `menu:name`) with a Back tile, Esc and the path on the status line; eight deep; the delivered page declares none yet |
 | home screen tiles | Changed | a tile for a `tool.` page whose verb is not in the account's VOC is not shown |
 | home screen version | Added | the date line in the header ends with the product and its version: `SD Core for Linux L2.0-0` |
 | `ide` | Added | tree, tabs, compile errors table, find, run, catalog and debug; Ctrl-E zooms the editor to the whole screen, and Go > Edit in SED hands a record to `sed` |
@@ -967,7 +976,7 @@ feature was already there, or it does not apply. They are here so that nobody lo
 | 64-bit versions | None | no change in this release |
 | `between` in a `when` clause | None | no change recorded |
 | `*` comment line in a paragraph | None | already works |
-| configuration file location | None | `sd.conf` is already in the SDSYS directory |
+| configuration file location | None | `sd.conf` is `/etc/sd.conf`, as it was in L1.1-3 |
 | `$echo` | None | already there in L1.1-3 |
 | `errlog` permissions | None | the daemon asks for 0777 and the installer sets 775 (group `sdusers`): every SD user can write it, world write is deliberately not given |
 | `formlist` bad data | None | no change recorded |
@@ -982,8 +991,8 @@ feature was already there, or it does not apply. They are here so that nobody lo
 | `matchfield()` `n-mx` pattern | None | at the start of the template: no change recorded |
 | memory alignment in `redim` | None | no change recorded |
 | negative default argument | None | for an optional argument: no change recorded (default argument values are new in this release, see BASIC) |
-| Pick wildcards in `ne` | None | nothing to fix: the Pick wildcards (`option pick.wildcard`) were removed on 27 October 2026 |
-| `qmbasic.warnings` | None | `sdbasic.warnings` was removed on 27 October 2026 with the three warning options |
+| Pick wildcards in `ne` | None | nothing to fix: the Pick wildcards (`option pick.wildcard`) were removed in this release |
+| `qmbasic.warnings` | None | `sdbasic.warnings` was removed in this release with the three warning options |
 | `$qmcall` | None | already there as the `$sdcall` flag, which lets a restricted client session call a subroutine |
 | `-quiet` | None | `sd -quiet` was already accepted; SD has no VOC update question for it to suppress |
 | `readv` fatal error | None | no change recorded |

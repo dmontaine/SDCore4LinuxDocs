@@ -68,12 +68,12 @@ sizes, the printer's defaults); none is a door, a path, a command, a log or a se
 | `SORTMRG` | 2 to 10 | session |
 | `USPLIT` | 0 to 1 | restart |
 
-**The other 37 are not changed from SD**, and the helper refuses them by name (a name it does not
+**The other 44 are not changed from SD**, and the helper refuses them by name (a name it does not
 know at all it refuses with a different sentence, because an unknown name in `sd.conf` stops SD from
 starting). They are the doors and what they allow (`NETDIRS`, `NETFILES`, `SDCLIENT`), every
 path and command, the log, dump and diagnostic settings, the security throttle `PWDELAY`, the sizes
 and combinations that SD does not check or checks against each other, and the ones that change
-what existing programs compute. Change them by hand, as before. The page
+what existing programs compute. Change them by hand. The page
 shows the same sentence in its box:
 
 | Parameter | Why it is not changed from SD |

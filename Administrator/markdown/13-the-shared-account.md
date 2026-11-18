@@ -96,7 +96,7 @@ any name. The administrator's own `open` does not follow `shared` either: SDSYS 
 | `shared.read` and `shared.write` on | yes | yes | only if `dict-on` too | no |
 | `shared.read` off | not found | — | — | no |
 | the local SDSYS session (`logto shared`) | — | yes | yes | **yes** |
-| SDSYS over the API | yes | yes | yes | no |
+| SDSYS over the API (door opened by `remote.sdsys api on`) | yes | yes | yes | **yes** |
 | a member of `sdg_shared`, in `logto shared` | — | only if the account `shared` has `shared-write-on` | likewise | no |
 
 * **A record write** — `write`, `writev`, `matwrite`, `delete`, `clearfile`, and the verbs that save
@@ -169,9 +169,11 @@ with the right can reach (SDSYS's own `open` does not follow `shared`).
 5. **Withdrawal takes effect at the person's next entry.** `shared.read` is tested when a file
    is opened: a file already open stays usable until the person signs off or enters another
    account. `shared.write` is tested at every write.
-6. **SDSYS over the API can write records in `shared` but cannot change its structure.** An API
-   session of `sdsys` has no administrator flag, so it follows `shared` (both switches are on for
-   it) and cannot make a structure change. Structure changes are made at a local `sdsys` terminal.
+6. **SDSYS over the API is the administrator.** When the administrator has opened that door
+   (`remote.sdsys api on`), a session of SDSYS runs with SDSYS's full rights, as at the keyboard
+   ([Remote Administration through the API](22a-remote-administration-through-the-api.html)), so
+   it can write records in `shared` and change its structure. So can a session of SDSYS that
+   signs in over the API from this machine.
 
 ## What is not done
 

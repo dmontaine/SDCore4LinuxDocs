@@ -19,7 +19,7 @@ in.**
 programmers use day to day:
 
 ```
-catalog bp myprog          private catalogue, this account
+catalog bp myprog          private catalog, this account
 catalog bp myprog local    this account's VOC
 ```
 
@@ -61,24 +61,21 @@ There are two SD keeps itself, and they are not interchangeable.
 
 **A third place is worth checking, and it is not a file SD writes at
 all: `journalctl`.** API connections and `sd-elevate`'s own actions go to
-syslog (`syslog(3)`, `logger`), not to `errlog` — a real difference from
-SD Core for Windows, which keeps a dedicated file for both. Filter by tag:
+syslog (`syslog(3)`, `logger`), not to `errlog`. Filter by tag:
 
 ```sh
 journalctl -t sd-elevate
 journalctl SYSLOG_IDENTIFIER=sdlnxd
 ```
 
-**`sd-elevate` itself keeps no comprehensive action log the way SD Core for
-Windows's elevation helper does — a real, honestly-stated gap, not a
-different mechanism standing in for it.** What exists: one `logger` call
-recording when an account's own SD password is set, the SD-level `audit`
-trail for account creation/deletion/grants (which `sd-elevate` performs on
-SD's behalf), and `sudo`'s own logging of every invocation it authorizes
+**`sd-elevate` keeps no separate log file of its own.** What records its work:
+a `logger` line for some of its actions (for example when an account's own SD
+password is set), the SD-level `audit` trail for account
+creation/deletion/grants (which `sd-elevate` performs on SD's behalf), and
+`sudo`'s own logging of every invocation it authorizes
 (`journalctl _COMM=sudo`, or `/var/log/auth.log` depending on the
 distribution's syslog configuration) — which is where to look for *"the
-account was not created — what actually happened"* until a dedicated log
-exists.
+account was not created — what actually happened"*.
 
 ### API connections in the journal
 
@@ -145,7 +142,9 @@ a definition that is not there.
 ### The page is 140 × 43, not 80 × 24
 
 **SD's default terminal size is 140 columns by 43 lines.** **A terminal narrower than that makes wide reports
-look wrapped or truncated**, which reads as a formatting bug and is not one.
+look wrapped or truncated**, which reads as a formatting bug and is not one. SD's own
+full-screen programs (`sed`, `ced`, `ide`) want at least 140 columns by
+43 lines and refuse a smaller window.
 
 `term` reports the size in force, above the `Device` line:
 

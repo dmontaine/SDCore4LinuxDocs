@@ -49,8 +49,8 @@ account's own user and `sdsys`.
 **Do not run it with `sudo` unless you must.** New files are created with the
 owner and umask of whoever runs the program. `-R` writes a new overflow subfile
 (`%1`) and renames it into place, so after a run as root that file belongs to
-root and the account's own user may no longer be able to write it. This was
-check with `ls -l` after any run you did not make as
+root and the account's own user may no longer be able to write it. Check
+with `ls -l` after any run you did not make as
 the file's owner, and `chown` it back.
 
 It reads the configuration file named by the environment variable `SD_CONFIG`
@@ -66,8 +66,8 @@ sdfix {options} pathname ...
 A pathname is the file's directory, as an operating system path, not an SD
 file name and not a VOC entry. Options start with `-`, may be joined in one word
 (`-BF`), and are not case sensitive. Several files may be named; each is
-processed in turn. A path that is not an SD hashed file is skipped without
-comment, and if none was found the program says *No SD hashed files found
+processed in turn. A path that is not an SD hashed file is skipped, with only
+the line `SDFIX processed:` *name* `Status:` *n*, and if none was found the program says *No SD hashed files found
 matching given name(s)*.
 
 | Option | What it does |
@@ -75,7 +75,7 @@ matching given name(s)*.
 | `-C` | Check the file. This is the default when no other mode is given. |
 | `-F` | Check, and **fix every error it knows how to fix, without asking.** Not combinable with `-Q`. |
 | `-Q` | Check, and **ask `Fix?` at each error it knows how to fix.** Answer `y` or `n`. Not combinable with `-F`. |
-| `-R` | Recover disk space: shrink the primary subfile and rewrite the overflow subfile with the free blocks squeezed out. **Not combinable with `-F` or `-Q`**: `-r cannot be combined with -f or -q: run the fix first, then -r on its own`, status 1, and the file is not touched. (Older copies accepted the combination, ran neither the check nor the repair, and recovered space from an unchecked file.) Add `-C` or `-Z` to make it check first. |
+| `-R` | Recover disk space: shrink the primary subfile and rewrite the overflow subfile with the free blocks squeezed out. **Not combinable with `-F` or `-Q`**: `-r cannot be combined with -f or -q: run the fix first, then -r on its own`, status 1, and the file is not touched. Add `-C` or `-Z` to make it check first. |
 | `-Z` | Clear the dead space at the end of each group (implies `-C`). **Writes to the file.** |
 | `-B` | No progress bar. Use it when you log or redirect, since the bar is drawn with carriage returns. |
 | `-V` | Verbose. Changes the output of `-R` only; it does nothing to a check. Not listed in the usage text. |
@@ -154,11 +154,10 @@ Fix? Y
 ```
 
 The first error is still there on the next run; the second is gone. `-F` does
-the same for every error, with no questions. Which errors can be fixed, and how,
+the same for every error, with no questions (`Corrected by resetting to 1`). Which errors can be fixed, and how,
 is on the next page of this set, [sdfix: what it checks and repairs](14a-sdfix-checks-and-repairs.html).
 That page also covers the dump-and-rebuild of mis-hashed groups, interactive
-mode, and the faults in the tool that were found while writing these pages and
-fixed afterwards.
+mode, and what the tool will not do.
 
 ## Recovering space with `-R`
 
@@ -208,8 +207,7 @@ Dead space cleared in 0 block(s)
 
 It walks the groups in the primary subfile and the overflow blocks chained from
 them. It does **not** clear free overflow blocks (those on the free chain), and
-it does not visit the blocks that hold a large record's data (source, not
-provoked). Unlike a plain check it
+it does not visit the blocks that hold a large record's data. Unlike a plain check it
 **writes**, so back up and close the file first, as for `-F`.
 
 ## Writing it down

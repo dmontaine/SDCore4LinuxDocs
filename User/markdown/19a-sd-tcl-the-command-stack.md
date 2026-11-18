@@ -35,7 +35,9 @@ anything else ends the chance, and `.c-` then has nothing to undo.
 `.s` and `.r` together are the whole workflow: type the lines, then save them
 under a name, then recall them later to edit. **`.s` writes a sentence when the
 range is one line and a paragraph when it is more**, so the record type follows
-from what you saved rather than from anything you say.
+from what you saved rather than from anything you say. **A new name is stored in
+lower case**, as every VOC name is; saving over a record that already exists keeps
+that record's name.
 
 `.x` *file* *id* is the one that reaches outside the VOC — the file name and the
 record id are each folded as typed, then lower, then upper.
@@ -186,9 +188,9 @@ it**, in any account type, so the name is not even recognized. The F1 key at the
 command prompt reaches the same empty routine and therefore does nothing. **This
 documentation is the help system.**
 
-**Unlike SD Core for Windows, `umask` is a real, typeable verb here** —
-internal verb 35, with a VOC record (`newvoc/umask`) in every account, kept
-deliberately because it is a real, live mechanism on this port. See
+**`umask` is a real, typeable verb** —
+internal verb 35, with a VOC record (`newvoc/umask`) in every account. It is a
+live mechanism: it sets the permissions of the files SD and its shell commands create. See
 *Accounts and Security* in the **administrator documentation** for what it
 does and why Linux keeps it. `umask()` from SD BASIC works too.
 

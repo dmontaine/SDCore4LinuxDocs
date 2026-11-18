@@ -8,20 +8,18 @@ SD](07a-sd-admin-configuration-changing-from-sd.html).
 
 | Parameter | Default | Effect |
 |---|---|---|
-| `SDCLIENT` | 0 | Restricts what an API session may do. Non-zero disables file access outright (no file can be opened, so no dictionary can be evaluated either) and refuses `SDIConv`, `SDOConv`, `SDIConvs` and `SDOConvs` a conversion code that reads a file (`T` with a file) or calls a program (`U`); any non-zero value also refuses `SDOpenSeq` and `SDExecute`; `2` additionally refuses any subroutine not compiled as callable from a client (a subroutine whose name begins with `$` must be so compiled at every setting, `0` included) |
+| `SDCLIENT` | 0 | Restricts what an API session may do. Non-zero disables file access outright (no file can be opened, so no dictionary can be evaluated either) and refuses `SDIConv`, `SDOConv`, `SDIConvs` and `SDOConvs` a conversion code that reads a file (`T` with a file) or calls a program (`U`); any non-zero value also refuses `SDOpenSeq`, `SDExecute`, `SDTrans` and `SDRTrans`; `2` additionally refuses any subroutine not compiled as callable from a client (a subroutine whose name begins with `$` must be so compiled at every setting, `0` included) |
+| `BACKUPDIR` | unset | The directory `backup.account` and `restore.account` use. Set by `set.backup.directory`, not by hand - see [Backing Up and Restoring Accounts](01b-backup-and-restore.html) |
+| `NETDIRS` | unset | Directories outside any account that an account without `os-on` may still open by path (every session, the API's included), separated by semicolons; see *`NETDIRS`: directories outside an account*, below |
 
-**There is no `APIPORT` on this port — a real structural
-difference, not an oversight.** SD Core for Windows sizes its listener from
-`sd.conf` at start-up and restarts SD itself to change it; here, whether SD
-listens for the API at all is `systemd`'s `sdclient.socket` unit, activated
-independently of any running `sd` process (see *Remote access and the
-machine*, in this set), and who may reach it is the firewall (`ufw`, or firewalld), moved
-by the `remote.api` verb rather than by editing this file. **An API session's file
-access is its own account's, widened only by `NETDIRS`** (below, *`NETDIRS`:
-directories outside an account*), which names directories every account without
-`os-on` may additionally open, the API session's included, and which is empty as
-delivered. (The `os-on` switch is read for an API session like any other, but it
-does not lift that confinement — see *Accounts and Security*.)
+**There is no `APIPORT`.** Whether SD listens for the API at all is
+`systemd`'s `sdclient.socket` unit, activated independently of any running `sd`
+process (see *Remote access and the machine*, in this set), and who may reach it
+is the firewall (`ufw`, or firewalld), moved by the `remote.api` verb rather than
+by editing this file. **An API session's file access is its own account's,
+widened only by `NETDIRS`** (below, *`NETDIRS`: directories outside an account*),
+which is empty as delivered. (The `os-on` switch is read for an API session like
+any other, but it does not lift that confinement — see *Accounts and Security*.)
 
 `SDCLIENT` is not reported by the `config` verb and has no entry in the shipped
 `sd.conf`. It defaults to 0, which permits everything.
@@ -144,7 +142,8 @@ directories that hold nothing one account must keep from another.
 **What it does not open.** `sh` and `os.execute`, the edit gates (`voc-on`,
 `bp-on`, `dict-on`), the shared account's rules and what the `ai` line may send
 are separate and unchanged. The administrator and an account with `os-on` are
-not affected: they reach every path already.
+not affected: they reach every path already. `NETDIRS` is asked last: after the
+account's own directory and the `sd-on` gate.
 
 **Entries SD ignores.** An entry is left out, and named in the error log and
 the system log when SD starts, when it is not an absolute path, is not an
@@ -160,9 +159,11 @@ leads somewhere unlisted is refused, upper and lower case differ, and
 the directory it leads to.
 
 A session reads the line when it starts, so a change reaches the sessions
-started after it; no restart is needed. A value longer than 191 characters is
-refused: SD does not start, and a new session does not begin, with `NETDIRS
-value is longer than 191 characters.` It is not shown by `config()`.
+started after it; no restart is needed. **A value longer than 191 characters is
+refused, by name**: SD does not start, and a new session does not begin, with
+`NETDIRS value is longer than 191 characters.` It is never cut, because a cut
+path is a shorter directory and would admit more than you wrote. It is not shown
+by `config`, and `config('NETDIRS')` does not read it: read the file.
 
 One API route is not widened: request 29, the old remote open of an account's
 file that `NETFILES` gates (below). A pointer followed there must still lead
@@ -182,7 +183,7 @@ with `config('NETFILES')`. **One
 thing reads it:** the API server's request 29, "open an SDNet
 file", answers "Remote server disallowed access" (7009) unless bit 2 of
 `NETFILES` is set, and the files-only API route refuses request 29 whatever the
-value is. **Setting the bit is not enough.** The request also refuses unless
+value is. **`NETDIRS` does not widen this request**: a pointer followed there must still lead inside the account, whatever `NETDIRS` lists. **Setting the bit is not enough.** The request also refuses unless
 `SDCLIENT` is 0, the account has a register record (a path names none), the
 caller may enter the account by the same rule as `logto` (a member of its
 group, the account not suspended, the reason never told to the caller), and

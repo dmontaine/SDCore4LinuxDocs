@@ -153,13 +153,13 @@ catalog is enough** — nothing here needs an elevated session:
 Compiling bp zzcls
 0 error(s)
 :catalog bp zzcls
-ZZCLS added to private catalogue
+ZZCLS added to private catalog
 ```
 
 ## Objects
 
 ```
-object(catalogued.name {, arguments})   create an instance
+object(cataloged.name {, arguments})   create an instance
 objinfo(variable, 0)                    1 if the variable holds an object
 objinfo(variable, 1)                    the class name
 variable = ''                           release it
@@ -213,7 +213,7 @@ can validate, transform or compute without the caller knowing.
 
 ```
 :crt p->balance
-000003C1: Unrecognised property/method name (BALANCE). at line 92
+000003C1: Unrecognized property/method name (BALANCE). at line 92
 ```
 
 **Note the wording.** It is not *"private"* — from outside the class the name is
@@ -248,8 +248,7 @@ assign it. A name is wholly public or wholly restricted: a `restricted function 
 `public subroutine foo` is a compile error.
 
 `restricted` is a reserved word inside the program now. **A starting value** (`public x = 1`) is
-covered in the next section for `public` and `private`; giving one to a `restricted` variable has not
-been tested.
+covered in the next section for `public` and `private`; do not give one to a `restricted` variable.
 
 ## Starting values
 

@@ -184,7 +184,9 @@ ssh and API access, the accounts — for an administrator to keep. It is for
 reference only: nothing reads it back. **It never contains a password or a
 private key.** The API's certificate appears as its subject, dates and
 fingerprint, or as *certificate: not yet generated* until the API has had its
-first TLS connection.
+first TLS connection. It also lists the entries of the global catalog that are
+not SD's own, which a backup of an account carries only for the programs whose
+object file is in that account.
 
 ## Who has these verbs
 
@@ -193,9 +195,8 @@ first TLS connection.
 `update.accounts`, `config`, `backup.account`, `restore.account`,
 `set.backup.directory`, `settings.report`. An ordinary account has none of these names at
 all — this is not a permission it lacks, the verbs are simply not in its
-VOC. **Unlike SD Core for Windows, there is no separate `grant`/`revoke`/
-`list.grants` set** — `modify.account add`/`delete` folds the grant into
-one place; see [Accounts and Security: The Home Screen, ssh Keys and Passwords](01-accounts-and-security-8-home-screen-ssh-keys-passwords.html).
+VOC. **Who may enter an account is changed in one place**, `modify.account`
+*name* `add` / `delete`; see [Accounts and Security: The Home Screen, ssh Keys and Passwords](01-accounts-and-security-8-home-screen-ssh-keys-passwords.html).
 
 ## See also
 

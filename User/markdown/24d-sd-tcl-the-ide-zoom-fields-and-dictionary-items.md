@@ -25,9 +25,8 @@ between the tabs and the editor only. Anything that fills the messages - a
 compile with errors or warnings, a search, Run a command - ends the zoom so
 that you can read it; a compile with no errors leaves it as it is.
 
-Ctrl-E is the editor's *end of row* key in other programs that use `screen memo`; in the
-IDE it is the zoom and **End** ends a row. (The IDE no longer hands a record to SED:
-[SED](27a-sd-tcl-sed.html) is the IDE's own editor started by itself.)
+Ctrl-E is the editor's *end of row* key in other programs that use `screen memo` (and in `sed`); in the
+IDE **End** ends a row. Nothing is handed to another editor: [SED](27a-sd-tcl-sed.html) is this editor, started by itself.
 
 **F12 shows the record as fields, values and subvalues, so that nobody types a mark**
 (in the IDE's own form, as a pane of the tab). The record in the open tab is shown in the *fields pane* - the editor of
@@ -54,12 +53,12 @@ indented JSON, one element to a line; the preview and the diff come first, and w
 changes the fields and so the tab's text. Explaining a compile message does not apply to the pane.
 **On the empty top level of a record, Alt-T asks whether it is a collection or an array** (C, A or
 Esc); a new record of a collection file starts as an empty collection. If something
-else changes the text under the pane (the overwrite question's *Reload*, SED), the pane follows it,
+else changes the text under the pane (the overwrite question's *Reload*), the pane follows it,
 staying in the same container when it can; text that is no longer a record the fields can show ends the
 pane and the text is shown, untouched. With no record open, F12 says so.
 **A record of an ordinary file whose text is a JSON object or array** (with no
-value or subvalue mark in it) goes to CED as the *tree of the JSON*, as a collection file's record
-does, and comes back as the JSON text in the same layout; anything else (marks in the record, text
+value or subvalue mark in it) is shown as the *tree of the JSON*, as a collection file's record
+is, and comes back as the JSON text in the same layout; anything else (marks in the record, text
 that does not parse, text that does not begin with `{` or `[`) is shown as fields, as above.
 
 **A dictionary item opens as a form**: `ide dict file record` (a record that is not
@@ -68,7 +67,7 @@ does the **E** of TOOL.DICT, which hands the item to the IDE. `ide dict file rec
 **Cancel** (or **Esc**) in the form leaves the item as text in its tab, and **Go, Dictionary item as
 form** (or `/form` on the command line) shows the form for the tab you are in. A record found by a search,
 items opened together from a list, Ctrl-O, an item already in a tab, an item another session holds (it is
-read-only) and an item the form cannot show open as text, as before. The form takes the body of the
+read-only) and an item the form cannot show open as text. The form takes the body of the
 screen (140 by 43) in the same frame as the IDE and the pages, with its own bar, status line and row
 of keys, and is **one form**. Its first row is the **Type**, an entry: type `D`, `E`, `I`,
 `L`, `PH` or `X` and press Tab, and **the rows of that type appear**, each a label and an entry; a new item

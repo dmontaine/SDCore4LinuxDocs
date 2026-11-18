@@ -15,10 +15,6 @@ which parameter controls it.
 > outside the administrator set. Where a page in another set is worth naming,
 > it is named in words.
 
-> Every figure here was read from the sources that define it, or counted
-> directly from this tree's own shipped directories, not from documentation
-> of another product or port.
-
 ## Data
 
 | | | |
@@ -34,8 +30,8 @@ concatenation, and to anything a program assembles in memory.
 
 **A record id may be longer than 63 characters only if `MAXIDLEN` is raised**,
 and the range starts at 63 rather than 0 — a lower value is refused at start-up
-rather than accepted. The ceiling of 255 is compiled, and the comment in the
-source notes that raising it would require major file-format changes.
+rather than accepted. The ceiling of 255 is compiled, because raising it
+would require major file-format changes.
 
 ## Files
 
@@ -45,6 +41,7 @@ source notes that raising it would require major file-format changes.
 | Group size for a dynamic file | **4 KB** by default, maximum **8** | `GRPSIZE` |
 | Open files across all sessions | **80** | `NUMFILES` |
 | Maximum pathname length | **255** | compiled |
+| Path of a program named to `RUN` | **255** characters | compiled |
 | Sort keys in one query | **32** | compiled |
 
 Group size is expressed in 1 KB units, so the compiled maximum of 8 is 8 KB.
@@ -129,16 +126,18 @@ set's SD TCL syntax card.)
 
 | | |
 |---|---|
-| Parameters accepted in `sd.conf` | **50** |
-| Parameters the `config` verb displays | **49** |
-| Parameters readable with `config()` | **47** |
-| Parameters settable for the current session | **23** |
+| Parameters accepted in `sd.conf` | **58** |
+| Parameters the `config` verb displays | **55** |
+| Parameters readable with `config()` | **55** |
+| Parameters settable for the current session | **29** |
 
-The verb displays `DEBUG` and `FDS` only when they are set, and `TIMEZONE`,
-which is not a file parameter. No parameter is accepted and ignored:
-the eleven that once were (`APILOGIN`, `CODEPAGE`, `CREATUSR`,
-`EXCLREM`, `FIXUSERS`, `GDI`, `JNLDIR`, `JNLMODE`, `PORTMAP`, `RINGWAIT` and
-`TXCHAR`) no longer exist, and a line naming one stops SD from starting;
+The three parameters the verb does not display and `config()` cannot read are
+`BACKUPDIR`, `NETDIRS` and `SDSYS`. The verb displays `DEBUG` and `FDS` only when
+they are set, and `TIMEZONE`, which is not a file parameter; `config()` reads it
+and a session can set it, and it is counted among the 29. No parameter is accepted and ignored:
+a line naming a name SD does not have (such as `APILOGIN`, `CODEPAGE`, `CREATUSR`,
+`EXCLREM`, `FILERULE`, `FIXUSERS`, `GDI`, `INVCASE`, `JNLDIR`, `JNLMODE`,
+`PORTMAP`, `RINGWAIT` or `TXCHAR`) stops SD from starting;
 *Configuration* in this set says how the installer takes them out of a kept
-`sd.conf`. `NETFILES` is not what SDNet uses, and *Configuration* says what does
-read it.
+`sd.conf`. `NETFILES` is not inert, because bit 2 gates API request 29, and
+*Configuration* says so.

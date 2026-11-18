@@ -118,9 +118,10 @@ and an account without it is refused there too. **That is what makes `sh-on`
 on an account that also has the API route a shell behind its credential from
 wherever the API port is reachable** — see *What `os-on` actually costs* in
 [Accounts and Security: File Writing, the AI and VOC Pointers](01-accounts-and-security-5-files-write-ai-pointers.html). SDSYS over the API is
-the exception to the exception: an API session carries no administrator flag,
-and SDSYS's own record holds no switch, so it has no shell over the API; use
-the local login. See also
+the exception to the exception: SDSYS reaches the API from another computer only
+through the door `remote.sdsys api on` opens ([Remote Administration through
+the API](22a-remote-administration-through-the-api.html)), and a session it
+admits is the administrator, which no switch holds back. See also
 [Remote Access and the Machine](05-remote-access-and-the-machine.html).
 
 ## Who has these verbs

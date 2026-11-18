@@ -428,7 +428,7 @@ bp zzed
 
 **Field 1 is a marker, not a command. it must begin with `E`** — `ED` is the
 usual thing to write — and `ed` refuses a record that does not with *"Record is
-not a prestored edit sequence"*. Nothing was run for it above, and the
+not a prestored edit sequence"*. The
 line numbers in error messages count it: an unrecognized command in **field 2**
 is reported as line 2.
 

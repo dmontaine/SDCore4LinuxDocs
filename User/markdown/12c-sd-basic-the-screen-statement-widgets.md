@@ -39,7 +39,7 @@ line makes it a comment as it goes in. A text of some thousand lines is slower t
 the color of a line depends on the lines above it.
 
 ```
-screen theme 'night' returning th else crt 'no colour here'
+screen theme 'night' returning th else crt 'no color here'
 screen memo f, 'src', text at 2,2 size 40,8 syntax 'sd.basic' lnum
 ```
 
@@ -117,7 +117,7 @@ the marks stay with their rows through a sort.
 ### The tree
 
 ```
-nodes = 'Colours':@sm:1:@sm:'c'
+nodes = 'Colors':@sm:1:@sm:'c'
 nodes<2> = 'Red':@sm:2:@sm:'c1'
 nodes<3> = 'Green':@sm:2:@sm:'c2'
 nodes<4> = 'Shapes':@sm:1:@sm:'s'

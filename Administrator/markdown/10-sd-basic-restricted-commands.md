@@ -140,7 +140,7 @@ itself administrator rights.
 | | |
 |---|---|
 | **`option`** | `option(`*a*`)` ***(internal)*** |
-| **`ospath`** | `ospath(`*a*, *b*`)` ***(internal)***. **Any program may call the openQM form, with openQM's key numbers, behind the account's OS access gate;** the internal form keeps its own numbers. See *SD Basic - Status and the Machine* |
+| **`ospath`** | `ospath(`*a*, *b*`)` ***(internal)***. **Any program may call the openQM form, with openQM's key numbers, behind the account's `os` switch;** the internal form keeps its own numbers. See *SD Basic - Status and the Machine* |
 | **`osrename`** | `osrename(`*a*, *b*`)` ***(internal)*** |
 
 ## P

@@ -46,7 +46,7 @@ and the next `writeseq` takes *its* `else` branch.
 | **append** | position at the end, so writes add to what is there |
 | **overwrite** | truncate on open |
 | **readonly** | open without taking a write lock |
-| **creating** | when the name does not exist, make the file now (an existing file is opened as without the word). **The file is made exclusively**: if something has taken the name by the moment it is made, or the name is a symbolic link that leads nowhere, nothing is created and `status()` is 6032. **The same holds for the `openseq file, record` form** (a record whose name is such a link takes the `else`, `status()` 6032, and nothing is made). An `openseq` with a pathname of such a link, without `creating`, opens a file that cannot be written, so the `writeseq` that would have made the link's target is refused; and a link put at the name after the open is refused too. **The file is made only once the lock on its name is held** : when another session holds the name, the `locked` clause runs (or, without one, the open waits) and nothing is made. The directory it goes in must be there; it is never made |
+| **creating** | when the name does not exist, make the file now (an existing file is opened as without the word). **The file is made exclusively**: if something has taken the name by the moment it is made, or the name is a symbolic link that leads nowhere, nothing is created and `status()` is 6032. **The same holds for the `openseq file, record` form** (a record whose name is such a link takes the `else`, `status()` 6032, and nothing is made). An `openseq` with a pathname of such a link, without `creating`, opens a file that cannot be written, so the `writeseq` that would have made the link's target is refused; and a link put at the name after the open is refused too. **The file is made only once the lock on its name is held**: when another session holds the name, the `locked` clause runs (or, without one, the open waits) and nothing is made. The directory it goes in must be there; it is never made |
 | **shared** | includes `creating`, but keeps open-or-create, so that several processes can add to one file; it is not exclusive, except that a name that is a symbolic link leading nowhere is refused with `status()` 6032 as it is for `creating` |
 
 ## Reading
@@ -267,6 +267,8 @@ session may not change (the administrator's edit gates for the account decide
 which) is opened by `openseq` **read only**, `creating` there is refused, and
 `deleteseq` of such a file is refused. A record called `voc`, `x.dic` or
 `sample.bp` in an ordinary directory file is a plain file, not one of these.
+The name is resolved before the question is put, so a link inside the account that
+leads into one of these files does not get round it. The administrator is not asked.
 
 ## Directory files, and where the marks go
 

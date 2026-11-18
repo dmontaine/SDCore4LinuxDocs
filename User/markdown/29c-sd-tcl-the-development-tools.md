@@ -51,7 +51,7 @@ entry is shown dimmed when the page cannot do it now, and **Quit is the last ent
 other entries**. Choosing an entry does exactly what its key does, through
 the page's own checks and boxes: the bar adds no access and runs no command by itself.
 
-**F2 finds an action by its name.** It opens a list of every entry of the page's
+**F2 finds an action by its name**. It opens a list of every entry of the page's
 menus, written *Menu > Entry* with its key beside it (*Query > Run the query   R*). Type part of a name to
 narrow the list, Up and Down move, Enter chooses, Esc leaves. An entry the page cannot do now says *(not
 now)*; choosing it shows why in a box and does nothing. Choosing any other entry does what its key does,

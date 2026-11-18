@@ -52,7 +52,7 @@ them. `dumb` and `unknown` have no `cup` and stay line by line. Then:
 - **The keys every page has**: **F9 runs**, **F5** and
   **Ctrl-L** draw the screen again, **Ctrl-T** takes the next color theme and keeps it for
   you, **Ctrl-K** lists the keys. On the command line, delete to the end of the line and swap
-  two characters, which were Ctrl-K and Ctrl-T, are **Alt-K** and **Alt-T** (or Esc, then K or T).
+  two characters are **Alt-K** and **Alt-T** (or Esc, then K or T).
 
 **The full-screen display is laid out for 140 columns by 43 lines or more**
 (a bigger window is used

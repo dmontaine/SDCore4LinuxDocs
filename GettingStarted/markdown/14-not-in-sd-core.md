@@ -23,17 +23,16 @@ recorded on one side and wonder whether it binds the other.
 | `modify` — the full-screen record editor from OpenQM | **`sed`** or **`micro`** |
 | `nano` — the second external editor (removed in 2.0-0) | **`micro`**, **`sed`** or **`ed`** |
 
-**`sed` was removed and has come back**, with drop-down menus that show the key
-for each action, so it is no longer in this table.
-
 **SD Core's own full-screen editing is `sed` and `micro`**, which open the
 record in each program by name — see
 [Programmer commands](07-programmer-commands.html#editors), which also says
-what they are good for and what they cannot do. **Unlike SD Core for
-Windows, `edit` is not one of them here — it aliases `ed`, the line editor,
-because there is no Linux program to alias it to the way Microsoft Edit
-serves that role there.** The three removed programs above are gone as
+what they are good for and what they cannot do. **`edit` is not one of them: it
+aliases `ed`, the line editor.** The removed programs above are gone as
 *programs*; the capability is not.
+
+**`micro` is gated by the account's `os-on` switch** — every account has the verb,
+not every account has the permission — and is refused over the API regardless (a
+session with no terminal has nowhere to draw a full screen).
 
 `modify` is not in SD Core at all, for any account.
 
@@ -42,8 +41,7 @@ different verbs with different programs behind them. `modify.account` is
 SDSYS's alone; `modify.password` is every account's, for its own password —
 only naming a different account needs SDSYS.
 
-> **`ed`** was never affected by any full-screen keyboard fault — it reads
-> whole lines and goes through the command-line editor.
+> **`ed`** reads whole lines and goes through the command-line editor.
 
 ## The PROC language
 
@@ -128,12 +126,12 @@ or through your own export/import BASIC.
 `nls` is still there: it shows and sets the currency symbol and the thousands
 and decimal separators, which is all it ever did.
 
-## Embedded Python — kept, and this port's own decision to keep it
+## Embedded Python — kept
 
-**Unlike SD Core for Windows, which dropped it and only later brought back a
-narrower, process-isolated form, this port never removed embedded Python.**
+**Embedded Python is part of SD Core for Linux.**
 It links directly against the interpreter, and there is no separate helper
-process to talk to over a pipe.
+process to talk to over a pipe. The installer needs the Python development
+headers to build it.
 
 **BASIC-callable programs** (`call !py_createdict`, and so on) are the
 interface — there is no TCL verb, so this is a programming capability, not

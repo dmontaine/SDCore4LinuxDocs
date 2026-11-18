@@ -231,10 +231,8 @@ nothing, and does not print that line. Root never writes a file inside the user'
 directory.
 
 `/etc/sudoers.d/sdcore` gives members of the `sdusers` group this one command,
-`sd-elevate netcred-dir` with no argument, **beside** the three `cred-own` commands they
-already had. That is all that was added. **The sudoers file is installed by
-the installer, so an installation made before this release does not have the
-permission until the installer is run again.** Until then `set.netlogin` stops at
+`sd-elevate netcred-dir` with no argument, **beside** the three `cred-own` commands. **The sudoers file is installed by
+the installer.** Without that permission `set.netlogin` stops at
 the directory step (check 6) with a message that includes sudo's own refusal.
 
 ## Continued in

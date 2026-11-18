@@ -20,7 +20,7 @@ come across, what happens to the Linux user and groups, and the cases where the 
 * **Both machines run SD Core for Linux**, the full product. A backup from SD Core Solo is
   refused ("A full product's backup restores only to a full product, and a Solo backup only to
   Solo"). The manifest records the SD release but the restore does not compare it, so put the
-  same release, or a newer one, on the new machine. Restoring onto an older one was not tried.
+  same release, or a newer one, on the new machine.
 * **You are SDSYS on both**, and **no other session is logged in on either** while the verb runs.
   SD lists any it finds: *1 other session(s) are logged in. Every other session must log out
   first:*, then a line for each. While a backup or restore runs nobody can sign in, at the
@@ -115,6 +115,7 @@ route.files: 0
 route.files.write: 0
 route.files.admin: 0
 route.ai: 0
+ssh.key: 0
 os.sh: 1
 os.execute: 0
 edit.voc: 1
@@ -142,26 +143,26 @@ lines.
 | the files | fill the new directory | replace the directory |
 | `description`, `suspended` | set from the zip | **set from the zip**, so a suspended account comes back suspended |
 | `route.ssh`, `route.api`, `route.files` | the Linux user joins `sdssh`, `sdapi`, `sdfiles` as the zip says | unchanged |
-| ssh key sign-in (no key in the zip) | the Linux user is put in `sdsshnokey`: **off**; `modify.account` *name* `ssh-key-on` afterwards | unchanged |
+| `ssh.key` (ssh key sign-in) | the Linux user is put in `sdsshnokey`, so key sign-in is **off**, unless the zip says it had it (`ssh.key: 1`); a zip made without `ssh.key` leaves it off, and `modify.account` *name* `ssh-key-on` afterwards turns it on | unchanged |
 | `os.sh`, `os.execute`, `edit.*`, `net`, `shared.read`, `shared.write` | set as the zip says | **unchanged** |
 | `type`, `members` | the kind of account made, and a group account's members | unchanged |
 | `gcat:` lines | the program is put in the global catalog again | same |
 
 A key the zip does not have (an older backup) gives the delivered default: every gate off,
 `shared.read` on, `shared.write` off. **An existing account keeps its own switches whatever the zip
-says.** In the test a zip with `os.sh: 1` restored over an account with `sh` off left it off; to
+says**: a zip with `os.sh: 1` restored over an account with `sh` off leaves it off. To
 change one, use `modify.account`.
 
 **Global programs.** The backup notes each global program whose object file is in the account, and
 the restore catalogs it again from the restored file, printing *… re-cataloged globally*. A
 program recompiled after it was cataloged no longer matches, so it is not carried;
-`settings.report` lists the global catalog. **Check any name the new machine already uses.** The
-source says a different program under the name is left alone and reported (message 13017); in the
-test the program from the zip **replaced** it, and its name was printed in capitals.
+`settings.report` lists the global catalog. **Check any name the new machine already uses.** A
+different program already under the name is left alone and reported (message 13017: *… is
+already in the global catalog as a different program, so it was not replaced*).
 
 **Permissions.** Each file and directory keeps its permission bits, except that other-write is
-removed and the owner always has read and write (and search on a directory). In the test `0640`,
-`0750` and `0755` came back as they were, `0666` as `0664` and `0444` as `0644`. Ownership is not
+removed and the owner always has read and write (and search on a directory): `0640`,
+`0750` and `0755` come back as they were, `0666` as `0664` and `0444` as `0644`. Ownership is not
 in the zip: the restore gives the tree to the account's own Linux user and group, with the setgid
 bit on every directory. That step needs root.
 

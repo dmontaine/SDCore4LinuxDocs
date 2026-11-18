@@ -1,10 +1,8 @@
 Title: Development and file commands
 Subtitle: Compiling, editing, and the verbs that maintain files, indexes and records in bulk.
 
-**Every account has these, from the moment it is created.** SD Core used to
-hold them back from a *standard* account and only give them to a
-*programmer* or *administrator* one; that split is gone — see
-[Accounts](05-account-types.html). This page is now a reference for what
+**Every account has these, from the moment it is created** — see
+[Accounts](05-account-types.html). This page is a reference for what
 each of them does, not a list of what you have been given.
 
 **One thing, named as it comes up below, still needs more than the verb**:
@@ -38,15 +36,15 @@ extra at all.
 | **`ed`** | the line editor. Needs nothing installed. `edit` is an alias for it |
 | **`sed`** | a **full-screen** editor that runs inside SD, with drop-down menus and color for SD BASIC and five other languages |
 | **`micro`** | a **full-screen** editor — opens the record in `micro` |
+| **`ced`** | a full-screen editor for a record that is a **data collection** (JSON), one level at a time with the type of every element shown |
+| **`ide`** | a full-screen workbench: the files and records, the program and its compile messages on one screen |
 | **`debug`** | the BASIC debugger |
 | **`pstat`** · **`pdebug`** · **`pdump`** · **`dump`** | process introspection |
 
 ### Editors
 
-**`edit` is not a full-screen editor here** — a real difference from SD
-Core for Windows, where it opens Microsoft Edit. There is no Linux
-equivalent to alias it to, so `edit` runs the **line** editor, `ed`,
-instead. There are two full-screen editors. **`sed` is SD's own**: a program
+**`edit` is not a full-screen editor** — it runs the **line** editor, `ed`.
+There are two general full-screen editors. **`sed` is SD's own**: a program
 written in SD BASIC that runs inside SD, so it needs no installing and no
 operating-system permission (its menus, keys and syntax color are described in
 *The SED Screen Editor*, in the User documentation). The other is the program
@@ -73,6 +71,10 @@ open, and compiles from its own Tools menu.
 **Both are terminal editors**, so they work over ssh as well as at the
 console.
 
+**`sed`, `ced` and `ide` run inside SD** and draw the screen themselves, so they need no
+operating-system permission and no editor installed; they need a terminal window of at
+least 140 columns by 43 lines (the debugger uses the same frame).
+
 **Both highlight SD BASIC.** `micro`'s highlighting is per-user
 (`~/.config/micro/syntax`, staged by the installer where it can):
 
@@ -86,11 +88,9 @@ other file is treated as plain text, which is correct for a VOC entry or a
 data record.
 
 > **The word lists are generated from the compiler.** They come out of
-> `bcomp`'s own tables — **182 statements, 37 reserved words and 176
-> intrinsic functions** — so the highlighting cannot drift from the
-> language. **If a name you expect is not colored, that is worth
-> reporting**: it means the two have come apart, which is exactly what
-> generating them was meant to prevent.
+> the compiler's own tables of statements, reserved words and intrinsic
+> functions, so the highlighting follows the language. **If a name you
+> expect is not colored, that is worth reporting.**
 
 **`ed` is unaffected and is still there.**
 
@@ -174,8 +174,7 @@ terminal rather than reading it through a pipe.
 reporting** with the terminal you connected from.
 
 The removed full-screen editors are a different matter: `update.record` and
-`modify` are gone and are not coming back. (`sed` was removed once and has
-returned, above.) See [Not in SD Core](14-not-in-sd-core.html).
+`modify` are gone and are not coming back. See [Not in SD Core](14-not-in-sd-core.html).
 
 ## Files
 

@@ -141,7 +141,7 @@ is out of date.
   subfile 2 [2]*.
 * **On success it says what `-q` would now say**: `Index directory is
   /tmp/sdi_demo/byhand`, or `Indices are not relocated` when `akpath` is omitted.
-  It used to print nothing. A failure to write the header is now reported and
+  A failure to write the header is reported and
   exits 1. SD's own account restore does not read this line: it checks the
   status and then runs `-q` itself.
 * Omit `akpath` to say "the indexes are in the data file's directory".
@@ -164,14 +164,11 @@ the indexes back you create them and build them again with `create.index` and
   `Delete the index files in path (Y/N)?` and, on `y`, deletes **the index files
   the header lists** and then the directory if that leaves it empty. Anything
   else in the directory stays, and the program says so (the same rule as `-m`).
-  It used to delete the directory and everything in it.
 * **Answering `n` stops the program**: it prints `Indices not deleted`,
   exits 1, and changes nothing: the header is as it was and `-q` still names the
-  directory. It used to print "All indices deleted" and clear the header,
-  leaving the index files on the disk referred to by nothing.
+  directory.
 * **If standard input ends at the question, it is taken as `n`**: the
-  program prints `End of input` and `Indices not deleted` and exits 1. It used to
-  answer with whatever was left in memory, or loop for ever.
+  program prints `End of input` and `Indices not deleted` and exits 1.
 * With indexes in the data file's own directory there is no question. It deletes
   the files and clears the map. If a file cannot be deleted it says so, clears
   the map anyway (the indexes are gone from the file's point of view), and

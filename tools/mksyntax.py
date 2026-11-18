@@ -388,10 +388,10 @@ exist, and this account may not call it.
 
 **`$internal` needs both halves.** `BCOMP` tests
 `kernel(K$INTERNAL, -1) and kernel(K$ADMINISTRATOR, -1)` — internal mode alone
-was enough until 13 Aug 2026, and it was not safe: internal programs are the
+is not enough, because internal programs are the
 only ones that may set the administrator flag, and `sd -internal` is not itself
-gated, so any account could have compiled a three-line program that granted
-itself administrator rights. That was demonstrated, not theorised.
+gated, so any account could otherwise compile a three-line program that grants
+itself administrator rights.
 
 """
 

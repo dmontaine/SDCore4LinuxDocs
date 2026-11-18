@@ -2,9 +2,8 @@ Title: Lower case
 Subtitle: Commands, file names, record ids and account names are lower case now — and nothing you type has to change.
 
 **Everything that can be lower case is lower case, completely — no name
-exists in two casings.** SD used to be inconsistent about it: BASIC source
-is free-form and usually written lower case, while file names, field names
-and account names were forced up.
+exists in two casings.** BASIC source is free-form and usually written lower
+case; file names, field names and account names are lower case as well.
 
 **What you type does not change.** `LIST`, `list` and `List` all run the same
 verb, and so does every keyword — `with`, `by`, `no.page` and the rest.
@@ -27,14 +26,16 @@ the `login` paragraph lookup, and `set.file`'s default `qfile` pointer.
 
 | | |
 |---|---|
-| Commands in the VOC | **`list`**, `count`, **`select`**, **`create.file`**, **`setptr`** … 388 of 388 `newvoc` records, 448 of 448 `voc_template` records — and that is how they appear in `list voc`, `listv` and `ct voc` |
-| BASIC source and include records | 217 `gpl.bp` records, 16 `syscom` includes — all of them |
-| System files on disk | `accounts`, `bp`, `bp.out`, `gpl.bp`, `messages`, `newvoc`, `pcode.out`, `syscom`, `voc`, `voc.dic`, `voc_template` and the rest — 0 of 15 `sdsys` directory names still upper case |
+| Commands in the VOC | **`list`**, `count`, **`select`**, **`create.file`**, **`setptr`** … and that is how they appear in `list voc`, `listv` and `ct voc` |
+| BASIC source and include records | the `gpl.bp` programs and the `syscom` includes — all of them |
+| System files on disk | `accounts`, `bp`, `bp.out`, `gpl.bp`, `messages`, `newvoc`, `pcode.out`, `syscom`, `voc`, `voc.dic`, `voc_template` and the rest |
 | Account names on disk | `sdsys/accounts/don`, matching the account's own directory in `user_accounts` |
 | Files in a new account | created with lower-case names on disk |
 
 **This is a completed migration, not an additive fallback that leaves old
-spellings behind it** — every name in every ruled category is lower case.
+spellings behind it** — every name in every ruled category is lower case. That
+includes the names of programs in the global catalog: `catalog` stores a name in
+lower case, and the loader finds an entry whichever case you type.
 
 ## Record ids in your own data files are untouched, deliberately
 
@@ -53,12 +54,17 @@ no `no.case` or `case` word to give it): SD writes records preserving the
 casing given by whatever performs the write, and reads locate records
 regardless of casing.
 
-## One correction worth reading
+**An upgrade converts the files you already had**, account by account, and leaves
+what it cannot convert safely: a file with two ids that differ only by case, an
+indexed file, a file outside its account's directory or under SDSYS, and SDSYS's own
+files. The walk is kept in `/var/tmp/sdcore-install-nocase.log`, which names each one.
+The mechanics are in [Upgrading and uninstalling](01a-upgrading-and-uninstalling.html).
 
-**`list` and `ct` used to disagree about the same name.** `list voc $hold`
-answered *"'$HOLD' not found"* on the very record `ct voc $hold` had just shown
-you. `list`, `sort`, `select` and the rest of the query language now use the
-same as-typed → lower → upper order as everything else.
+## One lookup order everywhere
+
+**`list` and `ct` find a name the same way.** `list voc $hold` finds the record
+`ct voc $hold` shows. `list`, `sort`, `select` and the rest of the query language use
+the same as-typed → lower → upper order as everything else.
 
 ## Account names
 

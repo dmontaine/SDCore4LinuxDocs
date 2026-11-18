@@ -142,8 +142,8 @@ and the error number for a file that will not open.
 The dictionary of the VOC also has the items **`trigger`**, **`encryption`**
 and **`replication`**, so `list voc with type = "F" and with trigger` lists the
 files that have a trigger function. SD has neither encryption nor replication,
-so `with encryption` and `with replication` select nothing and `with no` selects
-every file.
+so `with encryption` and `with replication` select nothing, and `with no encryption`
+and `with no replication` select every file.
 
 ### count — count the records
 
@@ -193,10 +193,9 @@ SD tries a name as typed, then lower, then upper. What it changes is what
 SD prints back: `CT VOC LIST` answers `VOC list`.
 
 The file-pointer entries — `bp`, `bp.out`, `gpl.bp`, `gpl.bp.out` — are
-in lower case too. **It is complete, not partial**: an
+lower case. An
 account's own `voc`, and the system directory's `newvoc`, `accounts`,
-`messages` and `syscom`, are all lower case on disk too, confirmed directly
-— there is nothing left in upper case to migrate. `qfile` was never a path
+`messages` and `syscom`, are all lower case on disk too. `qfile` was never a path
 of its own; it is a VOC pointer to `@SDSYS/$ipc`, the session IPC area, and
 has no on-disk name to fold.
 
@@ -215,8 +214,8 @@ wrote.
 **The `M` (menu) record type is removed.** A VOC record of that type is no
 longer dispatched; the home screen (`home`, or `menu`) is the menu system.
 
-**`EDIT` runs.** It is a real `V` record, a working full-screen editor, not
-an undispatchable entry of the kind described above. See [SD
+**`EDIT` runs.** It is a real `V` record, the line editor `ed` under another name (it is
+not a full-screen editor), not an undispatchable entry of the kind described above. See [SD
 VOC - Structure and Usage](32-sd-voc-structure-and-usage.html#what-sdsyss-own-voc-holds).
 
 ## See also

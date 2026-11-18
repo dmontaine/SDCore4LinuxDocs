@@ -31,10 +31,14 @@ the verb is not recognized, not that you lack permission for it.
 
 **This is Linux group membership, and it *is* what a grant is** — the
 account's own Linux group (`sdu_`*name* for a user account, `sdg_`*name*
-for a group account) is what entry to it means. Unlike SD Core for
-Windows, there is no separate `grant`/`revoke`/`list.grants` set of verbs:
+for a group account) is what entry to it means. There is no separate
+`grant`/`revoke`/`list.grants` set of verbs:
 `modify.account add`/`delete` folds both directions into one place, with
 SD's own audit line added on top of the group change.
+
+**To see who is in an account,** read its Linux group: `getent group sdu_`*name*
+(`sdg_`*name* for a group account). The account's own user is always there and is
+not a grant.
 
 **Read this twice, because it is the most confusing part of how SD controls
 access.** Entry to an account is membership of the Linux group named in
@@ -47,7 +51,7 @@ as any Linux service.** So:
 
 > From an ordinary account the register is reached as `sd.accounts`, not
 > `accounts` — `list sd.accounts`, `ct sd.accounts fred`. There is no tier
-> column any more; the register's only state field is the suspension.
+> column; the register's only state field is the suspension.
 
 ## Changing an account afterwards
 
@@ -84,7 +88,7 @@ accounts that need it, one at a time:
 
 | | |
 |---|---|
-| **`ssh`** \| **`api`** \| **`both`** \| **`none`** | who may connect. Absolute: `api` takes ssh away. These four words leave `files-on` alone |
+| **`ssh`** \| **`api`** \| **`both`** \| **`none`** | who may connect. The word says what the access *is*, not what to add: `modify.account fred api` gives Fred the API and takes ssh away, and `both` gives both. These four words leave `files-on` alone |
 | **`files-on`** \| **`files-off`** | the files-only API route: a login that may work with files and do nothing else. Off for a new account; reported as "Account fred has files yes"; reaches the person at their next login. `api` wins when the account has both |
 | **`sh-on`** \| **`sh-off`** | the `sh` verb |
 | **`os-on`** \| **`os-off`** | `OS.EXECUTE` in a program, `micro`, the embedded Python, and files or directories of the operating system named by their path outside the account's own directory |
@@ -98,6 +102,11 @@ OS.EXECUTE" or "*name* has no OS access, so outside its own account it can
 reach by pathname only a directory the administrator opened to all". See the *Administrator* set's
 *Accounts and security* chapter, which says what each switch covers and what
 `os-on` costs on an account that is also reachable from outside.
+
+**More than one word may be given in one command** (`modify.account fred sh-on os-on voc-on`).
+SD reads and checks them all first and changes nothing if any word is refused; it then carries
+them out in a fixed order and reports which it did. A word that contradicts another in the same
+command (`sh-on` with `sh-off`, or `ssh` with `api`) is refused.
 
 ### Saving changes to a VOC, a program file or a dictionary: three more switches
 
@@ -131,9 +140,9 @@ to create; an existing account keeps what it has. See the *Administrator* set's
 *Accounts and security* chapter for which files and which commands are
 covered, and for what is not stopped.
 
-**`modify.password` is now the whole of what `set.password` used to be.**
-Same verb, same behavior under either name; every account has a password
-from the moment it is made, so there is nothing to *set* for the first time.
+**`modify.password` changes a password, and it is the only verb that does.**
+Every account has a password from the moment it is made, so there is nothing
+to *set* for the first time and there is no `set.password` verb.
 Run with no argument it changes your own; SDSYS may change any account's,
 naming it — see [Administrator commands](06-administrator-commands.html).
 

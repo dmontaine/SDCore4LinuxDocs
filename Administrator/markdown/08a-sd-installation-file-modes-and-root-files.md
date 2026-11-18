@@ -14,23 +14,22 @@ Things to know:
 - **A daemon that keeps failing is given up on.** Five starts in a minute and the unit is `failed`; `journalctl -u sd-lnxd` says why, and `sudo systemctl reset-failed sd-lnxd; sudo systemctl start sd-lnxd` starts it again once that is mended.
 - **One daemon at a time.** A second `sdlnxd` (started by hand, or by a plain `sd -start`) finds the first named in the shared segment and ends at once with status 0, saying so in the error log.
 - **`sd -restart` and a plain `sd -start`** still fork a daemon of their own, outside systemd, so nothing watches it. Use `systemctl restart sd.service`.
-- An installation made before this change has the new units after SD is deleted (keeping the accounts and the configuration) and installed again, as for any upgrade. If the old `sd.service` was left behind by a delete, the installer replaces it, and adds `sd-lnxd.service`, when it does not mention the new unit.
+- An upgrade over an older installation has the units after SD is deleted (keeping the accounts and the configuration) and installed again. If an old `sd.service` was left behind by a delete, the installer replaces it, and adds `sd-lnxd.service`, when it does not mention that unit.
 
 The error log (`errlog`) is mode 664,
-owner `sdsys`, group `sdusers` (it was 775): every session appends to it, and nothing runs it.
+owner `sdsys`, group `sdusers`: every session appends to it, and nothing runs it.
 
-SD's shared memory segment and its semaphores are made mode 0660 and belong to the group `sdusers`, so only SD users can attach them. An installation that
-was started before this change keeps its old, wider modes until SD is stopped and started again. `ipcs -m` shows the mode of the segment.
+SD's shared memory segment and its semaphores are made mode 0660 and belong to the group `sdusers`, so only SD users can attach them. `ipcs -m` shows the mode of the segment.
 
 **A member of `sdusers` who has an operating-system shell can still write the segment**, because every SD user is in that group. So nothing a session *decides on* is read
-from it any more. A session takes these from places only SDSYS or root can write:
+from it. A session takes these from places only SDSYS or root can write:
 
-| What | Where a session gets it now | It used to come from |
-|---|---|---|
-| the system directory (global catalog, register, messages, audit trail, errlog) | `SDSYS=` in `sd.conf` | the segment |
-| the p-code every session runs | `bin/pcode`, read by the session itself; a copy that others or `sdusers` can write is refused | the segment |
-| the per-session settings (`SH`, `SPOOLER`, `USRDIR`, `GRPDIR`, `DUMPDIR`, `TEMPDIR` ...) | `sd.conf`, read by the session when it starts | a template in the segment |
-| the session's own administrator, `sh`, `os.execute` and `sd.accounts` bits and its gates | memory only that process can change | its entry in the segment |
+| What | Where a session gets it |
+|---|---|
+| the system directory (global catalog, register, messages, audit trail, errlog) | `SDSYS=` in `sd.conf` |
+| the p-code every session runs | `bin/pcode`, read by the session itself; a copy that others or `sdusers` can write is refused |
+| the per-session settings (`SH`, `SPOOLER`, `USRDIR`, `GRPDIR`, `DUMPDIR`, `TEMPDIR` ...) | `sd.conf`, read by the session when it starts |
+| the session's own administrator, `sh`, `os.execute` and `sd.accounts` bits and its gates | memory only that process can change |
 
 Two things follow. **`sd.conf` is read by every new session**, so an edit to one of the per-session settings reaches the sessions started after it, without a restart;
 the parameters that size or configure the segment still need one. And **a bad line in `sd.conf` stops a new session starting**, with the message `sd -start`
@@ -62,14 +61,14 @@ they are started in practice; the form in which `pdebug` waits and a phantom is 
 11948) when the store cannot be set up, and a phantom that finds no store, or a `pdebug` that has gone, behaves as if no `pdebug` were waiting. The store survives a restart of
 SD, which `$ipc` did not, so `pdebug` removes the records of its own user number when it starts, and a phantom ignores a start record whose `pdebug` has gone.
 The secret is kept in no file and not in the segment. That another operating-system user cannot read the environment of this user's processes is the
-operating system's rule; it has been tested here with one user only.
+operating system's rule.
 
 ### The files root runs
 
 `sd.service` runs `bin/sd` as root (`sd -start` and `sd -stop`), `sd-lnxd.service` runs `bin/sdlnxd` as root, `sdclient@.service` (the first stage of every API connection)
 runs `bin/sd -n -q` as root, `sd-elevate akpath-set` runs `bin/sdidx` as root, and every session - that first stage included - reads `bin/pcode`. **A file that root runs
-must not be one that the `sdsys` login can replace.** Until 2.0-0 the installer's `chown -R sdsys:sdusers` left all of them `sdsys`'s, so whoever held that login could
-change one and have root run it at the next start. **Near its end the installer now makes `/usr/local/sdsys/bin` and every file in it `root:root`, with no group or other
+must not be one that the `sdsys` login can replace,** or whoever held that login could
+change one and have root run it at the next start. **Near its end the installer makes `/usr/local/sdsys/bin` and every file in it `root:root`, with no group or other
 write, and makes the directory itself immutable** (`chattr +i`).
 
 | | owner, mode |

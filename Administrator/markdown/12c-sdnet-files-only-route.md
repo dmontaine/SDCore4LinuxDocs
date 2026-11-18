@@ -31,7 +31,7 @@ messages are in [Accounts and Security](01-accounts-and-security-4-shared-and-fi
   subroutine, execute a command or answer its prompts, enter another account,
   use sequential files, read variables, run `system()`, `trans()` or an evaluation or
   conversion, run a transaction, or open an SDNet file on a third server. Any other
-  request, and any request number this release does not know, is refused: the table
+  request, and any request number SD does not know, is refused: the table
   is an allow list.
 - A refused request is not carried out. It is answered with "This login is for files
   only: request *n* is not allowed" and written to the audit trail; the connection
@@ -67,8 +67,8 @@ to let that login do.
   group, reads it back, then removes `sdfiles` and reads that back, and it does the work
   for a person who is in only one of the two: a person who is in `sdfileswrite` and
   not in `sdfiles` (a removal that stopped half way, or a change made by hand) is
-  taken out of it, where the first release told them "already had that access" and
-  left the membership in place to become write access at the next `files-on`. If a
+  taken out of it, so a membership left in place cannot become write access at the
+  next `files-on`. If a
   removal fails the command says so ("Unable to change remote access for *name*,
   status: *n*") and stops: a failure of the write group's removal leaves the person
   exactly as they were, and a failure of the second removal leaves them in `sdfiles`
@@ -103,17 +103,13 @@ to let that login do.
   here: ask the administrator for files-write-on (request 16)". (The client shows the
   text of any `ON ERROR` reply that has one, cut at 100 characters; a reply with no text
   still shows "status *n*".) A
-  program that traps the error with `ON ERROR` sees `STATUS()` 7000, as before. The audit
+  program that traps the error with `ON ERROR` sees `STATUS()` 7000. The audit
   trail on the target also has the request number.
 - **The group is read at login**, from `/etc/group`, so a change takes effect at the
   person's **next** login on that server, and a refusal to read the group file refuses
   the login with its own reason.
-- **The consequence for existing definitions.** A server defined `write` on a client
-  stops writing the day the target runs this release, until the remote user is given
-  the group there (one `modify.account` word on the target). Reads are unaffected.
-- An installation made before this release has neither the group nor the helper that
-  accepts it until the installer is run again; until then `files-write-on` says
-  "sdfileswrite is not a valid Linux Group" and changes nothing.
+- **A server defined `write` on a client** writes only when the remote user has been
+  given the group on the target (one `modify.account` word there). Reads are unaffected.
 
 ## Continued in
 

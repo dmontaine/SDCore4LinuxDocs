@@ -134,6 +134,8 @@ stock                zztrig               PRE.WRITE, PRE.DELETE, POST.WRITE, POS
 2 file(s) with a trigger function
 ```
 
+With nothing to report the list is empty and the last line says `0 file(s) with a trigger function`.
+
 ### A trigger on a directory file
 
 A directory file can have a trigger function too. `set.trigger` works on it as on a hashed file, and

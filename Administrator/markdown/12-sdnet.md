@@ -111,7 +111,7 @@ handshake, and sends nothing. Every other connection goes to a defined server.)
 Two things must then both be true before an account can use one: it has the NET
 switch (off by default), and it is named in that server's *accounts* list (empty
 by default). Neither is a
-judgement that nobody should have the capability; each is a decision about who
+judgment that nobody should have the capability; each is a decision about who
 decides, and it is yours.
 
 **The file holds no secret, and must never hold one.** A definition is a name, an

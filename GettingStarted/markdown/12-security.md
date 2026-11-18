@@ -20,7 +20,7 @@ to apply — it is what `create.account` and the installer already do:
 | Saving a change to a VOC, a program file or a dictionary (and compiling) | **off for a new account**, in three independent switches (`voc-on`, `bp-on`, `dict-on`) that SDSYS turns on account by account; reading is never stopped — see [Managing accounts](05a-managing-accounts.html) |
 | The `shared` account | the one door that is **open** in a new installation, on purpose: every account can read the data files of the `shared` account by file name, and none can write them — see [The shared account](#the-shared-account-is-open-to-read-by-design) |
 | The API | local-only (`127.0.0.1:4247`) until an administrator opens it to the network — see [API access](09-api-access.html) |
-| SDSYS | no API route from any other computer, ever; ssh only after an administrator has opened that door (then the password alone); on the machine itself the API accepts it only on the local Unix socket, from a process running as `sdsys` — the one thing this page treats as non-negotiable rather than a default |
+| SDSYS | **both remote doors shut**: ssh only after an administrator has opened that door (`remote.sdsys ssh on`, then the password alone), and no API route from another computer until an administrator has opened that door for chosen addresses (`remote.sdsys api on` *address*, then SDSYS's SD password alone); on the machine itself the API accepts it only on the local Unix socket, from a process whose login is `sdsys` — the one thing this page treats as non-negotiable rather than a default |
 
 **An ordinary account is not denied a console login here**, unlike SD Core
 for Windows. SD's switches govern what a session *inside SD* can reach;
@@ -30,7 +30,7 @@ between the two. See [Security and the operating
 system](12a-security-and-the-operating-system.html).
 
 **The administrator can open the API to the network — `remote.api`,
-`remote.ssh` — and that is a decision for their own environment, not a
+`remote.ssh` — and SDSYS's own doors (`remote.sdsys`), and that is a decision for their own environment, not a
 default to second-guess.** Securing the transport and shipping a
 closed-by-default system is what this installer is responsible for; what
 an administrator does with the accounts they create afterward is theirs.
@@ -94,16 +94,17 @@ which records who actually logged in and cannot be forged by `sudo` or
 happens to be running as.
 
 **This is deliberate and total, not a special case for remote sessions.**
-SDSYS itself is refused ssh outright until the administrator opens that door (`remote.sdsys on`), and then
+SDSYS itself is refused ssh outright until the administrator opens that door (`remote.sdsys ssh on`), and then
 only with its password: nothing else stands between the network and the administrator while it is
 open, so open it only on a machine whose `sdsys` password is long and used nowhere else, and shut
-it again (`remote.sdsys off`) when it is not needed. The API refuses it from every other
-computer and over the network port on this machine as well; it accepts SDSYS
-only on the local Unix socket, from a process running as `sdsys`, and only
-with SDSYS's own SD password — see [ssh access](08-ssh-access.html) and
-[API access](09-api-access.html). There is no "administrator, but only over
-the network" middle case for the API; SDSYS's other routes are a genuine
-login — local, or ssh with its password once `remote.sdsys on` has opened that door — and, for programs, that local socket.
+it again (`remote.sdsys ssh off`) when it is not needed. The API is shut to SDSYS from every other
+computer until the administrator opens that door for chosen addresses (`remote.sdsys api on` *address*),
+and then only SDSYS's own SD password stands between those addresses and the administrator; the same
+care applies, and `remote.sdsys api off` shuts it. Over the network port on this machine's own loopback
+it is always refused, and on this machine it is accepted only on the local Unix socket, from a process whose
+login is `sdsys`, with SDSYS's own SD password — see [ssh access](08-ssh-access.html) and
+[API access](09-api-access.html). SDSYS's routes are a genuine
+login — local, or ssh with its password once `remote.sdsys ssh on` has opened that door — and the API doors above.
 
 ## Taking an account out of use without deleting it
 
@@ -138,7 +139,7 @@ own process, under your own Linux identity (a real `setuid`, not a filtered
 token — see [API access](09-api-access.html#an-api-session-runs-as-you)).
 There is no data server standing between you and the files. So:
 
-> **While SD runs as the invoking user, account passwords organise access; they
+> **While SD runs as the invoking user, account passwords organize access; they
 > do not secure it.**
 
 A password gate inside SD is not a file security boundary. The old password

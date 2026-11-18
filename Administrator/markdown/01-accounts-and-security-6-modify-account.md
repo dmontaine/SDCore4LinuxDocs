@@ -37,13 +37,15 @@ then carries out all of them, or none of them:
 * **An unknown word, two words that set one access to different states, or
   `add` / `delete` among other words refuses the whole command before anything
   is changed**, and the refusal names the word: `sh-on` with `sh-off`, `ssh`
-  with `api` (say `both`), and `files-off` with `files-write-on` are the
-  conflicts.
+  with `api` (say `both`), `files-off` with `files-write-on`, and
+  `files-admin-on` with `files-off` or `files-write-off` are the conflicts.
 * **The words are carried out in one fixed order whatever order they were
-  typed:** the route words, then the register switches in the order of the list
-  above, then the files words (`files-on` before `files-write-on`, which needs
-  it), and the suspension last. Each is reported and audited exactly as if it
-  had been given alone.
+  typed:** the route words, then `sh`, `os`, `sd`, the three edit switches,
+  `recovery`, `xfer` and `net`, then the shared-account words, then the files
+  words (`files-on` before `files-write-on`, which needs it, and that before
+  `files-admin-on`), then `ai-on` / `ai-off`, `ssh-key-on` / `ssh-key-off` and
+  `sdsys-on` / `sdsys-off`, the start and pins words, and the suspension last.
+  Each is reported and audited exactly as if it had been given alone.
 * **A command of more than one action ends with a line** saying which were
   carried out, and if one could not be (a refusal such as `sh-on` on a group
   account, or a Linux group change that failed) the others are still carried out

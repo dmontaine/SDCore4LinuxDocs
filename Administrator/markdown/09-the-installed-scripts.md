@@ -1,18 +1,14 @@
 Title: The Installed Scripts
 Subtitle: The three helper scripts installed beside SD, the sudoers scope that lets SD run them, and what their exit codes mean.
 
-**Unlike SD Core for Windows, which ships thirty-seven separate PowerShell
-scripts, this port does its privileged work through three: one general
-helper with many subcommands, and two standalone ones.** Where Windows
-needed a script per task because each ran as its own elevated PowerShell
-process, this port dispatches by argument through a single `sudo`-scoped
-entry point — the same shape of problem, a smaller surface because the
-mechanism is free to differ.
+**SD does its privileged work through three scripts: one general helper
+with many subcommands, and two standalone ones.** The helper dispatches by
+argument through a single `sudo`-scoped entry point, which keeps the
+surface small.
 
-They are in `/usr/local/sbin`, and they are there for the same two reasons
-Windows's are: so that a step which failed during the installation can be
-run again without reinstalling, and so that a choice made at install time
-can be changed afterward.
+They are in `/usr/local/sbin`, so that a step which failed during the
+installation can be run again without reinstalling, and so that a choice
+made at install time can be changed afterward.
 
 **They are shell scripts, not SD verbs.** Nothing here is typed at an `sd`
 prompt. Most need `sudo` to do anything; SD itself reaches them through a
@@ -139,8 +135,13 @@ of the record, false of the machine. Reports by default; `--sweep`
 removes the stale records and their directories, and needs root. Exit
 **0** the register is clean, **1** something stale is still there
 (reported, refused, or would not go), **2** the question could not be
-answered. Not run by the installer — a recovery tool for drift that
-happened outside SD's own verbs.
+answered. `sd.service` runs it with `--sweep` before every start of SD
+(a failure there does not stop SD from starting); run by hand without
+`--sweep` it is the way to see drift that happened outside SD's own verbs.
+It refuses to sweep, and reports instead, on a machine whose name service
+comes from a remote directory, because a directory user that is not yet
+reachable at boot looks the same as one that is gone; `--allow-remote-nss`
+overrides that for an administrator who knows the directory is up.
 
 ## Continued in
 

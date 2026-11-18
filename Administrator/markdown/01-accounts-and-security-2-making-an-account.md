@@ -22,14 +22,15 @@ create.account other <name> <pathname> {shared-read-off} {shared-write-on} {star
 **A new user account starts with every door shut** (but one: it can read the
 files of the `shared` account, below, and not write them). Say nothing and it has
 no ssh, no API, no `sh` and no `OS.EXECUTE`, it cannot save a change to
-a VOC, a program file or a dictionary, and it has no right to use a server
-defined for SDNet, and no files-only login; you open each one by naming it. `ssh`, `api` or `both` give the remote routes (`none` is the default
+a VOC, a program file or a dictionary, it has no right to use a server
+defined for SDNet, no files-only login and no use of the AI; you open each
+one by naming it. `ssh`, `api` or `both` give the remote routes (`none` is the default
 and is accepted so that a script can say so); `files-on` gives the narrower
 files-only API route (below, *The files-only route*); `sh-on` and `os-on` give the
 two operating-system switches, and they are independent, so `sh-on os-on`
 gives both and neither cancels the other; `voc-on`, `bp-on` and `dict-on`
 give the three edit switches (below), each on its own; `net-on` gives the
-SDNet switch (below). Two words go the other way, because the `shared` account
+SDNet switch (below); `ai-on` gives the AI (below, *The AI*). Two words go the other way, because the `shared` account
 (below) is open to every account unless you say otherwise: `shared-read-off`
 takes away the right to read its files and `shared-write-on` gives the right
 to write them. (The two words that restate the defaults, `shared-read-on` and
@@ -74,6 +75,11 @@ start word was typed, a tail `start=menu` or `start=terminal`:
 ```
 create.account account=fred type=user gates=pins-on start=menu
 ```
+
+The `gates=` list names every access the command granted, from `ssh`, `api`, `sh-on`,
+`os-on`, `voc-on`, `bp-on`, `dict-on`, `net-on`, `files-on`, `files-write-on`,
+`files-admin-on`, `ai-on`, `shared-read-off`, `shared-write-on`, `pins-on`,
+`recovery-on`, `xfer-on` and `ssh-key-on`, and says `none` when it granted none.
 
 **One more word, for a user account only: `recovery-on`** makes the account's `ide` keep a recovery copy of
 text that was not saved (*The recovery copy*, below). It is off when the word is left out, a group or `other`
@@ -151,10 +157,14 @@ stays inside SD.
 
 | | |
 |---|---|
-| **`sh-on`** · `sh-off` | the `sh` verb |
-| **`os-on`** · `os-off` | `OS.EXECUTE` in a BASIC program, the screen editor `micro`, the embedded Python, **and reaching an operating-system file or directory by its path outside the account's own directory** |
+| **`sh-on`** · `sh-off` | the `sh` verb (see [Operating System Access](03-operating-system-access.html)) |
+| **`os-on`** · `os-off` | `OS.EXECUTE` in a BASIC program, the screen editors `edit` and `micro`, the embedded Python, **and reaching an operating-system file or directory by its path outside the account's own directory** |
 
-That last clause is the one that is easy to miss. Without `os-on` an
+The grant is two fields of the account's own record, so it follows the account,
+and a person at the console is held to the limit on paths as well as a session
+that arrived over the network.
+
+That last clause of the table is the one that is easy to miss. Without `os-on` an
 account can still open every file it reaches **through its VOC** —
 dictionaries and other SD files included — and anything inside its own
 directory, **provided the VOC pointer leads somewhere it may go** (the
@@ -183,7 +193,7 @@ to all (SDSYS can give it: `modify.account` *name* `os-on`)". **SDSYS is never r
 ### The third switch: `sd-on`, other SD accounts' directories
 
 `os-on` is wide: it reaches any path. `sd-on` is the narrow version, for an
-account that has to read or write the **data** of a neighbouring SD account
+account that has to read or write the **data** of a neighboring SD account
 (a shared reports folder, a hand-over directory) without being given the
 whole machine. It is **off for a new account**, and `modify.account` *name*
 `sd-on` / `sd-off` turns it on and off. It may be set on a group account

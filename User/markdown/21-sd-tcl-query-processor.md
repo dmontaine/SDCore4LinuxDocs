@@ -75,8 +75,8 @@ entry that is empty for anything that is not a verb.
 ### The operators, and their synonyms
 
 **SD accepts several spellings of each operator** and they are exactly
-equivalent — the same token underneath. Each row below was run, and the
-spellings in a row returned identical counts on the same data.
+equivalent — the same token underneath. The spellings in a row return
+identical counts on the same data.
 
 | | |
 |---|---|
@@ -167,8 +167,8 @@ The values in the list are compared with the field as it is stored. Unlike a
 value typed in the sentence, they are not run through the field's input
 conversion first, so for a field with a conversion (a date, say) the list must
 hold the stored form: a list of day numbers selects the records for those days,
-a list of the same dates written as `12/31/2023` selects none. *(Tried on a
-field with the `D4/` conversion.)*
+a list of the same dates written as `12/31/2023` selects none. *(That holds for a
+field with the `D4/` conversion, for example.)*
 
 **`in` and `not.in` are now keywords.** After `=` or another comparison an
 unquoted `in` is still an ordinary value: `with state = in` finds the records
@@ -178,8 +178,7 @@ left out and repeated for you, an unquoted `in` or `not.in` is the operator, so
 `with state = "oh" or "in"`. A dictionary item called `in` still wins over the
 keyword, and a quoted value is never taken for one. An account whose VOC
 predates this change has no `in` or `not.in` record; the query processor knows
-the two words anyway (tried, with both records deleted from the account's VOC),
-and `update.accounts` adds the records.
+the two words anyway, and `update.accounts` adds the records.
 
 These are the query processor's own. The paragraph `if` has an `in` of its
 own, which compares a word with a list of words; the two are not connected.

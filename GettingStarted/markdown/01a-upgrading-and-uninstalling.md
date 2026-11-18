@@ -37,8 +37,7 @@ parameter this release dropped (`APILOGIN`, `CODEPAGE`, `CREATUSR`, `EXCLREM`,
 hand from an older installation needs the same done to it; see
 *Configuration* in the Administrator set.
 
-**Existing accounts pick up a release's new commands automatically**, as in
-SD Core for Windows. When you kept your accounts, the installer ends by
+**Existing accounts pick up a release's new commands automatically.** When you kept your accounts, the installer ends by
 running, as the administrator:
 
 ```
@@ -56,19 +55,38 @@ registering an account from an older system, say. To refresh one account
 instead, `update.accounts` (no `all`) run **in that account** updates just
 it and offers to do the rest.
 
-**The `sdsys` user is in no user account's group as delivered** (from 2.0-0), and
-an install does not put it there. A release before 2.0-0 did, for every account, so
-an install that keeps accounts and finds the `sdsys` user in their groups **asks once**
-whether to keep it there: the answer is no unless you type `y`, and it is also no
-when nothing can be read (no terminal). With no, it takes the user out of those
-groups and says so. After a `y`, or after a no that took the user out of every one of
-those groups, it records the decision in `/home/sd/$groups.ruled` (a group it could not
-leave is a warning and no record, so the next install asks again),
-and from then on the installer does not touch these groups, so what the administrator
-does with `modify.account` *name* `sdsys-on` and `sdsys-off` stands. See
-*The Master Files* in the Administrator documentation for what
-the membership gives the `sdsys` user (write access to everything the account's group
-may write) and for what the default does and does not protect.
+**The `sdsys` user is in the group of every user account as delivered**, so that
+SDSYS can change that account's files. An install that keeps accounts puts the user
+in the group of each user account it is not in yet, makes the account's record files
+writable by that group, and says how many accounts it changed; it asks nothing. It
+does this once, and records that in `/home/sd/$sdsys.access` (a group it could not
+change is a warning and no record, so the next install tries again). From then on the
+installer does not touch these groups, so what the administrator does with
+`modify.account` *name* `sdsys-off` and `sdsys-on` stands. See *The Master Files* in
+the Administrator documentation for what the membership gives the `sdsys` user (write
+access to everything the account's group may write).
+
+**Your files are converted to case-insensitive record ids for you.** Every file
+`create.file` makes treats ids as one whatever the case (see
+[Lower case](11-lower-case.html)), and an upgrade keeps your existing files, which
+were built case sensitive. After the accounts' VOCs are brought up to the release,
+the installer walks every registered account, **naming each one as it goes**, reads
+each file the account's VOC names first, and converts it only if no two of its ids
+differ only by case, so a conversion cannot lose a record. It also makes each
+account's private catalog names lower case. The whole walk is kept in
+`/var/tmp/sdcore-install-nocase.log`. A file is **left exactly as it was** and named
+when:
+
+- it holds two ids that differ only by case (rename or delete one of each pair, then
+  run `configure.file` *name* `no.case` on it);
+- it has alternate key indexes (convert it by hand with `configure.file`);
+- it lies outside its account's directory, or under SDSYS (each is converted by its
+  owner with `configure.file` *name* `no.case`);
+- it could not be read or rebuilt.
+
+SDSYS's own files are not walked at all. A walk that did not finish prints a warning
+and the install goes on; what was not converted keeps working, and ids are still
+found typed in any case.
 
 Two limits are worth knowing before you rely on it.
 
@@ -118,8 +136,8 @@ register record, and you rename that account by hand and run the installer again
 
 ## Uninstalling
 
-`deletesdcore.sh` is in the release package beside `installsdcore.sh` (from
-L1.1-1 on), and in the source repository. Run it as yourself, not with `sudo`:
+`deletesdcore.sh` is in the release package beside `installsdcore.sh`, and in the
+source repository. Run it as yourself, not with `sudo`:
 
 ```sh
 ./deletesdcore.sh

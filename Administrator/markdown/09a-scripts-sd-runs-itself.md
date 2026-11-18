@@ -1,47 +1,40 @@
 Title: The Scripts SD Runs For Itself
-Subtitle: What calls `sd-elevate`'s subcommands, and the handful of things Windows automated that this port does differently.
+Subtitle: What calls `sd-elevate`'s subcommands, what the installer does inline, and what runs when SD starts.
 
 This page continues [The Installed Scripts](09-the-installed-scripts.html).
 
-**Unlike SD Core for Windows, there is no separate category of scripts
-"the installer runs" versus "a verb calls" versus "SD runs for itself" —
-it is the same `sd-elevate` and the same subcommands (listed on the
-previous page) either way, invoked from `installsdcore.sh` directly, from
-an administrator verb, or from `deletesdcore.sh`.** This page is mostly
-about the handful of places this port's approach genuinely differs from
-what Windows automates, rather than a second catalog to read alongside
-the first.
+**There is no separate category of scripts "the installer runs" versus
+"a verb calls" versus "SD runs for itself".** It is the same `sd-elevate`
+and the same subcommands (listed on the previous page) either way, invoked
+from `installsdcore.sh` directly, from an administrator verb, or from
+`deletesdcore.sh`. This page is about the few steps that have no script of
+their own, and the one thing that runs at every start.
 
-## What has no separate script at all
+## What has no separate script
 
-**Several things Windows does through a dedicated `.ps1` file, this port
-does inline, or does not do the way Windows does:**
-
-| Windows script | Here |
+| Step | How it is done |
 |---|---|
-| `deny-logon.ps1` | nothing — an ordinary account's console login is not denied here at all (being at the console is being on the machine as that Linux user, which SD's `sh-on`/`os-on` switches do not govern). See *Security and the operating system* in the Getting Started set |
-| `install-service.ps1` | a `systemd` unit file (`sd.service`, `sdclient.socket`), installed with `install`, not a script that creates a service |
-| `install-editors.ps1` | `apt-get install micro`, inline in `installsdcore.sh` |
-| `upgrade-voc.ps1` | `update.accounts all`, run inline by `installsdcore.sh` as the administrator when the accounts were kept |
-| `sync-route-groups.ps1`, `sd-path.ps1` | nothing to run by hand — the installer makes the `sdssh`, `sdapi` and `sdfiles` route groups once, and `modify.account` moves an account in and out of them; there is no PATH toggle, and `sd` is symlinked into `/usr/local/bin` at install time |
-| the `secure-*` family (eleven scripts) | inline `chown`/`chmod` calls in `installsdcore.sh`, at the specific paths that need them (`$cred` 700, `batch.jobs` 750, and so on — see *Security* in the Getting Started set) |
-| `micro-home.ps1` | nothing installed — `micro`'s own program (`gpl.bp/edit`) copies its syntax file into the caller's `~/.config/micro/syntax` itself, on first use, with no privilege needed. Self-healing, and it reaches an account made after the install without anything to re-run |
+| Keeping an ordinary account off the console | not done: an ordinary account's console login is not denied at all (being at the console is being on the machine as that Linux user, which SD's `sh-on`/`os-on` switches do not govern). See *Security and the operating system* in the Getting Started set |
+| The service | a `systemd` unit file (`sd.service`, `sdclient.socket`), installed with `install` |
+| The editors | `apt-get install micro`, inline in `installsdcore.sh` |
+| Bringing every account's VOC up to the release | `update.accounts all`, run inline by `installsdcore.sh` as the administrator when the accounts were kept |
+| The route groups and the `sd` command | nothing to run by hand: the installer makes the `sdssh`, `sdapi` and `sdfiles` route groups once, and `modify.account` moves an account in and out of them; `sd` is symlinked into `/usr/local/bin` at install time, and there is no PATH toggle |
+| Locking down SD's own files | inline `chown`/`chmod` calls in `installsdcore.sh`, at the specific paths that need them (`$cred` 700, `batch.jobs` 750, and so on — see *Security* in the Getting Started set) |
+| `micro`'s syntax file | `micro`'s own program (`gpl.bp/edit`) copies it into the caller's `~/.config/micro/syntax` itself, on first use, with no privilege needed. It reaches an account made after the install without anything to re-run |
 
-## What Windows automates that this port does not, yet
+## What runs at every start
 
-**`reconcile-accounts.ps1` — runs at every service start on Windows.**
-This port's equivalent, `sd-reconcile-accounts`, is installed but **not**
-wired into `sd.service`'s startup — checked against the unit file and
-`installsdcore.sh` directly. It is a manual recovery tool, run when `list
-sd.accounts` and the Linux accounts disagree, not a standing safeguard.
+**`sd-reconcile-accounts --sweep` runs before `sd -start`** as `ExecStartPre`
+of `sd.service`, with its exit status ignored, so a stale record can never
+stop SD from starting. It removes register records whose Linux user has gone,
+and their directories (see the previous page). Run by hand without `--sweep`
+it only reports.
 
 ## Restarting after a remote-access change
 
-**Unlike SD Core for Windows, where `remote.api on`/`off` may offer to
-restart the whole server** (its listener opens only when `sd.exe` itself
-starts), **no SD session is ever ended by a remote-access change here.**
-`remote.api`'s `on`/`local` restart only the `sdclient.socket` unit;
-`remote.ssh` only moves a firewall rule. See [Remote access and the
+**No SD session is ever ended by a remote-access change.** `remote.api`'s
+`on`/`local` restart only the `sdclient.socket` unit; `remote.ssh` only moves
+a firewall rule. See [Remote access and the
 machine](05-remote-access-and-the-machine.html).
 
 ## See also

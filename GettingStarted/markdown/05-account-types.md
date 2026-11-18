@@ -1,9 +1,8 @@
 Title: Accounts
 Subtitle: Ordinary accounts, SDSYS, Suspended and Group — what each one may do, and how to make one.
 
-**Every ordinary account gets the same VOC.** SD Core used to divide accounts
-into three capability tiers — Standard, Programmer, Administrator — each with
-a different, smaller VOC. **The tiers are gone**: the only privileged account is SDSYS. An account you create today
+**Every ordinary account gets the same VOC.** There are no capability tiers:
+the only privileged account is SDSYS. An account you create
 gets every verb there is, the same set SDSYS has for running applications and
 building them. What it does **not** get is administration — that is not a
 verb an account can be given, it is a separate account.
@@ -23,24 +22,22 @@ step because being logged in as `sdsys` already *is* the privilege: `sudo`,
 refused, checked against the kernel's own audit trail (which records who
 actually logged in, not which account a shell is currently running as).
 
-> **This matches SD Core for Windows's own model exactly at the result
-> level**, even though the mechanism differs (a real login vs. elevation
-> checked against the running session). Neither port lets an administrator
-> of the underlying operating system pick up SD privilege by virtue of
-> that — being a Linux `sudo`er, like being a Windows administrator,
-> grants nothing by itself. The reasoning is in the *Administrator* set's
-> *Accounts and security* chapter.
+> **Being an administrator of the operating system gives no SD privilege.**
+> Being a Linux `sudo`er grants nothing by itself. The reasoning is in the
+> *Administrator* set's *Accounts and security* chapter.
 
 **SDSYS's Linux login password** is set once, during installation
 (`sudo passwd sdsys`) — that is what you type at the machine's own login
 prompt to reach it at all, and changing it afterward is an ordinary Linux
 action (`passwd`), not an SD verb. SDSYS also has its own SD credential
-(`modify.password`, run from within an SDSYS session, changes its own),
-but that credential secures nothing remote: `sdsys` has no API access from another
-computer, under any setting, and ssh access only once the administrator has opened that door (and then
-the Linux password alone is what guards it). The one
-thing the credential is for is a program running as `sdsys` on this machine,
-which gives it to use the API through the local Unix socket — see
+(`modify.password`, run from within an SDSYS session, changes its own).
+That credential secures nothing remote as delivered: both of SDSYS's remote doors are
+shut. Once the administrator opens the ssh door (`remote.sdsys ssh on`), the Linux password
+alone guards it; once the administrator opens the API door (`remote.sdsys api on` *address*),
+this SD credential alone guards it, for the addresses named. **Open either only on a machine
+whose `sdsys` password is long and used nowhere else:** with a door open, nothing else
+stands between those computers and the administrator. The credential is also what a program
+running as `sdsys` on this machine gives to use the API through the local Unix socket — see
 [API access](09-api-access.html). For what an administrator cannot reach
 from SD, see [Reaching the operating system](06-administrator-commands.html).
 
@@ -68,7 +65,7 @@ administrator loosens it, account by account, for the people who need it:
 
 | word | gives the account |
 |---|---|
-| `ssh` · `api` · `both` | the remote route(s). `none` is the default |
+| `ssh` · `api` · `both` | the remote route(s). `none` is the default: an account with `none` is reached only with `logto`, from inside another session |
 | `files-on` | the files-only API route: an API login that can open, read, write and select from files and do nothing else (no commands, no subroutine calls, no `logto`). `api` gives the whole API and wins when an account has both |
 | `sh-on` | the `sh` verb |
 | `os-on` | `OS.EXECUTE`, `micro`, the embedded Python, and files or directories of the operating system named by their path outside the account's own directory |
@@ -83,8 +80,12 @@ has a section on the edit switches. **No new account is an
 exception — not even the one the installer creates for whoever installed
 SD on a fresh machine**; the accounts that keep their shell, `OS.EXECUTE` and
 edit rights are the user accounts that already exist when the installing user
-upgrades. SDSYS has no remote access at all, and that
-is not a setting.
+upgrades. **If the machine has no ssh server, `ssh` and `both` still make the
+account, and the command warns that it cannot sign in until one is installed; if it
+has no API listener, `api` and `both` warn the same way** (turn it on with `remote.api on`).
+The grant is already in place and takes effect then. SDSYS's own remote doors are not
+among these words: `remote.sdsys ssh on` and `remote.sdsys api on` *address* open them
+for the administrator, and both are shut as delivered.
 
 ### What creating a user account actually does
 
@@ -106,8 +107,9 @@ over the API only if it is in `sdapi` — those two memberships are what the
 `sdfiles`, is a narrower API route that reaches files and nothing else; the
 `files-on` and `files-off` words make and take it away, and `ssh`, `api`,
 `both` and `none` leave it alone. `sdsys` is in
-none of them, and is refused at the door on both routes rather than left
-ungranted. One more group works the other way round: a Linux user that `create.account`
+none of them: it reaches ssh and the API only through its own doors, which are
+shut as delivered (`remote.sdsys`; see [ssh access](08-ssh-access.html) and
+[API access](09-api-access.html)). One more group works the other way round: a Linux user that `create.account`
 makes is put in `sdsshnokey`, and its members are offered no ssh key sign-in (only the
 password), until `modify.account` *name* `ssh-key-on` takes the user out; see
 [ssh access](08-ssh-access.html).

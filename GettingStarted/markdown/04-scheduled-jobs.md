@@ -4,11 +4,10 @@ Subtitle: Running an SD command on a timer, and the permit list that decides whi
 **A cron job or a systemd timer can run an SD command, and only the
 commands an administrator has named for it.**
 
-Typing a command after `sd` — `sd my.report` — used to run unconditionally,
-with no gate at all: the group-membership test at entry proved *who* was
-running it, never *what* it might run unattended. A scheduled job has
-nobody at the keyboard to use judgement, so it needed a pre-vetted list
-instead, whoever's Linux identity is actually running it.
+Typing a command after `sd` — `sd my.report` — is gated: the group-membership test at entry
+proves *who* is running it, never *what* it might run unattended. A scheduled job has
+nobody at the keyboard to use judgement, so it runs only from a pre-vetted list,
+whoever's Linux identity is actually running it.
 
 There are two ways past the gate now:
 

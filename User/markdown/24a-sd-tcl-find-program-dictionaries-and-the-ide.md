@@ -18,10 +18,10 @@ account's `cat` directory, or the directory `$PRIVATE.CATALOGUE` names) and the
 global one — and reports every one that has it:
 
 ```
-Program is in the local catalogue
+Program is in the local catalog
    Compiled 10/15/26 20:56:03
    Subroutine with 2 arguments
-Program is in the private catalogue
+Program is in the private catalog
    Compiled 10/14/26 09:12:40
    Subroutine with 2 arguments
 ```
@@ -125,6 +125,8 @@ opens a tab for each record named** (one that is not there is a new record) **an
 records of the file as a select list does, the first ten in tabs** (both work after
 `dict`; the ids are the words of the command, so an id with a blank in it is opened with Ctrl-O). It needs a terminal and
 **stops in a phantom**.
+
+**The `sed` command is this editor by itself**, with no files pane: see [SED](27a-sd-tcl-sed.html) for what is different there. The keys every full-screen page shares are in [Using the Full-Screen Pages](29d-sd-tcl-using-the-full-screen-pages.html).
 
 | part | what it is |
 |---|---|

@@ -194,17 +194,16 @@ reset command).
 - **It imposes no window size and no lock on your program.** Ask for the size you need with
   `minsize`; a window that becomes smaller later cuts what falls outside it (cells outside the
   window are dropped, not wrapped) and your program keeps its keys. SD's own full-screen
-  programs (SED and CED, at 140 by 43) are laid out for that size and, when their cursor is off the
-  screen, take the keyboard behind a warning until the window is made bigger or you press
-  Ctrl-Q, y; the IDE and the toolkit pages are laid out for 140 by 43 and do it whenever the
-  window is smaller than that, wherever the cursor is; the library routines that do it are SD's
-  own and are not a statement.
+  programs are laid out for 140 by 43: CED, when its cursor is off the screen, takes the
+  keyboard behind a warning until the window is made bigger or you press Ctrl-Q, y; the IDE,
+  SED and the toolkit pages do it whenever the window is smaller than that, wherever the cursor
+  is; the library routines that do it are SD's own and are not a statement.
 - A table sorts what it *shows*, never the rows you gave it, and a tree is the list of
   nodes you gave it with the depths you gave it: neither is a database view.
 - It has no widget for editing a record with the editor's own commands: `screen memo` has
-  selection, undo, find and keyboard macros (Alt-R, Alt-P), but not SED's buffers or bindings, and
-  [SED](27a-sd-tcl-sed.html) keeps its own text area and prompt line (its menus and its
-  color for the language use the library). [CED](27b-sd-tcl-ced.html) and
+  selection, undo, find and keyboard macros (Alt-R, Alt-P), but not the tabs, the menus or the
+  compile and run keys of the IDE and [SED](27a-sd-tcl-sed.html), which are those programs' own.
+  The IDE, SED, [CED](27b-sd-tcl-ced.html) and
   [the debugger](17-sd-basic-debugging.html) are drawn with the library.
 - It draws nothing in a phantom or over the API: every verb takes `else`.
 - Text written with `print` or `crt` is not in the shadow.

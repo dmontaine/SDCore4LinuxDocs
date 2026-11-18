@@ -305,6 +305,10 @@ work out the unlock at boot for your own machine.
 
 ## What this does not cover
 
+- **A running machine.** Once the volume is unlocked, everything is plain text to
+  anyone signed in with the right to read it, and to root.
+- **Copies you make.** A record exported to a file, a report printed to a file, or a
+  file copied off the machine is outside the encrypted volume once it leaves it.
 - **Swap.** Data can be written to swap; encrypt the swap or turn it off yourself.
 - **`TEMPDIR`.** The recipe moves `SORTWORK` onto the volume; move `TEMPDIR` as well if
   work files must be protected.

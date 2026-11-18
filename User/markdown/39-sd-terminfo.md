@@ -50,7 +50,7 @@ A name that is not installed is refused and your current type is kept:
 
 ```
 :term vt320
-Unrecognised terminal name
+Unrecognized terminal name
 ```
 
 There is no `vt320` definition; `vt220` or `xterm` does the same job.
@@ -202,13 +202,10 @@ below. The start functions `@(-5)` and `@(-13)` are not changed.
 ## Compiling a definition
 
 **`sdtic` is built alongside the server during installation** — it is
-what compiles `terminfo.src` at install time — **but, unlike SD Core for
-Windows, is not currently left on the machine afterward.** The installer
-deletes its whole temporary build tree once installation finishes, and
-`sdtic` was only ever in that tree. To compile a custom definition after
-the fact, build it yourself from a clone of the source
-(`make sd` in `sdb_ai/sd64` produces `bin/sdtic`) rather than expect a
-copy already on the machine.
+what compiles `terminfo.src` at install time — **and is left in the
+installation's `bin` directory** (`/usr/local/sdsys/bin/sdtic` on a standard
+install, with `terminfo.src` beside it in `/usr/local/sdsys`). Nothing needs
+building to compile a custom definition after the fact.
 
 ```
 sdtic {options} src...

@@ -211,14 +211,13 @@ field number cannot be indexed on a collection file, and an E-type item cannot b
 
 **A read or write trigger on a collection file is always given the collection**, and what a pre-write trigger
 changes is what is stored; a trigger that refuses a write (a non-zero `@trigger.return.code`) stops it as usual, and the
-post-write trigger does not run. **The API server sends a client the JSON text of a record it reads from a collection file**
-(this has been compiled but not yet run against a live API server). **The debugger** shows a collection variable as its JSON,
+post-write trigger does not run. **The API server sends a client the JSON text of a record it reads from a collection file**. **The debugger** shows a collection variable as its JSON,
 and `/c{path}` shows one element: see [SD Basic - Debugging](17-sd-basic-debugging.html).
 
-## What does not work, and what was not tried
+## What does not work
 
 `readv` and `writev` of a field number have no meaning on a collection file, and `matread` is refused. **`analyze.file` does not
-say that a file holds collections**, and `micro` was not tried on a collection record: use `ced`, the `ide` (F12) or `ed`.
+say that a file holds collections**. Edit a collection record with `ced`, the `ide` (F12) or `ed`.
 
 ## See also
 

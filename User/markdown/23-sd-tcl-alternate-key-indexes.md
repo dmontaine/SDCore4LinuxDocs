@@ -16,7 +16,7 @@ marks a word typed as it stands; braces mark an optional part.
 **That is the whole of this page's advice.** `create.index` defines an index and
 `build.index` fills it, and **the half that is easy to miss is the second one**.
 Run both, in that order; what each prints is shown in the next two sections.
-(`make.index`, which did both in one command, was added and removed again in 2.0-0.)
+(`make.index`, which did both in one command, was removed in 2.0-0.)
 
 ## The four verbs
 
@@ -290,12 +290,6 @@ Deleted index f2
 that way, and `delete.index zzak f1`, `delete.index zzak F1` and
 `delete.index zzak f1 f2` all do what they say (the answer is
 *Deleted index f1*, in lower case, whichever case you typed).
-
-> **An older SD held index names in upper case and `delete.index` matched them
-> exactly:** `delete.index zzak f1` then answered *"Unrecognized index name
-> (f1)"* on a file where `list.index zzak f1` had just found the index. If you
-> meet that, the SD you are talking to is older than this page; use **`all`**,
-> or type the name exactly as `list.index` prints it.
 
 Deleting the file removes its indexes with it.
 

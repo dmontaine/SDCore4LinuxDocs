@@ -1,20 +1,16 @@
 Title: SD Standard Subroutines
 Subtitle: The cataloged names beginning with !, which of them an application may use, and how each is called.
 
-**This port ships 157 cataloged routines whose names begin with `!`** —
-not carried
-over from SD Core for Windows's own count of forty-two. The figure grows as
+**SD ships 185 cataloged routines whose names begin with `!`** — counted from
+the `$catalog` lines of its programs. The figure grows as
 features are added, so read it as approximate. Twenty-two are the embedded Python
 interface (`!PY_CREATEDICT` and the rest — see
 [Embedded Python](37a-sd-basic-python-integration.html); this page does not
-repeat them) and forty-seven, all named `!SCREEN_...`, are the routines behind
+repeat them) and forty-nine, all named `!SCREEN_...`, are the routines behind
 the `screen` statement (see
 [The Screen Statement](12a-sd-basic-the-screen-statement.html); they are not
 called directly and are not listed here). This page names the rest that a
-programmer is likely to meet. This port has no need for several Windows-only
-ones this page used to list — `!ELEVATE`, `!PS_SCRIPT`, `!DELETE_USER`,
-`!OS_GROUP` and `!PROFILE_DIR` among them, noted below where each would have
-been. They are in the global catalog, so any account reaches them without
+programmer is likely to meet. They are in the global catalog, so any account reaches them without
 cataloging anything of its own.
 
 **Most exist to support SD itself and are not an interface for applications.**
@@ -139,7 +135,7 @@ It needs a real terminal too, and returns at once without one.
 |---|---|
 | `!PARSER` | `call !parser(key, type, string, keyword, voc.rec, quote.char)` — variable arguments |
 
-`!PARSER` is the tokeniser SD's own verbs use to read their arguments, and the
+`!PARSER` is the tokenizer SD's own verbs use to read their arguments, and the
 keys it takes are defined in `SYSCOM/PARSER.H`. It is the most useful of the
 internal routines and the one most likely to change.
 
@@ -155,7 +151,7 @@ machine.
 | | |
 |---|---|
 | `!ATVAR` `!SETVAR` | read and set the `@` variables |
-| `!GETPU` `!SETPU` | read and set one characteristic of a print unit: `call !getpu(key, unit, value, status)` and `call !setpu(key, unit, new.value, status)`, which are the `getpu()` function and the `setpu` statement wrapped as subroutines (SED uses `!SETPU` to set a print unit's banner and location). *key* is the print unit key (width 2, length 3, mode 1 and so on: see the keys in *SD Basic - Printing*); *unit* runs from -1 to 256, and any other number gives *status* 1007, "Bad print unit". They hold nothing per user. An application can use the statement and the function directly |
+| `!GETPU` `!SETPU` | read and set one characteristic of a print unit: `call !getpu(key, unit, value, status)` and `call !setpu(key, unit, new.value, status)`, which are the `getpu()` function and the `setpu` statement wrapped as subroutines (the IDE uses `!SETPU` to set a print unit's banner and location). *key* is the print unit key (width 2, length 3, mode 1 and so on: see the keys in *SD Basic - Printing*); *unit* runs from -1 to 256, and any other number gives *status* 1007, "Bad print unit". They hold nothing per user. An application can use the statement and the function directly |
 | `!CREATE_USER` `!SET_PASSWD` | the Linux user account half of `create.account` and `modify.password` |
 | `!CRED_SET` `!CRED_VERIFY` | write and check a credential in the credential store |
 | `!SD_GET_SALT` `!SD_KEY_FROM_PW` | the key derivation behind that credential |
@@ -165,19 +161,17 @@ machine.
 | `!PEER_LOCAL` | whether a connection came from this machine |
 | `!SDCLIENT` | the server side of the client API |
 
-**Unlike SD Core for Windows, there is no `!ELEVATE`, `!PS_SCRIPT`,
-`!DELETE_USER` or `!OS_GROUP` here.** Privileged work on this port goes
-through `sd-elevate`, a `sudo`-scoped external helper invoked directly
-(`os.execute`), not through an internal BASIC subroutine wrapping a
-second helper process — see the *Administrator* set's *The Installed
-Scripts* chapter. Deleting the Linux user is folded into `delete.account`
-itself rather than a separate internal call, and there is no Windows
-profile directory concept to have a subroutine for.
+**There is no `!ELEVATE`, `!PS_SCRIPT`, `!DELETE_USER` or `!OS_GROUP`.**
+Privileged work goes through `sd-elevate`, a `sudo`-scoped external helper
+invoked directly (`os.execute`), not through an internal BASIC subroutine
+wrapping a second helper process — see the *Administrator* set's *The
+Installed Scripts* chapter. Deleting the Linux user is part of
+`delete.account` itself rather than a separate internal call.
 
 ## What is not here
 
 Documentation for other MultiValue systems describes `!`-prefixed routines SD
-Core for Windows does not have. Three a reader may come looking for:
+does not have. Three a reader may come looking for:
 
 | | |
 |---|---|

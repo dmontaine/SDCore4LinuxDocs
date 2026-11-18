@@ -43,8 +43,8 @@ The optional fourth argument of `open.socket` is a **connect timeout in
 seconds**. When it runs out the call returns 0 with `status()` **7005**, as any
 failed connect does; zero, a negative number or no argument means no limit of
 SD's own (the system's connect timeout, which can be two minutes, applies).
-Before this release the fourth argument was an unused place for a security
-context and had to be zero.
+On a socket opened with the TLS flag it also bounds the TLS handshake. It is not
+used with the non-blocking flag.
 
 Flags `0` is TCP, stream. `0x00010000` selects UDP and `0x00020000` ICMP.
 

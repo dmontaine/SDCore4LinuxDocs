@@ -308,8 +308,8 @@ def main():
     if 'class="licenceblock"' not in sections[0]:
         carrying = [s for s in stems
                     if 'class="licenceblock"' in sections[stems.index(s)]]
-        sys.exit('mkbook: %s opens with %s and its licence page is %s - the '
-                 'front matter states no licence of its own, so the licence '
+        sys.exit('mkbook: %s opens with %s and its license page is %s - the '
+                 'front matter states no license of its own, so the license '
                  'page must be the first document.  Rename so it sorts first '
                  '(add_nav.py checks the same thing for the website, and the '
                  'book must not disagree with it)'

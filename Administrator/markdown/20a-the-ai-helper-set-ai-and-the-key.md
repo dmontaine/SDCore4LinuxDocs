@@ -70,7 +70,7 @@ If a key is lost or shown to someone, clear it and ask the provider for a new on
 
 ## Custom: say it plainly
 
-Custom lets you point the helper at any `https://` address. The text people send, and the key, then go to that host. That is your deliberate act and it is the widest thing on this page. What stays fixed: https only (a local model server on `http://` is not allowed), the certificate and the host name are always checked (there is no switch to turn that off), the helper never follows a redirect to another host, and the key is sent only to the address you gave. A private certificate authority is the file you name with `set.ai ca`; **it replaces the system store for the helper**, so whoever holds one of its keys can read what accounts send and the key. Use a file you trust, and `set.ai ca -` to go back to the system store.
+Custom lets you point the helper at any `https://` address. The text people send, and the key, then go to that host. That is your deliberate act and it is the widest thing on this page. What stays fixed: https only (a local model server on `http://` is not allowed), TLS 1.2 or later, the certificate and the host name are always checked (there is no switch to turn that off), the helper never follows a redirect to another host, and the key is sent only to the address you gave. A private certificate authority is the file you name with `set.ai ca`; **it replaces the system store for the helper**, so whoever holds one of its keys can read what accounts send and the key. Use a file you trust, and `set.ai ca -` to go back to the system store.
 
 If you want only the four named providers, leave Custom unfilled.
 

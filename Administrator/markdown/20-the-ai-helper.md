@@ -7,7 +7,7 @@ SD can ask an AI model a question for an account holder (the `ai` verb, see *SD 
 
 ## What leaves the machine
 
-When a person types `ai some text`, SD shows them the text, the provider and the model, and asks whether to send it. Only if they answer `y` or `yes` does anything go out. What goes out is your standing text (below), that text, one fixed sentence that asks for a short plain answer, and a limit on the length of the answer. It is sent over **https**, with the certificate checked, to the address of the provider you chose, and to nowhere else. The key goes only to that address. No proxy is used: a machine that reaches the internet only through an HTTP proxy cannot use the AI.
+When a person types `ai some text`, SD shows them the provider, the model and the size of all that will be sent, then their text, and asks whether to send it. Only if they answer `y` or `yes` does anything go out. What goes out is your standing text (below), that text, one fixed sentence that asks for a short plain answer, and a limit on the length of the answer. It is sent over **https**, with the certificate checked, to the address of the provider you chose, and to nowhere else. The key goes only to that address. No proxy is used: a machine that reaches the internet only through an HTTP proxy cannot use the AI.
 
 SD adds nothing of the account, the session or the data. A person can of course type or paste whatever they like into the question, which is why the preview is not optional and why the gate is yours to give.
 

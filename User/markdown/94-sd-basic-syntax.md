@@ -138,7 +138,7 @@ exist.**
 | **`deleteseq`** | `deleteseq` *path* {`on error` …} `then` … `else` … |
 | **`deleteu`** | `deleteu` *file.var*, *id* {`on error` …} |
 | **`delimiter`** | `for each` *var* `in` *string* {`delimiter` *d*} … `next` *var*; also a clause of `readcsv`, `matreadcsv`, `writecsv` and `matwritecsv` ***(clause word)*** |
-| **`digest`** | `digest(`*string*, *is.file*, *mode*`)` — *mode* `MD5`, `SHA1`, `SHA256`, `SHA384` or `SHA512` |
+| **`digest`** | `digest(`*string*, *is.file*, *mode*`)` — *mode* `MD5`, `SHA1`, `SHA256`, `SHA384` or `SHA512`; a file outside the account's own directory needs the account's `os` switch |
 | **`dim`** | `dim` *name*`(`*rows* {, *cols*}`)`, … |
 | **`dir`** | `dir(`*a*`)` |
 | **`disinherit`** | `disinherit` *object* |
@@ -367,14 +367,14 @@ exist.**
 | **`open.socket`** | `open.socket(`*addr*, *port*, *flags* {, *context*}`)` |
 | **`openpath`** | `openpath` *path* {`readonly`} {`non.transactional`} {`sync`} `to` *file.var* {`on error` …} `then` … `else` … — the three words come before `to`, in any order |
 | **`openseq`** | `openseq` *path* `to` *file.var* {`append`} {`overwrite`} {`readonly`} `then` … `else` … — ***`then` = it existed, `else` = it was created*** |
-| **`opentemp`** | `opentemp` {*path*} {`non.transactional`} `to` *file.var* {`on error` …} `then` … `else` … |
+| **`opentemp`** | `opentemp` {*path*} {`non.transactional`} `to` *file.var* {`on error` …} `then` … `else` … — a path outside the account's own directory, and the temporary file SD names itself, need the account's `os` switch |
 | **`ors`** | `ors(`*a*, *b*`)` |
 | **`os.error`** | `os.error()` |
 | **`os.execute`** | `os.execute` *command* {`capturing` *var* or `silent`} |
-| **`osdelete`** | `osdelete` *path* |
+| **`osdelete`** | `osdelete` *path* — a path outside the account's own directory needs the account's `os` switch |
 | **`ospath`** | `ospath(`*path*, *key* {, *qualifier*}`)` — keys 0 to 18, see [Status and the Machine](16a-sd-basic-status-and-the-machine.html); an internal program's own `ospath()` has other numbers |
-| **`osread`** | `osread` *var* `from` *path* `then` … `else` … |
-| **`oswrite`** | `oswrite` *expr* `to` *path* |
+| **`osread`** | `osread` *var* `from` *path* `then` … `else` … — a path outside the account's own directory needs the account's `os` switch |
+| **`oswrite`** | `oswrite` *expr* `to` *path* — a path outside the account's own directory needs the account's `os` switch |
 | **`outerjoin`** | `outerjoin(`*a*, *b*, *c*`)` |
 | **`overlay`** | clause of `input` — type over what is already there ***(clause word)*** |
 | **`overwrite`** | clause of `openseq` ***(clause word)*** |

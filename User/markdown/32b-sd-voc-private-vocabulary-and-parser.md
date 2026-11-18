@@ -87,7 +87,7 @@ cataloged in the private catalog and a private record of the same name,
 
 ```
 :zzcatprog
-private vocabulary beats the catalogue
+private vocabulary beats the catalog
 ```
 
 ran the private record, not the program.

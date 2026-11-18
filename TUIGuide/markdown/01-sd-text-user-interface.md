@@ -179,7 +179,7 @@ frame. At 140 by 43:
 | 41 | The border | `TK.C.YBORD` |
 | 42 | The row of keys, made from the key table | `TK.C.YKEYS` |
 
-The screens in this guide show the borders drawn with `+`, `-` and `|`, as on a terminal whose locale is not UTF-8. On a terminal that says UTF-8 the
+The screens in this guide were captured on a terminal whose locale is not UTF-8, so the borders are drawn with `+`, `-` and `|`. On a terminal that says UTF-8 the
 library opens the screen with line-drawing characters, and `ctx<TK.C.UTF8>` is 1.
 Reverse video and color - the highlighted row, the status line - do not show in a
 copy as text.

@@ -1,9 +1,8 @@
 Title: Administrator commands
 Subtitle: The verbs only SDSYS has, and how to use them.
 
-**These verbs are not in an ordinary account's VOC at all.** SD Core used to
-give an *administrator-tier* account a larger VOC than a *programmer*
-account's; that model is gone. Every ordinary account now gets the same VOC
+**These verbs are not in an ordinary account's VOC at all.** Every ordinary
+account gets the same VOC
 — see [Accounts](05-account-types.html) — and administration is not a verb
 an account can be given. It is SDSYS, a single Linux user the installer
 makes, reached by logging in to the machine itself, locally, as `sdsys`,
@@ -18,23 +17,40 @@ create.account  user <name>
 create.account  group <name>
 delete.account  <name> {remove.home}
 modify.account  <name> add|delete <user>
+modify.account  <name> ssh|api|both|none
+modify.account  <name> sh-on|sh-off
+modify.account  <name> os-on|os-off
+modify.account  <name> voc-on|voc-off
+modify.account  <name> bp-on|bp-off
+modify.account  <name> dict-on|dict-off
+modify.account  <name> files-on|files-off
 modify.account  <name> suspended|unsuspended
 update.accounts {all}
 clean.account
 ```
 
-Covered in full in [Accounts](05-account-types.html) and
+The `modify.account` lines above are the ones this set describes; it has
+more words (`xfer-on`, `ai-on`, `net-on`, `recovery-on`, `shared-read-on`,
+`sdsys-on` and others), and typing `modify.account` with an account and no
+word prints them all. Covered in full in [Accounts](05-account-types.html) and
 [Managing accounts](05a-managing-accounts.html). The points worth repeating
 here:
 
 - **A new account has no ssh, no API, no `sh` and no `OS.EXECUTE`, and it
   cannot save a change to a VOC, a program file or a dictionary.**
   `ssh`, `api`, `both`, `sh-on`, `os-on`, `voc-on`, `bp-on` and `dict-on` give
-  them, at `create.account` or later with `modify.account`; SDSYS has no API access from another computer at all, and its ssh door
-  opens only when the administrator runs `remote.sdsys on`, which is not one of these settings.
+  them, at `create.account` or later with `modify.account`. SDSYS's two remote doors
+  are not among these settings and are shut as delivered: its ssh door opens only when the
+  administrator runs `remote.sdsys ssh on`, and its API door from another computer only
+  when the administrator runs `remote.sdsys api on` *address* (see below).
 - **`modify.account add`/`delete`** is the grant — Linux group membership,
   with SD's own audit line on top. There is no separate `grant`/`revoke`
   pair of verbs.
+- **`modify.account` says what the access *is*, not what to add.**
+  `modify.account fred api` gives Fred the API and takes ssh away; `both` gives both.
+- **`modify.account` takes several actions in one command**
+  (`modify.account fred sh-on os-on`); it reads and checks them all first and changes
+  nothing if any word is refused.
 - **`suspended`/`unsuspended`** is a state, not a tier — nothing about the
   VOC moves either way, because every account's VOC is the whole of `newvoc`
   regardless.
@@ -105,12 +121,19 @@ machine's clock and every other session are untouched.
 ```
 remote.api on | local | off
 remote.ssh on | off
+remote.sdsys ssh on | off
+remote.sdsys api on <address ...> | off
 umask {mask}
 ```
 
 These set up the machine's own remote-access surface rather than any
 one account's — see [ssh access](08-ssh-access.html) and
-[API access](09-api-access.html) for what each one does. There is no
+[API access](09-api-access.html) for what each one does. **`remote.sdsys` opens
+or shuts SDSYS's own two doors, and both are shut as delivered.** Opening one
+means that nothing but `sdsys`'s password then stands between the computers
+allowed in and the administrator: its ssh door is guarded by the Linux password and
+its API door, which names the addresses it admits, by SD's own password for SDSYS.
+The Administrator set's chapters on remote administration say what each risks. There is no
 `ssh.server`/`append.sd.path` pair here: this port does not manage an ssh
 server as an installable feature (the distribution's own package does that)
 and puts `sd` on `PATH` at install time rather than as a toggle.
@@ -146,11 +169,8 @@ account**, as sign-in and `logto` do: an account with `sh-on` has `sh` over the
 API, an account without it is refused there too, and a new account has
 neither. That makes `sh-on` or `os-on` on an account that also has the API
 route a shell behind its credential from wherever the API port is reachable —
-weigh that when you turn either on. An API session is not treated as a local
-session for any purpose otherwise, SDSYS's own included (it can reach the API
-only through the local Unix socket, and carries no administrator flag) — see
-[API access](09-api-access.html). An administrator who needs a shell uses the
-local login.
+weigh that when you turn either on. An administrator who needs a shell uses the
+local login. See [API access](09-api-access.html).
 
 ## The full list
 
@@ -160,7 +180,7 @@ local login.
 **`unlock`** · **`config`** ·
 **`listu`** · **`list.readu`** · **`list.locks`** · **`clear.locks`** ·
 **`lock`** · **`logout`** · **`set.date`** · **`remote.api`** ·
-**`remote.ssh`** · **`umask`**
+**`remote.ssh`** · **`remote.sdsys`** · **`umask`**
 
 **`modify.password` is not on this list** — every account
 has it; what SDSYS has that an ordinary account does not is the right to

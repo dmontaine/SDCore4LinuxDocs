@@ -50,6 +50,13 @@ connection sent`. `why` on a disconnect is `eof` (the client left), `closed` (th
 transfer or ended), `idle`, `max` or `logout`; on a close it is `done` (Enter), `wait` (no connection came),
 `idle`, `max` or `input ended`. There are also `xfer rename to=... from=...` and `xfer remove name=...`.
 
+**A `logto` that is refused writes `logto refused account=`*name*` reason=`*why*.** For an account that
+is suspended the reason is `suspended`; for one the person may not enter it is `not granted`; for a
+name the register does not hold it is `not in the register` (the person is told the same as for an
+account they may not enter, so the register cannot be probed); and for `logto sdsys` from a session
+that did not start as the `sdsys` user it is `logto refused account=sdsys reason=sdsys is entered by
+its own session only`.
+
 ## Who writes it
 
 **The user, uid and pid on a line are not the session's word.** Every session sends its record to the
@@ -69,7 +76,7 @@ compiled in and is not a setting.
 | | |
 |---|---|
 | File | `audit` in the system directory (`/usr/local/sdsys/audit`) |
-| Owner and mode | `sdsys:sdusers`, mode 600 (an older install may have 620; the installer puts it right) |
+| Owner and mode | `sdsys:sdusers`, mode 600 (the installer sets it) |
 | Append only | the installer sets the append-only attribute (`chattr +a`) where the file system has it; if it cannot, it says so, and the file is then protected by its mode alone |
 | Rotation | at one megabyte the daemon (and `sd -start`) renames it to `audit.yyyymmdd-hhmmss` and starts a new file with the same owner, mode and attribute. A rotated file is not pruned by SD: that is the site's decision, and it starts with `chattr -a` |
 
