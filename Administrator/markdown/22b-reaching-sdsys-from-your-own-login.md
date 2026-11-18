@@ -133,6 +133,11 @@ computer's own network address; neither does the console, a desktop terminal, `s
 
 A second try is a new ssh login, and the wait applies again.
 
+**The `-t` is needed.** It gives the session a terminal, and this way in is for a person at a terminal:
+without one (`ssh` with no `-t`, or with its input taken from a file or another program) no password is
+asked and the session is refused as a session without a `sdsys` login, its audit line ending
+`why=no-terminal`.
+
 ## Reaching SDSYS over the API
 
 A program of a listed user on this computer connects to SD's Unix socket and signs in as `sdsys`, with
