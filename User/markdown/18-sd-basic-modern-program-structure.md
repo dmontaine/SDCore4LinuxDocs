@@ -14,8 +14,8 @@ subroutine — and everything here is an alternative to it, not an extension of
 it.
 
 `class` and `object` support is part of the SD BASIC compiler and works the same
-way on SD Core for Windows and on SD Core for Linux. Where a listing shows an
-error, that is the error the compiler gives.
+way on every SD Core product. Where a listing shows an error, that is the
+error the compiler gives.
 
 ## Scope, and the one thing to get straight first
 

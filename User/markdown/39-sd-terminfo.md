@@ -195,9 +195,8 @@ processor's styles, SED, the pick lists) therefore behave as they did on every s
 Think before you give an entry an `erev` of its own: it ends reverse video and nothing else, where
 `sgr0` ended the colors too.
 
-Put the additions in `terminfo.mods` in the SDSYS account directory, which the installer compiles
-after `terminfo.src` so that an upgrade does not lose them, and compile with `sdtic` as described
-below. The start functions `@(-5)` and `@(-13)` are not changed.
+`terminfo.src` is replaced by an upgrade, so keep the additions in a separate file of
+your own, and compile them with `sdtic` as described below. The start functions `@(-5)` and `@(-13)` are not changed.
 
 ## Compiling a definition
 

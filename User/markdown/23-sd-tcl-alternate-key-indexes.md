@@ -267,7 +267,7 @@ not kept up as records are written, and the query processor does not use it. It 
 a large load, or a batch run that would change most of the records, where keeping
 three indexes live costs far more than building them afterwards. **`build.index`
 builds it again and switches it on.** Until then its data are out of date, and
-`list.index` shows it as *needing a build*.
+`list.index` shows an `N` for it in the `En` (enabled) column.
 
 **Like `delete.index` it needs the file to itself.** Another session that had the file
 open would go on using, and keeping up, an index this one had switched off. (openQM

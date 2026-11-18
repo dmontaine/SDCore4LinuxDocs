@@ -132,6 +132,11 @@ There is no "insert only" form — read first if that distinction matters, and
 hold a lock between the read and the write or two sessions will both find it
 absent.
 
+`delete file.variable, record.id` removes a record. After
+`delete f, 'R2'`, reading `R2` takes the `else` branch.
+
+`clearfile file.variable` empties the file but leaves it in place.
+
 ### Files an account may not change: the edit switches
 
 Three kinds of file can be changed only by an account whose administrator
@@ -256,11 +261,6 @@ statement returns. The `S` flag in field 6 of the file's VOC entry (an `F` entry
 `open` of it, and bit 4 of the `FSYNC` parameter in `sd.conf` gives it to every hashed file. **It is much slower: a write costs a disk flush, so use it on the
 files that need it and not on all.** It protects the file you flagged and nothing else on the machine, and a file
 that is not hashed (a directory file) does not take it.
-
-`delete file.variable, record.id` removes a record. After
-`delete f, 'R2'`, reading `R2` takes the `else` branch.
-
-`clearfile file.variable` empties the file but leaves it in place.
 
 ## Continued in
 

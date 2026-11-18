@@ -272,6 +272,8 @@ multiple is unchanged. With a step of 3, `roundup(10, 3)` is 12,
 `rounddown(10, 3)` is 9, `roundup(-4, 3)` is -6 and `rounddown(-4, 3)` is -3.
 **A step under 1 gives 0.**
 
+All four take a dynamic array and answer with one of the same shape.
+
 ## Numbers of any length: `sadd`, `ssub`, `smul`, `sdiv`, `scmp`
 
 ```
@@ -297,8 +299,6 @@ z = sdiv('1', '3')                          ;* '0.333333333333333'
 Dividing by zero stops the program with a run-time error. `scmp()` answers -1 when *a* is
 less than *b*, 0 when they are equal and 1 when *a* is greater; `'1.50'` and `'1.5'` are
 equal.
-
-All four take a dynamic array and answer with one of the same shape.
 
 ## Continued in
 

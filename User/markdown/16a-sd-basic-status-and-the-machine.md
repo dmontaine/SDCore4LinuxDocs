@@ -61,8 +61,10 @@ Three arguments. The encoding is `201` for hex or `202` for base64.
 sets `status()` to **10204**, a key length error. The key has to
 be an encoded 256-bit key. Make it with `sdkey(passphrase, salt)`, where the salt
 comes from `sdsalt()` and is kept with the data, or take a random one from
-`sdrandkey()`; both are in every account, and
-[SD Basic - Encryption](06a-sd-basic-encryption.html) has the worked example.
+`sdrandkey()`; both are in every account. **SD does not keep the key: a lost
+passphrase is lost data.** The three functions, the `XE` conversion that shows
+an encrypted field decrypted, the key ring and the `encrypt.key` verb are on
+[SD Basic - Encryption](06a-sd-basic-encryption.html), with the worked example.
 
 ## UMASK()
 

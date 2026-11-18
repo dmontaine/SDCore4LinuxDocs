@@ -25,7 +25,7 @@ in lower case.
 sh command
 ```
 
-Everything after the verb is the command. It runs in the account's own
+With `sh-on`, everything after the verb is the command. It runs in the account's own
 directory, at the account's own Linux permissions:
 
 ```

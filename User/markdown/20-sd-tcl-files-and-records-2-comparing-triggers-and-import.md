@@ -44,7 +44,7 @@ fixdir file {id ...}
 
 An item of a **directory file** that arrived from a Windows machine has a carriage
 return at the end of each line (CR LF line ends), which the Linux side does not
-expect. `fixdir` takes the carriage return off the end of each line of the items
+expect. `fixdir` removes every carriage return from the items
 named; with no ids it does every item of the file.
 
 ```
