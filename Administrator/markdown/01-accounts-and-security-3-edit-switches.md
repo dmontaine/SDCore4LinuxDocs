@@ -152,7 +152,7 @@ lists that computer's address): it is the administrator, and nothing is loaded f
 
 **Group and other accounts.** The three words are accepted for a group or
 other account, and they do matter: a member of the account's Linux group can
-sign on to it directly with `sd -A`*name*, in a batch job, or over the API,
+sign on to it directly with `sd -a`*name*, in a batch job, or over the API,
 and the account's own switches then decide, because the account signed on to
 is the one that counts (only `logto` leaves the earlier account's switches
 alone). The upgrade leaves group and other accounts off on purpose; where

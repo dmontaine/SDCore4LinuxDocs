@@ -16,7 +16,7 @@ create.account other <name> <pathname> {shared-read-off} {shared-write-on} {star
 | | |
 |---|---|
 | **`user`** | an SD account **and** a Linux user account to log in as |
-| **`group`** | a shared workspace with no Linux account, reached with `logto`, or directly by a member of its group with `sd -A`*name*. The name `shared` is reserved for the installer's own account (below) and is refused here |
+| **`group`** | a shared workspace with no Linux account, reached with `logto`, or directly by a member of its group with `sd -a`*name*. The name `shared` is reserved for the installer's own account (below) and is refused here |
 | **`other`** | an SD account over a directory you name |
 
 **A new user account starts with every door shut** (but one: it can read the
@@ -136,10 +136,18 @@ a paragraph that tests the code after it sees success as success.
 **Every account gets the same VOC**, the whole of `newvoc` — there is no
 tier. What differs from one account to the next is what it is *allowed to
 do* with the verbs it has: its remote routes and its two operating-system
-switches are per-account settings, all off until you turn them on.
-**SDSYS is the exception and it is not a setting** — see above; it is never
-refused by these switches, and it has no remote access whatever it is
-given.
+switches are per-account settings, all off until you turn them on (the exception
+is reading the shared account). **SDSYS is the exception and it is not a setting**
+— see above; it is never refused by these switches, and it has no remote access
+whatever it is given.
+
+**The audit trail records what was granted.** The line `create.account` writes
+ends with `gates=`, the words of the sentence that grant or withdraw an access,
+in the program's fixed order, or `gates=none`:
+
+```
+create.account account=fred type=user gates=ssh,api,sh-on
+```
 
 ### Two settings that are easy to conflate
 
@@ -163,7 +171,7 @@ stays inside SD.
 | | |
 |---|---|
 | **`sh-on`** · `sh-off` | the `sh` verb (see [Operating System Access](03-operating-system-access.html)) |
-| **`os-on`** · `os-off` | `OS.EXECUTE` in a BASIC program, the screen editors `edit` and `micro`, the embedded Python, **and reaching an operating-system file or directory by its path outside the account's own directory** |
+| **`os-on`** · `os-off` | `OS.EXECUTE` in a BASIC program, the screen editor `micro`, the embedded Python, **and reaching an operating-system file or directory by its path outside the account's own directory** |
 
 The grant is two fields of the account's own record, so it follows the account,
 and a person at the console is held to the limit on paths as well as a session

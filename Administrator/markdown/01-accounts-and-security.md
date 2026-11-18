@@ -32,7 +32,7 @@ one gate, one route in, and nothing that widens it.** Every verb on this
 page is refused outright to any session that is not actually SDSYS:
 
 ```
-:modify.account don suspended
+:modify.account fred suspended
 Command requires administrator privileges
 :delete.account sdsys
 Command requires administrator privileges

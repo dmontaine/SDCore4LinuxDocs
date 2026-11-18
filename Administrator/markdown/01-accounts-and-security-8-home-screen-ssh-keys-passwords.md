@@ -39,7 +39,7 @@ modify.account account pins-off   they may not (the delivered state)
   `terminal`, `keys`, `switch` and `signout`, the seven development tiles (`files`, `voc`,
   `dict`, `query`, `bulk`, `catalog` and `test`) and `recent`, which is not a tile but the
   Recent group (below): 14 ids, the ones the page draws and the rows of the *Menu* box of the
-  menu management page. **Sign out cannot be turned off**: a person must always be able to
+  menu management page. **Sign out cannot be turned off**, and neither can the **Back** tile of a sub-menu page: a person must always be able to
   leave. Any other id is accepted and said not to be standard (it would apply to a tile of
   that name in a page of the account's own).
 * **`recent`: the Recent group.** A group at the top of the home screen with the tiles the
@@ -148,8 +148,8 @@ one, and `modify.account fred unsuspended` lifts the suspension.
 ### `add`/`delete` is the grant
 
 ```
-:modify.account don add pete
-:modify.account don delete pete
+:modify.account fred add pete
+:modify.account fred delete pete
 ```
 
 **`add` and `delete` are the grant.** There is no separate `grant`, `revoke`
@@ -197,7 +197,7 @@ administrator resetting a forgotten password does not know it.
 than ignored:**
 
 ```
-:modify.password don hunter2
+:modify.password fred hunter2
 A password is never given on the command line; modify.password prompts for it
 ```
 

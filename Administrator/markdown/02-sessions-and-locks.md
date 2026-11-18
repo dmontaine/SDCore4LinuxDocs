@@ -33,9 +33,9 @@ listu {detail} {no.page} {lptr {n}}
 ```
 :listu
   User  Pid          Puid  Login time    Origin : Username
-    12  1789               27 Aug 13:14  : don
-    19  1808               27 Aug 13:53  : don
-*   27  1828               27 Aug 13:59  : don
+    12  1789               27 Aug 13:14  : fred
+    19  1808               27 Aug 13:53  : fred
+*   27  1828               27 Aug 13:59  : fred
 ```
 
 | | |
@@ -118,7 +118,7 @@ group and task lock the session still held**, and says so (then the text of
 message 10167, *User n was not running, so there was nothing to log out*):
 
 ```
-LOGOUT reaped user 43 (pid 1799435, don) - process was gone.
+LOGOUT reaped user 43 (pid 1799435, fred) - process was gone.
 ```
 
 For a session killed from outside with `kill -9` while it held a record lock,
@@ -200,9 +200,9 @@ That answer is about the **whole system**, not about you. With locks held:
 
 ```
 User File Path........................... Type Id..............................
-  23    1 /home/sd/user_accounts/don/zzlk31a      RU   R1
-  19    4 /home/sd/user_accounts/don/voc          RU   zzlock31
-  23    1 /home/sd/user_accounts/don/zzlk31a      RL   R2
+  23    1 /home/sd/user_accounts/fred/zzlk31a     RU   R1
+  19    4 /home/sd/user_accounts/fred/voc         RU   zzlock31
+  23    1 /home/sd/user_accounts/fred/zzlk31a     RL   R2
 ```
 
 | | |
@@ -224,7 +224,7 @@ A file lock has no id:
 
 ```
 User File Path........................... Type Id..............................
-  23    1 /home/sd/user_accounts/don/zzlk31a      FX
+  23    1 /home/sd/user_accounts/fred/zzlk31a     FX
 ```
 
 ### The keywords

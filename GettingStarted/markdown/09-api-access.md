@@ -57,7 +57,8 @@ named by the environment variable `SD_KNOWN_SERVERS`), one line,
 address and port that presents another certificate is **refused before a single
 byte of the login is sent**, with a message that names both fingerprints and the
 line to remove. A server that has been reinstalled has a new certificate: remove
-its line, connect again, and the new certificate is remembered. **A store the
+its line and connect again. **Removing the line is the remedy**, and only if you
+know why the certificate changed. **A store the
 client cannot read or write refuses the connection** rather than connecting
 unchecked, so a program that runs with no home directory (a web server's, a
 service's) needs `SD_KNOWN_SERVERS` set to a file it may write. This is done in

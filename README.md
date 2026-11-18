@@ -78,6 +78,13 @@ the page names the two cards write in italics into links.
 and `tools/verbcounts.py` check the links and that every SD BASIC name, TCL verb
 and `sd.conf` parameter is documented.
 
+The PowerShell programs in `tools/` (`mkpdf.ps1`, `mkbookpdf.ps1`, `release.ps1`,
+`sdtcl.ps1`, `sdprobe.ps1`, `sdprobe2.ps1`, `sdcompile.ps1`, `sddebug.ps1`) and
+`tools/scriptmap.py`, which checks the installed PowerShell scripts against their
+page, are the Windows documentation's tools. They are kept here so that the
+`tools` folder is the same in every SD documentation repository; nothing on Linux
+runs them.
+
 ## License
 
 See `GettingStarted/markdown/00a-copyright-and-licence.md`.

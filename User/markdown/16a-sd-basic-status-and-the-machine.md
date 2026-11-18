@@ -64,7 +64,7 @@ comes from `sdsalt()` and is kept with the data, or take a random one from
 `sdrandkey()`; both are in every account. **SD does not keep the key: a lost
 passphrase is lost data.** The three functions, the `XE` conversion that shows
 an encrypted field decrypted, the key ring and the `encrypt.key` verb are on
-[SD Basic - Encryption](06a-sd-basic-encryption.html), with the worked example.
+[SD Basic - Encrypting Data](06a-sd-basic-encryption.html), with the worked example.
 
 ## UMASK()
 

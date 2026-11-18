@@ -43,8 +43,16 @@ The optional fourth argument of `open.socket` is a **connect timeout in
 seconds**. When it runs out the call returns 0 with `status()` **7005**, as any
 failed connect does; zero, a negative number or no argument means no limit of
 SD's own (the system's connect timeout, which can be two minutes, applies).
-On a socket opened with the TLS flag it also bounds the TLS handshake. It is not
-used with the non-blocking flag.
+On a socket opened with the TLS flag it also bounds the TLS handshake: a server
+that accepts the connection and never answers the hello is given up on after
+that many seconds, or after 15 seconds when there is no fourth argument (the
+SDNet client passes `NETWAIT` here). It is not used with the non-blocking flag.
+
+**On a TLS socket the timeout of `read.socket` holds as it does on any other.**
+A TLS 1.3 server sends session tickets after the handshake, and a server or a
+link can stop in the middle of a TLS record; neither uses up the wait or lets the
+read run on without a limit. A read that gets nothing in time returns nothing
+with `status()` 1011.
 
 Flags `0` is TCP, stream. `0x00010000` selects UDP and `0x00020000` ICMP.
 

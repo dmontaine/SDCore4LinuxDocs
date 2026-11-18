@@ -155,7 +155,7 @@ values and the most records any one value has.
 Analysis of the indices of file zzak
 
 Index name...... Indexed values  Most records for one value
-city                          4                           5
+f1                            2                           5
 ```
 
 With an index name the totals follow (index entries, key values, least, average

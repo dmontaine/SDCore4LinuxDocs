@@ -27,7 +27,7 @@ This page is the full description.
 | the register's group field | `sdg_shared` |
 
 **Why the group is not `sdusers`.** Signing on to an account, `logto`, a Q-pointer and
-`sd -A`*name* all admit exactly the members of the register's group. If that were `sdusers`,
+`sd -a`*name* all admit exactly the members of the register's group. If that were `sdusers`,
 every SD user could `logto shared` and write there whatever `shared.write` said, and
 taking `shared.read` away would stop nothing. With `sdg_shared` only SDSYS enters `shared`;
 everybody else reaches its files only through the lookup below, which is what the two switches
@@ -96,7 +96,7 @@ any name. The administrator's own `open` does not follow `shared` either: SDSYS 
 | `shared.read` and `shared.write` on | yes | yes | only if `dict-on` too | no |
 | `shared.read` off | not found | — | — | no |
 | the local SDSYS session (`logto shared`) | — | yes | yes | **yes** |
-| SDSYS over the API (door opened by `remote.sdsys api on`) | yes | yes | yes | **yes** |
+| SDSYS over the API (door opened by `remote.sdsys api on`) | — | yes | yes | **yes** |
 | a member of `sdg_shared`, in `logto shared` | — | only if the account `shared` has `shared-write-on` | likewise | no |
 
 * **A record write** — `write`, `writev`, `matwrite`, `delete`, `clearfile`, and the verbs that save

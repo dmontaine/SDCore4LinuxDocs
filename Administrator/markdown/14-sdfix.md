@@ -67,7 +67,7 @@ A pathname is the file's directory, as an operating system path, not an SD
 file name and not a VOC entry. Options start with `-`, may be joined in one word
 (`-BF`), and are not case sensitive. Several files may be named; each is
 processed in turn. A path that is not an SD hashed file is skipped, with only
-the line `SDFIX processed:` *name* `Status:` *n*, and if none was found the program says *No SD hashed files found
+the line `SDFIX processed: name Status: 1`, and if none was found the program says *No SD hashed files found
 matching given name(s)*.
 
 | Option | What it does |

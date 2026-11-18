@@ -340,7 +340,7 @@ ZZMATH.AFTER.UNLOAD
 **That is the one thing a common block cannot give you.** A file left open, a
 lock held, a socket connected — a destructor closes it when the last reference
 goes, whatever route the program took to get there. SD's own client library uses
-exactly this: `destroy.object` in `SDCLIENT` disconnects the session if one is
+exactly this: `destroy.object` in `sdclient` disconnects the session if one is
 still up.
 
 ## Inheritance
@@ -415,7 +415,7 @@ does.**
 
 | | |
 |---|---|
-| `gpl.bp/SDCLIENT` | **SD's own client library is a class module** — 1,040 lines, 33 members, `create.object` and `destroy.object` both defined. Connecting to another SD server from BASIC means instantiating it |
+| `gpl.bp/sdclient` | **SD's own client library is a class module** — public members, `create.object` and `destroy.object` both defined. Connecting to another SD server from BASIC means instantiating it |
 | `gpl.bp/DEBUG` | five `local subroutine`s and a `local function`, with `deffun … local` above them |
 
 ## Choosing between the two shapes

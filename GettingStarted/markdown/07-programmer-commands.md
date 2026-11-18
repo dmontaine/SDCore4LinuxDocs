@@ -73,10 +73,11 @@ console.
 
 **`sed`, `ced` and `ide` run inside SD** and draw the screen themselves, so they need no
 operating-system permission and no editor installed; they need a terminal window of at
-least 140 columns by 43 lines (the debugger uses the same frame).
+least 140 columns by 43 lines (the debugger and the home screen use the same frame).
 
-**Both highlight SD BASIC.** `micro`'s highlighting is per-user
-(`~/.config/micro/syntax`, staged by the installer where it can):
+**Both highlight SD BASIC.** `micro`'s highlighting is per-user: the `micro`
+verb copies SD's syntax file into your `~/.config/micro/syntax` the first time
+it is used:
 
 | | |
 |---|---|

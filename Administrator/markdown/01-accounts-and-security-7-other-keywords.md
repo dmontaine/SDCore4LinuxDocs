@@ -161,7 +161,7 @@ opens, and it is held to this:
 * **It needs the ssh route.** The client signs in over ssh, so an account with no `ssh` route cannot
   connect. A file that arrives is only a record in `xfer.in`: bringing a program in does not compile or run
   it, and what the person may then do with it is what the account's other switches allow.
-* **Everything is in the audit trail** (*The Audit Trail*): each opening and closing, each connection with
+* **Everything is in the audit trail** ([The Audit Trail](21-the-audit-trail.html)): each opening and closing, each connection with
   the address it came from, each file with its size and SHA-256, and each refusal with its reason.
 
 A change takes effect at the next connection: the register is read each time a client connects. To end a

@@ -7,9 +7,7 @@ document the removed features themselves.**
 
 Everything here was in OpenQM, in ScarletDME, or in upstream `sdb64`, and is
 not in SD Core for Linux. **Most of these removals were made independently
-on SD Core for Windows too, for the same reasons** — see its own
-version of this page — which is worth knowing if you come across a decision
-recorded on one side and wonder whether it binds the other.
+on SD Core for Windows too, for the same reasons.**
 
 > **If you had a use for any of these, say so.** Several were removed on the
 > reasoning that nothing needed them. That reasoning is worth testing against
@@ -30,7 +28,7 @@ collection, and `ide`, a workbench for programs and files.
 
 **SD Core's own full-screen editing is `sed` and `micro`**, which open the
 record in each program by name — see
-[Programmer commands](07-programmer-commands.html#editors), which also says
+[Development and file commands](07-programmer-commands.html#editors), which also says
 what they are good for and what they cannot do. **`edit` is not one of them: it
 aliases `ed`, the line editor.** The removed programs above are gone as
 *programs*; the capability is not.
@@ -123,7 +121,8 @@ could not reach, and the test can be deleted.**
 
 The `TAPE`/`RESTORE` subsystem is gone, along with the assumption of a
 tape-backed sequential medium it was built around. Back up and restore SD
-data the ordinary Linux way — at the file level, with the daemon stopped,
+data with `backup.account` and `restore.account` — see the Administrator set's
+*Backing Up and Restoring Accounts* — at the file level, with the daemon stopped,
 or through your own export/import BASIC.
 
 ## Language and locale
@@ -185,7 +184,8 @@ a second, older copy of the source sitting in `bp`.
 **SD ships only those four examples into the SDSYS `bp` file now.**
 Everything else in it is yours — and because of that, **`bp` and its compiled objects
 are preserved when you upgrade**, alongside your accounts and the rest of
-your own data.
+your own data. An upgrade replaces those four programs by name and touches
+nothing else in `bp`.
 
 ## Things that were never features, and are not coming
 

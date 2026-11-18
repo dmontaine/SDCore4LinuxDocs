@@ -56,7 +56,7 @@ directory, `/home/sd/group_accounts/shared`, belongs to `sdsys` with the group
 `sdusers` (mode 2775, files 664), so every SD user's own process can read the
 files through the kernel, and write them when it has `shared.write`. **Only SDSYS
 enters `shared`**: its Linux group is `sdg_shared`, whose members are `root` and
-`sdsys`, not `sdusers`, so `logto shared`, a Q-pointer to it and `sd -Ashared` are
+`sdsys`, not `sdusers`, so `logto shared`, a Q-pointer to it and `sd -ashared` are
 refused to everybody else. That is what makes taking `shared.read` away a real
 wall for an account that has neither `sh` nor `os`.
 

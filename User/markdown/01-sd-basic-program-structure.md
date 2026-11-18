@@ -291,8 +291,8 @@ o->method(args)
 o->property = value
 ```
 
-**SD's own client library is a class module.** `gpl.bp/SDCLIENT` is 1,040
-lines with 33 members and both lifecycle hooks — connecting to another SD server
+**SD's own client library is a class module.** `gpl.bp/sdclient` has public
+members and both lifecycle hooks — connecting to another SD server
 from BASIC means instantiating it.
 
 ## Arguments

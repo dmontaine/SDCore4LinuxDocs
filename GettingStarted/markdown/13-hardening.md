@@ -89,7 +89,7 @@ sd_Log[115214]: API connection over TCP from 203.0.113.4 port 51322 (SD login re
 or, over the Unix socket used for a local connection:
 
 ```
-sd_Log[115214]: Connection over Unix socket /run/sd/api.sock from uid 1000 (don)
+sd_Log[115214]: Connection over Unix socket /run/sd/api.sock from uid 1000 (fred)
 ```
 
 **Nothing is refused on the strength of it.** This records who connected; it

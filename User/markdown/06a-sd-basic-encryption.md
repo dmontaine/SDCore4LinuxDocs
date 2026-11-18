@@ -133,7 +133,7 @@ applies the conversion. So:
 | `sort by` the field | sorts the **cipher text**, which is in no useful order |
 | `with salary = "41250"` | **finds nothing, even with the key**: the literal is encrypted with a fresh nonce. `with salary = ""` does find the empty ones |
 | `with` on the stored token | works (`with raw = "AQ..."`): you can look a known value up |
-| `count`, `select` | count what is there; `with salary # ""` counts the filled fields |
+| `count`, `select` | count what is there; `with salary ne ""` counts the filled fields |
 | `total salary` | adds the cipher text, which is 0 |
 | an I-type that uses the field (`salary * 2`) | an error: it works on the stored value |
 | an I-type that decrypts: `oconv(raw, "XE;salary")` | decrypted, with the key |

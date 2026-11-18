@@ -13,7 +13,7 @@ says what a line looks like, who is able to write one, how the file is kept, and
 
 ```
 2026-10-25 14:03:11 user=fred uid=1001 pid=48213 modify.account net-on account=fred
-2026-10-25 14:03:40 user=sdsys sudo=don uid=1002 pid=48990 tool start app=tool.audit
+2026-10-25 14:03:40 user=sdsys sudo=sam uid=1002 pid=48990 tool start app=tool.audit
 ```
 
 A line is the time, then `user=` (the operating-system user that made the entry), `sudo=` when that user

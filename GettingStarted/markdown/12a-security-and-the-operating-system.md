@@ -19,7 +19,8 @@ SDSYS turns it on (`modify.account` *name* `sh-on` / `os-on`):
 
 `sed` is not in the table: it runs inside SD, so editing a record of
 an SD file needs no switch. `sed` asks the `os-on` question only for a `path:`
-name outside the account's own directory (the last row).
+name outside the account's own directory (the last row). The narrower `sd-on`
+allows the directories of other SD accounts the person could `logto`.
 
 The two switches are independent: `sh-off` leaves `OS.EXECUTE` alone, and
 the reverse. A change reaches the account the next time it is entered.
@@ -56,6 +57,35 @@ account** — whether or not you hold `os-on`. The Administrator set's
 read and write by pathname, as it may inside its own directory. It is empty as delivered;
 the Administrator set's *Configuration* chapter has it.
 
+**Four rules hold for all of them:**
+
+**1. A blank switch means no.** A new account has all of them off, and when you
+upgrade, the installer switches them on once for the accounts that already exist
+(above).
+
+**2. SDSYS passes on its own**, regardless of the register, so an empty
+register cannot lock the machine's own administrator out. This is *narrower*
+than the identity check might suggest: it is the `sdsys` Linux user in a local
+session, and nothing less passes. A session in any other account gets no
+exemption at all; it is checked against the account's switches exactly like any
+other. See [Accounts](05-account-types.html#sdsys-is-the-only-administrator).
+
+**3. An API session is checked the same way as any other, by the account it
+entered — and an SDSYS session, which exists only on this machine's local socket
+or when the administrator has opened that door, is the administrator's own.** An
+ordinary account with `sh-on` gets `sh` over the API exactly as it would
+anywhere else, which is the real risk `sh-on` or `os-on` plus API access
+creates — see [API access](09-api-access.html). **SDSYS reaches the API from
+another computer only through the door the administrator opens with
+`remote.sdsys api on`**, shut as delivered.
+
+**4. Nothing in SD limits what you then do.** Once a switch is on, SD is not
+standing between that person and the machine — **the boundary from that point
+on is their own Linux user's permissions**, and nothing else. An editor can open
+any file they are allowed to open, in the data tree or outside it. A shell is
+held to one rule only: at the prompt `sh` refuses a pipe, a redirect, a chain
+and a variable, for every account; the way round is a script file.
+
 **What the switches do not do.** They stop SD handing the operating system to
 an account that has not been given it. They do not change what the account's
 Linux user may do — that stays whatever Linux says, checked by the kernel.
@@ -67,6 +97,14 @@ Linux user may do — that stays whatever Linux says, checked by the kernel.
 > user with a shell — and think twice before giving it to an account that is
 > also reachable from outside (`ssh`, `api`), because then the shell is
 > behind that account's credential from wherever the route reaches.
+
+> **So `sh-on` and `os-on` are statements of trust in an account.** They are
+> not a convenience to be handed out because somebody asked for a full-screen
+> editor. Grant them on the same basis you would grant a shell account on the
+> machine, because that is close to what you are granting.
+
+**How to grant and remove them** is on
+[Administrator commands](06-administrator-commands.html#the-shell-sh).
 
 **A session with no terminal is refused for the editors regardless** — an API
 session or a piped script has nowhere to draw a full screen for an editor;
@@ -100,8 +138,10 @@ fail rather than quietly running with less protection than intended.
 with date, time and the Linux user it belonged to.
 
 ```
-2026-10-07 21:07:52 user=don uid=3 pid=353011 login account=sdsys
-2026-10-07 21:07:52 user=don uid=3 pid=353011 logto refused account=sdsys reason=sdsys is entered by its own session only
+2026-10-07 21:07:52 user=sam uid=1 pid=8624 login account=sdsys
+2026-10-07 21:07:52 user=sam uid=1 pid=8624 logto refused account=sdsys reason=sdsys is entered by its own session only
+2026-10-06 21:03:55 user=sdsys uid=1 pid=4120 delete.account account=ann
+2026-10-06 21:04:31 user=sdsys uid=1 pid=4120 remote.api local
 ```
 
 Every word before the first `=` is lower case, the event names included
@@ -136,10 +176,10 @@ too, with the reason** — and **before** the three-second wait SD adds to slow
 down guessing, so a program that hangs up during the wait is recorded as well.
 
 **This is not the error log and does not behave like it.** The error log
-throws away its oldest half when it fills; the audit file is **rotated —
-renamed with the date and time and a new one started when it reaches one
+throws away its oldest half when it fills; the audit file is **renamed
+with the date and time and a new one started when it reaches one
 megabyte (by the audit daemon as it writes, and by `sd -start`), so nothing
-is ever discarded within a run.** Removing the old ones is your decision —
+is ever discarded.** Removing the old ones is your decision —
 SD will not do it for you, and they will accumulate.
 
 **The file itself is append-only at the kernel level** (`chattr +a`), lifted

@@ -36,10 +36,11 @@ sdidx -q /home/sd/user_accounts/acct/orders        # where are its indexes?
 * **Close the file in every session first.** The program refuses if the file is
   open within the running SD: see below. **It refuses nothing if SD is not
   running**, because it has nothing to ask.
+* **Check the result with `-q` after `-m` or `-p`.** If `-m` or `-d` cannot delete an old
+  index file it says so and exits 1; it does not say "moved" or "deleted" over a file that is
+  still there.
 * **Check who owns the files you moved** after `-m` on a file in an account (see
-  below). If `-m` or `-d` cannot delete an old index file it says so and
-  exits 1; it no longer says "moved" or "deleted" over a file that is still
-  there.
+  below).
 
 ## Where it is and who can run it
 
@@ -142,8 +143,8 @@ is out of date.
 * **On success it says what `-q` would now say**: `Index directory is
   /tmp/sdi_demo/byhand`, or `Indices are not relocated` when `akpath` is omitted.
   A failure to write the header is reported and
-  exits 1. SD's own account restore does not read this line: it checks the
-  status and then runs `-q` itself.
+  exits 1. SD's own account restore does not rely on this line: it runs `-q` itself and
+  checks that it names the path.
 * Omit `akpath` to say "the indexes are in the data file's directory".
 * It does not know about accounts. It will point a file at any directory you can
   write, inside the account or not. The account restore goes through a helper

@@ -17,9 +17,9 @@ come across, what happens to the Linux user and groups, and the cases where the 
 
 ## What you need
 
-* **Both machines run SD Core for Linux**, the full product. A backup from SD Core Solo is
-  refused ("A full product's backup restores only to a full product, and a Solo backup only to
-  Solo"). The manifest records the SD release but the restore does not compare it, so put the
+* **Both machines run the full product**, SD Core for Windows or SD Core for Linux. A backup
+  from SD Core Solo is refused, and a full backup does not restore onto Solo: a full product's
+  backup restores only to a full product, and a Solo backup only to Solo. The manifest records the SD release but the restore does not compare it, so put the
   same release, or a newer one, on the new machine.
 * **You are SDSYS on both**, and **no other session is logged in on either** while the verb runs.
   SD lists any it finds: *1 other session(s) are logged in. Every other session must log out
@@ -27,7 +27,7 @@ come across, what happens to the Linux user and groups, and the cases where the 
   terminal, over ssh or through the API.
 * **Disk for a second copy on the new machine.** A restore unpacks the zip into
   `.sdrestore.`*n*, in the folder that holds `user_accounts` and `group_accounts`, before it
-  changes anything, and removes it when it ends. If a crashed restore left one, the next refuses:
+  changes anything, and removes it when it ends. If a restore that did not finish left one, the next refuses:
   *… already exists, left by an earlier restore that did not finish. Remove it, then run
   restore.account again.*
 

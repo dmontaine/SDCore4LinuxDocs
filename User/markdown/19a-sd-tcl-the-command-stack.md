@@ -207,9 +207,12 @@ are administrator-only:
 
 | | |
 |---|---|
-| **standard** | `abort` `alias` `clear.abort` `clear.stack` `display` `get.stack` `go` `if` `list.vars` `logto` `off` `option` `pause` `quit` `report.src` `save.stack` `set` `set.exit.status` `stop` `who` `who.am.i` |
+| **standard** | `abort` `alias` `clear.abort` `clear.stack` `command.logging` `display` `get.stack` `go` `if` `list.vars` `logto` `off` `option` `pause` `quit` `report.src` `save.stack` `set` `set.exit.status` `stop` `who` `who.am.i` |
 
-**Everything on this page is in a standard account.** An account that does not
+**Everything on this page is in a standard account**, and so is
+`command.logging`, which is described on [SD TCL - The Terminal and the
+Session: Timers, Dates and Logging](29-sd-tcl-the-terminal-and-the-session-2-timers-dates-and-logging.html).
+An account that does not
 have a verb does not have the VOC record for it — the name is simply not
 recognized rather than refused.
 

@@ -49,7 +49,7 @@ modify.account acme sdsys-off
 **What is expected to stop working when an account is off.** An edit, delete or compile from `tool.entries` into it. So
 is **SDSYS writing inside the account in any other way**: `logto` the account and make a file, edit a
 program, catalog; an interactive `update.accounts` for it (`update.accounts
-all` skips such an account and says so, see [Account maintenance](01a-account-maintenance.html)); `sd -A`*account* from the operating
+all` skips such an account and says so, see [Account maintenance](01a-account-maintenance.html)); `sd -a`*account* from the operating
 system. (The installer's own `update.accounts all` runs as root and is not affected.) `create.account`,
 `delete.account`, `backup.account`, `restore.account`, and reading the
 account (`logto` and a listing, `tool.entries`' lists) are done by the root helper or only read the files, and are expected to
