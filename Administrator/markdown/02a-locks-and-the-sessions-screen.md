@@ -160,8 +160,7 @@ any file, so nothing has to be written back.
 > by a user number nothing is behind, until SD itself is restarted.
 > `list.locks` shows the number with an owner and `clear.locks` refuses it
 > because it is not yours. **`unlock tasklock` *n*, run as SDSYS, is the way
-> out** — that is what the forced form is for. It is recorded in the
-> project's fix lists.
+> out** — that is what the forced form is for.
 
 ## Sessions and locks on one screen: `tool.sessions`
 
@@ -217,6 +216,9 @@ lower-case letters, digits, dot, dash and underscore go through) or an id that i
 the words `unlock` reads as a keyword (`all`, `file`, `user`, `filelock`, `tasklock`) —
 release those at the prompt with `unlock`. The lock table keeps record ids in upper case
 and shows them so; the page sends the id in lower case, which the verb folds.
+
+**`logout` ends a session by signalling its process**, so work that session has not saved
+is lost, and the record locks it holds are released; the box says so before you answer Run.
 
 **Not on the page:** a message to a user, `logout all`, and any change to a session of an
 ordinary account's own work. An ordinary account has no such page: its own sessions are

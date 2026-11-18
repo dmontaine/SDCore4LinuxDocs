@@ -50,7 +50,8 @@ An address is written in one of these forms:
 
 A range of length 0 (`0.0.0.0/0`, `::/0`) is refused: it would be every address, and the word
 `any` is the only way to ask for that. Anything that is not an address or a range is refused before
-anything is changed, and so is `any` together with other addresses.
+anything is changed, and so is `any` together with other addresses. SD's API listens on IPv4 only,
+so an IPv6 address or range is accepted and kept but no client reaches SD from one.
 
 The same can be done without SD, with root:
 

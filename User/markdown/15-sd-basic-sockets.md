@@ -191,7 +191,11 @@ line, in hexadecimal and as characters (a full stop for a byte that is not print
 socket the log holds the data before it is encrypted and after it is decrypted, so it can hold
 passwords: **the log is made readable by its owner only (mode 0600), a link at the path is not followed,
 and the pathname is held to the OS-access gate** — an account without `os-on` may trace only into its
-own directory (`set.socket.mode` returns 0 and nothing is written). SD's own key number; the
+own directory. A path that runs through the VOC, a dictionary or a program file that the session
+may not change is refused too, as it is for a sequential file (the administrator's edit gates for
+the account decide which; see [SD Basic - Sequential Files](10-sd-basic-sequential-files.html)); the
+administrator is not asked that second question. A refused trace makes `set.socket.mode` return 0
+and nothing is written. SD's own key number; the
 openQM manual names the key without one.
 
 ## Waiting on several sockets: `select.socket()`

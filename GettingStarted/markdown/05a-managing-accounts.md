@@ -131,7 +131,7 @@ switch: "A program file can only be changed by an account that has bp.edit
 show that in their message line; every other verb prints it.
 
 When the installer is run by the user whose own account already exists, the
-upgrade switches all three on, once, for the *user* accounts in the register.
+upgrade switches all three on, once, for the *user* accounts in the register whose field is blank.
 Group and other accounts are left off on purpose, and a member who signs on to
 one directly (`sd -a`*name*, a batch job, or the API) gets that account's own
 switches, so give them there with `voc-on`, `bp-on` and `dict-on` where members

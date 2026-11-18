@@ -62,7 +62,8 @@ here:
   *upgrade* — a fresh account never needs it, and **the installer runs
   `update.accounts all` for you** when you keep your accounts.
   **`list.voc.removed`** shows the list and **`restore.voc`** puts a removed
-  record back.
+  record back; the next `update.accounts` removes it again, because the list has the
+  last word, so give a record you want to keep a name SD does not ship.
 - **`delete.account`** keeps the Linux user's home directory unless you
   add `remove.home` — a person's own files and ssh keys live there.
 

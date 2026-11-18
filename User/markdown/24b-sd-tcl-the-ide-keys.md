@@ -73,8 +73,7 @@ up and down arrows stop at the first and last line.
 
 **Each tab has a kind**: a program, an item of a file's dictionary, a record
 of the VOC, or a record of a data file. The kind decides the marks (below) and the gate that a save
-asks: a program asks `bp.edit`, a dictionary item `dict.edit` and a VOC record `voc.edit`, as SED and
-`ed` do, and the refusal is shown in a box that says which switch and what the administrator can do.
+asks: a program asks `bp.edit`, a dictionary item `dict.edit` and a VOC record `voc.edit`, as `ed` does, and the refusal is shown in a box that says which switch and what the administrator can do.
 Compile and Catalog on a dictionary item say it is not a program. A dictionary named in the New
 record form is not yet taken (use `ide dict`).
 

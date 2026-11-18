@@ -120,9 +120,8 @@ File types: `1` SH, **`3` DH — an ordinary dynamic file**, `4` directory, `5`
 sequential.
 
 > **Unlike SD Core for Windows, there is no path-translation caveat
-> here.** This port runs natively, so the path `fileinfo()` returns is
-> already the one Linux program will use it directly — nothing to
-> convert.
+> here.** The path `fileinfo()` returns is already the one a Linux
+> program uses: there is nothing to convert.
 
 > **There is no record-count key.** Key `6` is the *minimum modulus* and reads
 > `1` on a small file whatever it contains — `1` with two records

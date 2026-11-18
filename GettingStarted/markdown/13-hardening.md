@@ -189,6 +189,7 @@ phantom or a piped script.
 | After an unclean shutdown | SD starts anyway, once the daemon's own liveness — not just the segment's presence — is checked. See [Running SD](03-running-sd.html) |
 | Nested sessions | SD will not start a second time inside itself — see [Running SD](03-running-sd.html) |
 | `sd <command>` | needs SDSYS, or an entry in `batch.jobs` — see above |
+| End of piped input | ends the session — at the command prompt, at `PAUSE` and at the Ctrl-R search |
 
 ## Setting no password
 

@@ -154,8 +154,8 @@ later with `sudo apt-get install gpm`. Removing SD leaves the `gpm` package
 installed. SD asks gpm only when the terminal type is
 `linux` and its input is a text console, so a session over ssh, in `tmux` or
 `screen`, or in an emulator is not affected, and a program that opens its
-screen with `nomouse` is not connected. SED reads its own mouse reports
-and has no mouse on the console.
+screen with `nomouse` is not connected. The IDE (and `sed`, which is the same
+program) reads its own mouse reports and has no mouse on the console.
 
 **Color and borders.** The console has eight colors and bold, and the
 themes (`blue`, `classic`, `mono`) work on it. On a console set to UTF-8, which

@@ -108,6 +108,9 @@ to let that login do.
 - **The group is read at login**, from `/etc/group`, so a change takes effect at the
   person's **next** login on that server, and a refusal to read the group file refuses
   the login with its own reason.
+- **A machine without the groups has neither** until the installer is run again; until then
+  `files-on` and `files-write-on` say that the group does not exist and change nothing, and
+  `create.account` refuses to make a user it was asked to give the route.
 - **A server defined `write` on a client** writes only when the remote user has been
   given the group on the target (one `modify.account` word there). Reads are unaffected.
 

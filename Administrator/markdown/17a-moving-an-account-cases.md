@@ -102,6 +102,6 @@ link.
 
 ## See also
 
-[Account Maintenance](01a-account-maintenance.html) for the verbs and `set.backup.directory`;
+[Backing Up and Restoring Accounts](01b-backup-and-restore.html) for the verbs and `set.backup.directory`;
 [Accounts and Security](01-accounts-and-security.html) for the switches;
 [Data at Rest](04a-data-at-rest.html) for backups and encryption.

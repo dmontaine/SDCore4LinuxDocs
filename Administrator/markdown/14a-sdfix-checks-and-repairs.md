@@ -113,8 +113,8 @@ shows the window at that decimal address; `rebuild n` dump and rebuild group *n*
   read as hex digits, as written.
 * `h` shows `Next seq id`, the counter used by `write ... creating.seqkey`, and
   warns if it is negative.
-* **If its input ends or fails, interactive mode ends**: `End of input` when
-  it ended, `Input error [n]` when reading failed.
+* **If its input ends or fails, interactive mode ends**: `End of input` and
+  `Status: 0` when it ended, `Input error [n]` and `Status: 1` when reading failed.
 
 ## What it will not do
 

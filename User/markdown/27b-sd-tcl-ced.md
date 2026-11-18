@@ -63,8 +63,8 @@ nothing past the edge, and draws everything again when the window is made bigger
 While the selected row is **off the screen** CED does not take keys: a warning in
 reverse video fills the upper left, every key is thrown away, it goes by itself
 when the window is big enough, and **Ctrl-Q, then y** leaves CED with nothing
-kept; the record is unlocked. [SED](27a-sd-tcl-sed.html) describes the lock in
-full.
+kept; the record is unlocked. The IDE, and `sed` with it, has a different lock, which looks at the
+window and not at the cursor (see [the IDE and the window](24e-sd-tcl-the-ide-ai-and-the-window.html)).
 
 ## The keys
 

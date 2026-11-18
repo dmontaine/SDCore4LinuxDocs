@@ -70,7 +70,7 @@ Linux user to hold the switch.
 
 **Upgrading keeps what accounts have.** The installer switches `sh` and
 `OS.EXECUTE` on, once, for every user account that exists when you upgrade
-(ssh and the API are left exactly as they were), so that nobody loses a
+and whose switch is still blank (an account told `no` stays `no`; ssh and the API are left exactly as they were), so that nobody loses a
 command they were using, and in the same way `voc-on`, `bp-on` and
 `dict-on`, once, for the same user accounts. This happens when the installer
 is run by the user whose own account already exists; a different OS user

@@ -200,7 +200,11 @@ ospath(path, key {, qualifier})
 The names are in the `keys.h` header; 6 and 18 have none, so give those as numbers. Every key that
 looks at or changes the file system (all but 0, 1, 4, 8, 9, 10 and 18) asks the account's gate
 first: an account with neither `os-on` nor `sd-on` is held to its own directory, and a refusal
-answers false with `status()` set to a permission error. An unknown key answers false with
+answers false with `status()` set to a permission error. The keys that delete or make something
+(5, 13 and 14) are asked a second question, whatever the account holds: a path that runs through the
+VOC, a dictionary or a program file that the session may not change (the administrator's edit
+gates for the account decide which) is refused the same way, and so is a change inside the
+`shared` account unless the session is the administrator's. An unknown key answers false with
 `status()` 1. The qualifier is read and ignored. An internal program's own `ospath()`, with its
 different numbers, is unchanged.
 

@@ -71,7 +71,7 @@ ed customers 1001
 ```
 
 **`ed`** is the **line** editor, and it needs nothing installed —
-**`edit`** is an alias for it, not for a full-screen editor. For a full screen, **`sed`** is SD's own editor, with drop-down menus,
+**`edit`** is an alias for it, not for a full-screen editor. For a full screen, **`sed`** is SD's own editor, with drop-down menus, and needs no operating-system permission for a record of an SD file (see *The SED Screen Editor* in the User set);
 **`micro`** opens the record in `micro` — see
 [Development and file commands](07-programmer-commands.html#editors). The old
 full-screen editors `update.record` and `modify` are gone; see

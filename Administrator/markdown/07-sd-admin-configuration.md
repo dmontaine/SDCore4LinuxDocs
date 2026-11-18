@@ -71,6 +71,7 @@ Virtual Machine Version Number L2.0-0
 CLEANUP   300 seconds
 CMDSTACK  99
 DEADLOCK  0
+DHCACHE   10
 DUMPDIR   /usr/local/sdsys/dumps
 ERRLOG    50 kb
 ...
@@ -79,7 +80,7 @@ YEARBASE  1930
 
 SD accepts **58** parameters (`APIPORT` does not
 exist here — see *The API*, below). The verb prints all of them except
-`BACKUPDIR`, `NETDIRS` and `SDSYS`, and `DEBUG`, `FDS` and `PHANTOMS` only when they are set.
+`BACKUPDIR`, `NETDIRS` and `SDSYS`, and `DEBUG`, `FDS` and `PHANTOMS` only when they are set; it also prints `TIMEZONE`, which is not a file parameter.
 
 `NETDIRS` is the one to know about. It decides what a session held to its account
 by the `os` switch, the API's included, may reach outside its own account (see

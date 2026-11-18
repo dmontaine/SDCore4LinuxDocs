@@ -202,8 +202,8 @@ reset command).
   nodes you gave it with the depths you gave it: neither is a database view.
 - It has no widget for editing a record with the editor's own commands: `screen memo` has
   selection, undo, find and keyboard macros (Alt-R, Alt-P), but not the tabs, the menus or the
-  compile and run keys of the IDE and [SED](27a-sd-tcl-sed.html), which are those programs' own.
-  The IDE, SED, [CED](27b-sd-tcl-ced.html) and
+  compile and run keys of the IDE (which `sed` also runs), which are that program's own.
+  The IDE, [CED](27b-sd-tcl-ced.html) and
   [the debugger](17-sd-basic-debugging.html) are drawn with the library.
 - It draws nothing in a phantom or over the API: every verb takes `else`.
 - Text written with `print` or `crt` is not in the shadow.

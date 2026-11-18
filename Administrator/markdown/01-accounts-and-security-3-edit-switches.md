@@ -161,7 +161,8 @@ gives it with `modify.account` *name* `voc-on` / `bp-on` / `dict-on`.
 
 **On an existing machine.** When the installer is run by the user whose own
 account already exists, the upgrade switches all three on, **once**, for every
-*user* account in the register, so that no such account loses what it had;
+*user* account in the register whose field is blank (a field that already says
+`no` is left as it is), so that no such account loses what it had;
 group and other accounts, and accounts made afterwards, start with all three
 off. On a fresh install, the installing user's own account is made with all
 three off like any other, unless the installer's "open every gate" question was

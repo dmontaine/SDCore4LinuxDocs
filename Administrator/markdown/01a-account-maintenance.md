@@ -291,6 +291,7 @@ Virtual Machine Version Number L2.0-0
 CLEANUP   300 seconds
 CMDSTACK  99
 DEADLOCK  0
+DHCACHE   10
 DUMPDIR   /usr/local/sdsys/dumps
 ERRLOG    50 kb
 ...

@@ -93,7 +93,7 @@ that one account sign in with a key as well as with its password; `ssh-key-off` 
 back; `create.account user` *name* `ssh-key-on` makes the account with it on. `ssh-key-on`
 does not give the ssh route: the account still needs `ssh` or `both`. The gate matrix
 (`tool.gates`) has a column for it, turning it ON there asks you to type the account's
-name, and each account's own gate page shows its state. After the word SD says
+name, and each account's own gate page shows its state, as `own` for a user SD did not make. After the word SD says
 `Account fred may sign in over ssh with a key: yes` (or `no`). Only SDSYS may use the
 words. The word is audited as `modify.account ssh-key-on account=fred`, and the audit
 line of a `create.account` that used it ends `gates=` with `ssh-key-on` among the words.
@@ -128,7 +128,9 @@ SD keep exactly the ssh settings they had, and `modify.account` refuses `ssh-key
 * **A backup that holds no such setting restores with it off**: `restore.account` puts the
   user in the group; `ssh-key-on` afterwards if it should have it.
 * **The group must exist.** It fails open: if `sdsshnokey` is missing or cannot be read, the
-  ssh server offers keys according to the machine's own settings. SD will not delete the
+  ssh server offers keys according to the machine's own settings, and `create.account`
+  refuses to make a user until the group is there (nothing is created; an account made with
+  `ssh-key-on`, or an attached user, is not put in the group and is not asked about it). SD will not delete the
   group; an installation without it needs the installer run again.
 
 ### `suspended`/`unsuspended` is a state, not a tier

@@ -54,7 +54,7 @@ full-screen pages are laid out for 140 × 43 or more**, SD's default size; they
 refuse a window smaller than that, and the debugger's
 full-screen display says so and is line by line instead. If the window is made smaller while one of them runs, it shows the
 upper left corner and stops taking keys while the cursor is off the screen — see
-the SED page. A `screen open` program of your own asks for the size it needs
+[the IDE and the window](24e-sd-tcl-the-ide-ai-and-the-window.html). A `screen open` program of your own asks for the size it needs
 with `minsize`, and SD asks nothing more of it.)
 
 **SD's default is 140 columns by 43 lines, not 80 × 24.** It is what a session gets when there is no terminal to

@@ -286,6 +286,7 @@ SPLITS = {
         '12a-sdnet-servers.md', '12b-sdnet-logins.md', '12c-sdnet-files-only-route.md',
         '12d-sdnet-administration-group-and-read-only-files.md',
         '12e-sdnet-writing-and-locking.md', '12f-sdnet-waits-and-audit.md'],
+    ('Administrator', '17-moving-an-account.md'): ['17a-moving-an-account-cases.md'],
     ('Administrator', '19-the-master-files.md'): [
         '19a-the-master-files-global-change.md', '19b-run-in.md',
         '19c-the-master-files-group-and-modes.md'],
