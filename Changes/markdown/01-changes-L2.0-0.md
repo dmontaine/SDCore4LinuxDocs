@@ -263,6 +263,7 @@ File handling: opening, indexes, triggers, print files, sorting, sequential file
 | `$setptr.defaults`, `@seqno` | Added | an X record `$setptr.defaults` in the VOC gives the options every `setptr` of a mode takes (field mode + 1); `@seqno` and `getpu(pu$seqno, unit)` give the number of the last `as next` hold file |
 | sort of long records | Changed | the disk sort handles records and keys over 32 KB |
 | trigger on a read | Changed | fixed: a locally cataloged read trigger could end the process |
+| trigger on the VOC | Changed | fixed: an account whose VOC has a trigger can be signed on to (the sign-on stopped with "Requires file variable"); a trigger not found while its file is opened is loaded at its first use, and one that cannot be found still refuses |
 | `vocname` letters | Added | `r` opens a file read-only, `n` non-transactionally, `s` with forced writes, from field 6 of its VOC entry |
 | `write ... creating.seqkey` | Added | a hashed file keeps a record-id counter: `write` or `writeu ... creating.seqkey id.var` writes under its next value and gives the id, skipping an id a record already has; `configure.file file next n` sets it and `next query` shows it; `ed` and the IDE take `creating.seqkey` for a record id |
 
