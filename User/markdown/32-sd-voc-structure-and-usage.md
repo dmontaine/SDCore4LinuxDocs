@@ -301,10 +301,9 @@ a command line does: `$private.voc` and `$voc.parser`, described on the next
 pages.
 
 **The license and the contributor list are not VOC records at all**, despite
-looking like the obvious candidates. `config gpl` and `config contrib` shell
-out to `less` against two plain files in the system directory,
-`sdsys/licence` and `sdsys/contrib` — see *Account Maintenance* in the
-Administrator set.
+looking like the obvious candidates. `config gpl` and `config contrib`, which
+work in every account, display two plain files in the system directory,
+`sdsys/licence` and `sdsys/contrib`.
 
 ## Continued in
 

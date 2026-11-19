@@ -18,8 +18,8 @@ not refused — the name is simply not recognized.**
 
 | | | |
 |---|---|---|
-| **every account** | 166 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 48 more | in `voc_template` but not `newvoc` |
+| **every account** | 167 verbs | `newvoc`, identical for every ordinary account |
+| **SDSYS only** | 47 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -55,7 +55,7 @@ not refused — the name is simply not recognized.**
 | **`como`** | **`como on`** {*record*} \| **`off`** \| **`pause`** \| **`resume`** |  |
 | **`compare.files`** | **`compare.files`** {**`dict`**} *file1* {**`dict`**} *file2* {**`detail`**} |  |
 | **`compile.dict`** | **`compile.dict`** {**`data`**} *file* {*i-type* …} {**`no.query`**} {**`no.page`**}  ·  **`compile.dict local`**  ·  **`compile.dict all`** |  |
-| **`config`** | **`config`** {**`lptr`** \| **`gpl`** \| **`contrib`** \| *param* *value*} | S |
+| **`config`** | **`config`** {**`lptr`** \| **`gpl`** \| **`contrib`** \| *param* *value*} |  |
 | **`configure.file`** | **`configure.file`** {**`dict`**} *voc.name* {*parameters*} \| **`default`**  ·  **`configure.file`** *voc.name* **`next`** *n* \| **`query`** |  |
 | **`convert.data`** | **`convert.data`** *from.pathname* *to.pathname* {**`from`** *format*} {**`as`** *format*} {**`header`**} {**`no.query`**} |  |
 | **`copy`** | **`copy from`** {**`dict`**} *src* {**`to`** {**`dict`**} *tgt*} {*id* …} {**`(options`**} |  |

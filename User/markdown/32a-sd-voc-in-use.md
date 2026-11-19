@@ -167,10 +167,10 @@ entry actually contains without an editor.
 ## The VOC and account creation
 
 `create.account` copies the VOC from `NEWVOC` in the system directory —
-**388 records**, counted directly, and identical for every ordinary
-account. SDSYS's own VOC is copied from `voc_template` instead — **448
+**391 records**, counted directly, and identical for every ordinary
+account. SDSYS's own VOC is copied from `voc_template` instead — **449
 records** — which carries the administration verbs `NEWVOC` does not:
-`create.account`, `delete.account`, `modify.account`, `config`, `set.date`,
+`create.account`, `delete.account`, `modify.account`, `set.date`,
 `update.accounts`, `clean.account`, `list.readu`, `list.locks`, `lock`,
 `unlock`, `listu`, `remote.ssh`, `remote.api`, and the rest of the set the
 *Administrator* documentation covers. **There is no separate

@@ -314,9 +314,14 @@ TEMPDIR
 YEARBASE  1930
 ```
 
-*(Forty-odd lines; cut here.)* **Reading needs nothing** — any account with the
-verb can do it, and it is the quickest answer to *how many users, how many
-locks, how many open files is this machine set up for*.
+*(Forty-odd lines; cut here.)* It is the quickest answer to *how many users,
+how many locks, how many open files is this machine set up for*.
+
+**Every account has the verb, but only `config gpl` and `config contrib` work
+outside SDSYS.** The sign-on banner tells every session to type them, so they
+are open to everyone. Every other form — the report, `lptr`, setting a value —
+needs the administrator and answers *Command requires administrator
+privileges* to anyone else.
 
 | | |
 |---|---|
@@ -330,12 +335,10 @@ read when SD starts. This form overrides one for the session you are in, which
 is the right tool for trying a value before writing it down and the wrong one
 for changing an installation.
 
-**`config gpl` and `config contrib` shell out to `less`**, against two plain
-files in the system directory (`sdsys/licence`, `sdsys/contrib`) — not a VOC
-record, despite reading like one. `gpl.bp/config` runs `sh less
-sdsys/licence` and `sh less sdsys/contrib` directly. That works because
-SDSYS runs it — `config` is one of SDSYS's own verbs, and SDSYS is never
-refused by the `sh-on` switch that gates `sh` for every other account.
+**`config gpl` and `config contrib` display two plain files** in the system
+directory (`sdsys/licence`, `sdsys/contrib`) — not a VOC record, despite
+reading like one. SD reads and shows them itself, paged like any other output,
+so they need no shell and work in an account whose `sh-on` switch is off.
 
 ## Setting the session's date: `set.date`
 
