@@ -194,10 +194,12 @@ object file is in that account.
 
 **All of them are SDSYS's** — `create.account`, `modify.account`,
 `modify.password` for another account, `delete.account`, `clean.account`,
-`update.accounts`, `load.examples`, `remove.examples`, `config`, `backup.account`, `restore.account`,
+`update.accounts`, `config`, `backup.account`, `restore.account`,
 `set.backup.directory`, `settings.report`. An ordinary account has none of these names at
 all — this is not a permission it lacks, the verbs are simply not in its
-VOC. **Who may enter an account is changed in one place**, `modify.account`
+VOC. (`load.examples` and `remove.examples` are in every account: a person loads the example
+programs into their own account given `bp.edit`, and only SDSYS names other accounts; see
+[Account Maintenance](01a-account-maintenance.html).) **Who may enter an account is changed in one place**, `modify.account`
 *name* `add` / `delete`; see [Accounts and Security: The Home Screen, ssh Keys and Passwords](01-accounts-and-security-8-home-screen-ssh-keys-passwords.html).
 
 ## See also

@@ -48,7 +48,7 @@ behind a warning that gives both sizes until the window is big enough again.
      edit a record        programs and files
 
    Everyone
-     >_                                          ^K
+     >_                                          [K]
      Terminal                                    Keys
      type exit to come back                      test your keyboard
 
