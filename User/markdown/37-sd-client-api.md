@@ -11,20 +11,31 @@ talks to SD needs API access and may need nothing else.
 
 ## The library
 
-Two names are installed, built from one source in one step:
+The client library is written new for SD Core (a clean-room library under the
+Blue Oak Model License 1.0.0), so an application of any licence may link it.
+It is delivered as binaries in the release package's `clients` folder; its
+source is not published. The same library has two names:
 
 | | |
 |---|---|
 | `sdclilib.so` | what existing applications ask for |
 | `libsdcli.so` | the ordinary Unix `lib*.so` convention (`-lsdcli` at link time) |
 
+The package holds two builds of it: `clients/Linux64` for OpenSSL 3
+(Debian 13, Ubuntu 24.04 and 26.04) and `clients/Linux64-openssl4` for
+OpenSSL 4 (Ubuntu 26.10).
+
 **This port carries no 32-bit build** — a difference from SD Core for
 Windows, which ships a separate pair for QM-heritage applications.
 
 ### Where it is, and how to use it
 
-Built to `bin/` under the source tree, installed alongside the server
-under `/usr/local/sdsys/bin`. Link against it (`-lsdcli`) or load it at
+**The installer puts it in `/usr/local/sdsys/bin`** when it is run from the
+release package: it takes the build that matches the OpenSSL the server
+uses, under both names. An install made from a copy of the source (a clone
+of the repository) has no client library, because the source does not
+contain one; copy the files from a release package's `clients` folder
+instead. Link against it (`-lsdcli`) or load it at
 runtime (`dlopen("sdclilib.so", ...)`) the ordinary way for a Linux shared
 library — there is no PATH-order concern the way a Windows DLL search has,
 because Linux resolves a shared library by its own rules (`rpath`,

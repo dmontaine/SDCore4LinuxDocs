@@ -83,7 +83,9 @@ The server side of the API, the client library and the language headers.
 | api sign-in: audit | Added | the first entry to an account writes `api login user= account=` to the audit trail |
 | `autologout` | Changed | reaches an API session; a client hang found while testing it is fixed |
 | client library headers | Added | C# (`sdclient.cs`) and PHP (`sdclient.php`) beside the six already there; neither has been run against a runtime |
+| client library: C header | Changed | fixed: `syscom/sdclilib.h` declared `SDMarkMapping`, `SDSelectIndex`, `SDSelectLeft`, `SDSelectRight`, `SDSetLeft` and `SDSetRight` with `int` where the library takes 16-bit values |
 | client library: call name | Changed | a subroutine called from the client may have a name as long as the lower of 128 and `maxidlen`, as on the server's own `call` |
+| client library: clean room | Changed | the C client library is written new for SD Core (Blue Oak Model License 1.0.0, so a program of any licence may link it), delivered as binaries in the release package's `clients` folder; the installer puts the build for the system's OpenSSL in `/usr/local/sdsys/bin`; the source no longer builds the old GPL library; the BASIC client and the language bindings are unchanged |
 | client library: collection files | Changed | a record read from a data collection file reaches the client as its JSON text, as `ct` shows it |
 | client library: connections | Changed | the number of simultaneous connections is no longer limited |
 | client library: detailed error | Changed | the BASIC class `sdclient` returns the detailed status when it cannot connect |
