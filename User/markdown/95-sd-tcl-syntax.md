@@ -18,8 +18,8 @@ not refused — the name is simply not recognized.**
 
 | | | |
 |---|---|---|
-| **every account** | 164 verbs | `newvoc`, identical for every ordinary account |
-| **SDSYS only** | 50 more | in `voc_template` but not `newvoc` |
+| **every account** | 166 verbs | `newvoc`, identical for every ordinary account |
+| **SDSYS only** | 48 more | in `voc_template` but not `newvoc` |
 
 ## The verbs
 
@@ -125,7 +125,7 @@ not refused — the name is simply not recognized.**
 | **`list.vars`** | **`list.vars`** {*pattern*} |  |
 | **`list.voc.removed`** | **`list.voc.removed`** {*account*}  —  the VOC records SD no longer ships and, with an account, what the next **`update.accounts`** would do in it (changes nothing) | S |
 | **`listu`** | **`listu`** {**`detail`**} {**`no.page`**} {**`lptr`** {*n*}} | S |
-| **`load.examples`** | **`load.examples`** {*account* …}  —  put the shipped example programs into examples.bp of every account (or the accounts named) and compile them there (administrator) | S |
+| **`load.examples`** | **`load.examples`** {*account* …}  —  put the shipped example programs into examples.bp of the account you are in and compile them there (needs bp.edit); naming accounts is the administrator's |  |
 | **`load.help`** | **`load.help`**  —  load the shipped context help into the file context.help of the shared account (administrator) | S |
 | **`local.sdsys`** | **`local.sdsys`** {**`ssh`** \| **`api`**} {**`add`** *user* {**`no.query`**} \| **`remove`** *user* \| **`clear`**} | S |
 | **`lock`** | **`lock`** *n* {**`no.wait`**} | S |
@@ -165,7 +165,7 @@ not refused — the name is simply not recognized.**
 | **`remote.api`** | **`remote.api`** {**`on`** \| **`local`** \| **`off`**} | S |
 | **`remote.sdsys`** | **`remote.sdsys`** {**`on`** \| **`off`** \| **`ssh`** {**`on`** \| **`off`**} \| **`api`** {**`on`** *address* ... \| **`on any`** \| **`off`**}} | S |
 | **`remote.ssh`** | **`remote.ssh`** {**`on`** \| **`off`**} | S |
-| **`remove.examples`** | **`remove.examples`** {*account* …}  —  take the shipped example programs, with their compiled objects, out of examples.bp of every account (or the accounts named); programs you added are kept (administrator) | S |
+| **`remove.examples`** | **`remove.examples`** {*account* …}  —  take the shipped example programs, with their compiled objects, out of examples.bp of the account you are in (needs bp.edit); programs you added are kept; naming accounts is the administrator's |  |
 | **`report.src`** | **`report.src on`** \| **`off`** \| **`report.src`** to toggle |  |
 | **`report.style`** | **`report.style`** {*name* \| **`off`**} |  |
 | **`restore.account`** | **`restore.account`** *archive* *name* … {**`no.query`**}  ·  **`restore.account`** *archive* **`all`** {**`no.query`**}  ·  **`restore.account latest`** *name* … \| **`all`** {**`no.query`**} | S |

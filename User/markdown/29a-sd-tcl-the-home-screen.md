@@ -63,6 +63,7 @@ behind a warning that gives both sizes until the window is big enough again.
 |---|---|
 | **Editor** | runs `sed` (it asks which file and record) |
 | **IDE** | runs `ide` |
+| **Example programs** | runs `load.examples`, which puts SD's example programs into your account's `examples.bp`, compiled (*SD Example Programs*), then waits for Enter so you can read its summary; it needs `bp-on`, and without it the tile is dimmed and says why |
 | **Receive files** | runs `receive` (*Moving files in and out*), then waits for Enter so you can read what came; it is there only when a transfer can be opened: the system allows file transfer, you are in your own account, and your account has the `xfer` gate |
 | **Terminal** | leaves the screen for the ordinary command prompt (below) |
 | **Keys** | runs `tool.keys`, the terminal and keyboard diagnostic |

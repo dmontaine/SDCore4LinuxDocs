@@ -1,21 +1,31 @@
 Title: SD Example Programs
-Subtitle: The file examples.bp in every account: the TUI guide's five pages and a first course in programming, compiled and ready to run.
+Subtitle: The file examples.bp you load into your account: the TUI guide's five pages and a first course in programming, compiled and ready to run.
 
-Every account has a file **`examples.bp`** that holds example programs, already compiled.
-Nothing has to be copied or set up to try one: at the prompt, type
+SD ships example programs that you can load into your own account, compiled and ready to
+run. They are not there until you load them. At the prompt, type
+
+```
+load.examples
+```
+
+or choose **Example programs** in the Tools group of the home screen. SD makes the file
+**`examples.bp`** in your account, puts every program into it and compiles them. Then:
 
 ```
 run examples.bp cs01.hello
 ```
 
-The file is the account's own, and SD fills it: the installer puts it into every account, a new
-account gets it when it is made, and an upgrade refreshes the programs SD ships. It is a program
-file like `bp`, so whether you may change it is the account's `bp-on` setting, which is off as
-delivered: you can list, read and run every program in it, but not change them there.
+**Loading them needs `bp-on`**, the account's setting for saving and compiling programs, which
+is off as delivered. Without it `load.examples` says *Programs can only be compiled or cataloged
+by an account that has bp.edit* and changes nothing, and the home screen's tile is dimmed and
+says why. Ask the administrator, who can give the account `bp-on`
+(`modify.account <account> bp-on`) or load the examples for you (`load.examples <account>`).
+`remove.examples` takes them out again, with the same rule.
 
-**To change a program, copy it to your own `bp` file first.** An upgrade puts the shipped
-programs back, so a change made in `examples.bp` itself would not last. Saving and compiling in
-`bp` needs `bp-on` (the administrator gives it: `modify.account <account> bp-on`):
+The file is the account's own, and a program file like `bp`, so `bp-on` also decides whether you
+may change a program in it. **To change a program, copy it to your own `bp` file first**: loading
+the examples again puts the shipped programs back, so a change made in `examples.bp` itself would
+not last.
 
 ```
 copy from examples.bp to bp cs06.fizzbuzz
@@ -23,7 +33,7 @@ basic bp cs06.fizzbuzz
 run bp cs06.fizzbuzz
 ```
 
-`list examples.bp` names them all; `ct examples.bp cs10.recursion` shows one. You do not load or remove the programs yourself: the installer puts them in every account and an upgrade refreshes them, and the administrator can load or remove them with `load.examples` and `remove.examples`.
+`list examples.bp` names them all; `ct examples.bp cs10.recursion` shows one.
 
 ## A first course in programming
 

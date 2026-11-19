@@ -190,9 +190,11 @@ Each example is a complete program. Each was put in the `bp` file of an ordinary
 account, compiled with `basic bp name` and run with `run bp name` on a terminal of
 140 by 43; the screens shown are what that terminal showed.
 
-**All five are already in every account**, compiled, in the file `examples.bp`: `run
-examples.bp hello` runs the first. To change one, copy it to your own `bp` first (`copy from
-examples.bp to bp hello`); the User guide's *SD Example Programs* says why.
+**All five come with SD.** Type `load.examples` (or choose Example programs on the home
+screen) and they are put into your account, compiled, in the file `examples.bp`; that needs
+the account's `bp-on`. Then `run examples.bp hello` runs the first. To change one, copy it to
+your own `bp` first (`copy from examples.bp to bp hello`); the User guide's *SD Example
+Programs* says why.
 
 | Page | Program | What it adds |
 |---|---|---|

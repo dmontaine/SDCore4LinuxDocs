@@ -13,7 +13,7 @@ which part of the statement a page uses; this page shows the parts together.
 
 ## The program
 
-It is already in your account, compiled: `run examples.bp stock`. To change it, put it in the
+Once you have loaded the examples (`load.examples`), it is in your account, compiled: `run examples.bp stock`. To change it, put it in the
 `bp` file of your account as `stock` (`copy from examples.bp to bp stock`), then `basic bp stock`
 and `run bp stock`.
 

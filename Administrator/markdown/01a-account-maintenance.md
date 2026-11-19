@@ -235,45 +235,54 @@ the SDSYS directory.
 To see it work, put a record in the file and run `update.accounts`; then
 `ct voc` the id in the account.
 
-## The example programs in every account: `load.examples` and `remove.examples`
+## The example programs: `load.examples` and `remove.examples`
 
-Every account has its own file `examples.bp` of example programs, compiled: the five
-programs of the *SD Text User Interface - Programmer's Guide* and a first course in
-programming (User guide, *SD Example Programs*). They come from the directory `examples`
-of the SD system directory (`/usr/local/sdsys/examples`), one file to a program.
+SD ships a set of example programs: the five programs of the *SD Text User Interface -
+Programmer's Guide* and a first course in programming (User guide, *SD Example
+Programs*). They are installed in the directory `examples` of the SD system directory
+(`/usr/local/sdsys/examples`), one file to a program. **No account gets them by itself**:
+most accounts do not need them, so neither the installer nor `create.account` puts them
+anywhere. A person who wants them loads them into their own account; you can load them
+into accounts you name.
 
 ```
-load.examples                       every account in service
-load.examples <account> ...         the accounts named, a list
-remove.examples                     every account in service
-remove.examples <account> ...       the accounts named, a list
+load.examples                       the account you are in
+load.examples <account> ...         the accounts named, a list (the administrator only)
+remove.examples                     the account you are in
+remove.examples <account> ...       the accounts named, a list (the administrator only)
 ```
 
-The installer runs `load.examples` on every install and upgrade, and `create.account`
-runs it for each account it makes. In each account it makes `examples.bp` when it is not
-there, writes each shipped program that is new or has changed, leaves alone a program it
-does not ship (one you added), and compiles what it wrote. A suspended account is
-skipped; run `load.examples <account>` once it is back. The two summary lines count the
-accounts, the programs written and compiled, and the ones of yours it kept; each program
-that did not compile, or account it could not enter, is named. The run is on the audit
-trail (`load.examples accounts=... compiled=...`).
+`load.examples` makes the file `examples.bp` in the account when it is not there, writes
+each shipped program that is new or has changed, leaves alone a program it does not ship
+(one you added), and compiles what it wrote, into `examples.bp.out`. A person types it in
+their own account, or chooses **Example programs** in the Tools group of the home screen.
+The two summary lines count the accounts, the programs written and compiled, and the
+ones it kept; each program that did not compile, or account it could not enter, is named.
+The run is on the audit trail (`load.examples accounts=... compiled=...`).
 
-Both verbs take a list of accounts (`load.examples ann bob`). A name that is not
-registered is said and skipped, and the others go on.
+**It needs `bp.edit`.** Loading writes programs into `examples.bp` and compiles them, which
+is what `bp.edit` decides, so an account without it (as delivered) is refused before
+anything is written: *Programs can only be compiled or cataloged by an account that has
+bp.edit*. On the home screen the tile is dimmed and says why. To let a person load the
+examples, give the account `bp-on` (`modify.account <account> bp-on`), or load them for
+the person with `load.examples <account>`. Either way `bp.edit` then also decides whether
+the person may change the programs in `examples.bp`.
 
-`remove.examples` is the companion. In each account it deletes the shipped programs from
-`examples.bp` together with their compiled objects, and keeps any program you added; it
-deletes `examples.bp` itself only when nothing of yours is left in it. An account with no
-`examples.bp` is counted and left alone. **What it removes comes back:** the next install
-or upgrade, a new account, or a `load.examples` puts the programs back. The run is on the
-audit trail (`remove.examples accounts=... removed=...`).
+The administrator's list takes accounts by name (`load.examples ann bob`); a name that is
+not registered is said and skipped, and the others go on. A suspended account cannot be
+entered and is named. With no name the administrator's `load.examples` loads the SDSYS
+account only.
 
-**No access is opened by it.** `examples.bp` is an ordinary program file of the account,
-so the account's `bp.edit` setting decides whether its person may change it: off as
-delivered, so every account can list, read and run the examples and none can alter them
-there. To let a person copy one to `bp` and compile it, give the account `bp-on`. A
-change you want in every account is made to the file under `examples` and spread with
-`load.examples`; a change made in one account's `examples.bp` is put back by the next run.
+`remove.examples` is the companion, with the same rule for who may. In each account it
+deletes the shipped programs from `examples.bp` together with their compiled objects, and
+keeps any program you added; it deletes `examples.bp` itself only when nothing of yours is
+left in it. An account with no `examples.bp` is counted and left alone. Nothing puts the
+programs back by itself; a `load.examples` does. The run is on the audit trail
+(`remove.examples accounts=... removed=...`).
+
+A change you want everywhere is made to the file under `examples` and spread with
+`load.examples` to the accounts that have them; a change made in one account's
+`examples.bp` is put back by the next run there.
 
 ## Reading and setting configuration: `config`
 

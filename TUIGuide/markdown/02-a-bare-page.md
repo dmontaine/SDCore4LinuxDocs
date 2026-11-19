@@ -6,7 +6,7 @@ says which key was pressed. It shows the parts every page has.
 
 ## The program
 
-It is already in your account, compiled: `run examples.bp hello`. To change it, put it in the
+Once you have loaded the examples (`load.examples`), it is in your account, compiled: `run examples.bp hello`. To change it, put it in the
 `bp` file of your account as `hello` (`copy from examples.bp to bp hello`), then `basic bp hello`
 and `run bp hello`.
 

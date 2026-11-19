@@ -13,8 +13,8 @@ tool.menus
 **Menu management** is a full-screen page for the administrator (SDSYS's VOC only; it
 is also a tile on the administrator's own home screen). It lists every account but
 SDSYS with where it starts, whether it may add its own programs, and the tiles turned
-off for it; for the account you select it shows the standard tiles (the six of the
-account, the seven development tiles and the Recent group: 14 rows after the two settings
+off for it; for the account you select it shows the standard tiles (the seven of the
+account, the seven development tiles and the Recent group: 15 rows after the two settings
 above them) with `[x]` on and `[ ]` off, and a box that says in plain words what the
 settings mean. **It writes
 nothing itself:** every change is the command it will run, shown with its effect in a
@@ -35,10 +35,10 @@ modify.account account pins-off   they may not (the delivered state)
 ```
 
 * **Tiles are on as delivered and are turned off one account at a time**; there is no
-  setting for every account. The standard tile ids are `editor`, `ide`,
-  `terminal`, `keys`, `switch` and `signout`, the seven development tiles (`files`, `voc`,
-  `dict`, `query`, `bulk`, `catalog` and `test`) and `recent`, which is not a tile but the
-  Recent group (below): 14 ids, the ones the page draws and the rows of the *Menu* box of the
+  setting for every account. The standard tile ids are `editor`, `ide`, `examples` (Example
+  programs, which runs `load.examples`), `terminal`, `keys`, `switch` and `signout`, the seven
+  development tiles (`files`, `voc`, `dict`, `query`, `bulk`, `catalog` and `test`) and
+  `recent`, which is not a tile but the Recent group (below): 15 ids, the ones the page draws and the rows of the *Menu* box of the
   menu management page. **Sign out cannot be turned off**, and neither can the **Back** tile of a sub-menu page: a person must always be able to
   leave. Any other id is accepted and said not to be standard (it would apply to a tile of
   that name in a page of the account's own).

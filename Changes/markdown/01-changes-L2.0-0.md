@@ -380,7 +380,7 @@ Commands and VOC verbs that every account has, and the command language.
 | `private vocabulary` | Added | `$private.voc`: a file of commands searched after all other command sources |
 | `profiler` | Added | records what the programs of a session do and where|
 | `redo` | Added | runs a command again and again, `times` and `every` |
-| `remove.examples` | Added | administrator only: takes the shipped example programs and their compiled objects out of `examples.bp` of every account in service, or of the accounts named (a list); keeps programs the administrator added, and deletes the file only when nothing is left in it |
+| `remove.examples` | Added | takes the shipped example programs and their compiled objects out of `examples.bp` of the account you are in (with `bp.edit`), or of the accounts named (a list, the administrator only); keeps programs that were added, and deletes the file only when nothing is left in it |
 | `.s` (command stack) | Changed | a new saved sentence's VOC name is lower case; an existing one keeps its name |
 | saved list verbs | Changed | `save.list`, `get.list`, `delete.list`: `keep`, `deleting`, `count.sup`, a default name, a name left out, `in file` |
 | `selectindex` | Added | the command form of the statement |
@@ -524,13 +524,13 @@ has, with the changes they made.
 | `create.account` xfer word | Added | `create.account user <name> xfer-on` lets the new account's person move files with `receive` and `send`; off as delivered, user accounts only (`xfer-off` is for `modify.account`) |
 | `dict-on` and `dict-off` | Added | per-account switch for saving a change to a dictionary |
 | `docs.install` | Added | SDSYS puts a directory of PDFs into the shared account's `pdf` directory |
-| `examples.bp` | Added | every account has its own file of example programs, compiled: the TUI guide's five and 23 programs of a first course in programming; the installer and `create.account` put it there, an upgrade refreshes it; read-only as delivered (`bp.edit`) |
+| `examples.bp` | Added | an account's own file of example programs, compiled: the TUI guide's five and 23 programs of a first course in programming; loaded by the account's person with `load.examples` or the home screen's Example programs tile (needs `bp.edit`), or by the administrator for accounts named; no account gets it by itself |
 | `files-admin-on` | Added | third remote permission: the login may configure, index, create and delete files on this server (group `sdfilesadmin`) |
 | `files-on` and `files-off` | Added | per-account switch for the files route SDNet uses (group `sdfiles`) |
 | `files-write-on`, `-off` | Added | per-account switch for changing files over the files route (group `sdfileswrite`); `files-off` removes it first |
 | `list.shared` | Added | administrator only: the files of the shared account that an account with shared read can open by name, and a count; with no shared account in service it says so |
 | `list.voc.removed` | Added | administrator only: the VOC records SD no longer ships, with the release each went in and what to write instead; given an account, what the next `update.accounts` would do in it (changes nothing) |
-| `load.examples` | Added | administrator only: puts the shipped example programs into `examples.bp` of every account in service, or of the accounts named (a list), and compiles them there; keeps programs the administrator added |
+| `load.examples` | Added | puts the shipped example programs into `examples.bp` of the account you are in and compiles them there, for an account with `bp.edit` (refused without it, before anything is written); the administrator may name accounts (a list); keeps programs that were added |
 | `load.help` | Added | SDSYS loads the text of the `[?]` help buttons into the shared account; keeps records the administrator added |
 | `local.sdsys` | Added | administrator only: two lists of Linux users who may reach `sdsys` from this computer, by `ssh -t` *user*`@localhost sd-sdsys` and over the API's Unix socket, each with the SD password of `sdsys`; both empty as delivered; `add`, `remove` and `clear` per list, and also two fields on the sdsys view of `tool.remote` |
 | `modify.account` | Changed | takes more than one action in a command (`modify.account fred sh-on os-on voc-on`), all carried out or none |
