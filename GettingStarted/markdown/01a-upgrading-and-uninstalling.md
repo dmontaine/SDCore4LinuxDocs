@@ -163,6 +163,23 @@ in `/home/sd/jobs.saved`, and the next install schedules each one again and says
 how many (*Scheduled jobs: n scheduled again, m NOT*). When the configuration is
 deleted, the jobs go with it.
 
+**When something cannot be put back, the install says so in a red box.** If an
+install over an installed SD, or a reinstall that keeps your accounts and
+configuration, could not put something back as it was (a scheduled job the helper
+refuses, the API door or the `sdsys` ssh door that was open and could not be
+opened again, or the firewall rule for the API), the closing summary starts, right
+under *The SD server is installed.*, with a boxed, bold red block that lists each
+one with the exact command to type. A job's command is printed from its saved
+definition, quoted, so copying it cannot run anything else. The uninstaller shows
+the same kind of block at its end for what it could not save for the next install
+(the note that reopens the API door or the `sdsys` ssh door, or a job's definition).
+Nothing is printed when everything was put back.
+
+**Your screen theme comes back as you had it.** An install, an upgrade or a reload
+leaves the `SCREENTHEME` line of a kept `sd.conf` exactly as it was; a kept file with
+no such line stays on `mono`. Only a new install starts in `paper`, from the
+shipped `sd.conf`.
+
 **Answering "no" to accounts does not delete them on its own** — you must
 then type `DELETE` at a second prompt to confirm. **A silent or partial
 answer never deletes the database**; only an explicit `DELETE` does.
