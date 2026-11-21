@@ -142,6 +142,7 @@ Statements, functions, `$mode` words and compiler directives.
 | `$ifdef`, `$ifndef` | Changed | accept `and` and `or` between token names |
 | `inmat()` | Changed | after `matches` or `matchfield()` it is the number of the pattern that matched; after `matbuild` and `matwrite` it is the element count; a collection array is accepted |
 | `input ... fill` | Added | shows a fill character in every empty cell of the field |
+| `input ... hidden`, `input ... no.echo` | Changed | throws away what was typed ahead before it asks when the answer comes from the keyboard, so keys typed before a password prompt appeared are never the start of the password; answers piped in or stacked with `data` are read as before |
 | `input ... no.echo` | Added | shows nothing as the user types |
 | `input ... raw` | Added | reads exactly the number of characters given, as they arrive |
 | `inputif` | Added | reads a line only if one is already there, else takes `else` |
@@ -328,7 +329,7 @@ The kernel, `sd.conf`, and the numbered keys.
 | the call name | Changed | can be as long as 128 characters (the lower of 128 and `maxidlen`)|
 | the startup process | Changed | its `@tty` is `startup` |
 | time zone and `epoch()` | Added | `epoch()`, `mvdate()`, `mvtime()`, `mvdate.time()`, `mvepoch()`; `set.timezone` and `config timezone` |
-| upgrade: conversion to case-insensitive ids | Changed | a file the conversion could not handle is named in the report ("File: " and its path) |
+| upgrade: conversion to case-insensitive ids | Changed | a file the conversion could not handle is named in the report ("File: " and its path); a file an account's VOC points at under SDSYS or outside the account is named only when it is not already case insensitive (SDSYS's own files are), so a reinstall that keeps the accounts no longer warns about files with nothing to convert |
 | upgrade: retired `sd.conf` parameters | Changed | an upgrade takes the parameters this release no longer has out of a kept `sd.conf` (SD would not start on them) |
 | `usplit=1` | Added | interactive users take the lowest user number, phantoms and API sessions the highest |
 
@@ -725,6 +726,7 @@ Three simple layers, with no vault and nothing on by default.
 | install over an installed SD | Changed | `installsdcore.sh` upgrades it in place, keeping the accounts and the configuration, instead of stopping with "Uninstall it before running this script" |
 | immutable `bin` | Changed | `deletesdcore.sh` lifts the attribute before it removes the system directory |
 | installer packages | Changed | also installs `gpm`, the console mouse daemon, so the full-screen tools have a mouse on a bare Linux console; the package starts it, the installer does not, and removing SD leaves it; on a machine with no console mouse device (a container, say) it is not installed at all, and if it cannot be installed the installer removes it again, warns and goes on |
+| installer: ufw on Debian | Changed | the installer and the uninstaller find ufw as the file `/usr/sbin/ufw` too, so with ufw active an install that opens the API adds its rule and an uninstall removes it; before, an ordinary user's command path had no `/usr/sbin`, ufw was not found and no rule was added or removed |
 | installer: the `sdsys` user's groups | Changed | an install that keeps the accounts leaves the `sdsys` user in the group of each group account (`sdg_shared` among them); it used to take it out of all of them |
 | installer: what could not be put back | Added | when an install over an installed SD, or a reinstall that keeps the accounts and the configuration, cannot put something back (a scheduled job the helper refuses, the API door or the `sdsys` ssh door that was open, the API's firewall rule), the closing summary starts under "The SD server is installed." with a boxed bold red block that names each one and the exact command to type; the uninstaller shows one at its end for what it could not save for the next install; nothing is printed when everything was put back, and the summary no longer says the API's firewall rule was added when adding it failed |
 | installer source message | Changed | says which source it is downloading, the release tag or `main` |
