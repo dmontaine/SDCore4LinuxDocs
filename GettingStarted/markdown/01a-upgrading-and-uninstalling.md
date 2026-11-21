@@ -1,12 +1,18 @@
 Title: Upgrading and uninstalling
 Subtitle: Replacing an existing installation, and taking SD off the machine.
 
-This page continues [Installing SD Core](01-installation.html). SD must be
-uninstalled before `installsdcore.sh` will run again — it refuses outright if
-`/usr/local/sdsys/bin/sd` already exists — so "upgrading" here means
-uninstalling with accounts kept, then installing again.
+This page continues [Installing SD Core](01-installation.html).
 
 ## Upgrading
+
+**Run the new release's `installsdcore.sh` over the installed one; no uninstall
+is needed.** When `/usr/local/sdsys/bin/sd` is already there, the installer
+says *SD Core is already installed: upgrading it in place, keeping your accounts
+and your configuration*, runs the new release's `deletesdcore.sh` itself with the
+answers that keep both, and then installs. The result is the same as
+uninstalling with accounts and configuration kept and installing again, which
+still works. If that step cannot run, the installer stops before it installs
+anything and says so.
 
 **Uninstalling with your database kept, then installing again, updates
 your database in place.**
@@ -149,6 +155,13 @@ Two separate questions, each defaulting to keeping what you have:
 Keep your existing accounts? (Y/n)
 Keep your existing configuration? (Y/n)
 ```
+
+**The administrator's scheduled jobs are kept with the configuration.** Their
+timers are always stopped and removed, since a timer left behind would start a
+program that is gone; when you keep the configuration their definitions are saved
+in `/home/sd/jobs.saved`, and the next install schedules each one again and says
+how many (*Scheduled jobs: n scheduled again, m NOT*). When the configuration is
+deleted, the jobs go with it.
 
 **Answering "no" to accounts does not delete them on its own** — you must
 then type `DELETE` at a second prompt to confirm. **A silent or partial
