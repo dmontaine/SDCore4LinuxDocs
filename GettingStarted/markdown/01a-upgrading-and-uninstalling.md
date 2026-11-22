@@ -168,12 +168,25 @@ install over an installed SD, or a reinstall that keeps your accounts and
 configuration, could not put something back as it was (a scheduled job the helper
 refuses, the API door or the `sdsys` ssh door that was open and could not be
 opened again, or the firewall rule for the API), the closing summary starts, right
-under *The SD server is installed.*, with a boxed, bold red block that lists each
-one with the exact command to type. A job's command is printed from its saved
-definition, quoted, so copying it cannot run anything else. The uninstaller shows
-the same kind of block at its end for what it could not save for the next install
-(the note that reopens the API door or the `sdsys` ssh door, or a job's definition).
-Nothing is printed when everything was put back.
+under *The SD server is installed.*, with *WARNING: SOME SETTINGS NEED TO BE FIXED.*
+in bold red. Each numbered item says how to correct it and gives the lines to type at
+the colon prompt. **Sign in to Linux as `sdsys` itself, then start SD:** the commands
+are the administrator's, and are refused to any other user and after `su sdsys`.
+
+A scheduled job is made again with `set.job add`, or with `set.job change` when its
+definition is already there. When the saved definition is damaged the line shows
+`<job> <schedule>`: put in the job and the schedule you had
+(`set.job add nightly backup-all daily 02:30`). The box does not give reasons; the
+reason a job was refused is in the install's output above it. If the same step fails
+when you type it, correct what it reports and type it again. An API or ssh note that
+the install did not trust (it must be a plain file owned by root) is listed too: if
+that door was not open before, leave it as it is.
+
+When the firewall rule for the API could not be added, a red warning of its own says
+so: `remote.api on` adds the rule, and `remote.api local` keeps the API to this
+computer. The uninstaller shows the same kind of box at its end for what it could not
+save for the next install; do those steps after that install. Nothing is printed when
+everything was put back.
 
 **Your screen theme comes back as you had it.** An install, an upgrade or a reload
 leaves the `SCREENTHEME` line of a kept `sd.conf` exactly as it was; a kept file with
