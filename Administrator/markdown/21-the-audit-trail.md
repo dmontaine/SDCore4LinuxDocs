@@ -75,6 +75,10 @@ These lines are written by the root helper that changes the password, not by the
 always read `user=root sudo=`*the person*; a line that names `cred-own` under any other user was not written
 by SD. A change the administrator makes with `modify.password` is not one of these lines.
 
+**A restart of SD asked for from a page writes `sd restart app=`*page*` status=asked`,** or `status=refused`
+when the root helper did not take it (`tool.config`, after a change to a parameter SD reads only when it
+starts). The line is written before SD stops; the sessions the restart ends write nothing of their own.
+
 ## Who writes it
 
 **The user, uid and pid on a line are not the session's word.** Every session sends its record to the

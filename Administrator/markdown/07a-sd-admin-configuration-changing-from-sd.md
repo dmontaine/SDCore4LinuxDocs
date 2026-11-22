@@ -42,7 +42,16 @@ shows what SD runs with and what the file says), checks that it is a whole numbe
 before anything else happens, and then shows the exact command in the toolkit's box with a plain
 sentence about when it takes effect. Cancel, which is what Enter chooses, runs nothing. Run runs
 `set.config` and the page reads the file and SD's own values again and says what changed: the file's
-old and new value, and what SD is running with. `E` on any other row writes nothing: it shows why the
+old and new value, and what SD is running with. After a change to a parameter whose effect is
+`restart` (`CLEANUP`, `LGNWAIT`, `NUMLOCKS`, `USPLIT`) a second box, titled **Restart SD?**, says why
+the change needs a restart and that **a restart stops and starts SD and signs out everyone, this
+session too**. It offers **Restart** and **Not now**; Not now is what Enter chooses, and it leaves the
+change for the next time SD is started. Restart closes the page, clears the screen, says SD is
+restarting and asks the root helper (`sd-elevate sd-restart`) to have systemd restart `sd.service`;
+your session ends with every other, and you sign in again when SD is back, a few seconds later. If SD
+does not end the session within a minute, or the helper refuses, the reason is shown and the page
+comes back. The box is offered only when the file then differs from what SD is running with: a value
+set back to the one SD already runs with needs no restart. `E` on any other row writes nothing: it shows why the
 parameter is not changed from SD, and the exact line to add by hand, as root, in the `[sd]` section
 of the file SD reads.
 
@@ -123,8 +132,18 @@ shows the same sentence in its box:
 | `XFERWAIT` | A transfer limit: raising it keeps a slot open longer before anyone connects. |
 | `YEARBASE` | Changes how every program reads a two-digit year; SD checks no range. |
 
-**What this does not do.** It does not restart SD: a `restart` parameter changes the file and the
-running SD keeps its old value until it is stopped and started. It does not reach a file other than
+**Restarting SD from the page.** The helper's `sd-restart` takes no argument: it asks systemd to
+restart `sd.service` and returns at once, and nothing a caller passes chooses what is restarted. Only
+the user `sdsys` can ask, as for `conf-set`. It refuses when `sd.service` is not active, which is the
+case when SD was started by hand (`sd -start`): such an SD is stopped and started the way it was
+started. **A restart ends every session, terminal and API, and work that was not saved is lost**, so
+tell the people using SD first, or choose Not now and restart when nobody is signed in. One audit
+line is written each time the helper is asked: `sd restart app=tool.config status=asked`, or
+`status=refused`.
+
+**What this does not do.** The verb `set.config` does not restart SD: a `restart` parameter changes
+the file and the running SD keeps its old value until it is stopped and started; only the page's
+box offers the restart. It does not reach a file other than
 `/etc/sd.conf`. It cannot change a parameter that SD does not range-check, however useful that
 would be; such a parameter joins the list when SD itself checks it. And SD itself does not write the
 file as root: the verb asks the helper, and the helper is the one program that does.
