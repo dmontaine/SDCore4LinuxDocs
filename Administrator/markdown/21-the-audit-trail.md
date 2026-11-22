@@ -67,6 +67,14 @@ that did not start as the `sdsys` user it is `logto refused account=sdsys reason
 its own session only`. Add and delete are `modify.account add account=`*name*` to=`*user* and
 `modify.account delete account=`*name*` from=`*user*.
 
+**A person who changes their own SD password writes `cred-own set account=`*name*,** and a change that is
+refused once SD knows who is asking writes `cred-own refused account=`*name*` mode=`*m*` reason=`*why*, where
+*m* is `verify` (the current password checked before the new one is asked for), `set`, or `other`, and *why*
+is one word made of the refusal, such as `the-current-password-is-not-correct` or `account-fred-is-suspended`.
+These lines are written by the root helper that changes the password, not by the person's session, so they
+always read `user=root sudo=`*the person*; a line that names `cred-own` under any other user was not written
+by SD. A change the administrator makes with `modify.password` is not one of these lines.
+
 ## Who writes it
 
 **The user, uid and pid on a line are not the session's word.** Every session sends its record to the
