@@ -19,9 +19,9 @@ ordinary Unix `lib*.so` convention (`-lsdcli` at link time). **They are not
 two copies to keep in sync by hand** — one build target produces both, so
 there is nothing to drift.
 
-**SD Core for Linux carries no 32-bit build.** SD Core for Windows ships a separate
-32-bit client for QM-heritage applications and a third-party tool
-(mvDeveloper) that only runs 32-bit; neither concern applies here.
+**There is no 32-bit client**, for Linux or for Windows: a 32-bit application
+must be built again as a 64-bit one. A program written for QM does not work
+with SD out of the box, because of the changes SD has made.
 
 ## Where it lands
 
