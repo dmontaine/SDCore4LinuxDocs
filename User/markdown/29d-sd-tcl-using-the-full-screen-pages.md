@@ -124,7 +124,7 @@ you type its name to confirm.
 
 ## The AI line
 
-When the administrator has allowed the AI for your account, every page has an **`AI>`** row above the status line. Press
+When the administrator has allowed the AI for your account, every page has an **`AI>`** row above the status line, with a horizontal rule between them. Press
 **F6** until the cursor is there (it is the stop after the last box), choose **AI > Ask the AI**, or click the row; type what you want in your own words and press Enter. Nothing is sent yet: a box shows
 the provider, the size of all that will be sent, **your request** and anything of yours the page sends with it (a record's
 lines, a selection, earlier questions), with **Cancel** as the default; press **s** for Send. SD's own instructions to the

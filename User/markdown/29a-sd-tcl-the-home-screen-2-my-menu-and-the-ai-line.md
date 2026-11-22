@@ -83,8 +83,8 @@ sub-menu are kept by the Recent group like any other.
 
 When the AI is on for your account (the administrator has chosen a provider, given it a
 key, **and allowed your account**; see [Asking the AI](29b-sd-tcl-asking-the-ai.html))
-the home screen has one more row, just above the status line, that starts **`AI>`**. Without
-the AI there is no such row and nothing on this page changes.
+the home screen has a row that starts **`AI>`**, and under it a horizontal rule that keeps it
+apart from the status line. Without the AI there are no such rows and nothing on this page changes.
 
 **Press F6, choose AI > Ask the AI, or click the row**, type
 what you want in your own words, and press Enter:
