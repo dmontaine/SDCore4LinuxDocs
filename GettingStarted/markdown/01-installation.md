@@ -11,7 +11,8 @@ installer carrying its own compiled runtime. Windows has one target and one
 ABI; SD Core for Linux supports Debian and Ubuntu (and their derivatives), detected
 from `/etc/os-release`. Any other distribution — Fedora, RHEL and RHEL's
 clones, Arch, openSUSE, or a machine with no `/etc/os-release` — is refused
-before the installer changes anything. It builds from source so that changes elsewhere in the
+before the installer changes anything. It has been installed and tested on Debian 13
+and on Ubuntu 24.04 LTS, 26.04 LTS and 26.10. It builds from source so that changes elsewhere in the
 system — library versions, kernel, `libssl` — are accounted for at build
 time rather than papered over by a bundled runtime.
 

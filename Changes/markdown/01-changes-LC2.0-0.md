@@ -883,7 +883,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `sd -stop` and `sd -restart` | Changed | a session still attached ten seconds after the termination signal is ended with SIGKILL, and the stop says how many; before, it was left running with SD gone under it. A session idle at a terminal or on a pipe leaves by itself |
 | session whose SD was stopped | Changed | ends at once with a message in syslog and on its terminal, instead of spinning at full processor use for ever |
 | `sh` whose shell cannot be started | Changed | the command ends with status 127; a copy of the session used to carry on in the background |
-| sign-on banner | Changed | names the platform: `SD Core for Linux, the Essential Multivalue String Database, version LC2.0-0` (it said `SD Core, ...`) |
+| sign-on banner | Changed | the product's name and version: `SD Core for Linux, version LC2.0-0` (it said `SD Core, the Essential Multivalue String Database, version ...`); `sd --version` names the product too |
 | `term` and a damaged terminfo file | Changed | a terminfo file that is corrupt or cut short keeps the session's current terminal type; it used to leave the session with none |
 
 ### Tools and the home screen
