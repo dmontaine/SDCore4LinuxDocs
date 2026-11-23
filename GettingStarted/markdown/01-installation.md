@@ -101,9 +101,11 @@ choice.
 (its *Keep your existing configuration?* answered yes), the installer asks
 neither question and keeps access as it was: ssh is left exactly as the
 machine has it, and the API stays open to other computers if it was open, and
-local if it was local. An install after the configuration was deleted asks
-both again; that uninstall also removes the listener setting `remote.api`
-wrote.
+local if it was local. The API counts as open only when it was running and
+listening for other computers at the uninstall, so one turned off with
+`remote.api off` comes back local. An install after the configuration was
+deleted asks both again. Every uninstall removes the listener setting
+`remote.api` wrote.
 
 **Neither question is about whether an ssh server or an API listener
 exist.** They always do — `openssh-server` is installed as an ordinary
