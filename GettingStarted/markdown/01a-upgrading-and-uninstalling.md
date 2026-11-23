@@ -1,7 +1,7 @@
 Title: Upgrading and uninstalling
 Subtitle: Replacing an existing installation, and taking SD off the machine.
 
-This page continues [Installing SD Core](01-installation.html).
+This page continues [Installing SD Core for Linux](01-installation.html).
 
 ## Upgrading
 

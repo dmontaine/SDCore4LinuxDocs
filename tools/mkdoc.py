@@ -827,7 +827,7 @@ def main():
                     metavar='PATH', help='.md files, or directories of them')
     ap.add_argument('--out', required=True, metavar='DIR')
     ap.add_argument('--product', default='SD Core for Linux')
-    ap.add_argument('--version', default='L2.0-0')
+    ap.add_argument('--version', default='LC2.0-0')
     args = ap.parse_args()
 
     sources = []

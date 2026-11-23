@@ -47,7 +47,7 @@ import urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import mkbookpdf  # noqa: E402  (find_browser, wait_for_debug_port, CDP)
 
-UNIQUE = 'New Features Unique to SD Core'
+UNIQUE = 'New Features Unique to SD Core for Linux'     # the Changes heading, full name since the owner's naming rule of 22 Nov 2026
 
 
 def headings(page_html):

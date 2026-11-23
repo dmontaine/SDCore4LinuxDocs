@@ -16,5 +16,5 @@ of this page, under the same copyright and the same license.
 
 ## The set this page belongs to
 
-Read [SD Core - Introduction and Getting Started](00b-sd-introduction.html) for
+Read [SD Core for Linux - Introduction and Getting Started](00b-sd-introduction.html) for
 what the User set covers and how the two references inside it are arranged.

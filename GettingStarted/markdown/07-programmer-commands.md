@@ -175,7 +175,7 @@ terminal rather than reading it through a pipe.
 reporting** with the terminal you connected from.
 
 The removed full-screen editors are a different matter: `update.record` and
-`modify` are gone and are not coming back. See [Not in SD Core](14-not-in-sd-core.html).
+`modify` are gone and are not coming back. See [Not in SD Core for Linux](14-not-in-sd-core.html).
 
 ## Files
 

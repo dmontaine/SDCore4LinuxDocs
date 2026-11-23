@@ -192,7 +192,7 @@ session: the next session starts from the defaults. Anything other than the thre
 names is refused, *"x is not a recognized NLS key"*.
 
 These are the same three values that **`getnls`** and **`setnls`** read and set
-from SD BASIC (see [Data Conversion](06-sd-basic-data-conversion.html)). SD Core
+from SD BASIC (see [Data Conversion](06-sd-basic-data-conversion.html)). SD Core for Linux
 is English only; `nls` has nothing to do with the language of messages, month
 names or day names.
 

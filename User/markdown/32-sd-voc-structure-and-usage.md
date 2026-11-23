@@ -290,7 +290,7 @@ supplier` parse.
 
 ```
 001  X
-002  L2.0-0
+002  LC2.0-0
 ```
 
 This is `$release`, and it is SDSYS's **only** X-record. An X-record is

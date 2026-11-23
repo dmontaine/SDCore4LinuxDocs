@@ -200,7 +200,7 @@ file permissions and the confinement described above allow. The one setting that
 widens it is `NETDIRS` in `sd.conf`, a list of directories outside every account that
 an account without `os-on` may also reach; it is empty as delivered, and the
 administrator fills it (see *`NETDIRS`* in the Administrator set's *Configuration*
-chapter). `APIPORT` is not a parameter of SD Core. **The account's `os-on`
+chapter). `APIPORT` is not a parameter of SD Core for Linux. **The account's `os-on`
 switch lifts this confinement**, for an API session as for any other: an
 account that holds it reaches whatever its Linux user may (see
 [Security and the operating system](12a-security-and-the-operating-system.html)).

@@ -300,7 +300,7 @@ setnls key, value
 
 Report and set the currency symbol, the thousands separator and the decimal
 separator — keys `NLS$CURRENCY`, `NLS$THOUSANDS` and `NLS$DECIMAL` from
-`syscom keys.h`. SD Core is English only; these three settings are all there
+`syscom keys.h`. SD Core for Linux is English only; these three settings are all there
 is. **`setnls` changes them for the session**, so a
 program that alters them and then aborts leaves the session changed. Read the
 old value, set the new, and restore it on the way out.

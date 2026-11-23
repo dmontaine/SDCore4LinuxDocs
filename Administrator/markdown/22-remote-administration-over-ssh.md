@@ -25,7 +25,7 @@ off as delivered, described in [Reaching SDSYS from Your Own Login](22b-reaching
 **This page is about SD Core for Linux.** SD Core for Windows has the same door in its own form:
 there the administrator is an elevated Windows account, so the door opens a separate account that
 signs in over ssh only and is never elevated; its own documentation describes it. Neither SD Core
-Solo has it.
+Solo for Linux nor SD Core Solo for Windows has it.
 
 > This document is separate so that it can be withheld. It links to nothing outside the
 > administrator set. Where a page in another set is worth naming, it is named in words.

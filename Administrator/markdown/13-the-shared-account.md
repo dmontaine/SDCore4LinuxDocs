@@ -182,7 +182,7 @@ with the right can reach (SDSYS's own `open` does not follow `shared`).
 * Every `open` that misses the account's own VOC for an ordinary lower-case name now reads the
   register and `shared`'s VOC to see; nothing caches a miss yet. Names that begin with a symbol and
   the standard names never reach the disk.
-* SD Core Solo has one account, and does not have this.
+* SD Core Solo for Linux and SD Core Solo for Windows have one account, and do not have this.
 
 ## See also
 

@@ -407,7 +407,7 @@ error, because the space changes what it is.
 
 ## What is not here
 
-These existed in OpenQM or earlier SD releases and **are not in SD Core**.
+These existed in OpenQM or earlier SD releases and **are not in SD Core for Linux**.
 A program using one will not compile.
 
 | | |

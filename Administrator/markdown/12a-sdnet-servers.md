@@ -166,7 +166,7 @@ the label is not part of the hash.
 
 What that command relies on:
 
-- `/etc/sd-tls/api.pem` is where an SD Core server keeps its API identity (the
+- `/etc/sd-tls/api.pem` is where an SD Core for Linux server keeps its API identity (the
   certificate and its private key): the file is `api.pem` in a directory named
   `sd-tls` inside the directory that holds `sd.conf`, which is normally `/etc`;
   `sd-elevate tls-show` reads the same file. The hash SD shows is computed from the
@@ -176,7 +176,7 @@ What that command relies on:
   should agree. If they do not, trust neither until you know why.
 - The file is made by the API's first TLS connection, so a server that has never
   taken one has no `api.pem` yet. A server with a different `sd.conf` directory has
-  its `sd-tls` there. Where the identity of a Solo server is kept is not covered
+  its `sd-tls` there. Where the identity of an SD Core Solo for Linux server is kept is not covered
   here.
 
 **When it does not work, nothing is written.** There is a message for each case:

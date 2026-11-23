@@ -1,7 +1,7 @@
 Title: Client distribution
 Subtitle: The shared library an application needs, why there are two names, and how to build one.
 
-An application reaches SD Core through a shared library. **You do not have to
+An application reaches SD Core for Linux through a shared library. **You do not have to
 find it inside an installed SD system** — the source builds standalone as
 well, because the person writing an application and the person running the
 server are not always the same person.

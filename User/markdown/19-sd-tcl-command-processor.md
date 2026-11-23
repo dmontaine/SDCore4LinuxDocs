@@ -121,7 +121,7 @@ A **sentence** is a VOC record holding one command line. Typing its name runs
 that line with anything else you typed appended, so a sentence is a command with
 its first arguments filled in.
 
-A **paragraph** holds several lines and is the closest thing SD Core has to a
+A **paragraph** holds several lines and is the closest thing SD Core for Linux has to a
 shell script. Six verbs exist for paragraphs and **four of them are refused
 outside one**:
 

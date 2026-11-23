@@ -10,7 +10,7 @@ what an upgrade does and does not touch.
 > it is named in words.
 
 The installer itself — the prompts and their defaults — is covered in the
-GettingStarted set, under *Installing SD Core*, and is not repeated here.
+GettingStarted set, under *Installing SD Core for Linux*, and is not repeated here.
 
 ## Two things to know before the first install
 

@@ -97,7 +97,7 @@ SD refuses each of these.
 | `option pick`, `assoc.unassoc.mv`, `pick.breakpoint`, `pick.breakpoint.u`, `pick.explode`, `pick.grand.total`, `pick.implied.eq`, `pick.null`, `pick.wildcard`, `qualified.display`, `with.implies.or`, `query.no.case`, `query.priority.and` | removed, with the Pick style of query they switched on: write `with city = "Reno"`, put the text after a `break.on` field the way SD does, and use the `like` operator for wildcards, `or` and brackets for the order of tests, and `no.case` after an operator for case |
 | `option ampm.upcase`, `crdb.upcase`, `no.date.wrapping`, `space.mct`, `lock.beep`, `ed.no.query.fd`, `create.file.upcase`, `select.keep.case`, `debug.rebind.keys`, `proc.a` | removed: the output is as the default always was (`am`, `cr`, `db`), a date such as 31 February rolls into the next month, a lock wait is silent, and `fd` in `ed` asks before it deletes |
 | `option local.cat.relative`, `option no.sel.when.filter`, `option silent.tandem` | not provided |
-| `option pick.proc`, `option proc.if.no.case` | not provided: PROC is gone (see [Not in SD Core](14-not-in-sd-core.html)) |
+| `option pick.proc`, `option proc.if.no.case` | not provided: PROC is gone (see [Not in SD Core for Linux](14-not-in-sd-core.html)) |
 | `$mode d3`, `$mode mvbase` | not provided |
 | `$mode nocase.strings` | a directive of its own: `$nocase.strings`, or a `nocase.strings` line in `$basic.options` |
 | `$mode numeric.boolean`, `scandup`, `sselectv`, `symtab0` | not provided |

@@ -51,7 +51,7 @@ so on.
 |---|---|---|
 | **00** | Start here | this page — what the set is and what it leaves out |
 | **00a** | [Copyright and license](00a-copyright-and-licence.html) | The copyright and the license for this set, in full and in one place |
-| **01** | [Installing SD Core](01-installation.html) | What the installer does, and the choices it offers |
+| **01** | [Installing SD Core for Linux](01-installation.html) | What the installer does, and the choices it offers |
 | **01a** | [Upgrading and uninstalling](01a-upgrading-and-uninstalling.html) | Installing a new release over an existing one, and taking SD off the machine |
 | **02** | **[Your first thirty minutes](02-first-run.html)** | **Start here if you just want it working** — install to a second user signing in, in eight steps |
 | **03** | [Running SD](03-running-sd.html) | The daemon, starting and stopping, and recovering from an unclean shutdown |
@@ -67,7 +67,7 @@ so on.
 | **12** | [Security](12-security.html) | The identity model, and what protects the database |
 | **12a** | [Security and the operating system](12a-security-and-the-operating-system.html) | Reaching the machine from inside SD, how privileged work is done, and the audit trail |
 | **13** | [Other hardening](13-hardening.html) | The global catalog, the pcode library, scheduled jobs, the logs, line endings, the terminal, and running SD |
-| **14** | [Not in SD Core](14-not-in-sd-core.html) | What has been removed, and what to use instead |
+| **14** | [Not in SD Core for Linux](14-not-in-sd-core.html) | What has been removed, and what to use instead |
 | **15** | [Migrating to SD](15-migrating-to-sd.html) | Bringing programs and queries from another MultiValue database: where the compatibility words are set, and the words SD does not accept |
 | **15a** | [Option words](15a-migrating-option-words.html) | The words of the `option` command, one line each |
 | **15b** | [Mode words](15b-migrating-mode-words.html) | The names `$mode` accepts and the lines of a `$basic.options` record, one line each |
@@ -120,12 +120,12 @@ connect.
 
 ## What this release is
 
-**L2.0-0.** Linux only, and English only. SD Core for Windows is a separate
+**LC2.0-0.** Linux only, and English only. SD Core for Windows is a separate
 project and this is not a build of it.
 
 **It is a hobby project with no release schedule.**
 
-This set is the delta. It covers installing SD Core on Linux, running it, and
+This set is the delta. It covers installing SD Core for Linux, running it, and
 what differs from OpenQM and from SD Core for Windows. The reference for the
 language and the command processor is a separate set, and so is the
 administrator's.
@@ -166,7 +166,7 @@ differently from OpenQM and is not described here**, and **anything in these
 pages that turns out not to be true of the build you are running**. The second
 is as valuable as the first.
 
-**Quote the version as `L2.0-0`** — the string in the header bar of every
+**Quote the version as `LC2.0-0`** — the string in the header bar of every
 page here, in the sign-on banner, and in what `sd --version` reports. The bare `2.0-0` is the same
 release; the `L` says it is the Linux one, and that is the part worth
 keeping in a report.

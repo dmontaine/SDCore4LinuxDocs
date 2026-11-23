@@ -1,4 +1,4 @@
-Title: SD Core - Introduction and Getting Started
+Title: SD Core for Linux - Introduction and Getting Started
 Subtitle: What a multivalue database is, what SD is, the four components, and your first session.
 
 This page orients you to SD Core for Linux: what a multivalue database is,
@@ -148,7 +148,7 @@ TeamViewer) — a real local login, which counts as local because it *is*.
 `sdsys` has no ssh route and no network route to arrive over, ever, from
 any other computer; its only API route is the local socket on this machine.
 
-## What is not in SD Core
+## What is not in SD Core for Linux
 
 The following were in OpenQM, in ScarletDME, or in upstream `sdb64`, and
 are not in SD Core for Linux:

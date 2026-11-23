@@ -1,4 +1,4 @@
-Title: Installing SD Core
+Title: Installing SD Core for Linux
 Subtitle: What the installer does to the machine, and the choices it puts in front of you.
 
 There is a compiler to run. `installsdcore.sh` clones the source from
@@ -40,7 +40,7 @@ setting three passwords at the terminal.
 ## Getting the installer
 
 **The command that starts SD Core is `sd`, and `sd` is its only name.** SD Core
-for Linux Solo, if you install it as well, is started by `sd-solo`; the two have
+Solo for Linux, if you install it as well, is started by `sd-solo`; the two have
 separate API ports (4247 and 4249) and separate shared-memory keys, so they can
 share a computer. The installer is `installsdcore.sh` and the uninstaller
 `deletesdcore.sh` (Solo's are `installsdsolo.sh` and `deletesdsolo.sh`).

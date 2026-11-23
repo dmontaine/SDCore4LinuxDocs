@@ -1,4 +1,4 @@
-Title: Not in SD Core
+Title: Not in SD Core for Linux
 Subtitle: What has been removed, why, and what to use instead.
 
 This page exists so you do not spend time hunting for something that is not

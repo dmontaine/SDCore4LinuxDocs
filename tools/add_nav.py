@@ -44,7 +44,7 @@ import mkdoc
 
 DOCS_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PRODUCT = "SD Core for Linux"
-VERSION = "L2.0-0"
+VERSION = "LC2.0-0"
 
 # ── Set definitions ──────────────────────────────────────────
 

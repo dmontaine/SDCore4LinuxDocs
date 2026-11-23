@@ -1,5 +1,5 @@
 Title: SD Glossary
-Subtitle: Terms used in SD Core documentation, from account to VOC.
+Subtitle: Terms used in SD Core for Linux documentation, from account to VOC.
 
 This glossary defines the terms used throughout the SD Core for Linux
 documentation set. Terms are listed in alphabetical order.

@@ -76,7 +76,7 @@ that did nothing:
 
 ```
 $ sdconv -B objfile
-[ SDCONV L2.0-0   Copyright, Ladybridge Systems, 2007.  All rights reserved. ]
+[ SDCONV LC2.0-0   Copyright, Ladybridge Systems, 2007.  All rights reserved. ]
 
 $ echo $?
 0

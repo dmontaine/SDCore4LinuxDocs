@@ -20,7 +20,7 @@ exists, or onto a machine that has never had it. A restored account's paths are
 corrected to where it now lives, and programs it had in the global catalog are
 cataloged again. **Backups made here restore on SD Core for Windows, and the
 other way round**; a backup of the full product restores only to a full system
-(SD Core Solo's only to Solo).
+(a backup made by SD Core Solo for Linux or SD Core Solo for Windows only to Solo).
 
 **`restore.account latest` restores the most recent backup without your naming
 it:**

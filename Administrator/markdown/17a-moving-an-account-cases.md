@@ -91,8 +91,8 @@ modify.account once it is an SD user.*
   **There is no way to restore under another account name.** A word such as `as` is read as an
   account name: *as is not in this backup.*
 * **A Windows backup.** The archive format is shared with SD Core for Windows, and the restore
-  accepts a full backup of it by the same manifest rules as a Linux one (a Solo backup, or a
-  different format, is refused). It reads the Windows paths in the account's VOC pointers, both
+  accepts a full backup of it by the same manifest rules as a Linux one (a backup from SD Core Solo for Windows or
+  SD Core Solo for Linux, or a different format, is refused). It reads the Windows paths in the account's VOC pointers, both
   separators and without regard to case, and rewrites those that lead into the account to the
   new place. A pointer whose file is not in the backup under that exact spelling is reported
   (*… points at …, which does not exist here with that exact spelling.*), and a pointer that

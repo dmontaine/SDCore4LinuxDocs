@@ -18,7 +18,7 @@ come across, what happens to the Linux user and groups, and the cases where the 
 ## What you need
 
 * **Both machines run the full product**, SD Core for Windows or SD Core for Linux. A backup
-  from SD Core Solo is refused, and a full backup does not restore onto Solo: a full product's
+  from SD Core Solo for Linux or SD Core Solo for Windows is refused, and a full backup does not restore onto Solo: a full product's
   backup restores only to a full product, and a Solo backup only to Solo. The manifest records the SD release but the restore does not compare it, so put the
   same release, or a newer one, on the new machine.
 * **You are SDSYS on both**, and **no other session is logged in on either** while the verb runs.
@@ -99,7 +99,7 @@ a header, then one section per account.
 ```
 format: 1
 product: linux-full
-sd.version: L2.0-0
+sd.version: LC2.0-0
 created: 2026-10-18T11:49:48
 host: oldbox
 source.root: /home/sd

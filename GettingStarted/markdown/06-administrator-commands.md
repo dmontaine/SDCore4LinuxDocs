@@ -135,7 +135,7 @@ means that nothing but `sdsys`'s password then stands between the computers
 allowed in and the administrator: its ssh door is guarded by the Linux password and
 its API door, which names the addresses it admits, by SD's own password for SDSYS.
 The Administrator set's chapters on remote administration say what each risks. There is no
-`ssh.server`/`append.sd.path` pair here: SD Core does not manage an ssh
+`ssh.server`/`append.sd.path` pair here: SD Core for Linux does not manage an ssh
 server as an installable feature (the distribution's own package does that)
 and puts `sd` on `PATH` at install time rather than as a toggle.
 

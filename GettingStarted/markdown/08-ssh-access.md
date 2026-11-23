@@ -78,7 +78,7 @@ The Administrator set's *Accounts and Security* chapter has the whole of it.
 **This is applied once, to the ssh server, regardless of the two questions
 the installer asked.** Whether remote ssh access is turned on only decides
 whether `sshd` is enabled at boot and reachable from other computers (see
-[Installing SD Core](01-installation.html#what-you-are-asked)); the
+[Installing SD Core for Linux](01-installation.html#what-you-are-asked)); the
 boundary above is written to `sshd_config` either way, so `ssh localhost`
 is confined the same as a connection from anywhere else.
 
@@ -116,7 +116,7 @@ than needing a separate remote-desktop product.
 
 **Whether remote ssh access is turned on is a plain yes/no from the
 installer**, defaulting to no (see
-[Installing SD Core](01-installation.html#what-you-are-asked)). Answering
+[Installing SD Core for Linux](01-installation.html#what-you-are-asked)). Answering
 yes enables `sshd` at boot and adds a firewall rule for 22/tcp (`ufw`, or firewalld where that is the firewall in use); answering no
 leaves `sshd` and the firewall exactly as the box already had them — the
 installer does not narrow an existing, wider rule on your behalf. Change it

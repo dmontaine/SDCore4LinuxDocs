@@ -1,8 +1,8 @@
-Title: Changes in L2.0-0
+Title: Changes in LC2.0-0
 Subtitle: What was added, changed and removed since L1.1-3 (9 October 2026), by section and in alphabetical order.
 Columns: 23 11 66
 
-**This is the list of what changed between L1.1-3 (9 October 2026) and L2.0-0.** The release changelog
+**This is the list of what changed between L1.1-3 (9 October 2026) and LC2.0-0.** The release changelog
 (`sdsys/changelog`) has the full story of each change: what it does, why, and what it does not do. This document
 is the short form.
 
@@ -52,7 +52,7 @@ is the short form.
 
 **[REMOVED](#removed)**: what SD no longer has, and what to write instead.
 
-**[New Features Unique to SD Core](#new-features-unique-to-sd-core)**, not part of openQM:
+**[New Features Unique to SD Core for Linux](#new-features-unique-to-sd-core-for-linux)**, not part of openQM:
 [Administration](#administration) · [AI](#ai) · [API and client library](#api-and-client-library) ·
 [Commands](#commands) · [Data formats](#data-formats) · [Encryption](#encryption) · [Files](#files-1) ·
 [Installer](#installer) · [Screen library](#screen-library) · [SDNet](#sdnet) · [Security](#security) · [System](#system-1) ·
@@ -397,7 +397,7 @@ Commands and VOC verbs that every account has, and the command language.
 
 ## TOOLS
 
-The debugger and the editors, from the openQM list. The full-screen tools that are SD's own are under New Features Unique to SD Core.
+The debugger and the editors, from the openQM list. The full-screen tools that are SD's own are under New Features Unique to SD Core for Linux.
 
 | Name | Change | What |
 |---|---|---|
@@ -412,7 +412,7 @@ The debugger and the editors, from the openQM list. The full-screen tools that a
 
 ## REMOVED
 
-These were in L1.1-3 - or were added and taken out again during L2.0-0 - and **SD no longer has them**. This is the one place where a removal is listed,
+These were in L1.1-3 - or were added and taken out again during LC2.0-0 - and **SD no longer has them**. This is the one place where a removal is listed,
 whatever the area it belonged to. Most were removed because they existed only to make SD behave like another MultiValue
 product, or gave a second way to do something SD already does one way. **A program, a login paragraph or a `$basic.options` record that uses one has to
 be edited**; the last column says what to write instead. A program that was compiled with a removed mode keeps what it was
@@ -508,7 +508,7 @@ compiled with until it is compiled again. More rows are added as the removal goe
 | `pdf`, `set.viewer`, `tool.viewers` | Removed | added and taken out again in this release, with the installer's two questions about a PDF reader and the Documentation button of a help box: the documentation PDFs are still in the shared account's `pdf` directory, where every account can read them (copy one to your own computer), and a help box's last line names the PDF that says more; an upgrade removes the three VOC entries and the list of allowed readers |
 | `sed` option `scroll1` | Removed | added and taken out again in this release: SED is the IDE's editor, page up and page down move a whole page, and the word in `&sed.options&` is passed over |
 
-## New Features Unique to SD Core
+## New Features Unique to SD Core for Linux
 
 Everything in this section is SD Core's own and is not part of openQM: the administrator's pages and gates, the
 AI features, the master files and the shared account, SDNet, the screen library and the full-screen tools, the
@@ -860,7 +860,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | SDSYS cron and at | Changed | the `sdsys` user may not use cron or at (the installer adds it to `/etc/cron.deny` and `/etc/at.deny`, moves an existing crontab to a root-only copy, removes queued at jobs); a cron job was a password-only administrator login. Scheduled work is `sd-elevate job-set`; the administrator lifts it by taking `sdsys` out of the deny file |
 | SDSYS files a session makes | Changed | a session in the SDSYS account makes files 644 and directories 755 (umask 022), not group-writable: SDSYS's group is `sdusers`, every SD user, who could change the example programs' objects and the administrator's command stack; other accounts keep 002, and `create.account` no longer leaves its umask behind |
 | SDSYS in more than one place | Added | SDSYS may be signed on at two terminals, and it is now visible: the audit line `sdsys second session others=<n>`, `sdsys x<n>` on those rows of `tool.sessions` with `SDSYS in <n> places` in its counts line, and `<m> signed, <n> sdsys` on the home screen's Sessions and locks tile; a phantom, an API process and a session with no terminal are not counted |
-| SDSYS over ssh | Added | in SD Core (not Solo; SD Core for Windows has it in its own form): `sdsys` can sign in over ssh from another computer once the administrator opens that door (`remote.sdsys on`, or `sudo sd-elevate sdsys-ssh on` from any login with sudo, which is how a server with no screen opens it); it is shut as delivered, the installer does not ask about it, an upgrade that keeps the configuration leaves it as it was (open stays open), and the installer's closing summary says which it is and how to change it. The sign-in asks the Linux password alone (a second factor was tried in test versions of this release and taken out, at the owner's word: the password is all that guards the door while it is open, so open it only on a machine whose `sdsys` password is long and used nowhere else); the session is `sd` with no shell, no forwarding, no keys. Turning it on asks `sshd` itself what it would do with `sdsys` and puts the file back if the answer is not the one SD wrote (an earlier `Match` block, a `DenyUsers` or an `AllowUsers` that leaves `sdsys` out). The API is a separate door (SDSYS through the API, below) |
+| SDSYS over ssh | Added | in SD Core (not SD Core Solo for Linux; SD Core for Windows has it in its own form): `sdsys` can sign in over ssh from another computer once the administrator opens that door (`remote.sdsys on`, or `sudo sd-elevate sdsys-ssh on` from any login with sudo, which is how a server with no screen opens it); it is shut as delivered, the installer does not ask about it, an upgrade that keeps the configuration leaves it as it was (open stays open), and the installer's closing summary says which it is and how to change it. The sign-in asks the Linux password alone (a second factor was tried in test versions of this release and taken out, at the owner's word: the password is all that guards the door while it is open, so open it only on a machine whose `sdsys` password is long and used nowhere else); the session is `sd` with no shell, no forwarding, no keys. Turning it on asks `sshd` itself what it would do with `sdsys` and puts the file back if the answer is not the one SD wrote (an earlier `Match` block, a `DenyUsers` or an `AllowUsers` that leaves `sdsys` out). The API is a separate door (SDSYS through the API, below) |
 | SDSYS through the API | Added | in SD Core: an administration program on another computer can sign in through the API as `sdsys`, with `sdsys`'s SD password, once the administrator opens that door for chosen addresses (`remote.sdsys api on 192.168.1.20`, a range such as `192.168.1.0/24`, or `any` alone for every address; `api off` shuts it); shut as delivered, the installer does not ask, an upgrade that keeps the configuration leaves it as it was. Such a session has every right of the administrator; an API session into any other account has that account's rights only. From this machine's Unix socket SDSYS keeps the API whatever the door says, but only from a real `sdsys` login (`su sdsys` and `sudo -u sdsys` are refused there too). A connection from one of this computer's own addresses (a tunnel aimed at its network address) counts as local, so it never matches the list. The API port must also be open to other computers (`remote.api`) |
 | `setptr ... spooler`, `setpu` | Changed | fixed: the spooler string ran as a shell command for any account; only a session with the `os` switch may set it |
 | shared memory modes | Changed | the shared segment and the semaphores are 0660 and given to the group `sdusers`; they were 0666, open to every local user |
@@ -883,7 +883,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | `sd -stop` and `sd -restart` | Changed | a session still attached ten seconds after the termination signal is ended with SIGKILL, and the stop says how many; before, it was left running with SD gone under it. A session idle at a terminal or on a pipe leaves by itself |
 | session whose SD was stopped | Changed | ends at once with a message in syslog and on its terminal, instead of spinning at full processor use for ever |
 | `sh` whose shell cannot be started | Changed | the command ends with status 127; a copy of the session used to carry on in the background |
-| sign-on banner | Changed | names the platform: `SD Core for Linux, the Essential Multivalue String Database, version L2.0-0` (it said `SD Core, ...`) |
+| sign-on banner | Changed | names the platform: `SD Core for Linux, the Essential Multivalue String Database, version LC2.0-0` (it said `SD Core, ...`) |
 | `term` and a damaged terminfo file | Changed | a terminfo file that is corrupt or cut short keeps the session's current terminal type; it used to leave the session with none |
 
 ### Tools and the home screen
@@ -910,7 +910,7 @@ Fixes that close a way round a gate, and what the gates now ask.
 | home screen small window | Changed | an account that starts in the home screen is signed out when the window is too small for it, even with the Terminal tile on (it used to be left at the prompt); SDSYS always starts at the prompt |
 | home screen sub-menus | Added | a tile can open a second page of tiles (a tile whose action is `menu:name`) with a Back tile, Esc and the path on the status line; eight deep; the delivered page declares none yet |
 | home screen tiles | Changed | a tile for a `tool.` page whose verb is not in the account's VOC is not shown |
-| home screen version | Added | the date line in the header ends with the product and its version: `SD Core for Linux L2.0-0` |
+| home screen version | Added | the date line in the header ends with the product and its version: `SD Core for Linux LC2.0-0` |
 | `ide` | Added | tree, tabs, compile errors table, find, run, catalog and debug; Ctrl-E zooms the editor to the whole screen, and Go > Edit in SED hands a record to `sed` |
 | `ide` breakpoints | Added | Shift-F7 or a click in the gutter marks a line of a program tab (`*`); F7 runs to the first mark, Build / Debug from the first line stops at line 1 with them set; what the debugger still has comes back as marks; up to 20, only lines where a statement begins |
 | `ide` autologout countdown | Added | with `autologout` set, the status line counts down the last 60 seconds before the session is signed out and says whether unsaved changes will be lost; any key stops it; it reads the inactivity clock `autologout` itself uses |

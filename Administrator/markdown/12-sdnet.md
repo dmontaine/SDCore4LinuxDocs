@@ -24,8 +24,8 @@ port 4245 and no password in any file.
   `read` unless SDSYS defines it `write` on the client, and the administrator of the
   *target* must also allow writing for that remote user (`sdfileswrite`).
 - **The same channel as the API.** The connection is the target server's own API port,
-  TLS 1.3 with the SCRAM login bound to the TLS session, and no new listener. A full
-  SD Core listens for the API on 4247; a Solo on 4249.
+  TLS 1.3 with the SCRAM login bound to the TLS session, and no new listener.
+  SD Core for Linux listens for the API on 4247; SD Core Solo for Linux on 4249.
 - **Delivered off, and loosened by SDSYS.** The switch is off for every account,
   the list of accounts allowed to use a server is empty, and a server is
   `read` unless SDSYS says otherwise. SDSYS turns each on, one account and one

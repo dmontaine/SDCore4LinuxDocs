@@ -1,7 +1,7 @@
 Title: Your first thirty minutes
 Subtitle: From a finished install to a working account, a file and a second user signing in over ssh.
 
-This page assumes SD Core is installed and you have never used SD Core for Linux
+This page assumes SD Core for Linux is installed and you have never used it
 before. It is a walkthrough, not a reference — every step links to the page
 that explains it properly.
 
@@ -30,7 +30,7 @@ You land in **the SD account named after your Linux login**. Nothing asks
 for a password — Linux has already authenticated you, at the console or
 over ssh.
 
-The sign-on banner names the product and its version, `L2.0-0`, and the
+The sign-on banner names the product and its version, `LC2.0-0`, and the
 date line of the home screen ends with them too.
 
 **SD is already running.** It is a `systemd` service, `sd.service`, enabled
@@ -75,7 +75,7 @@ ed customers 1001
 **`micro`** opens the record in `micro` — see
 [Development and file commands](07-programmer-commands.html#editors). The old
 full-screen editors `update.record` and `modify` are gone; see
-[Not in SD Core](14-not-in-sd-core.html).
+[Not in SD Core for Linux](14-not-in-sd-core.html).
 
 In **`ed`**: `i` to insert, type your lines, a full stop on its own line to stop
 inserting, then `fi` to file and exit.

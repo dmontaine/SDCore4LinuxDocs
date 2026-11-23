@@ -242,7 +242,7 @@ in**, and nothing else was changed to give it. The next try by that user is refu
   this computer, can ask for the administrator; only the password stands in the way.
 * **It cannot tell the keyboard from the network.** A listed user who signs in to this computer from
   elsewhere and then uses ssh to `localhost` arrives from this computer.
-* **It is not in SD Core Solo**, which has no `sdsys`.
+* **It is not in SD Core Solo for Linux**, which has no `sdsys`.
 * **A background process cannot be started from such a session.** A phantom begins a session of its
   own, which has no terminal to be asked the password at, and is refused as a session without a
   `sdsys` login (the audit line ends `why=no-terminal`). Start background work from a login as `sdsys`.

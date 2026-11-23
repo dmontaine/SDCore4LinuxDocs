@@ -148,7 +148,7 @@ To keep an edit of your own to a record SD still ships, mark it — see below.
 
 ## Keeping your own version of a VOC record: `[locked]`
 
-This has no equivalent in OpenQM or in SD on Linux. Nothing you know from
+This has no equivalent in OpenQM or in upstream SD (sdb64). Nothing you know from
 another MultiValue system will tell you it exists.
 
 A site that has customized one of SD's own VOC records marks it by putting
@@ -296,7 +296,7 @@ config contrib             display the contributors
 
 ```
 :config
-Virtual Machine Version Number L2.0-0
+Virtual Machine Version Number LC2.0-0
 CLEANUP   300 seconds
 CMDSTACK  99
 DEADLOCK  0

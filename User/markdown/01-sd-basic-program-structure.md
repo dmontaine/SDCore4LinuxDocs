@@ -412,7 +412,7 @@ either: it is the caller's matrix, with the caller's size, until a `redim` chang
 
 Nothing in the program-structure group has been removed from this port. The
 `package` statements — `enter.package`, `exit.package` and `package` — went
-before SD Core, and `varset` is present but is an internal debugging aid rather
+before SD Core for Linux, and `varset` is present but is an internal debugging aid rather
 than something application code uses.
 
 ## See also
